@@ -1,0 +1,28 @@
+[versions]
+gradle = "8.12"
+agp = "8.12.2"
+kotlin = "2.2.20"
+compose-bom = "2025.10.00"
+
+activity = "1.9.2"
+navigation = "2.8.0"
+
+# генераторы кода подключим позже при необходимости
+ksp = "2.2.20-1.0.25"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library     = { id = "com.android.library",     version.ref = "agp" }
+kotlin-android      = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose      = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp                 = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+[libraries]
+compose-bom     = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui      = { module = "androidx.compose.ui:ui" }
+compose-m3      = { module = "androidx.compose.material3:material3" }
+compose-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
+
+activity-compose   = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
