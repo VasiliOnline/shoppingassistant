@@ -1,24 +1,13 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    //alias(libs.plugins.ksp) // подключим, когда понадобится Room/генерация
 }
 
 android {
-    namespace = "com.example.shoppingassistant"
-
+    namespace = "com.example.shoppingassistant.feature"
     compileSdk = 36
-
-    defaultConfig {
-        applicationId = "com.example.shoppingassistant"
-        minSdk = 26
-        targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
-        vectorDrawables { useSupportLibrary = true }
-    }
-
+    defaultConfig { minSdk = 26 }
     buildFeatures { compose = true }
 
     compileOptions {
@@ -28,10 +17,6 @@ android {
     kotlin {
         jvmToolchain(21)
     }
-
-    packaging {
-        resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
-    }
 }
 
 dependencies {
@@ -39,12 +24,8 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.m3)
     implementation(libs.compose.preview)
-    implementation(libs.ui)
     debugImplementation(libs.compose.tooling)
-
-    implementation(libs.activity.compose)
+    implementation("androidx.compose.material:material-icons-extended") // ← добавить
     implementation(libs.navigation.compose)
-
     implementation(project(":core"))
-    implementation(project(":feature"))
 }

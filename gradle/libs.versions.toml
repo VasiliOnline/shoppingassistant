@@ -3,19 +3,20 @@ gradle = "8.12"
 agp = "8.12.2"
 kotlin = "2.2.20"
 compose-bom = "2025.10.00"
-
+ktor = "3.0.0"
+serialization = "1.7.3"
 activity = "1.9.2"
 navigation = "2.8.0"
-
+coroutines = "1.9.0"
 # генераторы кода подключим позже при необходимости
-ksp = "2.2.20-1.0.25"
+ui = "1.9.4"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library     = { id = "com.android.library",     version.ref = "agp" }
 kotlin-android      = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose      = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp                 = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [libraries]
 compose-bom     = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
@@ -23,6 +24,16 @@ compose-ui      = { module = "androidx.compose.ui:ui" }
 compose-m3      = { module = "androidx.compose.material3:material3" }
 compose-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
-
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 activity-compose   = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+
+# Ktor client
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# Kotlinx Serialization (если будешь работать с @Serializable напрямую)
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
