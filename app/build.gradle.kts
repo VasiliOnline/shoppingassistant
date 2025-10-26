@@ -40,11 +40,26 @@ dependencies {
     implementation(libs.compose.m3)
     implementation(libs.compose.preview)
     implementation(libs.ui)
+    implementation(libs.foundation.layout)
+    implementation(libs.foundation)
+    implementation(libs.volley)
     debugImplementation(libs.compose.tooling)
 
     implementation(libs.activity.compose)
     implementation(libs.navigation.compose)
-
+    implementation("androidx.compose.material:material-icons-extended") // ← добавить
+    implementation("androidx.compose.foundation:foundation")
     implementation(project(":core"))
     implementation(project(":feature"))
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    // Koin + Compose
+    implementation("io.insert-koin:koin-android:4.0.0")
+    implementation("io.insert-koin:koin-androidx-compose:4.0.0")
+    implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+
+
+
 }

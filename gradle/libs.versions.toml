@@ -1,6 +1,6 @@
 [versions]
 gradle = "8.12"
-agp = "8.12.2"
+agp = "8.12.3"
 kotlin = "2.2.20"
 compose-bom = "2025.10.00"
 ktor = "3.0.0"
@@ -10,6 +10,12 @@ navigation = "2.8.0"
 coroutines = "1.9.0"
 # генераторы кода подключим позже при необходимости
 ui = "1.9.4"
+foundation-layout = "1.9.4"
+material3 = "1.4.0"
+ui-text = "1.9.4"
+foundation = "1.9.4"
+animation-core = "1.9.4"
+volley = "1.2.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -37,3 +43,9 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 
 # Kotlinx Serialization (если будешь работать с @Serializable напрямую)
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundation-layout" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "ui-text" }
+foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animation-core" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }

@@ -15,7 +15,7 @@ import com.example.shoppingassistant.feature.chat.ChatScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { App() }
+        setContent { AppRoot() }
     }
 }
 

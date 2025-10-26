@@ -69,6 +69,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -87,22 +88,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.compose.LocalImageLoader
+import coil.imageLoader
+import coil.request.ImageRequest
+import com.example.shoppingassistant.core.data.ProductRepository
 import com.example.shoppingassistant.core.network.GptApi
 import com.example.shoppingassistant.feature.chat.model.Product
 import com.example.shoppingassistant.feature.chat.ui.ProductCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.compose.koinViewModel
+import com.example.shoppingassistant.*
+import com.example.shoppingassistant.core.ui.AppImageLoader
 
 // фон карточки: немного светлее страницы (близко к rgb(22,19,19), но читаемее)
 // рядом с UI-константами
@@ -154,10 +171,33 @@ private val attributeCatalog: Map<String, List<AttributeDef>> = mapOf(
         AttributeDef("season", "Сезон", listOf("Лето", "Деми", "Зима"))
     )
 )
+// маленький helper: из выбранного товара + атрибутов получаем категорию и фильтры
+private fun toQuery(chosen: String, selectedAttrs: Map<String, String>): Pair<String, Map<String, String>> {
+    // Простейшая логика: категория — первое слово без цифр; фильтры = выбранные атрибуты
+    val category = chosen.takeWhile { !it.isDigit() }.trim().ifBlank { chosen }
+
+    return category to selectedAttrs
+}
+class ChatViewModel(private val repo: ProductRepository) : ViewModel() {
+    private val _offerCount = MutableStateFlow<Int?>(null)
+    val offerCount: StateFlow<Int?> = _offerCount.asStateFlow()
+
+    fun updateOfferCount(chosenItem: String?, selectedAttrs: Map<String, String>) {
+        viewModelScope.launch {
+            if (chosenItem == null) {
+                _offerCount.value = null
+            } else {
+                val (category, filters) = toQuery(chosenItem, selectedAttrs)
+                _offerCount.value = try { repo.offersCount(category, filters) } catch (_: Exception) { null }
+            }
+        }
+    }
+}
 
 @Composable
 fun ChatScreen(
     nav: NavController,
+    viewModel: ChatViewModel = koinViewModel(), // или hiltViewModel()
     modifier: Modifier = Modifier
 ) {
     val products = remember { mutableStateListOf<Product>() }
@@ -185,8 +225,7 @@ fun ChatScreen(
 // карточка показана?
     var showQuickCard by remember { mutableStateOf(false) }
 
-// кол-во предложений (пока временно, позже — реальное)
-    var offerCount by remember { mutableStateOf<Int?>(null) }
+
 
 // Что пользователь выбрал из подсказок — чтобы показать под полем панель атрибутов
     var chosenItem by remember { mutableStateOf<String?>(null) }
@@ -194,6 +233,11 @@ fun ChatScreen(
 // Текущее наполнение атрибутов (выбор пользователя)
     val selectedAttrs = remember { mutableStateMapOf<String, String>() }
 
+    val offerCount by viewModel.offerCount.collectAsState()
+    // когда изменились chosenItem/selectedAttrs — вызвать
+    LaunchedEffect(chosenItem, selectedAttrs) {
+        viewModel.updateOfferCount(chosenItem, selectedAttrs)
+    }
 // Какой атрибут редактируем (для диалога выбора варианта)
     var dialogAttr by remember { mutableStateOf<AttributeDef?>(null) }
 
@@ -270,7 +314,6 @@ fun ChatScreen(
                         chosenItem = choice
                         bannerVisible = true      // показываем баннер
                         showQuickCard = false     // карточку НЕ показываем
-                        offerCount = 27           // временно; позже подставим реальное
                         typeIntoField(choice)
                     }
                     ,
@@ -307,13 +350,14 @@ fun ChatScreen(
                 if (showQuickCard && chosenItem != null) {
                     ProductQuickCard(
                         title = chosenItem!!,
-                        images = emptyList(),
+                        images = listOf( /* сюда реальные URL, когда появятся */ ),
                         attributes = attrsForChosen ?: emptyList(),
                         selected = selectedAttrs,
                         modifier = Modifier
-                            .fillMaxWidth(0.9f)         // как раньше
+                            .fillMaxWidth(0.9f)
                             .align(Alignment.CenterHorizontally)
                     )
+
                 }
 
             }
@@ -326,12 +370,16 @@ fun ChatScreen(
                 reverseLayout = true
             ) {
                 items(products.reversed()) { product ->
-                    ProductCard(
-                        product = product,
-                        onBuyClick = { /* TODO */ },
-                        onSubscribeClick = { /* TODO */ },
-                        onDetailsClick = { /* TODO */ }
+                    ProductQuickCard(
+                        title = chosenItem!!,
+                        images = listOf( /* сюда реальные URL, когда появятся */ ),
+                        attributes = attrsForChosen ?: emptyList(),
+                        selected = selectedAttrs,
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .align(Alignment.CenterHorizontally)
                     )
+
                 }
             }
             InputRow(
@@ -346,7 +394,6 @@ fun ChatScreen(
                     chosenItem = choice
                     bannerVisible = true          // показываем баннер под полем
                     showQuickCard = false         // карточку пока не показываем
-                    offerCount = 27               // временно: покажем число; позже — подставим реальное
                     typeIntoField(choice)         // анимированно подставляем текст в поле
                 }
                 ,
@@ -446,12 +493,28 @@ private fun ProductQuickCard(
                     .fillMaxWidth()
                     .height(200.dp)
             ) {
-                HorizontalPager(state = pagerState) {
-                    NoPhotoPlaceholder(
-                        modifier = Modifier.fillMaxSize(),
-                        bg = Color.Transparent
-                    )
+                val imageLoader = AppImageLoader.current
+
+
+                HorizontalPager(state = pagerState) { idx ->
+                    val url = images.getOrNull(idx) as? String
+                    if (url.isNullOrBlank()) {
+                        NoPhotoPlaceholder(Modifier.fillMaxSize())
+                    } else {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(url)
+                                .diskCacheKey(url)
+                                .memoryCacheKey(url)
+                                .build(),
+                            contentDescription = null,
+                            imageLoader = imageLoader,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
+
             }
 
             // Атрибуты сразу следом — без промежуточных фоновых блоков
