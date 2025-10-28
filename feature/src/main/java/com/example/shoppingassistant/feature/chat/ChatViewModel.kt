@@ -1,0 +1,2 @@
+package com.example.shoppingassistant.feature.chat
+
