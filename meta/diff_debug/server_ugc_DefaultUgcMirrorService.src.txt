@@ -1,0 +1,31 @@
+package com.example.shoppingassistant.server.ugc
+
+import com.example.shoppingassistant.domain.ugc.UgcMirrorResult
+
+/**
+ * Простейшая реализация [UgcMirrorService] для MVP.
+ *
+ * Сейчас она не ходит никуда наружу и не парсит HTML:
+ * - чистит и нормализует ссылку (trim);
+ * - возвращает [UgcMirrorResult] с заполненным sourceUrl;
+ * - остальные поля остаются пустыми.
+ *
+ * Позже сюда можно добавить:
+ * - детектор типа площадки (Avito, Ozon, Wildberries и т.п.);
+ * - отдельные парсеры под каждую площадку;
+ * - кэширование и rate limiting.
+ */
+class DefaultUgcMirrorService : UgcMirrorService {
+
+    override suspend fun mirrorByUrl(url: String): UgcMirrorResult {
+        val trimmed = url.trim()
+
+        if (trimmed.isEmpty()) {
+            // Пустая строка — ничего не парсим, просто возвращаем исходное значение.
+            return UgcMirrorResult(sourceUrl = url)
+        }
+
+        // На MVP: возвращаем только нормализованный URL.
+        return UgcMirrorResult(sourceUrl = trimmed)
+    }
+}

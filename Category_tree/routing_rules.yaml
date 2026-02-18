@@ -1,0 +1,25 @@
+version: 1
+stage: 2.0
+default_locale: ru-RU
+routing:
+  priority:
+    - when: exact_alias_to_category
+      route_type: OPEN_CATEGORY
+      min_confidence: 0.92
+    - when: exact_alias_to_browse
+      route_type: OPEN_BROWSE
+      min_confidence: 0.88
+    - when: fuzzy_alias_to_category
+      route_type: OPEN_CATEGORY
+      min_confidence: 0.75
+    - when: no_confident_match
+      route_type: RUN_SEARCH
+      min_confidence: 0.30
+  tie_breakers:
+    - higher_weight
+    - category_over_browse
+    - shorter_term_distance
+  guardrails:
+    - require_alias_normalization
+    - reject_hidden_browse_nodes
+    - reject_deprecated_categories_in_open_routes

@@ -1,0 +1,1017 @@
+package com.example.shoppingassistant.domain.catalog
+
+import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueConstraint
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.catalog.constraints.CompatibilityRule
+import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+
+/**
+ * Базовый сид категорий/атрибутов для MVP (включая словари значений).
+ */
+object CatalogSeed {
+    val profiles: List<CategoryProfile> = listOf(
+        techRootProfile(),
+        smartphoneProfile(),
+        laptopProfile(),
+        foodRootProfile(),
+        fastFoodProfile(),
+        rollsProfile(),
+        pizzaProfile(),
+        fashRootProfile(),
+        fashShoesProfile(),
+        sneakersProfile(),
+        kidsRootProfile(),
+        strollerProfile(),
+        homeRootProfile(),
+        dishesProfile(),
+        mugsProfile(),
+        thermoMugProfile(),
+        coffeeMachineProfile(),
+        suppRootProfile(),
+        proteinProfile(),
+        vitaminsProfile(),
+    )
+
+    val categories: List<Category> = profiles.map { it.category }
+
+    val constraints: List<CatalogConstraints> = listOf(
+        smartphoneConstraints(),
+        iphone16ProConstraints(),
+        iphone16Constraints(),
+    )
+}
+
+private fun techRootProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(code = "TECH", segment = CategorySegment.TECH, title = "Электроника"),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun foodRootProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(code = "FOOD", segment = CategorySegment.FOOD, title = "Еда"),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun fashRootProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(code = "FASH", segment = CategorySegment.FASH, title = "Одежда и обувь"),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun kidsRootProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(code = "KIDS", segment = CategorySegment.KIDS, title = "Детские товары"),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun suppRootProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(code = "SUPP", segment = CategorySegment.SUPP, title = "Спортпит и добавки"),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun fastFoodProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(
+            code = "FOOD.FASTFOOD",
+            segment = CategorySegment.FOOD,
+            title = "Фастфуд",
+            parentCode = "FOOD",
+        ),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun homeRootProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(code = "HOME", segment = CategorySegment.HOME, title = "Дом"),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun fashShoesProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(
+            code = "FASH.SHOES",
+            segment = CategorySegment.FASH,
+            title = "Обувь",
+            parentCode = "FASH",
+        ),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun dishesProfile(): CategoryProfile =
+    CategoryProfile(
+        category = Category(
+            code = "HOME.DISHES",
+            segment = CategorySegment.HOME,
+            title = "Посуда",
+            parentCode = "HOME",
+        ),
+        attributes = emptyList(),
+        categoryAttributes = emptyList(),
+    )
+
+private fun mugsProfile(): CategoryProfile {
+    val code = "HOME.MUGS"
+    val attrs = listOf(
+        baseAttr("volume_ml"),
+        baseAttr("material"),
+        baseAttr("has_lid"),
+        baseAttr("is_thermal"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "volume_ml", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "material", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "has_lid", uiOrder = 3),
+        CategoryAttribute(code, "is_thermal", uiOrder = 4),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.HOME, title = "Кружки", parentCode = "HOME.DISHES"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun thermoMugProfile(): CategoryProfile {
+    val code = "HOME.THERMOMUG"
+    val attrs = listOf(
+        baseAttr("volume_ml"),
+        baseAttr("material"),
+        baseAttr("has_lid"),
+        baseAttr("is_thermal"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "volume_ml", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "material", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "has_lid", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "is_thermal", uiOrder = 4, isRequiredForCategory = true),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.HOME, title = "Термокружки", parentCode = "HOME.DISHES"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun smartphoneProfile(): CategoryProfile {
+    val code = "TECH.SMARTPHONE"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("model"),
+        baseAttr("memory_gb"),
+        baseAttr("condition"),
+        baseAttr("network_type"),
+        baseAttr("ram_gb"),
+        baseAttr("os_family"),
+        baseAttr("dual_sim"),
+        baseAttr("region_code"),
+        baseAttr("battery_health_percent"),
+        baseAttr("color"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "model", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "memory_gb", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "condition", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "network_type", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "ram_gb", uiOrder = 6),
+        CategoryAttribute(code, "os_family", uiOrder = 7),
+        CategoryAttribute(code, "dual_sim", uiOrder = 8),
+        CategoryAttribute(code, "region_code", uiOrder = 9),
+        CategoryAttribute(code, "battery_health_percent", uiOrder = 10),
+        CategoryAttribute(code, "color", uiOrder = 11),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.TECH, title = "Смартфоны", parentCode = "TECH"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+        requiredIfRules = listOf(
+            RequiredIfRule(
+                requiredAttributeCode = "battery_health_percent",
+                whenAll = listOf(
+                    AttributeCondition(
+                        attributeCode = "condition",
+                        op = AttributeConditionOp.EQUALS_ANY,
+                        values = listOf("used"),
+                    ),
+                ),
+            ),
+        ),
+    )
+}
+
+private fun smartphoneConstraints(): CatalogConstraints =
+    CatalogConstraints(
+        scope = ConstraintScope.CATEGORY,
+        categoryCode = "TECH.SMARTPHONE",
+        compatibilityRules = listOf(
+            CompatibilityRule(
+                whenAll = listOf(
+                    AttributeCondition(
+                        attributeCode = "brand",
+                        op = AttributeConditionOp.EQUALS_ANY,
+                        values = listOf("Apple"),
+                    ),
+                    AttributeCondition(
+                        attributeCode = "model",
+                        op = AttributeConditionOp.STARTS_WITH_ANY,
+                        values = listOf("iPhone"),
+                    ),
+                ),
+                apply = listOf(
+                    AttributeValueConstraint(
+                        attributeCode = "os_family",
+                        allowedValues = listOf("iOS"),
+                        reason = "Для iPhone доступна только iOS",
+                    )
+                ),
+            )
+        ),
+    )
+
+private fun iphone16ProConstraints(): CatalogConstraints =
+    CatalogConstraints(
+        scope = ConstraintScope.MODEL,
+        categoryCode = "TECH.SMARTPHONE",
+        brand = "Apple",
+        model = "iPhone 16 Pro",
+        attributeConstraints = listOf(
+            AttributeValueConstraint(
+                attributeCode = "memory",
+                allowedValues = listOf("256 ГБ", "512 ГБ", "1 ТБ"),
+                reason = "Доступные варианты памяти для iPhone 16 Pro",
+            ),
+            AttributeValueConstraint(
+                attributeCode = "color",
+                allowedValues = listOf("Black", "Blue", "Natural Titanium"),
+                reason = "Доступные цвета для iPhone 16 Pro",
+            ),
+        ),
+    )
+
+private fun iphone16Constraints(): CatalogConstraints =
+    CatalogConstraints(
+        scope = ConstraintScope.MODEL,
+        categoryCode = "TECH.SMARTPHONE",
+        brand = "Apple",
+        model = "iPhone 16",
+        attributeConstraints = listOf(
+            AttributeValueConstraint(
+                attributeCode = "memory",
+                allowedValues = listOf("128 ГБ", "256 ГБ", "512 ГБ"),
+                reason = "Доступные варианты памяти для iPhone 16",
+            ),
+            AttributeValueConstraint(
+                attributeCode = "color",
+                allowedValues = listOf("Black", "White", "Pink"),
+                reason = "Доступные цвета для iPhone 16",
+            ),
+        ),
+    )
+
+private fun laptopProfile(): CategoryProfile {
+    val code = "TECH.LAPTOP"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("model"),
+        baseAttr("condition"),
+        baseAttr("cpu_family"),
+        baseAttr("ram_gb"),
+        baseAttr("storage_type"),
+        baseAttr("storage_gb"),
+        baseAttr("screen_size_inch"),
+        baseAttr("gpu_type"),
+        baseAttr("os_family"),
+        baseAttr("keyboard_layout"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "model", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "condition", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "cpu_family", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "ram_gb", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "storage_type", uiOrder = 6, isRequiredForCategory = true),
+        CategoryAttribute(code, "storage_gb", uiOrder = 7, isRequiredForCategory = true),
+        CategoryAttribute(code, "screen_size_inch", uiOrder = 8, isRequiredForCategory = true),
+        CategoryAttribute(code, "gpu_type", uiOrder = 9),
+        CategoryAttribute(code, "os_family", uiOrder = 10),
+        CategoryAttribute(code, "keyboard_layout", uiOrder = 11),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.TECH, title = "Ноутбуки", parentCode = "TECH"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun rollsProfile(): CategoryProfile {
+    val code = "FOOD.ROLLS_SUSHI"
+    val attrs = listOf(
+        baseAttr("restaurant_name"),
+        baseAttr("portion_size_gram"),
+        baseAttr("servings_count"),
+        baseAttr("is_vegan"),
+        baseAttr("is_vegetarian"),
+        baseAttr("spiciness_level"),
+        baseAttr("cuisine_type"),
+        baseAttr("set_type"),
+        baseAttr("pieces_count"),
+        baseAttr("fish_type_primary"),
+        baseAttr("has_cheese"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "restaurant_name", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "portion_size_gram", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "servings_count", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "is_vegan", uiOrder = 4),
+        CategoryAttribute(code, "is_vegetarian", uiOrder = 5),
+        CategoryAttribute(code, "spiciness_level", uiOrder = 6),
+        CategoryAttribute(code, "cuisine_type", uiOrder = 7),
+        CategoryAttribute(code, "set_type", uiOrder = 8),
+        CategoryAttribute(code, "pieces_count", uiOrder = 9),
+        CategoryAttribute(code, "fish_type_primary", uiOrder = 10),
+        CategoryAttribute(code, "has_cheese", uiOrder = 11),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.FOOD, title = "Роллы и суши", parentCode = "FOOD.FASTFOOD"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun pizzaProfile(): CategoryProfile {
+    val code = "FOOD.PIZZA"
+    val attrs = listOf(
+        baseAttr("restaurant_name"),
+        baseAttr("portion_size_gram"),
+        baseAttr("servings_count"),
+        baseAttr("is_vegan"),
+        baseAttr("is_vegetarian"),
+        baseAttr("spiciness_level"),
+        baseAttr("cuisine_type"),
+        baseAttr("diameter_cm"),
+        baseAttr("thickness"),
+        baseAttr("base_type"),
+        baseAttr("topping_signature"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "restaurant_name", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "portion_size_gram", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "servings_count", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "is_vegan", uiOrder = 4),
+        CategoryAttribute(code, "is_vegetarian", uiOrder = 5),
+        CategoryAttribute(code, "spiciness_level", uiOrder = 6),
+        CategoryAttribute(code, "cuisine_type", uiOrder = 7),
+        CategoryAttribute(code, "diameter_cm", uiOrder = 8, isRequiredForCategory = true),
+        CategoryAttribute(code, "thickness", uiOrder = 9),
+        CategoryAttribute(code, "base_type", uiOrder = 10),
+        CategoryAttribute(code, "topping_signature", uiOrder = 11),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.FOOD, title = "Пицца", parentCode = "FOOD.FASTFOOD"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun sneakersProfile(): CategoryProfile {
+    val code = "FASH.SNEAKERS"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("model_line"),
+        baseAttr("gender"),
+        baseAttr("condition"),
+        baseAttr("size_eu"),
+        baseAttr("size_uk"),
+        baseAttr("size_us"),
+        baseAttr("colorway"),
+        baseAttr("release_year"),
+        baseAttr("limited_edition"),
+        baseAttr("material_upper"),
+        baseAttr("material_sole"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "model_line", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "gender", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "condition", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "size_eu", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "size_uk", uiOrder = 6),
+        CategoryAttribute(code, "size_us", uiOrder = 7),
+        CategoryAttribute(code, "colorway", uiOrder = 8),
+        CategoryAttribute(code, "release_year", uiOrder = 9),
+        CategoryAttribute(code, "limited_edition", uiOrder = 10),
+        CategoryAttribute(code, "material_upper", uiOrder = 11),
+        CategoryAttribute(code, "material_sole", uiOrder = 12),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.FASH, title = "Кроссовки", parentCode = "FASH.SHOES"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun strollerProfile(): CategoryProfile {
+    val code = "KIDS.STROLLER"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("model"),
+        baseAttr("condition"),
+        baseAttr("age_from_months"),
+        baseAttr("age_to_months"),
+        baseAttr("weight_limit_kg"),
+        baseAttr("stroller_type"),
+        baseAttr("color"),
+        baseAttr("included_accessories"),
+        baseAttr("weight_kg"),
+        baseAttr("folding_type"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "model", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "condition", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "age_from_months", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "age_to_months", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "weight_limit_kg", uiOrder = 6, isRequiredForCategory = true),
+        CategoryAttribute(code, "stroller_type", uiOrder = 7, isRequiredForCategory = true),
+        CategoryAttribute(code, "color", uiOrder = 8),
+        CategoryAttribute(code, "included_accessories", uiOrder = 9),
+        CategoryAttribute(code, "weight_kg", uiOrder = 10),
+        CategoryAttribute(code, "folding_type", uiOrder = 11),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.KIDS, title = "Детские коляски", parentCode = "KIDS"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun coffeeMachineProfile(): CategoryProfile {
+    val code = "HOME.COFFEE_MACHINE"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("model"),
+        baseAttr("condition"),
+        baseAttr("coffee_type"),
+        baseAttr("used_for"),
+        baseAttr("power_watt"),
+        baseAttr("pump_pressure_bar"),
+        baseAttr("water_tank_litre"),
+        baseAttr("color"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "model", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "condition", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "coffee_type", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "used_for", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "power_watt", uiOrder = 6, isRequiredForCategory = true),
+        CategoryAttribute(code, "pump_pressure_bar", uiOrder = 7),
+        CategoryAttribute(code, "water_tank_litre", uiOrder = 8),
+        CategoryAttribute(code, "color", uiOrder = 9),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.HOME, title = "Кофемашины"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun proteinProfile(): CategoryProfile {
+    val code = "SUPP.PROTEIN"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("product_name"),
+        baseAttr("dosage_unit"),
+        baseAttr("dosage_per_serving"),
+        baseAttr("servings_count"),
+        baseAttr("form_factor"),
+        baseAttr("flavor"),
+        baseAttr("country_of_origin"),
+        baseAttr("is_sugar_free"),
+        baseAttr("is_lactose_free"),
+        baseAttr("is_gluten_free"),
+        baseAttr("protein_per_serving_gram"),
+        baseAttr("protein_percent"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "product_name", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "dosage_unit", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "dosage_per_serving", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "servings_count", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "form_factor", uiOrder = 6, isRequiredForCategory = true),
+        CategoryAttribute(code, "flavor", uiOrder = 7),
+        CategoryAttribute(code, "country_of_origin", uiOrder = 8),
+        CategoryAttribute(code, "is_sugar_free", uiOrder = 9),
+        CategoryAttribute(code, "is_lactose_free", uiOrder = 10),
+        CategoryAttribute(code, "is_gluten_free", uiOrder = 11),
+        CategoryAttribute(code, "protein_per_serving_gram", uiOrder = 12),
+        CategoryAttribute(code, "protein_percent", uiOrder = 13),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.SUPP, title = "Протеин", parentCode = "SUPP"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+private fun vitaminsProfile(): CategoryProfile {
+    val code = "SUPP.VITAMIN"
+    val attrs = listOf(
+        baseAttr("brand"),
+        baseAttr("product_name"),
+        baseAttr("dosage_unit"),
+        baseAttr("dosage_per_serving"),
+        baseAttr("servings_count"),
+        baseAttr("form_factor"),
+        baseAttr("flavor"),
+        baseAttr("country_of_origin"),
+        baseAttr("is_sugar_free"),
+        baseAttr("is_lactose_free"),
+        baseAttr("is_gluten_free"),
+        baseAttr("substance_code"),
+    )
+    val catAttrs = listOf(
+        CategoryAttribute(code, "brand", uiOrder = 1, isRequiredForCategory = true),
+        CategoryAttribute(code, "product_name", uiOrder = 2, isRequiredForCategory = true),
+        CategoryAttribute(code, "dosage_unit", uiOrder = 3, isRequiredForCategory = true),
+        CategoryAttribute(code, "dosage_per_serving", uiOrder = 4, isRequiredForCategory = true),
+        CategoryAttribute(code, "servings_count", uiOrder = 5, isRequiredForCategory = true),
+        CategoryAttribute(code, "form_factor", uiOrder = 6, isRequiredForCategory = true),
+        CategoryAttribute(code, "flavor", uiOrder = 7),
+        CategoryAttribute(code, "country_of_origin", uiOrder = 8),
+        CategoryAttribute(code, "is_sugar_free", uiOrder = 9),
+        CategoryAttribute(code, "is_lactose_free", uiOrder = 10),
+        CategoryAttribute(code, "is_gluten_free", uiOrder = 11),
+        CategoryAttribute(code, "substance_code", uiOrder = 12, isRequiredForCategory = true),
+    )
+    return CategoryProfile(
+        category = Category(code = code, segment = CategorySegment.SUPP, title = "Витамины/минералы", parentCode = "SUPP"),
+        attributes = attrs,
+        categoryAttributes = catAttrs,
+        valueDictionaries = dictsFor(attrs),
+    )
+}
+
+// Заглушки: будут заменены на реальные определения и словари ниже по задаче.
+private val baseAttributeDefs: Map<String, AttributeDef> = buildMap {
+    put("brand", stringDef("brand", "Бренд", requiredForSearch = true, requiredForOffer = true))
+    put("model", stringDef("model", "Модель", requiredForSearch = true, requiredForOffer = true))
+    put("model_line", stringDef("model_line", "Линейка", requiredForOffer = true))
+    put("memory_gb", intDef("memory_gb", "Память (ГБ)", requiredForOffer = true, facet = true))
+    put("ram_gb", intDef("ram_gb", "RAM (ГБ)", facet = true))
+    put("condition", enumDef("condition", "Состояние", dict = "condition", requiredForOffer = true, requiredForExpress = true, facet = true))
+    put("network_type", enumDef("network_type", "Связь", dict = "network_type", requiredForOffer = true, facet = true))
+    put("os_family", enumDef("os_family", "OS", dict = "os_family", facet = true))
+    put("dual_sim", boolDef("dual_sim", "Dual SIM"))
+    put("region_code", stringDef("region_code", "Регион/версия", facet = true))
+    put("battery_health_percent", intDef("battery_health_percent", "Ёмкость аккумулятора (%)"))
+    put("color", enumDef("color", "Цвет", dict = "color", facet = true))
+
+    put("cpu_family", stringDef("cpu_family", "CPU семейство", requiredForOffer = true, facet = true))
+    put("storage_type", enumDef("storage_type", "Тип накопителя", dict = "storage_type", requiredForOffer = true, facet = true))
+    put("storage_gb", intDef("storage_gb", "Накопитель (ГБ)", requiredForOffer = true, facet = true))
+    put("screen_size_inch", decimalDef("screen_size_inch", "Диагональ (дюймы)", requiredForOffer = true, facet = true))
+    put("gpu_type", stringDef("gpu_type", "GPU"))
+    put("keyboard_layout", enumDef("keyboard_layout", "Раскладка", dict = "keyboard_layout"))
+
+    put("restaurant_name", stringDef("restaurant_name", "Ресторан/сеть", requiredForOffer = true))
+    put("portion_size_gram", intDef("portion_size_gram", "Порция (г)", requiredForOffer = true))
+    put("servings_count", intDef("servings_count", "Порций", requiredForOffer = true))
+    put("is_vegan", boolDef("is_vegan", "Веган"))
+    put("is_vegetarian", boolDef("is_vegetarian", "Вегетариан"))
+    put("spiciness_level", enumDef("spiciness_level", "Острота", dict = "spiciness_level"))
+    put("cuisine_type", enumDef("cuisine_type", "Кухня", dict = "cuisine_type"))
+    put("set_type", enumDef("set_type", "Тип сета", dict = "set_type"))
+    put("pieces_count", intDef("pieces_count", "Кол-во кусочков"))
+    put("fish_type_primary", enumDef("fish_type_primary", "Рыба", dict = "fish_type_primary"))
+    put("has_cheese", boolDef("has_cheese", "Сыр"))
+
+    put("diameter_cm", decimalDef("diameter_cm", "Диаметр (см)", requiredForOffer = true))
+    put("thickness", enumDef("thickness", "Толщина", dict = "thickness"))
+    put("base_type", enumDef("base_type", "Тесто/основание", dict = "base_type"))
+    put("topping_signature", stringDef("topping_signature", "Фирменная начинка"))
+
+    put("gender", enumDef("gender", "Пол", dict = "gender", requiredForOffer = true, facet = true))
+    put("size_eu", decimalDef("size_eu", "Размер EU", requiredForOffer = true, facet = true))
+    put("size_uk", decimalDef("size_uk", "Размер UK", facet = true))
+    put("size_us", decimalDef("size_us", "Размер US", facet = true))
+    put("colorway", stringDef("colorway", "Окраска/колорвей"))
+    put("release_year", intDef("release_year", "Год релиза"))
+    put("limited_edition", boolDef("limited_edition", "Лимитированное издание"))
+    put("material_upper", stringDef("material_upper", "Материал верха"))
+    put("material_sole", stringDef("material_sole", "Материал подошвы"))
+
+    put("age_from_months", intDef("age_from_months", "Возраст с (мес)", requiredForOffer = true))
+    put("age_to_months", intDef("age_to_months", "Возраст до (мес)", requiredForOffer = true))
+    put("weight_limit_kg", decimalDef("weight_limit_kg", "Вес ребёнка до (кг)", requiredForOffer = true))
+    put("stroller_type", enumDef("stroller_type", "Тип коляски", dict = "stroller_type", requiredForOffer = true))
+    put("included_accessories", stringListDef("included_accessories", "Комплектация"))
+    put("weight_kg", decimalDef("weight_kg", "Вес коляски (кг)"))
+    put("folding_type", enumDef("folding_type", "Складование", dict = "folding_type"))
+
+    put("coffee_type", enumDef("coffee_type", "Тип кофе", dict = "coffee_type", requiredForOffer = true))
+    put("used_for", enumDef("used_for", "Назначение", dict = "used_for", requiredForOffer = true))
+    put("power_watt", intDef("power_watt", "Мощность (Вт)", requiredForOffer = true))
+    put("pump_pressure_bar", decimalDef("pump_pressure_bar", "Давление (бар)"))
+    put("water_tank_litre", decimalDef("water_tank_litre", "Объём бака (л)"))
+
+    put("product_name", stringDef("product_name", "Название продукта", requiredForOffer = true))
+    put("dosage_unit", enumDef("dosage_unit", "Ед. дозировки", dict = "dosage_unit", requiredForOffer = true))
+    put("dosage_per_serving", decimalDef("dosage_per_serving", "Доза за приём", requiredForOffer = true))
+    put("servings_count", intDef("servings_count", "Количество порций", requiredForOffer = true))
+    put("form_factor", enumDef("form_factor", "Форма выпуска", dict = "form_factor", requiredForOffer = true))
+    put("flavor", enumDef("flavor", "Вкус", dict = "flavor", facet = true))
+    put("country_of_origin", stringDef("country_of_origin", "Страна производства"))
+    put("is_sugar_free", boolDef("is_sugar_free", "Без сахара"))
+    put("is_lactose_free", boolDef("is_lactose_free", "Без лактозы"))
+    put("is_gluten_free", boolDef("is_gluten_free", "Без глютена"))
+    put("protein_per_serving_gram", decimalDef("protein_per_serving_gram", "Белка за порцию (г)"))
+    put("protein_percent", decimalDef("protein_percent", "Белок (%)"))
+    put("substance_code", enumDef("substance_code", "Действующее вещество", dict = "substance_code", requiredForOffer = true))
+
+    // HOME: mugs / dishes
+    put("volume_ml", intDef("volume_ml", "Объём (мл)", facet = true))
+    put("material", enumDef("material", "Материал", dict = "material", facet = true))
+    put("has_lid", boolDef("has_lid", "Крышка"))
+    put("is_thermal", boolDef("is_thermal", "Термо"))
+}
+
+private fun baseAttr(code: String): AttributeDef =
+    baseAttributeDefs[code] ?: error("AttributeDef not found for code=$code")
+
+private val baseDicts: Map<String, AttributeValueDict> = buildMap {
+    put("material", AttributeValueDict(
+        attributeCode = "material",
+        code = "material",
+        entries = listOf(
+            entry("CERAMIC", "Ceramic", listOf("керамика", "фарфор"), rank = 80),
+            entry("GLASS", "Glass", listOf("стекло"), rank = 70),
+            entry("STEEL", "Steel", listOf("сталь", "нержавейка", "нержавеющая"), rank = 60),
+            entry("ALUMINUM", "Aluminum", listOf("алюминий", "aluminium"), rank = 55),
+            entry("WOOD", "Wood", listOf("дерево", "wood"), rank = 50),
+            entry("SILICONE", "Silicone", listOf("силикон", "silicone"), rank = 45),
+            entry("LEATHER", "Leather", listOf("кожа", "leather"), rank = 40),
+            entry("PLASTIC", "Plastic", listOf("пластик"), rank = 30),
+        ),
+    ))
+    put("condition", AttributeValueDict(
+        attributeCode = "condition",
+        code = "condition",
+        entries = listOf(
+            entry("NEW", "new", listOf("новый", "brand new", "sealed"), rank = 100),
+            entry("LIKE_NEW", "like new", listOf("как новый", "почти новый"), rank = 90),
+            entry("USED", "used", listOf("б/у", "used good", "preowned"), rank = 70),
+            entry("REFURBISHED", "refurbished", listOf("восстановленный", "renewed"), rank = 40),
+            entry("OPEN_BOX", "open box", listOf("распакован", "витринный"), rank = 30),
+            entry("FOR_PARTS", "for parts", listOf("на запчасти", "нерабочий"), rank = 10),
+        ),
+    ))
+    put("network_type", AttributeValueDict(
+        attributeCode = "network_type",
+        code = "network_type",
+        entries = listOf(
+            entry("5G", "5g", listOf("5 g", "5g ready"), rank = 100),
+            entry("4G", "4g", listOf("lte", "4 g"), rank = 90),
+            entry("3G", "3g", listOf("umts"), rank = 60),
+            entry("2G", "2g", listOf("gsm"), rank = 40),
+        ),
+    ))
+    put("os_family", AttributeValueDict(
+        attributeCode = "os_family",
+        code = "os_family",
+        entries = listOf(
+            entry("ANDROID", "Android", listOf("андроид"), rank = 100),
+            entry("IOS", "iOS", listOf("ios", "iphone os"), rank = 95),
+            entry("HARMONY", "Harmony", listOf("harmonyos"), rank = 60),
+            entry("WINDOWS", "Windows", listOf("win"), rank = 50),
+            entry("MACOS", "macOS", listOf("mac os", "osx"), rank = 40),
+            entry("LINUX", "Linux", listOf("ubuntu", "debian"), rank = 30),
+            entry("KAIOS", "KaiOS", listOf("kai os"), rank = 20),
+        ),
+    ))
+    put("color", AttributeValueDict(
+        attributeCode = "color",
+        code = "color",
+        entries = listOf(
+            entry("BLACK", "Black", listOf("черный", "чёрный", "space black", "dark"), rank = 100),
+            entry("WHITE", "White", listOf("белый", "white", "starlight"), rank = 90),
+            entry("GRAY", "Gray", listOf("серый", "silver", "серебристый"), rank = 80),
+            entry("BLUE", "Blue", listOf("синий", "blue"), rank = 70),
+            entry("RED", "Red", listOf("красный", "red"), rank = 60),
+            entry("GREEN", "Green", listOf("зелёный", "green"), rank = 50),
+            entry("GOLD", "Gold", listOf("золотой", "gold"), rank = 45),
+            entry("PINK", "Pink", listOf("розовый", "pink"), rank = 40),
+            entry("PURPLE", "Purple", listOf("фиолетовый", "purple"), rank = 35),
+            entry("YELLOW", "Yellow", listOf("желтый", "жёлтый", "yellow"), rank = 30),
+            entry("ORANGE", "Orange", listOf("оранжевый", "orange"), rank = 25),
+            entry("NATURAL_TITANIUM", "Natural Titanium", listOf("натуральный титан", "titanium", "титан"), rank = 20),
+        ),
+    ))
+    put("storage_type", AttributeValueDict(
+        attributeCode = "storage_type",
+        code = "storage_type",
+        entries = listOf(
+            entry("SSD", "SSD", listOf("solid state", "nvme", "pcie"), rank = 90),
+            entry("HDD", "HDD", listOf("hard drive", "sata"), rank = 50),
+            entry("HYBRID", "Hybrid", listOf("ssh", "fusion"), rank = 40),
+        ),
+    ))
+    put("keyboard_layout", AttributeValueDict(
+        attributeCode = "keyboard_layout",
+        code = "keyboard_layout",
+        entries = listOf(
+            entry("US", "US", listOf("eng", "english"), rank = 80),
+            entry("UK", "UK", listOf("british"), rank = 60),
+            entry("RU", "RU", listOf("рус", "cyrillic"), rank = 60),
+            entry("EU", "EU", listOf("euro"), rank = 50),
+            entry("DE", "DE", listOf("german", "de"), rank = 40),
+            entry("JP", "JP", listOf("japanese", "jp"), rank = 30),
+        ),
+    ))
+    put("spiciness_level", AttributeValueDict(
+        attributeCode = "spiciness_level",
+        code = "spiciness_level",
+        entries = listOf(
+            entry("MILD", "Mild", listOf("неострый", "низкая")),
+            entry("MEDIUM", "Medium", listOf("средний", "умеренный")),
+            entry("HOT", "Hot", listOf("острый", "макс")),
+        ),
+    ))
+    put("cuisine_type", AttributeValueDict(
+        attributeCode = "cuisine_type",
+        code = "cuisine_type",
+        entries = listOf(
+            entry("JAPANESE", "Japanese", listOf("японская")),
+            entry("ITALIAN", "Italian", listOf("итальянская")),
+            entry("FUSION", "Fusion", listOf("фьюжн")),
+            entry("AMERICAN", "American", listOf("американская")),
+        ),
+    ))
+    put("set_type", AttributeValueDict(
+        attributeCode = "set_type",
+        code = "set_type",
+        entries = listOf(
+            entry("ASSORTED", "Assorted", listOf("ассорти")),
+            entry("MAKI_SET", "Maki set", listOf("маки", "роллы сет")),
+            entry("WARM_SET", "Warm set", listOf("тёплые роллы")),
+        ),
+    ))
+    put("fish_type_primary", AttributeValueDict(
+        attributeCode = "fish_type_primary",
+        code = "fish_type_primary",
+        entries = listOf(
+            entry("SALMON", "Salmon", listOf("лосось", "семга")),
+            entry("TUNA", "Tuna", listOf("тунец")),
+            entry("EEL", "Eel", listOf("угорь")),
+            entry("SHRIMP", "Shrimp", listOf("креветка")),
+        ),
+    ))
+    put("thickness", AttributeValueDict(
+        attributeCode = "thickness",
+        code = "thickness",
+        entries = listOf(
+            entry("THIN", "Thin", listOf("тонкое")),
+            entry("TRADITIONAL", "Traditional", listOf("традиционное", "пышное")),
+        ),
+    ))
+    put("base_type", AttributeValueDict(
+        attributeCode = "base_type",
+        code = "base_type",
+        entries = listOf(
+            entry("CLASSIC", "Classic", listOf("классическое")),
+            entry("WHOLEWHEAT", "Whole wheat", listOf("цельнозерновое")),
+            entry("GLUTEN_FREE", "Gluten free", listOf("безглютеновое")),
+        ),
+    ))
+    put("gender", AttributeValueDict(
+        attributeCode = "gender",
+        code = "gender",
+        entries = listOf(
+            entry("UNISEX", "Unisex", listOf("унисекс"), rank = 80),
+            entry("MALE", "Male", listOf("мужской", "m"), rank = 70),
+            entry("FEMALE", "Female", listOf("женский", "f", "w"), rank = 70),
+            entry("KIDS", "Kids", listOf("детский", "kids"), rank = 50),
+        ),
+    ))
+    put("stroller_type", AttributeValueDict(
+        attributeCode = "stroller_type",
+        code = "stroller_type",
+        entries = listOf(
+            entry("TRAVEL", "Travel", listOf("прогулочная", "трость")),
+            entry("TRANSFORMER", "Transformer", listOf("трансформер")),
+            entry("JOGGER", "Jogger", listOf("для бега")),
+            entry("CARRIAGE", "Carriage", listOf("люлька")),
+        ),
+    ))
+    put("folding_type", AttributeValueDict(
+        attributeCode = "folding_type",
+        code = "folding_type",
+        entries = listOf(
+            entry("BOOK", "Book", listOf("книжка")),
+            entry("UMBRELLA", "Umbrella", listOf("трость")),
+            entry("ONE_HAND", "One-hand", listOf("одним движением")),
+        ),
+    ))
+    put("coffee_type", AttributeValueDict(
+        attributeCode = "coffee_type",
+        code = "coffee_type",
+        entries = listOf(
+            entry("ESPRESSO", "Espresso", listOf("рожковая", "эспрессо")),
+            entry("CAPSULE", "Capsule", listOf("капсульная")),
+            entry("DRIP", "Drip", listOf("капельная", "фильтр")),
+            entry("GEYSER", "Geyser", listOf("гейзерная")),
+        ),
+    ))
+    put("used_for", AttributeValueDict(
+        attributeCode = "used_for",
+        code = "used_for",
+        entries = listOf(
+            entry("HOME", "Home", listOf("дом", "household")),
+            entry("OFFICE", "Office", listOf("офис")),
+        ),
+    ))
+    put("dosage_unit", AttributeValueDict(
+        attributeCode = "dosage_unit",
+        code = "dosage_unit",
+        entries = listOf(
+            entry("G", "g", listOf("gram", "г")),
+            entry("MG", "mg", listOf("миллиграмм")),
+            entry("ML", "ml", listOf("миллилитр")),
+            entry("SCOOP", "scoop", listOf("мерка")),
+        ),
+    ))
+    put("form_factor", AttributeValueDict(
+        attributeCode = "form_factor",
+        code = "form_factor",
+        entries = listOf(
+            entry("POWDER", "Powder", listOf("порошок")),
+            entry("CAPSULE", "Capsule", listOf("капсула")),
+            entry("TABLET", "Tablet", listOf("таблетка")),
+            entry("LIQUID", "Liquid", listOf("жидкость", "сироп")),
+            entry("BAR", "Bar", listOf("батончик")),
+        ),
+    ))
+    put("flavor", AttributeValueDict(
+        attributeCode = "flavor",
+        code = "flavor",
+        entries = listOf(
+            entry("VANILLA", "Vanilla", listOf("ваниль")),
+            entry("CHOCOLATE", "Chocolate", listOf("шоколад")),
+            entry("STRAWBERRY", "Strawberry", listOf("клубника")),
+            entry("BANANA", "Banana", listOf("банан")),
+            entry("UNFLAVORED", "Unflavored", listOf("без вкуса", "neutral")),
+        ),
+    ))
+    put("substance_code", AttributeValueDict(
+        attributeCode = "substance_code",
+        code = "substance_code",
+        entries = listOf(
+            entry("VITAMIN_D3", "Vitamin D3", listOf("d3", "витамин д3")),
+            entry("VITAMIN_C", "Vitamin C", listOf("аскорбинка", "c")),
+            entry("MAGNESIUM", "Magnesium", listOf("магний", "mg")),
+            entry("IRON", "Iron", listOf("железо", "fe")),
+            entry("OMEGA3", "Omega-3", listOf("омега", "omega 3")),
+        ),
+    ))
+}
+
+private fun dictsFor(defs: List<AttributeDef>): List<AttributeValueDict> =
+    defs.mapNotNull { def -> def.valueDictCode?.let { baseDicts[it] } }
+        .distinctBy { it.attributeCode }
+
+private fun stringDef(
+    code: String,
+    title: String,
+    requiredForSearch: Boolean = false,
+    requiredForOffer: Boolean = false,
+    requiredForExpress: Boolean = false,
+    facet: Boolean = false,
+    multi: Boolean = false,
+    dict: String? = null,
+): AttributeDef = AttributeDef(
+    code = code,
+    title = title,
+    dataType = AttributeDataType.STRING,
+    requiredForSearch = requiredForSearch,
+    requiredForOffer = requiredForOffer,
+    requiredForExpress = requiredForExpress,
+    facetEnabled = facet,
+    multiValued = multi,
+    valueDictCode = dict,
+)
+
+private fun intDef(
+    code: String,
+    title: String,
+    requiredForSearch: Boolean = false,
+    requiredForOffer: Boolean = false,
+    requiredForExpress: Boolean = false,
+    facet: Boolean = false,
+): AttributeDef = AttributeDef(
+    code = code,
+    title = title,
+    dataType = AttributeDataType.INT,
+    requiredForSearch = requiredForSearch,
+    requiredForOffer = requiredForOffer,
+    requiredForExpress = requiredForExpress,
+    facetEnabled = facet,
+)
+
+private fun decimalDef(
+    code: String,
+    title: String,
+    requiredForSearch: Boolean = false,
+    requiredForOffer: Boolean = false,
+    requiredForExpress: Boolean = false,
+    facet: Boolean = false,
+): AttributeDef = AttributeDef(
+    code = code,
+    title = title,
+    dataType = AttributeDataType.DECIMAL,
+    requiredForSearch = requiredForSearch,
+    requiredForOffer = requiredForOffer,
+    requiredForExpress = requiredForExpress,
+    facetEnabled = facet,
+)
+
+private fun boolDef(
+    code: String,
+    title: String,
+    requiredForOffer: Boolean = false,
+    requiredForExpress: Boolean = false,
+    facet: Boolean = false,
+): AttributeDef = AttributeDef(
+    code = code,
+    title = title,
+    dataType = AttributeDataType.BOOL,
+    requiredForOffer = requiredForOffer,
+    requiredForExpress = requiredForExpress,
+    facetEnabled = facet,
+)
+
+private fun stringListDef(
+    code: String,
+    title: String,
+    requiredForOffer: Boolean = false,
+    facet: Boolean = false,
+): AttributeDef = AttributeDef(
+    code = code,
+    title = title,
+    dataType = AttributeDataType.STRING_LIST,
+    requiredForOffer = requiredForOffer,
+    facetEnabled = facet,
+    multiValued = true,
+)
+
+private fun enumDef(
+    code: String,
+    title: String,
+    dict: String,
+    requiredForOffer: Boolean = false,
+    requiredForExpress: Boolean = false,
+    requiredForSearch: Boolean = false,
+    facet: Boolean = false,
+    multi: Boolean = false,
+): AttributeDef = AttributeDef(
+    code = code,
+    title = title,
+    dataType = AttributeDataType.ENUM,
+    requiredForSearch = requiredForSearch,
+    requiredForOffer = requiredForOffer,
+    requiredForExpress = requiredForExpress,
+    facetEnabled = facet,
+    multiValued = multi,
+    valueDictCode = dict,
+)
+
+private fun entry(
+    canonicalCode: String,
+    canonicalValue: String,
+    synonyms: List<String> = emptyList(),
+    rank: Int = 0,
+): AttributeValueDictEntry = AttributeValueDictEntry(
+    canonicalCode = canonicalCode,
+    canonicalValue = canonicalValue,
+    synonyms = synonyms,
+    rank = rank,
+)

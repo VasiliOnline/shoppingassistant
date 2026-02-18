@@ -1,0 +1,375 @@
+package com.example.shoppingassistant.core.data.tracks
+
+import com.example.shoppingassistant.core.data.nearby.NearbyCondition
+import com.example.shoppingassistant.core.data.nearby.NearbyDelivery
+import com.example.shoppingassistant.core.data.nearby.NearbyFiltersStorage
+import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
+import com.example.shoppingassistant.domain.facet.FacetCountMode
+import com.example.shoppingassistant.domain.facet.FacetCountsQuery
+import com.example.shoppingassistant.domain.facet.FacetCountsRepository
+import com.example.shoppingassistant.domain.tracks.Track
+import com.example.shoppingassistant.domain.tracks.TrackFilterKey
+import com.example.shoppingassistant.domain.tracks.TrackFilterOption
+import com.example.shoppingassistant.domain.tracks.TrackFilterOptionsBundle
+import com.example.shoppingassistant.domain.tracks.TrackFilterOptionsRepository
+import com.example.shoppingassistant.domain.tracks.TrackId
+import com.example.shoppingassistant.domain.tracks.TrackRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+class TrackFilterOptionsRepositoryImpl(
+    private val trackRepository: TrackRepository,
+    private val nearbyFiltersStorage: NearbyFiltersStorage,
+    private val facetCountsRepository: FacetCountsRepository,
+    private val categoryAliasRepository: CategoryAliasRepository,
+    private val historyStore: TrackFilterOptionsHistoryStore,
+    private val clock: () -> Long = { System.currentTimeMillis() },
+) : TrackFilterOptionsRepository {
+
+    private data class CacheEntry(
+        val bundle: TrackFilterOptionsBundle,
+        val createdAt: Long,
+        val ttlSec: Int,
+    )
+
+    private val cache = LinkedHashMap<String, CacheEntry>()
+
+    override suspend fun getOptions(
+        trackId: TrackId,
+        key: TrackFilterKey,
+        query: String?,
+        extraKey: String?,
+    ): TrackFilterOptionsBundle = withContext(Dispatchers.Default) {
+        val cacheKey = buildCacheKey(trackId, key, query, extraKey)
+        val now = clock()
+        val cached = cache[cacheKey]
+        if (cached != null && !isExpired(cached, now)) return@withContext cached.bundle
+
+        val result = try {
+            val track = runCatching { trackRepository.getTrack(trackId) }.getOrNull()
+            if (track != null) {
+                recordTrackFilters(track)
+            }
+            val categoryCode = resolveCategoryCode(track)
+            buildBundle(trackId, key, query, extraKey, categoryCode)
+        } catch (_: Throwable) {
+            buildFallbackBundle(trackId, key, query, extraKey, now, null)
+        }
+
+        val ttlSec = result.ttlSec ?: defaultTtlSec(key)
+        cache[cacheKey] = CacheEntry(result, now, ttlSec)
+        result
+    }
+
+    private suspend fun buildBundle(
+        trackId: TrackId,
+        key: TrackFilterKey,
+        query: String?,
+        extraKey: String?,
+        categoryCode: String?,
+    ): TrackFilterOptionsBundle {
+        val now = clock()
+        val normalizedQuery = query?.trim().orEmpty().lowercase().takeIf { it.isNotBlank() }
+        val recent = historyStore.getRecent(key, extraKey)
+        val suggested = suggestedOptionsFor(key)
+        val counts = loadFacetCounts(trackId, key, extraKey, categoryCode, normalizedQuery)
+        val seeded = seededOptionsFor(key, extraKey)
+        val filteredSuggested = filterByQuery(suggested, normalizedQuery)
+        val filteredRecent = filterByQuery(recent, normalizedQuery)
+        val filteredSeeded = mergeSeededWithCounts(seeded, counts, normalizedQuery)
+
+        val options = mergeOptions(
+            suggested = filteredSuggested,
+            recent = filteredRecent,
+            all = filteredSeeded,
+            counts = counts,
+        )
+
+        return TrackFilterOptionsBundle(
+            key = key,
+            options = options,
+            allowCustom = allowCustomFor(key),
+            allowEmpty = true,
+            searchEnabled = searchEnabledFor(key, filteredSeeded.size),
+            lastUpdatedAt = now,
+            ttlSec = defaultTtlSec(key),
+        )
+    }
+
+    private suspend fun buildFallbackBundle(
+        trackId: TrackId,
+        key: TrackFilterKey,
+        query: String?,
+        extraKey: String?,
+        now: Long,
+        categoryCode: String?,
+    ): TrackFilterOptionsBundle {
+        val normalizedQuery = query?.trim().orEmpty().lowercase().takeIf { it.isNotBlank() }
+        val recent = historyStore.getRecent(key, extraKey)
+        val filteredRecent = filterByQuery(recent, normalizedQuery)
+        val counts = loadFacetCounts(trackId, key, extraKey, categoryCode, normalizedQuery)
+        val options = mergeOptions(
+            suggested = emptyList(),
+            recent = filteredRecent,
+            all = emptyList(),
+            counts = counts,
+        )
+        return TrackFilterOptionsBundle(
+            key = key,
+            options = options,
+            allowCustom = true,
+            allowEmpty = true,
+            searchEnabled = searchEnabledFor(key, options.size),
+            lastUpdatedAt = now,
+            ttlSec = defaultTtlSec(key),
+        )
+    }
+
+    private suspend fun recordTrackFilters(track: Track) {
+        val filters = track.filters
+        filters.region?.let { historyStore.record(TrackFilterKey.REGION, it) }
+        filters.delivery?.let { historyStore.record(TrackFilterKey.DELIVERY, it) }
+        filters.condition?.let { historyStore.record(TrackFilterKey.CONDITION, it) }
+        filters.seller?.let { historyStore.record(TrackFilterKey.SELLER, it) }
+        if (filters.extra.isNotEmpty()) {
+            historyStore.recordMany(TrackFilterKey.EXTRA_KEY, filters.extra.keys.toList())
+            filters.extra.forEach { (key, value) ->
+                historyStore.record(TrackFilterKey.EXTRA_VALUE, value, extraKey = key)
+            }
+        }
+    }
+
+    private suspend fun suggestedOptionsFor(key: TrackFilterKey): List<String> {
+        if (key != TrackFilterKey.REGION) return emptyList()
+        val place = runCatching { nearbyFiltersStorage.get() }.getOrNull()?.filters?.selectedPlace
+        val values = listOfNotNull(place?.city, place?.country)
+        return values.filter { it.isNotBlank() }
+    }
+
+    private suspend fun loadFacetCounts(
+        trackId: TrackId,
+        key: TrackFilterKey,
+        extraKey: String?,
+        categoryCode: String?,
+        query: String?,
+    ): Map<String, Int> {
+        val resolvedCategory = categoryCode ?: resolveCategoryCode(runCatching { trackRepository.getTrack(trackId) }.getOrNull())
+        if (resolvedCategory.isNullOrBlank()) return emptyMap()
+
+        return when (key) {
+            TrackFilterKey.EXTRA_VALUE -> {
+                val facetKey = extraKey?.let(::mapExtraKeyToFacetKey) ?: return emptyMap()
+                loadFacetCountsForFacet(resolvedCategory, facetKey, query)
+            }
+            TrackFilterKey.EXTRA_KEY -> {
+                val counts = LinkedHashMap<String, Int>()
+                EXTRA_KEY_FACET_MAP.forEach { (label, facetKey) ->
+                    val map = loadFacetCountsForFacet(resolvedCategory, facetKey, query)
+                    val total = map.values.sum()
+                    if (total > 0) counts[label] = total
+                }
+                counts
+            }
+            else -> emptyMap()
+        }
+    }
+
+    private suspend fun loadFacetCountsForFacet(
+        categoryCode: String,
+        facetKey: String,
+        query: String?,
+    ): Map<String, Int> {
+        val counts = runCatching {
+            facetCountsRepository.getFacetCounts(
+                FacetCountsQuery(
+                    categoryCode = categoryCode,
+                    targetFacetKey = facetKey,
+                    mode = FacetCountMode.REPLACE,
+                    excludeTargetFacet = true,
+                ),
+            )
+        }.getOrElse { emptyList() }
+        val normalizedQuery = query?.trim().orEmpty().lowercase().takeIf { it.isNotBlank() }
+        return counts
+            .filter { value -> normalizedQuery == null || value.value.lowercase().contains(normalizedQuery) }
+            .associate { it.value to it.count }
+    }
+
+    private fun mergeSeededWithCounts(
+        seeded: List<String>,
+        counts: Map<String, Int>,
+        query: String?,
+    ): List<String> {
+        if (counts.isEmpty()) return filterByQuery(seeded, query)
+        val sortedCounts = counts.entries.sortedByDescending { it.value }.map { it.key }
+        val merged = ArrayList<String>(sortedCounts.size + seeded.size)
+        merged.addAll(sortedCounts)
+        seeded.forEach { value ->
+            if (merged.none { it.equals(value, ignoreCase = true) }) merged.add(value)
+        }
+        return filterByQuery(merged, query)
+    }
+
+    private fun seededOptionsFor(key: TrackFilterKey, extraKey: String?): List<String> {
+        return when (key) {
+            TrackFilterKey.REGION -> REGION_SEEDS
+            TrackFilterKey.DELIVERY -> NearbyDelivery.entries.map { it.label }
+            TrackFilterKey.CONDITION -> NearbyCondition.entries
+                .filterNot { it == NearbyCondition.Any }
+                .map { it.label }
+            TrackFilterKey.SELLER -> SELLER_SEEDS
+            TrackFilterKey.EXTRA_KEY -> EXTRA_KEY_SEEDS
+            TrackFilterKey.EXTRA_VALUE -> {
+                if (extraKey.isNullOrBlank()) emptyList() else emptyList()
+            }
+        }
+    }
+
+    private fun mergeOptions(
+        suggested: List<String>,
+        recent: List<String>,
+        all: List<String>,
+        counts: Map<String, Int>,
+    ): List<TrackFilterOption> {
+        val map = LinkedHashMap<String, TrackFilterOption>()
+        val countByKey = counts.entries.associate { it.key.lowercase() to it.value }
+        fun add(values: List<String>, isSuggested: Boolean, isRecent: Boolean) {
+            values.forEach { value ->
+                val trimmed = value.trim()
+                if (trimmed.isBlank()) return@forEach
+                val existing = map[trimmed]
+                val count = countByKey[trimmed.lowercase()]
+                val next = if (existing == null) {
+                    TrackFilterOption(
+                        id = trimmed,
+                        label = trimmed,
+                        count = count,
+                        isSuggested = isSuggested,
+                        isRecent = isRecent,
+                    )
+                } else {
+                    existing.copy(
+                        count = existing.count ?: count,
+                        isSuggested = existing.isSuggested || isSuggested,
+                        isRecent = existing.isRecent || isRecent,
+                    )
+                }
+                map[trimmed] = next
+            }
+        }
+        add(suggested, isSuggested = true, isRecent = false)
+        add(recent, isSuggested = false, isRecent = true)
+        add(all, isSuggested = false, isRecent = false)
+        return map.values.toList()
+    }
+
+    private fun filterByQuery(values: List<String>, query: String?): List<String> {
+        if (query.isNullOrBlank()) return values
+        return values.filter { it.lowercase().contains(query) }
+    }
+
+    private fun allowCustomFor(key: TrackFilterKey): Boolean =
+        key == TrackFilterKey.EXTRA_KEY || key == TrackFilterKey.EXTRA_VALUE
+
+    private fun searchEnabledFor(key: TrackFilterKey, size: Int): Boolean =
+        key == TrackFilterKey.REGION || key == TrackFilterKey.EXTRA_KEY || key == TrackFilterKey.EXTRA_VALUE || size > 10
+
+    private fun defaultTtlSec(key: TrackFilterKey): Int = when (key) {
+        TrackFilterKey.EXTRA_KEY, TrackFilterKey.EXTRA_VALUE -> TTL_DYNAMIC_SEC
+        else -> TTL_STATIC_SEC
+    }
+
+    private fun buildCacheKey(
+        trackId: TrackId,
+        key: TrackFilterKey,
+        query: String?,
+        extraKey: String?,
+    ): String {
+        val q = query?.trim()?.lowercase().orEmpty()
+        val extra = extraKey?.trim()?.lowercase().orEmpty()
+        return "$trackId|${key.name}|$q|$extra"
+    }
+
+    private fun isExpired(entry: CacheEntry, now: Long): Boolean =
+        entry.ttlSec > 0 && (now - entry.createdAt) > entry.ttlSec * 1000L
+
+    private suspend fun resolveCategoryCode(track: Track?): String? {
+        val explicit = track?.categoryCode?.trim()?.takeIf { it.isNotBlank() }
+        if (explicit != null) return explicit
+
+        val candidates = listOf(
+            track?.title,
+            track?.target?.matchKey,
+            track?.target?.query,
+            track?.target?.url,
+        )
+            .mapNotNull { it?.trim()?.takeIf { value -> value.isNotBlank() } }
+
+        if (candidates.isEmpty()) return null
+        val haystack = candidates.joinToString(" ").lowercase()
+
+        val aliases = runCatching { categoryAliasRepository.listAliases() }.getOrElse { emptyList() }
+        val match = aliases
+            .filter { it.alias.isNotBlank() && haystack.contains(it.alias.lowercase()) }
+            .maxByOrNull { it.alias.length }
+        return match?.categoryCode?.takeIf { it.isNotBlank() }
+    }
+
+    private fun mapExtraKeyToFacetKey(extraKey: String): String? {
+        val normalized = extraKey.trim().lowercase()
+        return EXTRA_KEY_FACET_MAP.entries.firstOrNull { normalized == it.key.lowercase() }?.value
+            ?: when (normalized) {
+                "бренд" -> "brand"
+                "модель" -> "model"
+                "цвет" -> "color"
+                "размер" -> "size"
+                "материал" -> "material"
+                "brand" -> "brand"
+                "model" -> "model"
+                "color" -> "color"
+                "size" -> "size"
+                "material" -> "material"
+                else -> null
+            }
+    }
+
+    private companion object {
+        const val TTL_DYNAMIC_SEC = 120
+        const val TTL_STATIC_SEC = 86_400
+
+        val REGION_SEEDS = listOf(
+            "Москва",
+            "Санкт-Петербург",
+            "Новосибирск",
+            "Екатеринбург",
+            "Казань",
+            "Нижний Новгород",
+            "Самара",
+            "Омск",
+            "Ростов-на-Дону",
+            "Уфа",
+        )
+
+        val SELLER_SEEDS = listOf(
+            "Магазин",
+            "Частное лицо",
+            "Проверенный продавец",
+        )
+
+        val EXTRA_KEY_SEEDS = listOf(
+            "Бренд",
+            "Модель",
+            "Цвет",
+            "Размер",
+            "Материал",
+        )
+
+        val EXTRA_KEY_FACET_MAP = linkedMapOf(
+            "Бренд" to "brand",
+            "Модель" to "model",
+            "Цвет" to "color",
+            "Размер" to "size",
+            "Материал" to "material",
+        )
+    }
+}

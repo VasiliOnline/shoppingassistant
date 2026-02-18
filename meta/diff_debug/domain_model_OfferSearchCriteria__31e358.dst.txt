@@ -1,0 +1,49 @@
+package com.example.shoppingassistant.domain.model
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Критерии поиска офферов/объявлений.
+ */
+@Serializable
+data class OfferSearchCriteria(
+    val brand: String?,
+    val model: String?,
+    val brands: List<String> = emptyList(),
+    val categoryCode: String? = null,
+    val priceMin: Double? = null,
+    val priceMax: Double? = null,
+    val location: String? = null,
+    val radiusKm: Int? = null,
+    val centerLat: Double? = null,
+    val centerLon: Double? = null,
+    val geoMode: GeoMode? = null,
+    val deliverableOnly: Boolean = false,
+    val condition: String? = null,
+    val deliveryChannels: List<String> = emptyList(),
+    val attributes: Map<String, String> = emptyMap(),
+    val userCountry: String? = null,
+    val userLanguage: String? = null,
+    val limit: Int = 20,
+    val sort: OfferSort = OfferSort.RANK,
+    val sellerCity: String? = null,
+    val sellerCountryCode: String? = null,
+    val updatedAfterMs: Long? = null,
+)
+
+@Serializable
+enum class OfferSort {
+    RANK,
+    PRICE_ASC,
+    PRICE_DESC,
+    RATING_DESC,
+    DELIVERY_ASC,
+    NEWEST,
+    DISTANCE_ASC,
+}
+
+@Serializable
+enum class GeoMode {
+    RADIUS,
+    CITY_FALLBACK,
+}

@@ -1,0 +1,88 @@
+package com.example.shoppingassistant.feature.pages.profile.tasks
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.feature.R
+
+/**
+ * Блок ошибки профиля.
+ *
+ * Показывает:
+ *  - заголовок в зависимости от типа ошибки (сеть/другое);
+ *  - текстовое сообщение;
+ *  - действия: "Повторить" и "Войти".
+ *
+ * Позже сюда можно добавить иллюстрации персонажей и более
+ * богатую визуализацию, не меняя публичный контракт.
+ */
+@Composable
+fun ProfileErrorBlock(
+    error: ProfileErrorUi,
+    onRetryClick: () -> Unit,
+    onLoginClick: () -> Unit,
+) {
+    val title = when (error.kind) {
+        ProfileErrorKind.NETWORK -> stringResource(R.string.profile_error_network_title)
+        ProfileErrorKind.UNKNOWN -> stringResource(R.string.profile_error_unknown_title)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        androidx.compose.material3.Icon(
+            imageVector = Icons.Outlined.Person,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(error.messageResId),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Button(onClick = onRetryClick) {
+                Text(stringResource(R.string.profile_error_retry))
+            }
+            OutlinedButton(onClick = onLoginClick) {
+                Text(stringResource(R.string.profile_error_login))
+            }
+        }
+    }
+}

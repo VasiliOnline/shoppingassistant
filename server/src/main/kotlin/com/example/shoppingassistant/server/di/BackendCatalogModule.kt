@@ -1,0 +1,17 @@
+package com.example.shoppingassistant.server.di
+
+import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.facet.FacetCollectionRepository
+import com.example.shoppingassistant.domain.facet.FacetDefinitionRepository
+import com.example.shoppingassistant.domain.facet.FacetPresetRepository
+import com.example.shoppingassistant.server.catalog.CatalogRepositoryImpl
+import com.example.shoppingassistant.server.catalog.FacetSchemaRepositoryImpl
+import org.koin.dsl.module
+
+val backendCatalogModule = module {
+    single<CatalogRepository> { CatalogRepositoryImpl() }
+    single { FacetSchemaRepositoryImpl() }
+    single<FacetDefinitionRepository> { get<FacetSchemaRepositoryImpl>() }
+    single<FacetPresetRepository> { get<FacetSchemaRepositoryImpl>() }
+    single<FacetCollectionRepository> { get<FacetSchemaRepositoryImpl>() }
+}

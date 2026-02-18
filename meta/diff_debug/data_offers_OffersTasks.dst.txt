@@ -1,0 +1,41 @@
+package com.example.shoppingassistant.core.data.offers
+
+import com.example.shoppingassistant.domain.model.OfferFull
+import com.example.shoppingassistant.domain.model.OfferSearchCriteria
+import kotlinx.serialization.Serializable
+
+/**
+ * Контракты удалённого поиска офферов и управления алертами.
+ * Реализации лежат в отдельных *Impl.
+ */
+interface OfferRemoteDataSource {
+    suspend fun search(criteria: OfferSearchCriteria, bearerToken: String? = null): List<OfferFull>
+}
+
+@Serializable
+data class AlertDto(
+    val id: Long,
+    val scope: String,
+    val productId: Long?,
+    val offerId: Long?,
+    val alertType: String,
+    val thresholdValue: Double,
+    val currency: String?,
+    val deliveryChannel: String?,
+    val minIntervalMinutes: Int,
+    val lastTriggeredAt: Long?,
+    val createdAt: Long,
+)
+
+interface OfferAlertsRemoteDataSource {
+    suspend fun listAlerts(bearerToken: String): List<AlertDto>
+    suspend fun createPriceDropAlert(
+        offerId: String,
+        percentDrop: Int,
+        deliveryChannel: String?,
+        minIntervalMinutes: Int? = null,
+        bearerToken: String,
+    )
+
+    suspend fun deactivateAlert(id: Long, bearerToken: String)
+}

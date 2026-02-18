@@ -1,0 +1,55 @@
+package com.example.shoppingassistant.core.rank
+
+import com.example.shoppingassistant.domain.model.ProductDto
+
+enum class Badge { BEST_PRICE, FAST_DELIVERY, TOP_SELLER }
+
+data class BadgeReason(
+    val badge: Badge,
+    val reason: String // короткое объяснение для пользователя
+)
+
+/**
+ * Назначает бейджи для Top-3 по трём критериям:
+ *  - минимальная цена → BEST_PRICE
+ *  - минимальная доставка → FAST_DELIVERY
+ *  - максимальный рейтинг продавца → TOP_SELLER
+ * При конфликтах приоритет: цена > доставка > рейтинг.
+ * Остальным (если осталось) — мягкий дефолт.
+ */
+object BadgeSelector {
+
+    fun assign(top3: List<ProductDto>): Map<String, BadgeReason> {
+        if (top3.isEmpty()) return emptyMap()
+        val list = top3.take(3)
+
+        val byPrice = list.filter { it.price != null }
+            .minByOrNull { it.price!! }
+
+        val byDelivery = list.filter { it.deliveryTime != null }
+            .minByOrNull { it.deliveryTime!! }
+
+        val byRating = list.filter { it.sellerRating != null }
+            .maxByOrNull { it.sellerRating!! }
+
+        val assigned = LinkedHashMap<String, BadgeReason>()
+
+        fun putIfAbsent(dto: ProductDto, badge: Badge, reason: String) {
+            if (!assigned.containsKey(dto.id)) {
+                assigned[dto.id] = BadgeReason(badge, reason)
+            }
+        }
+
+        byPrice?.let { putIfAbsent(it, Badge.BEST_PRICE, "Лучшая цена среди Top-3") }
+        byDelivery?.let { putIfAbsent(it, Badge.FAST_DELIVERY, "Самая быстрая доставка среди Top-3") }
+        byRating?.let { putIfAbsent(it, Badge.TOP_SELLER, "Самый высокий рейтинг продавца среди Top-3") }
+
+        // заполняем оставшиеся
+        list.forEach { dto ->
+            if (!assigned.containsKey(dto.id)) {
+                assigned[dto.id] = BadgeReason(Badge.BEST_PRICE, "Подходит по параметрам")
+            }
+        }
+        return assigned
+    }
+}

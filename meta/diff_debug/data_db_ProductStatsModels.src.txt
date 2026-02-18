@@ -1,0 +1,18 @@
+package com.example.shoppingassistant.core.data.db
+
+data class BrandModelStat(
+    val brand: String,
+    val model: String,
+    val count: Int,
+)
+
+data class AttributeValueStat(
+    val key: String,
+    val value: String,
+    val count: Int,
+)
+
+data class FacetValueCountRow(
+    val value: String,
+    val count: Int,
+)

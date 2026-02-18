@@ -1,0 +1,19 @@
+{
+  "createdAtLocal": "2026-02-15T15:33:50+03:00",
+  "baselinePurpose": "Freeze Stage 2.1 before Stage 2.2",
+  "commandsOrActions": [
+    "Executed domain tests for module domain (:domain:test)",
+    "Executed golden suite via existing JUnit test runner (:domain:test --tests *Stage21GoldenSuiteRunnerTest)",
+    "Captured Gradle environment",
+    "Captured Java environment",
+    "Searched for dedicated Gradle coverage runner and did not find one"
+  ],
+  "artifacts": [
+    "domain_test_console.txt",
+    "golden_console.txt",
+    "gradle_env.txt",
+    "java_env.txt",
+    "baseline_meta.json"
+  ],
+  "notes": "Golden suite exists and was executed. Dedicated Gradle coverage task was not detected in build scripts."
+}

@@ -1,0 +1,37 @@
+package com.example.shoppingassistant.feature.ui.animations
+
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.lazy.LazyItemScope
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
+@Composable
+fun rememberListAnimationsTask(): ListAnimationsTask = ListAnimationsTaskImpl()
+
+private class ListAnimationsTaskImpl : ListAnimationsTask {
+    override fun itemEnter(): EnterTransition =
+        fadeIn(animationSpec = tween(200)) + slideInVertically { full -> full / 3 }
+
+    override fun itemExit(): ExitTransition =
+        fadeOut(animationSpec = tween(150)) + slideOutVertically { full -> -full / 4 }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    override fun LazyItemScope.staggeredItem(index: Int, baseDelayMs: Int): Modifier =
+        Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(
+                        durationMillis = 250,
+                        delayMillis = (index * baseDelayMs).coerceAtMost(400),
+                    )
+        )
+
+    @OptIn(ExperimentalFoundationApi::class)
+    override fun LazyItemScope.animatedPlacement(durationMs: Int): Modifier =
+        Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(durationMillis = durationMs))
+}

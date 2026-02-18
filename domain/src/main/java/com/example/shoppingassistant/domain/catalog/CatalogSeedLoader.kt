@@ -1,12 +1,17 @@
 package com.example.shoppingassistant.domain.catalog
 
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.facet.FacetCollection
+import com.example.shoppingassistant.domain.facet.FacetDefinition
+import com.example.shoppingassistant.domain.facet.FacetPreset
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 
 internal object CatalogSeedLoader {
     private const val STAGE20_BASE = "taxonomy/stage2/2.0"
     private const val STAGE11_BASE = "taxonomy/stage1/1.1"
     private const val STAGE12_BASE = "taxonomy/stage1/1.2"
+    private const val STAGE30_BASE = "taxonomy/stage3/3.0"
 
     /**
      * Stage 2.0 data contract may live under taxonomy/stage2/2.0,
@@ -54,6 +59,27 @@ internal object CatalogSeedLoader {
         CatalogSeedResourceReader.readJson(
             resourcePath = "$STAGE12_BASE/google_taxonomy_mappings.json",
             deserializer = ListSerializer(GoogleTaxonomyMapping.serializer()),
+        )
+    }
+
+    val facetDefinitions: List<FacetDefinition> by lazy {
+        readListOrEmpty(
+            resourcePath = "$STAGE30_BASE/facet_definitions.json",
+            serializer = FacetDefinition.serializer(),
+        )
+    }
+
+    val facetPresets: List<FacetPreset> by lazy {
+        readListOrEmpty(
+            resourcePath = "$STAGE30_BASE/facet_presets.json",
+            serializer = FacetPreset.serializer(),
+        )
+    }
+
+    val facetCollections: List<FacetCollection> by lazy {
+        readListOrEmpty(
+            resourcePath = "$STAGE30_BASE/facet_collections.json",
+            serializer = FacetCollection.serializer(),
         )
     }
 
@@ -120,5 +146,18 @@ internal object CatalogSeedLoader {
             deduped.putIfAbsent(key, constraint)
         }
         return deduped.values.toList()
+    }
+
+    private fun <T> readListOrEmpty(
+        resourcePath: String,
+        serializer: KSerializer<T>,
+    ): List<T> {
+        if (!CatalogSeedResourceReader.resourceExists(resourcePath)) {
+            return emptyList()
+        }
+        return CatalogSeedResourceReader.readJson(
+            resourcePath = resourcePath,
+            deserializer = ListSerializer(serializer),
+        )
     }
 }

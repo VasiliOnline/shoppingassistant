@@ -3,6 +3,9 @@ rootProject.name = "shoppingassistant"
 include(":app")
 include(":core")
 include(":feature")
+include(":server")
+include(":domain")
+include(":rank")
 
 pluginManagement {
     repositories {

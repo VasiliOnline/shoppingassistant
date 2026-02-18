@@ -1,0 +1,15 @@
+// Last synced: 2025-12-10 15:35:15
+package com.example.shoppingassistant.server.di
+
+import com.example.shoppingassistant.server.ugc.DefaultUgcMirrorService
+import com.example.shoppingassistant.server.ugc.UgcMirrorService
+import org.koin.dsl.module
+
+/**
+ * DI-модуль backend-а для UGC-зеркала по ссылке.
+ *
+ * Здесь регистрируем [UgcMirrorService] и его реализацию.
+ */
+val backendUgcModule = module {
+    single<UgcMirrorService> { DefaultUgcMirrorService() }
+}

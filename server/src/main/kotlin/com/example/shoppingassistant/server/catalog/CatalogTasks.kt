@@ -7,6 +7,7 @@ enum class CatalogBackendTaskId {
     SCHEMA,
     SEED,
     REPOSITORY,
+    FACET_SCHEMA,
 }
 
 data class CatalogBackendTask(
@@ -30,5 +31,10 @@ val catalogBackendTasks = listOf(
         id = CatalogBackendTaskId.REPOSITORY,
         path = "server/src/main/kotlin/com/example/shoppingassistant/server/catalog/CatalogRepositoryImpl.kt",
         description = "Exposed-репозиторий CatalogRepository (list/lookup/upsert профилей).",
+    ),
+    CatalogBackendTask(
+        id = CatalogBackendTaskId.FACET_SCHEMA,
+        path = "server/src/main/kotlin/com/example/shoppingassistant/server/catalog/FacetSchemaRepositoryImpl.kt",
+        description = "Stage 3.0: контракт facet definitions/presets/collections + DB seeding.",
     ),
 )

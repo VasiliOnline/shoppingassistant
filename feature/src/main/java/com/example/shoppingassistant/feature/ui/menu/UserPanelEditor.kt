@@ -1,0 +1,709 @@
+package com.example.shoppingassistant.feature.ui.menu
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import com.example.shoppingassistant.domain.menu.ActionKey
+import com.example.shoppingassistant.domain.menu.Handedness
+import com.example.shoppingassistant.domain.menu.ModeKey
+import com.example.shoppingassistant.domain.menu.PanelEdge
+import com.example.shoppingassistant.domain.menu.PanelSlotRef
+import com.example.shoppingassistant.domain.menu.UserPanel
+import com.example.shoppingassistant.domain.menu.UserPanelConfig
+import com.example.shoppingassistant.domain.menu.UserPanelOps
+import kotlinx.coroutines.launch
+
+@Composable
+fun UserPanelEditor(
+    panel: UserPanel,
+    config: UserPanelConfig,
+    modeCatalog: List<PanelItemDescriptor<ModeKey>>,
+    actionCatalog: List<PanelItemDescriptor<ActionKey>>,
+    onPanelChange: (UserPanel) -> Unit,
+    onDone: () -> Unit,
+    onCancel: () -> Unit,
+    onReset: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val density = LocalDensity.current
+    val scope = rememberCoroutineScope()
+    val slotBounds = remember { mutableStateMapOf<PanelSlotRef, Rect>() }
+    val snackbarHostState = remember { SnackbarHostState() }
+    var deleteBounds by remember { mutableStateOf<Rect?>(null) }
+    var dragInfo by remember { mutableStateOf<DragInfo?>(null) }
+    var pickerTarget by remember { mutableStateOf<PanelSlotRef?>(null) }
+    var pendingUndo by remember { mutableStateOf<UserPanel?>(null) }
+
+    fun updateWithUndo(before: UserPanel, removed: Boolean) {
+        if (!removed) return
+        pendingUndo = before
+        scope.launch {
+            val result = snackbarHostState.showSnackbar("Item removed", "Undo")
+            if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) {
+                pendingUndo?.let { onPanelChange(it) }
+            }
+            pendingUndo = null
+        }
+    }
+
+    fun applyActionDrop(key: ActionKey, to: PanelSlotRef?) {
+        val before = panel
+        val outcome = UserPanelOps.applyActionDrop(
+            panel = panel,
+            actionKey = key,
+            to = to,
+        )
+        onPanelChange(outcome.panel)
+        updateWithUndo(before, outcome.removed != null)
+    }
+
+    fun applyModeDrop(key: ModeKey, to: PanelSlotRef?) {
+        val before = panel
+        val outcome = UserPanelOps.applyModeDrop(
+            panel = panel,
+            modeKey = key,
+            to = to,
+        )
+        onPanelChange(outcome.panel)
+        updateWithUndo(before, outcome.removed != null)
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
+        )
+
+        Surface(
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surface,
+            shadowElevation = 8.dp,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "Edit panel",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    TextButton(onClick = onCancel) { Text(text = "Cancel") }
+                    TextButton(onClick = onReset) { Text(text = "Reset") }
+                    TextButton(onClick = onDone) { Text(text = "Done") }
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = "Rail position:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    HandednessButton(
+                        label = "Left",
+                        selected = panel.handedness == Handedness.LEFT,
+                        onClick = { onPanelChange(panel.copy(handedness = Handedness.LEFT)) },
+                    )
+                    HandednessButton(
+                        label = "Right",
+                        selected = panel.handedness == Handedness.RIGHT,
+                        onClick = { onPanelChange(panel.copy(handedness = Handedness.RIGHT)) },
+                    )
+                }
+                Text(
+                    text = "Tap a slot to replace. Long-press and drag to move.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+
+        SlotPanel(
+            edge = PanelEdge.SIDE,
+            panel = panel,
+            slots = config.sideSlots,
+            catalog = actionCatalog,
+            dragInfo = dragInfo,
+            slotBounds = slotBounds,
+            onEmptyClick = { pickerTarget = it },
+            onOccupiedClick = { pickerTarget = it },
+            onDragStart = { dragInfo = it },
+            onDragUpdate = { dragInfo = it },
+            onDragEnd = {
+                dragInfo?.let { info ->
+                    applyDragDrop(
+                        dragInfo = info,
+                        slotBounds = slotBounds,
+                        deleteBounds = deleteBounds,
+                        onModeDrop = ::applyModeDrop,
+                        onActionDrop = ::applyActionDrop,
+                    )
+                }
+                dragInfo = null
+            },
+            onRemove = { _, action ->
+                applyActionDrop(action, to = null)
+            },
+            modifier = Modifier
+                .align(if (panel.handedness == Handedness.LEFT) Alignment.CenterStart else Alignment.CenterEnd)
+                .padding(horizontal = 16.dp)
+                .zIndex(1f),
+        )
+
+        SlotPanel(
+            edge = PanelEdge.BOTTOM,
+            panel = panel,
+            slots = config.bottomSlots,
+            catalog = modeCatalog,
+            dragInfo = dragInfo,
+            slotBounds = slotBounds,
+            onEmptyClick = { pickerTarget = it },
+            onOccupiedClick = { pickerTarget = it },
+            onDragStart = { dragInfo = it },
+            onDragUpdate = { dragInfo = it },
+            onDragEnd = {
+                dragInfo?.let { info ->
+                    applyDragDrop(
+                        dragInfo = info,
+                        slotBounds = slotBounds,
+                        deleteBounds = deleteBounds,
+                        onModeDrop = ::applyModeDrop,
+                        onActionDrop = ::applyActionDrop,
+                    )
+                }
+                dragInfo = null
+            },
+            onRemove = { _, mode ->
+                applyModeDrop(mode, to = null)
+            },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+                .zIndex(1f),
+        )
+
+        if (dragInfo != null) {
+            DeleteZone(
+                onBounds = { deleteBounds = it },
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .zIndex(1f),
+            )
+            dragInfo?.let { info ->
+                DragGhost(info = info, modeCatalog = modeCatalog, actionCatalog = actionCatalog, density = density)
+            }
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
+
+        pickerTarget?.let { target ->
+            PanelItemSheet(
+                target = target,
+                modeCatalog = modeCatalog,
+                actionCatalog = actionCatalog,
+                onSelectMode = { mode ->
+                    applyModeDrop(mode, to = target)
+                    pickerTarget = null
+                },
+                onSelectAction = { action ->
+                    applyActionDrop(action, to = target)
+                    pickerTarget = null
+                },
+                onDismiss = { pickerTarget = null },
+            )
+        }
+    }
+}
+
+@Composable
+private fun HandednessButton(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    TextButton(
+        onClick = onClick,
+        modifier = Modifier.heightIn(min = 32.dp),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal),
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+private data class DragInfo(
+    val edge: PanelEdge,
+    val from: PanelSlotRef,
+    val position: Offset = Offset.Zero,
+    val modeKey: ModeKey? = null,
+    val actionKey: ActionKey? = null,
+)
+
+@Suppress("UNCHECKED_CAST")
+@Composable
+private fun <T> SlotPanel(
+    edge: PanelEdge,
+    panel: UserPanel,
+    slots: Int,
+    catalog: List<PanelItemDescriptor<T>>,
+    dragInfo: DragInfo?,
+    slotBounds: MutableMap<PanelSlotRef, Rect>,
+    onEmptyClick: (PanelSlotRef) -> Unit,
+    onOccupiedClick: (PanelSlotRef) -> Unit,
+    onDragStart: (DragInfo) -> Unit,
+    onDragUpdate: (DragInfo) -> Unit,
+    onDragEnd: () -> Unit,
+    onRemove: (PanelSlotRef, T) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val arrangement = if (edge == PanelEdge.SIDE) Arrangement.spacedBy(10.dp) else Arrangement.spacedBy(12.dp)
+    val panelShape = MaterialTheme.shapes.large
+    val panelBorder = MaterialTheme.colorScheme.outlineVariant
+    val panelModifier = modifier.wrapContentSize()
+
+    if (edge == PanelEdge.SIDE) {
+        Box(modifier = panelModifier.border(1.dp, panelBorder, panelShape)) {
+            Column(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .width(68.dp),
+                verticalArrangement = arrangement,
+            ) {
+                for (index in 0 until slots) {
+                    val slot = panel.sideActions.getOrNull(index)
+                    val key = slot?.key as? T
+                    val descriptor = catalog.firstOrNull { it.key == key }
+                    SlotItem(
+                        ref = PanelSlotRef(edge, index),
+                        key = key,
+                        descriptor = descriptor,
+                        dragInfo = dragInfo,
+                        slotBounds = slotBounds,
+                        onRemove = onRemove,
+                        onEmptyClick = onEmptyClick,
+                        onOccupiedClick = onOccupiedClick,
+                        onDragStart = onDragStart,
+                        onDragUpdate = onDragUpdate,
+                        onDragEnd = onDragEnd,
+                    )
+                }
+            }
+        }
+    } else {
+        Box(modifier = panelModifier.border(1.dp, panelBorder, panelShape)) {
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .width((slots * 68).dp),
+                horizontalArrangement = arrangement,
+            ) {
+                for (index in 0 until slots) {
+                    val slot = panel.bottomModes.getOrNull(index)
+                    val key = slot?.key as? T
+                    val descriptor = catalog.firstOrNull { it.key == key }
+                    SlotItem(
+                        ref = PanelSlotRef(edge, index),
+                        key = key,
+                        descriptor = descriptor,
+                        dragInfo = dragInfo,
+                        slotBounds = slotBounds,
+                        onRemove = onRemove,
+                        onEmptyClick = onEmptyClick,
+                        onOccupiedClick = onOccupiedClick,
+                        onDragStart = onDragStart,
+                        onDragUpdate = onDragUpdate,
+                        onDragEnd = onDragEnd,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun <T> SlotItem(
+    ref: PanelSlotRef,
+    key: T?,
+    descriptor: PanelItemDescriptor<T>?,
+    dragInfo: DragInfo?,
+    slotBounds: MutableMap<PanelSlotRef, Rect>,
+    onRemove: (PanelSlotRef, T) -> Unit,
+    onEmptyClick: (PanelSlotRef) -> Unit,
+    onOccupiedClick: (PanelSlotRef) -> Unit,
+    onDragStart: (DragInfo) -> Unit,
+    onDragUpdate: (DragInfo) -> Unit,
+    onDragEnd: () -> Unit,
+) {
+    val shape = MaterialTheme.shapes.large
+    val bounds = slotBounds[ref]
+    val isHover = dragInfo?.let { bounds?.contains(it.position) == true } == true
+    val borderColor = when {
+        isHover -> MaterialTheme.colorScheme.primary
+        key == null -> MaterialTheme.colorScheme.outlineVariant
+        else -> MaterialTheme.colorScheme.outline
+    }
+
+    Box(
+        modifier = Modifier
+            .size(56.dp)
+            .background(MaterialTheme.colorScheme.surface, shape)
+            .border(width = if (isHover) 2.dp else 1.dp, color = borderColor, shape = shape)
+            .onGloballyPositioned { coordinates -> slotBounds[ref] = coordinates.boundsInWindow() }
+            .pointerInput(key, descriptor) {
+                if (key == null || descriptor == null) return@pointerInput
+                detectDragGesturesAfterLongPress(
+                    onDragStart = { offset ->
+                        val itemBounds = slotBounds[ref]
+                        val start = if (itemBounds == null) Offset.Zero else itemBounds.topLeft + offset
+                        val info = if (ref.edge == PanelEdge.BOTTOM) {
+                            DragInfo(edge = ref.edge, from = ref, position = start, modeKey = key as? ModeKey)
+                        } else {
+                            DragInfo(edge = ref.edge, from = ref, position = start, actionKey = key as? ActionKey)
+                        }
+                        onDragStart(info)
+                    },
+                    onDrag = { change, _ ->
+                        val itemBounds = slotBounds[ref] ?: return@detectDragGesturesAfterLongPress
+                        val position = itemBounds.topLeft + change.position
+                        val info = if (ref.edge == PanelEdge.BOTTOM) {
+                            DragInfo(edge = ref.edge, from = ref, position = position, modeKey = key as? ModeKey)
+                        } else {
+                            DragInfo(edge = ref.edge, from = ref, position = position, actionKey = key as? ActionKey)
+                        }
+                        onDragUpdate(info)
+                    },
+                    onDragEnd = onDragEnd,
+                    onDragCancel = onDragEnd,
+                )
+            }
+            .clickable {
+                if (key == null) onEmptyClick(ref) else onOccupiedClick(ref)
+            }
+            .padding(10.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (key == null || descriptor == null) {
+            Icon(
+                imageVector = Icons.Outlined.Add,
+                contentDescription = "Empty slot",
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.size(22.dp),
+            )
+        } else {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Icon(
+                    imageVector = descriptor.icon,
+                    contentDescription = descriptor.title,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(22.dp),
+                )
+                IconButton(
+                    onClick = { onRemove(ref, key) },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .size(22.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "Remove",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DragGhost(
+    info: DragInfo,
+    modeCatalog: List<PanelItemDescriptor<ModeKey>>,
+    actionCatalog: List<PanelItemDescriptor<ActionKey>>,
+    density: Density,
+) {
+    val descriptor = when (info.edge) {
+        PanelEdge.BOTTOM -> {
+            val key = info.modeKey ?: return
+            modeCatalog.firstOrNull { it.key == key }
+        }
+        PanelEdge.SIDE -> {
+            val key = info.actionKey ?: return
+            actionCatalog.firstOrNull { it.key == key }
+        }
+    } ?: return
+    val x = with(density) { info.position.x.toDp() }
+    val y = with(density) { info.position.y.toDp() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(3f),
+    ) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            shadowElevation = 6.dp,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = x, top = y),
+        ) {
+            Icon(
+                imageVector = descriptor.icon,
+                contentDescription = descriptor.title,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(20.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun DeleteZone(
+    onBounds: (Rect) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.errorContainer,
+        modifier = modifier
+            .padding(top = 10.dp)
+            .onGloballyPositioned { coordinates -> onBounds(coordinates.boundsInWindow()) },
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onErrorContainer,
+            )
+            Text(
+                text = "Remove",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+            )
+        }
+    }
+}
+
+private fun applyDragDrop(
+    dragInfo: DragInfo,
+    slotBounds: Map<PanelSlotRef, Rect>,
+    deleteBounds: Rect?,
+    onModeDrop: (ModeKey, PanelSlotRef?) -> Unit,
+    onActionDrop: (ActionKey, PanelSlotRef?) -> Unit,
+) {
+    val target = slotBounds.entries.firstOrNull { it.value.contains(dragInfo.position) }?.key
+    val shouldDelete = deleteBounds?.contains(dragInfo.position) == true
+    if (shouldDelete) {
+        when (dragInfo.edge) {
+            PanelEdge.BOTTOM -> dragInfo.modeKey?.let { onModeDrop(it, null) }
+            PanelEdge.SIDE -> dragInfo.actionKey?.let { onActionDrop(it, null) }
+        }
+        return
+    }
+    if (target == null) {
+        when (dragInfo.edge) {
+            PanelEdge.BOTTOM -> dragInfo.modeKey?.let { onModeDrop(it, null) }
+            PanelEdge.SIDE -> dragInfo.actionKey?.let { onActionDrop(it, null) }
+        }
+        return
+    }
+    if (target.edge != dragInfo.edge) {
+        return
+    }
+    when (dragInfo.edge) {
+        PanelEdge.BOTTOM -> dragInfo.modeKey?.let { onModeDrop(it, target) }
+        PanelEdge.SIDE -> dragInfo.actionKey?.let { onActionDrop(it, target) }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PanelItemSheet(
+    target: PanelSlotRef,
+    modeCatalog: List<PanelItemDescriptor<ModeKey>>,
+    actionCatalog: List<PanelItemDescriptor<ActionKey>>,
+    onSelectMode: (ModeKey) -> Unit,
+    onSelectAction: (ActionKey) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var query by remember { mutableStateOf("") }
+    val isModePicker = target.edge == PanelEdge.BOTTOM
+    val title = if (isModePicker) "Modes" else "Quick actions"
+    val filteredModes = modeCatalog.filter { it.title.contains(query, ignoreCase = true) }
+    val filteredActions = actionCatalog.filter { it.title.contains(query, ignoreCase = true) }
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            TextField(
+                value = query,
+                onValueChange = { query = it },
+                placeholder = { Text("Search") },
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
+                modifier = Modifier.fillMaxWidth(),
+            )
+            val empty = if (isModePicker) filteredModes.isEmpty() else filteredActions.isEmpty()
+            if (empty) {
+                Text(
+                    text = "No items available",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (isModePicker) {
+                        items(filteredModes) { item ->
+                            PanelItemRow(
+                                title = item.title,
+                                icon = item.icon,
+                                enabled = item.isAvailable,
+                                onClick = { onSelectMode(item.key) },
+                            )
+                        }
+                    } else {
+                        items(filteredActions) { item ->
+                            PanelItemRow(
+                                title = item.title,
+                                icon = item.icon,
+                                enabled = item.isAvailable,
+                                onClick = { onSelectAction(item.key) },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PanelItemRow(
+    title: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = enabled, onClick = onClick),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}

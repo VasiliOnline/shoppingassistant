@@ -1,0 +1,729 @@
+package com.example.shoppingassistant.server.offers
+
+import com.example.shoppingassistant.domain.model.BrandFacet
+import com.example.shoppingassistant.domain.model.GeoMode
+import com.example.shoppingassistant.domain.model.Money
+import com.example.shoppingassistant.domain.model.Normalization
+import com.example.shoppingassistant.domain.model.OfferFacetType
+import com.example.shoppingassistant.domain.model.OfferFull
+import com.example.shoppingassistant.domain.model.OfferRepository
+import com.example.shoppingassistant.domain.model.OfferSearchCriteria
+import com.example.shoppingassistant.domain.model.OfferSearchFacets
+import com.example.shoppingassistant.domain.model.OfferSearchMeta
+import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
+import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsResponse
+import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.model.ProductFull
+import com.example.shoppingassistant.domain.model.UserBadge
+import com.example.shoppingassistant.domain.model.UserPreferences
+import com.example.shoppingassistant.domain.model.UserProfile
+import com.example.shoppingassistant.domain.model.UserRating
+import com.example.shoppingassistant.core.rank.RankService
+import com.example.shoppingassistant.server.db.DatabaseFactory
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ColumnSet
+import org.jetbrains.exposed.sql.CustomFunction
+import org.jetbrains.exposed.sql.DoubleColumnType
+import org.jetbrains.exposed.sql.Expression
+import org.jetbrains.exposed.sql.ExpressionWithColumnType
+import org.jetbrains.exposed.sql.IColumnType
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.QueryBuilder
+import org.jetbrains.exposed.sql.QueryParameter
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.TextColumnType
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.andWhere
+import org.jetbrains.exposed.sql.countDistinct
+import org.jetbrains.exposed.sql.innerJoin
+import org.jetbrains.exposed.sql.leftJoin
+import org.jetbrains.exposed.sql.or
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.json.contains
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNotNull
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.security.MessageDigest
+import java.util.Locale
+
+/**
+ * Реализация репозитория офферов на Exposed.
+ * Ранжирование через RankService (общий модуль).
+ */
+class OfferRepositoryImpl(
+    private val rankService: RankService,
+) : OfferRepository {
+    override suspend fun searchOffers(criteria: OfferSearchCriteria): List<OfferFull> =
+        DatabaseFactory.dbQuery {
+            val joined = buildBaseJoin(criteria)
+            val geoFilter = resolveGeoFilter(criteria)
+            val distanceMetersExpr = distanceMetersExprOrNull(geoFilter.centerLat, geoFilter.centerLon)
+            val sliceColumns = joined.columns.toMutableList<Expression<*>>()
+            if (distanceMetersExpr != null) {
+                sliceColumns.add(distanceMetersExpr)
+            }
+
+            val offersQuery = joined
+                .select(sliceColumns)
+                .apply {
+                    applyCriteriaFilters(criteria, includeBrandFilter = true, geoFilter = geoFilter)
+                    applySort(criteria)
+                }
+                .limit(criteria.limit)
+
+            val mapped = offersQuery.map { row ->
+                row.toOfferFull(
+                    lang = criteria.userLanguage,
+                    distanceMetersExpr = distanceMetersExpr,
+                )
+            }
+            val withRatings = aggregateRatings(mapped)
+            rankBy(criteria, withRatings)
+        }
+
+    override suspend fun searchOffersWithFacets(
+        req: OfferSearchWithFacetsRequest,
+    ): OfferSearchWithFacetsResponse =
+        DatabaseFactory.dbQuery {
+            val criteria = req.criteria
+            val joined = buildBaseJoin(criteria)
+            val geoFilter = resolveGeoFilter(criteria)
+            val computedAtMs = System.currentTimeMillis()
+
+            val distanceMetersExpr = distanceMetersExprOrNull(geoFilter.centerLat, geoFilter.centerLon)
+            val sliceColumns = joined.columns.toMutableList<Expression<*>>()
+            if (distanceMetersExpr != null) {
+                sliceColumns.add(distanceMetersExpr)
+            }
+
+            val offersQuery = joined
+                .select(sliceColumns)
+                .apply {
+                    applyCriteriaFilters(criteria, includeBrandFilter = true, geoFilter = geoFilter)
+                    applySort(criteria)
+                }
+                .limit(criteria.limit)
+
+            val offers = offersQuery.map { row ->
+                row.toOfferFull(
+                    lang = criteria.userLanguage,
+                    distanceMetersExpr = distanceMetersExpr,
+                )
+            }
+            val ranked = rankBy(criteria, aggregateRatings(offers))
+
+            val totalExpr = OffersTable.id.countDistinct()
+            val total = joined
+                .select(totalExpr)
+                .apply { applyCriteriaFilters(criteria, includeBrandFilter = true, geoFilter = geoFilter) }
+                .firstOrNull()
+                ?.get(totalExpr)
+                ?.coerceAtMost(Int.MAX_VALUE.toLong())
+                ?.toInt()
+                ?: 0
+
+            val facets = if (OfferFacetType.BRAND in req.facets) {
+                val includeBrandFilter = OfferFacetType.BRAND !in req.excludeFacetFilters
+                OfferSearchFacets(
+                    brands = buildBrandFacets(
+                        base = joined,
+                        criteria = criteria,
+                        includeBrandFilter = includeBrandFilter,
+                        geoFilter = geoFilter,
+                    ),
+                )
+            } else {
+                OfferSearchFacets()
+            }
+
+            OfferSearchWithFacetsResponse(
+                offers = ranked,
+                total = total,
+                facets = facets,
+                generatedAtMs = computedAtMs,
+                meta = OfferSearchMeta(
+                    computedAtMs = computedAtMs,
+                    totalCount = total,
+                    filtersHash = buildFiltersHash(criteria, req.facets, req.excludeFacetFilters, geoFilter),
+                    geoMode = geoFilter.mode,
+                    radiusKmApplied = geoFilter.radiusKmApplied,
+                ),
+            )
+        }
+
+    private fun buildBaseJoin(criteria: OfferSearchCriteria): ColumnSet =
+        OffersTable
+            .innerJoin(ProductsTable, { productId }, { ProductsTable.id })
+            .leftJoin(UserPreferencesTable, { OffersTable.userId }, { UserPreferencesTable.userId })
+            .leftJoin(UserProfilesTable, { OffersTable.userId }, { UserProfilesTable.userId })
+            .leftJoin(SellerStatsTable, { OffersTable.userId }, { SellerStatsTable.userId })
+            .let { base ->
+                if (criteria.userLanguage != null) {
+                    base.leftJoin(
+                        ProductI18nTable,
+                        { ProductsTable.id },
+                        { ProductI18nTable.productId },
+                    )
+                } else {
+                    base
+                }
+            }
+
+    private fun org.jetbrains.exposed.sql.Query.applyCriteriaFilters(
+        criteria: OfferSearchCriteria,
+        includeBrandFilter: Boolean,
+        geoFilter: GeoFilter,
+    ) {
+        criteria.categoryCode?.takeIf { it.isNotBlank() }?.let { category ->
+            andWhere { ProductsTable.category eq category }
+        }
+        if (includeBrandFilter) {
+            val brandKeys = criteria.brands
+                .map { Normalization.key(it) }
+                .filter { it.isNotBlank() }
+            val brandExpr = normalizedBrandExpr()
+            if (brandKeys.isNotEmpty()) {
+                andWhere { brandExpr inList brandKeys }
+            } else {
+                criteria.brand?.takeIf { it.isNotBlank() }?.let { brand ->
+                    val key = Normalization.key(brand)
+                    if (key.isNotBlank()) {
+                        andWhere { brandExpr eq key }
+                    }
+                }
+            }
+        }
+        criteria.model?.takeIf { it.isNotBlank() }?.let { model ->
+            andWhere { ProductsTable.model eq model }
+        }
+        criteria.priceMin?.let { minPrice ->
+            andWhere { OffersTable.priceCents greaterEq toMinorUnits(minPrice) }
+        }
+        criteria.priceMax?.let { maxPrice ->
+            andWhere { OffersTable.priceCents lessEq toMinorUnits(maxPrice) }
+        }
+        val sellerCountryCode = criteria.sellerCountryCode
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
+            ?: criteria.userCountry?.trim()?.takeIf { it.isNotBlank() }
+        sellerCountryCode?.let { code ->
+            andWhere { UserProfilesTable.countryCode eq code }
+        }
+        val sellerCity = criteria.sellerCity?.trim()?.takeIf { it.isNotBlank() }
+        if (sellerCity != null) {
+            andWhere { UserProfilesTable.city eq sellerCity }
+        } else {
+            criteria.location?.trim()?.takeIf { it.isNotBlank() }?.let { location ->
+                andWhere { UserProfilesTable.city like "%$location%" }
+            }
+        }
+        criteria.userLanguage?.let { lang ->
+            andWhere { ProductI18nTable.lang eq lang }
+        }
+        criteria.updatedAfterMs?.let { updatedAfter ->
+            andWhere { OffersTable.updatedAt greaterEq updatedAfter }
+        }
+        applyConditionFilters(criteria)
+        val deliveryChannels = criteria.deliveryChannels
+            .map { it.trim().lowercase() }
+            .filter { it.isNotBlank() }
+        if (deliveryChannels.isNotEmpty()) {
+            val deliveryAttrOps = deliveryChannels
+                .map { channel ->
+                    jsonContains(OffersTable.attributes, mapOf("delivery_channel" to channel)) or
+                        jsonContains(OffersTable.attributes, mapOf("delivery" to channel))
+                }
+            val deliveryAttrExpr = deliveryAttrOps.reduceOrNull { acc, op -> acc or op }
+            val columnExpr = OffersTable.deliveryChannel inList deliveryChannels
+            if (deliveryAttrExpr != null) {
+                andWhere { columnExpr or deliveryAttrExpr }
+            } else {
+                andWhere { columnExpr }
+            }
+        }
+        if (geoFilter.mode == GeoMode.RADIUS &&
+            geoFilter.centerLat != null &&
+            geoFilter.centerLon != null &&
+            geoFilter.radiusKmApplied != null
+        ) {
+            andWhere {
+                OffersTable.locationGeog.isNotNull() or
+                    (OffersTable.lat.isNotNull() and OffersTable.lon.isNotNull())
+            }
+            val radiusMeters = geoFilter.radiusKmApplied.toDouble() * 1000.0
+            andWhere { stDWithinOp(geoFilter.centerLat, geoFilter.centerLon, radiusMeters) }
+        }
+        val attrs = criteria.attributes.filterKeys { key -> !key.equals("condition", ignoreCase = true) }
+        if (attrs.isNotEmpty()) {
+            andWhere {
+                jsonContains(OffersTable.attributes, attrs) or
+                    jsonContains(ProductsTable.specs, attrs)
+            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun jsonContains(column: Column<*>, value: Map<String, String>): Op<Boolean> {
+        val param = QueryParameter(value, column.columnType as IColumnType<Map<String, String>>)
+        return (column as ExpressionWithColumnType<Any>).contains(param)
+    }
+
+    private fun org.jetbrains.exposed.sql.Query.applyConditionFilters(criteria: OfferSearchCriteria) {
+        val rawConditions = buildList {
+            addAll(criteria.conditions)
+            criteria.condition?.let { add(it) }
+            criteria.attributes.entries
+                .firstOrNull { (key, _) -> key.equals("condition", ignoreCase = true) }
+                ?.value
+                ?.let { add(it) }
+        }
+        val expanded = rawConditions
+            .flatMap { expandOfferConditionAliases(it) }
+            .distinct()
+        if (expanded.isEmpty()) return
+        val ops = expanded.map { value ->
+            val attrs = mapOf("condition" to value)
+            (OffersTable.condition eq value) or
+                jsonContains(OffersTable.attributes, attrs) or
+                jsonContains(ProductsTable.specs, attrs)
+        }
+        val combined = ops.reduceOrNull { acc, op -> acc or op } ?: return
+        andWhere { combined }
+    }
+
+    private fun org.jetbrains.exposed.sql.Query.applySort(criteria: OfferSearchCriteria) {
+        when (criteria.sort) {
+            OfferSort.PRICE_ASC -> orderBy(OffersTable.priceCents to SortOrder.ASC)
+            OfferSort.PRICE_DESC -> orderBy(OffersTable.priceCents to SortOrder.DESC)
+            OfferSort.NEWEST -> orderBy(OffersTable.updatedAt to SortOrder.DESC)
+            OfferSort.DELIVERY_ASC, OfferSort.DISTANCE_ASC -> {
+                val distanceExpr = distanceMetersExprOrNull(criteria.centerLat, criteria.centerLon)
+                if (distanceExpr != null) {
+                    orderBy(distanceExpr to SortOrder.ASC)
+                } else {
+                    orderBy(OffersTable.updatedAt to SortOrder.DESC)
+                }
+            }
+            else -> {} // остальное сортируем позже
+        }
+    }
+
+    private fun buildBrandFacets(
+        base: ColumnSet,
+        criteria: OfferSearchCriteria,
+        includeBrandFilter: Boolean,
+        geoFilter: GeoFilter,
+    ): List<BrandFacet> {
+        val countExpr = OffersTable.id.countDistinct()
+        val rows = base
+            .select(ProductsTable.brand, countExpr)
+            .apply { applyCriteriaFilters(criteria, includeBrandFilter = includeBrandFilter, geoFilter = geoFilter) }
+            .groupBy(ProductsTable.brand)
+            .orderBy(countExpr to SortOrder.DESC, ProductsTable.brand to SortOrder.ASC)
+            .limit(BRAND_FACET_SQL_LIMIT)
+            .toList()
+
+        val merged = LinkedHashMap<String, BrandMerge>()
+        rows.forEach { row ->
+            val raw = row[ProductsTable.brand]?.trim().orEmpty()
+            if (raw.isBlank()) return@forEach
+            val key = Normalization.key(raw)
+            if (key.isBlank()) return@forEach
+            val count = row[countExpr].toInt()
+            val existing = merged[key]
+            if (existing == null) {
+                merged[key] = BrandMerge(name = raw, total = count, topCount = count)
+            } else {
+                existing.total += count
+                if (count > existing.topCount) {
+                    existing.name = raw
+                    existing.topCount = count
+                }
+            }
+        }
+
+        val locale = Locale.getDefault()
+        return merged.map { (id, agg) ->
+            BrandFacet(id = id, name = agg.name, count = agg.total)
+        }.sortedWith(
+            compareByDescending<BrandFacet> { it.count }
+                .thenBy { it.name.lowercase(locale) }
+        ).take(BRAND_FACET_LIMIT)
+    }
+
+    private fun resolveGeoFilter(criteria: OfferSearchCriteria): GeoFilter {
+        val hasCoords = criteria.centerLat != null && criteria.centerLon != null
+        val hasRadius = criteria.radiusKm != null
+        val requestedMode = criteria.geoMode ?: if (hasCoords && hasRadius) {
+            GeoMode.RADIUS
+        } else {
+            GeoMode.CITY_FALLBACK
+        }
+        if (requestedMode != GeoMode.RADIUS || !hasCoords || !hasRadius) {
+            return GeoFilter(
+                mode = GeoMode.CITY_FALLBACK,
+                radiusKmApplied = null,
+                centerLat = null,
+                centerLon = null,
+            )
+        }
+        val applied = clampRadiusKm(criteria.radiusKm!!)
+        return GeoFilter(
+            mode = GeoMode.RADIUS,
+            radiusKmApplied = applied,
+            centerLat = criteria.centerLat,
+            centerLon = criteria.centerLon,
+        )
+    }
+
+    private fun clampRadiusKm(value: Int): Int =
+        value.coerceIn(MIN_RADIUS_KM, MAX_RADIUS_KM)
+
+    private fun buildFiltersHash(
+        criteria: OfferSearchCriteria,
+        facets: Set<OfferFacetType>,
+        excludeFacetFilters: Set<OfferFacetType>,
+        geoFilter: GeoFilter,
+    ): String {
+        val mergedConditions = buildList {
+            addAll(criteria.conditions)
+            criteria.condition?.let { add(it) }
+            criteria.attributes.entries
+                .firstOrNull { (key, _) -> key.equals("condition", ignoreCase = true) }
+                ?.value
+                ?.let { add(it) }
+        }
+        val normalizedConditions = mergedConditions
+            .mapNotNull { normalizeOfferCondition(it) }
+            .distinct()
+            .sorted()
+        val normalizedCondition = normalizedConditions.firstOrNull()
+        val normalizedAttributes = criteria.attributes
+            .filterKeys { key -> !key.equals("condition", ignoreCase = true) }
+            .toSortedMap()
+        val normalizedCriteria = criteria.copy(
+            brand = criteria.brand?.trim()?.ifBlank { null },
+            model = criteria.model?.trim()?.ifBlank { null },
+            brands = criteria.brands.map { it.trim() }.filter { it.isNotBlank() }.sorted(),
+            categoryCode = criteria.categoryCode?.trim()?.ifBlank { null },
+            location = criteria.location?.trim()?.ifBlank { null },
+            radiusKm = geoFilter.radiusKmApplied ?: criteria.radiusKm,
+            geoMode = geoFilter.mode,
+            deliverableOnly = criteria.deliverableOnly,
+            condition = normalizedCondition,
+            conditions = normalizedConditions,
+            deliveryChannels = criteria.deliveryChannels.map { it.trim() }.filter { it.isNotBlank() }.sorted(),
+            attributes = normalizedAttributes,
+            userCountry = criteria.userCountry?.trim()?.ifBlank { null },
+            userLanguage = criteria.userLanguage?.trim()?.ifBlank { null },
+            sellerCity = criteria.sellerCity?.trim()?.ifBlank { null },
+            sellerCountryCode = criteria.sellerCountryCode?.trim()?.ifBlank { null },
+        )
+        val payload = FilterHashPayload(
+            criteria = normalizedCriteria,
+            facets = facets.sortedBy { it.name },
+            excludeFacetFilters = excludeFacetFilters.sortedBy { it.name },
+        )
+        val json = filtersJson.encodeToString(payload)
+        val digest = MessageDigest.getInstance("SHA-256").digest(json.toByteArray())
+        val hex = digest.joinToString(separator = "") { byte -> "%02x".format(byte) }
+        return "sha256:$hex"
+    }
+
+    private fun normalizedBrandExpr(): ExpressionWithColumnType<String> {
+        val replaced = regexpReplace(
+            expr = ProductsTable.brand,
+            pattern = "[^[:alnum:]]+",
+            replacement = "-",
+        )
+        val lowered = CustomFunction<String>("lower", TextColumnType(), replaced)
+        return regexpReplace(
+            expr = lowered,
+            pattern = "^-+|-+$",
+            replacement = "",
+        )
+    }
+
+    private fun regexpReplace(
+        expr: Expression<*>,
+        pattern: String,
+        replacement: String,
+    ): ExpressionWithColumnType<String> =
+        CustomFunction(
+            "regexp_replace",
+            TextColumnType(),
+            expr,
+            QueryParameter(pattern, TextColumnType()),
+            QueryParameter(replacement, TextColumnType()),
+            QueryParameter("g", TextColumnType()),
+        )
+
+    private fun distanceMetersExprOrNull(centerLat: Double?, centerLon: Double?): ExpressionWithColumnType<Double>? {
+        if (centerLat == null || centerLon == null) return null
+        return distanceMetersExpr(centerLat, centerLon)
+    }
+
+    private fun distanceMetersExpr(centerLat: Double, centerLon: Double): ExpressionWithColumnType<Double> {
+        val sourcePoint = offersGeographyExpr()
+        val centerPoint = geographyPointParam(centerLat, centerLon)
+        return CustomFunction("ST_Distance", DoubleColumnType(), sourcePoint, centerPoint)
+    }
+
+    private fun stDWithinOp(
+        centerLat: Double,
+        centerLon: Double,
+        radiusMeters: Double,
+    ): Op<Boolean> =
+        object : Op<Boolean>() {
+            override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+                queryBuilder.append("ST_DWithin(")
+                offersGeographyExpr().toQueryBuilder(queryBuilder)
+                queryBuilder.append(", ")
+                geographyPointParam(centerLat, centerLon).toQueryBuilder(queryBuilder)
+                queryBuilder.append(", ")
+                queryBuilder.registerArgument(DoubleColumnType(), radiusMeters)
+                queryBuilder.append(")")
+            }
+        }
+
+    private fun offersGeographyExpr(): Expression<Any> =
+        object : Expression<Any>() {
+            override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+                queryBuilder.append("COALESCE(")
+                queryBuilder.append(OffersTable.locationGeog)
+                queryBuilder.append(", ")
+                geographyPointExpr(OffersTable.lat, OffersTable.lon).toQueryBuilder(queryBuilder)
+                queryBuilder.append(")")
+            }
+        }
+
+    private fun geographyPointExpr(
+        latExpr: Expression<*>,
+        lonExpr: Expression<*>,
+    ): Expression<Any> =
+        object : Expression<Any>() {
+            override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+                queryBuilder.append("ST_SetSRID(ST_MakePoint(")
+                queryBuilder.append(lonExpr)
+                queryBuilder.append(", ")
+                queryBuilder.append(latExpr)
+                queryBuilder.append("), 4326)::geography")
+            }
+        }
+
+    private fun geographyPointParam(
+        centerLat: Double,
+        centerLon: Double,
+    ): Expression<Any> =
+        object : Expression<Any>() {
+            override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+                queryBuilder.append("ST_SetSRID(ST_MakePoint(")
+                queryBuilder.registerArgument(DoubleColumnType(), centerLon)
+                queryBuilder.append(", ")
+                queryBuilder.registerArgument(DoubleColumnType(), centerLat)
+                queryBuilder.append("), 4326)::geography")
+            }
+        }
+
+    private data class BrandMerge(
+        var name: String,
+        var total: Int,
+        var topCount: Int,
+    )
+
+    private data class GeoFilter(
+        val mode: GeoMode,
+        val radiusKmApplied: Int?,
+        val centerLat: Double?,
+        val centerLon: Double?,
+    )
+
+    @Serializable
+    private data class FilterHashPayload(
+        val criteria: OfferSearchCriteria,
+        val facets: List<OfferFacetType>,
+        val excludeFacetFilters: List<OfferFacetType>,
+    )
+
+    private fun rankBy(
+        criteria: OfferSearchCriteria,
+        offers: List<OfferFull>,
+    ): List<OfferFull> {
+        return when (criteria.sort) {
+            OfferSort.RANK -> rankByRankService(criteria, offers)
+            else -> OfferRanking.rank(offers, criteria.sort)
+        }
+    }
+
+    private fun rankByRankService(
+        criteria: OfferSearchCriteria,
+        offers: List<OfferFull>,
+    ): List<OfferFull> {
+        val dtos = offers.map {
+            com.example.shoppingassistant.domain.model.ProductDto(
+                id = it.product.id,
+                title = it.product.title,
+                brand = it.product.brand,
+                model = it.product.model,
+                price = it.price.toMajor(),
+                deliveryTime = null, // нет в модели OfferFull; заполняйте при расширении данных
+                sellerRating = it.seller.rating?.value,
+                sellerRatingCount = it.seller.rating?.count,
+            )
+        }
+        val rankedIds = rankService.topN(
+            dtos,
+            com.example.shoppingassistant.domain.model.NormalizedQuery(
+                brand = criteria.brand ?: criteria.brands.firstOrNull().orEmpty(),
+                model = criteria.model.orEmpty(),
+                attributes = criteria.attributes,
+            ),
+            n = dtos.size,
+        ).map { it.first.id }
+
+        val order = rankedIds.withIndex().associate { it.value to it.index }
+        return offers.sortedBy { order[it.product.id] ?: Int.MAX_VALUE }
+    }
+
+    private fun aggregateRatings(offers: List<OfferFull>): List<OfferFull> {
+        val ids = offers.mapNotNull { it.seller.id.toLongOrNull() }.distinct()
+        if (ids.isEmpty()) return offers
+
+        val rows = UserReviewsTable
+            .selectAll()
+            .where { UserReviewsTable.toUserId inList ids }
+            .toList()
+
+        val aggregates = rows
+            .groupBy { it[UserReviewsTable.toUserId] }
+            .mapValues { (_, items) ->
+                val scores = items.mapNotNull { it[UserReviewsTable.score]?.toDouble() }
+                val avg = if (scores.isNotEmpty()) scores.average() else 0.0
+                val cnt = scores.size.toLong()
+                avg to cnt
+            }
+
+        if (aggregates.isEmpty()) return offers
+
+        return offers.map { offer ->
+            val sid = offer.seller.id.toLongOrNull()
+            val agg = sid?.let { aggregates[it] }
+            if (agg == null) offer
+            else {
+                val (avg, cnt) = agg
+                offer.copy(
+                    seller = offer.seller.copy(
+                        rating = UserRating(
+                            value = avg,
+                            count = cnt.toInt(),
+                        ),
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun ResultRow.toOfferFull(
+        lang: String?,
+        distanceMetersExpr: ExpressionWithColumnType<Double>?,
+    ): OfferFull {
+        val productId = this[OffersTable.productId]
+        val product = ProductFull(
+            id = productId.toString(),
+            brand = this.tryGet(ProductsTable.brand),
+            model = this.tryGet(ProductsTable.model),
+            title = this.tryGet(ProductI18nTable.title) ?: this.tryGet(ProductsTable.titleNorm).orEmpty(),
+            imageUrls = this.tryGet(ProductsTable.imageUrls) ?: emptyList(),
+            specs = this.tryGet(ProductsTable.specs) ?: emptyMap(),
+            description = this.tryGet(ProductI18nTable.description) ?: this.tryGet(ProductsTable.description),
+            gtin = this.tryGet(ProductsTable.gtin),
+            mpn = this.tryGet(ProductsTable.mpn),
+            sku = this.tryGet(ProductsTable.sku),
+            updatedAt = this.tryGet(ProductsTable.updatedAt),
+            i18n = if (lang != null && this.tryGet(ProductI18nTable.title) != null) {
+                listOf(
+                    com.example.shoppingassistant.domain.model.ProductI18n(
+                        lang = lang,
+                        title = this.tryGet(ProductI18nTable.title)!!,
+                        description = this.tryGet(ProductI18nTable.description),
+                    ),
+                )
+            } else {
+                emptyList()
+            },
+        )
+
+        val userPrefs = UserPreferences(
+            badges = this.tryGet(UserPreferencesTable.badges)?.mapNotNull { name -> runCatching { UserBadge.valueOf(name) }.getOrNull() }
+                ?: emptyList(),
+            shippingCountries = this.tryGet(UserPreferencesTable.shippingCountries) ?: emptyList(),
+        )
+
+        val seller = UserProfile(
+            id = this[OffersTable.userId].toString(),
+            name = this.tryGet(UserProfilesTable.displayName) ?: this[OffersTable.userId].toString(),
+            avatarUrl = this.tryGet(UserProfilesTable.avatarUrl),
+            countryCode = this.tryGet(UserProfilesTable.countryCode),
+            city = this.tryGet(UserProfilesTable.city),
+            rating = UserRating(
+                value = this.tryGet(SellerStatsTable.ratingValue) ?: this.tryGet(UserPreferencesTable.ratingValue) ?: 0.0,
+                count = this.tryGet(SellerStatsTable.ratingCount) ?: this.tryGet(UserPreferencesTable.ratingCount) ?: 0,
+            ),
+            preferences = userPrefs,
+        )
+
+        val baseAttrs = this.tryGet(OffersTable.attributes) ?: emptyMap()
+        val distanceMeters = distanceMetersExpr?.let { this[it] }
+        val distanceKm = distanceMeters?.div(1000.0)
+        val attrs = if (distanceKm != null) {
+            baseAttrs + ("distance_km" to formatDistanceKm(distanceKm))
+        } else {
+            baseAttrs
+        }
+
+        return OfferFull(
+            id = this[OffersTable.id].toString(),
+            product = product,
+            seller = seller,
+            price = Money(this[OffersTable.priceCents]),
+            currency = this[OffersTable.currency],
+            attributes = attrs,
+            description = this.tryGet(OffersTable.description),
+            imageUrls = this.tryGet(OffersTable.imageUrls) ?: emptyList(),
+            status = this[OffersTable.status].let { runCatching { com.example.shoppingassistant.domain.model.OfferStatus.valueOf(it) }.getOrDefault(com.example.shoppingassistant.domain.model.OfferStatus.ACTIVE) },
+            updatedAt = this.tryGet(OffersTable.updatedAt),
+        )
+    }
+
+    private fun formatDistanceKm(distanceKm: Double): String =
+        String.format(Locale.US, "%.2f", distanceKm)
+
+    private fun <T> ResultRow.tryGet(column: Column<T>): T? =
+        runCatching { this[column] }.getOrNull()
+
+    private companion object {
+        private const val BRAND_FACET_SQL_LIMIT = 100
+        private const val BRAND_FACET_LIMIT = 50
+        private const val MIN_RADIUS_KM = 1
+        private const val MAX_RADIUS_KM = 5
+        private val filtersJson = Json {
+            encodeDefaults = true
+            explicitNulls = false
+        }
+    }
+
+    private fun toMinorUnits(price: Double): Long =
+        BigDecimal(price).setScale(2, RoundingMode.HALF_UP)
+            .movePointRight(2)
+            .longValueExact()
+}

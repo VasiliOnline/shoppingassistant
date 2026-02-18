@@ -1,0 +1,51 @@
+package com.example.shoppingassistant.server.subscriptions
+
+import kotlinx.serialization.Serializable
+
+interface SubscriptionsEngineRunner {
+    suspend fun runOnce(): SubscriptionsEngineRunResult
+}
+
+@Serializable
+data class SubscriptionsEngineRunResult(
+    val processedHistoryRows: Int,
+    val triggeredAlerts: Int,
+    val notificationsCreated: Int,
+    val lastHistoryId: Long?,
+)
+
+interface SubscriptionNotificationsRepository {
+    suspend fun listNotificationsPage(
+        userId: Long,
+        limit: Int,
+        offset: Int,
+    ): SubscriptionNotificationsPage
+
+    suspend fun markRead(userId: Long, notificationId: Long): Boolean
+
+    suspend fun markAllRead(userId: Long): Int
+}
+
+@Serializable
+data class SubscriptionNotificationsPage(
+    val items: List<SubscriptionNotificationDto>,
+    val limit: Int,
+    val offset: Int,
+    val canLoadMore: Boolean,
+)
+
+@Serializable
+data class SubscriptionNotificationDto(
+    val id: Long,
+    val alertId: Long,
+    val offerId: Long,
+    val priceHistoryId: Long,
+    val createdAt: Long,
+    val priceCollectedAt: Long,
+    val isRead: Boolean,
+    val message: String,
+    val dropPercent: Double,
+    val baselinePriceMinor: Long,
+    val currentPriceMinor: Long,
+    val currency: String,
+)

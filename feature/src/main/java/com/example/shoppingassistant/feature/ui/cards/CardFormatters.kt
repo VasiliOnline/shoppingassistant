@@ -1,0 +1,89 @@
+package com.example.shoppingassistant.feature.ui.cards
+
+import android.text.format.DateUtils
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+fun formatPriceText(
+    price: Double?,
+    currency: String? = null,
+): String {
+    if (price == null) return "-"
+    val locale = Locale.getDefault()
+    val formatter = NumberFormat.getNumberInstance(locale).apply {
+        maximumFractionDigits = 0
+    }
+    val value = formatter.format(price)
+    val currencyLabel = currency?.trim().orEmpty()
+    return if (currencyLabel.isBlank()) value else "$value $currencyLabel"
+}
+
+fun formatUpdatedAtText(updatedAtMillis: Long?): String? {
+    if (updatedAtMillis == null || updatedAtMillis <= 0L) return null
+    val now = System.currentTimeMillis()
+    if (updatedAtMillis > now) return null
+    return DateUtils.getRelativeTimeSpanString(
+        updatedAtMillis,
+        now,
+        DateUtils.MINUTE_IN_MILLIS,
+        DateUtils.FORMAT_ABBREV_RELATIVE,
+    ).toString()
+}
+
+fun formatRatingText(rating: Double?): String? {
+    if (rating == null) return null
+    val locale = Locale.getDefault()
+    val formatter = NumberFormat.getNumberInstance(locale).apply {
+        maximumFractionDigits = 1
+        minimumFractionDigits = 1
+    }
+    return "${formatter.format(rating)}/5"
+}
+
+fun formatDistanceLabel(distanceKm: Float?): String? {
+    if (distanceKm == null || distanceKm <= 0f) return null
+    return if (distanceKm < 1f) {
+        val meters = (distanceKm * 1000f).toInt().coerceAtLeast(1)
+        "$meters м"
+    } else {
+        val rounded = kotlin.math.round(distanceKm * 10f) / 10f
+        val text = if (rounded % 1f == 0f) {
+            rounded.toInt().toString()
+        } else {
+            String.format(Locale.getDefault(), "%.1f", rounded)
+        }
+        "$text км"
+    }
+}
+
+fun formatTimeOfDay(updatedAtMillis: Long?): String? {
+    if (updatedAtMillis == null || updatedAtMillis <= 0L) return null
+    val now = System.currentTimeMillis()
+    if (updatedAtMillis > now) return null
+    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return formatter.format(Date(updatedAtMillis))
+}
+
+fun formatLocationText(
+    city: String?,
+    country: String?,
+): String? {
+    val parts = listOfNotNull(
+        city?.takeIf { it.isNotBlank() },
+        country?.takeIf { it.isNotBlank() },
+    )
+    return parts.joinToString(", ").ifBlank { null }
+}
+
+fun normalizeBadgeLabel(raw: String): String {
+    val locale = Locale.getDefault()
+    return raw
+        .replace('_', ' ')
+        .replace('-', ' ')
+        .trim()
+        .replaceFirstChar { ch ->
+            if (ch.isLowerCase()) ch.titlecase(locale) else ch.toString()
+        }
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "category": {
+      "code": "HOME",
+      "segment": "HOME",
+      "title": "Дом и ремонт",
+      "parentCode": null,
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.FURNITURE",
+      "segment": "HOME",
+      "title": "Мебель",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.STORAGE",
+      "segment": "HOME",
+      "title": "Хранение и организация",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.LIGHTING",
+      "segment": "HOME",
+      "title": "Освещение",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.TEXTILES",
+      "segment": "HOME",
+      "title": "Текстиль и интерьер",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.KITCHEN_DINING",
+      "segment": "HOME",
+      "title": "Посуда и кухня",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "has_lid",
+        "title": "Крышка",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_thermal",
+        "title": "Термо",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "HOME.KITCHEN_DINING",
+        "attributeCode": "volume_ml",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "HOME.KITCHEN_DINING",
+        "attributeCode": "material",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "HOME.KITCHEN_DINING",
+        "attributeCode": "has_lid",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "HOME.KITCHEN_DINING",
+        "attributeCode": "is_thermal",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.CLEANING",
+      "segment": "HOME",
+      "title": "Бытовая химия и уборка",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.REPAIR_TOOLS",
+      "segment": "HOME",
+      "title": "Ремонт и инструменты",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.PLUMBING",
+      "segment": "HOME",
+      "title": "Сантехника",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "HOME.GARDEN",
+      "segment": "HOME",
+      "title": "Дача и сад",
+      "parentCode": "HOME",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  }
+]

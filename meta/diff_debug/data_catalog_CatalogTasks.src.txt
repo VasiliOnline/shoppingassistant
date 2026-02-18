@@ -1,0 +1,15 @@
+package com.example.shoppingassistant.core.data.catalog
+
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+
+/**
+ * Источник данных каталога категорий/атрибутов (локальный или удалённый).
+ * Реализации лежат в отдельных *Impl.
+ */
+interface CatalogDataSource {
+    suspend fun listProfiles(): List<CategoryProfile>
+    suspend fun getProfile(code: String): CategoryProfile?
+    suspend fun listConstraints(): List<CatalogConstraints>
+    suspend fun saveProfile(profile: CategoryProfile)
+}

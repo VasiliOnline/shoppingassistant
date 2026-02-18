@@ -1,0 +1,106 @@
+package com.example.shoppingassistant.feature.pages.common
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.core.config.SubscriptionsConfig
+import com.example.shoppingassistant.feature.pages.subscriptions.CreateConditions
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ConditionsSheet(
+    conditions: CreateConditions,
+    onChange: (CreateConditions) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(text = "Условия срабатывания", style = MaterialTheme.typography.titleMedium)
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text("Новый оффер")
+                Switch(
+                    checked = conditions.newOfferAppeared,
+                    onCheckedChange = { v -> onChange(conditions.copy(newOfferAppeared = v)) },
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text("Цена ≤")
+                Switch(
+                    checked = conditions.maxPriceEnabled,
+                    onCheckedChange = { v -> onChange(conditions.copy(maxPriceEnabled = v)) },
+                )
+            }
+            OutlinedTextField(
+                value = conditions.maxPriceMajor,
+                onValueChange = { v -> onChange(conditions.copy(maxPriceMajor = v)) },
+                label = { Text("Максимальная цена") },
+                singleLine = true,
+                enabled = conditions.maxPriceEnabled,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                SubscriptionsConfig.SUPPORTED_CURRENCIES.forEach { code ->
+                    FilterChip(
+                        selected = conditions.currency == code,
+                        onClick = { onChange(conditions.copy(currency = code)) },
+                        enabled = conditions.maxPriceEnabled,
+                        label = { Text(code) },
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text("Падение ≥ %")
+                Switch(
+                    checked = conditions.dropPercentEnabled,
+                    onCheckedChange = { v -> onChange(conditions.copy(dropPercentEnabled = v)) },
+                )
+            }
+            OutlinedTextField(
+                value = conditions.dropPercent,
+                onValueChange = { v -> onChange(conditions.copy(dropPercent = v)) },
+                label = { Text("Процент падения") },
+                singleLine = true,
+                enabled = conditions.dropPercentEnabled,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.width(1.dp))
+        }
+    }
+}

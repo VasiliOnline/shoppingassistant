@@ -1,0 +1,61 @@
+package com.example.shoppingassistant.domain.template
+
+import com.example.shoppingassistant.domain.catalog.AttributeDataType
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class TemplateAnchorType { PRODUCT, CATEGORY }
+
+@Serializable
+enum class TemplateSnapshotMode { SEARCH, OFFER, EXPRESS }
+
+@Serializable
+data class TemplateSnapshotAttr(
+    val key: String,
+    val value: String,
+    val type: AttributeDataType = AttributeDataType.STRING,
+)
+
+/**
+ * Канонические данные шаблона, из которых выводится стабильный `templateId`.
+ */
+@Serializable
+data class TemplateSnapshotData(
+    val anchorType: TemplateAnchorType,
+    val anchorId: String,
+    val categoryCode: String? = null,
+    val attrs: List<TemplateSnapshotAttr> = emptyList(),
+    val freeText: String? = null,
+    val mode: TemplateSnapshotMode = TemplateSnapshotMode.SEARCH,
+)
+
+/**
+ * Снимок шаблона для истории/подписок: `templateId` — стабильный hash(snapshotData).
+ */
+@Serializable
+data class TemplateSnapshot(
+    val data: TemplateSnapshotData,
+    val templateId: String,
+)
+
+/**
+ * Стабильный ID шаблона для дедупа истории/подписок.
+ */
+interface TemplateIdTask {
+    fun computeId(data: TemplateSnapshotData): String
+}
+
+@Serializable
+data class TemplateHistoryEntry(
+    val snapshot: TemplateSnapshot,
+    val usedAtMillis: Long,
+)
+
+/**
+ * История последних выбранных/использованных шаблонов (локальное хранилище).
+ */
+interface TemplateHistoryRepository {
+    suspend fun upsert(entry: TemplateHistoryEntry)
+    suspend fun listRecent(limit: Int = 20): List<TemplateHistoryEntry>
+    suspend fun deleteByIds(ids: List<String>)
+}

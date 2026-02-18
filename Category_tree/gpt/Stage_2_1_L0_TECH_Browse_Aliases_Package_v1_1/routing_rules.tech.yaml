@@ -1,0 +1,123 @@
+schema_version: 1
+l0_code: TECH
+normalization:
+  locale_default: ru-RU
+  rules:
+  - lowercase
+  - trim
+  - collapse_spaces
+  - yo_to_e
+  - strip_punct
+  - hyphen_to_space
+scoring:
+  accept_threshold: 70
+  top1_top2_gap: 10
+  alias_priority_weight: 1.0
+  trigger_bonus_max: 25
+  conflict_penalty_max: 25
+  fuzzy:
+    enabled: true
+    max_levenshtein: 1
+    min_token_len: 5
+priority_buckets:
+  P0_strong:
+    priority: 90
+    examples:
+    - смартфон
+    - ноутбук
+    - телевизор
+    - наушники
+  P1_brand_model:
+    priority: 80
+  P2_generic:
+    priority: 65
+  P3_broad_group:
+    priority: 55
+triggers:
+  TECH.PHONES:
+    bonus:
+    - pattern: \b(iphone|айфон|android|смартфон)\b
+      add: 15
+    - pattern: \b(samsung|xiaomi|pixel|huawei|oneplus)\b
+      add: 10
+  TECH.PHONE_ACCESSORIES:
+    bonus:
+    - pattern: \b(чехол|стекло|пленк|зарядк|кабель|пауэрбанк|power\s?bank)\b
+      add: 15
+    - pattern: \b(lightning|type\s?c|usb\s?c|адаптер|держатель|попсокет)\b
+      add: 10
+  TECH.LAPTOPS:
+    bonus:
+    - pattern: \b(ноутбук|laptop|ultrabook|ультрабук)\b
+      add: 15
+    - pattern: \b(macbook|thinkpad|xps|vivobook|legion)\b
+      add: 10
+  TECH.PC_COMPONENTS:
+    bonus:
+    - pattern: \b(gpu|видеокарта|rtx|rx)\b
+      add: 15
+    - pattern: \b(cpu|процессор|ryzen|intel|ddr|ram|ssd|nvme|материн)\b
+      add: 10
+  TECH.TV_VIDEO:
+    bonus:
+    - pattern: \b(телевизор|tv|smart\s?tv|oled|qled|android\s?tv)\b
+      add: 15
+    - pattern: \b(проектор|медиаплеер|tv\s?box|apple\s?tv|google\s?tv)\b
+      add: 10
+  TECH.AUDIO:
+    bonus:
+    - pattern: \b(наушники|headphones|earbuds|airpods|buds)\b
+      add: 15
+    - pattern: \b(колонк|speaker|soundbar|саундбар|микрофон|hi[- ]?fi)\b
+      add: 10
+  TECH.CAMERAS:
+    bonus:
+    - pattern: \b(фотоаппарат|камера|camera|dslr|беззеркалк|mirrorless)\b
+      add: 15
+    - pattern: \b(canon|nikon|sony|gopro|объектив|lens)\b
+      add: 10
+  TECH.GAMING:
+    bonus:
+    - pattern: \b(ps5|playstation|xbox|switch|игровая\s?приставка|консоль)\b
+      add: 15
+    - pattern: \b(dualsense|геймпад|game\s?pass|игры)\b
+      add: 10
+  TECH.TABLETS_EBOOKS:
+    bonus:
+    - pattern: \b(планшет|tablet|ipad)\b
+      add: 15
+    - pattern: \b(ридер|электронная\s?книга|kindle|kobo|boox|ebook)\b
+      add: 10
+  TECH.SMART_HOME:
+    bonus:
+    - pattern: \b(умный\s?дом|smart\s?home|zigbee|homekit|alexa|google\s?home)\b
+      add: 15
+    - pattern: \b(умная\s?лампочка|умная\s?розетка|датчик|motion\s?sensor|термостат|smart\s?plug)\b
+      add: 10
+conflicts:
+- pattern: \b(airpods|earbuds|buds)\b
+  prefer: TECH.AUDIO
+  penalty_other: 10
+- pattern: \b(чехол|стекло|зарядк|кабель)\b
+  prefer: TECH.PHONE_ACCESSORIES
+  penalty_other: 8
+- pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi)\b
+  prefer: TECH.SMART_HOME
+  penalty_other: 8
+- pattern: \b(объектив|lens)\b
+  prefer: TECH.CAMERAS
+  penalty_other: 6
+fallbacks:
+  ambiguous_to_group: true
+  default_root: B.TECH
+  group_map:
+    TECH.PHONES: B.TECH.PHONES
+    TECH.PHONE_ACCESSORIES: B.TECH.PHONES
+    TECH.LAPTOPS: B.TECH.COMPUTERS
+    TECH.PC_COMPONENTS: B.TECH.COMPUTERS
+    TECH.TABLETS_EBOOKS: B.TECH.COMPUTERS
+    TECH.TV_VIDEO: B.TECH.TV_AUDIO_VIDEO
+    TECH.AUDIO: B.TECH.TV_AUDIO_VIDEO
+    TECH.CAMERAS: B.TECH.PHOTO
+    TECH.GAMING: B.TECH.GAMING
+    TECH.SMART_HOME: B.TECH.SMART_HOME

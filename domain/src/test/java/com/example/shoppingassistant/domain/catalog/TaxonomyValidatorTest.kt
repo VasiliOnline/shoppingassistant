@@ -424,6 +424,28 @@ class TaxonomyValidatorTest {
         assertContainsIssue(report, "ALIAS_ENTRY_GENERIC_TOP")
     }
 
+    @Test
+    fun aliasEntryLocaleOutsideAllowList_detected() {
+        val aliasEntries = listOf(
+            AliasEntry(
+                locale = "fr-FR",
+                term = "telephone",
+                kind = AliasKind.CATEGORY,
+                targetCode = "TECH.PHONES",
+                weight = 60,
+                matchKind = AliasMatchKind.EXACT,
+            ),
+        )
+        val report = validator.validate(
+            categories = baseCategories(),
+            aliases = baseAliases(),
+            mappings = baseMappings(),
+            browseNodes = baseBrowseNodes(),
+            aliasEntries = aliasEntries,
+        )
+        assertContainsIssue(report, "ALIAS_ENTRY_LOCALE_NOT_ALLOWED")
+    }
+
     private fun baseCategories(): List<Category> = listOf(
         category(code = "TECH", parentCode = null, segment = CategorySegment.TECH),
         category(code = "TECH.PHONES", parentCode = "TECH", segment = CategorySegment.TECH),

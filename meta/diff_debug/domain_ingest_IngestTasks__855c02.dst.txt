@@ -1,0 +1,85 @@
+package com.example.shoppingassistant.domain.ingest
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Источник, из которого загружаем карточку товара.
+ */
+@Serializable
+enum class SourceType {
+    AVITO,
+}
+
+/**
+ * Сырые данные о локации продавца / объявления.
+ */
+@Serializable
+data class RawLocation(
+    val city: String? = null,
+    val region: String? = null,
+    val addressLine: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val displayName: String? = null,
+)
+
+/**
+ * Сырые данные о продавце.
+ */
+@Serializable
+data class RawSeller(
+    val name: String? = null,
+    val type: RawSellerType = RawSellerType.UNKNOWN,
+    val profileUrl: String? = null,
+    val avatarUrl: String? = null,
+    val rating: Double? = null,
+)
+
+@Serializable
+enum class RawSellerType {
+    PRIVATE,
+    BUSINESS,
+    UNKNOWN,
+}
+
+/**
+ * Полностью сырая карточка оффера, без GPT-нормализации.
+ */
+@Serializable
+data class RawOffer(
+    val source: SourceType,
+    val url: String,
+    val listingId: String? = null,
+    val canonicalUrl: String? = null,
+    val sourceIconUrl: String? = null,
+    val citySlug: String? = null,
+    val categorySlug: String? = null,
+    val title: String? = null,
+    val rawTitle: String? = null,
+    val description: String? = null,
+    val rawDescription: String? = null,
+    val priceValue: Double? = null,
+    val priceCurrency: String? = null,
+    val images: List<String> = emptyList(),
+    val attributesRaw: List<Pair<String, String>> = emptyList(),
+    val seller: RawSeller? = null,
+    val location: RawLocation? = null,
+    val createdAtText: String? = null,
+)
+
+/**
+ * Контракт репозитория загрузки сырых карточек.
+ */
+interface OfferIngestRepository {
+    suspend fun loadRawOffer(source: SourceType, url: String): RawOffer
+}
+
+/**
+ * Use-case задачи загрузки сырых данных карточки по ссылке.
+ */
+class LoadRawOfferTask(
+    private val repository: OfferIngestRepository,
+) {
+    suspend operator fun invoke(source: SourceType, url: String): RawOffer =
+        repository.loadRawOffer(source, url)
+}

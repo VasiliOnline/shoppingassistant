@@ -1,0 +1,2337 @@
+package com.example.shoppingassistant.feature.pages.draft.photo
+
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.Sell
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import coil.compose.AsyncImage
+import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.ugc.draft.DraftCondition
+import com.example.shoppingassistant.domain.ugc.draft.DraftContacts
+import com.example.shoppingassistant.domain.ugc.draft.DraftDelivery
+import com.example.shoppingassistant.domain.ugc.draft.DraftInputOrigin
+import com.example.shoppingassistant.domain.ugc.draft.DraftLocation
+import com.example.shoppingassistant.domain.ugc.draft.DraftMedia
+import com.example.shoppingassistant.domain.ugc.draft.DraftMediaType
+import com.example.shoppingassistant.domain.ugc.draft.DraftOffer
+import com.example.shoppingassistant.domain.ugc.draft.DraftPhotoRole
+import com.example.shoppingassistant.domain.ugc.draft.DraftPriceType
+import com.example.shoppingassistant.feature.metrics.FlowMetrics
+import com.example.shoppingassistant.feature.pages.draft.create.CreateDraftViewModel
+import com.example.shoppingassistant.feature.pages.draft.create.DraftCategoryState
+import com.example.shoppingassistant.feature.pages.draft.create.DraftCreateMode
+import com.example.shoppingassistant.feature.pages.draft.create.DraftCreateModeStore
+import com.example.shoppingassistant.feature.pages.draft.create.DraftMediaImporter
+import com.example.shoppingassistant.feature.pages.draft.create.DraftPublishValidator
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.java.KoinJavaComponent.get as koinGet
+
+private val CardRadius = 24.dp
+private val ControlRadius = 18.dp
+private const val MaxPhotosPerStep = 3
+
+@Composable
+fun PhotoPostFlow(
+    visible: Boolean,
+    draftId: String? = null,
+    origin: DraftInputOrigin? = null,
+    onDismiss: () -> Unit,
+    onOpenManual: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    viewModel: CreateDraftViewModel = koinViewModel(),
+) {
+    if (!visible) return
+    val state by viewModel.state.collectAsState()
+    val draft = state.draft
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val cameraAvailable = remember(context) {
+        context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
+    }
+    val modeStore: DraftCreateModeStore = remember { koinGet(DraftCreateModeStore::class.java) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    var screen by rememberSaveable { mutableStateOf(PostFlowScreen.ENTRY) }
+    var step by rememberSaveable { mutableStateOf(PhotoStep.FRONT) }
+    var showExitDialog by rememberSaveable { mutableStateOf(false) }
+    var cameraRequested by rememberSaveable { mutableStateOf(false) }
+    var permissionState by rememberSaveable { mutableStateOf(CameraPermissionState.Unknown) }
+    var pendingSlot by remember { mutableStateOf<PhotoSlotRef?>(null) }
+    var coreReadyLogged by rememberSaveable { mutableStateOf(false) }
+    var startNewDraft by rememberSaveable { mutableStateOf(false) }
+
+    val importer = remember { DraftMediaImporter(context) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        val slot = pendingSlot ?: return@rememberLauncherForActivityResult
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val media = importer.importPhoto(uri) ?: return@launch
+            viewModel.upsertPhoto(slot.role, slot.index, media)
+            FlowMetrics.markPhotoAdded(slot.role.name.lowercase(), "gallery")
+        }
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        val slot = pendingSlot ?: return@rememberLauncherForActivityResult
+        if (bitmap == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val media = importer.importBitmap(bitmap) ?: return@launch
+            viewModel.upsertPhoto(slot.role, slot.index, media)
+            FlowMetrics.markPhotoAdded(slot.role.name.lowercase(), "camera")
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        cameraRequested = true
+        permissionState = resolveCameraPermission(context, cameraRequested)
+        if (granted) {
+            cameraLauncher.launch(null)
+        }
+    }
+
+    fun closeFlow() {
+        if (draft != null) {
+            viewModel.closeDraft()
+        }
+        onDismiss()
+    }
+
+    fun openDraftForPhoto() {
+        viewModel.openDraft(draftId, DraftInputOrigin.PHOTO)
+    }
+
+    fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", context.packageName, null)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+    }
+
+    fun requestExit() {
+        if (draft == null) {
+            onDismiss()
+            return
+        }
+        if (state.isDirty) {
+            showExitDialog = true
+        } else {
+            closeFlow()
+        }
+    }
+
+    fun updateCategoryWithUndo(newCode: String?) {
+        val previous = state.draft?.categoryCode
+        if (previous == newCode) return
+        viewModel.updateCategory(newCode)
+        scope.launch {
+            val result = snackbarHostState.showSnackbar(
+                message = "Категория изменена",
+                actionLabel = "Отменить",
+            )
+            if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) {
+                viewModel.updateCategory(previous)
+            }
+        }
+    }
+
+    fun updatePriceTypeWithUndo(type: DraftPriceType) {
+        val previous = state.draft?.price
+        if (previous?.type == type) return
+        viewModel.updatePriceType(type)
+        scope.launch {
+            val result = snackbarHostState.showSnackbar(
+                message = "Цена обновлена",
+                actionLabel = "Отменить",
+            )
+            if (result == androidx.compose.material3.SnackbarResult.ActionPerformed && previous != null) {
+                viewModel.updatePriceType(previous.type)
+                if (previous.type == DraftPriceType.FIXED) {
+                    viewModel.updatePriceInput(previous.rawInput.orEmpty())
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(visible, draftId, origin) {
+        if (!visible) return@LaunchedEffect
+        FlowMetrics.markPostPhotoFlowOpen()
+        if (origin != null && origin != DraftInputOrigin.PHOTO) {
+            onOpenManual()
+            return@LaunchedEffect
+        }
+        if (draftId != null) {
+            viewModel.openDraft(draftId, origin ?: DraftInputOrigin.PHOTO)
+            screen = PostFlowScreen.EDITOR
+            return@LaunchedEffect
+        }
+        if (origin == DraftInputOrigin.PHOTO) {
+            modeStore.set(DraftCreateMode.PHOTO)
+            openDraftForPhoto()
+            screen = PostFlowScreen.PHOTO_CAPTURE
+            return@LaunchedEffect
+        }
+        val last = modeStore.get()
+        if (last == DraftCreateMode.PHOTO) {
+            openDraftForPhoto()
+            screen = PostFlowScreen.PHOTO_CAPTURE
+        } else {
+            screen = PostFlowScreen.ENTRY
+        }
+    }
+
+    LaunchedEffect(screen) {
+        if (screen == PostFlowScreen.PHOTO_CAPTURE) {
+            permissionState = resolveCameraPermission(context, cameraRequested)
+        }
+    }
+
+    LaunchedEffect(startNewDraft) {
+        if (!startNewDraft) return@LaunchedEffect
+        viewModel.closeDraft()
+        delay(200)
+        viewModel.openDraft(null, DraftInputOrigin.PHOTO)
+        step = PhotoStep.FRONT
+        screen = PostFlowScreen.PHOTO_CAPTURE
+        startNewDraft = false
+    }
+
+    val coreReady = draft?.let { isCoreReady(it) } == true
+    LaunchedEffect(draft?.id) {
+        coreReadyLogged = false
+    }
+    LaunchedEffect(coreReady, draft?.id) {
+        if (coreReady && !coreReadyLogged) {
+            coreReadyLogged = true
+            FlowMetrics.markCoreFieldsCompleted()
+        }
+    }
+
+    BackHandler(enabled = true) {
+        when (screen) {
+            PostFlowScreen.ENTRY -> requestExit()
+            PostFlowScreen.PHOTO_CAPTURE -> requestExit()
+            PostFlowScreen.EDITOR -> screen = PostFlowScreen.PHOTO_CAPTURE
+            PostFlowScreen.CATEGORY -> screen = PostFlowScreen.EDITOR
+            PostFlowScreen.PREVIEW -> screen = PostFlowScreen.EDITOR
+            PostFlowScreen.PUBLISHING -> Unit
+            PostFlowScreen.RESULT -> requestExit()
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        modifier = modifier,
+    ) { padding ->
+        Surface(
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            when (screen) {
+                PostFlowScreen.ENTRY -> PostEntryScreen(
+                    onPhoto = {
+                        scope.launch { modeStore.set(DraftCreateMode.PHOTO) }
+                        openDraftForPhoto()
+                        screen = PostFlowScreen.PHOTO_CAPTURE
+                    },
+                    onManual = {
+                        scope.launch { modeStore.set(DraftCreateMode.MANUAL) }
+                        onOpenManual()
+                    },
+                    onClose = { requestExit() },
+                )
+                PostFlowScreen.PHOTO_CAPTURE -> PhotoCaptureScreen(
+                    step = step,
+                    draft = draft,
+                    permissionState = permissionState,
+                    cameraAvailable = cameraAvailable,
+                    onClose = { requestExit() },
+                    onStepChange = { step = it },
+                    onRequestCamera = { role, index ->
+                        pendingSlot = PhotoSlotRef(role, index)
+                        cameraRequested = true
+                        val permission = resolveCameraPermission(context, cameraRequested)
+                        permissionState = permission
+                        when (permission) {
+                            CameraPermissionState.Granted -> cameraLauncher.launch(null)
+                            CameraPermissionState.DeniedPermanent -> openAppSettings()
+                            else -> permissionLauncher.launch(Manifest.permission.CAMERA)
+                        }
+                    },
+                    onOpenSettings = { openAppSettings() },
+                    onRequestGallery = { role, index ->
+                        pendingSlot = PhotoSlotRef(role, index)
+                        galleryLauncher.launch("image/*")
+                    },
+                    onDelete = { role, index, removed ->
+                        val slot = PhotoSlotRef(role, index)
+                        viewModel.removePhoto(role, index)
+                        scope.launch {
+                            val result = snackbarHostState.showSnackbar(
+                                message = "Фото удалено",
+                                actionLabel = "Отменить",
+                            )
+                            val undo = result == androidx.compose.material3.SnackbarResult.ActionPerformed
+                            if (undo) {
+                                viewModel.upsertPhoto(slot.role, slot.index, removed)
+                            }
+                            FlowMetrics.markPhotoDeleted(undo)
+                        }
+                    },
+                    onContinue = { screen = PostFlowScreen.EDITOR },
+                )
+                PostFlowScreen.EDITOR -> DraftEditorScreen(
+                    draft = draft,
+                    state = state,
+                    onBack = { screen = PostFlowScreen.PHOTO_CAPTURE },
+                    onOpenCategory = { screen = PostFlowScreen.CATEGORY },
+                    onOpenPreview = {
+                        FlowMetrics.markPreviewOpen()
+                        screen = PostFlowScreen.PREVIEW
+                    },
+                    onSaveDraft = {
+                        FlowMetrics.markDraftSaved()
+                        viewModel.saveDraftNow()
+                    },
+                    onUpdateTitle = viewModel::updateTitle,
+                    onUpdateDescription = viewModel::updateDescription,
+                    onUpdatePriceInput = viewModel::updatePriceInput,
+                    onUpdatePriceType = { type -> updatePriceTypeWithUndo(type) },
+                    onUpdateCategory = { code -> updateCategoryWithUndo(code) },
+                    onUpdateCondition = viewModel::updateCondition,
+                    onUpdateDelivery = viewModel::updateDelivery,
+                    onUpdateContacts = viewModel::updateContacts,
+                    onUpdateLocation = viewModel::updateLocation,
+                )
+                PostFlowScreen.CATEGORY -> CategoryPickerScreen(
+                    state = state.categoryState,
+                    selectedCode = draft?.categoryCode,
+                    onQueryChange = viewModel::setCategorySearch,
+                    onPick = {
+                        updateCategoryWithUndo(it.code)
+                        screen = PostFlowScreen.EDITOR
+                    },
+                    onBack = { screen = PostFlowScreen.EDITOR },
+                )
+                PostFlowScreen.PREVIEW -> ListingPreviewScreen(
+                    draft = draft,
+                    state = state,
+                    onBack = { screen = PostFlowScreen.EDITOR },
+                    onPublish = {
+                        FlowMetrics.markPublishAttemptedDetailed()
+                        screen = PostFlowScreen.PUBLISHING
+                    },
+                    onEdit = { screen = PostFlowScreen.EDITOR },
+                    onUpdateContacts = viewModel::updateContacts,
+                    onUpdateLocation = viewModel::updateLocation,
+                )
+                PostFlowScreen.PUBLISHING -> PublishingScreen(
+                    draft = draft,
+                    onSaveDraft = {
+                        FlowMetrics.markDraftSaved()
+                        viewModel.saveDraftNow()
+                        requestExit()
+                    },
+                    onExit = { requestExit() },
+                    onPublish = {
+                        val current = state.draft
+                        val validation = DraftPublishValidator.validate(current, state.attributesState.required)
+                        if (!validation.isReady) {
+                            FlowMetrics.markPublishFailedDetailed("missing_fields")
+                            screen = PostFlowScreen.EDITOR
+                            return@PublishingScreen
+                        }
+                        viewModel.publishDraft {
+                            FlowMetrics.markPublishSucceededDetailed()
+                            screen = PostFlowScreen.RESULT
+                        }
+                    },
+                )
+                PostFlowScreen.RESULT -> PublishResultScreen(
+                    draft = draft,
+                    onOpenListing = { closeFlow() },
+                    onShare = { closeFlow() },
+                    onCreateAnother = {
+                        startNewDraft = true
+                    },
+                    onClose = { closeFlow() },
+                )
+            }
+        }
+    }
+
+    if (showExitDialog) {
+        ExitConfirmDialog(
+            onSaveExit = {
+                showExitDialog = false
+                FlowMetrics.markDraftSaved()
+                viewModel.saveDraftNow { closeFlow() }
+            },
+            onDiscard = {
+                showExitDialog = false
+                FlowMetrics.markDraftDiscarded()
+                viewModel.discardDraft { closeFlow() }
+            },
+            onStay = { showExitDialog = false },
+        )
+    }
+}
+
+@Composable
+private fun PostEntryScreen(
+    onPhoto: () -> Unit,
+    onManual: () -> Unit,
+    onClose: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = "Новое объявление",
+                style = MaterialTheme.typography.titleMedium,
+            )
+            IconButton(onClick = onClose) {
+                Icon(Icons.Outlined.Close, contentDescription = "Закрыть")
+            }
+        }
+
+        ModeChoiceCard(
+            title = "По фото",
+            subtitle = "Быстрый старт",
+            icon = Icons.Outlined.PhotoCamera,
+            primary = true,
+            onClick = onPhoto,
+        )
+        ModeChoiceCard(
+            title = "Вручную",
+            subtitle = "Заполнить всё самостоятельно",
+            icon = Icons.Outlined.Sell,
+            primary = false,
+            onClick = onManual,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "1) Фото 2) Проверь 3) Опубликуй",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun ModeChoiceCard(
+    title: String,
+    subtitle: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    primary: Boolean,
+    onClick: () -> Unit,
+) {
+    val shape = RoundedCornerShape(CardRadius)
+    Surface(
+        tonalElevation = if (primary) 2.dp else 0.dp,
+        shape = shape,
+        color = if (primary) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 88.dp)
+            .clip(shape)
+            .clickable(onClick = onClick),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(
+                        if (primary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = if (primary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = if (primary) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (primary) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Icon(
+                Icons.Outlined.KeyboardArrowRight,
+                contentDescription = null,
+                tint = if (primary) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PhotoCaptureScreen(
+    step: PhotoStep,
+    draft: DraftOffer?,
+    permissionState: CameraPermissionState,
+    cameraAvailable: Boolean,
+    onClose: () -> Unit,
+    onStepChange: (PhotoStep) -> Unit,
+    onRequestCamera: (DraftPhotoRole, Int) -> Unit,
+    onOpenSettings: () -> Unit,
+    onRequestGallery: (DraftPhotoRole, Int) -> Unit,
+    onDelete: (DraftPhotoRole, Int, DraftMedia) -> Unit,
+    onContinue: () -> Unit,
+) {
+    val media = draft?.media.orEmpty().filter { it.type == DraftMediaType.PHOTO }
+    val stepMedia = media.filter { it.role == step.role }
+    val slots = remember(stepMedia, step) {
+        List(MaxPhotosPerStep) { index -> stepMedia.getOrNull(index) }
+    }
+    val listState = rememberLazyListState()
+    var currentIndex by rememberSaveable(step) { mutableIntStateOf(0) }
+    var showHelp by rememberSaveable(step) { mutableStateOf(false) }
+    val visibleIndex = remember(listState) { androidx.compose.runtime.derivedStateOf { listState.firstVisibleItemIndex } }
+
+    LaunchedEffect(slots.size) {
+        val max = (slots.size - 1).coerceAtLeast(0)
+        if (currentIndex > max) currentIndex = max
+    }
+    LaunchedEffect(visibleIndex.value) {
+        currentIndex = visibleIndex.value
+    }
+
+    val canProceed = stepMedia.isNotEmpty()
+    val nextStep = step.next()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        PhotoCaptureTopBar(
+            step = step,
+            onHelp = { showHelp = !showHelp },
+            onClose = onClose,
+        )
+
+        if (showHelp && step.hint.isNotBlank()) {
+            InlineInfoCard(text = step.hint)
+        }
+
+        SlotDots(count = slots.size, currentIndex = currentIndex)
+
+    LazyRow(
+        state = listState,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        itemsIndexed(slots) { index, item ->
+            PhotoSlotCard(
+                media = item,
+                index = index,
+                modifier = Modifier.fillParentMaxWidth(),
+                onClick = {
+                    currentIndex = index
+                    if (item == null) {
+                        if (cameraAvailable) {
+                            onRequestCamera(step.role, index)
+                        } else {
+                            onRequestGallery(step.role, index)
+                        }
+                    }
+                },
+            )
+        }
+    }
+
+        PermissionHint(
+            permissionState = permissionState,
+            cameraAvailable = cameraAvailable,
+            onRequest = { onRequestCamera(step.role, currentIndex) },
+            onOpenSettings = onOpenSettings,
+            onGallery = { onRequestGallery(step.role, currentIndex) },
+        )
+
+        PhotoActionRow(
+            canDelete = slots.getOrNull(currentIndex) != null,
+            cameraEnabled = cameraAvailable,
+            onCamera = { onRequestCamera(step.role, currentIndex) },
+            onGallery = { onRequestGallery(step.role, currentIndex) },
+            onDelete = {
+                val removed = slots.getOrNull(currentIndex) ?: return@PhotoActionRow
+                onDelete(step.role, currentIndex, removed)
+            },
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        PhotoCaptureBottomBar(
+            canProceed = canProceed,
+            hasNextStep = nextStep != null,
+            onNext = {
+                if (nextStep != null) {
+                    onStepChange(nextStep)
+                } else {
+                    onContinue()
+                }
+            },
+            onSkip = {
+                if (nextStep != null) {
+                    onStepChange(nextStep)
+                } else {
+                    onContinue()
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun PhotoCaptureTopBar(
+    step: PhotoStep,
+    onHelp: () -> Unit,
+    onClose: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconButton(onClick = onClose) {
+            Icon(Icons.Outlined.Close, contentDescription = "Закрыть")
+        }
+        Text(
+            text = "Шаг ${step.index + 1}/3 — ${step.title}",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.weight(1f),
+        )
+        IconButton(onClick = onHelp) {
+            Icon(Icons.Outlined.HelpOutline, contentDescription = "Подсказка")
+        }
+    }
+}
+
+@Composable
+private fun InlineInfoCard(text: String) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+        )
+    }
+}
+
+@Composable
+private fun SlotDots(count: Int, currentIndex: Int) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        repeat(count) { index ->
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(
+                        if (index == currentIndex) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.outlineVariant,
+                    ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PhotoSlotCard(
+    media: DraftMedia?,
+    index: Int,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    val shape = RoundedCornerShape(CardRadius)
+    Surface(
+        shape = shape,
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        tonalElevation = 1.dp,
+        modifier = Modifier
+            .then(modifier)
+            .aspectRatio(0.75f)
+            .clip(shape)
+            .clickable(onClick = onClick),
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (media != null) {
+                val model = media.localUri ?: media.remoteUrl
+                AsyncImage(
+                    model = model,
+                    contentDescription = "Фото ${index + 1}",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Icon(
+                        Icons.Outlined.AddPhotoAlternate,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(48.dp),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Добавьте фото",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PermissionHint(
+    permissionState: CameraPermissionState,
+    onRequest: () -> Unit,
+    onOpenSettings: () -> Unit,
+    onGallery: () -> Unit,
+) {
+    if (permissionState == CameraPermissionState.Granted || permissionState == CameraPermissionState.Unknown) return
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Нужно разрешение камеры, чтобы сделать снимок.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (permissionState == CameraPermissionState.DeniedTemporary) {
+                    OutlinedButton(onClick = onRequest) {
+                        Text("Разрешить камеру")
+                    }
+                } else {
+                    OutlinedButton(onClick = onOpenSettings) {
+                        Text("Открыть настройки")
+                    }
+                }
+                TextButton(onClick = onGallery) {
+                    Text("Выбрать из галереи")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PhotoActionRow(
+    canDelete: Boolean,
+    onCamera: () -> Unit,
+    onGallery: () -> Unit,
+    onDelete: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        ActionIconButton(
+            label = "Камера",
+            icon = Icons.Outlined.PhotoCamera,
+            onClick = onCamera,
+        )
+        ActionIconButton(
+            label = "Галерея",
+            icon = Icons.Outlined.Image,
+            onClick = onGallery,
+        )
+        ActionIconButton(
+            label = "Удалить",
+            icon = Icons.Outlined.Delete,
+            enabled = canDelete,
+            onClick = onDelete,
+        )
+    }
+}
+
+@Composable
+private fun ActionIconButton(
+    label: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .widthIn(min = 72.dp)
+            .clickable(enabled = enabled, onClick = onClick),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(
+                    if (enabled) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
+                ),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                icon,
+                contentDescription = label,
+                tint = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = if (enabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.outline,
+        )
+    }
+}
+
+@Composable
+private fun PhotoCaptureBottomBar(
+    canProceed: Boolean,
+    hasNextStep: Boolean,
+    onNext: () -> Unit,
+    onSkip: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Button(
+            onClick = onNext,
+            enabled = canProceed,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp),
+            shape = RoundedCornerShape(ControlRadius),
+        ) {
+            Text("Далее")
+        }
+        if (canProceed && hasNextStep) {
+            TextButton(
+                onClick = onSkip,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Пропустить дополнительные фото")
+            }
+        } else if (!canProceed) {
+            Text(
+                text = "Добавьте фото",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 4.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun DraftEditorScreen(
+    draft: DraftOffer?,
+    state: com.example.shoppingassistant.feature.pages.draft.create.CreateDraftState,
+    onBack: () -> Unit,
+    onOpenCategory: () -> Unit,
+    onOpenPreview: () -> Unit,
+    onSaveDraft: () -> Unit,
+    onUpdateTitle: (String) -> Unit,
+    onUpdateDescription: (String) -> Unit,
+    onUpdatePriceInput: (String) -> Unit,
+    onUpdatePriceType: (DraftPriceType) -> Unit,
+    onUpdateCategory: (String?) -> Unit,
+    onUpdateCondition: (DraftCondition?) -> Unit,
+    onUpdateDelivery: (DraftDelivery) -> Unit,
+    onUpdateContacts: (DraftContacts) -> Unit,
+    onUpdateLocation: (DraftLocation) -> Unit,
+) {
+    val scroll = rememberScrollState()
+    val coreReady = draft?.let { isCoreReady(it) } == true
+    var previewExpanded by rememberSaveable { mutableStateOf(false) }
+    var showOptionalHints by rememberSaveable { mutableStateOf(true) }
+    var showMoreOptional by rememberSaveable { mutableStateOf(false) }
+    val expandedSections = remember { mutableStateListOf<DraftSection>() }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scroll)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(bottom = 120.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Назад")
+                    }
+                    Text(
+                        text = "Черновик",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+                Text(
+                    text = if (state.isSaving) "Сохраняем..." else "Сохранено",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            CompletionChecklist(draft = draft, coreReady = coreReady)
+
+            if (coreReady) {
+                Text(
+                    text = "Готово к публикации",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+
+            if (showOptionalHints && coreReady) {
+                OptionalImprovementsCard(
+                    showMore = showMoreOptional,
+                    onShowMore = { showMoreOptional = true },
+                    onHide = { showOptionalHints = false },
+                    onOpenSection = { section ->
+                        if (!expandedSections.contains(section)) expandedSections.add(section)
+                    },
+                )
+            }
+
+            LivePreviewCard(
+                draft = draft,
+                expanded = previewExpanded,
+                coreReady = coreReady,
+                onToggle = { previewExpanded = !previewExpanded },
+                onOpenPreview = if (coreReady) onOpenPreview else null,
+            )
+
+            DraftCoreFields(
+                draft = draft,
+                categoryState = state.categoryState,
+                onUpdateTitle = onUpdateTitle,
+                onUpdatePriceInput = onUpdatePriceInput,
+                onUpdatePriceType = onUpdatePriceType,
+                onUpdateCategory = onUpdateCategory,
+                onOpenCategory = onOpenCategory,
+            )
+
+            DraftSectionCard(
+                title = "Описание",
+                status = if (draft?.description.isNullOrBlank()) "не указано" else "добавлено",
+                expanded = expandedSections.contains(DraftSection.DESCRIPTION),
+                onToggle = { toggleSection(expandedSections, DraftSection.DESCRIPTION) },
+            ) {
+                OutlinedTextField(
+                    value = draft?.description.orEmpty(),
+                    onValueChange = onUpdateDescription,
+                    label = { Text("Описание") },
+                    modifier = Modifier.fillMaxWidth(),
+                    minLines = 3,
+                )
+            }
+
+            DraftSectionCard(
+                title = "Состояние",
+                status = draft?.condition?.let { conditionLabel(it) } ?: "не указано",
+                expanded = expandedSections.contains(DraftSection.CONDITION),
+                onToggle = { toggleSection(expandedSections, DraftSection.CONDITION) },
+            ) {
+                ConditionChips(
+                    selected = draft?.condition,
+                    onSelect = onUpdateCondition,
+                )
+            }
+
+            DraftSectionCard(
+                title = "Доставка/Самовывоз",
+                status = deliveryStatus(draft?.delivery),
+                expanded = expandedSections.contains(DraftSection.DELIVERY),
+                onToggle = { toggleSection(expandedSections, DraftSection.DELIVERY) },
+            ) {
+                val delivery = draft?.delivery ?: DraftDelivery()
+                ToggleRow(
+                    label = "Самовывоз",
+                    checked = delivery.pickup,
+                    onCheckedChange = { onUpdateDelivery(delivery.copy(pickup = it)) },
+                )
+                ToggleRow(
+                    label = "Доставка",
+                    checked = delivery.delivery,
+                    onCheckedChange = { onUpdateDelivery(delivery.copy(delivery = it)) },
+                )
+            }
+
+            DraftSectionCard(
+                title = "Контакты",
+                status = contactsStatus(draft?.contacts),
+                expanded = expandedSections.contains(DraftSection.CONTACTS),
+                onToggle = { toggleSection(expandedSections, DraftSection.CONTACTS) },
+            ) {
+                val contacts = draft?.contacts ?: DraftContacts()
+                ToggleRow(
+                    label = "Показывать телефон",
+                    checked = contacts.phoneEnabled,
+                    onCheckedChange = { onUpdateContacts(contacts.copy(phoneEnabled = it)) },
+                )
+                Text(
+                    text = "Чат доступен всегда.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            DraftSectionCard(
+                title = "Гео",
+                status = geoStatus(draft?.location),
+                expanded = expandedSections.contains(DraftSection.GEO),
+                onToggle = { toggleSection(expandedSections, DraftSection.GEO) },
+            ) {
+            val location = draft?.location ?: DraftLocation()
+            val areaValue = location.area.orEmpty()
+            val showArea = !location.publicLabel.isNullOrBlank()
+            ToggleRow(
+                label = "Показывать район",
+                checked = showArea,
+                onCheckedChange = { checked ->
+                    val resolved = areaValue.ifBlank { location.city.orEmpty() }
+                    val label = if (checked) resolved.takeIf { it.isNotBlank() } else null
+                    onUpdateLocation(location.copy(publicLabel = label))
+                },
+            )
+            OutlinedTextField(
+                value = areaValue,
+                onValueChange = { value ->
+                    val resolved = value.ifBlank { location.city.orEmpty() }
+                    val label = if (showArea) resolved.takeIf { it.isNotBlank() } else location.publicLabel
+                    onUpdateLocation(location.copy(area = value, publicLabel = label))
+                },
+                    label = { Text("Район или город") },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
+            DraftSectionCard(
+                title = "Импорт по ссылке",
+                status = "не указано",
+                expanded = expandedSections.contains(DraftSection.IMPORT),
+                onToggle = { toggleSection(expandedSections, DraftSection.IMPORT) },
+            ) {
+                Text(
+                    text = "Можно добавить данные по ссылке позже.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                OutlinedButton(onClick = {}, enabled = false) {
+                    Text("Добавить ссылку")
+                }
+            }
+        }
+
+        Surface(
+            tonalElevation = 3.dp,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                HorizontalDivider()
+                StickyActionBar(
+                    coreReady = coreReady,
+                    missingCore = coreMissingLabels(draft),
+                    onPreview = onOpenPreview,
+                    onSave = onSaveDraft,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompletionChecklist(
+    draft: DraftOffer?,
+    coreReady: Boolean,
+) {
+    val items = listOf(
+        "Фото" to (draft?.media?.isNotEmpty() == true),
+        "Заголовок" to (!draft?.title.isNullOrBlank()),
+        "Цена" to (draft?.let { DraftPublishValidator.isPriceReady(it) } == true),
+        "Категория" to (!draft?.categoryCode.isNullOrBlank()),
+    )
+    val tint by animateColorAsState(
+        targetValue = if (coreReady) MaterialTheme.colorScheme.primary.copy(alpha = 0.08f) else Color.Transparent,
+        label = "readyTint",
+    )
+    Surface(
+        shape = RoundedCornerShape(CardRadius),
+        color = tint,
+        tonalElevation = if (coreReady) 2.dp else 0.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Чтобы опубликовать, нужно:",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                items.forEachIndexed { index, (label, ok) ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Icon(
+                            imageVector = if (ok) Icons.Outlined.CheckCircle else Icons.Outlined.Check,
+                            contentDescription = null,
+                            tint = if (ok) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (ok) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    if (index != items.lastIndex) {
+                        Text(
+                            text = " / ",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun OptionalImprovementsCard(
+    showMore: Boolean,
+    onShowMore: () -> Unit,
+    onHide: () -> Unit,
+    onOpenSection: (DraftSection) -> Unit,
+) {
+    val suggestions = listOf(
+        OptionalSuggestion("description", "Добавьте описание", DraftSection.DESCRIPTION),
+        OptionalSuggestion("condition", "Укажите состояние", DraftSection.CONDITION),
+        OptionalSuggestion("delivery", "Добавьте доставку", DraftSection.DELIVERY),
+    )
+    val visible = if (showMore) suggestions else suggestions.take(2)
+    Surface(
+        shape = RoundedCornerShape(CardRadius),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Можно улучшить (не обязательно)",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            visible.forEach { suggestion ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = suggestion.label,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    TextButton(onClick = { onOpenSection(suggestion.section) }) {
+                        Text("Добавить")
+                    }
+                }
+            }
+            if (!showMore) {
+                TextButton(onClick = onShowMore) {
+                    Text("Еще 1 идея")
+                }
+            }
+            TextButton(onClick = onHide) {
+                Text("Скрыть подсказки")
+            }
+        }
+    }
+}
+
+@Composable
+private fun LivePreviewCard(
+    draft: DraftOffer?,
+    expanded: Boolean,
+    coreReady: Boolean,
+    onToggle: () -> Unit,
+    onOpenPreview: (() -> Unit)?,
+) {
+    val cover = draft?.media?.firstOrNull()?.localUri ?: draft?.media?.firstOrNull()?.remoteUrl
+    val tintAlpha by animateFloatAsState(
+        targetValue = if (coreReady) 0.1f else 0f,
+        animationSpec = tween(durationMillis = 180),
+        label = "readyCard",
+    )
+    val tint = MaterialTheme.colorScheme.primary.copy(alpha = tintAlpha)
+    Surface(
+        shape = RoundedCornerShape(CardRadius),
+        color = if (coreReady) tint else MaterialTheme.colorScheme.surfaceVariant,
+        tonalElevation = 1.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onToggle)
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (cover != null) {
+                        AsyncImage(
+                            model = cover,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(if (expanded) 72.dp else 40.dp)
+                                .clip(RoundedCornerShape(12.dp)),
+                            contentScale = ContentScale.Crop,
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(if (expanded) 72.dp else 40.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(MaterialTheme.colorScheme.surface),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(Icons.Outlined.Image, contentDescription = null)
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text(
+                            text = "Превью карточки",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Text(
+                            text = if (coreReady) "Готово к публикации" else "Заполните минимум — увидите превью",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                Icon(
+                    imageVector = if (expanded) Icons.Outlined.KeyboardArrowDown else Icons.Outlined.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            AnimatedVisibility(visible = expanded) {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(
+                        text = draft?.title?.ifBlank { "Без названия" } ?: "Без названия",
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = draft?.let { formatDraftPrice(it) } ?: "—",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    Text(
+                        text = "Нажмите, чтобы открыть полный предпросмотр",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(enabled = onOpenPreview != null) { onOpenPreview?.invoke() },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DraftCoreFields(
+    draft: DraftOffer?,
+    categoryState: DraftCategoryState,
+    onUpdateTitle: (String) -> Unit,
+    onUpdatePriceInput: (String) -> Unit,
+    onUpdatePriceType: (DraftPriceType) -> Unit,
+    onUpdateCategory: (String?) -> Unit,
+    onOpenCategory: () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        OutlinedTextField(
+            value = draft?.title.orEmpty(),
+            onValueChange = onUpdateTitle,
+            label = { Text("Заголовок") },
+            placeholder = { Text("Например: iPhone 13 128GB") },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        OutlinedTextField(
+            value = draft?.price?.rawInput.orEmpty(),
+            onValueChange = onUpdatePriceInput,
+            label = { Text("Цена") },
+            placeholder = { Text("0") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            AssistChip(
+                label = "Договорная",
+                selected = draft?.price?.type == DraftPriceType.NEGOTIABLE,
+                onClick = { onUpdatePriceType(DraftPriceType.NEGOTIABLE) },
+            )
+            AssistChip(
+                label = "Бесплатно",
+                selected = draft?.price?.type == DraftPriceType.FREE,
+                onClick = { onUpdatePriceType(DraftPriceType.FREE) },
+            )
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            OutlinedTextField(
+                value = categoryLabel(draft?.categoryCode, categoryState.categories),
+                onValueChange = {},
+                label = { Text("Категория") },
+                modifier = Modifier.fillMaxWidth(),
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = onOpenCategory) {
+                        Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null)
+                    }
+                },
+            )
+            if (draft?.categoryCode.isNullOrBlank()) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    categoryState.popular.take(3).forEach { category ->
+                        SuggestChip(
+                            label = category.title ?: category.code,
+                            onClick = { onUpdateCategory(category.code) },
+                        )
+                    }
+                }
+            }
+            TextButton(onClick = onOpenCategory) {
+                Text("Выбрать из списка")
+            }
+        }
+    }
+}
+
+@Composable
+private fun SuggestChip(
+    label: String,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.clickable(onClick = onClick),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+            )
+            Text(
+                text = "Предложено",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+    }
+}
+
+@Composable
+private fun AssistChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.clickable(onClick = onClick),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+        )
+    }
+}
+
+@Composable
+private fun DraftSectionCard(
+    title: String,
+    status: String,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(CardRadius),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onToggle)
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                    Text(
+                        text = status,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Icon(
+                    imageVector = if (expanded) Icons.Outlined.KeyboardArrowDown else Icons.Outlined.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            if (expanded) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    content()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConditionChips(
+    selected: DraftCondition?,
+    onSelect: (DraftCondition?) -> Unit,
+) {
+    val options = listOf(
+        DraftCondition.NEW to "Новое",
+        DraftCondition.LIKE_NEW to "Как новое",
+        DraftCondition.GOOD to "Хорошее",
+        DraftCondition.USED to "Б/У",
+        DraftCondition.FOR_PARTS to "На запчасти",
+    )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.horizontalScroll(rememberScrollState()),
+    ) {
+        options.forEach { (condition, label) ->
+            AssistChip(
+                label = label,
+                selected = selected == condition,
+                onClick = { onSelect(condition) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun ToggleRow(
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(text = label, style = MaterialTheme.typography.bodyMedium)
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun StickyActionBar(
+    coreReady: Boolean,
+    missingCore: List<String>,
+    onPreview: () -> Unit,
+    onSave: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        if (!coreReady && missingCore.isNotEmpty()) {
+            Text(
+                text = "Заполните: ${missingCore.joinToString(", ")}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Button(
+            onClick = onPreview,
+            enabled = coreReady,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp),
+            shape = RoundedCornerShape(ControlRadius),
+        ) {
+            Text("Предпросмотр")
+        }
+        TextButton(
+            onClick = onSave,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Сохранить черновик")
+        }
+    }
+}
+
+@Composable
+private fun CategoryPickerScreen(
+    state: DraftCategoryState,
+    selectedCode: String?,
+    onQueryChange: (String) -> Unit,
+    onPick: (Category) -> Unit,
+    onBack: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onBack) {
+                    Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Назад")
+                }
+                Text("Категория", style = MaterialTheme.typography.titleMedium)
+            }
+            Spacer(modifier = Modifier.width(24.dp))
+        }
+
+        OutlinedTextField(
+            value = state.searchQuery,
+            onValueChange = onQueryChange,
+            label = { Text("Поиск категории") },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        if (state.popular.isNotEmpty()) {
+            Text(
+                text = "Популярные",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                state.popular.forEach { cat ->
+                    AssistChip(
+                        label = cat.title ?: cat.code,
+                        selected = cat.code == selectedCode,
+                        onClick = { onPick(cat) },
+                    )
+                }
+            }
+        }
+
+        val filtered = filterCategories(state.categories, state.searchQuery)
+        val tree = buildCategoryTree(filtered)
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            items(tree) { node ->
+                CategoryNodeRow(node, selectedCode, onPick, 0)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CategoryNodeRow(
+    node: CategoryNode,
+    selectedCode: String?,
+    onPick: (Category) -> Unit,
+    indent: Int,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        val selected = node.category.code == selectedCode
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onPick(node.category) }
+                .padding(start = (indent * 12).dp, top = 6.dp, bottom = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = node.category.title ?: node.category.code,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
+            )
+            if (selected) {
+                Icon(
+                    Icons.Outlined.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+        node.children.forEach { child ->
+            CategoryNodeRow(child, selectedCode, onPick, indent + 1)
+        }
+    }
+}
+
+@Composable
+private fun ListingPreviewScreen(
+    draft: DraftOffer?,
+    state: com.example.shoppingassistant.feature.pages.draft.create.CreateDraftState,
+    onBack: () -> Unit,
+    onPublish: () -> Unit,
+    onEdit: () -> Unit,
+    onUpdateContacts: (DraftContacts) -> Unit,
+    onUpdateLocation: (DraftLocation) -> Unit,
+) {
+    val duplicate = state.duplicateDraft
+    val scroll = rememberScrollState()
+    var duplicateLogged by rememberSaveable(duplicate?.id) { mutableStateOf(false) }
+
+    LaunchedEffect(duplicate?.id) {
+        if (duplicate != null && !duplicateLogged) {
+            duplicateLogged = true
+            FlowMetrics.markDuplicateWarningShown()
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scroll)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(bottom = 110.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Назад")
+                }
+                Text("Предпросмотр", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.width(24.dp))
+            }
+
+            PreviewGallery(draft = draft)
+
+            Text(
+                text = draft?.title?.ifBlank { "Без названия" } ?: "Без названия",
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = draft?.let { formatDraftPrice(it) } ?: "—",
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Text(
+                text = categoryLabel(draft?.categoryCode, state.categoryState.categories),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            draft?.description?.takeIf { it.isNotBlank() }?.let { description ->
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+
+            PrivacyControls(
+                draft = draft,
+                onUpdateContacts = onUpdateContacts,
+                onUpdateLocation = onUpdateLocation,
+            )
+
+            if (duplicate != null) {
+                DedupCard(
+                    duplicate = duplicate,
+                    onEdit = onEdit,
+                    onPublish = onPublish,
+                )
+            }
+        }
+
+        Surface(
+            tonalElevation = 3.dp,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                HorizontalDivider()
+                Button(
+                    onClick = onPublish,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp),
+                    shape = RoundedCornerShape(ControlRadius),
+                ) {
+                    Text("Опубликовать")
+                }
+                TextButton(
+                    onClick = onEdit,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text("Редактировать")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PreviewGallery(draft: DraftOffer?) {
+    val media = draft?.media.orEmpty().filter { it.type == DraftMediaType.PHOTO }
+    if (media.isEmpty()) return
+    val listState = rememberLazyListState()
+    LazyRow(
+        state = listState,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 220.dp),
+    ) {
+        items(media) { item ->
+            val model = item.localUri ?: item.remoteUrl
+            AsyncImage(
+                model = model,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .widthIn(min = 280.dp)
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(CardRadius)),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PrivacyControls(
+    draft: DraftOffer?,
+    onUpdateContacts: (DraftContacts) -> Unit,
+    onUpdateLocation: (DraftLocation) -> Unit,
+) {
+    val contacts = draft?.contacts ?: DraftContacts()
+    val location = draft?.location ?: DraftLocation()
+    Surface(
+        shape = RoundedCornerShape(CardRadius),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Что будет видно другим",
+                style = MaterialTheme.typography.titleSmall,
+            )
+            ToggleRow(
+                label = "Показывать контакты сразу",
+                checked = contacts.phoneEnabled,
+                onCheckedChange = { onUpdateContacts(contacts.copy(phoneEnabled = it)) },
+            )
+            Text(
+                text = "Если выключено — покажем чат.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            HorizontalDivider()
+            ToggleRow(
+                label = "Показывать точное местоположение",
+                checked = location.showExactLocation,
+                onCheckedChange = { onUpdateLocation(location.copy(showExactLocation = it)) },
+            )
+            Text(
+                text = "Если выключено — покажем только район.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DedupCard(
+    duplicate: DraftOffer,
+    onEdit: () -> Unit,
+    onPublish: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(CardRadius),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Похоже на уже существующее объявление",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text(
+                text = duplicate.title?.ifBlank { "Без названия" } ?: "Без названия",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextButton(onClick = onEdit) { Text("Вернуться и изменить") }
+                TextButton(onClick = onPublish) { Text("Все равно опубликовать") }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PublishingScreen(
+    draft: DraftOffer?,
+    onSaveDraft: () -> Unit,
+    onExit: () -> Unit,
+    onPublish: () -> Unit,
+) {
+    var step by rememberSaveable { mutableIntStateOf(0) }
+    val errorMessage = draft?.publishError?.takeIf { it.isNotBlank() }
+
+    LaunchedEffect(errorMessage) {
+        if (!errorMessage.isNullOrBlank()) return@LaunchedEffect
+        step = 0
+        delay(500)
+        step = 1
+        onPublish()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            text = if (errorMessage == null) "Публикуем" else "Не удалось опубликовать",
+            style = MaterialTheme.typography.titleMedium,
+        )
+        if (errorMessage == null) {
+            PublishingStepItem(
+                label = "Загружаем фото...",
+                active = step >= 0,
+            )
+            PublishingStepItem(
+                label = "Публикуем...",
+                active = step >= 1,
+            )
+        } else {
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Button(
+                onClick = onPublish,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp),
+                shape = RoundedCornerShape(ControlRadius),
+            ) {
+                Text("Повторить")
+            }
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        TextButton(onClick = onSaveDraft) { Text("Сохранить черновик") }
+        TextButton(onClick = onExit) { Text("Выйти") }
+    }
+}
+
+@Composable
+private fun PublishingStepItem(
+    label: String,
+    active: Boolean,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(10.dp)
+                .clip(CircleShape)
+                .background(if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun PublishResultScreen(
+    draft: DraftOffer?,
+    onOpenListing: () -> Unit,
+    onShare: () -> Unit,
+    onCreateAnother: () -> Unit,
+    onClose: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text("Готово", style = MaterialTheme.typography.titleMedium)
+            IconButton(onClick = onClose) {
+                Icon(Icons.Outlined.Close, contentDescription = "Закрыть")
+            }
+        }
+        LivePreviewCard(
+            draft = draft,
+            expanded = true,
+            coreReady = true,
+            onToggle = {},
+            onOpenPreview = null,
+        )
+        Button(
+            onClick = onOpenListing,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp),
+            shape = RoundedCornerShape(ControlRadius),
+        ) {
+            Text("Посмотреть объявление")
+        }
+        OutlinedButton(
+            onClick = onShare,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Поделиться")
+        }
+        TextButton(
+            onClick = onCreateAnother,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Создать еще одно")
+        }
+    }
+}
+
+@Composable
+private fun ExitConfirmDialog(
+    onSaveExit: () -> Unit,
+    onDiscard: () -> Unit,
+    onStay: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onStay,
+        title = { Text("Сохранить черновик?") },
+        text = { Text("Есть несохраненные изменения.") },
+        confirmButton = {
+            Button(onClick = onSaveExit) {
+                Text("Сохранить и выйти")
+            }
+        },
+        dismissButton = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextButton(onClick = onDiscard) {
+                    Text("Выйти без сохранения")
+                }
+                TextButton(onClick = onStay) {
+                    Text("Остаться")
+                }
+            }
+        },
+    )
+}
+
+private fun isCoreReady(draft: DraftOffer): Boolean {
+    val hasMedia = draft.media.any { it.type == DraftMediaType.PHOTO }
+    val hasTitle = !draft.title.isNullOrBlank()
+    val hasPrice = DraftPublishValidator.isPriceReady(draft)
+    val hasCategory = !draft.categoryCode.isNullOrBlank()
+    return hasMedia && hasTitle && hasPrice && hasCategory
+}
+
+private fun coreMissingLabels(draft: DraftOffer?): List<String> {
+    if (draft == null) return emptyList()
+    val missing = mutableListOf<String>()
+    if (draft.media.none { it.type == DraftMediaType.PHOTO }) missing += "фото"
+    if (draft.title.isNullOrBlank()) missing += "заголовок"
+    if (!DraftPublishValidator.isPriceReady(draft)) missing += "цена"
+    if (draft.categoryCode.isNullOrBlank()) missing += "категория"
+    return missing
+}
+
+private fun conditionLabel(condition: DraftCondition): String = when (condition) {
+    DraftCondition.NEW -> "Новое"
+    DraftCondition.LIKE_NEW -> "Как новое"
+    DraftCondition.GOOD -> "Хорошее"
+    DraftCondition.USED -> "Б/У"
+    DraftCondition.FOR_PARTS -> "На запчасти"
+}
+
+private fun deliveryStatus(delivery: DraftDelivery?): String {
+    val safe = delivery ?: return "не указано"
+    val parts = mutableListOf<String>()
+    if (safe.pickup) parts += "самовывоз"
+    if (safe.delivery) parts += "доставка"
+    return if (parts.isEmpty()) "не указано" else parts.joinToString(", ")
+}
+
+private fun contactsStatus(contacts: DraftContacts?): String {
+    val safe = contacts ?: return "не указано"
+    return if (safe.phoneEnabled) "телефон" else "чат"
+}
+
+private fun geoStatus(location: DraftLocation?): String {
+    val safe = location ?: return "не указано"
+    return safe.publicLabel?.takeIf { it.isNotBlank() } ?: "не указано"
+}
+
+private fun toggleSection(list: MutableList<DraftSection>, section: DraftSection) {
+    if (list.contains(section)) {
+        list.remove(section)
+    } else {
+        list.add(section)
+    }
+}
+
+private fun categoryLabel(code: String?, categories: List<Category>): String {
+    if (code.isNullOrBlank()) return ""
+    return categories.firstOrNull { it.code == code }?.title ?: code
+}
+
+private fun formatDraftPrice(draft: DraftOffer): String = when (draft.price.type) {
+    DraftPriceType.FIXED -> draft.price.amountMajor?.let {
+        val currency = draft.price.currency ?: "USD"
+        "%.0f %s".format(it, currency)
+    } ?: "—"
+    DraftPriceType.NEGOTIABLE -> "Договорная"
+    DraftPriceType.FREE -> "Бесплатно"
+    DraftPriceType.EXCHANGE -> "Обмен"
+}
+
+private fun filterCategories(categories: List<Category>, query: String): List<Category> {
+    val trimmed = query.trim().lowercase()
+    if (trimmed.isBlank()) return categories
+    return categories.filter {
+        it.code.lowercase().contains(trimmed) ||
+            (it.title?.lowercase()?.contains(trimmed) == true)
+    }
+}
+
+private data class CategoryNode(
+    val category: Category,
+    val children: List<CategoryNode> = emptyList(),
+)
+
+private fun buildCategoryTree(categories: List<Category>): List<CategoryNode> {
+    val grouped = categories.groupBy { it.parentCode }
+    fun build(parent: String?): List<CategoryNode> =
+        grouped[parent].orEmpty().sortedBy { it.title ?: it.code }.map { cat ->
+            CategoryNode(cat, build(cat.code))
+        }
+    return build(null)
+}
+
+private fun resolveCameraPermission(context: Context, requested: Boolean): CameraPermissionState {
+    val granted = ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.CAMERA,
+    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+    if (granted) return CameraPermissionState.Granted
+    val activity = context.findActivity()
+    val shouldExplain = activity?.let {
+        ActivityCompat.shouldShowRequestPermissionRationale(it, Manifest.permission.CAMERA)
+    } == true
+    return if (!requested) {
+        CameraPermissionState.Unknown
+    } else if (shouldExplain) {
+        CameraPermissionState.DeniedTemporary
+    } else {
+        CameraPermissionState.DeniedPermanent
+    }
+}
+
+private fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
+private enum class PostFlowScreen {
+    ENTRY,
+    PHOTO_CAPTURE,
+    EDITOR,
+    CATEGORY,
+    PREVIEW,
+    PUBLISHING,
+    RESULT,
+}
+
+private enum class CameraPermissionState {
+    Unknown,
+    Granted,
+    DeniedTemporary,
+    DeniedPermanent,
+}
+
+private enum class PhotoStep(
+    val index: Int,
+    val role: DraftPhotoRole,
+    val title: String,
+    val hint: String,
+) {
+    FRONT(0, DraftPhotoRole.FRONT, "Лицевая сторона", "Снимите основной вид товара."),
+    DETAILS(1, DraftPhotoRole.DETAILS, "Детали/комплект", "Добавьте детали или комплект."),
+    DEFECTS(2, DraftPhotoRole.DEFECTS, "Дефекты/этикетка", "Покажите дефекты или этикетку."),
+    ;
+
+    fun next(): PhotoStep? = when (this) {
+        FRONT -> DETAILS
+        DETAILS -> DEFECTS
+        DEFECTS -> null
+    }
+}
+
+private enum class DraftSection {
+    DESCRIPTION,
+    CONDITION,
+    DELIVERY,
+    CONTACTS,
+    GEO,
+    IMPORT,
+}
+
+private data class PhotoSlotRef(
+    val role: DraftPhotoRole,
+    val index: Int,
+)
+
+private data class OptionalSuggestion(
+    val id: String,
+    val label: String,
+    val section: DraftSection,
+)

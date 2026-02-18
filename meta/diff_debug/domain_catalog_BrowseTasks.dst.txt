@@ -1,0 +1,45 @@
+package com.example.shoppingassistant.domain.catalog
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class BrowseTargetType {
+    CATEGORY,
+    SEARCH_PRESET,
+}
+
+@Serializable
+enum class BrowseNodeStatus {
+    ACTIVE,
+    HIDDEN,
+}
+
+@Serializable
+data class BrowseNode(
+    val browseCode: String,
+    val parentBrowseCode: String? = null,
+    val titleKey: String? = null,
+    val titleRu: String,
+    val targetCategoryCode: String? = null,
+    val targetType: BrowseTargetType? = null,
+    val order: Int = 0,
+    val status: BrowseNodeStatus = BrowseNodeStatus.ACTIVE,
+    val tags: List<String> = emptyList(),
+)
+
+interface BrowseNodeRepository {
+    suspend fun listBrowseNodes(): List<BrowseNode>
+    suspend fun getBrowseNode(browseCode: String): BrowseNode?
+}
+
+class GetBrowseNodesTask(
+    private val repository: BrowseNodeRepository,
+) {
+    suspend operator fun invoke(): List<BrowseNode> = repository.listBrowseNodes()
+}
+
+class GetBrowseNodeTask(
+    private val repository: BrowseNodeRepository,
+) {
+    suspend operator fun invoke(browseCode: String): BrowseNode? = repository.getBrowseNode(browseCode)
+}

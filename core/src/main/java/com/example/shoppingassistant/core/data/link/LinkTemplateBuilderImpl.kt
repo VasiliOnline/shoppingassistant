@@ -1,0 +1,162 @@
+package com.example.shoppingassistant.core.data.link
+
+import com.example.shoppingassistant.domain.ingest.IngestStatus
+import com.example.shoppingassistant.domain.ingest.LoadRawOfferTask
+import com.example.shoppingassistant.domain.ingest.SourceResolveResult
+import com.example.shoppingassistant.domain.ingest.SourceResolveStatus
+import com.example.shoppingassistant.domain.ingest.SourceResolver
+import com.example.shoppingassistant.domain.ingest.SourceRegistry
+import com.example.shoppingassistant.domain.ingest.SourceType
+import com.example.shoppingassistant.domain.ingest.UrlNormalizer
+import com.example.shoppingassistant.domain.offers.OfferCategory
+import com.example.shoppingassistant.domain.ugc.MirrorByUrlUseCase
+import java.net.URI
+
+/**
+ * Собирает LinkTemplateRaw из ingest (RawOffer) + UGC mirror.
+ * Логика гибкая: минимально заполняем поля, не кидаем исключения.
+ */
+class LinkTemplateBuilderImpl(
+    private val loadRawOffer: LoadRawOfferTask,
+    private val mirrorByUrl: MirrorByUrlUseCase,
+    private val sourceResolver: SourceResolver,
+    private val sourceRegistry: SourceRegistry,
+    private val urlNormalizer: UrlNormalizer,
+) : LinkTemplateBuilderTask {
+
+    override suspend fun build(source: SourceType, url: String): LinkTemplateRaw {
+        val normalized = urlNormalizer.normalize(url)
+        val ingest = runCatching { loadRawOffer(source, normalized.normalized) }.getOrNull()
+        val raw = ingest?.rawOffer
+        val mirror = runCatching { mirrorByUrl(normalized.normalized) }.getOrNull()
+
+        val attributes = linkedMapOf<String, String>()
+        raw?.attributesRaw?.forEach { (k, v) -> putIfUseful(attributes, k, v) }
+        mirror?.attributes?.forEach { (k, v) -> putIfUseful(attributes, k, v) }
+
+        val brand = firstValue(attributes, listOf("brand", "марка"))
+            ?: raw?.title?.split(" ")?.firstOrNull()
+        val model = firstValue(attributes, listOf("model", "модель"))
+        val title = mirror?.title ?: raw?.title ?: raw?.rawTitle
+        val price = mirror?.priceRaw?.toDoubleOrNull() ?: raw?.priceValue
+        val currency = mirror?.currency ?: raw?.priceCurrency
+        val images = (mirror?.imageUrls.orEmpty() + (raw?.images ?: emptyList()))
+            .filter { it.isNotBlank() }
+            .distinct()
+
+        val category = when {
+            raw?.categorySlug?.contains("electron", ignoreCase = true) == true -> OfferCategory.TECH
+            else -> OfferCategory.OTHER
+        }
+
+        val entry = sourceRegistry.findBySourceType(source)
+        val canonicalUrl = raw?.canonicalUrl?.let { urlNormalizer.normalize(it).normalized }
+        val listingId = raw?.listingId?.trim()?.ifBlank { null }
+        val domainName = normalized.host
+            ?: runCatching { URI(normalized.normalized).host }.getOrNull()
+        val meta = LinkSourceMeta(
+            sourceType = source,
+            sourceId = entry?.id,
+            url = normalized.normalized,
+            canonicalUrl = canonicalUrl,
+            listingId = listingId,
+            domainName = domainName?.removePrefix("www."),
+            sourceIconUrl = raw?.sourceIconUrl ?: entry?.iconUrl ?: deriveFaviconUrl(normalized.normalized),
+        )
+
+        return LinkTemplateRaw(
+            title = title,
+            brand = brand,
+            model = model,
+            category = category,
+            price = price,
+            currency = currency,
+            imageUrls = images,
+            attributes = attributes,
+            ingestStatus = ingest?.status ?: IngestStatus.NETWORK_ERROR,
+            ingestMessage = ingest?.message,
+            sourceMeta = meta,
+        )
+    }
+
+    override suspend fun build(url: String): LinkTemplateRaw {
+        val resolved = sourceResolver.resolve(url)
+        val normalizedUrl = resolved.normalizedUrl?.normalized ?: url.trim()
+        return when (resolved.status) {
+            SourceResolveStatus.RESOLVED -> build(resolved.sourceType, normalizedUrl)
+            SourceResolveStatus.INVALID_URL -> buildFailure(
+                resolved = resolved,
+                url = normalizedUrl,
+                status = IngestStatus.PARSE_ERROR,
+                message = "Некорректная ссылка",
+            )
+            SourceResolveStatus.DISABLED -> {
+                val disabledMessage = if (resolved.source?.capabilities?.requiresBrowser == true) {
+                    "Нужно открыть через браузер/расширение"
+                } else {
+                    "Источник временно отключен"
+                }
+                buildFailure(
+                    resolved = resolved,
+                    url = normalizedUrl,
+                    status = IngestStatus.UNSUPPORTED,
+                    message = disabledMessage,
+                )
+            }
+            SourceResolveStatus.UNSUPPORTED -> buildFailure(
+                resolved = resolved,
+                url = normalizedUrl,
+                status = IngestStatus.UNSUPPORTED,
+                message = "Источник не поддерживается",
+            )
+        }
+    }
+
+    private fun putIfUseful(map: MutableMap<String, String>, key: String?, value: String?) {
+        val k = key?.trim().orEmpty()
+        val v = value?.trim().orEmpty()
+        if (k.isNotBlank() && v.isNotBlank()) {
+            map[k] = v
+        }
+    }
+
+    private fun firstValue(attributes: Map<String, String>, keys: List<String>): String? =
+        attributes.entries.firstOrNull { (k, _) -> keys.any { key -> k.equals(key, ignoreCase = true) } }?.value
+
+    private fun deriveFaviconUrl(url: String): String? {
+        val host = runCatching { URI(url).host }.getOrNull() ?: return null
+        return "https://${host.removePrefix("www.")}/favicon.ico"
+    }
+
+    private fun buildFailure(
+        resolved: SourceResolveResult,
+        url: String,
+        status: IngestStatus,
+        message: String,
+    ): LinkTemplateRaw {
+        val entry = resolved.source
+        val host = resolved.normalizedUrl?.host
+        val meta = LinkSourceMeta(
+            sourceType = resolved.sourceType,
+            sourceId = resolved.sourceId,
+            url = url,
+            canonicalUrl = null,
+            listingId = null,
+            domainName = host,
+            sourceIconUrl = entry?.iconUrl ?: deriveFaviconUrl(url),
+        )
+        return LinkTemplateRaw(
+            title = null,
+            brand = null,
+            model = null,
+            category = OfferCategory.OTHER,
+            price = null,
+            currency = null,
+            imageUrls = emptyList(),
+            attributes = emptyMap(),
+            ingestStatus = status,
+            ingestMessage = message,
+            sourceMeta = meta,
+        )
+    }
+}

@@ -1,5 +1,11 @@
 package com.example.shoppingassistant.core.data
 
+import com.example.shoppingassistant.core.data.db.ProductEntity
+import com.example.shoppingassistant.core.data.Normalizer
+import com.example.shoppingassistant.domain.model.OfferSource
+import com.example.shoppingassistant.domain.model.ProductDto
+import java.net.URI
+
 data class ProductBrief(
     val id: String,
     val title: String,
@@ -9,3 +15,26 @@ data class ProductBrief(
     val sellerRating: Double?,
     val attributes: Map<String, String> = emptyMap()
 )
+
+private fun sourceNameFromUrl(url: String): String? =
+    runCatching { URI(url).host?.removePrefix("www.") }.getOrNull()
+
+fun ProductEntity.toDto(): ProductDto {
+    val priceMajor: Double? = this.priceCents?.let { it.toDouble() / 100.0 }
+    val days: Int? = this.deliveryDays
+    return ProductDto(
+        id = this.id.toString(),
+        title = this.title,
+        brand = this.brand,
+        brandId = this.brandKey?.takeIf { it.isNotBlank() } ?: this.brand?.let { Normalizer.key(it) }?.takeIf { it.isNotBlank() },
+        model = this.model,
+        price = priceMajor,
+        deliveryTime = days,
+        sellerRating = this.sellerRating,
+        sellerRatingCount = null,
+        source = OfferSource.EXTERNAL,
+        sourceName = sourceNameFromUrl(this.sourceUrl),
+        externalUrl = this.sourceUrl,
+        imageUrls = this.imageUrls ?: emptyList(),
+    )
+}

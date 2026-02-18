@@ -1,0 +1,592 @@
+package com.example.shoppingassistant.feature.pages.main.ui.offers
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.StarHalf
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.StarHalf
+import androidx.compose.material.icons.rounded.StarOutline
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.core.data.ExplainedItem
+import com.example.shoppingassistant.core.usecase.CreateOfferPriceAlertUseCase
+import com.example.shoppingassistant.core.usecase.OfferAlertResult
+import com.example.shoppingassistant.core.usecase.SearchOffersUseCase
+import com.example.shoppingassistant.domain.model.OfferSearchCriteria
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.get as koinGet
+import java.util.Locale
+import kotlin.math.roundToInt
+
+private enum class OffersLayoutMode { Horizontal, Vertical }
+private enum class OffersBadge { None, BestPrice, BestRating, Nearest }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OffersSheetTask(props: OffersSheetProps) {
+    val (visible, query, prefetchedItems, onDismiss) = props
+    if (!visible || query == null) return
+
+    val searchOffers: SearchOffersUseCase = koinGet(SearchOffersUseCase::class.java)
+    val createAlert: CreateOfferPriceAlertUseCase = koinGet(CreateOfferPriceAlertUseCase::class.java)
+    val scope = rememberCoroutineScope()
+    val criteria = remember(query) {
+        val locale = Locale.getDefault()
+        OfferSearchCriteria(
+            brand = query.brand,
+            model = query.model,
+            attributes = query.attributes,
+            limit = 20,
+            userCountry = locale.country.takeIf { it.isNotBlank() },
+            userLanguage = locale.language.takeIf { it.isNotBlank() },
+        )
+    }
+
+    var items by remember(query) { mutableStateOf<List<ExplainedItem>>(prefetchedItems) }
+    var isLoading by remember(query) { mutableStateOf(prefetchedItems.isEmpty()) }
+    var minimized by remember { mutableStateOf(false) }
+    var selectedItem by remember { mutableStateOf<ExplainedItem?>(null) }
+    var alertMessage by remember { mutableStateOf<String?>(null) }
+    var alertIsError by remember { mutableStateOf(false) }
+    val userCountryLabel = criteria.userCountry
+
+    LaunchedEffect(criteria, prefetchedItems) {
+        if (prefetchedItems.isNotEmpty()) {
+            items = prefetchedItems
+            isLoading = false
+            return@LaunchedEffect
+        }
+        isLoading = true
+        items = runCatching { searchOffers(criteria) }.getOrElse { emptyList() }
+        isLoading = false
+    }
+
+    LaunchedEffect(selectedItem?.dto?.id) {
+        alertMessage = null
+        alertIsError = false
+    }
+
+    var layoutMode by remember { mutableStateOf(OffersLayoutMode.Horizontal) }
+    var badge by remember { mutableStateOf(OffersBadge.None) }
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val displayedItems = remember(items, badge) {
+        when (badge) {
+            OffersBadge.None -> items
+            OffersBadge.BestPrice -> items.sortedWith(
+                compareBy<ExplainedItem> { it.dto.price == null }.thenBy { it.dto.price }
+            )
+            OffersBadge.BestRating -> items.sortedWith(
+                compareByDescending<ExplainedItem> { it.dto.sellerRating ?: 0.0 }
+            )
+            OffersBadge.Nearest -> items.sortedWith(
+                compareBy<ExplainedItem> { it.dto.deliveryTime == null }
+                    .thenBy { it.dto.deliveryTime ?: Int.MAX_VALUE }
+            )
+        }
+    }
+
+    if (visible && !minimized) {
+        ModalBottomSheet(
+            onDismissRequest = { minimized = true },
+            sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+            ) {
+                HeaderRow(onDismiss)
+                Spacer(Modifier.height(8.dp))
+                HorizontalDivider()
+                Spacer(Modifier.height(8.dp))
+                BadgeMenu(
+                    active = badge,
+                    onSelect = { badge = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                )
+                LayoutToggle(layoutMode) { layoutMode = it }
+
+                when {
+                    isLoading -> OffersSkeleton(layout = layoutMode)
+                    displayedItems.isEmpty() -> {
+                        Text(
+                            text = "Подходящих предложений не найдено.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(vertical = 24.dp),
+                        )
+                    }
+
+                    else -> {
+                        when (layoutMode) {
+                            OffersLayoutMode.Horizontal -> {
+                                OffersHorizontalList(
+                                    items = displayedItems,
+                                    userCountry = userCountryLabel,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onSelect = { selectedItem = it },
+                                )
+                            }
+
+                            OffersLayoutMode.Vertical -> {
+                                OffersVerticalList(
+                                    items = displayedItems,
+                                    userCountry = userCountryLabel,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onSelect = { selectedItem = it },
+                                )
+                            }
+                        }
+                    }
+                }
+
+                selectedItem?.let { item ->
+                    Spacer(Modifier.height(12.dp))
+                    OfferDetailsPanel(
+                        item = item,
+                        onClose = { selectedItem = null },
+                        alertMessage = alertMessage,
+                        alertIsError = alertIsError,
+                        onAlertRequest = { percent ->
+                            scope.launch {
+                                when (val result = createAlert(item.dto.id, percent)) {
+                                    OfferAlertResult.Success -> {
+                                        alertMessage = "Подписка оформлена"
+                                        alertIsError = false
+                                    }
+
+                                    OfferAlertResult.Unauthorized -> {
+                                        alertMessage = "Нужна авторизация, чтобы оформить подписку"
+                                        alertIsError = true
+                                    }
+
+                                    is OfferAlertResult.Error -> {
+                                        alertMessage = "Не удалось оформить подписку: ${result.reason}"
+                                        alertIsError = true
+                                    }
+                                }
+                            }
+                        },
+                    )
+                }
+
+                Spacer(Modifier.height(12.dp))
+            }
+        }
+    }
+
+    if (visible && minimized) {
+        CollapsedTab(onRestore = { minimized = false }, onClose = onDismiss)
+    }
+}
+
+@Composable
+private fun OffersVerticalList(
+    items: List<ExplainedItem>,
+    userCountry: String?,
+    modifier: Modifier = Modifier,
+    onSelect: (ExplainedItem) -> Unit,
+) {
+    LazyColumn(
+        modifier = modifier.padding(vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+    ) {
+        itemsIndexed(items = items, key = { _, it -> it.dto.id }) { _, item ->
+            OfferCardVertical(item = item, userCountry = userCountry, onClick = { onSelect(item) })
+        }
+    }
+}
+
+@Composable
+private fun OfferCardVertical(
+    item: ExplainedItem,
+    userCountry: String?,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+) {
+    val dto = item.dto
+    val contentSpacing = 8.dp
+    val cardMinHeight = 360.dp
+    val gradient = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.16f),
+            MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
+        )
+    )
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = cardMinHeight)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    ) {
+        Column(
+            modifier = Modifier
+                .background(gradient)
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(contentSpacing),
+        ) {
+            SliderStub(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(220.dp),
+            )
+            Text(
+                text = dto.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(contentSpacing),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                ProfileRow(
+                    name = dto.brand ?: dto.model ?: "Продавец",
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.CenterEnd,
+                ) {
+                    PriceRow(
+                        price = dto.price,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        emphasize = true,
+                    )
+                }
+            }
+            LocationRow(
+                country = dto.sellerCountry,
+                city = dto.sellerCity,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            DeliveryRow(
+                deliveryAvailable = dto.deliveryTime != null,
+                userCountry = userCountry,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            StarsRatingRow(
+                rating = dto.sellerRating,
+                reviews = null,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            SellerBadgesRow(
+                sellerBadges = dto.sellerBadges,
+                shippingCountries = dto.sellerShippingCountries,
+                userCountry = userCountry,
+            )
+            OfferTabs(item = item)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "ID: ${dto.id}",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(Modifier.width(6.dp))
+                Icon(
+                    imageVector = Icons.Outlined.ArrowOutward,
+                    contentDescription = "Открыть детали",
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun OffersHorizontalList(
+    items: List<ExplainedItem>,
+    userCountry: String?,
+    modifier: Modifier = Modifier,
+    onSelect: (ExplainedItem) -> Unit,
+) {
+    LazyRow(
+        modifier = modifier.padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+    ) {
+        items(items = items, key = { it.dto.id }) { item ->
+            OfferCardHorizontal(item = item, userCountry = userCountry, onClick = { onSelect(item) })
+        }
+    }
+}
+
+@Composable
+private fun OfferCardHorizontal(
+    item: ExplainedItem,
+    userCountry: String?,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+) {
+    val dto = item.dto
+    val gradient = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.16f),
+            MaterialTheme.colorScheme.secondary.copy(alpha = 0.12f),
+        )
+    )
+
+    Card(
+        modifier = modifier
+            .width(260.dp)
+            .heightIn(min = 300.dp)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    ) {
+        BoxWithConstraints(
+            modifier = Modifier
+                .background(gradient)
+                .padding(12.dp),
+        ) {
+            val sliderHeight =
+                if (maxHeight.value.isFinite()) maxHeight * 0.5f else 300.dp * 0.5f
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                SliderStub(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(sliderHeight),
+                )
+
+                Text(
+                    text = dto.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 2,
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    ProfileRow(
+                        name = dto.brand ?: dto.model ?: "Продавец",
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Box(
+                        modifier = Modifier.weight(1f),
+                        contentAlignment = Alignment.CenterEnd,
+                    ) {
+                        PriceRow(
+                            price = dto.price,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                            emphasize = true,
+                        )
+                    }
+                }
+
+                DeliveryRow(
+                    deliveryAvailable = dto.deliveryTime != null,
+                    userCountry = userCountry,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                LocationRow(
+                    country = dto.sellerCountry,
+                    city = dto.sellerCity,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                StarsRatingRow(
+                    rating = dto.sellerRating,
+                    reviews = null,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                SellerBadgesRow(
+                    sellerBadges = dto.sellerBadges,
+                    shippingCountries = dto.sellerShippingCountries,
+                    userCountry = userCountry,
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "ID: ${dto.id}",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Icon(
+                        imageVector = Icons.Outlined.ArrowOutward,
+                        contentDescription = "Открыть детали",
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LayoutToggle(
+    layoutMode: OffersLayoutMode,
+    onChange: (OffersLayoutMode) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FilterChip(
+            selected = layoutMode == OffersLayoutMode.Horizontal,
+            onClick = { onChange(OffersLayoutMode.Horizontal) },
+            label = {
+                Icon(
+                    imageVector = Icons.Outlined.ViewWeek,
+                    contentDescription = "Горизонтальные карточки",
+                )
+            },
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme
+                    .primary.copy(alpha = 0.18f),
+            ),
+        )
+        Spacer(Modifier.width(8.dp))
+        FilterChip(
+            selected = layoutMode == OffersLayoutMode.Vertical,
+            onClick = { onChange(OffersLayoutMode.Vertical) },
+            label = {
+                Icon(
+                    imageVector = Icons.Outlined.ViewStream,
+                    contentDescription = "Вертикальные карточки",
+                )
+            },
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme
+                    .primary.copy(alpha = 0.18f),
+            ),
+        )
+    }
+}
+
+@Composable
+private fun OffersSkeleton(
+    layout: OffersLayoutMode,
+    modifier: Modifier = Modifier,
+) {
+    val shape = RoundedCornerShape(20.dp)
+    val baseColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+
+    when (layout) {
+        OffersLayoutMode.Horizontal -> {
+            LazyRow(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(horizontal = 4.dp),
+            ) {
+                items(3) {
+                    Box(
+                        modifier = Modifier
+                            .width(260.dp)
+                            .height(150.dp)
+                            .clip(shape)
+                            .background(baseColor),
+                    )
+                }
+            }
+        }
+
+        OffersLayoutMode.Vertical -> {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                repeat(3) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .clip(shape)
+                            .background(baseColor),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeaderRow(onDismiss: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Close,
+            contentDescription = "Закрыть",
+            modifier = Modifier
+                .clickable { onDismiss() }
+                .padding(4.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.weight(1f),
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 6.dp)
+                    .width(40.dp)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f))
+            )
+            Text(
+                text = "Предложения",
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+        TextButton(onClick = onDismiss) {
+            Text(text = "Свернуть")
+        }
+    }
+}

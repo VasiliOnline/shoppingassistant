@@ -1,0 +1,39 @@
+package com.example.shoppingassistant.core.data.tracks
+
+import com.example.shoppingassistant.domain.tracks.Track
+import com.example.shoppingassistant.domain.tracks.TrackEventsPage
+import com.example.shoppingassistant.domain.tracks.TrackFilters
+import com.example.shoppingassistant.domain.tracks.TrackTop10
+import com.example.shoppingassistant.domain.tracks.TrackTarget
+import com.example.shoppingassistant.domain.tracks.TrackType
+import kotlinx.serialization.Serializable
+
+interface TracksRemoteDataSource {
+    suspend fun listTracks(): List<Track>
+    suspend fun getTrack(trackId: String): Track?
+    suspend fun createTrack(request: TrackCreateRequest): Track
+    suspend fun updateTrack(trackId: String, request: TrackUpdateRequest): Track?
+    suspend fun pauseTrack(trackId: String): Track?
+    suspend fun resumeTrack(trackId: String): Track?
+    suspend fun deleteTrack(trackId: String): Boolean
+    suspend fun getTop10(trackId: String, forceRefresh: Boolean = false, preferCache: Boolean = true): TrackTop10
+    suspend fun refreshTop10(trackId: String): TrackTop10
+    suspend fun listEvents(trackId: String, limit: Int, offset: Int): TrackEventsPage
+    suspend fun markEventRead(eventId: String): Boolean
+    suspend fun markAllEventsRead(trackId: String): Int
+}
+
+@Serializable
+data class TrackCreateRequest(
+    val type: TrackType,
+    val target: TrackTarget,
+    val filters: TrackFilters = TrackFilters(),
+    val title: String? = null,
+)
+
+@Serializable
+data class TrackUpdateRequest(
+    val title: String? = null,
+    val filters: TrackFilters? = null,
+    val isActive: Boolean? = null,
+)

@@ -1,0 +1,14 @@
+package com.example.shoppingassistant.feature.pages.offers.ui
+
+import com.example.shoppingassistant.core.data.ExplainedItem
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+
+/**
+ * Контракт UI-таски нижнего листа офферов.
+ */
+data class OffersSheetProps(
+    val visible: Boolean,
+    val query: NormalizedQuery?,
+    val prefetchedItems: List<ExplainedItem> = emptyList(),
+    val onDismiss: () -> Unit,
+)

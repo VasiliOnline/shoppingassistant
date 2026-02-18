@@ -1,0 +1,1306 @@
+package com.example.shoppingassistant.feature.pages.profile.tasks
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.domain.model.AuthError
+import com.example.shoppingassistant.domain.model.AuthResult
+import com.example.shoppingassistant.feature.R
+import com.example.shoppingassistant.feature.pages.profile.ProfileState
+import com.example.shoppingassistant.feature.ui.animations.ModalContainerTask
+import com.example.shoppingassistant.feature.ui.animations.ShakeAnimationTask
+import com.example.shoppingassistant.feature.ui.animations.SuccessAnimationTask
+import com.example.shoppingassistant.feature.ui.animations.rememberModalContainerTask
+import com.example.shoppingassistant.feature.ui.animations.rememberShakeAnimationTask
+import com.example.shoppingassistant.feature.ui.animations.rememberSuccessAnimationTask
+import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+/**
+ * Страница «Личные данные» для профиля. Этот экран заменяет модальное
+ * окно: он занимает весь экран, но использует те же стили и компоненты,
+ * что и окно профиля. В секциях email, пароля и телефона реализована
+ * логика редактирования с отправкой кода и сохранением данных.
+ *
+ * @param profile Текущее состояние авторизованного профиля. Берутся email и телефон.
+ * @param onBackClick Вызывается при нажатии на стрелку «Назад».
+ * @param onPhoneChanged Вызывается при подтверждении нового номера телефона.
+ * @param onPasswordChanged Вызывается при успешной смене пароля.
+ * @param onRequestDelete Вызывается при нажатии на кнопку «Удалить аккаунт».
+ */
+@Composable
+fun ProfilePersonalDataPage(
+    profile: ProfileState.Authorized,
+    onBackClick: () -> Unit,
+    onPhoneChanged: suspend (String) -> Unit = {},
+    onPasswordChanged: suspend (String, String) -> AuthResult = { _, _ ->
+        AuthResult.Error(AuthError.UNKNOWN)
+    },
+    onRequestDelete: suspend () -> Boolean = { false },
+    onRequestEmailChange: suspend (String) -> Unit = {},
+    onConfirmEmailChange: suspend (String) -> AuthResult = {
+        AuthResult.Error(AuthError.UNKNOWN)
+    },
+) {
+    // Локальные данные текущего пользователя
+    var currentEmail by remember(profile.id) { mutableStateOf(profile.email) }
+    var phoneValue by remember(profile.id) { mutableStateOf(profile.phone.orEmpty()) }
+
+    // Состояния для отображения диалогов
+    var showEmailDialog by remember { mutableStateOf(false) }
+    var showPasswordDialog by remember { mutableStateOf(false) }
+    var showEditPhoneDialog by remember { mutableStateOf(false) }
+    var showAddPhoneDialog by remember { mutableStateOf(false) }
+    var deleteError by remember { mutableStateOf<String?>(null) }
+    val pageScope = rememberCoroutineScope()
+    val modalTask = rememberModalContainerTask()
+    val successAnimationTask = rememberSuccessAnimationTask()
+    val shakeAnimationTask = rememberShakeAnimationTask()
+    val backLabel = stringResource(R.string.profile_back)
+    val titleLabel = stringResource(R.string.profile_personal_title)
+    val emailLabel = stringResource(R.string.profile_personal_email_label)
+    val passwordLabel = stringResource(R.string.profile_personal_password_label)
+    val phoneLabel = stringResource(R.string.profile_personal_phone_label)
+    val notSetLabel = stringResource(R.string.profile_personal_not_set)
+    val changeLabel = stringResource(R.string.profile_personal_change)
+    val addPhoneLabel = stringResource(R.string.profile_personal_add_phone)
+    val changePhoneLabel = stringResource(R.string.profile_personal_change_phone)
+    val deleteAccountLabel = stringResource(R.string.profile_personal_delete_account)
+    val deleteFailedLabel = stringResource(R.string.profile_personal_delete_failed)
+
+    /**
+     * Вспомогательная функция для маскировки номера телефона. Возвращает строку,
+     * содержащую несколько звёздочек и четыре последние цифры номера. Если
+     * номер пустой, возвращает "Не указан".
+     */
+    fun maskPhone(number: String): String {
+        val digits = number.filter { it.isDigit() }
+        return if (digits.isNotEmpty()) {
+            val last4 = digits.takeLast(4)
+            "*******$last4"
+        } else {
+            notSetLabel
+        }
+    }
+
+    val scrollState = rememberScrollState()
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(scrollState)
+                .padding(
+                    horizontal = LayoutDefaults.HorizontalPadding,
+                    vertical = LayoutDefaults.SectionSpacing,
+                ),
+            verticalArrangement = Arrangement.spacedBy(LayoutDefaults.LargeSectionSpacing),
+        ) {
+            // Заголовок и кнопка Назад
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                    contentDescription = backLabel,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = titleLabel,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+
+            // Карточка с данными
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                color = MaterialTheme.colorScheme.surface,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = LayoutDefaults.CardInnerPadding,
+                            vertical = LayoutDefaults.LargeSectionSpacing,
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(LayoutDefaults.LargeSectionSpacing),
+                ) {
+                    /** Email section **/
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = emailLabel,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        // отображаем текущее значение и кнопку «Изменить»
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            // Текущий email с мягким фоном
+                            Surface(
+                                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                                shape = RoundedCornerShape(8.dp),
+                            ) {
+                                Text(
+                                    text = currentEmail.ifBlank { notSetLabel },
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                )
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                            TextButton(
+                                onClick = { showEmailDialog = true },
+                                colors = ButtonDefaults.textButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                                    contentColor = MaterialTheme.colorScheme.primary,
+                                ),
+                                shape = RoundedCornerShape(50),
+                                contentPadding = ButtonDefaults.ContentPadding,
+                            ) {
+                                Text(changeLabel)
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+
+                    /** Password section **/
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = passwordLabel,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            // отображаем звездочки, используя более красивые символы
+                            TextField(
+                                value = "••••••••",
+                                onValueChange = {},
+                                singleLine = true,
+                                enabled = false,
+                                visualTransformation = PasswordVisualTransformation('•'),
+                                colors = TextFieldDefaults.colors(
+                                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                                        alpha = 0.25f
+                                    ),
+                                    disabledIndicatorColor = Color.Transparent,
+                                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                        alpha = 0.6f
+                                    ),
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier.weight(1f),
+                            )
+                            TextButton(
+                                onClick = { showPasswordDialog = true },
+                                colors = ButtonDefaults.textButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                                    contentColor = MaterialTheme.colorScheme.primary,
+                                ),
+                                shape = RoundedCornerShape(50),
+                                contentPadding = ButtonDefaults.ContentPadding,
+                            ) {
+                                Text(changeLabel)
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+
+                    /** Phone section **/
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Text(
+                            text = phoneLabel,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            Text(
+                                text = maskPhone(phoneValue),
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            TextButton(
+                                onClick = {
+                                    if (phoneValue.isBlank()) {
+                                        showAddPhoneDialog = true
+                                    } else {
+                                        showEditPhoneDialog = true
+                                    }
+                                },
+                                colors = ButtonDefaults.textButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                                    contentColor = MaterialTheme.colorScheme.primary,
+                                ),
+                                shape = RoundedCornerShape(50),
+                                contentPadding = ButtonDefaults.ContentPadding,
+                            ) {
+                                Text(if (phoneValue.isBlank()) addPhoneLabel else changePhoneLabel)
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+
+                    // Кнопка удаления аккаунта
+                    Button(
+                        onClick = {
+                            pageScope.launch {
+                                deleteError = null
+                                runCatching { onRequestDelete() }
+                                    .onSuccess { success ->
+                                        if (success) {
+                                            onBackClick()
+                                        } else {
+                                            deleteError = deleteFailedLabel
+                                        }
+                                    }
+                                    .onFailure { throwable ->
+                                        deleteError = throwable.message ?: deleteFailedLabel
+                                    }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.15f),
+                            contentColor = MaterialTheme.colorScheme.error,
+                        ),
+                        shape = RoundedCornerShape(14.dp),
+                    ) {
+                        Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(deleteAccountLabel)
+                    }
+                    if (deleteError != null) {
+                        Text(
+                            text = deleteError!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
+            }
+        }
+
+        val handlePhoneChange: suspend (String) -> Unit = { newPhone ->
+            onPhoneChanged(newPhone)
+            phoneValue = newPhone
+        }
+
+        val handlePasswordChange: suspend (String, String) -> AuthResult = { oldPass, newPass ->
+            onPasswordChanged(oldPass, newPass)
+        }
+
+        val handleRequestEmailChange: suspend (String) -> Unit = { email ->
+            onRequestEmailChange(email)
+        }
+
+        val handleConfirmEmailChange: suspend (String) -> AuthResult = { token ->
+            onConfirmEmailChange(token)
+        }
+
+        EmailChangeDialog(
+            visible = showEmailDialog,
+            onDismiss = { showEmailDialog = false },
+            currentEmail = currentEmail,
+            onEmailSaved = { newEmail ->
+                currentEmail = newEmail
+                showEmailDialog = false
+            },
+            onRequestEmailChange = handleRequestEmailChange,
+            onConfirmEmailChange = handleConfirmEmailChange,
+            modal = modalTask,
+            successAnimation = successAnimationTask,
+            shakeAnimation = shakeAnimationTask,
+        )
+
+        PasswordChangeDialog(
+            visible = showPasswordDialog,
+            onDismiss = { showPasswordDialog = false },
+            onPasswordChanged = handlePasswordChange,
+            modal = modalTask,
+            successAnimation = successAnimationTask,
+            shakeAnimation = shakeAnimationTask,
+        )
+
+        EditPhoneDialog(
+            visible = showEditPhoneDialog,
+            initialPhone = phoneValue,
+            onDismiss = { showEditPhoneDialog = false },
+            onPhoneChanged = handlePhoneChange,
+            modal = modalTask,
+            successAnimation = successAnimationTask,
+            shakeAnimation = shakeAnimationTask,
+        )
+
+        AddPhoneDialog(
+            visible = showAddPhoneDialog,
+            onDismiss = { showAddPhoneDialog = false },
+            onPhoneAdded = handlePhoneChange,
+            modal = modalTask,
+            successAnimation = successAnimationTask,
+            shakeAnimation = shakeAnimationTask,
+        )
+    }
+}
+
+/**
+ * Диалог для изменения email. Позволяет ввести новый адрес, отправить код подтверждения
+ * и сохранить изменения. После успешного сохранения показывается сообщение об успехе.
+ *
+ * @param currentEmail Текущее значение email, отображается для информации
+ * @param onDismiss Вызывается при закрытии диалога
+ * @param onEmailSaved Вызывается после успешного сохранения нового email
+ */
+@Composable
+private fun EmailChangeDialog(
+    visible: Boolean,
+    currentEmail: String,
+    onDismiss: () -> Unit,
+    onEmailSaved: (String) -> Unit,
+    onRequestEmailChange: suspend (String) -> Unit,
+    onConfirmEmailChange: suspend (String) -> AuthResult,
+    modal: ModalContainerTask,
+    successAnimation: SuccessAnimationTask,
+    shakeAnimation: ShakeAnimationTask,
+) {
+    var emailInput by remember { mutableStateOf("") }
+    var codeRequested by remember { mutableStateOf(false) }
+    var codeInput by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var success by remember { mutableStateOf(false) }
+    var isProcessing by remember { mutableStateOf(false) }
+    var shakeKey by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+
+    val titleText = if (success) {
+        stringResource(R.string.profile_email_change_success_title)
+    } else {
+        stringResource(R.string.profile_email_change_title)
+    }
+
+    val emailSuccessSubtitle = stringResource(R.string.profile_email_change_success_subtitle)
+    val subtitleRequest = stringResource(R.string.profile_email_change_subtitle_request)
+    val subtitleConfirm = stringResource(R.string.profile_email_change_subtitle_confirm)
+
+    val notSetLabel = stringResource(R.string.profile_personal_not_set)
+    val currentEmailText = stringResource(
+        R.string.profile_email_change_current,
+        currentEmail.ifBlank { notSetLabel },
+    )
+
+    val newEmailPlaceholder = stringResource(R.string.profile_email_change_placeholder)
+    val invalidEmailText = stringResource(R.string.profile_email_change_invalid)
+
+    val sendCodeLabel = stringResource(R.string.profile_email_change_send)
+    val sendingLabel = stringResource(R.string.profile_email_change_sending)
+
+    val codePrompt = stringResource(R.string.profile_email_change_code_prompt)
+    val codePlaceholder = stringResource(R.string.profile_email_change_code_placeholder)
+    val codeInvalidText = stringResource(R.string.profile_email_change_code_invalid)
+
+    val saveLabel = stringResource(R.string.profile_email_change_save)
+    val savingLabel = stringResource(R.string.profile_email_change_saving)
+
+    val confirmFailedText = stringResource(R.string.profile_email_change_failed)
+    val emailExistsText = stringResource(R.string.profile_email_change_email_exists)
+    val invalidCodeText = stringResource(R.string.profile_email_change_code_invalid_auth)
+    val sendFailedText = stringResource(R.string.profile_email_change_send_failed)
+
+    val cancelLabel = stringResource(R.string.profile_reset_cancel)
+
+
+    fun confirmErrorMessage(error: AuthError): String =
+        when (error) {
+            AuthError.EMAIL_ALREADY_EXISTS -> emailExistsText
+            AuthError.INVALID_CREDENTIALS -> invalidCodeText
+            AuthError.UNKNOWN -> confirmFailedText
+        }
+
+
+    LaunchedEffect(visible) {
+        if (!visible) {
+            emailInput = ""
+            codeRequested = false
+            codeInput = ""
+            errorMessage = null
+            success = false
+            isProcessing = false
+            shakeKey = 0
+        }
+    }
+
+    LaunchedEffect(success) {
+        if (success) {
+            delay(2200)
+            onDismiss()
+        }
+    }
+
+    modal.Render(
+        visible = visible,
+        title = titleText,
+        subtitle = when {
+            success -> emailSuccessSubtitle
+            !codeRequested -> subtitleRequest
+            else -> subtitleConfirm
+        },
+        icon = {
+            if (success) {
+                successAnimation.Render(modifier = Modifier.size(92.dp))
+            } else {
+                Icon(
+                    imageVector = Icons.Outlined.Email,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(48.dp),
+                )
+            }
+        },
+        onDismiss = onDismiss,
+    ) {
+        if (!success) {
+            if (!codeRequested) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = with(shakeAnimation) { Modifier.shake(shakeKey) },
+                ) {
+                    Text(
+                        text = currentEmailText,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    TextField(
+                        value = emailInput,
+                        onValueChange = {
+                            emailInput = it
+                            errorMessage = null
+                        },
+                        singleLine = true,
+                        placeholder = { Text(newEmailPlaceholder) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = errorMessage != null,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            errorIndicatorColor = MaterialTheme.colorScheme.error,
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                    )
+                    if (errorMessage != null) {
+                        Text(
+                            text = errorMessage!!,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        Button(
+                            onClick = {
+                                if (!emailInput.contains("@") || !emailInput.contains(".")) {
+                                    errorMessage = invalidEmailText
+                                    shakeKey++
+                                    return@Button
+                                }
+                                scope.launch {
+                                    isProcessing = true
+                                    runCatching {
+                                        onRequestEmailChange(emailInput.trim())
+                                    }.onSuccess {
+                                        codeRequested = true
+                                    }.onFailure { throwable ->
+                                        errorMessage = throwable.message ?: sendFailedText
+                                        shakeKey++
+                                    }
+                                    isProcessing = false
+                                }
+                            },
+                            enabled = emailInput.isNotBlank() && !isProcessing,
+                            shape = RoundedCornerShape(12.dp),
+                        ) {
+                            Text(if (isProcessing) sendingLabel else sendCodeLabel)
+                        }
+                    }
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = with(shakeAnimation) { Modifier.shake(shakeKey) },
+                ) {
+                    Text(
+                        text = codePrompt,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    TextField(
+                        value = codeInput,
+                        onValueChange = {
+                            if (it.length <= 6 && it.all { ch -> ch.isDigit() }) {
+                                codeInput = it
+                                errorMessage = null
+                            }
+                        },
+                        singleLine = true,
+                        placeholder = { Text(codePlaceholder) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = errorMessage != null,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            errorIndicatorColor = MaterialTheme.colorScheme.error,
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                    )
+                    if (errorMessage != null) {
+                        Text(
+                            text = errorMessage!!,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Button(
+                            onClick = {
+                                if (codeInput.length != 6) {
+                                    errorMessage = codeInvalidText
+                                    shakeKey++
+                                    return@Button
+                                }
+                                scope.launch {
+                                    isProcessing = true
+                                    runCatching {
+                                        onConfirmEmailChange(codeInput.trim())
+                                    }.onSuccess { result ->
+                                        when (result) {
+                                            is AuthResult.Success -> {
+                                                onEmailSaved(emailInput.trim())
+                                                success = true
+                                            }
+                                            is AuthResult.Error -> {
+                                                errorMessage = confirmErrorMessage(result.error)
+                                                shakeKey++
+                                            }
+                                        }
+                                    }.onFailure {
+                                        errorMessage = confirmFailedText
+                                        shakeKey++
+                                    }
+                                    isProcessing = false
+                                }
+                            },
+                            enabled = codeInput.length == 6 && !isProcessing,
+                            shape = RoundedCornerShape(12.dp),
+                        ) {
+                            Text(if (isProcessing) savingLabel else saveLabel)
+                        }
+                        OutlinedButton(
+                            onClick = onDismiss,
+                            shape = RoundedCornerShape(12.dp),
+                        ) {
+                            Text(cancelLabel)
+                        }
+                    }
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                successAnimation.Render(modifier = Modifier.size(96.dp))
+                Text(
+                    text = stringResource(R.string.profile_email_change_success_title),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Диалог для смены пароля. Позволяет ввести текущий и новый пароль, выполнить
+ * базовую валидацию и сохранить изменения. После успешного сохранения
+ * отображается сообщение об успехе.
+ *
+ * @param onDismiss Закрытие диалога без сохранения
+ * @param onPasswordChanged Вызывается при подтверждении нового пароля
+ */
+
+@Composable
+private fun PasswordChangeDialog(
+    visible: Boolean,
+    onDismiss: () -> Unit,
+    onPasswordChanged: suspend (String, String) -> AuthResult,
+    modal: ModalContainerTask,
+    successAnimation: SuccessAnimationTask,
+    shakeAnimation: ShakeAnimationTask,
+) {
+    var currentPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+    var currentError by remember { mutableStateOf<String?>(null) }
+    var newError by remember { mutableStateOf<String?>(null) }
+    var success by remember { mutableStateOf(false) }
+    var actionError by remember { mutableStateOf<String?>(null) }
+    var isProcessing by remember { mutableStateOf(false) }
+    var shakeKey by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    val titleText = if (success) {
+        stringResource(R.string.profile_password_change_success_title)
+    } else {
+        stringResource(R.string.profile_password_change_title)
+    }
+    val subtitleText = if (success) {
+        stringResource(R.string.profile_password_change_subtitle)
+    } else {
+        null
+    }
+    val currentPlaceholder = stringResource(R.string.profile_password_current_placeholder)
+    val newPlaceholder = stringResource(R.string.profile_password_new_placeholder)
+    val currentRequiredText = stringResource(R.string.profile_password_current_required)
+    val newMinText = stringResource(R.string.profile_password_new_min)
+    val invalidCurrentText = stringResource(R.string.profile_password_invalid_current)
+    val changeFailedText = stringResource(R.string.profile_password_change_failed)
+    val saveLabel = stringResource(R.string.profile_password_save)
+    val savingLabel = stringResource(R.string.profile_password_saving)
+    val cancelLabel = stringResource(R.string.profile_password_cancel)
+    fun passwordErrorMessage(error: AuthError): String =
+        when (error) {
+            AuthError.INVALID_CREDENTIALS -> invalidCurrentText
+            AuthError.EMAIL_ALREADY_EXISTS -> changeFailedText
+            AuthError.UNKNOWN -> changeFailedText
+        }
+
+    LaunchedEffect(visible) {
+        if (!visible) {
+            currentPassword = ""
+            newPassword = ""
+            currentError = null
+            newError = null
+            actionError = null
+            success = false
+            isProcessing = false
+            shakeKey = 0
+        }
+    }
+
+    LaunchedEffect(success) {
+        if (success) {
+            delay(2200)
+            onDismiss()
+        }
+    }
+
+    modal.Render(
+        visible = visible,
+        title = titleText,
+        subtitle = subtitleText,
+        icon = {
+            if (success) {
+                successAnimation.Render(modifier = Modifier.size(92.dp))
+            } else {
+                Icon(
+                    imageVector = Icons.Outlined.Lock,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(48.dp),
+                )
+            }
+        },
+        onDismiss = onDismiss,
+    ) {
+        if (!success) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = with(shakeAnimation) { Modifier.shake(shakeKey) },
+            ) {
+                TextField(
+                    value = currentPassword,
+                    onValueChange = {
+                        currentPassword = it
+                        currentError = null
+                    },
+                    singleLine = true,
+                    placeholder = { Text(currentPlaceholder) },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = currentError != null,
+                    visualTransformation = PasswordVisualTransformation('•'),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = MaterialTheme.colorScheme.error,
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                )
+                if (currentError != null) {
+                    Text(
+                        text = currentError!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                TextField(
+                    value = newPassword,
+                    onValueChange = {
+                        newPassword = it
+                        newError = null
+                    },
+                    singleLine = true,
+                    placeholder = { Text(newPlaceholder) },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = newError != null,
+                    visualTransformation = PasswordVisualTransformation('•'),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = MaterialTheme.colorScheme.error,
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                )
+                if (newError != null) {
+                    Text(
+                        text = newError!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Button(
+                        onClick = {
+                            if (isProcessing) return@Button
+                            if (currentPassword.isBlank()) {
+                                currentError = currentRequiredText
+                                shakeKey++
+                                return@Button
+                            }
+                            if (newPassword.length < 8) {
+                                newError = newMinText
+                                shakeKey++
+                                return@Button
+                            }
+                            scope.launch {
+                                isProcessing = true
+                                actionError = null
+                                runCatching {
+                                    onPasswordChanged(
+                                        currentPassword.trim(),
+                                        newPassword.trim(),
+                                    )
+                                }.onSuccess { result ->
+                                    when (result) {
+                                        is AuthResult.Success -> success = true
+                                        is AuthResult.Error -> {
+                                            actionError = passwordErrorMessage(result.error)
+                                            shakeKey++
+                                        }
+                                    }
+                                }.onFailure {
+                                    actionError = changeFailedText
+                                    shakeKey++
+                                }
+                                isProcessing = false
+                            }
+                        },
+                        enabled = currentPassword.isNotBlank() && newPassword.length >= 8,
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(if (isProcessing) savingLabel else saveLabel)
+                    }
+                    OutlinedButton(
+                        onClick = onDismiss,
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(cancelLabel)
+                    }
+                }
+                if (actionError != null) {
+                    Text(
+                        text = actionError!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                successAnimation.Render(modifier = Modifier.size(96.dp))
+            }
+        }
+    }
+}
+
+/**
+ * Диалог для редактирования существующего номера телефона. Пользователь вводит новый
+ * номер, запрашивает код подтверждения и сохраняет изменения. После
+ * сохранения отображается сообщение об успехе.
+ *
+ * @param initialPhone Текущее значение номера телефона
+ * @param onDismiss Закрытие диалога
+ * @param onPhoneChanged Вызывается после подтверждения нового номера
+ */
+@Composable
+private fun EditPhoneDialog(
+    visible: Boolean,
+    initialPhone: String,
+    onDismiss: () -> Unit,
+    onPhoneChanged: suspend (String) -> Unit,
+    modal: ModalContainerTask,
+    successAnimation: SuccessAnimationTask,
+    shakeAnimation: ShakeAnimationTask,
+) {
+    var phoneInput by remember { mutableStateOf(initialPhone) }
+    var codeRequested by remember { mutableStateOf(false) }
+    var codeInput by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var success by remember { mutableStateOf(false) }
+    var isProcessing by remember { mutableStateOf(false) }
+    var shakeKey by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    val titleText = if (success) {
+        stringResource(R.string.profile_phone_edit_success_title)
+    } else {
+        stringResource(R.string.profile_phone_edit_title)
+    }
+    val subtitleText = if (success) {
+        stringResource(R.string.profile_phone_edit_subtitle_success)
+    } else {
+        stringResource(R.string.profile_phone_edit_subtitle_request)
+    }
+    val phonePlaceholder = stringResource(R.string.profile_phone_input_placeholder)
+    val invalidPhoneText = stringResource(R.string.profile_phone_invalid)
+    val sendCodeLabel = stringResource(R.string.profile_phone_send_code)
+    val codePrompt = stringResource(R.string.profile_phone_code_prompt)
+    val codePlaceholder = stringResource(R.string.profile_phone_code_placeholder)
+    val codeInvalidText = stringResource(R.string.profile_phone_code_invalid)
+    val saveLabel = stringResource(R.string.profile_phone_save)
+    val savingLabel = stringResource(R.string.profile_phone_saving)
+    val cancelLabel = stringResource(R.string.profile_password_cancel)
+    val changeFailedText = stringResource(R.string.profile_phone_change_failed)
+    val successText = stringResource(R.string.profile_phone_success)
+
+    LaunchedEffect(visible) {
+        if (!visible) {
+            phoneInput = initialPhone
+            codeRequested = false
+            codeInput = ""
+            errorMessage = null
+            success = false
+            isProcessing = false
+            shakeKey = 0
+        }
+    }
+
+    LaunchedEffect(success) {
+        if (success) {
+            delay(2200)
+            onDismiss()
+        }
+    }
+
+    modal.Render(
+        visible = visible,
+        title = titleText,
+        subtitle = subtitleText,
+        icon = {
+            if (success) {
+                successAnimation.Render(modifier = Modifier.size(92.dp))
+            } else {
+                Icon(
+                    imageVector = Icons.Outlined.Phone,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(48.dp),
+                )
+            }
+        },
+        onDismiss = onDismiss,
+    ) {
+        if (!success) {
+            if (!codeRequested) {
+                Row(
+                    modifier = with(shakeAnimation) { Modifier.shake(shakeKey) }
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TextField(
+                        value = phoneInput,
+                        onValueChange = {
+                            phoneInput = it
+                            errorMessage = null
+                        },
+                        singleLine = true,
+                        placeholder = { Text(phonePlaceholder) },
+                        modifier = Modifier.weight(1f),
+                        isError = errorMessage != null,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            errorIndicatorColor = MaterialTheme.colorScheme.error,
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                    )
+                    Button(
+                        onClick = {
+                            val digits = phoneInput.filter { it.isDigit() }
+                            if (digits.length < 10) {
+                                errorMessage = invalidPhoneText
+                                shakeKey++
+                                return@Button
+                            }
+                            codeRequested = true
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(sendCodeLabel)
+                    }
+                }
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = with(shakeAnimation) { Modifier.shake(shakeKey) },
+                ) {
+                    Text(
+                        text = codePrompt,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    TextField(
+                        value = codeInput,
+                        onValueChange = {
+                            if (it.length <= 6 && it.all { ch -> ch.isDigit() }) {
+                                codeInput = it
+                                errorMessage = null
+                            }
+                        },
+                        singleLine = true,
+                        placeholder = { Text(codePlaceholder) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = errorMessage != null,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            errorIndicatorColor = MaterialTheme.colorScheme.error,
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                    )
+                    if (errorMessage != null) {
+                        Text(
+                            text = errorMessage!!,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Button(
+                            onClick = {
+                                if (codeInput.length != 6) {
+                                    errorMessage = codeInvalidText
+                                    shakeKey++
+                                    return@Button
+                                }
+                                scope.launch {
+                                    isProcessing = true
+                                    runCatching {
+                                        onPhoneChanged(phoneInput.trim())
+                                    }.onSuccess {
+                                        success = true
+                                    }.onFailure { throwable ->
+                                        errorMessage = throwable.message ?: changeFailedText
+                                        shakeKey++
+                                    }
+                                    isProcessing = false
+                                }
+                            },
+                            enabled = codeInput.length == 6 && !isProcessing,
+                            shape = RoundedCornerShape(12.dp),
+                        ) {
+                            Text(if (isProcessing) savingLabel else saveLabel)
+                        }
+                        OutlinedButton(
+                            onClick = onDismiss,
+                            shape = RoundedCornerShape(12.dp),
+                        ) {
+                            Text(cancelLabel)
+                        }
+                    }
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                successAnimation.Render(modifier = Modifier.size(96.dp))
+                Text(
+                    text = successText,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Диалог для добавления нового номера телефона, если у пользователя его ещё нет.
+ * Пользователь вводит номер и сохраняет, затем отображается сообщение об успехе.
+ *
+ * @param onDismiss Закрытие диалога
+ * @param onPhoneAdded Вызывается после успешного добавления номера
+ */
+@Composable
+private fun AddPhoneDialog(
+    visible: Boolean,
+    onDismiss: () -> Unit,
+    onPhoneAdded: suspend (String) -> Unit,
+    modal: ModalContainerTask,
+    successAnimation: SuccessAnimationTask,
+    shakeAnimation: ShakeAnimationTask,
+) {
+    var phoneInput by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var success by remember { mutableStateOf(false) }
+    var isProcessing by remember { mutableStateOf(false) }
+    var shakeKey by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    val titleText = if (success) {
+        stringResource(R.string.profile_phone_add_success_title)
+    } else {
+        stringResource(R.string.profile_phone_add_title)
+    }
+    val subtitleText = if (success) {
+        stringResource(R.string.profile_phone_add_subtitle_success)
+    } else {
+        stringResource(R.string.profile_phone_add_subtitle_request)
+    }
+    val phonePlaceholder = stringResource(R.string.profile_phone_add_placeholder)
+    val invalidPhoneText = stringResource(R.string.profile_phone_invalid)
+    val saveLabel = stringResource(R.string.profile_phone_save)
+    val savingLabel = stringResource(R.string.profile_phone_saving)
+    val cancelLabel = stringResource(R.string.profile_password_cancel)
+    val saveFailedText = stringResource(R.string.profile_phone_add_failed)
+    val successText = stringResource(R.string.profile_phone_add_success)
+
+    LaunchedEffect(visible) {
+        if (!visible) {
+            phoneInput = ""
+            errorMessage = null
+            success = false
+            isProcessing = false
+            shakeKey = 0
+        }
+    }
+
+    LaunchedEffect(success) {
+        if (success) {
+            delay(2200)
+            onDismiss()
+        }
+    }
+
+    modal.Render(
+        visible = visible,
+        title = titleText,
+        subtitle = subtitleText,
+        icon = {
+            if (success) {
+                successAnimation.Render(modifier = Modifier.size(92.dp))
+            } else {
+                Icon(
+                    imageVector = Icons.Outlined.Phone,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(48.dp),
+                )
+            }
+        },
+        onDismiss = onDismiss,
+    ) {
+        if (!success) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = with(shakeAnimation) { Modifier.shake(shakeKey) },
+            ) {
+                TextField(
+                    value = phoneInput,
+                    onValueChange = {
+                        phoneInput = it
+                        errorMessage = null
+                    },
+                    singleLine = true,
+                    placeholder = { Text(phonePlaceholder) },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = errorMessage != null,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = MaterialTheme.colorScheme.error,
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                )
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Button(
+                        onClick = {
+                            val digits = phoneInput.filter { it.isDigit() }
+                            if (digits.length < 10) {
+                                errorMessage = invalidPhoneText
+                                shakeKey++
+                                return@Button
+                            }
+                            scope.launch {
+                                isProcessing = true
+                                runCatching {
+                                    onPhoneAdded(phoneInput.trim())
+                                }.onSuccess {
+                                    success = true
+                                }.onFailure { throwable ->
+                                    errorMessage = throwable.message ?: saveFailedText
+                                    shakeKey++
+                                }
+                                isProcessing = false
+                            }
+                        },
+                        enabled = phoneInput.isNotBlank() && !isProcessing,
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(if (isProcessing) savingLabel else saveLabel)
+                    }
+                    OutlinedButton(
+                        onClick = onDismiss,
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(cancelLabel)
+                    }
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                successAnimation.Render(modifier = Modifier.size(96.dp))
+                Text(
+                    text = successText,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+        }
+    }
+}

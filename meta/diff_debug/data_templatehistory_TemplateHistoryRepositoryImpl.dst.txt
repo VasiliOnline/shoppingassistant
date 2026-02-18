@@ -1,0 +1,45 @@
+package com.example.shoppingassistant.core.data.templatehistory
+
+import com.example.shoppingassistant.core.data.templatehistory.db.TemplateHistoryDao
+import com.example.shoppingassistant.core.data.templatehistory.db.TemplateHistoryEntity
+import com.example.shoppingassistant.domain.template.TemplateHistoryEntry
+import com.example.shoppingassistant.domain.template.TemplateHistoryRepository
+import com.example.shoppingassistant.domain.template.TemplateIdTask
+import com.example.shoppingassistant.domain.template.TemplateSnapshot
+import kotlinx.serialization.json.Json
+
+class TemplateHistoryRepositoryImpl(
+    private val dao: TemplateHistoryDao,
+    private val idTask: TemplateIdTask,
+    private val json: Json = Json { ignoreUnknownKeys = true },
+) : TemplateHistoryRepository {
+
+    override suspend fun upsert(entry: TemplateHistoryEntry) {
+        val fixedId = idTask.computeId(entry.snapshot.data)
+        val fixedSnapshot = if (entry.snapshot.templateId == fixedId) entry.snapshot
+        else TemplateSnapshot(data = entry.snapshot.data, templateId = fixedId)
+
+        val payload = json.encodeToString(TemplateSnapshot.serializer(), fixedSnapshot)
+        dao.upsert(
+            TemplateHistoryEntity(
+                templateId = fixedSnapshot.templateId,
+                snapshotJson = payload,
+                usedAtMillis = entry.usedAtMillis,
+            )
+        )
+    }
+
+    override suspend fun listRecent(limit: Int): List<TemplateHistoryEntry> {
+        val safeLimit = limit.coerceIn(1, 100)
+        return dao.listRecent(safeLimit).mapNotNull { row ->
+            val snapshot = runCatching {
+                json.decodeFromString(TemplateSnapshot.serializer(), row.snapshotJson)
+            }.getOrNull() ?: return@mapNotNull null
+
+            TemplateHistoryEntry(
+                snapshot = snapshot,
+                usedAtMillis = row.usedAtMillis,
+            )
+        }
+    }
+}

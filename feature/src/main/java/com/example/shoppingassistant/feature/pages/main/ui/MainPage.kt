@@ -547,6 +547,8 @@ fun MainPage(
         scope.launch {
             val query = BrandModelRules.fromRaw(trimmed)
             val routed = runCatching { routeQueryTask(trimmed) }.getOrNull()
+            var routedCollectionCode = routed?.facetCollectionCode?.takeIf { it.isNotBlank() }
+            val routedPresetCode = routed?.facetPresetCode?.takeIf { it.isNotBlank() }
             val routedCategoryCode = when (routed?.routeType) {
                 QueryRouteType.OPEN_CATEGORY -> routed.primaryTargetCode?.takeIf { it.isNotBlank() }
                 QueryRouteType.OPEN_BROWSE -> {
@@ -554,6 +556,7 @@ fun MainPage(
                     if (browseCode == null) {
                         null
                     } else {
+                        routedCollectionCode = routedCollectionCode ?: browseCode
                         runCatching {
                             getBrowseNodeTask(browseCode)
                                 ?.takeIf { it.targetType == BrowseTargetType.CATEGORY }
@@ -576,6 +579,8 @@ fun MainPage(
                 query = query,
                 queryText = trimmed,
                 categoryCode = resolvedCategoryCode,
+                facetCollectionCode = routedCollectionCode,
+                facetPresetCode = routedPresetCode,
                 origin = ResultsOrigin.Text,
             )
             FlowMetrics.markOpenResultsFromText()

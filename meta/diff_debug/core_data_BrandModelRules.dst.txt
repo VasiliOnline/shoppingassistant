@@ -1,0 +1,24 @@
+package com.example.shoppingassistant.core.data
+
+import com.example.shoppingassistant.domain.model.Normalization
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+
+object BrandModelRules {
+    fun fromRaw(raw: String, attrs: Map<String, String> = emptyMap()): NormalizedQuery {
+        val s = raw.trim()
+        val (brand, model) = when {
+            s.startsWith("iphone", ignoreCase = true) -> "Apple" to s
+            s.startsWith("galaxy", ignoreCase = true) -> "Samsung" to s
+            else -> splitByFirstSpace(s)
+        }
+        return NormalizedQuery(
+            brand = brand.trim(),
+            model = model.trim(),
+            attributes = Normalization.normalizeAttrs(attrs)
+        )
+    }
+    private fun splitByFirstSpace(s: String): Pair<String, String> {
+        val i = s.indexOf(' ')
+        return if (i > 0) s.substring(0, i) to s.substring(i + 1) else s to ""
+    }
+}

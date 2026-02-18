@@ -1,0 +1,143 @@
+package com.example.shoppingassistant.core.data.nearby
+
+import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+
+const val DEFAULT_NEARBY_RADIUS_KM = 3
+const val MAX_NEARBY_RADIUS_KM = 5
+val NEARBY_RADIUS_PRESETS = listOf(1, 3, 5)
+const val NEARBY_PLACE_KEY = "nearby"
+
+@Serializable
+enum class NearbyScope {
+    NEARBY,
+    CITY,
+    COUNTRY,
+}
+
+@Serializable
+enum class NearbyCondition(
+    val label: String,
+    val value: String,
+) {
+    Any("Любое", ""),
+    New("Новое", "new"),
+    Used("Б/у", "used"),
+}
+
+@Serializable
+enum class NearbyDelivery(
+    val label: String,
+    val value: String,
+) {
+    Delivery("Доставка", "delivery"),
+    Pickup("Самовывоз", "pickup"),
+    Meeting("Встреча", "meeting"),
+}
+
+@Serializable
+enum class NearbyPostedAt(
+    val label: String,
+    val days: Int?,
+) {
+    Any("Любое", null),
+    H24("24 часа", 1),
+    D3("3 дня", 3),
+    D7("7 дней", 7),
+    D30("30 дней", 30),
+}
+
+@Serializable
+enum class NearbySort(
+    val label: String,
+) {
+    Distance("По расстоянию"),
+    Newest("Новые"),
+    PriceAsc("Дешевле"),
+    PriceDesc("Дороже"),
+}
+
+@Serializable
+data class NearbyBrand(
+    val id: String,
+    val name: String,
+)
+
+@Serializable
+data class NearbyPlace(
+    val city: String? = null,
+    val country: String? = null,
+)
+
+@Serializable
+data class NearbyFiltersState(
+    val locationScope: NearbyScope = NearbyScope.NEARBY,
+    val radiusKm: Int = DEFAULT_NEARBY_RADIUS_KM,
+    val selectedPlace: NearbyPlace? = null,
+    val categoryCodes: Set<String> = emptySet(),
+    val brands: List<NearbyBrand> = emptyList(),
+    val priceMin: Int? = null,
+    val priceMax: Int? = null,
+    val condition: NearbyCondition = NearbyCondition.Any,
+    val delivery: Set<NearbyDelivery> = emptySet(),
+    val postedAt: NearbyPostedAt = NearbyPostedAt.D3,
+    val sort: NearbySort = NearbySort.Distance,
+)
+
+@Serializable
+data class NearbyFiltersAppliedState(
+    val placeKey: String = NEARBY_PLACE_KEY,
+    val filters: NearbyFiltersState = NearbyFiltersState(),
+    val categoryCodes: Set<String> = emptySet(),
+)
+
+interface NearbyFiltersStorage {
+    suspend fun get(): NearbyFiltersAppliedState?
+    suspend fun set(state: NearbyFiltersAppliedState)
+    suspend fun clear()
+}
+
+class NearbyFiltersStorageImpl(
+    context: Context,
+) : NearbyFiltersStorage {
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
+
+    override suspend fun get(): NearbyFiltersAppliedState? = withContext(Dispatchers.IO) {
+        val raw = prefs.getString(KEY_APPLIED, null) ?: return@withContext null
+        val decoded = runCatching { json.decodeFromString(NearbyFiltersAppliedState.serializer(), raw) }.getOrNull()
+            ?: return@withContext null
+        if (decoded.filters.categoryCodes.isEmpty() && decoded.categoryCodes.isNotEmpty()) {
+            return@withContext decoded.copy(
+                filters = decoded.filters.copy(categoryCodes = decoded.categoryCodes),
+            )
+        }
+        decoded
+    }
+
+    override suspend fun set(state: NearbyFiltersAppliedState) = withContext(Dispatchers.IO) {
+        val payload = json.encodeToString(
+            NearbyFiltersAppliedState.serializer(),
+            state.copy(
+                placeKey = NEARBY_PLACE_KEY,
+                categoryCodes = state.filters.categoryCodes,
+            ),
+        )
+        prefs.edit().putString(KEY_APPLIED, payload).apply()
+    }
+
+    override suspend fun clear() = withContext(Dispatchers.IO) {
+        prefs.edit().remove(KEY_APPLIED).apply()
+    }
+
+    private companion object {
+        private const val PREFS_NAME = "nearby_filters.prefs"
+        private const val KEY_APPLIED = "nearby.filters.applied"
+    }
+}

@@ -1,0 +1,89 @@
+// Last synced: 2025-12-22
+package com.example.shoppingassistant.feature.pages.main.voice
+
+/**
+ * UI-правило: НЕ показываем нормализованные атрибуты пользователю.
+ * В UI показываем только:
+ *  - готовность/неготовность
+ *  - краткую причину (1–2 строки)
+ *  - распознанный текст (transcript)
+ */
+enum class VoiceWizardStage {
+    Idle,
+    Recording,
+    Review,
+    Processing,
+}
+
+enum class VoicePermissionState {
+    Unknown,
+    Granted,
+    Denied,
+    DeniedPermanently,
+}
+
+enum class VoiceWizardEligibility {
+    Ready,
+    MissingRequired,
+    CategoryBlocked,
+    NoAnalogFound,
+    GptUnavailableOrLimitExceeded,
+    Error,
+}
+
+data class VoiceSegment(
+    val id: Long,
+    val text: String,
+    val createdAtMs: Long,
+)
+
+data class VoiceWizardState(
+    val visible: Boolean = false,
+    val stage: VoiceWizardStage = VoiceWizardStage.Idle,
+
+    /** segments -> transcript (concatenation). Удобно для pause/undo. */
+    val segments: List<VoiceSegment> = emptyList(),
+
+    /** То, что можно показать/редактировать в Review. */
+    val transcript: String = "",
+
+    /** Таймер записи для UI. */
+    val recordingSeconds: Int = 0,
+
+    /** Внутреннее решение о возможности создать шаблон. */
+    val eligibility: VoiceWizardEligibility = VoiceWizardEligibility.MissingRequired,
+
+    /** Короткое сообщение (1–2 строки) — почему нельзя создать или что происходит. */
+    val message: String? = null,
+
+    /** Ошибка распознавания/обработки (если есть). */
+    val errorMessage: String? = null,
+
+    /** Разрешение на микрофон. */
+    val permission: VoicePermissionState = VoicePermissionState.Unknown,
+
+    /** GPT ветка (появляется только при NotReady и если доступна). */
+    val gptAvailable: Boolean = false,
+    val gptInProgress: Boolean = false,
+)
+
+fun VoiceWizardState.canCreateTemplate(): Boolean =
+    eligibility == VoiceWizardEligibility.Ready && stage != VoiceWizardStage.Processing && !gptInProgress
+
+object VoiceWizardCopy {
+    const val MISSING_REQUIRED = "Не удалось распознать модель и характеристики товара :("
+    const val CATEGORY_BLOCKED = "Пока нельзя искать или добавлять товар в данной категории :("
+    const val NO_ANALOG = "Не нашли аналог товара в каталоге :("
+    const val GPT_LIMIT = "Лимит улучшенной обработки исчерпан. Попробуй позже."
+    const val GENERIC_ERROR = "Не получилось обработать запись. Попробуй ещё раз."
+}
+
+/**
+ * Экономный, но качественный промпт (V1) — строго JSON, без объяснений.
+ * (Интеграция в GptApi — следующий шаг.)
+ */
+const val VOICE_GPT_PROMPT_V1: String =
+    "Ты извлекаешь данные о товаре из речи пользователя. " +
+            "Верни только JSON (без пояснений). " +
+            "Поля: brand, model, attributes{memory,storage,size,color,version}, categoryCandidate, confidence(0..1), missingRequiredKeys[]. " +
+            "Если не уверен — null/пусто."

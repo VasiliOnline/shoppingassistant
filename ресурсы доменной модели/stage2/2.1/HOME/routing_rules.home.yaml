@@ -1,0 +1,120 @@
+version: 2.1-L0
+l0_code: HOME
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- скачать
+- игра
+- обои
+- как
+- инструкция
+- своими
+- руками
+- ремонт айфона
+- ремонт ноутбука
+disambiguation_ordered_rules:
+- id: R.SMART_HOME_LIGHTING
+  if_any_tokens:
+  - умн
+  - smart
+  - zigbee
+  - z-wave
+  - homekit
+  - alexa
+  - google home
+  - wifi
+  - wi-fi
+  and_any_tokens:
+  - ламп
+  - свет
+  - выключател
+  - датчик
+  - розетк
+  then_route_canonical: TECH.SMART_HOME
+  confidence: 0.88
+  notes: Smart-home lighting/accessories => TECH.SMART_HOME
+- id: R.APPL_VACUUM
+  if_any_tokens:
+  - пылесос
+  - робот-пылесос
+  - робот пылесос
+  then_route_canonical: APPL.SMALL
+  confidence: 0.9
+  notes: Vacuum cleaners are appliances, not HOME.CLEANING
+- id: R.APPL_KITCHEN_APPLIANCES
+  if_any_tokens:
+  - блендер
+  - миксер
+  - мультивар
+  - аэрогрил
+  - кофевар
+  - кофемашин
+  - тостер
+  - электрочайник
+  - электрический чайник
+  - микроволн
+  - гриль электр
+  then_route_canonical: APPL.SMALL
+  confidence: 0.86
+  notes: Kitchen appliances => APPL.SMALL
+- id: R.HOME_TEA_TEAPOT
+  if_any_tokens:
+  - заварочн
+  - чайник заварочный
+  - чайник стеклянный
+  then_route_canonical: HOME.KITCHEN_DINING
+  confidence: 0.8
+  notes: Teapot as kitchenware
+- id: R.APPL_CLIMATE
+  if_any_tokens:
+  - кондиционер
+  - обогревател
+  - увлажнител
+  - очиститель
+  - очистител воздуха
+  - очиститель воздуха
+  - климатическ
+  then_route_canonical: APPL.CLIMATE
+  confidence: 0.88
+  notes: Climate devices => APPL.CLIMATE
+- id: R.HOME_DISHWASHER_TABLETS
+  if_any_tokens:
+  - посудомоечн
+  and_any_tokens:
+  - таблетк
+  - капсул
+  - соль
+  then_route_canonical: HOME.CLEANING
+  confidence: 0.84
+  notes: Dishwasher consumables belong to cleaning
+- id: R.PLUMBING_FILTERS
+  if_any_tokens:
+  - фильтр для воды
+  - осмос
+  - картридж
+  - под мойку
+  - аэратор
+  - сифон
+  - смесител
+  - унитаз
+  - раковин
+  - ванн
+  - душ
+  then_route_browse_node: BN.HOME.PLUMBING
+  confidence: 0.78
+  notes: Water / sanitary plumbing terms
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.HOME
+  default_canonical: HOME
+  if_only_generic_tokens_route_to_root: true

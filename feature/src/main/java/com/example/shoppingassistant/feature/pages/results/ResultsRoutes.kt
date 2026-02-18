@@ -26,6 +26,8 @@ data class ResultsPayload(
     val query: NormalizedQuery? = null,
     val queryText: String = "",
     val categoryCode: String? = null,
+    val facetCollectionCode: String? = null,
+    val facetPresetCode: String? = null,
     val location: String? = null,
     val radiusKm: Int? = null,
     val conditions: List<String> = emptyList(),

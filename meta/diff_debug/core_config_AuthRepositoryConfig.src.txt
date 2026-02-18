@@ -1,0 +1,29 @@
+package com.example.shoppingassistant.core.config
+
+/**
+ * Настройки выбора реализации AuthRepository на клиенте.
+ *
+ * Сейчас режим выбирается простой константой [mode]:
+ *  - REMOTE — используем настоящий backend (RemoteAuthRepository)
+ *  - IN_MEMORY — in-memory репозиторий для демо / оффлайн режима.
+ *
+ * Позже этот флаг можно вынести в BuildConfig, remote-config
+ * или конфигурацию по странам.
+ */
+object AuthRepositoryConfig {
+
+    enum class Mode {
+        REMOTE,
+        IN_MEMORY,
+    }
+
+    /**
+     * Текущий режим работы авторизации на клиенте.
+     *
+     * По умолчанию — REMOTE (реальный backend, регистрация пользователей
+     * из разных стран на одном сервере).
+     *
+     * Для демо/оффлайн сборок можно временно переключить на IN_MEMORY.
+     */
+    val mode: Mode = Mode.REMOTE
+}

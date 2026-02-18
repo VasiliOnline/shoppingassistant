@@ -1,0 +1,27 @@
+package com.example.shoppingassistant.domain.catalog
+
+internal object Stage21SportPackageLoader {
+    private val descriptor = Stage21PackageDescriptor(
+        l0Code = "SPORT",
+        basePath = "taxonomy/stage2/2.1/SPORT",
+        browseNodesFile = "browse_nodes.sport.tsv",
+        aliasesFile = "aliases.sport.tsv",
+        goldenQueriesFile = "queries_golden.sport.tsv",
+        coverageFile = "coverage.sport.json",
+        routingRulesFile = "routing_rules.sport.yaml",
+        browseRootCode = "B.SPORT",
+        schemaFamily = Stage21SchemaFamily.HOME_FAMILY,
+        supportsBlockedGoldenRouteKind = true,
+    )
+
+    private val packageData: Stage21HomeFamilyPackageData by lazy {
+        GenericStage21PackageLoader.load(descriptor)
+    }
+
+    val browseNodes: List<BrowseNode> by lazy { packageData.browseNodes }
+    val aliasSeedRows: List<HomeAliasSeedRow> by lazy { packageData.aliasSeedRows }
+    val aliasEntries: List<AliasEntry> by lazy { aliasSeedRows.map { it.toStage21AliasEntry(notesPrefix = "stage2.1.sport") } }
+    val goldenQueries: List<GoldenQuery> by lazy { packageData.goldenQueries }
+    val coverageGate: Stage21HomeCoverageGate by lazy { packageData.coverageGate }
+    val routingRulesYaml: String by lazy { packageData.routingRulesYaml }
+}

@@ -1,0 +1,3412 @@
+// GPT: task=MainPage part=state/MainPageViewModel role=state v=1
+package com.example.shoppingassistant.feature.pages.main.state
+
+import android.annotation.SuppressLint
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.shoppingassistant.core.data.AttributeService
+import com.example.shoppingassistant.core.data.BrandModelRules
+import com.example.shoppingassistant.core.data.Normalizer
+import com.example.shoppingassistant.core.data.ProductRepository
+import com.example.shoppingassistant.core.data.nearby.NearbyBrand
+import com.example.shoppingassistant.core.data.nearby.NearbyCondition
+import com.example.shoppingassistant.core.data.nearby.NearbyDelivery
+import com.example.shoppingassistant.core.data.nearby.NearbyFiltersAppliedState
+import com.example.shoppingassistant.core.data.nearby.NearbyFiltersState
+import com.example.shoppingassistant.core.data.nearby.NearbyFiltersStorage
+import com.example.shoppingassistant.core.data.nearby.NearbyPlace
+import com.example.shoppingassistant.core.data.nearby.NearbyPostedAt
+import com.example.shoppingassistant.core.data.nearby.NearbyScope
+import com.example.shoppingassistant.core.data.nearby.NearbySort
+import com.example.shoppingassistant.core.data.nearby.MAX_NEARBY_RADIUS_KM
+import com.example.shoppingassistant.core.data.link.LinkTemplateBuilderTask
+import com.example.shoppingassistant.core.data.link.LinkTemplateMapperTask
+import com.example.shoppingassistant.core.data.link.LinkTemplateRaw
+import com.example.shoppingassistant.core.data.searchTopExplained
+import com.example.shoppingassistant.core.rank.RankService
+import com.example.shoppingassistant.core.data.ExplainedItem
+import com.example.shoppingassistant.core.usecase.SearchOffersWithFacetsUseCase
+import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.template.TemplateAnchorType
+import com.example.shoppingassistant.domain.template.TemplateHistoryEntry
+import com.example.shoppingassistant.domain.template.TemplateHistoryRepository
+import com.example.shoppingassistant.domain.template.TemplateIdTask
+import com.example.shoppingassistant.domain.template.TemplateSnapshot
+import com.example.shoppingassistant.domain.template.TemplateSnapshotAttr
+import com.example.shoppingassistant.domain.template.TemplateSnapshotData
+import com.example.shoppingassistant.domain.template.TemplateSnapshotMode
+import com.example.shoppingassistant.domain.template.presets.TemplatePreset
+import com.example.shoppingassistant.domain.template.presets.TemplatePresetSource
+import com.example.shoppingassistant.domain.template.presets.TemplatePresetsRepository
+import com.example.shoppingassistant.domain.template.presets.generate.GenerateTemplatePresetsRequest
+import com.example.shoppingassistant.domain.template.presets.generate.GenerateTemplatePresetsTask
+import com.example.shoppingassistant.domain.model.Normalization
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+import com.example.shoppingassistant.domain.model.GeoMode
+import com.example.shoppingassistant.domain.model.OfferFacetType
+import com.example.shoppingassistant.domain.model.OfferSearchCriteria
+import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
+import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
+import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
+import com.example.shoppingassistant.domain.ingest.IngestStatus
+import com.example.shoppingassistant.domain.ingest.SourceType
+import com.example.shoppingassistant.domain.offers.OfferCategory
+import com.example.shoppingassistant.domain.offers.CreateTrackedOfferResult
+import com.example.shoppingassistant.domain.offers.CreateTrackedOfferStatus
+import com.example.shoppingassistant.domain.facet.FacetCountMode
+import com.example.shoppingassistant.domain.facet.FacetCountsQuery
+import com.example.shoppingassistant.domain.facet.GetFacetCountsTask
+import com.example.shoppingassistant.domain.tracks.Track
+import com.example.shoppingassistant.domain.tracks.TrackFilters
+import com.example.shoppingassistant.domain.tracks.TrackRepository
+import com.example.shoppingassistant.domain.tracks.TrackState
+import com.example.shoppingassistant.domain.tracks.TrackTarget
+import com.example.shoppingassistant.domain.tracks.TrackType
+import com.example.shoppingassistant.domain.vision.NormalizePhotosUseCase
+import com.example.shoppingassistant.domain.vision.GetVisionUsageUseCase
+import com.example.shoppingassistant.domain.vision.VisionNextAction
+import com.example.shoppingassistant.domain.vision.VisionNormalizeRequest
+import com.example.shoppingassistant.domain.vision.VisionPhotoInput
+import com.example.shoppingassistant.domain.vision.VisionPhotoRole
+import com.example.shoppingassistant.feature.pages.main.context.buildCategoryDictionary
+import com.example.shoppingassistant.feature.pages.main.context.attributeCatalogFor
+import com.example.shoppingassistant.feature.pages.main.context.resolveProduct
+import com.example.shoppingassistant.feature.pages.main.suggest.CategoryAnchorSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.HistoryTemplateSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestEngine
+import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestItem
+import com.example.shoppingassistant.feature.pages.main.suggest.AutoPresetSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.AutoTemplateSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.PresetTemplateSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.ProductAnchorSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.SectionHeaderSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.TextFixSuggest
+import com.example.shoppingassistant.feature.pages.main.ui.InputMode
+import com.example.shoppingassistant.feature.pages.main.vision.PhotoSlot
+import com.example.shoppingassistant.feature.pages.main.vision.PhotoSlotStatus
+import com.example.shoppingassistant.feature.pages.main.vision.PhotoWizardState
+import com.example.shoppingassistant.feature.pages.main.vision.PhotoWizardStep
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
+import com.example.shoppingassistant.feature.pages.model.BoundSegment
+import com.example.shoppingassistant.feature.pages.model.FilterStage
+import com.example.shoppingassistant.feature.pages.model.ValueDef
+import com.example.shoppingassistant.feature.pages.model.Product
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCardUi
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferStatus
+import com.example.shoppingassistant.feature.pages.useroffers.sync.UserOffersSyncTask
+import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersCreatedStore
+import com.example.shoppingassistant.feature.pages.common.buildSnapshotFromQuery
+import com.example.shoppingassistant.feature.auth.DebugAuthStore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.Locale
+import kotlin.math.pow
+import kotlin.math.round
+
+class MainPageViewModel(
+    private val repository: ProductRepository,
+    private val rankService: RankService,
+    private val attrSvc: AttributeService,
+    private val catalogRepository: CatalogRepository,
+    private val constraintsResolver: CatalogConstraintsResolver,
+    private val getFacetCounts: GetFacetCountsTask,
+    private val getCurrentUser: GetCurrentUserUseCase,
+    private val getProfileCache: GetProfileCacheTask,
+    private val createdStore: UserOffersCreatedStore,
+    private val userOffersSyncTask: UserOffersSyncTask,
+    private val linkTemplateBuilder: LinkTemplateBuilderTask,
+    private val linkTemplateMapper: LinkTemplateMapperTask,
+    private val suggestEngine: MainSuggestEngine,
+    private val templateIdTask: TemplateIdTask,
+    private val templateHistoryRepository: TemplateHistoryRepository,
+    private val trackRepository: TrackRepository,
+    private val templatePresetsRepository: TemplatePresetsRepository,
+    private val generateTemplatePresetsTask: GenerateTemplatePresetsTask,
+    private val normalizePhotosUseCase: NormalizePhotosUseCase,
+    private val getVisionUsageUseCase: GetVisionUsageUseCase,
+    private val searchOffersWithFacets: SearchOffersWithFacetsUseCase,
+    private val nearbyFiltersStorage: NearbyFiltersStorage,
+    private val debugAuthStore: DebugAuthStore,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(MainPageState())
+    val state: StateFlow<MainPageState> = _state.asStateFlow()
+
+    private val templateEngine: TemplateEngine = TemplateEngineTaskImpl(constraintsResolver)
+    private var categoryRequiredIfRules: List<RequiredIfRule> = emptyList()
+    private var categoryConstraints: List<CatalogConstraints> = emptyList()
+    private var categoryDictionary: CategoryDictionary = buildCategoryDictionary(null, emptyList(), emptyList(), emptyList())
+    private data class CategoryIndex(
+        val byCode: Map<String, Category>,
+        val parentCodes: Set<String>,
+        val breadcrumbByCode: Map<String, String>,
+    )
+    private data class CategorySelectionResult(
+        val codes: Set<String>,
+        val chips: List<CategoryChipUi>,
+        val leafCategoryCode: String?,
+    )
+    @Volatile private var categoryIndex: CategoryIndex? = null
+    private val atomicIdentityKeys = setOf("brand", "model", "model_line", "product_name")
+    private val expressRequiredKeys = setOf("price", "currency", "condition")
+    private val linkRequiredKeys = setOf("price", "currency", "brand")
+    private val breadcrumbSeparator = " → "
+    private val breadcrumbSplitRegex = Regex("\\s*(?:→|/|\\u001A)\\s*")
+    private val categorySelectorKey = "category"
+    private var facetCountsJob: Job? = null
+    private val attrFacetCountsJobs: MutableMap<String, Job> = mutableMapOf()
+    private var suggestJob: Job? = null
+    private var nearbyFetchJob: Job? = null
+    private var nearbyCountJob: Job? = null
+    private var lastFacetCountsRequestKey: String? = null
+    private val lastAttrFacetRequestKey: MutableMap<String, String> = mutableMapOf()
+    private var realUserId: String? = null
+
+    init {
+        viewModelScope.launch {
+            val user = runCatching { getCurrentUser() }.getOrNull()
+            val resolved = user?.id?.toString()
+            realUserId = resolved
+            val debugUser = debugAuthStore.user.value?.id
+            reduce { it.copy(currentUserId = debugUser ?: resolved) }
+            loadNearbyLocation(debugUser ?: resolved)
+        }
+        viewModelScope.launch {
+            debugAuthStore.user.collect { debugUser ->
+                reduce { it.copy(currentUserId = debugUser?.id ?: realUserId) }
+            }
+        }
+        viewModelScope.launch {
+            runCatching { ensureCategoryIndex() }
+        }
+        updateSuggestions("")
+        refreshCategoryChips()
+        loadNearbyFilters()
+    }
+
+    fun setState(s: MainPageState) { _state.value = s }
+    fun reduce(block: (MainPageState) -> MainPageState) = _state.update(block)
+
+    private fun recordAtomicTemplate(base: UiTemplate) {
+        val snapshot = buildSnapshot(base) ?: return
+        recordTemplateUsage(snapshot)
+        resetTemplate()
+    }
+
+    private suspend fun ensureCategoryIndex(): CategoryIndex {
+        val cached = categoryIndex
+        if (cached != null) return cached
+        val categories = runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+        val index = buildCategoryIndex(categories)
+        categoryIndex = index
+        return index
+    }
+
+    private fun buildCategoryIndex(categories: List<Category>): CategoryIndex {
+        val byCode = categories.associateBy { it.code }
+        val parentCodes = categories.mapNotNull { it.parentCode }.toSet()
+
+        fun titleOf(code: String): String = byCode[code]?.title ?: code
+        fun breadcrumb(code: String): String {
+            val path = ArrayList<String>()
+            var cur: Category? = byCode[code]
+            val seen = HashSet<String>()
+            while (cur != null && seen.add(cur.code)) {
+                val t = cur.title?.takeIf { it.isNotBlank() } ?: cur.code
+                path.add(t)
+                cur = cur.parentCode?.let { byCode[it] }
+            }
+            return path.asReversed().joinToString(breadcrumbSeparator).ifBlank { titleOf(code) }
+        }
+
+        val breadcrumbByCode = categories.associate { it.code to breadcrumb(it.code) }
+        return CategoryIndex(
+            byCode = byCode,
+            parentCodes = parentCodes,
+            breadcrumbByCode = breadcrumbByCode,
+        )
+    }
+
+    private fun splitBreadcrumb(raw: String?): List<String> {
+        val value = raw?.trim().orEmpty()
+        if (value.isBlank()) return emptyList()
+        return value
+            .split(breadcrumbSplitRegex)
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+    }
+
+    private fun normalizeBreadcrumb(raw: String?): String? {
+        val parts = splitBreadcrumb(raw)
+        return parts.takeIf { it.isNotEmpty() }?.joinToString(breadcrumbSeparator)
+    }
+
+    private fun breadcrumbTail(raw: String?): String =
+        splitBreadcrumb(raw).lastOrNull().orEmpty()
+
+    private fun categoryTrailFor(categoryCode: String?, fallback: String? = null): List<String> {
+        val code = categoryCode?.takeIf { it.isNotBlank() }
+        val fromIndex = code?.let { categoryIndex?.breadcrumbByCode?.get(it) }
+        val raw = fromIndex ?: normalizeBreadcrumb(fallback) ?: code ?: return emptyList()
+        return splitBreadcrumb(raw)
+    }
+
+    private fun resolveCategoryCodeFromBreadcrumb(value: String, index: CategoryIndex): String? {
+        val trimmed = value.trim()
+        if (trimmed.isBlank()) return null
+        index.byCode[trimmed]?.let { return it.code }
+        val normalized = normalizeBreadcrumb(trimmed)?.lowercase() ?: return null
+        return index.breadcrumbByCode.entries.firstOrNull { entry ->
+            normalizeBreadcrumb(entry.value)?.lowercase() == normalized
+        }?.key
+    }
+
+    private fun extractFreeTextRemainder(input: String, lockedTitle: String?): String {
+        val trimmed = input.trim()
+        if (trimmed.isBlank()) return ""
+        val header = lockedTitle?.trim().orEmpty()
+        if (header.isNotBlank() && trimmed.startsWith(header, ignoreCase = true)) {
+            return trimmed.removePrefix(header).trimStart()
+        }
+        return trimmed
+    }
+
+    private fun categoryBreadcrumbFor(categoryCode: String?): String? {
+        val trail = categoryTrailFor(categoryCode)
+        if (trail.isEmpty()) return null
+        return trail.joinToString(breadcrumbSeparator)
+    }
+
+    private fun categoryLevelKeysFor(
+        categoryCode: String?,
+        fallback: String? = null,
+        defs: List<AttributeDef> = emptyList(),
+    ): List<String> {
+        if (defs.any { it.key == categorySelectorKey }) return listOf(categorySelectorKey)
+        val trail = categoryTrailFor(categoryCode, fallback)
+        return if (trail.isNotEmpty()) listOf(categorySelectorKey) else emptyList()
+    }
+
+    private fun isCategoryLevelKey(key: String): Boolean =
+        key.startsWith("category_level_") || key == categorySelectorKey
+
+    private fun stripCategoryFilters(filters: Map<String, String>): Map<String, String> =
+        filters.filterKeys { key -> !isCategoryLevelKey(key) }
+
+    private fun injectCategoryAttributes(
+        attrs: Map<String, TemplateAttribute>,
+        categoryCode: String?,
+        fallback: String? = null,
+    ): Map<String, TemplateAttribute> {
+        val trail = categoryTrailFor(categoryCode, fallback)
+        val cleaned = attrs.filterKeys { key -> !isCategoryLevelKey(key) }
+        if (trail.isEmpty()) return cleaned
+        val breadcrumb = trail.joinToString(breadcrumbSeparator)
+        val categoryAttr = mapOf(
+            categorySelectorKey to TemplateAttribute(
+                code = categorySelectorKey,
+                canonicalValue = breadcrumb,
+                source = ValueSource.FromSuggestion,
+            )
+        )
+        return cleaned + categoryAttr
+    }
+
+    private fun filterTemplateAttributes(
+        attrs: Map<String, TemplateAttribute>,
+        allowedKeys: Set<String>,
+        categoryCode: String?,
+        fallback: String? = null,
+    ): Map<String, TemplateAttribute> {
+        val kept = attrs.filterKeys { key -> key in allowedKeys }
+        return injectCategoryAttributes(kept, categoryCode, fallback)
+    }
+
+    private fun leafCategoryBreadcrumbs(index: CategoryIndex): List<String> {
+        return index.byCode.values
+            .filter { category -> category.code !in index.parentCodes }
+            .mapNotNull { category -> index.breadcrumbByCode[category.code] }
+            .mapNotNull { normalizeBreadcrumb(it) }
+            .distinct()
+            .sortedBy { it.lowercase() }
+    }
+
+    private fun withCategoryDefs(
+        defs: List<AttributeDef>,
+    ): List<AttributeDef> {
+        val cleaned = defs.filterNot { def -> isCategoryLevelKey(def.key) }
+        val index = categoryIndex ?: return cleaned
+        val options = leafCategoryBreadcrumbs(index)
+        if (options.isEmpty()) return cleaned
+        val selector = AttributeDef(
+            key = categorySelectorKey,
+            title = "Категория",
+            options = options,
+            selectionOnly = true,
+        )
+        return listOf(selector) + cleaned
+    }
+
+    private suspend fun isAtomicCategory(categoryCode: String?): Boolean {
+        val code = categoryCode?.takeIf { it.isNotBlank() } ?: return false
+        val index = ensureCategoryIndex()
+        if (code in index.parentCodes) return false
+        val profile = runCatching { catalogRepository.getCategoryProfile(code) }.getOrNull() ?: return false
+        val attrCodes = (profile.categoryAttributes.map { it.attributeCode } + profile.attributes.map { it.code })
+            .map { it.lowercase() }
+            .toSet()
+        return atomicIdentityKeys.none { key -> key in attrCodes }
+    }
+
+    fun applyTemplateSnapshot(snapshot: TemplateSnapshot, openAttributes: Boolean = false) {
+        val data = snapshot.data
+        val lockedTitle = when (data.anchorType) {
+            TemplateAnchorType.CATEGORY -> {
+                val trail = categoryTrailFor(data.categoryCode)
+                trail.lastOrNull() ?: data.categoryCode ?: data.anchorId
+            }
+            TemplateAnchorType.PRODUCT -> data.anchorId
+        }.replace("\\s+".toRegex(), " ").trim()
+
+        val baseInput = listOfNotNull(
+            lockedTitle.takeIf { it.isNotBlank() },
+            data.freeText?.takeIf { it.isNotBlank() },
+        ).joinToString(" ").trim()
+
+        val attrs = injectCategoryAttributes(
+            data.attrs.associate { a ->
+                a.key to TemplateAttribute(
+                    code = a.key,
+                    canonicalValue = a.value,
+                    source = ValueSource.FromSuggestion,
+                )
+            },
+            data.categoryCode,
+            null,
+        )
+
+        val base = UiTemplate(
+            inputText = baseInput,
+            anchorType = data.anchorType,
+            anchorId = data.anchorId,
+            lockedTitle = lockedTitle,
+            isLocked = true,
+            categoryCode = data.categoryCode,
+            attributes = attrs,
+            mode = TemplateMode.SearchOrSubscribe,
+        )
+        rebuildDictionary(data.categoryCode, constraints = emptyList())
+        val updated = recomputeTemplate(base)
+        val chosenText = if (data.anchorType == TemplateAnchorType.CATEGORY) {
+            categoryBreadcrumbFor(data.categoryCode) ?: lockedTitle
+        } else lockedTitle
+        applyTemplate(updated) { it.copy(chosenText = chosenText, product = null, templatePrefillDone = true) }
+        refreshAttributes(product = null, categoryCode = data.categoryCode)
+        recordTemplateUsage()
+        if (openAttributes) {
+            openAttributesSheet()
+        }
+    }
+    private fun updateSuggestions(queryText: String = _state.value.template.inputText) {
+        val s = _state.value
+        if (s.template.isLocked) {
+            suggestJob?.cancel()
+            reduce { it.copy(suggestions = emptyList()) }
+            return
+        }
+        val query = queryText
+        suggestJob?.cancel()
+        suggestJob = viewModelScope.launch {
+            val items = runCatching { suggestEngine.suggest(query) }.getOrElse { emptyList() }
+            if (_state.value.template.inputText != query || _state.value.template.isLocked) return@launch
+            reduce { it.copy(suggestions = items) }
+        }
+    }
+
+    fun onSuggestChosen(item: MainSuggestItem) {
+        when (item) {
+            is TextFixSuggest -> {
+                onQueryChange(item.fixedText)
+            }
+            is ProductAnchorSuggest -> {
+                val categoryHint = item.categoryCode ?: _state.value.template.categoryCode
+                val brand = item.brand?.takeIf { it.isNotBlank() }
+                val model = item.model?.takeIf { it.isNotBlank() }
+                val product = if (brand != null && model != null) {
+                    Product(
+                        id = item.productId.toString(),
+                        title = item.text,
+                        brand = brand,
+                        model = model,
+                        categoryCode = categoryHint,
+                    )
+                } else {
+                    val q = BrandModelRules.fromRaw(item.text)
+                    if (q.brand.isBlank() || q.model.isBlank()) null
+                    else Product(
+                        id = item.productId.toString(),
+                        title = item.text,
+                        brand = q.brand,
+                        model = q.model,
+                        categoryCode = categoryHint,
+                    )
+                }
+                onSuggestionChosen(item.text, product)
+                reduce { it.copy(suggestions = emptyList()) }
+            }
+            is CategoryAnchorSuggest -> {
+                onCategoryAnchorChosen(item)
+                reduce { it.copy(suggestions = emptyList()) }
+            }
+            is HistoryTemplateSuggest -> {
+                onHistoryTemplateChosen(item)
+                reduce { it.copy(suggestions = emptyList()) }
+            }
+            is PresetTemplateSuggest -> {
+                onPresetTemplateChosen(item)
+                reduce { it.copy(suggestions = emptyList()) }
+            }
+            is AutoPresetSuggest -> {
+                onAutoPresetChosen()
+                reduce { it.copy(suggestions = emptyList()) }
+            }
+            is AutoTemplateSuggest -> {
+                onAutoTemplateChosen(item)
+                reduce { it.copy(suggestions = emptyList()) }
+            }
+            is SectionHeaderSuggest -> Unit
+            else -> Unit
+        }
+    }
+
+    private fun onCategoryAnchorChosen(item: CategoryAnchorSuggest) {
+        val current = _state.value
+        val raw = current.template.inputText
+        val alias = item.matchedAlias
+        val hasAlias = !alias.isNullOrBlank() && raw.contains(alias, ignoreCase = true)
+        val remainder = if (hasAlias) stripFirstOccurrence(raw, alias) else ""
+        val normalizedBreadcrumb = normalizeBreadcrumb(item.breadcrumb) ?: item.breadcrumb
+        val tail = breadcrumbTail(normalizedBreadcrumb)
+        val heading = tail.ifBlank { normalizedBreadcrumb }
+        val desiredInput = listOfNotNull(
+            heading.takeIf { it.isNotBlank() },
+            remainder.takeIf { it.isNotBlank() },
+        ).joinToString(" ").trim()
+
+        val baseAttrs = injectCategoryAttributes(
+            emptyMap(),
+            item.categoryCode,
+            normalizedBreadcrumb,
+        )
+        val base = UiTemplate(
+            inputText = desiredInput,
+            anchorType = TemplateAnchorType.CATEGORY,
+            anchorId = item.categoryCode,
+            lockedTitle = heading,
+            isLocked = true,
+            categoryCode = item.categoryCode,
+            attributes = baseAttrs,
+            mode = TemplateMode.SearchOrSubscribe,
+        )
+        viewModelScope.launch {
+            if (isAtomicCategory(item.categoryCode)) {
+                recordAtomicTemplate(base)
+                return@launch
+            }
+            rebuildDictionary(item.categoryCode, constraints = emptyList())
+            val updated = templateEngine.onInputTextChanged(base, desiredInput, categoryDictionary)
+            applyTemplate(updated) { it.copy(chosenText = normalizedBreadcrumb, product = null, templatePrefillDone = false) }
+            refreshAttributes(product = null, categoryCode = item.categoryCode)
+            recordTemplateUsage()
+        }
+    }
+
+    private fun onHistoryTemplateChosen(item: HistoryTemplateSuggest) {
+        val data = item.entry.snapshot.data
+        val lockedTitle = when (data.anchorType) {
+            TemplateAnchorType.CATEGORY -> {
+                val trail = categoryTrailFor(data.categoryCode)
+                trail.lastOrNull() ?: data.categoryCode ?: data.anchorId
+            }
+            TemplateAnchorType.PRODUCT -> data.anchorId
+        }.replace("\\s+".toRegex(), " ").trim()
+
+        val baseInput = listOfNotNull(
+            lockedTitle.takeIf { it.isNotBlank() },
+            data.freeText?.takeIf { it.isNotBlank() },
+        ).joinToString(" ").trim()
+
+        val attrs = injectCategoryAttributes(
+            data.attrs.associate { a ->
+                a.key to TemplateAttribute(
+                    code = a.key,
+                    canonicalValue = a.value,
+                    source = ValueSource.FromSuggestion,
+                )
+            },
+            data.categoryCode,
+            null,
+        )
+
+        val base = UiTemplate(
+            inputText = baseInput,
+            anchorType = data.anchorType,
+            anchorId = data.anchorId,
+            lockedTitle = lockedTitle,
+            isLocked = true,
+            categoryCode = data.categoryCode,
+            attributes = attrs,
+            mode = TemplateMode.SearchOrSubscribe,
+        )
+        rebuildDictionary(data.categoryCode, constraints = emptyList())
+        val updated = recomputeTemplate(base)
+        val chosenText = if (data.anchorType == TemplateAnchorType.CATEGORY) {
+            categoryBreadcrumbFor(data.categoryCode) ?: lockedTitle
+        } else lockedTitle
+        applyTemplate(updated) { it.copy(chosenText = chosenText, product = null, templatePrefillDone = true) }
+        val focusKey = if (item.status == com.example.shoppingassistant.domain.template.status.TemplateStatus.DRAFT) {
+            item.firstErrorKey
+        } else null
+        refreshAttributes(product = null, categoryCode = data.categoryCode, focusOnKey = focusKey)
+        recordTemplateUsage()
+    }
+
+    private fun onPresetTemplateChosen(item: PresetTemplateSuggest) {
+        applyPreset(item.preset, item.text)
+    }
+
+    private fun onAutoPresetChosen() {
+        val resolvedCategory = _state.value.template.categoryCode
+            ?: _state.value.product?.categoryCode
+        if (resolvedCategory.isNullOrBlank()) return
+        viewModelScope.launch {
+            val presets = runCatching {
+                generateTemplatePresetsTask.generate(
+                    GenerateTemplatePresetsRequest(
+                        categoryCode = resolvedCategory,
+                        limit = 20,
+                        maxAttributes = 4,
+                    )
+                )
+            }.getOrElse { emptyList() }
+            val picked = presets.maxByOrNull { it.rank } ?: return@launch
+            applyPreset(picked, picked.title)
+        }
+    }
+
+    private fun onAutoTemplateChosen(item: AutoTemplateSuggest) {
+        val heading = item.text.replace("\\s+".toRegex(), " ").trim()
+        val resolvedCategoryCode = item.categoryCode ?: _state.value.template.categoryCode
+        val placeholder = item.modelLine ?: item.model
+
+        val baseAttrs = buildMap<String, TemplateAttribute> {
+            item.brand.takeIf { it.isNotBlank() }?.let { b ->
+                put(
+                    "brand",
+                    TemplateAttribute(
+                        code = "brand",
+                        canonicalValue = b,
+                        source = ValueSource.FromSuggestion,
+                    )
+                )
+            }
+            item.model.takeIf { it.isNotBlank() }?.let { m ->
+                put(
+                    "model",
+                    TemplateAttribute(
+                        code = "model",
+                        canonicalValue = m,
+                        source = ValueSource.FromSuggestion,
+                    )
+                )
+            }
+            item.modelLine?.takeIf { it.isNotBlank() }?.let { line ->
+                put(
+                    "model_line",
+                    TemplateAttribute(
+                        code = "model_line",
+                        canonicalValue = line,
+                        source = ValueSource.FromSuggestion,
+                    )
+                )
+            }
+        }
+
+        val decoratedAttrs = injectCategoryAttributes(
+            attrs = baseAttrs,
+            categoryCode = resolvedCategoryCode,
+            fallback = item.categoryBreadcrumb,
+        )
+
+        val base = UiTemplate(
+            inputText = heading,
+            anchorType = TemplateAnchorType.PRODUCT,
+            anchorId = heading,
+            lockedTitle = heading,
+            isLocked = true,
+            categoryCode = resolvedCategoryCode,
+            attributes = decoratedAttrs,
+            mode = TemplateMode.SearchOrSubscribe,
+        )
+        viewModelScope.launch {
+            if (isAtomicCategory(resolvedCategoryCode)) {
+                recordAtomicTemplate(base)
+                return@launch
+            }
+            rebuildDictionary(base.categoryCode, constraints = emptyList())
+            val updated = templateEngine.onInputTextChanged(base, heading, categoryDictionary)
+            applyTemplate(updated) {
+                it.copy(
+                    chosenText = heading,
+                    product = null,
+                    linkMeta = null,
+                    photoUrl = null,
+                    photoPlaceholderCategory = placeholder,
+                    templatePrefillDone = false,
+                )
+            }
+            refreshAttributes(product = null, categoryCode = resolvedCategoryCode)
+            recordTemplateUsage()
+        }
+    }
+
+    private fun applyPreset(preset: TemplatePreset, preferredTitle: String?) {
+        val data = preset.snapshot
+        val lockedTitle = (preferredTitle ?: "").ifBlank {
+            when (data.anchorType) {
+                TemplateAnchorType.CATEGORY -> {
+                    val trail = categoryTrailFor(data.categoryCode)
+                    trail.lastOrNull() ?: data.categoryCode ?: data.anchorId
+                }
+                TemplateAnchorType.PRODUCT -> data.anchorId
+            }
+        }.replace("\\s+".toRegex(), " ").trim()
+
+        val baseInput = listOfNotNull(
+            lockedTitle.takeIf { it.isNotBlank() },
+            data.freeText?.takeIf { it.isNotBlank() },
+        ).joinToString(" ").trim()
+
+        val attrs = injectCategoryAttributes(
+            data.attrs.associate { a ->
+                a.key to TemplateAttribute(
+                    code = a.key,
+                    canonicalValue = a.value,
+                    source = ValueSource.FromSuggestion,
+                )
+            },
+            data.categoryCode,
+            null,
+        )
+
+        val base = UiTemplate(
+            inputText = baseInput,
+            anchorType = data.anchorType,
+            anchorId = data.anchorId,
+            lockedTitle = lockedTitle,
+            isLocked = true,
+            categoryCode = data.categoryCode,
+            attributes = attrs,
+            mode = TemplateMode.SearchOrSubscribe,
+        )
+        viewModelScope.launch {
+            if (isAtomicCategory(data.categoryCode)) {
+                recordAtomicTemplate(base)
+                return@launch
+            }
+            rebuildDictionary(data.categoryCode, constraints = emptyList())
+            val updated = recomputeTemplate(base)
+            val chosenText = if (data.anchorType == TemplateAnchorType.CATEGORY) {
+                categoryBreadcrumbFor(data.categoryCode) ?: lockedTitle
+            } else lockedTitle
+            applyTemplate(updated) { it.copy(chosenText = chosenText, product = null, templatePrefillDone = true) }
+            refreshAttributes(product = null, categoryCode = data.categoryCode)
+            recordTemplateUsage()
+        }
+    }
+
+    private fun stripFirstOccurrence(text: String, needle: String?): String {
+        if (needle.isNullOrBlank()) return text.trim()
+        val idx = text.indexOf(needle, ignoreCase = true)
+        if (idx < 0) return text.trim()
+        val out = (text.removeRange(idx, idx + needle.length))
+            .replace("\\s+".toRegex(), " ")
+            .trim()
+        return out
+    }
+
+    private fun buildSuggestedInput(heading: String, raw: String): String {
+        val normalizedHeading = heading.replace("\\s+".toRegex(), " ").trim()
+        val normalizedRaw = raw.replace("\\s+".toRegex(), " ").trim()
+        if (normalizedHeading.isBlank()) return normalizedRaw
+        if (normalizedRaw.isBlank()) return normalizedHeading
+        if (normalizedRaw.startsWith(normalizedHeading, ignoreCase = true)) return normalizedRaw
+        val withoutHeading = stripFirstOccurrence(normalizedRaw, normalizedHeading)
+        val tail = withoutHeading.takeIf { it.isNotBlank() && !it.equals(normalizedRaw, ignoreCase = true) }
+        return listOfNotNull(
+            normalizedHeading,
+            tail?.takeIf { it.isNotBlank() }
+        ).joinToString(" ").trim()
+    }
+
+    fun addCurrentTemplateToRecent(onResult: (Boolean) -> Unit = {}) {
+        recordTemplateUsage(onResult = onResult)
+    }
+
+    private fun recordTemplateUsage(
+        onResult: (Boolean) -> Unit = {},
+    ) {
+        val snapshot = buildSnapshot(_state.value.template)
+        if (snapshot == null) {
+            onResult(false)
+            return
+        }
+        recordTemplateUsage(snapshot, onResult)
+    }
+
+    private fun recordTemplateUsage(
+        snapshot: TemplateSnapshot,
+        onResult: (Boolean) -> Unit = {},
+    ) {
+        viewModelScope.launch {
+            templateHistoryRepository.upsert(
+                TemplateHistoryEntry(
+                    snapshot = snapshot,
+                    usedAtMillis = System.currentTimeMillis(),
+                )
+            )
+            val history = runCatching { templateHistoryRepository.listRecent(limit = 20) }
+                .getOrElse { emptyList() }
+                .sortedByDescending { it.usedAtMillis }
+            if (history.size > 10) {
+                val toDrop = history.drop(10).map { it.snapshot.templateId }
+                templateHistoryRepository.deleteByIds(toDrop)
+            }
+            refreshCategoryChips()
+            onResult(true)
+        }
+    }
+
+    fun recordSearchHistory(
+        queryText: String,
+        query: NormalizedQuery?,
+        categoryCode: String? = null,
+    ) {
+        val snapshot = buildSnapshotFromQuery(
+            query = query,
+            queryText = queryText,
+            categoryCode = categoryCode,
+            templateIdTask = templateIdTask,
+        ) ?: return
+        recordTemplateUsage(snapshot)
+    }
+
+    fun clearSearchHistory() {
+        viewModelScope.launch {
+            val history = runCatching { templateHistoryRepository.listRecent(limit = 100) }
+                .getOrElse { emptyList() }
+            if (history.isNotEmpty()) {
+                templateHistoryRepository.deleteByIds(history.map { it.snapshot.templateId })
+            }
+            refreshCategoryChips()
+            updateSuggestions(_state.value.template.inputText)
+        }
+    }
+
+    private fun refreshCategoryChips() {
+        viewModelScope.launch {
+            val categories = runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+            val byCode = categories.associateBy { it.code }
+
+            val history = runCatching { templateHistoryRepository.listRecent(limit = 30) }
+                .getOrElse { emptyList() }
+            val frequent = history
+                .mapNotNull { it.snapshot.data.categoryCode }
+                .groupingBy { it }
+                .eachCount()
+                .entries
+                .sortedByDescending { it.value }
+                .mapNotNull { entry ->
+                    val category = byCode[entry.key] ?: return@mapNotNull null
+                    CategoryChipUi(
+                        code = category.code,
+                        title = category.title ?: category.code,
+                        breadcrumb = categoryBreadcrumbFor(category.code),
+                    )
+                }
+                .take(6)
+
+            val popularPresets = runCatching {
+                templatePresetsRepository.listPresets(source = TemplatePresetSource.POPULAR, limit = 20)
+            }.getOrElse { emptyList() }
+            val popular = popularPresets
+                .mapNotNull { it.snapshot.categoryCode }
+                .distinct()
+                .mapNotNull { code ->
+                    val category = byCode[code] ?: return@mapNotNull null
+                    CategoryChipUi(
+                        code = category.code,
+                        title = category.title ?: category.code,
+                        breadcrumb = categoryBreadcrumbFor(category.code),
+                    )
+                }
+                .take(6)
+
+            reduce { it.copy(frequentCategories = frequent, popularCategories = popular) }
+        }
+    }
+
+    fun onSearchCommitted() {
+        recordTemplateUsage()
+    }
+
+    suspend fun resolveNearbyCategoryChips(codes: Set<String>): List<CategoryChipUi> =
+        resolveCategorySelection(codes).chips
+
+    suspend fun resolveNearbyCategorySelection(
+        codes: Set<String>,
+    ): Pair<Set<String>, List<CategoryChipUi>> {
+        val result = resolveCategorySelection(codes)
+        return result.codes to result.chips
+    }
+
+    suspend fun resolveNearbyLeafCategoryCode(codes: Set<String>): String? =
+        resolveLeafCategoryCode(codes, ensureCategoryIndex())
+
+    private suspend fun resolveCategorySelection(
+        codes: Set<String>,
+    ): CategorySelectionResult {
+        if (codes.isEmpty()) {
+            return CategorySelectionResult(
+                codes = emptySet(),
+                chips = emptyList(),
+                leafCategoryCode = null,
+            )
+        }
+        val index = ensureCategoryIndex()
+        val compacted = codes.filter { code ->
+            var parent = index.byCode[code]?.parentCode
+            while (!parent.isNullOrBlank()) {
+                if (codes.contains(parent)) return@filter false
+                parent = index.byCode[parent]?.parentCode
+            }
+            true
+        }.toSet()
+        val items = compacted.map { code ->
+            val category = index.byCode[code]
+            CategoryChipUi(
+                code = code,
+                title = category?.title ?: code,
+                breadcrumb = index.breadcrumbByCode[code],
+            )
+        }.sortedBy { it.title }
+        val leafCategoryCode = resolveLeafCategoryCode(compacted, index)
+        return CategorySelectionResult(
+            codes = compacted,
+            chips = items,
+            leafCategoryCode = leafCategoryCode,
+        )
+    }
+
+    private fun resolveLeafCategoryCode(
+        codes: Set<String>,
+        index: CategoryIndex,
+    ): String? {
+        if (codes.size != 1) return null
+        val code = codes.first()
+        return if (index.parentCodes.contains(code)) null else code
+    }
+
+    private fun clampNearbyRadius(value: Int): Int =
+        value.coerceIn(1, MAX_NEARBY_RADIUS_KM)
+
+    private fun coarseGeo(value: Double): Double {
+        val factor = 10.0.pow(NEARBY_PRIVACY_DECIMALS.toDouble())
+        return round(value * factor) / factor
+    }
+
+    private fun coarsenLatLon(lat: Double?, lon: Double?): Pair<Double?, Double?> {
+        if (lat == null || lon == null) return null to null
+        return coarseGeo(lat) to coarseGeo(lon)
+    }
+
+    private fun normalizePostedAt(value: NearbyPostedAt): NearbyPostedAt = value
+
+    private fun normalizeNearbyBrands(brands: List<NearbyBrand>): List<NearbyBrand> {
+        if (brands.isEmpty()) return emptyList()
+        val deduped = LinkedHashMap<String, NearbyBrand>()
+        brands.forEach { brand ->
+            val rawName = brand.name.trim()
+            if (rawName.isBlank()) return@forEach
+            val normalizedName = Normalizer.normBrand(rawName) ?: rawName
+            val id = brand.id.trim().ifBlank { Normalizer.key(normalizedName) }
+            if (id.isBlank()) return@forEach
+            deduped.putIfAbsent(id, NearbyBrand(id = id, name = normalizedName))
+        }
+        return deduped.values.toList()
+    }
+
+    private fun sanitizeNearbyFilters(
+        filters: NearbyFiltersState,
+        allowBrands: Boolean,
+    ): NearbyFiltersState {
+        val permission = _state.value.nearbyLocationPermission
+        val allowNearby = permission != NearbyLocationPermission.DeniedTemporary &&
+            permission != NearbyLocationPermission.DeniedPermanent
+        val sanitizedScope = when (filters.locationScope) {
+            NearbyScope.NEARBY -> if (allowNearby) NearbyScope.NEARBY else NearbyScope.CITY
+            NearbyScope.CITY -> NearbyScope.CITY
+            NearbyScope.COUNTRY -> NearbyScope.CITY
+        }
+        val fallbackCity = filters.selectedPlace?.city?.trim()?.takeIf { it.isNotBlank() }
+            ?: _state.value.nearbyProfileCity
+            ?: _state.value.nearbyUserLocation
+        val sanitizedPlace = when (sanitizedScope) {
+            NearbyScope.NEARBY -> null
+            NearbyScope.CITY, NearbyScope.COUNTRY -> fallbackCity?.let { NearbyPlace(city = it) }
+        }
+        val updatedSort = if (sanitizedScope != NearbyScope.NEARBY && filters.sort == NearbySort.Distance) {
+            NearbySort.Newest
+        } else {
+            filters.sort
+        }
+        val normalizedBrands = if (allowBrands) normalizeNearbyBrands(filters.brands) else emptyList()
+        val normalizedDelivery = filters.delivery.filterNot { delivery -> delivery == NearbyDelivery.Meeting }.toSet()
+        return filters.copy(
+            locationScope = sanitizedScope,
+            radiusKm = clampNearbyRadius(filters.radiusKm),
+            selectedPlace = sanitizedPlace,
+            brands = normalizedBrands,
+            delivery = normalizedDelivery,
+            postedAt = normalizePostedAt(filters.postedAt),
+            sort = updatedSort,
+        )
+    }
+
+    private fun applyNearbyFiltersResolved(
+        filters: NearbyFiltersState,
+        categoryChips: List<CategoryChipUi>,
+        leafCategoryCode: String?,
+        persist: Boolean,
+        refresh: Boolean,
+        resetPagination: Boolean = true,
+    ) {
+        reduce {
+            val updated = it.copy(
+                nearbyFilters = filters,
+                nearbyCategoryChips = categoryChips,
+                nearbyLeafCategoryCode = leafCategoryCode,
+                nearbyBrandFacets = if (leafCategoryCode == null) emptyList() else it.nearbyBrandFacets,
+                nearbyError = null,
+                nearbyLastAction = null,
+                nearbyDraftLoading = false,
+            )
+            if (resetPagination) {
+                updated.copy(
+                    nearbyFetchLimit = NEARBY_INITIAL_FETCH_LIMIT,
+                    nearbyVisibleCount = NEARBY_INITIAL_VISIBLE_COUNT,
+                    nearbyIsLoadingMore = false,
+                )
+            } else {
+                updated
+            }
+        }
+        if (persist) persistNearbyFilters(filters = filters)
+        if (refresh) refreshNearbyFeed(filters = filters)
+    }
+
+    fun updateFeedCategories(
+        codes: Set<String>,
+        persist: Boolean = true,
+        refresh: Boolean = true,
+    ) {
+        viewModelScope.launch {
+            val result = resolveCategorySelection(codes)
+            val categoryChanged = result.codes != _state.value.nearbyFilters.categoryCodes
+            val base = _state.value.nearbyFilters.copy(
+                categoryCodes = result.codes,
+                brands = if (categoryChanged) emptyList() else _state.value.nearbyFilters.brands,
+            )
+            val updated = sanitizeNearbyFilters(base, allowBrands = result.leafCategoryCode != null)
+            applyNearbyFiltersResolved(
+                filters = updated,
+                categoryChips = result.chips,
+                leafCategoryCode = result.leafCategoryCode,
+                persist = persist,
+                refresh = refresh,
+            )
+        }
+    }
+
+    fun applyNearbyFilters(filters: NearbyFiltersState) {
+        viewModelScope.launch {
+            val result = resolveCategorySelection(filters.categoryCodes)
+            val categoryChanged = result.codes != _state.value.nearbyFilters.categoryCodes
+            val base = filters.copy(
+                categoryCodes = result.codes,
+                brands = if (categoryChanged) emptyList() else filters.brands,
+            )
+            val sanitized = sanitizeNearbyFilters(base, allowBrands = result.leafCategoryCode != null)
+            val updated = sanitized.copy(categoryCodes = result.codes)
+            applyNearbyFiltersResolved(
+                filters = updated,
+                categoryChips = result.chips,
+                leafCategoryCode = result.leafCategoryCode,
+                persist = true,
+                refresh = true,
+            )
+        }
+    }
+
+    fun resetNearbyFilter(section: NearbyFilterSection) {
+        val updated = _state.value.nearbyFilters.resetSection(section)
+        applyNearbyFilters(updated)
+    }
+
+    private suspend fun loadNearbyLocation(userId: String?) {
+        val profile = runCatching { getProfileCache(userId) }.getOrNull()
+        val city = profile?.city?.trim()?.takeIf { it.isNotBlank() }
+        val locale = Locale.getDefault()
+        val country = locale.country.takeIf { it.isNotBlank() }
+        reduce {
+            val currentLocation = it.nearbyUserLocation ?: city
+            val currentCountry = it.nearbyUserCountry ?: country
+            it.copy(
+                nearbyProfileCity = city,
+                nearbyUserLocation = currentLocation,
+                nearbyUserCountry = currentCountry,
+            )
+        }
+        refreshNearbyFeed()
+    }
+
+    fun updateNearbyLocationPermission(status: NearbyLocationPermission) {
+        reduce { it.copy(nearbyLocationPermission = status) }
+        val current = _state.value.nearbyFilters
+        if (status == NearbyLocationPermission.Granted) {
+            if (current.locationScope != NearbyScope.NEARBY) {
+                applyNearbyFilters(current.copy(locationScope = NearbyScope.NEARBY, selectedPlace = null))
+            }
+            return
+        }
+        if (current.locationScope == NearbyScope.NEARBY || current.locationScope == NearbyScope.COUNTRY) {
+            val fallbackCity = current.selectedPlace?.city
+                ?: _state.value.nearbyProfileCity
+            val updatedSort =
+                if (current.sort == NearbySort.Distance) NearbySort.Newest else current.sort
+            val updated = current.copy(
+                locationScope = NearbyScope.CITY,
+                selectedPlace = fallbackCity?.let { NearbyPlace(city = it) } ?: current.selectedPlace,
+                sort = updatedSort,
+            )
+            applyNearbyFilters(updated)
+        }
+    }
+
+    fun updateNearbyCurrentLocation(
+        city: String?,
+        country: String?,
+        lat: Double?,
+        lon: Double?,
+        addressLine: String? = null,
+        replaceMissing: Boolean = false,
+    ) {
+        val trimmedCity = city?.trim()?.takeIf { it.isNotBlank() }
+        val trimmedAddress = addressLine?.trim()?.takeIf { it.isNotBlank() }
+        val trimmedCountry = country?.trim()?.takeIf { it.isNotBlank() }
+        reduce {
+            val clearedError = it.nearbyError?.takeIf { err -> err.kind != NearbyErrorKind.Location }
+            it.copy(
+                nearbyUserLocation = if (replaceMissing) trimmedCity else trimmedCity ?: it.nearbyUserLocation,
+                nearbyUserAddressLine = if (replaceMissing) trimmedAddress else trimmedAddress ?: it.nearbyUserAddressLine,
+                nearbyUserCountry = if (replaceMissing) trimmedCountry else trimmedCountry ?: it.nearbyUserCountry,
+                nearbyUserLat = if (replaceMissing) lat else lat ?: it.nearbyUserLat,
+                nearbyUserLon = if (replaceMissing) lon else lon ?: it.nearbyUserLon,
+                nearbyError = clearedError,
+            )
+        }
+        if (_state.value.nearbyFilters.locationScope == NearbyScope.NEARBY) {
+            refreshNearbyFeed()
+        }
+    }
+
+    fun setNearbyError(kind: NearbyErrorKind, message: String, action: NearbyRetryAction?) {
+        reduce {
+            it.copy(
+                nearbyError = NearbyErrorState(kind = kind, message = message),
+                nearbyLastAction = action,
+                nearbyDraftLoading = false,
+            )
+        }
+    }
+
+    fun retryNearby(filters: NearbyFiltersState = _state.value.nearbyFilters) {
+        when (_state.value.nearbyLastAction) {
+            NearbyRetryAction.Feed -> refreshNearbyFeed(filters = filters)
+            NearbyRetryAction.Count -> requestNearbyDraftCount(filters)
+            null -> refreshNearbyFeed(filters = filters)
+        }
+    }
+
+    private fun loadNearbyFilters() {
+        viewModelScope.launch {
+            val stored = runCatching { nearbyFiltersStorage.get() }.getOrNull()
+            val rawFilters = stored?.filters ?: NearbyFiltersState()
+            val legacyCodes = stored?.categoryCodes.orEmpty()
+            val incomingCodes = if (rawFilters.categoryCodes.isNotEmpty()) rawFilters.categoryCodes else legacyCodes
+            val result = resolveCategorySelection(incomingCodes)
+            val filters = sanitizeNearbyFilters(
+                rawFilters.copy(categoryCodes = result.codes),
+                allowBrands = result.leafCategoryCode != null,
+            )
+            applyNearbyFiltersResolved(
+                filters = filters,
+                categoryChips = result.chips,
+                leafCategoryCode = result.leafCategoryCode,
+                persist = false,
+                refresh = true,
+            )
+        }
+    }
+
+    private fun persistNearbyFilters(
+        filters: NearbyFiltersState = _state.value.nearbyFilters,
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                nearbyFiltersStorage.set(
+                    NearbyFiltersAppliedState(
+                        filters = filters,
+                        categoryCodes = filters.categoryCodes,
+                    )
+                )
+            }
+        }
+    }
+
+    private fun refreshNearbyFeed(
+        filters: NearbyFiltersState = _state.value.nearbyFilters,
+        fetchLimit: Int = _state.value.nearbyFetchLimit,
+        debounceMs: Long = NEARBY_FETCH_DEBOUNCE_MS,
+    ) {
+        nearbyFetchJob?.cancel()
+        nearbyFetchJob = viewModelScope.launch {
+            reduce { it.copy(nearbyError = null, nearbyLastAction = NearbyRetryAction.Feed) }
+            if (debounceMs > 0) {
+                delay(debounceMs)
+            }
+            val criteria = buildNearbyCriteria(
+                filters = filters,
+                categoryCodes = filters.categoryCodes,
+                leafCategoryCode = _state.value.nearbyLeafCategoryCode,
+                currentLocation = _state.value.nearbyUserLocation,
+                currentCountry = _state.value.nearbyUserCountry,
+                currentLat = _state.value.nearbyUserLat,
+                currentLon = _state.value.nearbyUserLon,
+                limit = fetchLimit,
+            )
+            val includeBrandFacets = _state.value.nearbyLeafCategoryCode != null
+            val request = OfferSearchWithFacetsRequest(
+                criteria = criteria,
+                facets = if (includeBrandFacets) setOf(OfferFacetType.BRAND) else emptySet(),
+                excludeFacetFilters = if (includeBrandFacets) setOf(OfferFacetType.BRAND) else emptySet(),
+            )
+            val result = runCatching { searchOffersWithFacets(request) }
+            if (result.isFailure) {
+                setNearbyError(
+                    kind = NearbyErrorKind.Network,
+                    message = result.exceptionOrNull()?.message ?: "Не удалось обновить результаты",
+                    action = NearbyRetryAction.Feed,
+                )
+                reduce { it.copy(nearbyIsLoadingMore = false) }
+                return@launch
+            }
+            val payload = result.getOrThrow()
+            val items = payload.items
+            val brandFacets = if (includeBrandFacets) {
+                payload.brandFacets.map { facet ->
+                    NearbyBrandFacet(id = facet.id, name = facet.name, count = facet.count)
+                }
+            } else {
+                emptyList()
+            }
+            reduce { state ->
+                val visible = state.nearbyVisibleCount.coerceAtMost(items.size)
+                state.copy(
+                    nearbyOffers = items,
+                    nearbyFoundCount = payload.total,
+                    nearbyBrandFacets = brandFacets,
+                    nearbyError = null,
+                    nearbyFetchLimit = fetchLimit,
+                    nearbyVisibleCount = visible,
+                    nearbyIsLoadingMore = false,
+                )
+            }
+        }
+    }
+
+    fun loadMoreNearby() {
+        val current = _state.value
+        if (current.nearbyIsLoadingMore) return
+        if (current.nearbyOffers.size < current.nearbyFetchLimit &&
+            current.nearbyVisibleCount >= current.nearbyOffers.size
+        ) {
+            return
+        }
+        val nextLimit = current.nearbyFetchLimit + NEARBY_FETCH_STEP
+        val nextVisible = (current.nearbyVisibleCount + NEARBY_FETCH_STEP).coerceAtMost(nextLimit)
+        reduce {
+            it.copy(
+                nearbyFetchLimit = nextLimit,
+                nearbyVisibleCount = nextVisible,
+                nearbyIsLoadingMore = true,
+            )
+        }
+        refreshNearbyFeed(filters = current.nearbyFilters, fetchLimit = nextLimit, debounceMs = 0L)
+    }
+
+    fun requestNearbyDraftCount(filters: NearbyFiltersState) {
+        nearbyCountJob?.cancel()
+        reduce {
+            it.copy(
+                nearbyDraftCount = null,
+                nearbyDraftLoading = true,
+                nearbyLastAction = NearbyRetryAction.Count,
+                nearbyError = null,
+            )
+        }
+        nearbyCountJob = viewModelScope.launch {
+            delay(NEARBY_COUNT_DEBOUNCE_MS)
+            val leafCategoryCode = resolveLeafCategoryCode(filters.categoryCodes, ensureCategoryIndex())
+            val sanitized = sanitizeNearbyFilters(filters, allowBrands = leafCategoryCode != null)
+            val criteria = buildNearbyCriteria(
+                filters = sanitized,
+                categoryCodes = sanitized.categoryCodes,
+                leafCategoryCode = leafCategoryCode,
+                currentLocation = _state.value.nearbyUserLocation,
+                currentCountry = _state.value.nearbyUserCountry,
+                currentLat = _state.value.nearbyUserLat,
+                currentLon = _state.value.nearbyUserLon,
+            ).copy(limit = NEARBY_COUNT_LIMIT)
+            val request = OfferSearchWithFacetsRequest(criteria = criteria)
+            val result = runCatching { searchOffersWithFacets(request) }
+            if (result.isFailure) {
+                setNearbyError(
+                    kind = NearbyErrorKind.Network,
+                    message = result.exceptionOrNull()?.message ?: "Не удалось получить количество",
+                    action = NearbyRetryAction.Count,
+                )
+                return@launch
+            }
+            val payload = result.getOrThrow()
+            reduce {
+                it.copy(
+                    nearbyDraftCount = payload.total,
+                    nearbyDraftLoading = false,
+                    nearbyError = null,
+                )
+            }
+        }
+    }
+
+    private fun buildNearbyCriteria(
+        filters: NearbyFiltersState,
+        categoryCodes: Set<String>,
+        leafCategoryCode: String?,
+        currentLocation: String?,
+        currentCountry: String?,
+        currentLat: Double?,
+        currentLon: Double?,
+        limit: Int = NEARBY_INITIAL_FETCH_LIMIT,
+    ): OfferSearchCriteria {
+        val locale = Locale.getDefault()
+        val attrs = emptyMap<String, String>()
+        val condition = filters.condition.value.trim().takeIf {
+            filters.condition != NearbyCondition.Any && it.isNotBlank()
+        }
+        val deliveryChannels = filters.delivery
+            .mapNotNull { delivery -> delivery.value.trim().takeIf { it.isNotBlank() } }
+            .distinct()
+        val brandIds = filters.brands
+            .mapNotNull { brand -> brand.id.trim().takeIf { it.isNotBlank() } }
+            .distinct()
+        val brandName = filters.brands
+            .firstOrNull { brand -> brand.name.trim().isNotBlank() }
+            ?.name
+            ?.trim()
+        val resolvedScope = if (filters.locationScope == NearbyScope.COUNTRY) NearbyScope.CITY else filters.locationScope
+        val canUseGeo = resolvedScope == NearbyScope.NEARBY && currentLat != null && currentLon != null
+        val (coarseLat, coarseLon) = if (canUseGeo) coarsenLatLon(currentLat, currentLon) else null to null
+        val resolvedSort =
+            if (resolvedScope != NearbyScope.NEARBY && filters.sort == NearbySort.Distance) {
+                NearbySort.Newest
+            } else {
+                filters.sort
+            }
+        val sort = when (resolvedSort) {
+            NearbySort.Distance -> if (canUseGeo) OfferSort.DISTANCE_ASC else OfferSort.NEWEST
+            NearbySort.Newest -> OfferSort.NEWEST
+            NearbySort.PriceAsc -> OfferSort.PRICE_ASC
+            NearbySort.PriceDesc -> OfferSort.PRICE_DESC
+        }
+        val categoryCode = leafCategoryCode
+            ?: categoryCodes.singleOrNull()?.takeIf { it.isNotBlank() }
+        val radius = if (resolvedScope == NearbyScope.NEARBY) clampNearbyRadius(filters.radiusKm) else null
+        val selectedCity = filters.selectedPlace?.city?.trim()?.takeIf { it.isNotBlank() }
+        val resolvedLocation = when (resolvedScope) {
+            NearbyScope.NEARBY -> if (canUseGeo) null else currentLocation?.trim()?.takeIf { it.isNotBlank() }
+            NearbyScope.CITY, NearbyScope.COUNTRY -> selectedCity ?: currentLocation?.trim()?.takeIf { it.isNotBlank() }
+        }
+        val updatedAfterMs = filters.postedAt.days?.let { days ->
+            System.currentTimeMillis() - days.toLong() * 24 * 60 * 60 * 1000
+        }
+        val sellerCountryCode = when (filters.locationScope) {
+            NearbyScope.COUNTRY -> {
+                filters.selectedPlace?.country?.trim()?.takeIf { it.isNotBlank() }
+                    ?: currentCountry?.trim()?.takeIf { it.isNotBlank() }
+                    ?: locale.country.takeIf { it.isNotBlank() }
+            }
+            NearbyScope.NEARBY -> if (!canUseGeo) {
+                currentCountry?.trim()?.takeIf { it.isNotBlank() }
+            } else {
+                null
+            }
+            NearbyScope.CITY -> null
+        }
+        val sellerCity = when (resolvedScope) {
+            NearbyScope.NEARBY -> if (canUseGeo) null else resolvedLocation
+            NearbyScope.CITY -> resolvedLocation
+            NearbyScope.COUNTRY -> null
+        }
+        val location = when (resolvedScope) {
+            NearbyScope.NEARBY -> if (canUseGeo) null else resolvedLocation
+            NearbyScope.CITY -> resolvedLocation
+            NearbyScope.COUNTRY -> null
+        }
+
+        return OfferSearchCriteria(
+            brand = brandName,
+            model = null,
+            brands = brandIds,
+            categoryCode = categoryCode,
+            priceMin = filters.priceMin?.toDouble(),
+            priceMax = filters.priceMax?.toDouble(),
+            location = location,
+            radiusKm = radius,
+            centerLat = coarseLat,
+            centerLon = coarseLon,
+            geoMode = if (canUseGeo) GeoMode.RADIUS else GeoMode.CITY_FALLBACK,
+            deliverableOnly = false,
+            condition = condition,
+            conditions = listOfNotNull(condition),
+            deliveryChannels = deliveryChannels,
+            attributes = attrs,
+            userCountry = locale.country.takeIf { it.isNotBlank() },
+            userLanguage = locale.language.takeIf { it.isNotBlank() },
+            limit = limit,
+            sort = sort,
+            sellerCity = sellerCity,
+            sellerCountryCode = sellerCountryCode,
+            updatedAfterMs = updatedAfterMs,
+        )
+    }
+
+    fun subscribeToCurrentTemplate(onResult: (created: Boolean) -> Unit = {}) {
+        val current = _state.value.template
+        val snapshot = buildSnapshot(current)
+        if (snapshot == null) {
+            onResult(false)
+            return
+        }
+        viewModelScope.launch {
+            val heading = current.lockedTitle?.trim().takeIf { !it.isNullOrBlank() }
+                ?: categoryBreadcrumbFor(current.categoryCode)
+                ?: snapshot.data.anchorId
+            val freeText = snapshot.data.freeText?.trim().takeIf { !it.isNullOrBlank() }
+            val query = listOfNotNull(
+                heading?.takeIf { it.isNotBlank() },
+                freeText?.takeIf { it.isNotBlank() },
+            ).joinToString(" ").trim()
+                .ifBlank { current.inputText.trim() }
+
+            if (query.isBlank()) {
+                onResult(false)
+                return@launch
+            }
+
+            val existing = runCatching { trackRepository.listTracks() }
+                .getOrElse { emptyList() }
+                .firstOrNull { track ->
+                    track.type == TrackType.SEARCH &&
+                        track.target.query?.trim()?.equals(query, ignoreCase = true) == true
+                }
+            if (existing != null) {
+                onResult(false)
+                return@launch
+            }
+
+            val now = System.currentTimeMillis()
+            val created = runCatching {
+                trackRepository.upsertTrack(
+                    Track(
+                        id = "new",
+                        title = heading.takeIf { !it.isNullOrBlank() }?.take(80) ?: query.take(80),
+                        categoryCode = current.categoryCode,
+                        type = TrackType.SEARCH,
+                        target = TrackTarget(query = query),
+                        filters = TrackFilters(),
+                        alertRules = emptyList(),
+                        state = TrackState.ACTIVE,
+                        createdAt = now,
+                        updatedAt = now,
+                    )
+                )
+            }.isSuccess
+            onResult(created)
+        }
+    }
+
+    private fun buildSnapshot(template: UiTemplate): TemplateSnapshot? {
+        val anchorType = template.anchorType ?: return null
+        if (!template.isLocked) return null
+
+        val data = TemplateSnapshotData(
+            anchorType = anchorType,
+            anchorId = template.anchorId ?: template.lockedTitle ?: template.inputText,
+            categoryCode = template.categoryCode,
+            attrs = template.attributes.values
+                .asSequence()
+                .filter { !isCategoryLevelKey(it.code) }
+                .mapNotNull { a -> a.canonicalValue?.takeIf { it.isNotBlank() }?.let { v -> TemplateSnapshotAttr(key = a.code, value = v) } }
+                .sortedBy { it.key.lowercase() }
+                .toList(),
+            freeText = template.lockedTitle?.let { lt ->
+                template.inputText.removePrefix(lt).trim().takeIf { it.isNotBlank() }
+            } ?: template.inputText.trim().takeIf { it.isNotBlank() },
+            mode = when (template.mode) {
+                TemplateMode.OfferFromLink -> TemplateSnapshotMode.OFFER
+                TemplateMode.ExpressFromPhoto, TemplateMode.OfferFromVoice -> TemplateSnapshotMode.EXPRESS
+                TemplateMode.SearchOrSubscribe -> TemplateSnapshotMode.SEARCH
+            },
+        )
+        val id = templateIdTask.computeId(data)
+        return TemplateSnapshot(data = data, templateId = id)
+    }
+
+    private fun rebuildDictionary(
+        categoryCode: String?,
+        defs: List<AttributeDef> = _state.value.attributeDefs,
+        requiredIfRules: List<RequiredIfRule> = categoryRequiredIfRules,
+        constraints: List<CatalogConstraints> = categoryConstraints,
+    ) {
+        categoryRequiredIfRules = requiredIfRules
+        categoryConstraints = constraints
+        categoryDictionary = buildCategoryDictionary(categoryCode, defs, requiredIfRules, constraints)
+    }
+
+    private fun applyTemplate(
+        template: UiTemplate,
+        block: (MainPageState) -> MainPageState = { it },
+    ) {
+        val filters = template.asSelectedFilters()
+        val isActive = template.isLocked || template.mode != TemplateMode.SearchOrSubscribe
+        val shouldDropSearchState = !template.isLocked && template.mode == TemplateMode.SearchOrSubscribe
+        _state.update { state ->
+            val forcedActive = isActive || state.chosenText != null
+            block(
+                state.copy(
+                    template = template,
+                    queryText = template.inputText,
+                    selectedFilters = if (shouldDropSearchState) emptyMap() else filters,
+                    requiredKeys = template.requiredKeys,
+                    errorKeys = template.errorKeys,
+                    errorMessages = template.errorMessages,
+                    linkMeta = template.linkMeta,
+                    photoUrl = template.primaryPhotoUrl,
+                    photoUrls = template.photoUrls,
+                    templateMode = template.mode,
+                    isTemplateActive = forcedActive,
+                    product = if (shouldDropSearchState) null else state.product,
+                    attributeDefs = if (shouldDropSearchState) emptyList() else state.attributeDefs,
+                    foundCount = if (shouldDropSearchState) null else state.foundCount,
+                    prefetchedOffers = if (shouldDropSearchState) emptyList() else state.prefetchedOffers,
+                )
+            )
+        }
+        refreshFacetCountsIfVisible()
+        refreshAttrFacetCountsIfVisible()
+    }
+
+    private fun recomputeTemplate(template: UiTemplate): UiTemplate =
+        templateEngine.onInputTextChanged(template, template.inputText, categoryDictionary)
+
+    fun onInputModeChange(mode: InputMode) {
+        reduce {
+            it.copy(
+                inputMode = mode,
+                showFilterSheet = false,
+                filterStage = FilterStage.ATTRS,
+                currentAttrKey = null,
+                facetCountsKey = null,
+                facetCounts = null,
+                facetCountsLoading = false,
+            )
+        }
+    }
+
+    fun openPhotoWizard(step: PhotoWizardStep = PhotoWizardStep.FRONT) {
+        reduce { state ->
+            state.copy(
+                inputMode = InputMode.Photo,
+                photoWizard = PhotoWizardState(visible = true, step = step),
+            )
+        }
+    }
+
+
+    fun closePhotoWizard() {
+        reduce { state ->
+            state.copy(
+                photoWizard = state.photoWizard.copy(
+                    visible = false,
+                    pendingRole = null,
+                    errorMessage = null,
+                ),
+            )
+        }
+    }
+
+    fun dismissCategoryFallback() {
+        reduce { it.copy(categoryFallback = CategoryFallbackState()) }
+    }
+
+    fun applyCategoryCandidate(candidate: com.example.shoppingassistant.domain.vision.VisionCategoryCandidate) {
+        applyCategorySelectionFromFilter(candidate.code)
+        reduce { it.copy(categoryFallback = CategoryFallbackState()) }
+    }
+
+    fun setPhotoWizardStep(step: PhotoWizardStep) {
+        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(step = step, errorMessage = null)) }
+    }
+
+    fun requestPhotoSlot(role: VisionPhotoRole) {
+        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(pendingRole = role, errorMessage = null)) }
+    }
+
+    fun clearPendingPhotoRole() {
+        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(pendingRole = null)) }
+    }
+
+    fun addWizardPhoto(
+        role: VisionPhotoRole,
+        uri: String,
+        base64: String?,
+        hash: String?,
+        qualityOk: Boolean,
+    ) {
+        if (uri.isBlank()) return
+        val current = _state.value
+        val wizard = current.photoWizard
+        val total = wizard.totalPhotos()
+        val slotOccupied = wizard.allSlots().any { it.role == role && !it.uri.isNullOrBlank() }
+        if (!slotOccupied && total >= 8) {
+            reduce {
+                it.copy(
+                    photoWizard = wizard.copy(
+                        pendingRole = null,
+                        errorMessage = "Можно добавить максимум 8 фото",
+                    ),
+                )
+            }
+            return
+        }
+        val isDuplicate = !hash.isNullOrBlank() &&
+            wizard.allSlots().any { it.role != role && it.hash == hash }
+        val appearance = updateSlot(wizard.appearanceSlots, role, uri, base64, hash, isDuplicate, qualityOk)
+        val tech = updateSlot(wizard.techSlots, role, uri, base64, hash, isDuplicate, qualityOk)
+        val error = when {
+            isDuplicate -> "Похоже, это то же фото"
+            total >= 8 && wizard.allSlots().none { it.role == role && !it.uri.isNullOrBlank() } ->
+                "Можно добавить максимум 8 фото"
+            !qualityOk -> "Низкое качество. Попробуйте сфокусироваться ближе."
+            else -> null
+        }
+        val updatedWizardBase = wizard.copy(
+            appearanceSlots = appearance,
+            techSlots = tech,
+            pendingRole = null,
+            errorMessage = error,
+        )
+        val stepRoles = when (wizard.step) {
+            PhotoWizardStep.FRONT -> setOf(VisionPhotoRole.FRONT)
+            PhotoWizardStep.OPTIONAL -> setOf(
+                VisionPhotoRole.BACK,
+                VisionPhotoRole.LEFT,
+                VisionPhotoRole.RIGHT,
+                VisionPhotoRole.TOP,
+                VisionPhotoRole.BOTTOM,
+            )
+            PhotoWizardStep.SPECS -> setOf(VisionPhotoRole.TECH_1, VisionPhotoRole.TECH_2)
+        }
+        val canAutoAdvance = error == null &&
+            role in stepRoles &&
+            updatedWizardBase.allSlots()
+                .firstOrNull { it.role == role }
+                ?.status == PhotoSlotStatus.ADDED
+        val nextStep = when (wizard.step) {
+            PhotoWizardStep.FRONT -> PhotoWizardStep.OPTIONAL
+            PhotoWizardStep.OPTIONAL -> PhotoWizardStep.SPECS
+            PhotoWizardStep.SPECS -> null
+        }
+        val updatedWizard = if (canAutoAdvance && nextStep != null) {
+            updatedWizardBase.copy(step = nextStep)
+        } else {
+            updatedWizardBase
+        }
+        if (current.template.mode == TemplateMode.ExpressFromPhoto) {
+            val updatedTemplate = syncTemplatePhotos(current.template, updatedWizard)
+            applyTemplate(updatedTemplate) { it.copy(photoWizard = updatedWizard) }
+        } else {
+            reduce { it.copy(photoWizard = updatedWizard) }
+        }
+    }
+
+    fun removeWizardPhoto(role: VisionPhotoRole) {
+        val current = _state.value
+        val wizard = current.photoWizard
+        val appearance = clearSlot(wizard.appearanceSlots, role)
+        val tech = clearSlot(wizard.techSlots, role)
+        val updatedWizard = wizard.copy(
+            appearanceSlots = appearance,
+            techSlots = tech,
+            errorMessage = null,
+        )
+        if (current.template.mode == TemplateMode.ExpressFromPhoto) {
+            val updatedTemplate = syncTemplatePhotos(current.template, updatedWizard)
+            applyTemplate(updatedTemplate) { it.copy(photoWizard = updatedWizard) }
+        } else {
+            reduce { it.copy(photoWizard = updatedWizard) }
+        }
+    }
+
+    fun removeWizardPhotoByUri(uri: String) {
+        val role = _state.value.photoWizard.allSlots().firstOrNull { it.uri == uri }?.role ?: return
+        removeWizardPhoto(role)
+    }
+
+    fun setWizardError(message: String) {
+        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(errorMessage = message)) }
+    }
+    @SuppressLint("SimpleDateFormat")
+    fun recognizeWizardPhotos(inputs: List<VisionPhotoInput>, locale: String? = null) {
+        val current = _state.value
+        val wizard = current.photoWizard
+        val selectedInputs = buildVisionInputsForWizard(inputs, wizard, maxPhotos = 8)
+// Доп. защита: после фильтрации front мог выпасть (например, из-за пустого base64).
+        val hasFront = selectedInputs.any { it.role == VisionPhotoRole.FRONT }
+        if (!hasFront) {
+            val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
+            setWizardError(if (lang.startsWith("ru")) "Нужно фото лицевой стороны." else "Front photo is required.")
+            return
+        }
+
+// Требование: минимум 2 фото внешнего вида (FRONT + любая другая грань).
+        val appearanceRoles = setOf(
+            VisionPhotoRole.FRONT,
+            VisionPhotoRole.BACK,
+            VisionPhotoRole.LEFT,
+            VisionPhotoRole.RIGHT,
+            VisionPhotoRole.TOP,
+            VisionPhotoRole.BOTTOM,
+        )
+        val appearanceCount = selectedInputs.count { it.role in appearanceRoles }
+        if (appearanceCount < 2) {
+            val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
+            setWizardError(
+                if (lang.startsWith("ru")) {
+                    "Добавьте минимум две фотографии, чтобы не заполнять характеристики вручную."
+                } else {
+                    "Add at least two photos to avoid filling specs manually."
+                }
+            )
+            return
+        }
+
+        reduce { it.copy(photoWizard = wizard.copy(isRecognizing = true, errorMessage = null)) }
+        viewModelScope.launch {
+            val request = VisionNormalizeRequest(
+                photos = selectedInputs,
+                userKey = current.currentUserId,
+                locale = locale,
+                categoryHint = current.template.categoryCode ?: current.product?.categoryCode,
+                // Парсим только front/back ТОЛЬКО если оба есть и нет тех-фото.
+                parseFrontBackOnly =
+                    selectedInputs.any { it.role == VisionPhotoRole.FRONT } &&
+                            selectedInputs.any { it.role == VisionPhotoRole.BACK } &&
+                            selectedInputs.none { it.role == VisionPhotoRole.TECH_1 || it.role == VisionPhotoRole.TECH_2 },
+            )
+            // дальше без изменений...
+
+
+            val result = runCatching { normalizePhotosUseCase(request) }.getOrNull()
+            if (result == null) {
+                reduce {
+                    it.copy(
+                        photoWizard = it.photoWizard.copy(
+                            isRecognizing = false,
+                            errorMessage = "Не удалось распознать. Попробуйте другие фото.",
+                        ),
+                    )
+                }
+                return@launch
+            }
+
+            val fatalErrors = result.errors.filterNot { it == "NOT_IN_CATALOG" }
+            if (fatalErrors.isNotEmpty()) {
+                val message = when {
+                    fatalErrors.contains("LIMIT_EXCEEDED") -> {
+                        val usage = runCatching { getVisionUsageUseCase(current.currentUserId) }.getOrNull()?.usage
+                        val resetAt = usage?.resetAtMillis
+                        val resetText = resetAt?.let { millis ->
+                            java.text.SimpleDateFormat("HH:mm").format(java.util.Date(millis))
+                        }
+                        if (resetText != null) {
+                            "Лимит распознаваний исчерпан. Обновится в $resetText. Можно заполнить вручную."
+                        } else {
+                            "Лимит распознаваний исчерпан. Попробуйте позже или заполните вручную."
+                        }
+                    }
+
+                    fatalErrors.contains("MIN_APPEARANCE_PHOTOS") -> {
+                        val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
+                        if (lang.startsWith("ru")) {
+                            "Добавьте минимум две фотографии, чтобы не заполнять характеристики вручную."
+                        } else {
+                            "Add at least two photos to avoid filling specs manually."
+                        }
+                    }
+
+                    fatalErrors.contains("MISSING_FRONT_BACK") -> {
+                        val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
+                        if (lang.startsWith("ru")) {
+                            "Добавьте фото лицевой стороны и ещё одну грань товара."
+                        } else {
+                            "Add a front photo and one more side of the item."
+                        }
+                    }
+
+                    else -> {
+                        val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
+                        if (lang.startsWith("ru")) {
+                            "Не удалось распознать. Попробуйте другие фото."
+                        } else {
+                            "Recognition failed. Try different photos."
+                        }
+                    }
+                }
+
+                reduce {
+                    it.copy(
+                        photoWizard = it.photoWizard.copy(
+                            isRecognizing = false,
+                            errorMessage = message,
+                        ),
+                    )
+                }
+                return@launch
+            }
+
+            if (result.normalizedQuery == null) {
+                reduce {
+                    it.copy(
+                        photoWizard = it.photoWizard.copy(
+                            isRecognizing = false,
+                            errorMessage = "Не удалось распознать. Попробуйте другие фото.",
+                        ),
+                    )
+                }
+                return@launch
+            }
+
+            val stepOverride = stepForNextAction(result.nextAction)
+            val keepWizardOpen = result.nextAction != null
+            applyVisionResult(
+                result = result,
+                keepWizardOpen = keepWizardOpen,
+                wizardStep = stepOverride,
+                wizardError = if (keepWizardOpen) hintForNextAction(result.nextAction) else null,
+            )
+        }
+    }
+    private fun buildVisionInputsForWizard(
+        inputs: List<VisionPhotoInput>,
+        wizard: PhotoWizardState,
+        maxPhotos: Int,
+    ): List<VisionPhotoInput> {
+        val byRole = inputs
+            .asSequence()
+            .filter { it.base64.isNotBlank() }
+            .associateBy { it.role }
+
+        val slotsByRole = wizard.allSlots().associateBy { it.role }
+
+        // Приоритет: tech -> front/back -> остальные грани.
+        val order = listOf(
+            VisionPhotoRole.TECH_1,
+            VisionPhotoRole.TECH_2,
+            VisionPhotoRole.FRONT,
+            VisionPhotoRole.BACK,
+            VisionPhotoRole.LEFT,
+            VisionPhotoRole.RIGHT,
+            VisionPhotoRole.TOP,
+            VisionPhotoRole.BOTTOM,
+        )
+
+        val out = ArrayList<VisionPhotoInput>(maxPhotos)
+        for (role in order) {
+            if (out.size >= maxPhotos) break
+
+            // 1) Если UI уже прислал base64 по этой роли — берём его.
+            val fromUi = byRole[role]
+            if (fromUi != null) {
+                out.add(fromUi)
+                continue
+            }
+
+            // 2) Иначе пытаемся поднять base64 из wizard-слота.
+            val slot = slotsByRole[role] ?: continue
+            if (slot.uri.isNullOrBlank()) continue
+            if (slot.status == PhotoSlotStatus.DUPLICATE || slot.status == PhotoSlotStatus.ERROR) continue
+            val base64 = slot.base64?.takeIf { it.isNotBlank() } ?: continue
+
+            out.add(VisionPhotoInput(role = role, base64 = base64))
+        }
+
+        return out
+    }
+
+
+    private fun updateSlot(
+        slots: List<PhotoSlot>,
+        role: VisionPhotoRole,
+        uri: String,
+        base64: String?,
+        hash: String?,
+        isDuplicate: Boolean,
+        qualityOk: Boolean,
+    ): List<PhotoSlot> {
+        return slots.map { slot ->
+            if (slot.role != role) slot
+            else slot.copy(
+                uri = uri,
+                base64 = base64,
+                hash = hash,
+                status = when {
+                    isDuplicate -> PhotoSlotStatus.DUPLICATE
+                    !qualityOk -> PhotoSlotStatus.ERROR
+                    else -> PhotoSlotStatus.ADDED
+                },
+                error = when {
+                    isDuplicate -> "Дубликат"
+                    !qualityOk -> "Низкое качество"
+                    else -> null
+                },
+            )
+        }
+    }
+
+    private fun clearSlot(slots: List<PhotoSlot>, role: VisionPhotoRole): List<PhotoSlot> {
+        return slots.map { slot ->
+            if (slot.role != role) slot else slot.copy(
+                uri = null,
+                base64 = null,
+                hash = null,
+                status = PhotoSlotStatus.EMPTY,
+                error = null,
+            )
+        }
+    }
+
+    private fun applyVisionResult(
+        result: com.example.shoppingassistant.domain.vision.VisionNormalizeResult,
+        keepWizardOpen: Boolean = false,
+        wizardStep: PhotoWizardStep? = null,
+        wizardError: String? = null,
+    ) {
+        val current = _state.value
+        val wizard = current.photoWizard
+        val normalized = result.normalizedQuery
+        val titleCandidate = result.title
+            ?: listOfNotNull(normalized?.brand, normalized?.model).joinToString(" ").ifBlank { null }
+        val categoryCode = result.categoryCode ?: current.template.categoryCode
+        val baseInput = titleCandidate ?: current.template.inputText
+        val resolvedProduct = resolveProduct(titleCandidate)?.copy(categoryCode = categoryCode)
+            ?: run {
+                val brand = normalized?.brand?.takeIf { it.isNotBlank() }
+                val model = normalized?.model?.takeIf { it.isNotBlank() }
+                if (brand != null && model != null) {
+                    Product(brand = brand, model = model, categoryCode = categoryCode)
+                } else null
+            }
+
+        val visionAttrs = buildMap<String, TemplateAttribute> {
+            normalized?.brand?.takeIf { it.isNotBlank() }?.let { put("brand", TemplateAttribute("brand", it, ValueSource.FromSuggestion)) }
+            normalized?.model?.takeIf { it.isNotBlank() }?.let { put("model", TemplateAttribute("model", it, ValueSource.FromSuggestion)) }
+            normalized?.attributes?.forEach { (code, value) ->
+                if (value.isNotBlank()) {
+                    put(code, TemplateAttribute(code, value, ValueSource.FromSuggestion))
+                }
+            }
+        }
+        val mergedAttrs = current.template.attributes.toMutableMap().apply {
+            visionAttrs.forEach { (key, value) ->
+                val existing = this[key]
+                if (existing == null || existing.source == ValueSource.ParsedFromText) {
+                    this[key] = value
+                }
+            }
+        }
+
+        val photoUrls = wizard.allSlots().mapNotNull { it.uri?.takeIf { uri -> uri.isNotBlank() } }
+        val primary = wizard.appearanceSlots.firstOrNull { !it.uri.isNullOrBlank() }?.uri
+            ?: photoUrls.firstOrNull()
+
+        val base = current.template.copy(
+            inputText = baseInput,
+            lockedTitle = titleCandidate ?: current.template.lockedTitle,
+            isLocked = titleCandidate != null,
+            categoryCode = categoryCode,
+            anchorType = categoryCode?.let { com.example.shoppingassistant.domain.template.TemplateAnchorType.CATEGORY },
+            anchorId = categoryCode ?: current.template.anchorId ?: titleCandidate ?: baseInput,
+            attributes = mergedAttrs,
+            mode = current.template.mode,
+            photoUrls = photoUrls,
+            primaryPhotoUrl = primary,
+        )
+
+        val updated = templateEngine.onInputTextChanged(base, base.inputText, categoryDictionary)
+        applyTemplate(updated) {
+            it.copy(
+                product = resolvedProduct,
+                photoWizard = wizard.copy(
+                    visible = keepWizardOpen || wizard.visible,
+                    step = wizardStep ?: wizard.step,
+                    pendingRole = null,
+                    isRecognizing = false,
+                    errorMessage = wizardError,
+                    lastResult = result,
+                ),
+            )
+        }
+        refreshAttributes(product = resolvedProduct, categoryCode = categoryCode)
+        maybeShowCategoryFallback(categoryCode, result.categoryCandidates, resolvedProduct != null)
+    }
+
+    private fun maybeShowCategoryFallback(
+        categoryCode: String?,
+        candidates: List<com.example.shoppingassistant.domain.vision.VisionCategoryCandidate>,
+        hasProductMatch: Boolean,
+    ) {
+        val code = categoryCode?.takeIf { it.isNotBlank() }
+        viewModelScope.launch {
+            if (hasProductMatch && code != null) {
+                val profile = runCatching { catalogRepository.getCategoryProfile(code) }.getOrNull()
+                if (profile != null) {
+                    reduce { it.copy(categoryFallback = CategoryFallbackState()) }
+                    return@launch
+                }
+            }
+            val fallbackCandidates = candidates.ifEmpty {
+                runCatching { catalogRepository.listCategories() }
+                    .getOrElse { emptyList() }
+                    .take(3)
+                    .map { cat ->
+                        com.example.shoppingassistant.domain.vision.VisionCategoryCandidate(
+                            code = cat.code,
+                            title = cat.title,
+                            score = 0.5f,
+                        )
+                    }
+            }
+            reduce {
+                it.copy(
+                    categoryFallback = CategoryFallbackState(
+                        visible = fallbackCandidates.isNotEmpty(),
+                        candidates = fallbackCandidates,
+                        message = "Не нашли точную категорию. Выберите подходящую:",
+                    ),
+                )
+            }
+        }
+    }
+
+    private fun stepForNextAction(action: VisionNextAction?): PhotoWizardStep? = when (action) {
+        VisionNextAction.ADD_TECH_PHOTO,
+        VisionNextAction.RETAKE_CLEAR_TEXT,
+            -> PhotoWizardStep.SPECS
+
+        VisionNextAction.ADD_BACK_PHOTO -> PhotoWizardStep.OPTIONAL
+        VisionNextAction.RETAKE_PHOTO -> PhotoWizardStep.FRONT
+        null -> null
+    }
+
+    private fun hintForNextAction(action: com.example.shoppingassistant.domain.vision.VisionNextAction?): String? {
+        return when (action) {
+            com.example.shoppingassistant.domain.vision.VisionNextAction.ADD_TECH_PHOTO ->
+                "Добавьте тех. фото (шильдик/наклейка) для точного распознавания."
+            com.example.shoppingassistant.domain.vision.VisionNextAction.ADD_BACK_PHOTO ->
+                "Добавьте заднюю сторону, чтобы уточнить характеристики."
+            com.example.shoppingassistant.domain.vision.VisionNextAction.RETAKE_CLEAR_TEXT ->
+                "Сделайте тех. фото крупнее и с читаемым текстом."
+            com.example.shoppingassistant.domain.vision.VisionNextAction.RETAKE_PHOTO ->
+                "Переснимите фото: попробуйте лучшую фокусировку."
+            null -> null
+        }
+    }
+
+    private fun syncTemplatePhotos(template: UiTemplate, wizard: PhotoWizardState): UiTemplate {
+        val photoUrls = wizard.allSlots().mapNotNull { it.uri?.takeIf { uri -> uri.isNotBlank() } }
+        val primary = wizard.appearanceSlots.firstOrNull { !it.uri.isNullOrBlank() }?.uri
+            ?: photoUrls.firstOrNull()
+        return template.copy(photoUrls = photoUrls, primaryPhotoUrl = primary)
+    }
+
+    fun onQueryChange(value: String) {
+        val prev = _state.value
+        if (value == prev.template.inputText) return
+        if (value.isBlank()) {
+            resetTemplate()
+            updateSuggestions("")
+            return
+        }
+        val updated = templateEngine.onInputTextChanged(prev.template, value, categoryDictionary)
+        applyTemplate(updated) { it.copy(chosenText = null, boundSegments = emptyList()) }
+        enforceTemplateConsistency(value.trimStart())
+        updateSuggestions(value)
+    }
+
+    fun onSuggestionChosen(text: String, product: Product?) {
+        val heading = listOfNotNull(product?.brand, product?.model)
+            .joinToString(" ")
+            .ifBlank { text }
+            .replace("\\s+".toRegex(), " ")
+            .trim()
+        val desiredInput = buildSuggestedInput(heading, text)
+        val resolvedCategoryCode = product?.categoryCode ?: _state.value.template.categoryCode
+
+        val baseAttrs = buildMap<String, TemplateAttribute> {
+            product?.brand?.takeIf { it.isNotBlank() }?.let { b ->
+                put(
+                    "brand",
+                    TemplateAttribute(
+                        code = "brand",
+                        canonicalValue = b,
+                        source = ValueSource.FromSuggestion,
+                    )
+                )
+            }
+            product?.model?.takeIf { it.isNotBlank() }?.let { m ->
+                put(
+                    "model",
+                    TemplateAttribute(
+                        code = "model",
+                        canonicalValue = m,
+                        source = ValueSource.FromSuggestion,
+                    )
+                )
+            }
+        }
+        val decoratedAttrs = injectCategoryAttributes(baseAttrs, resolvedCategoryCode, null)
+
+        val base = UiTemplate(
+            inputText = desiredInput,
+            anchorType = com.example.shoppingassistant.domain.template.TemplateAnchorType.PRODUCT,
+            anchorId = product?.id?.takeIf { it.isNotBlank() } ?: heading,
+            lockedTitle = heading,
+            isLocked = true,
+            categoryCode = resolvedCategoryCode,
+            attributes = decoratedAttrs,
+            mode = TemplateMode.SearchOrSubscribe,
+        )
+        reduce { it.copy(suggestions = emptyList()) }
+        viewModelScope.launch {
+            if (isAtomicCategory(resolvedCategoryCode)) {
+                recordAtomicTemplate(base)
+                return@launch
+            }
+            rebuildDictionary(base.categoryCode, constraints = emptyList())
+            val updated = templateEngine.onInputTextChanged(base, desiredInput, categoryDictionary)
+            applyTemplate(updated) {
+                it.copy(
+                    chosenText = heading,
+                    product = product,
+                    linkMeta = null,
+                    photoUrl = null,
+                    photoPlaceholderCategory = product?.model ?: product?.brand,
+                    templatePrefillDone = false,
+                )
+            }
+            refreshAttributes(product, resolvedCategoryCode)
+            recordTemplateUsage()
+        }
+    }
+
+    fun resetTemplate() {
+        categoryRequiredIfRules = emptyList()
+        categoryConstraints = emptyList()
+        categoryDictionary = buildCategoryDictionary(null, emptyList(), emptyList(), emptyList())
+        reduce {
+            it.copy(
+                template = UiTemplate.Empty,
+                queryText = "",
+                chosenText = null,
+                product = null,
+                attributeDefs = emptyList(),
+                selectedFilters = emptyMap(),
+                requiredKeys = emptySet(),
+                errorKeys = emptySet(),
+                errorMessages = emptyMap(),
+                photoUrl = null,
+                photoUrls = emptyList(),
+                photoPlaceholderCategory = null,
+                linkMeta = null,
+                templateMode = TemplateMode.SearchOrSubscribe,
+                isTemplateActive = false,
+                templatePrefillDone = false,
+                showFilterSheet = false,
+                filterStage = FilterStage.ATTRS,
+                currentAttrKey = null,
+                facetCountsKey = null,
+                facetCounts = null,
+                facetCountsLoading = false,
+                foundCount = null,
+                prefetchedOffers = emptyList(),
+                createOfferLoading = false,
+                createOfferStatus = null,
+                createOfferMessage = null,
+                lastCreatedOfferId = null,
+                suggestions = emptyList(),
+                photoWizard = PhotoWizardState(),
+                categoryFallback = CategoryFallbackState(),
+            )
+        }
+        updateSuggestions("")
+    }
+
+    private fun dropTemplatePreserveQuery(currentQuery: String) {
+        reduce {
+            it.copy(
+                queryText = currentQuery,
+                chosenText = null,
+                product = null,
+                attributeDefs = emptyList(),
+                selectedFilters = emptyMap(),
+                requiredKeys = emptySet(),
+                errorKeys = emptySet(),
+                errorMessages = emptyMap(),
+                photoUrl = null,
+                photoUrls = emptyList(),
+                photoPlaceholderCategory = null,
+                linkMeta = null,
+                templateMode = TemplateMode.SearchOrSubscribe,
+                isTemplateActive = false,
+                templatePrefillDone = false,
+                showFilterSheet = false,
+                filterStage = FilterStage.ATTRS,
+                currentAttrKey = null,
+                facetCountsKey = null,
+                facetCounts = null,
+                facetCountsLoading = false,
+                foundCount = null,
+                prefetchedOffers = emptyList(),
+                createOfferLoading = false,
+                createOfferStatus = null,
+                createOfferMessage = null,
+                lastCreatedOfferId = null,
+            )
+        }
+    }
+
+    fun refreshCurrentUser() {
+        viewModelScope.launch {
+            val user = runCatching { getCurrentUser() }.getOrNull()
+            val resolved = user?.id?.toString()
+            realUserId = resolved
+            reduce { it.copy(currentUserId = debugAuthStore.user.value?.id ?: resolved) }
+        }
+    }
+
+    fun updatePrefetched(count: Int?, offers: List<ExplainedItem>) {
+        reduce {
+            it.copy(
+                nearbyFoundCount = count,
+                nearbyOffers = offers,
+            )
+        }
+    }
+
+    fun setAttributeValue(key: String, value: String) {
+        if (key == categorySelectorKey) {
+            applyCategorySelectionFromFilter(value)
+            return
+        }
+        val updated = templateEngine.onAttributeChanged(_state.value.template, key, value, categoryDictionary)
+        applyTemplate(updated) {
+            it.copy(
+                templatePrefillDone = true,
+                currentAttrKey = null,
+                showFilterSheet = false,
+                facetCountsKey = null,
+                facetCounts = null,
+                facetCountsLoading = false,
+            )
+        }
+        if (key == "brand" || key == "model") {
+            refreshAttributes(product = _state.value.product, categoryCode = _state.value.template.categoryCode)
+        }
+    }
+
+    private fun applyCategorySelectionFromFilter(value: String) {
+        viewModelScope.launch {
+            val index = ensureCategoryIndex()
+            val code = resolveCategoryCodeFromBreadcrumb(value, index) ?: return@launch
+            val rawBreadcrumb = index.breadcrumbByCode[code] ?: value
+            val breadcrumb = normalizeBreadcrumb(rawBreadcrumb) ?: rawBreadcrumb
+            val current = _state.value
+            val remainder = extractFreeTextRemainder(current.template.inputText, current.template.lockedTitle)
+            val heading = breadcrumbTail(breadcrumb).ifBlank { code }
+            val desiredInput = listOfNotNull(
+                heading.takeIf { it.isNotBlank() },
+                remainder.takeIf { it.isNotBlank() },
+            ).joinToString(" ").trim()
+
+            val baseAttrs = injectCategoryAttributes(
+                emptyMap(),
+                code,
+                breadcrumb,
+            )
+            val base = current.template.copy(
+                inputText = desiredInput,
+                anchorType = TemplateAnchorType.CATEGORY,
+                anchorId = code,
+                lockedTitle = heading,
+                isLocked = true,
+                categoryCode = code,
+                attributes = baseAttrs,
+            )
+            if (isAtomicCategory(code)) {
+                recordAtomicTemplate(base)
+                return@launch
+            }
+            rebuildDictionary(code, constraints = emptyList())
+            val updated = templateEngine.onInputTextChanged(base, desiredInput, categoryDictionary)
+            applyTemplate(updated) {
+                it.copy(
+                    chosenText = breadcrumb.takeIf { text -> text.isNotBlank() },
+                    product = null,
+                    templatePrefillDone = false,
+                )
+            }
+            refreshAttributes(product = null, categoryCode = code)
+            recordTemplateUsage()
+        }
+    }
+
+    fun removeAttribute(key: String) {
+        val updated = templateEngine.onAttributeChanged(_state.value.template, key, null, categoryDictionary)
+        applyTemplate(updated)
+    }
+
+    fun openAttributesSheet() {
+        reduce {
+            it.copy(
+                showFilterSheet = true,
+                filterStage = FilterStage.ATTRS,
+                currentAttrKey = null,
+                expressFillActive = false,
+                expressFillQueue = emptyList(),
+                expressFillNeedsPhoto = false,
+                facetCountsKey = null,
+                facetCounts = null,
+                facetCountsLoading = false,
+            )
+        }
+        refreshAttrFacetCountsIfVisible()
+    }
+
+    fun onPickAttribute(def: AttributeDef) {
+        reduce {
+            it.copy(
+                showFilterSheet = true,
+                filterStage = FilterStage.VALUES,
+                currentAttrKey = def.key,
+            )
+        }
+        requestFacetCounts(def)
+    }
+
+    fun onPickAttributeValue(def: AttributeDef, value: String) {
+        val flowState = _state.value
+        val isFlowStep = flowState.expressFillActive && flowState.expressFillQueue.firstOrNull() == def.key
+        setAttributeValue(def.key, value)
+        if (isFlowStep) {
+            val remaining = flowState.expressFillQueue.drop(1)
+            if (remaining.isNotEmpty()) {
+                val nextKey = remaining.first()
+                reduce {
+                    it.copy(
+                        showFilterSheet = true,
+                        filterStage = FilterStage.VALUES,
+                        currentAttrKey = nextKey,
+                        expressFillQueue = remaining,
+                    )
+                }
+                val nextDef = _state.value.attributeDefs.firstOrNull { it.key == nextKey }
+                requestFacetCounts(nextDef)
+            } else {
+                val needsPhoto = flowState.expressFillNeedsPhoto
+                reduce {
+                    it.copy(
+                        showFilterSheet = false,
+                        filterStage = FilterStage.ATTRS,
+                        currentAttrKey = null,
+                        expressFillActive = false,
+                        expressFillQueue = emptyList(),
+                        expressFillNeedsPhoto = false,
+                    )
+                }
+                if (needsPhoto) {
+                    openPhotoWizard(step = PhotoWizardStep.FRONT)
+                }
+            }
+            return
+        }
+        if (flowState.expressFillActive) {
+            reduce {
+                it.copy(
+                    expressFillActive = false,
+                    expressFillQueue = emptyList(),
+                    expressFillNeedsPhoto = false,
+                )
+            }
+        }
+        reduce {
+            it.copy(
+                showFilterSheet = false,
+                filterStage = FilterStage.ATTRS,
+                currentAttrKey = null,
+            )
+        }
+    }
+
+    fun focusAttribute(key: String) {
+        reduce {
+            it.copy(
+                showFilterSheet = true,
+                filterStage = FilterStage.VALUES,
+                currentAttrKey = key,
+            )
+        }
+        val def = _state.value.attributeDefs.firstOrNull { it.key == key }
+        requestFacetCounts(def)
+    }
+
+    fun dismissFilterSheet() {
+        val wasValues = _state.value.filterStage == FilterStage.VALUES && _state.value.currentAttrKey != null
+        reduce {
+            if (it.filterStage == FilterStage.VALUES && it.currentAttrKey != null) {
+                it.copy(
+                    filterStage = FilterStage.ATTRS,
+                    currentAttrKey = null,
+                    expressFillActive = false,
+                    expressFillQueue = emptyList(),
+                    expressFillNeedsPhoto = false,
+                    facetCountsKey = null,
+                    facetCounts = null,
+                    facetCountsLoading = false,
+                )
+            } else {
+                it.copy(
+                    showFilterSheet = false,
+                    currentAttrKey = null,
+                    expressFillActive = false,
+                    expressFillQueue = emptyList(),
+                    expressFillNeedsPhoto = false,
+                    facetCountsKey = null,
+                    facetCounts = null,
+                    facetCountsLoading = false,
+                )
+            }
+        }
+        if (wasValues) {
+            refreshAttrFacetCountsIfVisible()
+        }
+    }
+
+    fun startExpressFillFlow(): Boolean {
+        val state = _state.value
+        val selected = state.template.asSelectedFilters()
+        val hasPhotos = !state.template.primaryPhotoUrl.isNullOrBlank() || state.template.photoUrls.isNotEmpty()
+        val categoryKeys = categoryLevelKeysFor(
+            categoryCode = state.template.categoryCode,
+            defs = state.attributeDefs,
+        )
+        val expressKeys =
+            (categoryKeys + listOf("price", "condition") + state.template.requiredKeys).distinct()
+        val availableKeys = state.attributeDefs.map { it.key }.toSet()
+        val missingKeys = expressKeys.filter { key ->
+            key in availableKeys && selected[key].isNullOrBlank()
+        }
+        val needsPhoto = !hasPhotos
+        if (missingKeys.isEmpty()) {
+            if (needsPhoto) {
+                openPhotoWizard(step = PhotoWizardStep.FRONT)
+                return true
+            }
+            return false
+        }
+        val firstKey = missingKeys.first()
+        reduce {
+            it.copy(
+                showFilterSheet = true,
+                filterStage = FilterStage.VALUES,
+                currentAttrKey = firstKey,
+                expressFillActive = true,
+                expressFillQueue = missingKeys,
+                expressFillNeedsPhoto = needsPhoto,
+                facetCountsKey = null,
+                facetCounts = null,
+                facetCountsLoading = false,
+            )
+        }
+        val def = _state.value.attributeDefs.firstOrNull { it.key == firstKey }
+        requestFacetCounts(def)
+        return true
+    }
+
+    private fun refreshFacetCountsIfVisible() {
+        val state = _state.value
+        if (!state.showFilterSheet || state.filterStage != FilterStage.VALUES) return
+        val key = state.currentAttrKey ?: return
+        val def = state.attributeDefs.firstOrNull { it.key == key }
+        requestFacetCounts(def)
+    }
+
+    private fun refreshAttrFacetCountsIfVisible() {
+        val state = _state.value
+        if (!state.showFilterSheet || state.filterStage != FilterStage.ATTRS) return
+        val selected = state.template.asSelectedFilters()
+            .filterValues { it.isNotBlank() }
+            .filterKeys { key -> !isCategoryLevelKey(key) }
+        val selectedKeys = selected.keys
+        if (selectedKeys.isEmpty()) {
+            reduce { it.copy(attrFacetCounts = emptyMap(), attrFacetCountsLoading = emptySet()) }
+            return
+        }
+        attrFacetCountsJobs.keys
+            .filter { it !in selectedKeys }
+            .forEach { key ->
+                attrFacetCountsJobs.remove(key)?.cancel()
+                lastAttrFacetRequestKey.remove(key)
+            }
+        reduce {
+            it.copy(
+                attrFacetCounts = it.attrFacetCounts.filterKeys { key -> key in selectedKeys },
+                attrFacetCountsLoading = it.attrFacetCountsLoading.filter { it in selectedKeys }.toSet(),
+            )
+        }
+        selected.forEach { (key, value) ->
+            val def = state.attributeDefs.firstOrNull { it.key == key } ?: return@forEach
+            requestAttrFacetCount(def, value)
+        }
+    }
+
+    private fun requestFacetCounts(def: AttributeDef?) {
+        val key = def?.key?.takeIf { it.isNotBlank() } ?: return
+        if (isCategoryLevelKey(key)) return
+        val query = buildFacetCountsQuery(key, def) ?: return
+        val requestKey = buildFacetCountsRequestKey(query)
+        val state = _state.value
+        if (requestKey == lastFacetCountsRequestKey &&
+            state.facetCountsKey == key &&
+            state.facetCountsLoading == false &&
+            state.facetCounts != null
+        ) {
+            return
+        }
+        lastFacetCountsRequestKey = requestKey
+        facetCountsJob?.cancel()
+        facetCountsJob = viewModelScope.launch {
+            reduce { it.copy(facetCountsLoading = true, facetCountsKey = key, facetCounts = null) }
+            val counts = runCatching { getFacetCounts(query) }.getOrNull()
+            val map = counts?.associate { normalizeFacetValue(it.value) to it.count }
+            reduce { current ->
+                if (current.currentAttrKey != key || current.filterStage != FilterStage.VALUES) {
+                    current
+                } else {
+                    current.copy(
+                        facetCountsLoading = false,
+                        facetCountsKey = key,
+                        facetCounts = map,
+                    )
+                }
+            }
+        }
+    }
+
+    private fun requestAttrFacetCount(def: AttributeDef, selectedValue: String) {
+        val key = def.key.takeIf { it.isNotBlank() } ?: return
+        if (isCategoryLevelKey(key)) return
+        val value = selectedValue.trim()
+        if (value.isBlank()) return
+        val query = buildFacetCountsQuery(key, def) ?: return
+        val requestKey = buildFacetCountsRequestKey(query) + "|sel=" + normalizeFacetValue(value)
+        val state = _state.value
+        val lastKey = lastAttrFacetRequestKey[key]
+        if (
+            requestKey == lastKey &&
+            key !in state.attrFacetCountsLoading &&
+            state.attrFacetCounts.containsKey(key)
+        ) {
+            return
+        }
+        lastAttrFacetRequestKey[key] = requestKey
+        attrFacetCountsJobs[key]?.cancel()
+        attrFacetCountsJobs[key] = viewModelScope.launch {
+            reduce { it.copy(attrFacetCountsLoading = it.attrFacetCountsLoading + key) }
+            val counts = runCatching { getFacetCounts(query) }.getOrNull()
+            val map = counts?.associate { normalizeFacetValue(it.value) to it.count }
+            val resolved = if (map == null) null else map[normalizeFacetValue(value)] ?: 0
+            reduce { current ->
+                val updated = current.attrFacetCounts.toMutableMap()
+                if (resolved == null) {
+                    updated.remove(key)
+                } else {
+                    updated[key] = resolved
+                }
+                current.copy(
+                    attrFacetCounts = updated,
+                    attrFacetCountsLoading = current.attrFacetCountsLoading - key,
+                )
+            }
+        }
+    }
+
+    private fun buildFacetCountsQuery(
+        targetKey: String,
+        def: AttributeDef?,
+    ): FacetCountsQuery? {
+        val state = _state.value
+        val template = state.template
+        val categoryCode = template.categoryCode ?: state.product?.categoryCode
+        if (categoryCode.isNullOrBlank()) return null
+        val selected = stripCategoryFilters(template.asSelectedFilters())
+        val attributeFilters = selected
+            .filterKeys { it != "brand" && it != "model" }
+            .mapValues { listOf(it.value) }
+
+        val anchor = when (template.anchorType) {
+            TemplateAnchorType.PRODUCT -> {
+                val prod = state.product
+                if (prod != null) prod.brand to prod.model
+                else {
+                    val heading = template.lockedTitle ?: template.inputText
+                    val q = BrandModelRules.fromRaw(heading)
+                    q.brand to q.model
+                }
+            }
+            TemplateAnchorType.CATEGORY -> {
+                val brand = selected["brand"].orEmpty()
+                val model = selected["model"].orEmpty()
+                brand to model
+            }
+            null -> selected["brand"] to selected["model"]
+        }
+
+        var brand = anchor.first?.takeIf { it.isNotBlank() }
+        var model = anchor.second?.takeIf { it.isNotBlank() }
+        if (targetKey.equals("brand", ignoreCase = true)) brand = null
+        if (targetKey.equals("model", ignoreCase = true)) model = null
+
+        val mode = if (def?.multiValued == true) FacetCountMode.ADD else FacetCountMode.REPLACE
+
+        return FacetCountsQuery(
+            categoryCode = categoryCode,
+            brand = brand,
+            model = model,
+            selectedFilters = attributeFilters,
+            targetFacetKey = targetKey,
+            mode = mode,
+            excludeTargetFacet = true,
+        )
+    }
+
+    private fun buildFacetCountsRequestKey(query: FacetCountsQuery): String {
+        val sb = StringBuilder()
+        sb.append(query.categoryCode.trim().lowercase())
+        sb.append("|k=").append(query.targetFacetKey.trim().lowercase())
+        sb.append("|mode=").append(query.mode.name)
+        sb.append("|ex=").append(query.excludeTargetFacet)
+        sb.append("|b=").append(query.brand?.trim()?.lowercase().orEmpty())
+        sb.append("|m=").append(query.model?.trim()?.lowercase().orEmpty())
+        query.selectedFilters.entries.sortedBy { it.key.lowercase() }.forEach { (key, values) ->
+            sb.append("|f=").append(key.trim().lowercase()).append("=")
+            sb.append(values.map(::normalizeFacetValue).sorted().joinToString(","))
+        }
+        return sb.toString()
+    }
+
+    private fun normalizeFacetValue(value: String): String =
+        value.trim().lowercase()
+
+    fun toExpressWithPhoto(photoUrl: String?, placeholderCategory: String?) {
+        val current = _state.value
+        val urls = buildList {
+            if (!photoUrl.isNullOrBlank()) add(photoUrl)
+            addAll(current.template.photoUrls)
+            addAll(current.photoUrls)
+        }.filter { it.isNotBlank() }.distinct()
+        val lockedHeading = (current.template.lockedTitle ?: placeholderCategory)
+            ?.replace("\\s+".toRegex(), " ")
+            ?.trim()
+        val desiredInput = when {
+            !current.template.isLocked && !lockedHeading.isNullOrBlank() -> lockedHeading
+            current.template.inputText.isBlank() && !lockedHeading.isNullOrBlank() -> lockedHeading
+            else -> current.template.inputText
+        }
+        val base = current.template.copy(
+            inputText = desiredInput,
+            lockedTitle = lockedHeading ?: current.template.lockedTitle,
+            isLocked = current.template.isLocked || !lockedHeading.isNullOrBlank(),
+            mode = TemplateMode.ExpressFromPhoto,
+            primaryPhotoUrl = urls.firstOrNull(),
+            photoUrls = urls,
+            linkMeta = null,
+            linkTemplate = null,
+        )
+        val updated = recomputeTemplate(base)
+        applyTemplate(updated) {
+            it.copy(photoPlaceholderCategory = placeholderCategory ?: it.photoPlaceholderCategory)
+        }
+        refreshAttributes()
+    }
+
+    fun clearPhoto() {
+        val updated = _state.value.template.copy(
+            primaryPhotoUrl = null,
+            photoUrls = emptyList(),
+        )
+        applyTemplate(updated)
+    }
+
+    fun attachLinkTemplate(linkTemplate: LinkTemplateRaw) {
+        val resolvedCategoryCode = resolveCategoryCode(linkTemplate.category)
+        val uiCatalog = runCatching {
+            runBlocking {
+                attributeCatalogFor(
+                    product = null,
+                    svc = attrSvc,
+                    catalog = catalogRepository,
+                    constraintsResolver = constraintsResolver,
+                    categoryCode = resolvedCategoryCode,
+                )
+            }
+        }.getOrElse {
+            com.example.shoppingassistant.feature.pages.main.context.CategoryUiCatalog(
+                categoryCode = resolvedCategoryCode,
+                defs = emptyList(),
+                requiredIfRules = emptyList(),
+                constraints = emptyList(),
+            )
+        }
+
+        if (uiCatalog.defs.isNotEmpty()) {
+            rebuildDictionary(resolvedCategoryCode, uiCatalog.defs, uiCatalog.requiredIfRules)
+            _state.update { it.copy(attributeDefs = uiCatalog.defs) }
+        } else {
+            rebuildDictionary(resolvedCategoryCode, _state.value.attributeDefs, uiCatalog.requiredIfRules)
+        }
+        val base = _state.value.template.copy(mode = TemplateMode.OfferFromLink, categoryCode = resolvedCategoryCode)
+        val updated = templateEngine.attachLinkTemplate(base, linkTemplate, categoryDictionary)
+            .copy(
+                anchorType = com.example.shoppingassistant.domain.template.TemplateAnchorType.PRODUCT,
+                anchorId = base.anchorId ?: linkTemplate.title.orEmpty().ifBlank { linkTemplate.sourceMeta.url },
+            )
+        val product = productFromTemplate(linkTemplate)
+        applyTemplate(updated.copy(categoryCode = resolvedCategoryCode)) {
+            it.copy(
+                product = product ?: it.product,
+                photoPlaceholderCategory = product?.model ?: product?.brand ?: it.photoPlaceholderCategory,
+                templatePrefillDone = true,
+                chosenText = updated.inputText.takeIf { txt -> txt.isNotBlank() } ?: it.chosenText,
+            )
+        }
+        refreshAttributes(product ?: state.value.product, resolvedCategoryCode)
+    }
+
+    fun loadLinkTemplate(
+        source: SourceType,
+        url: String,
+        onResult: (Result<LinkTemplateRaw>) -> Unit = {},
+    ) {
+        viewModelScope.launch {
+            val result = runCatching { linkTemplateBuilder.build(source, url) }
+            result.onSuccess { template ->
+                if (template.ingestStatus == IngestStatus.OK) {
+                    attachLinkTemplate(template)
+                }
+            }
+            onResult(result)
+        }
+    }
+
+    fun loadLinkTemplate(
+        url: String,
+        onResult: (Result<LinkTemplateRaw>) -> Unit = {},
+    ) {
+        viewModelScope.launch {
+            val result = runCatching { linkTemplateBuilder.build(url) }
+            result.onSuccess { template ->
+                if (template.ingestStatus == IngestStatus.OK) {
+                    attachLinkTemplate(template)
+                }
+            }
+            onResult(result)
+        }
+    }
+
+    fun detachLink() {
+        val cleared = _state.value.template.copy(
+            linkMeta = null,
+            linkTemplate = null,
+            mode = TemplateMode.ExpressFromPhoto,
+        )
+        val recomputed = recomputeTemplate(cleared)
+        applyTemplate(recomputed) {
+            it.copy(
+                createOfferStatus = null,
+                createOfferMessage = null,
+                lastCreatedOfferId = null,
+            )
+        }
+    }
+
+    private fun productFromTemplate(linkTemplate: LinkTemplateRaw): Product? {
+        val brand = linkTemplate.brand?.takeIf { it.isNotBlank() } ?: return null
+        val model = linkTemplate.model?.takeIf { it.isNotBlank() }
+        val title = linkTemplate.title ?: listOfNotNull(brand, model).joinToString(" ").ifBlank { brand }
+        return Product(
+            id = "",
+            title = title,
+            brand = brand,
+            model = model ?: "",
+        )
+    }
+
+    fun removePhoto(url: String) {
+        val remaining = _state.value.template.photoUrls.filterNot { it == url }
+        val updated = _state.value.template.copy(
+            photoUrls = remaining,
+            primaryPhotoUrl = remaining.firstOrNull(),
+        )
+        applyTemplate(updated)
+    }
+
+    fun validateRequired(): String? {
+        val template = recomputeTemplate(_state.value.template)
+        val missing = template.requiredKeys.filter { key ->
+            template.attributes[key]?.canonicalValue.isNullOrBlank()
+        }.toSet()
+        val withErrors = template.copy(
+            errorKeys = missing,
+            errorMessages = missing.associateWith { "Нужно заполнить" },
+        )
+        applyTemplate(withErrors)
+        return missing.firstOrNull()
+    }
+
+    data class TemplateValidationResult(
+        val isValid: Boolean,
+        val priceValue: Double?,
+        val currency: String?,
+        val brand: String?,
+        val firstErrorKey: String?,
+    )
+
+    fun validateTemplateForTrackedOffer(): TemplateValidationResult {
+        val template = recomputeTemplate(_state.value.template.copy(mode = TemplateMode.OfferFromLink))
+        val validation = templateEngine.validateForOfferFromLink(template, categoryDictionary)
+        val attrs = template.asSelectedFilters()
+        val priceValue = attrs["price"]?.toDoubleOrNull()
+        val currencyRaw = attrs["currency"]?.trim()
+        val brand = attrs["brand"] ?: _state.value.product?.brand
+
+        val errors = linkedMapOf<String, String>().apply { putAll(validation.errorMessages) }
+        if (brand.isNullOrBlank()) {
+            errors["brand"] = "Укажите бренд"
+        }
+
+        val templWithErrors = template.copy(
+            requiredKeys = template.requiredKeys,
+            errorKeys = errors.keys.toSet(),
+            errorMessages = errors,
+        )
+        applyTemplate(templWithErrors)
+
+        val firstError = errors.keys.firstOrNull()
+        return TemplateValidationResult(
+            isValid = errors.isEmpty(),
+            priceValue = priceValue,
+            currency = currencyRaw?.takeIf { it.length == 3 },
+            brand = brand,
+            firstErrorKey = firstError,
+        )
+    }
+
+    fun submitTrackedOffer(onCompleted: (CreateTrackedOfferResult?) -> Unit = {}) {
+        val state = _state.value
+        val template = state.template
+        val linkTemplate = template.linkTemplate ?: run {
+            reduce {
+                it.copy(
+                    createOfferStatus = CreateTrackedOfferStatus.INVALID_INPUT,
+                    createOfferMessage = "Нет активной ссылки для создания предложения.",
+                )
+            }
+            return
+        }
+        if (template.mode != TemplateMode.OfferFromLink) {
+            reduce {
+                it.copy(
+                    createOfferStatus = CreateTrackedOfferStatus.INVALID_INPUT,
+                    createOfferMessage = "Шаблон не в режиме ссылки.",
+                )
+            }
+            return
+        }
+
+        val validation = validateTemplateForTrackedOffer()
+        if (!validation.isValid) {
+            validation.firstErrorKey?.let { focusAttribute(it) }
+            return
+        }
+
+        val imageUrls = template.primaryPhotoUrl?.let { listOf(it) }
+            ?: template.photoUrls.takeIf { it.isNotEmpty() }
+            ?: state.photoUrl?.let { listOf(it) }
+            ?: emptyList()
+        if (imageUrls.isEmpty()) {
+            reduce {
+                it.copy(
+                    createOfferStatus = CreateTrackedOfferStatus.INVALID_INPUT,
+                    createOfferMessage = "Добавьте фото объявления",
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            reduce { it.copy(createOfferLoading = true, createOfferMessage = null) }
+            val userId = state.currentUserId
+                ?: runCatching { getCurrentUser()?.id?.toString() }.getOrNull()?.also { id ->
+                    reduce { st -> st.copy(currentUserId = id) }
+                }
+                ?: run {
+                    reduce {
+                        it.copy(
+                            createOfferLoading = false,
+                            createOfferStatus = CreateTrackedOfferStatus.INVALID_INPUT,
+                            createOfferMessage = "Войдите, чтобы создать предложение по ссылке",
+                        )
+                    }
+                    onCompleted(null)
+                    return@launch
+                }
+
+            val mergedFilters = template.asSelectedFilters().toMutableMap()
+            state.product?.brand?.takeIf { it.isNotBlank() }?.let { mergedFilters.putIfAbsent("brand", it) }
+            state.product?.model?.takeIf { it.isNotBlank() }?.let { mergedFilters.putIfAbsent("model", it) }
+
+            val request = linkTemplateMapper.map(
+                template = linkTemplate,
+                selectedFilters = mergedFilters,
+                userId = userId,
+                photoUrls = imageUrls,
+            )
+
+            val localId = "temp-${System.currentTimeMillis()}"
+            val localUi = UserOfferCardUi(
+                id = localId,
+                title = request.title,
+                category = state.product?.model ?: state.chosenText,
+                priceMajor = request.priceValue,
+                currency = request.currency,
+                status = UserOfferStatus.ACTIVE,
+                coverUrl = imageUrls.firstOrNull(),
+                publishedAtMillis = System.currentTimeMillis(),
+                sourceUpdatedAtMillis = System.currentTimeMillis(),
+                sourceName = request.source.domainName,
+                sourceIconUrl = request.source.sourceIconUrl,
+            )
+            createdStore.add(localUi)
+
+            val result: CreateTrackedOfferResult = runCatching {
+                userOffersSyncTask.enqueueAndSync(localId, request)
+            }
+                .getOrElse { throwable ->
+                    reduce {
+                        it.copy(
+                            createOfferLoading = false,
+                            createOfferStatus = CreateTrackedOfferStatus.INVALID_INPUT,
+                            createOfferMessage = throwable.message ?: "Не удалось создать предложение",
+                        )
+                    }
+                    onCompleted(null)
+                    return@launch
+                }
+
+            val status = result.status
+            val message = when (status) {
+                CreateTrackedOfferStatus.CREATED -> "Предложение создано"
+                CreateTrackedOfferStatus.ALREADY_EXISTS -> "Предложение уже существует"
+                CreateTrackedOfferStatus.INVALID_INPUT -> result.message ?: "Некорректные данные"
+            }
+
+            reduce {
+                it.copy(
+                    createOfferLoading = false,
+                    createOfferStatus = status,
+                    createOfferMessage = message,
+                    lastCreatedOfferId = result.offerId ?: result.existingOfferId,
+                )
+            }
+            onCompleted(result)
+        }
+    }
+
+    fun applyTemplateMode(mode: TemplateMode) {
+        val updated = _state.value.template.copy(mode = mode)
+        val recalculated = recomputeTemplate(updated)
+        applyTemplate(recalculated) { it.copy(errorKeys = emptySet(), errorMessages = emptyMap()) }
+        refreshAttributes()
+    }
+
+    fun refreshAttributes(
+        product: Product? = _state.value.product,
+        categoryCode: String? = _state.value.template.categoryCode,
+        focusOnKey: String? = null,
+    ) {
+        viewModelScope.launch {
+            val resolvedCategory = categoryCode?.takeIf { it.isNotBlank() }
+                ?: product?.categoryCode?.takeIf { it.isNotBlank() }
+            val uiCatalog = runCatching {
+                attributeCatalogFor(
+                    product = product,
+                    svc = attrSvc,
+                    catalog = catalogRepository,
+                    constraintsResolver = constraintsResolver,
+                    categoryCode = resolvedCategory,
+                    selectedFilters = stripCategoryFilters(_state.value.template.asSelectedFilters()),
+                )
+            }.getOrElse {
+                com.example.shoppingassistant.feature.pages.main.context.CategoryUiCatalog(
+                    categoryCode = resolvedCategory,
+                    defs = emptyList(),
+                    requiredIfRules = emptyList(),
+                    constraints = emptyList(),
+                )
+            }
+            runCatching { ensureCategoryIndex() }
+            val template = _state.value.template
+            val lockedKeys: Set<String> = if (template.isLocked && template.anchorType == TemplateAnchorType.PRODUCT) {
+                template.attributes
+                    .filterValues { it.source == ValueSource.FromSuggestion }
+                    .keys
+                    .toSet()
+            } else emptySet()
+
+            val defs = uiCatalog.defs
+                .map { def -> def.copy(locked = def.key in lockedKeys) }
+
+            var extended = ensureTemplateAttributes(defs, template.mode)
+            if (extended.isEmpty()) {
+                extended = if (resolvedCategory?.startsWith("TECH.") == true) defaultSearchAttributes() else emptyList()
+            }
+            extended = withCategoryDefs(extended)
+            val dictDefs = extended.filterNot { def -> isCategoryLevelKey(def.key) }
+            rebuildDictionary(resolvedCategory, dictDefs, uiCatalog.requiredIfRules, uiCatalog.constraints)
+            _state.update { it.copy(attributeDefs = extended) }
+            val cleanedAttrs = filterTemplateAttributes(
+                attrs = template.attributes,
+                allowedKeys = dictDefs.map { it.key }.toSet(),
+                categoryCode = resolvedCategory,
+            )
+            val templ = template.copy(
+                categoryCode = resolvedCategory,
+                attributes = cleanedAttrs,
+            )
+            applyTemplate(recomputeTemplate(templ))
+            autoPrefillAttributes(extended)
+            focusOnKey?.takeIf { it.isNotBlank() }?.let { focusAttribute(it) }
+        }
+    }
+
+    private fun resolveCategoryCode(category: OfferCategory?): String? = when (category) {
+        OfferCategory.FAST_FOOD -> "FOOD.PIZZA"
+        OfferCategory.SUPPLEMENTS -> "SUPP.PROTEIN"
+        OfferCategory.TECH -> "TECH.SMARTPHONE"
+        OfferCategory.ENTERTAINMENT_TOYS -> "KIDS.STROLLER"
+        else -> null
+    }
+
+    private fun defaultSearchAttributes(): List<AttributeDef> = listOf(
+        AttributeDef("brand", "Бренд", requiredForSearch = true, requiredForOffer = true),
+        AttributeDef("model", "Модель", requiredForSearch = true),
+        AttributeDef("color", "Цвет", options = listOf("black", "white", "gray")),
+        AttributeDef("storage", "Память", options = listOf("128GB", "256GB", "512GB")),
+        AttributeDef("condition", "Состояние", options = listOf("Новый", "Как новый", "Б/У")),
+        AttributeDef("price", "Цена", requiredForOffer = true, requiredForExpress = true),
+        AttributeDef("currency", "Валюта", options = listOf("RUB", "USD", "EUR"), requiredForOffer = true, requiredForExpress = true),
+    )
+
+    private fun requiredKeysFor(mode: TemplateMode): Set<String> = when (mode) {
+        TemplateMode.SearchOrSubscribe -> emptySet()
+        TemplateMode.OfferFromLink -> linkRequiredKeys
+        TemplateMode.ExpressFromPhoto -> expressRequiredKeys
+        TemplateMode.OfferFromVoice -> expressRequiredKeys
+    }
+
+    private fun ensureTemplateAttributes(
+        defs: List<AttributeDef>,
+        mode: TemplateMode,
+    ): List<AttributeDef> {
+        if (mode == TemplateMode.SearchOrSubscribe) return defs
+
+        val mutable = defs.toMutableList()
+        val supportsBrand = defs.any { it.key == "brand" }
+        fun addIfMissing(key: String, title: String, options: List<String>) {
+            if (mutable.none { it.key == key }) {
+                mutable.add(AttributeDef(key, title, options))
+            }
+        }
+
+        if (supportsBrand) {
+            addIfMissing("brand", "Бренд", listOf("Указать бренд"))
+        }
+        addIfMissing("price", "Цена", listOf("Указать цену"))
+        addIfMissing("currency", "Валюта", listOf("RUB", "USD", "EUR"))
+        addIfMissing("condition", "Состояние", listOf("Новый", "Как новый", "Б/У"))
+        return mutable
+    }
+
+    private fun enforceTemplateConsistency(newQuery: String) {
+        // Раньше мы жёстко сбрасывали шаблон при рассинхроне текста и бренда/модели.
+        // Теперь сохраняем шаблон, чтобы при редактировании текста не пропадали фото/фильтры.
+        // Потерю консистентности решаем через валидацию/requiredKeys.
+    }
+
+    private fun autoPrefillAttributes(defs: List<AttributeDef>) {
+        val state = _state.value
+        val template = state.template
+        if (!state.isTemplateActive || state.templatePrefillDone) return
+        if (template.mode == TemplateMode.SearchOrSubscribe) return
+        if (template.attributes.isNotEmpty()) {
+            _state.update { it.copy(templatePrefillDone = true) }
+            return
+        }
+
+        val candidate = firstPrefillCandidate(defs)
+        if (candidate != null) {
+            val updated = templateEngine.onAttributeChanged(template, candidate.first, candidate.second, categoryDictionary)
+            applyTemplate(updated) { it.copy(templatePrefillDone = true) }
+        } else {
+            _state.update { it.copy(templatePrefillDone = true) }
+        }
+    }
+
+    private fun firstPrefillCandidate(defs: List<AttributeDef>): Pair<String, String>? {
+        val filtered = defs.filter {
+            it.options.isNotEmpty() &&
+                    it.key !in expressRequiredKeys &&
+                    it.key !in linkRequiredKeys &&
+                    !isCategoryLevelKey(it.key)
+        }
+        val color = filtered.firstOrNull { it.key.contains("color") || it.title.contains("цвет", ignoreCase = true) }
+        val pick = color ?: filtered.firstOrNull()
+        return pick?.options?.firstOrNull()?.let { pick.key to it }
+    }
+
+    private fun syncFilterIntoQuery(
+        query: String,
+        segments: List<BoundSegment>,
+        key: String,
+        value: String,
+    ): Pair<String, List<BoundSegment>> {
+        if (value.isBlank()) return query to segments
+        val mutable = segments.toMutableList()
+        var newQuery = query
+        val existingIdx = mutable.indexOfFirst { it.key == key }
+        if (existingIdx >= 0) {
+            val seg = mutable[existingIdx]
+            val start = seg.range.first
+            val endExclusive = seg.range.last + 1
+            val diff = value.length - (endExclusive - start)
+            newQuery = newQuery.removeRange(start, endExclusive)
+            newQuery = newQuery.substring(0, start) + value + newQuery.substring(start)
+            mutable[existingIdx] = BoundSegment(key, value, IntRange(start, start + value.length - 1))
+            if (diff != 0) {
+                for (i in mutable.indices) {
+                    if (i == existingIdx) continue
+                    val r = mutable[i].range
+                    if (r.first >= start) {
+                        val shiftedStart = r.first + diff
+                        val shiftedEnd = r.last + diff
+                        mutable[i] = mutable[i].copy(range = IntRange(shiftedStart, shiftedEnd))
+                    }
+                }
+            }
+            return newQuery to mutable
+        }
+
+        val prefix = if (newQuery.isBlank()) "" else " "
+        val insertPos = newQuery.length + prefix.length
+        newQuery = newQuery + prefix + value
+        mutable.add(BoundSegment(key, value, IntRange(insertPos - value.length, insertPos - 1)))
+        return newQuery to mutable
+    }
+
+    private fun removeSegmentForKey(
+        query: String,
+        segments: List<BoundSegment>,
+        key: String,
+    ): Pair<String, List<BoundSegment>> {
+        val idx = segments.indexOfFirst { it.key == key }
+        if (idx < 0) return query to segments
+        val seg = segments[idx]
+        val start = seg.range.first
+        val endExclusive = seg.range.last + 1
+        var newQuery = StringBuilder(query).apply { delete(start, endExclusive) }.toString()
+        newQuery = newQuery.replace(Regex("\\s{2,}"), " ").trim()
+        // Диапазоны остальных сегментов станут недействительными после сильной очистки строки.
+        val remaining = segments.filterIndexed { i, _ -> i != idx }.mapNotNull { s ->
+            // Попробуем переопределить диапазон по первому вхождению значения.
+            val pos = newQuery.indexOf(s.value)
+            if (pos >= 0) s.copy(range = IntRange(pos, pos + s.value.length - 1)) else null
+        }
+        return newQuery to remaining
+    }
+
+    private fun diffRange(old: String, new: String): Pair<Int, Int> {
+        if (old == new) return 0 to old.length
+        val prefix = old.commonPrefixWith(new)
+        val suffix = old.commonSuffixWith(new)
+        val start = prefix.length
+        val endOld = old.length - suffix.length
+        return start to endOld
+    }
+
+    private fun shiftSegments(
+        segments: List<BoundSegment>,
+        diffStart: Int,
+        diffEndOld: Int,
+        delta: Int,
+    ): List<BoundSegment> {
+        if (delta == 0) return segments
+        return segments.mapNotNull { seg ->
+            val start = seg.range.first
+            val end = seg.range.last
+            if (end < diffStart) {
+                seg
+            } else if (start >= diffEndOld) {
+                val shiftedStart = start + delta
+                val shiftedEnd = end + delta
+                seg.copy(range = IntRange(shiftedStart, shiftedEnd))
+            } else {
+                seg // будет переоценен validateSegments
+            }
+        }
+    }
+
+    private fun validateSegments(
+        newQuery: String,
+        segments: List<BoundSegment>,
+        attributeDefs: List<AttributeDef>,
+        selected: Map<String, String>,
+    ): Pair<List<BoundSegment>, Map<String, String>> {
+        val byKey = attributeDefs.associateBy { it.key }
+        val kept = mutableListOf<BoundSegment>()
+        val filters = selected.toMutableMap()
+        segments.forEach { seg ->
+            val def = byKey[seg.key]
+            val range = seg.range
+            if (range.first < 0 || range.last >= newQuery.length) return@forEach
+            val fragment = newQuery.substring(range.first, range.last + 1)
+            val matched = matchValue(def, fragment)
+            if (matched != null) {
+                kept.add(seg.copy(value = matched, range = range))
+                filters[seg.key] = matched
+            } else {
+                filters.remove(seg.key)
+            }
+        }
+        return kept to filters
+    }
+
+    private fun detectNewSegment(
+        newQuery: String,
+        rangeStart: Int,
+        rangeEnd: Int,
+        attributeDefs: List<AttributeDef>,
+        existingKeys: Set<String>,
+    ): BoundSegment? {
+        if (rangeStart >= rangeEnd || attributeDefs.isEmpty()) return null
+        val snippet = newQuery.substring(rangeStart, rangeEnd).trim()
+        if (snippet.isBlank()) return null
+        val tokens = snippet.split(" ", "\n", "\t").filter { it.isNotBlank() }
+        val focus = tokens.lastOrNull() ?: return null
+
+        var foundKey: String? = null
+        var foundCanonical: String? = null
+        attributeDefs.forEach { def ->
+            val canon = matchValue(def, focus)
+            if (canon != null) {
+                if (foundCanonical != null && foundCanonical != canon) {
+                    return null // неоднозначно
+                }
+                foundKey = def.key
+                foundCanonical = canon
+            }
+        }
+        if (foundKey == null || foundCanonical == null) return null
+        if (existingKeys.contains(foundKey!!)) return null
+        val idx = newQuery.indexOf(focus, rangeStart)
+        if (idx < 0) return null
+        return BoundSegment(
+            key = foundKey!!,
+            value = foundCanonical!!,
+            range = IntRange(idx, idx + focus.length - 1),
+        )
+    }
+
+    private fun autoBindFreeTokens(
+        newQuery: String,
+        attributeDefs: List<AttributeDef>,
+        existing: List<BoundSegment>,
+        existingFilters: Map<String, String>,
+    ): List<BoundSegment> {
+        if (attributeDefs.isEmpty()) return emptyList()
+        val existingKeys = existing.map { it.key }.toSet()
+        val tokens = newQuery.split(" ", "\n", "\t")
+            .mapIndexedNotNull { idx, token ->
+                val trimmed = token.trim()
+                if (trimmed.isBlank()) null else idx to trimmed
+            }
+        val result = mutableListOf<BoundSegment>()
+        tokens.forEach { (index, token) ->
+            val startPos = newQuery.indexOf(token)
+            if (startPos < 0) return@forEach
+            val overlapping = existing.any { seg ->
+                val r = seg.range
+                startPos in r.first..r.last || (startPos + token.length - 1) in r.first..r.last
+            }
+            if (overlapping) return@forEach
+            var matchedKey: String? = null
+            var matchedCanon: String? = null
+            attributeDefs.forEach { def ->
+                val m = matchValue(def, token)
+                if (m != null) {
+                    if (matchedCanon != null && matchedCanon != m) {
+                        matchedKey = null
+                        matchedCanon = null
+                        return@forEach
+                    }
+                    matchedKey = def.key
+                    matchedCanon = m
+                }
+            }
+            if (matchedKey != null && matchedCanon != null && matchedKey !in existingKeys) {
+                if (existingFilters[matchedKey] == matchedCanon || existing.any { it.key == matchedKey }) return@forEach
+                result.add(
+                    BoundSegment(
+                        key = matchedKey!!,
+                        value = matchedCanon!!,
+                        range = IntRange(startPos, startPos + token.length - 1),
+                    ),
+                )
+            }
+        }
+        return result
+    }
+
+    private fun matchValue(def: AttributeDef?, text: String): String? {
+        if (def == null || isCategoryLevelKey(def.key)) return null
+        val normalized = text.trim().lowercase()
+        if (normalized.isBlank()) return null
+        val values = def.allowedValues.ifEmpty {
+            def.options.map { ValueDef(canonical = it, synonyms = listOf(it)) }
+        }
+        values.forEach { v ->
+            if (v.canonical.equals(normalized, ignoreCase = true)) return v.canonical
+            if (v.synonyms.any { syn -> syn.equals(normalized, ignoreCase = true) }) return v.canonical
+            if (normalized.length >= 3 &&
+                (v.canonical.startsWith(normalized, ignoreCase = true) ||
+                        v.synonyms.any { syn -> syn.startsWith(normalized, ignoreCase = true) })
+            ) {
+                return v.canonical
+            }
+        }
+        return null
+    }
+
+    fun submitQuery(displayText: String? = null) {
+        val s = _state.value
+        val qText = s.template.inputText.trim()
+        if (qText.isBlank()) return
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            try {
+                val q = BrandModelRules.fromRaw(qText, Normalization.normalizeAttrs(stripCategoryFilters(s.template.asSelectedFilters())))
+                val explained = repository.searchTopExplained(q, limit = 3, rankService = rankService)
+                val offers = explained.map { it.dto }
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        foundCount = offers.size,
+                        topOffers = offers,
+                        showTopOffersSheet = offers.isNotEmpty()
+                    )
+                }
+            } catch (_: Throwable) {
+                _state.update { it.copy(isLoading = false, foundCount = 0, topOffers = emptyList()) }
+            }
+        }
+    }
+
+    // Счётчик для InputSection; удобно мокать в тестах
+    suspend fun countOffers(normalized: String, attrs: Map<String, String> = emptyMap()): Int = try {
+        val rawAttrs = attrs.ifEmpty { _state.value.template.asSelectedFilters() }
+        val q = BrandModelRules.fromRaw(normalized, Normalization.normalizeAttrs(stripCategoryFilters(rawAttrs)))
+        repository.searchTopExplained(q, 3, rankService).size
+    } catch (_: Throwable) { 0 }
+
+    private companion object {
+        private const val NEARBY_INITIAL_FETCH_LIMIT = 20
+        private const val NEARBY_INITIAL_VISIBLE_COUNT = 12
+        private const val NEARBY_FETCH_STEP = 20
+        private const val NEARBY_COUNT_LIMIT = 50
+        private const val NEARBY_FETCH_DEBOUNCE_MS = 250L
+        private const val NEARBY_COUNT_DEBOUNCE_MS = 250L
+        private const val NEARBY_PRIVACY_DECIMALS = 3
+    }
+}

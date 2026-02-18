@@ -1,0 +1,31 @@
+package com.example.shoppingassistant.core.data.catalog
+
+import com.example.shoppingassistant.domain.catalog.CategoryAlias
+import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
+
+/**
+ * MVP: in-memory алиасы категорий. Дальше можно заменить на БД/remote без изменения UI.
+ */
+class CategoryAliasRepositoryImpl(
+    private val seeded: List<CategoryAlias> = defaultAliases(),
+) : CategoryAliasRepository {
+
+    override suspend fun listAliases(): List<CategoryAlias> = seeded
+}
+
+private fun defaultAliases(): List<CategoryAlias> = listOf(
+    CategoryAlias(alias = "телефон", categoryCode = "TECH.SMARTPHONE"),
+    CategoryAlias(alias = "телефоны", categoryCode = "TECH.SMARTPHONE"),
+    CategoryAlias(alias = "смартфон", categoryCode = "TECH.SMARTPHONE"),
+    CategoryAlias(alias = "смартфоны", categoryCode = "TECH.SMARTPHONE"),
+    CategoryAlias(alias = "ip", categoryCode = "TECH.SMARTPHONE"),
+    CategoryAlias(alias = "iphone", categoryCode = "TECH.SMARTPHONE"),
+    CategoryAlias(alias = "айфон", categoryCode = "TECH.SMARTPHONE"),
+
+    CategoryAlias(alias = "роллы", categoryCode = "FOOD.ROLLS_SUSHI"),
+    CategoryAlias(alias = "суши", categoryCode = "FOOD.ROLLS_SUSHI"),
+    CategoryAlias(alias = "пицца", categoryCode = "FOOD.PIZZA"),
+
+    CategoryAlias(alias = "кружка", categoryCode = "HOME.MUGS"),
+    CategoryAlias(alias = "термокружка", categoryCode = "HOME.THERMOMUG"),
+)

@@ -1,0 +1,57 @@
+package com.example.shoppingassistant.feature.ui.menu
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.DynamicFeed
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.shoppingassistant.domain.menu.ActionKey
+import com.example.shoppingassistant.domain.menu.ModeKey
+import com.example.shoppingassistant.domain.menu.UserPanelKeys
+
+data class PanelItemDescriptor<K>(
+    val key: K,
+    val title: String,
+    val icon: ImageVector,
+    val isAvailable: Boolean = true,
+    val unavailableReason: String? = null,
+)
+
+fun defaultModeCatalog(
+    isLoggedIn: Boolean,
+): List<PanelItemDescriptor<ModeKey>> {
+    return UserPanelKeys.supportedModesV1.mapNotNull { key ->
+        when (key) {
+            ModeKey.DASHBOARD -> PanelItemDescriptor(
+                key = ModeKey.DASHBOARD,
+                title = "Новое",
+                icon = Icons.Outlined.DynamicFeed,
+            )
+            ModeKey.CHAT -> PanelItemDescriptor(
+                key = ModeKey.CHAT,
+                title = "Чат",
+                icon = Icons.Outlined.ChatBubbleOutline,
+            )
+            ModeKey.PROFILE -> PanelItemDescriptor(
+                key = ModeKey.PROFILE,
+                title = "Профиль",
+                icon = Icons.Outlined.Person,
+            )
+            else -> null
+        }
+    }
+}
+
+fun defaultActionCatalog(): List<PanelItemDescriptor<ActionKey>> {
+    return UserPanelKeys.supportedActionsV1.mapNotNull { key ->
+        when (key) {
+            ActionKey.POST -> PanelItemDescriptor(
+                key = ActionKey.POST,
+                title = "Поиск",
+                icon = Icons.Outlined.Search,
+            )
+            else -> null
+        }
+    }
+}

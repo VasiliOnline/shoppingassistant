@@ -1,0 +1,89 @@
+package com.example.shoppingassistant.feature.pages.trackeditems
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.shoppingassistant.domain.tracks.DeleteTrackTask
+import com.example.shoppingassistant.domain.tracks.GetTrackedItemsListTask
+import com.example.shoppingassistant.domain.tracks.PauseTrackTask
+import com.example.shoppingassistant.domain.tracks.ResumeTrackTask
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class TrackedItemsViewModel(
+    private val getTrackedItems: GetTrackedItemsListTask,
+    private val pauseTrack: PauseTrackTask,
+    private val resumeTrack: ResumeTrackTask,
+    private val deleteTrack: DeleteTrackTask,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(TrackedItemsState())
+    val state: StateFlow<TrackedItemsState> = _state.asStateFlow()
+
+    init {
+        load()
+    }
+
+    fun load() {
+        viewModelScope.launch {
+            _state.update { it.copy(tracks = TrackedItemsLoadState.Loading, actionMessage = null) }
+            runCatching { getTrackedItems() }
+                .onSuccess { items ->
+                    _state.update {
+                        it.copy(
+                            tracks = if (items.isEmpty()) TrackedItemsLoadState.Empty else TrackedItemsLoadState.Content(items),
+                        )
+                    }
+                }
+                .onFailure { e ->
+                    _state.update { it.copy(tracks = TrackedItemsLoadState.Error(e.message ?: "Не удалось загрузить")) }
+                }
+        }
+    }
+
+    fun setSearchQuery(value: String) {
+        _state.update { it.copy(searchQuery = value) }
+    }
+
+    fun setFilter(filter: TrackedItemsFilter) {
+        _state.update { it.copy(filter = filter) }
+    }
+
+    fun setSort(sort: TrackedItemsSort) {
+        _state.update { it.copy(sort = sort) }
+    }
+
+    fun togglePausedSection() {
+        _state.update { it.copy(pausedExpanded = !it.pausedExpanded) }
+    }
+
+    fun pause(trackId: String) {
+        viewModelScope.launch {
+            runCatching { pauseTrack(trackId) }
+                .onFailure { _state.update { it.copy(actionMessage = "Не удалось поставить на паузу") } }
+            load()
+        }
+    }
+
+    fun resume(trackId: String) {
+        viewModelScope.launch {
+            runCatching { resumeTrack(trackId) }
+                .onFailure { _state.update { it.copy(actionMessage = "Не удалось возобновить") } }
+            load()
+        }
+    }
+
+    fun delete(trackId: String) {
+        viewModelScope.launch {
+            runCatching { deleteTrack(trackId) }
+                .onFailure { _state.update { it.copy(actionMessage = "Не удалось удалить") } }
+            load()
+        }
+    }
+
+    fun consumeActionMessage() {
+        _state.update { it.copy(actionMessage = null) }
+    }
+}

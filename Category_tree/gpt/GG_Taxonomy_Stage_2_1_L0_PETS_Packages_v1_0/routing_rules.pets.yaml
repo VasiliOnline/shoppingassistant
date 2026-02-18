@@ -1,0 +1,178 @@
+version: 2.1-L0
+l0_code: PETS
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- как
+- советы
+- инструкция
+- форум
+- отзывы
+- скачать
+- игра
+- обои
+- дрессировать
+- приучить
+pet_tokens:
+- кот
+- кошка
+- котенок
+- котёнок
+- собак
+- щенок
+- питомц
+- хомяк
+- грызун
+- попугай
+- птиц
+- рыб
+- аквариум
+disambiguation_ordered_rules:
+- id: R.HUMAN_FOOD_EXCLUDE
+  if_any_tokens:
+  - хлеб
+  - молоко
+  - сыр
+  - курица
+  - рис
+  - гречка
+  - овощи
+  - фрукты
+  and_none_tokens:
+  - кот
+  - кошка
+  - собак
+  - щенок
+  - корм
+  then_route_canonical: FOOD.GROCERIES
+  confidence: 0.78
+  notes: Human food should not land in PETS
+- id: R.HUMAN_HAIRCARE_SHAMPOO
+  if_any_tokens:
+  - шампунь
+  - бальзам
+  - кондиционер
+  and_none_tokens:
+  - для собак
+  - для кошек
+  - для животных
+  - питомц
+  then_route_canonical: BEAUTY.HAIRCARE
+  confidence: 0.76
+  notes: Generic shampoo -> human haircare unless clearly pet
+- id: R.HUMAN_SUPPLEMENTS
+  if_any_tokens:
+  - витамин
+  - витамины
+  - омега
+  - бад
+  - бады
+  - магний
+  - цинк
+  - коллаген
+  and_none_tokens:
+  - для кошек
+  - для собак
+  - для животных
+  - питомц
+  then_route_canonical: BEAUTY.HEALTH
+  confidence: 0.84
+  notes: Human supplements -> BEAUTY.HEALTH
+- id: R.PLANTS_EXCLUDE
+  if_any_tokens:
+  - удобрение
+  - грунт
+  - почва
+  - корм для растений
+  then_route_canonical: HOME.GARDEN
+  confidence: 0.62
+  notes: Plant-related queries are not pets
+- id: R.PETS_FOOD
+  if_any_tokens:
+  - корм
+  - пауч
+  - консервы
+  - лакомств
+  - сухой корм
+  - влажный корм
+  - royal canin
+  - whiskas
+  - purina
+  - pedigree
+  - felix
+  - sheba
+  - hill
+  - acana
+  - orijen
+  - farmina
+  then_route_browse_node: BN.PETS.FOOD
+  confidence: 0.86
+  notes: Pet food
+- id: R.PETS_HYGIENE
+  if_any_tokens:
+  - наполнитель
+  - лоток
+  - туалет
+  - пеленк
+  - подстилк
+  - шампунь для собак
+  - шампунь для кошек
+  - пуходерк
+  - когтерез
+  - пакеты для уборки
+  - совок для наполнителя
+  then_route_browse_node: BN.PETS.HYGIENE
+  confidence: 0.84
+  notes: Pet hygiene
+- id: R.PETS_ACCESSORIES
+  if_any_tokens:
+  - ошейник
+  - поводок
+  - рулетка
+  - шлейк
+  - намордник
+  - миска
+  - поилка
+  - лежанк
+  - домик
+  - когтеточк
+  - переноск
+  - клетк
+  - террариум
+  - аквариум
+  - игрушка для собак
+  - игрушка для кошки
+  then_route_browse_node: BN.PETS.ACCESSORIES
+  confidence: 0.82
+  notes: Pet accessories
+- id: R.PETS_HEALTH
+  if_any_tokens:
+  - ветаптека
+  - веттовары
+  - блох
+  - клещ
+  - глист
+  - дегельминтизац
+  - антисептик для животных
+  - витамины для кошек
+  - витамины для собак
+  - паста для выведения шерсти
+  - перевязочный материал
+  then_route_browse_node: BN.PETS.HEALTH
+  confidence: 0.8
+  notes: Pet health/vet goods
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.PETS
+  default_canonical: PETS
+  if_only_generic_tokens_route_to_root: true

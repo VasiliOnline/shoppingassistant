@@ -1,0 +1,94 @@
+package com.example.shoppingassistant.feature.pages.main.context
+
+import com.example.shoppingassistant.feature.pages.main.state.AttributeDict
+import com.example.shoppingassistant.feature.pages.main.state.CategoryDictionary
+import com.example.shoppingassistant.feature.pages.main.state.TokenIndexEntry
+import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.feature.pages.model.ValueDef
+
+private val defaultOfferRequired = setOf("price", "currency", "brand")
+
+/**
+ * Собирает CategoryDictionary из списка AttributeDef (каталог атрибутов категории).
+ */
+fun buildCategoryDictionary(
+    categoryCode: String?,
+    defs: List<AttributeDef>,
+    requiredIfRules: List<RequiredIfRule> = emptyList(),
+    constraints: List<CatalogConstraints> = emptyList(),
+): CategoryDictionary {
+    val enriched = ensureDefaults(defs)
+    val attrDicts = enriched.associate { def ->
+        val canonicalValues = canonicalValues(def)
+        val tokenMap = buildTokenMap(def, canonicalValues)
+        def.key to AttributeDict(
+            code = def.key,
+            isRequiredForOffer = def.requiredForOffer || def.key in defaultOfferRequired,
+            isRequiredForSearch = def.requiredForSearch,
+            isRequiredForExpress = def.requiredForExpress,
+            tokenToCanonical = tokenMap,
+            canonicalValues = canonicalValues.toSet(),
+        )
+    }
+
+    val tokenIndex = mutableMapOf<String, MutableList<TokenIndexEntry>>()
+    attrDicts.values.forEach { attr ->
+        attr.tokenToCanonical.forEach { (token, canonical) ->
+            tokenIndex.getOrPut(token) { mutableListOf() }
+                .add(TokenIndexEntry(attr.code, canonical))
+        }
+    }
+
+    return CategoryDictionary(
+        categoryCode = categoryCode ?: "DEFAULT",
+        attributes = attrDicts,
+        tokenIndex = tokenIndex.mapValues { it.value },
+        requiredIfRules = requiredIfRules,
+        constraints = constraints,
+    )
+}
+
+private fun canonicalValues(def: AttributeDef): List<String> {
+    return if (def.allowedValues.isNotEmpty()) {
+        def.allowedValues.map(ValueDef::canonical)
+    } else {
+        def.options
+    }.map { it.trim() }.filter { it.isNotBlank() }
+}
+
+private fun buildTokenMap(def: AttributeDef, canonicalValues: List<String>): Map<String, String> {
+    val tokenMap = linkedMapOf<String, String>()
+
+    fun addTokens(value: String, canonical: String) {
+        val tokens = value.split("[\\s/,]+".toRegex()).map { normalizeToken(it) }.filter { it.isNotBlank() }
+        tokens.forEach { token -> tokenMap.putIfAbsent(token, canonical) }
+        val compact = normalizeToken(value.replace("\\s+".toRegex(), ""))
+        if (compact.isNotBlank()) tokenMap.putIfAbsent(compact, canonical)
+    }
+
+    def.allowedValues.forEach { v ->
+        addTokens(v.canonical, v.canonical)
+        v.synonyms.forEach { syn -> addTokens(syn, v.canonical) }
+    }
+    if (def.allowedValues.isEmpty()) {
+        canonicalValues.forEach { canon ->
+            addTokens(canon, canon)
+        }
+    }
+    return tokenMap
+}
+
+private fun ensureDefaults(defs: List<AttributeDef>): List<AttributeDef> {
+    val keys = defs.map { it.key }.toSet()
+    val extras = mutableListOf<AttributeDef>()
+    if ("price" !in keys) extras.add(AttributeDef("price", "Цена", requiredForOffer = true, requiredForExpress = true))
+    if ("currency" !in keys) extras.add(AttributeDef("currency", "Валюта", requiredForOffer = true, requiredForExpress = true))
+    if ("brand" !in keys) extras.add(AttributeDef("brand", "Бренд", requiredForOffer = true, requiredForSearch = true))
+    if ("condition" !in keys) extras.add(AttributeDef("condition", "Состояние"))
+    return defs + extras
+}
+
+private fun normalizeToken(token: String): String =
+    token.lowercase().replace("[^\\p{L}\\p{N}]+".toRegex(), "")

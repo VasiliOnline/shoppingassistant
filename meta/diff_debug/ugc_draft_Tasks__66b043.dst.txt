@@ -1,0 +1,188 @@
+package com.example.shoppingassistant.domain.ugc.draft
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class DraftInputOrigin {
+    PHOTO,
+    VIDEO,
+    VOICE,
+    TEXT,
+    LINK,
+    TEMPLATE,
+}
+
+@Serializable
+enum class DraftMediaType {
+    PHOTO,
+    VIDEO,
+}
+
+@Serializable
+enum class DraftMediaStatus {
+    LOCAL_ONLY,
+    UPLOADING,
+    UPLOADED,
+    ERROR,
+}
+
+@Serializable
+data class DraftMedia(
+    val id: String,
+    val type: DraftMediaType,
+    val localUri: String? = null,
+    val remoteUrl: String? = null,
+    val status: DraftMediaStatus = DraftMediaStatus.LOCAL_ONLY,
+    val width: Int? = null,
+    val height: Int? = null,
+    val byteSize: Long? = null,
+    val errorMessage: String? = null,
+)
+
+@Serializable
+enum class DraftPriceType {
+    FIXED,
+    NEGOTIABLE,
+    FREE,
+    EXCHANGE,
+}
+
+@Serializable
+data class DraftPrice(
+    val type: DraftPriceType = DraftPriceType.FIXED,
+    val rawInput: String? = null,
+    val amountMajor: Double? = null,
+    val currency: String? = null,
+)
+
+@Serializable
+enum class DraftCondition {
+    NEW,
+    LIKE_NEW,
+    GOOD,
+    USED,
+    FOR_PARTS,
+}
+
+@Serializable
+data class DraftLocation(
+    val city: String? = null,
+    val area: String? = null,
+    val address: String? = null,
+    val radiusKm: Int? = null,
+    val publicLabel: String? = null,
+    val isDefault: Boolean = false,
+)
+
+@Serializable
+data class DraftDelivery(
+    val pickup: Boolean = true,
+    val delivery: Boolean = false,
+    val meeting: Boolean = false,
+    val deliveryPriceMajor: Double? = null,
+    val currency: String? = null,
+)
+
+@Serializable
+data class DraftContacts(
+    val chatEnabled: Boolean = true,
+    val phoneEnabled: Boolean = false,
+    val phone: String? = null,
+    val onlyMessages: Boolean = false,
+    val availabilityNote: String? = null,
+)
+
+@Serializable
+data class DraftPolicyState(
+    val ageRestricted: Boolean = false,
+    val restrictedCategory: Boolean = false,
+    val requiresModeration: Boolean = false,
+    val warningMessage: String? = null,
+)
+
+@Serializable
+enum class DraftPublishStatus {
+    DRAFT,
+    READY,
+    PUBLISHING,
+    PUBLISHED,
+    ERROR,
+}
+
+@Serializable
+data class DraftOffer(
+    val id: String,
+    val createdAtMillis: Long,
+    val updatedAtMillis: Long,
+    val inputOrigin: DraftInputOrigin = DraftInputOrigin.TEXT,
+    val title: String? = null,
+    val description: String? = null,
+    val categoryCode: String? = null,
+    val price: DraftPrice = DraftPrice(),
+    val condition: DraftCondition? = null,
+    val location: DraftLocation = DraftLocation(),
+    val delivery: DraftDelivery = DraftDelivery(),
+    val contacts: DraftContacts = DraftContacts(),
+    val media: List<DraftMedia> = emptyList(),
+    val attributes: Map<String, String> = emptyMap(),
+    val policyState: DraftPolicyState = DraftPolicyState(),
+    val publishStatus: DraftPublishStatus = DraftPublishStatus.DRAFT,
+    val publishError: String? = null,
+    val fingerprint: String? = null,
+    val lastStepId: String? = null,
+)
+
+@Serializable
+data class DraftOfferSeed(
+    val inputOrigin: DraftInputOrigin = DraftInputOrigin.TEXT,
+    val title: String? = null,
+    val categoryCode: String? = null,
+    val price: DraftPrice = DraftPrice(),
+)
+
+interface DraftOffersRepository {
+    suspend fun create(seed: DraftOfferSeed): DraftOffer
+    suspend fun upsert(draft: DraftOffer)
+    suspend fun get(id: String): DraftOffer?
+    fun observe(id: String): Flow<DraftOffer?>
+    fun observeAll(): Flow<List<DraftOffer>>
+    suspend fun delete(id: String)
+    suspend fun clear()
+}
+
+class CreateDraftOfferTask(
+    private val repository: DraftOffersRepository,
+) {
+    suspend operator fun invoke(seed: DraftOfferSeed): DraftOffer = repository.create(seed)
+}
+
+class SaveDraftOfferTask(
+    private val repository: DraftOffersRepository,
+) {
+    suspend operator fun invoke(draft: DraftOffer) = repository.upsert(draft)
+}
+
+class GetDraftOfferTask(
+    private val repository: DraftOffersRepository,
+) {
+    suspend operator fun invoke(id: String): DraftOffer? = repository.get(id)
+}
+
+class ObserveDraftOfferTask(
+    private val repository: DraftOffersRepository,
+) {
+    operator fun invoke(id: String): Flow<DraftOffer?> = repository.observe(id)
+}
+
+class ListDraftOffersTask(
+    private val repository: DraftOffersRepository,
+) {
+    operator fun invoke(): Flow<List<DraftOffer>> = repository.observeAll()
+}
+
+class DeleteDraftOfferTask(
+    private val repository: DraftOffersRepository,
+) {
+    suspend operator fun invoke(id: String) = repository.delete(id)
+}

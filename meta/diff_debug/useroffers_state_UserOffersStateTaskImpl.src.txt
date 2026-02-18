@@ -1,0 +1,418 @@
+package com.example.shoppingassistant.feature.pages.useroffers.state
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
+import com.example.shoppingassistant.domain.useroffers.UserOfferSort
+import com.example.shoppingassistant.domain.useroffers.UserOfferStatus as DomainStatus
+import com.example.shoppingassistant.domain.useroffers.UserOffersQuery
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCardUi
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferStatus
+import com.example.shoppingassistant.feature.pages.useroffers.UserOffersLoadState
+import com.example.shoppingassistant.feature.pages.useroffers.UserOffersStateHandle
+import com.example.shoppingassistant.feature.pages.useroffers.feed.UserOffersFeedTask
+import com.example.shoppingassistant.feature.pages.useroffers.feed.rememberUserOffersFeedTask
+import com.example.shoppingassistant.feature.pages.useroffers.sync.UserOffersSyncTask
+import com.example.shoppingassistant.feature.pages.useroffers.sync.rememberUserOffersSyncTask
+import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersCreatedStore
+import java.io.IOException
+import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.get as koinGet
+
+internal class UserOffersStateTaskImpl(
+    private val getCurrentUser: GetCurrentUserUseCase,
+    private val feedTask: UserOffersFeedTask,
+    private val createdStore: UserOffersCreatedStore,
+) : UserOffersStateTask {
+
+    @Composable
+    override fun stateHandle(): UserOffersStateHandle {
+        val createdItems by createdStore.items.collectAsState()
+        val createdError by createdStore.errorMessage.collectAsState()
+        val syncTask: UserOffersSyncTask = rememberUserOffersSyncTask()
+        val scope = rememberCoroutineScope()
+
+        var isAuthorized by remember { mutableStateOf(true) }
+        var userName by remember { mutableStateOf<String?>(null) }
+        var isLoading by remember { mutableStateOf(true) }
+        var isRefreshing by remember { mutableStateOf(false) }
+        var isLoadingMoreActive by remember { mutableStateOf(false) }
+        var isLoadingMoreCompleted by remember { mutableStateOf(false) }
+        var errorMessage by remember { mutableStateOf<String?>(null) }
+
+        var activeRemote by remember { mutableStateOf(emptyList<UserOfferCardUi>()) }
+        var completedRemote by remember { mutableStateOf(emptyList<UserOfferCardUi>()) }
+        var activeCursor by remember { mutableStateOf<String?>(null) }
+        var completedCursor by remember { mutableStateOf<String?>(null) }
+        var activeHasMore by remember { mutableStateOf(false) }
+        var completedHasMore by remember { mutableStateOf(false) }
+        var activeLastUpdated by remember { mutableStateOf<Long?>(null) }
+        var completedLastUpdated by remember { mutableStateOf<Long?>(null) }
+
+        var isOffline by remember { mutableStateOf(false) }
+
+        fun clearRemote() {
+            activeRemote = emptyList()
+            completedRemote = emptyList()
+            activeCursor = null
+            completedCursor = null
+            activeHasMore = false
+            completedHasMore = false
+            activeLastUpdated = null
+            completedLastUpdated = null
+        }
+
+        fun applyError(throwable: Throwable, fallback: String, onUnauthorized: () -> Unit = {}) {
+            if (isUnauthorized(throwable)) {
+                isAuthorized = false
+                userName = null
+                onUnauthorized()
+            }
+            if (throwable is IOException) {
+                isOffline = true
+            }
+            errorMessage = throwable.message ?: fallback
+        }
+
+        suspend fun ensureAuthorized(): Boolean {
+            val user = runCatching { getCurrentUser() }.getOrElse { throwable ->
+                applyError(
+                    throwable,
+                    fallback = "Не удалось проверить авторизацию",
+                    onUnauthorized = { clearRemote() },
+                )
+                return false
+            }
+            if (user == null) {
+                isAuthorized = false
+                userName = null
+                return false
+            }
+            isAuthorized = true
+            userName = user.displayName ?: user.email
+            return true
+        }
+
+
+        suspend fun loadFirstPage(statuses: List<DomainStatus>): ListPageResult =
+            feedTask.loadPage(
+                UserOffersQuery(
+                    limit = PAGE_LIMIT,
+                    statuses = statuses,
+                    sort = DEFAULT_SORT,
+                ),
+            ).toResult()
+
+        suspend fun loadUpdatedPage(statuses: List<DomainStatus>, updatedSince: Long): ListPageResult =
+            feedTask.loadPage(
+                UserOffersQuery(
+                    limit = PAGE_LIMIT,
+                    statuses = statuses,
+                    updatedSinceMillis = updatedSince,
+                    sort = DEFAULT_SORT,
+                ),
+            ).toResult()
+
+        suspend fun loadNextPage(statuses: List<DomainStatus>, cursor: String): ListPageResult =
+            feedTask.loadPage(
+                UserOffersQuery(
+                    limit = PAGE_LIMIT,
+                    statuses = statuses,
+                    cursor = cursor,
+                    sort = DEFAULT_SORT,
+                ),
+            ).toResult()
+
+
+        suspend fun loadInitial() {
+            isLoading = true
+            errorMessage = null
+            isOffline = false
+
+            if (!ensureAuthorized()) {
+                isLoading = false
+                return
+            }
+
+            runCatching { syncTask.syncPending() }
+
+            runCatching { loadFirstPage(ACTIVE_DOMAIN_STATUSES) }
+                .onSuccess { result ->
+                    activeRemote = result.items
+                    activeCursor = result.nextCursor
+                    activeHasMore = result.hasMore
+                    activeLastUpdated = result.items.maxUpdatedMillis()
+                }
+                .onFailure { applyError(it, "Не удалось загрузить активные товары") }
+
+            if (isAuthorized) {
+                runCatching { loadFirstPage(COMPLETED_DOMAIN_STATUSES) }
+                    .onSuccess { result ->
+                        completedRemote = result.items
+                        completedCursor = result.nextCursor
+                        completedHasMore = result.hasMore
+                        completedLastUpdated = result.items.maxUpdatedMillis()
+                    }
+                    .onFailure { applyError(it, "Не удалось загрузить завершенные товары") }
+            }
+
+            isLoading = false
+        }
+
+        suspend fun refreshActive() {
+            val updatedSince = activeLastUpdated
+            if (updatedSince == null || activeRemote.isEmpty()) {
+                val result = loadFirstPage(ACTIVE_DOMAIN_STATUSES)
+                activeRemote = result.items
+                activeCursor = result.nextCursor
+                activeHasMore = result.hasMore
+                activeLastUpdated = result.items.maxUpdatedMillis()
+                return
+            }
+            val result = loadUpdatedPage(ACTIVE_DOMAIN_STATUSES, updatedSince)
+            if (result.items.isNotEmpty()) {
+                activeRemote = mergeUpdates(activeRemote, result.items)
+                activeLastUpdated = activeRemote.maxUpdatedMillis()
+            }
+        }
+
+        suspend fun refreshCompleted() {
+            val updatedSince = completedLastUpdated
+            if (updatedSince == null || completedRemote.isEmpty()) {
+                val result = loadFirstPage(COMPLETED_DOMAIN_STATUSES)
+                completedRemote = result.items
+                completedCursor = result.nextCursor
+                completedHasMore = result.hasMore
+                completedLastUpdated = result.items.maxUpdatedMillis()
+                return
+            }
+            val result = loadUpdatedPage(COMPLETED_DOMAIN_STATUSES, updatedSince)
+            if (result.items.isNotEmpty()) {
+                completedRemote = mergeUpdates(completedRemote, result.items)
+                completedLastUpdated = completedRemote.maxUpdatedMillis()
+            }
+        }
+
+        val loadMoreActive: () -> Unit = loadMoreActive@{
+            if (isLoading || isRefreshing || isLoadingMoreActive || !activeHasMore) return@loadMoreActive
+            val cursor = activeCursor ?: run {
+                activeHasMore = false
+                return@loadMoreActive
+            }
+            scope.launch {
+                isLoadingMoreActive = true
+                errorMessage = null
+                isOffline = false
+                runCatching { loadNextPage(ACTIVE_DOMAIN_STATUSES, cursor) }
+                    .onSuccess { result ->
+                        activeRemote = appendUnique(activeRemote, result.items)
+                        activeCursor = result.nextCursor
+                        activeHasMore = result.hasMore
+                        activeLastUpdated = activeRemote.maxUpdatedMillis() ?: activeLastUpdated
+                    }
+                    .onFailure { applyError(it, "Не удалось загрузить еще товары") }
+                isLoadingMoreActive = false
+            }
+        }
+
+        val loadMoreCompleted: () -> Unit = loadMoreCompleted@{
+            if (isLoading || isRefreshing || isLoadingMoreCompleted || !completedHasMore) return@loadMoreCompleted
+            val cursor = completedCursor ?: run {
+                completedHasMore = false
+                return@loadMoreCompleted
+            }
+            scope.launch {
+                isLoadingMoreCompleted = true
+                errorMessage = null
+                isOffline = false
+                runCatching { loadNextPage(COMPLETED_DOMAIN_STATUSES, cursor) }
+                    .onSuccess { result ->
+                        completedRemote = appendUnique(completedRemote, result.items)
+                        completedCursor = result.nextCursor
+                        completedHasMore = result.hasMore
+                        completedLastUpdated = completedRemote.maxUpdatedMillis() ?: completedLastUpdated
+                    }
+                    .onFailure { applyError(it, "Не удалось загрузить еще товары") }
+                isLoadingMoreCompleted = false
+            }
+        }
+
+        val refresh: () -> Unit = refresh@{
+            if (isRefreshing || isLoading) return@refresh
+            scope.launch {
+                isRefreshing = true
+                errorMessage = null
+                isOffline = false
+
+                if (!ensureAuthorized()) {
+                    isRefreshing = false
+                    return@launch
+                }
+
+                runCatching { syncTask.syncPending() }
+
+                runCatching { refreshActive() }
+                    .onFailure { applyError(it, "Не удалось обновить активные товары") }
+
+                if (isAuthorized) {
+                    runCatching { refreshCompleted() }
+                        .onFailure { applyError(it, "Не удалось обновить завершенные товары") }
+                }
+
+                isRefreshing = false
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            loadInitial()
+        }
+
+        val activeOffers = mergeOffers(
+            local = filterByStatuses(createdItems, ACTIVE_UI_STATUSES),
+            remote = filterByStatuses(activeRemote, ACTIVE_UI_STATUSES),
+        )
+        val completedOffers = mergeOffers(
+            local = filterByStatuses(createdItems, COMPLETED_UI_STATUSES),
+            remote = filterByStatuses(completedRemote, COMPLETED_UI_STATUSES),
+        )
+
+        val loadState = UserOffersLoadState(
+            isLoading = isLoading,
+            isAuthorized = isAuthorized,
+            isRefreshing = isRefreshing,
+            userName = userName,
+            activeOffers = activeOffers,
+            completedOffers = completedOffers,
+            activeHasMore = activeHasMore,
+            completedHasMore = completedHasMore,
+            isLoadingMoreActive = isLoadingMoreActive,
+            isLoadingMoreCompleted = isLoadingMoreCompleted,
+            errorMessage = errorMessage ?: createdError,
+            isOffline = isOffline,
+        )
+
+        return UserOffersStateHandle(
+            state = loadState,
+            loadMoreActive = loadMoreActive,
+            loadMoreCompleted = loadMoreCompleted,
+            refresh = refresh,
+        )
+    }
+}
+
+@Composable
+fun rememberUserOffersStateTask(): UserOffersStateTask {
+    val getCurrentUser: GetCurrentUserUseCase =
+        remember { koinGet(GetCurrentUserUseCase::class.java) }
+
+    val createdStore: UserOffersCreatedStore =
+        remember { koinGet(UserOffersCreatedStore::class.java) }
+
+    val feedTask = rememberUserOffersFeedTask()
+    return remember(getCurrentUser, createdStore, feedTask) {
+        UserOffersStateTaskImpl(
+            getCurrentUser = getCurrentUser,
+            feedTask = feedTask,
+            createdStore = createdStore,
+        )
+    }
+}
+
+
+@Composable
+fun rememberUserOffersState(): UserOffersStateHandle =
+    rememberUserOffersStateTask().stateHandle()
+
+private data class ListPageResult(
+    val items: List<UserOfferCardUi>,
+    val nextCursor: String?,
+    val hasMore: Boolean,
+)
+
+private fun com.example.shoppingassistant.feature.pages.useroffers.feed.UserOffersFeedPage.toResult(): ListPageResult =
+    ListPageResult(
+        items = items,
+        nextCursor = nextCursor,
+        hasMore = hasMore && items.isNotEmpty(),
+    )
+
+private fun isUnauthorized(throwable: Throwable): Boolean =
+    throwable is IllegalStateException && throwable.message?.contains("Unauthorized") == true
+
+private fun List<UserOfferCardUi>.maxUpdatedMillis(): Long? =
+    mapNotNull { it.updatedAtMillis ?: it.publishedAtMillis }.maxOrNull()
+
+private fun mergeUpdates(
+    existing: List<UserOfferCardUi>,
+    updates: List<UserOfferCardUi>,
+): List<UserOfferCardUi> {
+    if (updates.isEmpty()) return existing
+    val updateIds = updates.map { it.id }.toSet()
+    val merged = ArrayList<UserOfferCardUi>(existing.size + updates.size)
+    merged.addAll(updates)
+    existing.forEach { item ->
+        if (item.id !in updateIds) {
+            merged.add(item)
+        }
+    }
+    return merged
+}
+
+private fun appendUnique(
+    existing: List<UserOfferCardUi>,
+    incoming: List<UserOfferCardUi>,
+): List<UserOfferCardUi> {
+    if (incoming.isEmpty()) return existing
+    val byId = LinkedHashMap<String, UserOfferCardUi>(existing.size + incoming.size)
+    existing.forEach { byId[it.id] = it }
+    incoming.forEach { byId[it.id] = it }
+    return byId.values.toList()
+}
+
+private fun mergeOffers(
+    local: List<UserOfferCardUi>,
+    remote: List<UserOfferCardUi>,
+): List<UserOfferCardUi> {
+    if (local.isEmpty()) return remote
+    val byId = LinkedHashMap<String, UserOfferCardUi>(local.size + remote.size)
+    local.forEach { byId[it.id] = it }
+    remote.forEach { byId.putIfAbsent(it.id, it) }
+    return byId.values.toList()
+}
+
+private fun filterByStatuses(
+    items: List<UserOfferCardUi>,
+    allowed: Set<UserOfferStatus>,
+): List<UserOfferCardUi> = items.filter { it.status in allowed }
+
+private const val PAGE_LIMIT = 20
+
+private val ACTIVE_DOMAIN_STATUSES = listOf(
+    DomainStatus.ACTIVE,
+    DomainStatus.PAUSED,
+    DomainStatus.DRAFT,
+)
+
+private val COMPLETED_DOMAIN_STATUSES = listOf(
+    DomainStatus.FINISHED,
+    DomainStatus.ARCHIVED,
+)
+
+private val ACTIVE_UI_STATUSES = setOf(
+    UserOfferStatus.ACTIVE,
+    UserOfferStatus.PAUSED,
+    UserOfferStatus.DRAFT,
+)
+
+private val COMPLETED_UI_STATUSES = setOf(
+    UserOfferStatus.FINISHED,
+    UserOfferStatus.ARCHIVED,
+)
+
+private val DEFAULT_SORT = UserOfferSort.PUBLISHED_AT

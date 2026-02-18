@@ -1,0 +1,40 @@
+package com.example.shoppingassistant.feature.pages.main.state
+
+import com.example.shoppingassistant.core.data.nearby.DEFAULT_NEARBY_RADIUS_KM
+import com.example.shoppingassistant.core.data.nearby.NearbyCondition
+import com.example.shoppingassistant.core.data.nearby.NearbyDelivery
+import com.example.shoppingassistant.core.data.nearby.NearbyFiltersState
+import com.example.shoppingassistant.core.data.nearby.NearbyPostedAt
+import com.example.shoppingassistant.core.data.nearby.NearbyScope
+import com.example.shoppingassistant.core.data.nearby.NearbySort
+
+enum class NearbyFilterSection {
+    All,
+    Location,
+    Category,
+    Brand,
+    Price,
+    Condition,
+    Delivery,
+    PostedAt,
+    Sort,
+}
+
+fun NearbyFiltersState.defaultSort(): NearbySort =
+    if (locationScope == NearbyScope.NEARBY) NearbySort.Distance else NearbySort.Newest
+
+fun NearbyFiltersState.resetSection(section: NearbyFilterSection): NearbyFiltersState = when (section) {
+    NearbyFilterSection.All -> NearbyFiltersState()
+    NearbyFilterSection.Location -> copy(
+        locationScope = NearbyScope.NEARBY,
+        radiusKm = DEFAULT_NEARBY_RADIUS_KM,
+        selectedPlace = null,
+    )
+    NearbyFilterSection.Category -> copy(categoryCodes = emptySet())
+    NearbyFilterSection.Brand -> copy(brands = emptyList())
+    NearbyFilterSection.Price -> copy(priceMin = null, priceMax = null)
+    NearbyFilterSection.Condition -> copy(condition = NearbyCondition.Any)
+    NearbyFilterSection.Delivery -> copy(delivery = emptySet())
+    NearbyFilterSection.PostedAt -> copy(postedAt = NearbyPostedAt.D3)
+    NearbyFilterSection.Sort -> copy(sort = defaultSort())
+}

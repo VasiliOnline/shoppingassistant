@@ -1,0 +1,110 @@
+package com.example.shoppingassistant.feature.pages.useroffers.price
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import com.example.shoppingassistant.domain.useroffers.UpdateUserOfferPriceTask
+import com.example.shoppingassistant.domain.useroffers.UpdateUserOfferPricesTask
+import com.example.shoppingassistant.domain.useroffers.UserOfferPriceBulkRequest
+import com.example.shoppingassistant.domain.useroffers.UserOfferPriceBulkResult as DomainBulkResult
+import com.example.shoppingassistant.domain.useroffers.UserOfferPriceUpdateRequest
+import com.example.shoppingassistant.domain.useroffers.UserOfferPriceUpdateResult as DomainUpdateResult
+import com.example.shoppingassistant.domain.useroffers.UserOfferPublicationStatus as DomainPublicationStatus
+import com.example.shoppingassistant.domain.useroffers.UserOfferStatus as DomainStatus
+import com.example.shoppingassistant.domain.useroffers.UserOfferSummary
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCardUi
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferPublicationStatus
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferStatus
+import org.koin.java.KoinJavaComponent.get as koinGet
+
+internal class UserOffersPriceTaskImpl(
+    private val updateTask: UpdateUserOfferPriceTask,
+    private val updateBulkTask: UpdateUserOfferPricesTask,
+) : UserOffersPriceTask {
+    override suspend fun updatePrice(
+        offer: UserOfferCardUi,
+        priceMajor: Double,
+    ): UserOfferPriceUpdateResult {
+        val result = updateTask(
+            UserOfferPriceUpdateRequest(
+                offerId = offer.id,
+                priceMajor = priceMajor,
+                currency = offer.currency,
+            )
+        )
+        return result.toUi()
+    }
+
+    override suspend fun updatePrices(
+        offers: List<UserOfferCardUi>,
+        priceMajor: Double,
+    ): UserOfferPriceBulkResult {
+        val request = UserOfferPriceBulkRequest(
+            items = offers.map {
+                UserOfferPriceUpdateRequest(
+                    offerId = it.id,
+                    priceMajor = priceMajor,
+                    currency = it.currency,
+                )
+            }
+        )
+        val result = updateBulkTask(request)
+        return result.toUi()
+    }
+}
+
+@Composable
+fun rememberUserOffersPriceTask(): UserOffersPriceTask = remember {
+    UserOffersPriceTaskImpl(
+        updateTask = koinGet(UpdateUserOfferPriceTask::class.java),
+        updateBulkTask = koinGet(UpdateUserOfferPricesTask::class.java),
+    )
+}
+
+private fun DomainUpdateResult.toUi(): UserOfferPriceUpdateResult = UserOfferPriceUpdateResult(
+    offerId = offerId,
+    status = status,
+    updatedOffer = offer?.toUi(),
+    message = message,
+)
+
+private fun DomainBulkResult.toUi(): UserOfferPriceBulkResult = UserOfferPriceBulkResult(
+    results = results.map { it.toUi() },
+    succeeded = succeeded,
+    failed = failed,
+)
+
+private fun UserOfferSummary.toUi(): UserOfferCardUi = UserOfferCardUi(
+    id = id,
+    title = title,
+    category = category,
+    priceMajor = priceMajor,
+    currency = currency,
+    status = status.toUiStatus(),
+    publicationStatus = publicationStatus.toUiPublicationStatus(),
+    coverUrl = coverUrl,
+    publishedAtMillis = publishedAtMillis,
+    updatedAtMillis = updatedAtMillis,
+    expiresAtMillis = expiresAtMillis,
+    completedAtMillis = completedAtMillis,
+    lastRenewedAtMillis = lastRenewedAtMillis,
+    viewsCount = viewsCount,
+    favoritesCount = favoritesCount,
+    messagesCount = messagesCount,
+    todayViews = todayViews,
+    todayContacts = todayContacts,
+    isPromoted = isPromoted,
+)
+
+private fun DomainStatus.toUiStatus(): UserOfferStatus = when (this) {
+    DomainStatus.ACTIVE -> UserOfferStatus.ACTIVE
+    DomainStatus.PAUSED -> UserOfferStatus.PAUSED
+    DomainStatus.DRAFT -> UserOfferStatus.DRAFT
+    DomainStatus.FINISHED -> UserOfferStatus.FINISHED
+    DomainStatus.ARCHIVED -> UserOfferStatus.ARCHIVED
+}
+
+private fun DomainPublicationStatus.toUiPublicationStatus(): UserOfferPublicationStatus = when (this) {
+    DomainPublicationStatus.PUBLISHED -> UserOfferPublicationStatus.PUBLISHED
+    DomainPublicationStatus.ON_MODERATION -> UserOfferPublicationStatus.ON_MODERATION
+    DomainPublicationStatus.ERROR -> UserOfferPublicationStatus.ERROR
+}

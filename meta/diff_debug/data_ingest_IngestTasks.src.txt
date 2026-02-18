@@ -1,0 +1,22 @@
+package com.example.shoppingassistant.core.data.ingest
+
+import com.example.shoppingassistant.domain.ingest.IngestStatus
+import com.example.shoppingassistant.domain.ingest.RawOffer
+import com.example.shoppingassistant.domain.ingest.SourceType
+
+/**
+ * Базовый контракт парсера для внешнего источника.
+ */
+interface SourceParser {
+    val source: SourceType
+    val parserVersion: String get() = "1"
+    suspend fun load(url: String): ParserResult
+}
+
+data class ParserResult(
+    val status: IngestStatus,
+    val offer: RawOffer? = null,
+    val httpStatus: Int? = null,
+    val bytes: Long? = null,
+    val message: String? = null,
+)

@@ -1,0 +1,340 @@
+package com.example.shoppingassistant.feature.ui.state
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.feature.R
+import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
+import com.example.shoppingassistant.feature.ui.state.model.StateAction
+import java.text.DateFormat
+import java.util.Date
+
+@Composable
+fun EmptyStateBlock(
+    title: String,
+    message: String,
+    primaryAction: StateAction?,
+    secondaryAction: StateAction?,
+    icon: ImageVector?,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+) {
+    StateBlockCard(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        title = title,
+        message = message,
+        primaryAction = primaryAction,
+        secondaryAction = secondaryAction,
+        icon = icon,
+    )
+}
+
+@Composable
+fun ErrorStateBlock(
+    title: String,
+    message: String,
+    primaryAction: StateAction?,
+    secondaryAction: StateAction?,
+    icon: ImageVector?,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+) {
+    StateBlockCard(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        title = title,
+        message = message,
+        primaryAction = primaryAction,
+        secondaryAction = secondaryAction,
+        icon = icon,
+    )
+}
+
+@Composable
+fun OfflineStateBlock(
+    title: String,
+    message: String,
+    primaryAction: StateAction?,
+    secondaryAction: StateAction?,
+    icon: ImageVector?,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+) {
+    StateBlockCard(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        title = title,
+        message = message,
+        primaryAction = primaryAction,
+        secondaryAction = secondaryAction,
+        icon = icon,
+    )
+}
+
+@Composable
+fun OfflineBanner(
+    message: String,
+    lastUpdatedMillis: Long?,
+    action: StateAction?,
+    modifier: Modifier = Modifier,
+) {
+    val updatedLabel = lastUpdatedMillis?.let { millis ->
+        val formatted = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+            .format(Date(millis))
+        stringResource(R.string.state_last_updated, formatted)
+    }
+
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.92f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (updatedLabel != null) {
+                    Text(
+                        text = updatedLabel,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+            if (action != null) {
+                Spacer(modifier = Modifier.width(12.dp))
+                TextButton(onClick = action.onAction) {
+                    Text(action.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun StaleIndicator(
+    message: String,
+    action: StateAction?,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.75f),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (action != null) {
+                TextButton(onClick = action.onAction) {
+                    Text(action.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingSkeleton(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+    itemCount: Int = 6,
+) {
+    val baseColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+    val shape = RoundedCornerShape(18.dp)
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = contentPadding.calculateBottomPadding()),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        repeat(itemCount) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .background(color = baseColor, shape = shape),
+            )
+        }
+    }
+}
+
+@Composable
+fun RefreshingIndicator(
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.85f),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(16.dp),
+                strokeWidth = 2.dp,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Text(
+                text = stringResource(R.string.state_refreshing_label),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+fun PagingLoadingItem(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(16.dp),
+            strokeWidth = 2.dp,
+            color = MaterialTheme.colorScheme.primary,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(R.string.state_loading_more_label),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun StateBlockCard(
+    modifier: Modifier,
+    contentPadding: PaddingValues,
+    title: String,
+    message: String,
+    primaryAction: StateAction?,
+    secondaryAction: StateAction?,
+    icon: ImageVector?,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = contentPadding.calculateBottomPadding()),
+        contentAlignment = Alignment.Center,
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(horizontal = LayoutDefaults.HorizontalPadding)
+                .fillMaxWidth()
+                .widthIn(max = 420.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+            shape = RoundedCornerShape(22.dp),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 22.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                if (icon != null) {
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surface,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(10.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            androidx.compose.material3.Icon(
+                                imageVector = icon,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(28.dp),
+                            )
+                        }
+                    }
+                }
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (primaryAction != null) {
+                    Button(onClick = primaryAction.onAction) {
+                        Text(primaryAction.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
+                }
+                if (secondaryAction != null) {
+                    TextButton(onClick = secondaryAction.onAction) {
+                        Text(secondaryAction.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
+                }
+            }
+        }
+    }
+}

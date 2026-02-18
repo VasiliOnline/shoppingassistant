@@ -1,0 +1,310 @@
+package com.example.shoppingassistant.domain.catalog
+
+import kotlin.math.roundToInt
+
+internal class Stage21GoldenSuiteRunner(
+    private val packageCases: List<Stage21GoldenPackageCase>,
+) {
+    constructor() : this(defaultPackageCases())
+
+    fun run(): Stage21GoldenSuiteReport {
+        val packageReports = packageCases.map(::runPackageCase)
+        return Stage21GoldenSuiteReport(packages = packageReports)
+    }
+
+    private fun runPackageCase(packageCase: Stage21GoldenPackageCase): Stage21GoldenPackageReport {
+        val maxRank = packageCase.goldenQueries.maxOfOrNull { it.mustRankTopN }?.coerceAtLeast(3) ?: 3
+
+        var hitsAt1 = 0
+        var hitsAt3 = 0
+        var hitsByRequirement = 0
+        var ambiguousCount = 0
+        val misses = mutableListOf<String>()
+
+        packageCase.goldenQueries.forEach { query ->
+            val debug = packageCase.routeWithCandidates(query.queryText, query.locale, maxRank)
+            val matchedRank = findMatchedRank(query, debug)
+            val hitAt1 = matchedRank != null && matchedRank <= 1
+            val hitAt3 = matchedRank != null && matchedRank <= 3
+            val hitByRequirement = matchedRank != null && matchedRank <= query.mustRankTopN
+
+            if (hitAt1) hitsAt1++
+            if (hitAt3) hitsAt3++
+            if (hitByRequirement) hitsByRequirement++
+            if (debug.wasAmbiguous) ambiguousCount++
+
+            if (!hitByRequirement && misses.size < 20) {
+                val top = debug.topCandidates.take(3).joinToString { "${it.targetCode}:${it.score}" }
+                misses += "${query.queryId}:${query.queryText} expected=${query.expectedCode}@${query.mustRankTopN} top=[$top]"
+            }
+        }
+
+        val total = packageCase.goldenQueries.size.coerceAtLeast(1)
+        val recallAt1 = hitsAt1 / total.toDouble()
+        val recallAt3 = hitsAt3 / total.toDouble()
+        val passRate = hitsByRequirement / total.toDouble()
+        val ambiguousShare = ambiguousCount / total.toDouble()
+
+        val thresholdValue = when (packageCase.thresholdMode) {
+            Stage21GoldenThresholdMode.PASS_RATE -> passRate
+            Stage21GoldenThresholdMode.RECALL_AT1 -> recallAt1
+        }
+        val meetsThreshold = thresholdValue + 1e-9 >= packageCase.expectedThreshold
+        val meetsRequiredGoldenQueries = packageCase.requiredGoldenQueries?.let { required ->
+            packageCase.goldenQueries.size >= required
+        } ?: true
+
+        return Stage21GoldenPackageReport(
+            packageCode = packageCase.packageCode,
+            total = packageCase.goldenQueries.size,
+            hitsAt1 = hitsAt1,
+            hitsAt3 = hitsAt3,
+            hitsByRequirement = hitsByRequirement,
+            recallAt1 = recallAt1,
+            recallAt3 = recallAt3,
+            passRate = passRate,
+            ambiguousShare = ambiguousShare,
+            thresholdMode = packageCase.thresholdMode,
+            thresholdValue = thresholdValue,
+            expectedThreshold = packageCase.expectedThreshold,
+            requiredGoldenQueries = packageCase.requiredGoldenQueries,
+            meetsRequiredGoldenQueries = meetsRequiredGoldenQueries,
+            meetsThreshold = meetsThreshold,
+            misses = misses,
+        )
+    }
+
+    private fun findMatchedRank(
+        query: GoldenQuery,
+        debug: QueryRoutingDebugResult,
+    ): Int? {
+        val fromCandidates = debug.topCandidates.indexOfFirst { candidate ->
+            when (query.expectedTargetKind) {
+                GoldenTargetKind.CATEGORY_LEAF ->
+                    candidate.routeType == QueryRouteType.OPEN_CATEGORY && candidate.targetCode == query.expectedCode
+
+                GoldenTargetKind.BROWSE_NODE ->
+                    candidate.routeType == QueryRouteType.OPEN_BROWSE && candidate.targetCode == query.expectedCode
+            }
+        }.takeIf { it >= 0 }?.plus(1)
+        if (fromCandidates != null) return fromCandidates
+
+        return when (query.expectedTargetKind) {
+            GoldenTargetKind.CATEGORY_LEAF -> {
+                if (debug.result.routeType == QueryRouteType.OPEN_CATEGORY && debug.result.primaryTargetCode == query.expectedCode) {
+                    1
+                } else {
+                    null
+                }
+            }
+
+            GoldenTargetKind.BROWSE_NODE -> {
+                if (debug.result.routeType == QueryRouteType.OPEN_BROWSE && debug.result.primaryTargetCode == query.expectedCode) {
+                    1
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+    private companion object {
+        fun defaultPackageCases(): List<Stage21GoldenPackageCase> {
+            val techRouter = Stage21TechQueryRouter()
+            val applRouter = Stage21ApplQueryRouter()
+            val homeRouter = Stage21HomeQueryRouter()
+            val beautyRouter = Stage21BeautyQueryRouter()
+            val fashRouter = Stage21FashQueryRouter()
+            val foodRouter = Stage21FoodQueryRouter()
+            val kidsRouter = Stage21KidsQueryRouter()
+            val petsRouter = Stage21PetsQueryRouter()
+            val sportRouter = Stage21SportQueryRouter()
+            val autoRouter = Stage21AutoQueryRouter()
+
+            return listOf(
+                Stage21GoldenPackageCase(
+                    packageCode = "TECH",
+                    goldenQueries = Stage21TechPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.RECALL_AT1,
+                    expectedThreshold = Stage21TechPackageLoader.coverageGate.thresholds.goldenRecallTop1,
+                    routeWithCandidates = { query, locale, topN ->
+                        techRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "APPL",
+                    goldenQueries = Stage21ApplPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.RECALL_AT1,
+                    expectedThreshold = Stage21ApplPackageLoader.coverageGate.qualityGate.goldenRecallTop1,
+                    requiredGoldenQueries = (
+                        Stage21ApplPackageLoader.coverageGate.expectedLeafNodes.size *
+                            Stage21ApplPackageLoader.coverageGate.minGoldenPerLeaf
+                        ),
+                    routeWithCandidates = { query, locale, topN ->
+                        applRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "HOME",
+                    goldenQueries = Stage21HomePackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21HomePackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        homeRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "BEAUTY",
+                    goldenQueries = Stage21BeautyPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21BeautyPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        beautyRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "FASH",
+                    goldenQueries = Stage21FashPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21FashPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        fashRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "FOOD",
+                    goldenQueries = Stage21FoodPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21FoodPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        foodRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "KIDS",
+                    goldenQueries = Stage21KidsPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21KidsPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        kidsRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "PETS",
+                    goldenQueries = Stage21PetsPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21PetsPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        petsRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "SPORT",
+                    goldenQueries = Stage21SportPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21SportPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        sportRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+                Stage21GoldenPackageCase(
+                    packageCode = "AUTO",
+                    goldenQueries = Stage21AutoPackageLoader.goldenQueries,
+                    thresholdMode = Stage21GoldenThresholdMode.PASS_RATE,
+                    expectedThreshold = Stage21AutoPackageLoader.coverageGate.gates.goldenSetPassRate,
+                    routeWithCandidates = { query, locale, topN ->
+                        autoRouter.routeWithCandidates(query = query, locale = locale, topN = topN)
+                    },
+                ),
+            )
+        }
+    }
+}
+
+internal data class Stage21GoldenPackageCase(
+    val packageCode: String,
+    val goldenQueries: List<GoldenQuery>,
+    val thresholdMode: Stage21GoldenThresholdMode,
+    val expectedThreshold: Double,
+    val requiredGoldenQueries: Int? = null,
+    val routeWithCandidates: (query: String, locale: String, topN: Int) -> QueryRoutingDebugResult,
+)
+
+internal enum class Stage21GoldenThresholdMode {
+    PASS_RATE,
+    RECALL_AT1,
+}
+
+internal data class Stage21GoldenPackageReport(
+    val packageCode: String,
+    val total: Int,
+    val hitsAt1: Int,
+    val hitsAt3: Int,
+    val hitsByRequirement: Int,
+    val recallAt1: Double,
+    val recallAt3: Double,
+    val passRate: Double,
+    val ambiguousShare: Double,
+    val thresholdMode: Stage21GoldenThresholdMode,
+    val thresholdValue: Double,
+    val expectedThreshold: Double,
+    val meetsThreshold: Boolean,
+    val misses: List<String>,
+) {
+    fun summary(maxMisses: Int = 5): String {
+        val head = buildString {
+            append(packageCode)
+            append(": ")
+            append(if (meetsThreshold) "PASS" else "FAIL")
+            append(", total=")
+            append(total)
+            append(", passRate=")
+            append(percent(passRate))
+            append(", recall@1=")
+            append(percent(recallAt1))
+            append(", recall@3=")
+            append(percent(recallAt3))
+            append(", ambiguous=")
+            append(percent(ambiguousShare))
+            append(", threshold(")
+            append(thresholdMode.name.lowercase())
+            append(")=")
+            append(formatThreshold())
+        }
+        if (misses.isEmpty()) return head
+        val body = misses.take(maxMisses.coerceAtLeast(1)).joinToString("\n")
+        return "$head\n$body"
+    }
+
+    private fun formatThreshold(): String = when (thresholdMode) {
+        Stage21GoldenThresholdMode.PASS_RATE,
+        Stage21GoldenThresholdMode.RECALL_AT1,
+        -> "${percent(thresholdValue)}>=${percent(expectedThreshold)}"
+
+        Stage21GoldenThresholdMode.QUERY_COUNT ->
+            "${thresholdValue.toInt()}>=${expectedThreshold.toInt()}"
+    }
+
+    private fun percent(value: Double): String = "${(value * 10000.0).roundToInt() / 100.0}%"
+}
+
+internal data class Stage21GoldenSuiteReport(
+    val packages: List<Stage21GoldenPackageReport>,
+) {
+    val isPass: Boolean
+        get() = packages.all { it.meetsThreshold }
+
+    fun summary(maxMissesPerPackage: Int = 3): String {
+        val lines = mutableListOf<String>()
+        lines += buildString {
+            append("Stage21 Golden Suite: ")
+            append(if (isPass) "PASS" else "FAIL")
+            append(", packages=")
+            append(packages.size)
+        }
+        packages.forEach { report ->
+            lines += report.summary(maxMisses = maxMissesPerPackage)
+        }
+        return lines.joinToString("\n")
+    }
+}

@@ -1,0 +1,70 @@
+package com.example.shoppingassistant.feature.ui.layout
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.ime
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import kotlin.math.max
+
+@Composable
+fun ScreenRoot(
+    modifier: Modifier = Modifier,
+    applySafeInsets: Boolean = true,
+    bottomBarHeight: Dp = 0.dp,
+    extraBottomPadding: Dp = LayoutDefaults.ContentBottomSpacing,
+    topBar: (@Composable () -> Unit)? = null,
+    bottomBar: (@Composable () -> Unit)? = null,
+    content: @Composable (PaddingValues) -> Unit,
+) {
+    val density = LocalDensity.current
+    val layoutDirection = LocalLayoutDirection.current
+    val safeInsets = if (applySafeInsets) WindowInsets.safeDrawing else WindowInsets(0, 0, 0, 0)
+    val imeInsets = if (applySafeInsets) WindowInsets.ime else WindowInsets(0, 0, 0, 0)
+    val safeTopHorizontal = safeInsets.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
+    val safePadding = safeTopHorizontal.asPaddingValues()
+    val safeBottomPx = safeInsets.getBottom(density)
+    val imeBottomPx = imeInsets.getBottom(density)
+    val bottomInset = with(density) { max(safeBottomPx, imeBottomPx).toDp() }
+    val contentPadding = PaddingValues(bottom = bottomInset + bottomBarHeight + extraBottomPadding)
+
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    start = safePadding.calculateStartPadding(layoutDirection),
+                    end = safePadding.calculateEndPadding(layoutDirection),
+                    top = safePadding.calculateTopPadding(),
+                ),
+        ) {
+            topBar?.invoke()
+            content(contentPadding)
+        }
+        if (bottomBar != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = safePadding.calculateStartPadding(layoutDirection),
+                        end = safePadding.calculateEndPadding(layoutDirection),
+                        bottom = bottomInset,
+                    ),
+            ) {
+                bottomBar()
+            }
+        }
+    }
+}

@@ -1,0 +1,126 @@
+// Last synced: 2025-11-23 18:38
+package com.example.shoppingassistant.server.auth
+
+/**
+ * Общий манифест задач/эндпойнтов backend-модуля "Авторизация".
+ *
+ * Аналог ProfileApiTaskId/ProfileApiTaskDescriptor для профиля.
+ */
+enum class AuthApiTaskId {
+    REGISTER,
+    LOGIN,
+    LOGOUT,
+    FORGOT_PASSWORD,
+    RESET_PASSWORD,
+    CHANGE_PASSWORD,
+    VERIFY_EMAIL_START,
+    VERIFY_EMAIL_CONFIRM,
+    VERIFY_PHONE_START,
+    VERIFY_PHONE_CONFIRM,
+    CHANGE_EMAIL_START,
+    CHANGE_EMAIL_CONFIRM,
+    DELETE_ACCOUNT,
+    DELETE_ACCOUNT_RESTORE,
+}
+
+/**
+ * Описание одной backend-задачи (ручки).
+ */
+data class AuthApiTaskDescriptor(
+    val id: AuthApiTaskId,
+    val method: String,
+    val path: String,
+    val description: String,
+)
+
+/**
+ * Полный список задач backend-модуля "Авторизация".
+ *
+ * На этом шаге реально реализованы все ручки.
+ */
+val authApiTasks: List<AuthApiTaskDescriptor> = listOf(
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.REGISTER,
+        method = "POST",
+        path = "/api/auth/register",
+        description = "Регистрация нового пользователя по email и паролю.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.LOGIN,
+        method = "POST",
+        path = "/api/auth/login",
+        description = "Логин пользователя по email и паролю.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.LOGOUT,
+        method = "POST",
+        path = "/api/auth/logout",
+        description = "Выход текущего авторизованного пользователя.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.FORGOT_PASSWORD,
+        method = "POST",
+        path = "/api/auth/forgot-password",
+        description = "Инициировать восстановление пароля по email.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.RESET_PASSWORD,
+        method = "POST",
+        path = "/api/auth/reset-password",
+        description = "Установить новый пароль по reset-токену.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.CHANGE_PASSWORD,
+        method = "POST",
+        path = "/api/auth/change-password",
+        description = "Сменить пароль по старому паролю (требует авторизации).",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.VERIFY_EMAIL_START,
+        method = "POST",
+        path = "/api/auth/verify-email/start",
+        description = "Отправить токен подтверждения email текущему пользователю.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.VERIFY_EMAIL_CONFIRM,
+        method = "POST",
+        path = "/api/auth/verify-email/confirm",
+        description = "Подтвердить email по токену.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.VERIFY_PHONE_START,
+        method = "POST",
+        path = "/api/auth/verify-phone/start",
+        description = "Отправить код подтверждения телефона текущему пользователю.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.VERIFY_PHONE_CONFIRM,
+        method = "POST",
+        path = "/api/auth/verify-phone/confirm",
+        description = "Подтвердить телефон по SMS-коду.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.CHANGE_EMAIL_START,
+        method = "POST",
+        path = "/api/auth/change-email/start",
+        description = "Инициировать смену email (отправка токена на новый адрес, требует авторизации).",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.CHANGE_EMAIL_CONFIRM,
+        method = "POST",
+        path = "/api/auth/change-email/confirm",
+        description = "Подтвердить смену email по токену.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.DELETE_ACCOUNT,
+        method = "POST",
+        path = "/api/auth/delete-account",
+        description = "Пометить аккаунт удалённым (soft-delete), требует авторизации.",
+    ),
+    AuthApiTaskDescriptor(
+        id = AuthApiTaskId.DELETE_ACCOUNT_RESTORE,
+        method = "POST",
+        path = "/api/auth/delete-account/restore",
+        description = "Восстановить ранее удалённый аккаунт по restore-токену.",
+    ),
+)

@@ -1,0 +1,15 @@
+package com.example.shoppingassistant.core.data.suggest
+
+import com.example.shoppingassistant.core.data.db.ProductDao
+
+class ProductSuggestRepositoryImpl(
+    private val dao: ProductDao,
+) : ProductSuggestRepository {
+
+    override suspend fun search(query: String, limit: Int): List<ProductSuggestCandidate> {
+        val normalized = query.replace("\\s+".toRegex(), " ").trim()
+        if (normalized.isBlank()) return emptyList()
+        val safeLimit = limit.coerceIn(1, 20)
+        return dao.searchProductSuggestions(normalized, safeLimit)
+    }
+}

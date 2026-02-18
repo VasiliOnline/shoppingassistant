@@ -1,0 +1,333 @@
+package com.example.shoppingassistant.feature.ui.cards
+
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.core.tween
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import coil.compose.AsyncImage
+import coil.imageLoader
+import coil.request.ImageRequest
+import kotlinx.coroutines.delay
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.collectLatest
+import com.example.shoppingassistant.feature.R
+
+@Composable
+fun CardMediaPreview(
+    media: List<CardMediaItem>,
+    photoCount: Int,
+    photoPeekEnabled: Boolean,
+    onOpenDetails: (() -> Unit)?,
+    onPhotoPeekOpen: ((Int) -> Unit)?,
+    onPhotoPeekSwipe: ((Int) -> Unit)?,
+    onPhotoPeekOpenDetails: ((Int) -> Unit)?,
+    modifier: Modifier = Modifier,
+    density: CardDensity = CardDensity.Regular,
+) {
+    val metrics = CardTokens.metrics(density)
+    val resolvedCount = if (photoCount > 0) photoCount else media.size
+    val canPeek = photoPeekEnabled && resolvedCount >= 2 && media.isNotEmpty()
+
+    var showPeek by remember { mutableStateOf(false) }
+    var peekStartIndex by remember { mutableStateOf(0) }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(metrics.mediaAspectRatio)
+            .clip(RoundedCornerShape(metrics.cornerRadius))
+    ) {
+        CollageContent(
+            media = media,
+            resolvedCount = resolvedCount,
+            onTileClick = { index ->
+                if (canPeek) {
+                    peekStartIndex = index
+                    showPeek = true
+                    onPhotoPeekOpen?.invoke(index)
+                } else {
+                    onOpenDetails?.invoke()
+                }
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+
+    if (showPeek) {
+        PhotoPeekOverlay(
+            media = media,
+            startIndex = peekStartIndex,
+            onDismiss = { showPeek = false },
+            onOpenDetails = { index ->
+                onPhotoPeekOpenDetails?.invoke(index)
+                onOpenDetails?.invoke()
+                showPeek = false
+            },
+            onSwipe = onPhotoPeekSwipe,
+        )
+    }
+}
+
+@Composable
+private fun CollageContent(
+    media: List<CardMediaItem>,
+    resolvedCount: Int,
+    onTileClick: ((Int) -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    val background = MaterialTheme.colorScheme.surfaceVariant
+    val gap = 2.dp
+    val previewCount = when {
+        resolvedCount >= 3 -> 3
+        resolvedCount == 2 -> 2
+        else -> 1
+    }
+    val items = media.take(previewCount)
+
+    when (previewCount) {
+        1 -> CollageTile(
+            item = items.firstOrNull(),
+            modifier = modifier,
+            background = background,
+            onClick = { onTileClick?.invoke(0) },
+        )
+        2 -> Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(gap)) {
+            CollageTile(
+                item = items.getOrNull(0),
+                modifier = Modifier.weight(1f).fillMaxSize(),
+                background = background,
+                onClick = { onTileClick?.invoke(0) },
+            )
+            CollageTile(
+                item = items.getOrNull(1),
+                modifier = Modifier.weight(1f).fillMaxSize(),
+                background = background,
+                onClick = { onTileClick?.invoke(1) },
+            )
+        }
+        else -> Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(gap)) {
+            CollageTile(
+                item = items.getOrNull(0),
+                modifier = Modifier.weight(1.4f).fillMaxSize(),
+                background = background,
+                onClick = { onTileClick?.invoke(0) },
+            )
+            Column(
+                modifier = Modifier.weight(1f).fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(gap),
+            ) {
+                CollageTile(
+                    item = items.getOrNull(1),
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    background = background,
+                    onClick = { onTileClick?.invoke(1) },
+                )
+                CollageTile(
+                    item = items.getOrNull(2),
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    background = background,
+                    onClick = { onTileClick?.invoke(2) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CollageTile(
+    item: CardMediaItem?,
+    modifier: Modifier,
+    background: Color,
+    onClick: (() -> Unit)? = null,
+) {
+    val tileModifier = if (onClick != null) {
+        modifier.clickable(onClick = onClick)
+    } else {
+        modifier
+    }
+    if (item == null) {
+        Box(modifier = tileModifier.background(background))
+        return
+    }
+    AsyncImage(
+        model = item.url,
+        contentDescription = item.contentDescription,
+        contentScale = ContentScale.Crop,
+        modifier = tileModifier.background(background),
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun PhotoPeekOverlay(
+    media: List<CardMediaItem>,
+    startIndex: Int,
+    onDismiss: () -> Unit,
+    onOpenDetails: (Int) -> Unit,
+    onSwipe: ((Int) -> Unit)?,
+) {
+    if (media.isEmpty()) return
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+    val maxSizePx = with(density) { configuration.screenWidthDp.dp.roundToPx() }
+    val pagerState = rememberPagerState(initialPage = startIndex) { media.size }
+    var visible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        visible = true
+    }
+
+    LaunchedEffect(visible) {
+        if (!visible) {
+            delay(180)
+            onDismiss()
+        }
+    }
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collectLatest { index ->
+            onSwipe?.invoke(index)
+            val nextIndex = (index + 1).coerceAtMost(media.size - 1)
+            if (nextIndex != index) {
+                val request = ImageRequest.Builder(context)
+                    .data(media[nextIndex].url)
+                    .size(maxSizePx)
+                    .build()
+                context.imageLoader.enqueue(request)
+            }
+        }
+    }
+
+    fun requestDismiss() {
+        visible = false
+    }
+
+    Dialog(
+        onDismissRequest = { requestDismiss() },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true,
+        ),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.72f))
+                .clickable(onClick = { requestDismiss() }),
+        ) {
+            AnimatedVisibility(
+                visible = visible,
+                enter = fadeIn(animationSpec = tween(180)) + scaleIn(
+                    initialScale = 0.98f,
+                    animationSpec = tween(180),
+                ),
+                exit = fadeOut(animationSpec = tween(180)) + scaleOut(
+                    targetScale = 0.98f,
+                    animationSpec = tween(180),
+                ),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 20.dp, vertical = 32.dp),
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.clickable(
+                        onClick = {},
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                    ),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1f),
+                        ) { page ->
+                            AsyncImage(
+                                model = media[page].url,
+                                contentDescription = media[page].contentDescription,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(MaterialTheme.shapes.medium),
+                            )
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                text = stringResource(
+                                    R.string.card_photo_peek_index,
+                                    pagerState.currentPage + 1,
+                                    media.size,
+                                ),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Button(onClick = { onOpenDetails(pagerState.currentPage) }) {
+                                Text(stringResource(R.string.card_open_listing))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,155 @@
+package com.example.shoppingassistant.feature.pages.useroffers
+
+/**
+ * Контракты страницы пользовательских товаров (Мои товары).
+ *
+ * Tasks-файл содержит только модели/сигнатуры без реализации.
+ */
+enum class UserOffersTab { DRAFTS, ACTIVE, COMPLETED }
+
+enum class UserOffersLayout { HORIZONTAL, VERTICAL }
+
+enum class UserOffersSort {
+    CATEGORY,
+    PUBLISHED_AT,
+    UPDATED_AT,
+    PRICE,
+    VIEWS,
+    EXPIRES_AT,
+}
+
+enum class UserOfferStatus {
+    ACTIVE,
+    PAUSED,
+    DRAFT,
+    FINISHED,
+    ARCHIVED,
+}
+
+enum class UserOfferPublicationStatus {
+    PUBLISHED,
+    ON_MODERATION,
+    ERROR,
+}
+
+enum class UserOfferHealth {
+    BELOW_AVERAGE,
+    OK,
+}
+
+enum class UserOfferQuickFilter {
+    WITH_PHOTO,
+    WITHOUT_PHOTO,
+    EXPIRING_SOON,
+    ON_MODERATION,
+    PUBLISH_ERROR,
+    PROMOTED,
+}
+
+enum class UserOfferCreationMethod {
+    PHOTO,
+    LINK,
+    VOICE,
+    JSON_FILE,
+}
+
+enum class UserOfferAction {
+    EDIT,
+    SHARE,
+    SHARE_RADIUS,
+    PAUSE,
+    ACTIVATE,
+    MARK_FINISHED,
+    DUPLICATE,
+    RENEW,
+    EDIT_PRICE,
+    DELETE,
+}
+
+enum class UserOfferBulkAction {
+    PAUSE,
+    ACTIVATE,
+    DELETE,
+    RENEW,
+    CHANGE_PRICE,
+    EXPORT,
+}
+
+/**
+ * Плоская UI-модель карточки оффера пользователя.
+ * Не зависит от источника данных (локально/удаленно).
+ */
+data class UserOfferCardUi(
+    val id: String,
+    val title: String,
+    val category: String? = null,
+    val priceMajor: Double? = null,
+    val currency: String = "USD",
+    val status: UserOfferStatus = UserOfferStatus.ACTIVE,
+    val publicationStatus: UserOfferPublicationStatus = UserOfferPublicationStatus.PUBLISHED,
+    val coverUrl: String? = null,
+    val publishedAtMillis: Long? = null,
+    val updatedAtMillis: Long? = null,
+    val sourceUpdatedAtMillis: Long? = null,
+    val sourceName: String? = null,
+    val sourceIconUrl: String? = null,
+    val expiresAtMillis: Long? = null,
+    val completedAtMillis: Long? = null,
+    val lastRenewedAtMillis: Long? = null,
+    val viewsCount: Int? = null,
+    val favoritesCount: Int? = null,
+    val messagesCount: Int? = null,
+    val todayViews: Int? = null,
+    val todayContacts: Int? = null,
+    val isPromoted: Boolean = false,
+    val health: UserOfferHealth? = null,
+)
+
+/**
+ * Базовое состояние страницы «Мои товары».
+ */
+data class UserOffersLoadState(
+    val isLoading: Boolean,
+    val isAuthorized: Boolean,
+    val isRefreshing: Boolean = false,
+    val userName: String? = null,
+    val activeOffers: List<UserOfferCardUi> = emptyList(),
+    val completedOffers: List<UserOfferCardUi> = emptyList(),
+    val activeHasMore: Boolean = false,
+    val completedHasMore: Boolean = false,
+    val isLoadingMoreActive: Boolean = false,
+    val isLoadingMoreCompleted: Boolean = false,
+    val errorMessage: String? = null,
+    val isOffline: Boolean = false,
+)
+
+data class UserOffersStateHandle(
+    val state: UserOffersLoadState,
+    val loadMoreActive: () -> Unit,
+    val loadMoreCompleted: () -> Unit,
+    val refresh: () -> Unit,
+)
+
+/**
+ * Обработчики действий страницы. Все функции — no-op по умолчанию,
+ * чтобы экран можно было использовать без обязательной навигации.
+ */
+data class UserOffersCallbacks(
+    val onOpen: (offerId: String) -> Unit = {},
+    val onCreate: (method: UserOfferCreationMethod) -> Unit = {},
+    val onEdit: (offerId: String) -> Unit = {},
+    val onShare: (offerId: String) -> Unit = {},
+    val onShareNearby: (offerId: String) -> Unit = {},
+    val onPause: (offerId: String) -> Unit = {},
+    val onActivate: (offerId: String) -> Unit = {},
+    val onMarkFinished: (offerId: String) -> Unit = {},
+    val onDuplicate: (offerId: String) -> Unit = {},
+    val onRenew: (offerId: String) -> Unit = {},
+    val onUpdatePrice: (offerId: String, priceMajor: Double) -> Unit = { _, _ -> },
+    val onDelete: (offerId: String) -> Unit = {},
+    val onBulkAction: (action: UserOfferBulkAction, offerIds: List<String>, priceMajor: Double?) -> Unit = { _, _, _ -> },
+    val onLogin: () -> Unit = {},
+    val onRegister: () -> Unit = {},
+    val onBack: () -> Unit = {},
+    val onRetryLoad: () -> Unit = {},
+)

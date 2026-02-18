@@ -1,0 +1,254 @@
+package com.example.shoppingassistant.domain.catalog
+
+import kotlinx.serialization.json.Json
+import java.nio.charset.StandardCharsets
+
+internal object Stage21BeautyPackageLoader {
+    private val json = Json { ignoreUnknownKeys = true }
+    private const val basePath = "taxonomy/stage2/2.1/BEAUTY"
+    private const val browseNodesFile = "browse_nodes.beauty.tsv"
+    private const val aliasesFile = "aliases.beauty.tsv"
+    private const val goldenQueriesFile = "queries_golden.beauty.tsv"
+    private const val coverageFile = "coverage.beauty.json"
+    private const val routingRulesFile = "routing_rules.beauty.yaml"
+    private const val beautyBrowseRoot = "B.BEAUTY"
+
+    val browseNodes: List<BrowseNode> by lazy { loadBrowseNodes() }
+    val aliasSeedRows: List<HomeAliasSeedRow> by lazy { loadAliasSeedRows() }
+    val aliasEntries: List<AliasEntry> by lazy { aliasSeedRows.map { it.toBeautyAliasEntry() } }
+    val goldenQueries: List<GoldenQuery> by lazy { loadGoldenQueries() }
+    val coverageGate: Stage21HomeCoverageGate by lazy { loadCoverageGate() }
+    val routingRulesYaml: String by lazy { readResource("$basePath/$routingRulesFile") }
+
+    private fun loadBrowseNodes(): List<BrowseNode> = parseTsv("$basePath/$browseNodesFile").map { row ->
+        val parentCode = row.optional("parent_browse_node_id")?.let(::mapBrowseCode)
+        val depth = row.optional("depth")?.toIntOrNull() ?: 0
+        val canonicalCode = row.optional("canonical_category_code")
+        val nodeKind = when {
+            parentCode == null || depth <= 1 -> BrowseNodeKind.ROOT
+            canonicalCode.isNullOrBlank() -> BrowseNodeKind.GROUP
+            else -> BrowseNodeKind.LEAF_LINK
+        }
+        val targetCategoryCode = canonicalCode?.trim()?.takeIf { nodeKind == BrowseNodeKind.LEAF_LINK }
+        BrowseNode(
+            browseCode = mapBrowseCode(row.required("browse_node_id")),
+            parentBrowseCode = parentCode,
+            nodeKind = nodeKind,
+            titleKey = row.optional("slug")?.let { "catalog.beauty.$it" },
+            titleRu = row.required("title_ru"),
+            titleEn = null,
+            targetCategoryCode = targetCategoryCode,
+            targetType = targetCategoryCode?.let { BrowseTargetType.CATEGORY },
+            order = row.optional("sort_order")?.toIntOrNull() ?: 0,
+            availabilityScope = "ALL",
+            iconKey = extractIcon(row.optional("meta_json")),
+            analyticsKey = null,
+            searchKeywordsRu = emptyList(),
+            status = parseBrowseStatus(row.optional("status")),
+            tags = listOf("stage2.1", "BEAUTY", "kind:${nodeKind.name.lowercase()}"),
+            notes = null,
+        )
+    }
+
+    private fun loadAliasSeedRows(): List<HomeAliasSeedRow> = parseTsv("$basePath/$aliasesFile").map { row ->
+        val routeKind = parseAliasRouteKind(row.required("route_kind"))
+        val aliasText = row.required("alias_text")
+        val normalizedAlias = normalize(row.optional("normalized") ?: aliasText)
+        val rawTargetId = row.required("target_id")
+        val targetId = when (routeKind) {
+            HomeAliasRouteKind.BROWSE_NODE -> mapBrowseCode(rawTargetId)
+            HomeAliasRouteKind.CANONICAL -> rawTargetId
+            HomeAliasRouteKind.BLOCKED -> beautyBrowseRoot
+        }
+        HomeAliasSeedRow(
+            aliasId = row.required("alias_id"),
+            aliasText = aliasText,
+            locale = row.optional("locale") ?: "ru-RU",
+            normalizedAlias = normalizedAlias,
+            routeKind = routeKind,
+            targetId = targetId,
+            priority = row.optional("priority")?.toIntOrNull()?.coerceIn(0, 100) ?: 0,
+            matchType = parseAliasMatchType(row.optional("match_type")),
+            negativeTokens = parseNegativeTokens(row.optional("negative_tokens")),
+            isActive = parseAliasStatus(row.optional("status")),
+            notes = row.optional("notes"),
+        )
+    }
+
+    private fun loadGoldenQueries(): List<GoldenQuery> = parseTsv("$basePath/$goldenQueriesFile").map { row ->
+        val rawTargetKind = row.required("expected_route_kind")
+        val targetKind = parseGoldenTargetKind(rawTargetKind)
+        val rawExpectedTarget = row.required("expected_target")
+        GoldenQuery(
+            queryId = row.required("qid"),
+            locale = row.optional("locale") ?: "ru-RU",
+            queryText = row.required("query_text"),
+            expectedTargetKind = targetKind,
+            expectedCode = when (targetKind) {
+                GoldenTargetKind.CATEGORY_LEAF -> rawExpectedTarget
+                GoldenTargetKind.BROWSE_NODE -> if (rawTargetKind.trim().equals("blocked", ignoreCase = true)) {
+                    beautyBrowseRoot
+                } else {
+                    mapBrowseCode(rawExpectedTarget)
+                }
+            },
+            mustRankTopN = row.optional("must_rank_top_n")?.toIntOrNull() ?: 1,
+            notes = row.optional("notes"),
+        )
+    }
+
+    private fun loadCoverageGate(): Stage21HomeCoverageGate {
+        val raw = readResource("$basePath/$coverageFile")
+        return json.decodeFromString(raw)
+    }
+
+    private fun parseAliasRouteKind(raw: String): HomeAliasRouteKind = when (raw.trim().lowercase()) {
+        "browse_node" -> HomeAliasRouteKind.BROWSE_NODE
+        "canonical" -> HomeAliasRouteKind.CANONICAL
+        "blocked" -> HomeAliasRouteKind.BLOCKED
+        else -> error("Unsupported route_kind in $aliasesFile: '$raw'")
+    }
+
+    private fun parseAliasMatchType(raw: String?): HomeAliasMatchType = when (raw?.trim()?.lowercase()) {
+        null, "", "contains" -> HomeAliasMatchType.CONTAINS
+        "token" -> HomeAliasMatchType.TOKEN
+        "exact" -> HomeAliasMatchType.EXACT
+        "regex" -> HomeAliasMatchType.REGEX
+        else -> error("Unsupported match_type in $aliasesFile: '$raw'")
+    }
+
+    private fun parseAliasStatus(raw: String?): Boolean = when (raw?.trim()?.lowercase()) {
+        null, "", "active" -> true
+        "inactive", "hidden", "blocked" -> false
+        else -> true
+    }
+
+    private fun parseGoldenTargetKind(raw: String): GoldenTargetKind = when (raw.trim().lowercase()) {
+        "canonical", "category_leaf" -> GoldenTargetKind.CATEGORY_LEAF
+        "browse_node", "node" -> GoldenTargetKind.BROWSE_NODE
+        "blocked" -> GoldenTargetKind.BROWSE_NODE
+        else -> error("Unsupported expected_route_kind in $goldenQueriesFile: '$raw'")
+    }
+
+    private fun parseBrowseStatus(raw: String?): BrowseNodeStatus = when (raw?.trim()?.lowercase()) {
+        null, "", "active" -> BrowseNodeStatus.ACTIVE
+        "hidden", "inactive" -> BrowseNodeStatus.HIDDEN
+        else -> error("Unsupported status in $browseNodesFile: '$raw'")
+    }
+
+    private fun parseNegativeTokens(raw: String?): List<String> = raw
+        ?.split("|", ",", ";")
+        ?.map { normalize(it) }
+        ?.filter { it.isNotBlank() }
+        .orEmpty()
+
+    private fun parseTsv(resourcePath: String): List<Map<String, String>> {
+        val content = readResource(resourcePath)
+        val lines = content
+            .lineSequence()
+            .map { it.trimEnd('\r') }
+            .filter { it.isNotBlank() }
+            .toList()
+        if (lines.isEmpty()) return emptyList()
+
+        val header = lines.first().split('\t').map { it.trim() }
+        if (header.isEmpty()) return emptyList()
+        val normalizedHeader = header.toMutableList()
+        normalizedHeader[0] = normalizedHeader[0].removePrefix("\uFEFF")
+
+        return lines.drop(1).map { line ->
+            val cells = line.split('\t')
+            normalizedHeader.indices.associate { index ->
+                normalizedHeader[index] to cells.getOrElse(index) { "" }
+            }
+        }
+    }
+
+    private fun readResource(resourcePath: String): String {
+        val classLoader = Stage21BeautyPackageLoader::class.java.classLoader
+        val stream = classLoader.getResourceAsStream(resourcePath)
+            ?: error("Stage 2.1 BEAUTY resource not found: $resourcePath")
+        return stream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
+    }
+
+    private fun mapBrowseCode(rawNodeId: String): String {
+        val normalized = rawNodeId.trim()
+        if (normalized.isBlank()) return normalized
+
+        val upper = normalized.uppercase()
+        if (upper.startsWith("B.BEAUTY")) return normalized
+        if (upper.startsWith("BN.BEAUTY")) return "B.${normalized.substring(3)}"
+
+        val lower = normalized.lowercase()
+        if (!lower.startsWith("bn_beauty_")) return normalized
+        val suffix = lower.removePrefix("bn_beauty_")
+        if (suffix == "root") return beautyBrowseRoot
+
+        val segments = suffix
+            .split('_')
+            .filter { it.isNotBlank() }
+            .map { it.uppercase() }
+        return (listOf("B", "BEAUTY") + segments).joinToString(".")
+    }
+
+    private fun normalize(input: String): String = input
+        .trim()
+        .lowercase()
+        .replace('ё', 'е')
+        .replace("[-‐‑‒–—]+".toRegex(), " ")
+        .replace("[^\\p{L}\\p{N}\\s]".toRegex(), " ")
+        .replace("\\s+".toRegex(), " ")
+        .trim()
+
+    private fun extractIcon(metaJson: String?): String? {
+        val raw = metaJson?.trim().orEmpty()
+        if (raw.isBlank()) return null
+        val match = Regex(""""icon"\\s*:\\s*"([^"]+)"""").find(raw)
+        return match?.groupValues?.getOrNull(1)?.trim()?.takeIf { it.isNotEmpty() }
+    }
+
+    private fun Map<String, String>.required(column: String): String =
+        this[column]?.trim()?.takeIf { it.isNotEmpty() }
+            ?: error("Column '$column' is required in Stage 2.1 BEAUTY package")
+
+    private fun Map<String, String>.optional(column: String): String? =
+        this[column]?.trim()?.takeIf { it.isNotEmpty() }
+}
+
+private fun HomeAliasSeedRow.toBeautyAliasEntry(): AliasEntry {
+    val targetCode = targetId.trim()
+    return AliasEntry(
+        locale = locale,
+        term = aliasText,
+        normalizedTerm = normalizedAlias,
+        kind = when (routeKind) {
+            HomeAliasRouteKind.BROWSE_NODE,
+            HomeAliasRouteKind.BLOCKED,
+            -> AliasKind.BROWSE
+
+            HomeAliasRouteKind.CANONICAL -> AliasKind.CATEGORY
+        },
+        targetCode = targetCode,
+        weight = priority.coerceIn(0, 100),
+        matchKind = matchType.toBeautyAliasMatchKind(),
+        isBlocked = routeKind == HomeAliasRouteKind.BLOCKED || !isActive,
+        source = AliasSource.SEED,
+        notes = buildString {
+            append("stage2.1.beauty:")
+            append(routeKind.name.lowercase())
+            append(":")
+            append(aliasId)
+            if (notes != null) {
+                append(":")
+                append(notes)
+            }
+        },
+    )
+}
+
+private fun HomeAliasMatchType.toBeautyAliasMatchKind(): AliasMatchKind = when (this) {
+    HomeAliasMatchType.EXACT -> AliasMatchKind.EXACT
+    HomeAliasMatchType.CONTAINS -> AliasMatchKind.PREFIX
+    HomeAliasMatchType.TOKEN -> AliasMatchKind.TOKEN
+    HomeAliasMatchType.REGEX -> AliasMatchKind.FUZZY
+}

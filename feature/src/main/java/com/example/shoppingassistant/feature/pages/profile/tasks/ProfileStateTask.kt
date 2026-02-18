@@ -1,0 +1,206 @@
+// Last synced: 2025-11-18 19:02
+package com.example.shoppingassistant.feature.pages.profile.tasks
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
+import com.example.shoppingassistant.domain.model.AuthUser
+import com.example.shoppingassistant.domain.profile.GetExternalLinksTask
+import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
+import com.example.shoppingassistant.domain.profile.GetProfileSettingsTask
+import com.example.shoppingassistant.feature.pages.profile.ProfileEmail
+import com.example.shoppingassistant.domain.profile.ProfileSnapshot
+import com.example.shoppingassistant.domain.profile.ProfileSettings
+import com.example.shoppingassistant.domain.profile.SaveProfileCacheTask
+import com.example.shoppingassistant.feature.pages.profile.ProfileState
+import com.example.shoppingassistant.feature.R
+import kotlinx.coroutines.delay
+import java.io.IOException
+
+/**
+ * Тип ошибки UI для профиля.
+ *
+ * kind — тип (сейчас: NETWORK или UNKNOWN),
+ * message — человекочитаемое сообщение.
+ */
+enum class ProfileErrorKind {
+    NETWORK,
+    UNKNOWN,
+}
+
+data class ProfileErrorUi(
+    val kind: ProfileErrorKind,
+    val messageResId: Int,
+)
+
+enum class ProfileBanner {
+    OFFLINE,
+}
+
+/**
+ * UI-состояние задачи загрузки профиля.
+ */
+data class ProfileStateTaskUiState(
+    val isLoading: Boolean,
+    val error: ProfileErrorUi?,
+    val state: ProfileState,
+    val isStale: Boolean,
+    val banner: ProfileBanner?,
+)
+
+/**
+ * Loader состояния профиля.
+ *
+ * Сейчас:
+ *  - запрашивает GetCurrentUserUseCase;
+ *  - если пользователь найден → Authorized;
+ *  - иначе → NotAuthorized;
+ *  - при ошибке возвращает типизированную ProfileErrorUi.
+ *
+ * reloadToken — простой счётчик, при изменении которого задача
+ * перезапускает загрузку профиля.
+ */
+@Composable
+fun rememberProfileStateTask(
+    reloadToken: Int,
+    getCurrentUserUseCase: GetCurrentUserUseCase,
+    getProfileSettingsTask: GetProfileSettingsTask,
+    getExternalLinksTask: GetExternalLinksTask,
+    getProfileCacheTask: GetProfileCacheTask,
+    saveProfileCacheTask: SaveProfileCacheTask,
+): ProfileStateTaskUiState {
+    var state by remember { mutableStateOf<ProfileState>(ProfileState.NotAuthorized) }
+    var isLoading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<ProfileErrorUi?>(null) }
+    var isStale by remember { mutableStateOf(false) }
+    var banner by remember { mutableStateOf<ProfileBanner?>(null) }
+
+    LaunchedEffect(reloadToken) {
+        isLoading = true
+        error = null
+        isStale = false
+        banner = null
+
+        val cached = runCatching { getProfileCacheTask() }.getOrNull()
+        if (cached != null) {
+            state = cached.toAuthorizedState()
+            isLoading = false
+        }
+
+        runCatching {
+            // Небольшая пауза, чтобы успевал показаться лоадер/скелетон
+            delay(150L)
+            getCurrentUserUseCase()
+        }.onSuccess { user ->
+            if (user == null) {
+                state = ProfileState.NotAuthorized
+                isLoading = false
+                error = null
+                isStale = false
+                banner = null
+                return@onSuccess
+            }
+
+            val userId = user.id.toString()
+            val settings = runCatching { getProfileSettingsTask(userId) }
+                .getOrElse { ProfileSettings() }
+            val links = runCatching { getExternalLinksTask(userId) }
+                .getOrElse { emptyList() }
+
+            val snapshot = user.toSnapshot(settings, links)
+            runCatching { saveProfileCacheTask(snapshot) }
+
+            state = snapshot.toAuthorizedState()
+            isLoading = false
+            error = null
+            isStale = false
+            banner = null
+        }.onFailure { throwable ->
+            val kind = when (throwable) {
+                is IOException -> ProfileErrorKind.NETWORK
+                else -> ProfileErrorKind.UNKNOWN
+            }
+            if (kind == ProfileErrorKind.NETWORK && cached != null) {
+                state = cached.toAuthorizedState()
+                isLoading = false
+                error = null
+                isStale = true
+                banner = ProfileBanner.OFFLINE
+            } else {
+                state = ProfileState.NotAuthorized
+                isLoading = false
+                error = ProfileErrorUi(
+                    kind = kind,
+                    messageResId = when (kind) {
+                        ProfileErrorKind.NETWORK -> R.string.profile_error_network_body
+                        ProfileErrorKind.UNKNOWN -> R.string.profile_error_unknown_body
+                    },
+                )
+                isStale = false
+                banner = null
+            }
+        }
+    }
+
+    return ProfileStateTaskUiState(
+        isLoading = isLoading,
+        error = error,
+        state = state,
+        isStale = isStale,
+        banner = banner,
+    )
+}
+
+private fun ProfileSnapshot.toAuthorizedState(): ProfileState.Authorized =
+    ProfileState.Authorized(
+        id = id,
+        email = email,
+        emails = listOf(
+            ProfileEmail(
+                address = email,
+                isPrimary = true,
+                isVerified = emailVerified,
+            ),
+        ),
+        displayName = displayName,
+        avatarUrl = avatarUrl,
+        city = city,
+        phone = phone,
+        registeredAt = registeredAt,
+        emailVerified = emailVerified,
+        emailVerifiedAt = emailVerifiedAt,
+        phoneVerifiedAt = phoneVerifiedAt,
+        trustScore = trustScore,
+        dealsCount = dealsCount,
+        favoritesCount = favoritesCount,
+        alertsCount = alertsCount,
+        photos = photos,
+        settings = settings,
+        externalLinks = externalLinks,
+    )
+
+private fun AuthUser.toSnapshot(
+    settings: ProfileSettings,
+    links: List<com.example.shoppingassistant.domain.profile.ExternalLink>,
+): ProfileSnapshot {
+    val sanitizedPhotos = if (photos.isNotEmpty()) photos else listOfNotNull(avatarUrl)
+    return ProfileSnapshot(
+        id = id.toString(),
+        email = email,
+        displayName = displayName ?: email,
+        avatarUrl = avatarUrl,
+        city = city,
+        phone = phone,
+        registeredAt = createdAt,
+        emailVerified = emailVerified,
+        emailVerifiedAt = emailVerifiedAt,
+        phoneVerifiedAt = phoneVerifiedAt,
+        photos = sanitizedPhotos,
+        settings = settings,
+        externalLinks = links,
+    )
+}

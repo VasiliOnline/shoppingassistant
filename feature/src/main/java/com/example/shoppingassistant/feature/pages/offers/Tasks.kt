@@ -1,0 +1,86 @@
+// Last synced: 2025-11-26
+package com.example.shoppingassistant.feature.pages.offers
+
+/**
+ * Манифест задач страницы офферов/поиска предложений.
+ * Ориентирован на прод-логику: поиск по БД, ранжирование, локализация, аналитика.
+ *
+ * При добавлении новых задач расширяйте enum OfferTaskId и список offerTasks.
+ */
+enum class OfferTaskId {
+    /** Сбор и нормализация критериев: brand/model/attrs/lang/country. */
+    BUILD_CRITERIA,
+    /** Запрос к БД/репозиторию: поисковый use-case + ранжирование. */
+    SEARCH,
+    /** UI: нижний лист с результатами (OffersBottomSheet). */
+    BOTTOM_SHEET,
+    /** UI: карточка оффера (гориз/вертикал + expand). */
+    CARD,
+    /** UI: вкладки карточки (Характеристики/Описание/Аналитика). */
+    CARD_TABS,
+    /** Подписки/alerts на снижение цены/условия. */
+    ALERTS,
+    /** Карта доставки. */
+    DELIVERY_MAP,
+    /** Аналитика офферов: тренды, свежесть данных. */
+    ANALYTICS,
+}
+
+data class OfferTaskDescriptor(
+    val id: OfferTaskId,
+    val path: String,
+    val description: String,
+)
+
+/**
+ * Полный список задач офферов:
+ * - BUILD_CRITERIA: NormalizedQuery + userCountry/lang → OfferSearchCriteria.
+ * - SEARCH: вызов use-case поиска/ранжирования (Postgres/RankService).
+ * - BOTTOM_SHEET: UI списка (существующий OffersBottomSheet).
+ * - CARD: карточка оффера (гориз/верт, раскрытие).
+ * - CARD_TABS: контент вкладок карточки.
+ * - ALERTS: подписки/уведомления по цене.
+ * - ANALYTICS: тренды/свежесть данных для вкладки “Аналитика”.
+ */
+val offerTasks: List<OfferTaskDescriptor> = listOf(
+    OfferTaskDescriptor(
+        id = OfferTaskId.BUILD_CRITERIA,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/main/context/BuildQuery.kt",
+        description = "Сбор и нормализация критериев поиска (brand/model/attrs/lang/country) в OfferSearchCriteria.",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.SEARCH,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/main/state/MainPageViewModel.kt",
+        description = "Use-case поиска офферов в БД + ранжирование (RankService) с учётом языка/страны (OfferSearchCriteria).",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.BOTTOM_SHEET,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/offers/tasks/OffersSheetTask.kt",
+        description = "UI нижнего листа с офферами (гориз/верт режимы, бейджи, сортировка) как отдельная таска.",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.CARD,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/offers/tasks/OffersListsTask.kt",
+        description = "Карточка оффера (горизонтальная/вертикальная, профиль, локация, бейджи, ID/CTA).",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.CARD_TABS,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/main/ui/OfferTabs.kt",
+        description = "Вкладки карточки: Характеристики (specs), Описание (description), Аналитика (trends/freshness).",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.ALERTS,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/main/ui/OfferAlerts.kt",
+        description = "Подписки на снижение цены/условия (alerts) и их UI-кнопки/диалоги.",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.ANALYTICS,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/main/ui/OfferAnalytics.kt",
+        description = "Отображение трендов/свежести (price history, updatedAt) для вкладки Аналитика.",
+    ),
+    OfferTaskDescriptor(
+        id = OfferTaskId.DELIVERY_MAP,
+        path = "feature/src/main/java/com/example/shoppingassistant/feature/pages/offers/tasks/delivery/DeliveryMapTask.kt",
+        description = "Карта доставки: подсветка стран из предпочтений продавца, мини-превью + полноэкранная карта.",
+    ),
+)

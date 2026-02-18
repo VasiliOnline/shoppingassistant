@@ -1,0 +1,668 @@
+package com.example.shoppingassistant.feature.pages.trackeditems
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Sort
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.domain.tracks.Track
+import com.example.shoppingassistant.domain.tracks.TrackState
+import com.example.shoppingassistant.feature.ui.cards.formatPriceText
+import com.example.shoppingassistant.feature.ui.cards.formatUpdatedAtText
+import com.example.shoppingassistant.feature.ui.components.GoodyChip
+import com.example.shoppingassistant.feature.ui.layout.AppTopBar
+import kotlinx.coroutines.launch
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import org.koin.androidx.compose.koinViewModel
+import java.util.Currency
+import java.util.Locale
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun TrackedItemsPage(
+    onBack: (() -> Unit)? = null,
+    onOpenTrack: (String) -> Unit = {},
+    onEditTrack: (String) -> Unit = {},
+    onOpenEvents: (String) -> Unit = {},
+    viewModel: TrackedItemsViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    var pendingDelete by remember { mutableStateOf<Track?>(null) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var createWizardVisible by remember { mutableStateOf(false) }
+    val filteredItems = (state.tracks as? TrackedItemsLoadState.Content)
+        ?.let { filterTracks(it.items, state) }
+    val showFab = filteredItems?.isNotEmpty() == true
+
+    LaunchedEffect(state.actionMessage) {
+        val message = state.actionMessage ?: return@LaunchedEffect
+        snackbarHostState.showSnackbar(message)
+        viewModel.consumeActionMessage()
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.load()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
+    Scaffold(
+        topBar = {
+            Column {
+                AppTopBar(
+                    title = "Отслеживаемые товары",
+                    onBack = onBack,
+                    applySafeInsets = true,
+                )
+                SearchRow(
+                    query = state.searchQuery,
+                    onQueryChange = viewModel::setSearchQuery,
+                    filter = state.filter,
+                    onFilterChange = viewModel::setFilter,
+                    sort = state.sort,
+                    onSortChange = viewModel::setSort,
+                )
+            }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        floatingActionButton = {
+            if (showFab) {
+                FloatingActionButton(onClick = { createWizardVisible = true }) {
+                    Icon(Icons.Outlined.Add, contentDescription = "Создать")
+                }
+            }
+        },
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            when (val loadState = state.tracks) {
+                TrackedItemsLoadState.Loading -> {
+                    repeat(4) {
+                        TrackSkeleton()
+                    }
+                }
+                TrackedItemsLoadState.Empty -> {
+                    EmptyBlock(onCreateTrack = { createWizardVisible = true })
+                }
+                is TrackedItemsLoadState.Error -> {
+                    ErrorBlock(message = loadState.message, onRetry = viewModel::load)
+                }
+                is TrackedItemsLoadState.Content -> {
+                    val filtered = filteredItems.orEmpty()
+                    if (filtered.isEmpty()) {
+                        EmptyBlock(onCreateTrack = { createWizardVisible = true })
+                    } else {
+                        val onPauseWithUndo: (Track) -> Unit = { track ->
+                            viewModel.pause(track.id)
+                            scope.launch {
+                                val result = snackbarHostState.showSnackbar(
+                                    message = "Трек на паузе: ${track.title}",
+                                    actionLabel = "Отменить"
+                                )
+                                if (result == androidx.compose.material3.SnackbarResult.ActionPerformed) {
+                                    viewModel.resume(track.id)
+                                }
+                            }
+                        }
+                        TracksSections(
+                            items = filtered,
+                            sort = state.sort,
+                            pausedExpanded = state.pausedExpanded,
+                            onTogglePaused = viewModel::togglePausedSection,
+                            onOpenTrack = onOpenTrack,
+                            onOpenEvents = { track -> onOpenEvents(track.id) },
+                            onPause = onPauseWithUndo,
+                            onResume = { track -> viewModel.resume(track.id) },
+                            onRefresh = { track -> viewModel.refresh(track.id) },
+                            onEdit = { track -> onEditTrack(track.id) },
+                            onDelete = { track -> pendingDelete = track },
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    pendingDelete?.let { track ->
+        AlertDialog(
+            onDismissRequest = { pendingDelete = null },
+            title = { Text("Удалить трек?") },
+            text = { Text("Трек будет удалён без возможности восстановления.\n${track.title}") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        pendingDelete = null
+                        viewModel.delete(track.id)
+                        scope.launch { snackbarHostState.showSnackbar("Трек удалён") }
+                    }
+                ) { Text("Удалить") }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingDelete = null }) { Text("Отмена") }
+            },
+        )
+    }
+
+    if (createWizardVisible) {
+        CreateTrackWizardSheet(
+            onDismiss = { createWizardVisible = false },
+            onTrackCreated = { createdTrackId ->
+                createWizardVisible = false
+                viewModel.load()
+                if (createdTrackId.isNotBlank()) {
+                    onOpenTrack(createdTrackId)
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun SearchRow(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    filter: TrackedItemsFilter,
+    onFilterChange: (TrackedItemsFilter) -> Unit,
+    sort: TrackedItemsSort,
+    onSortChange: (TrackedItemsSort) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(horizontal = 16.dp)) {
+        fun toggle(target: TrackedItemsFilter) {
+            if (filter == target) onFilterChange(TrackedItemsFilter.ALL) else onFilterChange(target)
+        }
+        OutlinedTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            placeholder = { Text("Поиск по трекам") },
+            leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null) },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                GoodyChip(
+                    label = "Активные",
+                    selected = filter == TrackedItemsFilter.ACTIVE,
+                    onClick = { toggle(TrackedItemsFilter.ACTIVE) },
+                )
+                GoodyChip(
+                    label = "Пауза",
+                    selected = filter == TrackedItemsFilter.PAUSED,
+                    onClick = { toggle(TrackedItemsFilter.PAUSED) },
+                )
+                GoodyChip(
+                    label = "Ошибка",
+                    selected = filter == TrackedItemsFilter.ERROR,
+                    onClick = { toggle(TrackedItemsFilter.ERROR) },
+                )
+            }
+            SortMenu(sort = sort, onSortChange = onSortChange)
+        }
+    }
+}
+
+@Composable
+private fun SortMenu(
+    sort: TrackedItemsSort,
+    onSortChange: (TrackedItemsSort) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    TextButton(onClick = { expanded = true }) {
+        Icon(Icons.Outlined.Sort, contentDescription = null, modifier = Modifier.size(18.dp))
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(sortLabel(sort))
+    }
+    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        TrackedItemsSort.values().forEach { option ->
+            DropdownMenuItem(
+                text = { Text(sortLabel(option)) },
+                onClick = {
+                    onSortChange(option)
+                    expanded = false
+                },
+            )
+        }
+    }
+}
+
+private fun sortLabel(sort: TrackedItemsSort): String = when (sort) {
+    TrackedItemsSort.NEW_EVENTS -> "По событиям"
+    TrackedItemsSort.BEST_PRICE -> "По цене"
+    TrackedItemsSort.AZ -> "A-Z"
+}
+
+private fun filterTracks(items: List<Track>, state: TrackedItemsState): List<Track> {
+    val query = state.searchQuery.trim().lowercase()
+    val base = if (query.isBlank()) items else items.filter { it.title.lowercase().contains(query) }
+    return when (state.filter) {
+        TrackedItemsFilter.ALL -> base
+        TrackedItemsFilter.ACTIVE -> base.filter { it.state == TrackState.ACTIVE }
+        TrackedItemsFilter.PAUSED -> base.filter { it.state == TrackState.PAUSED }
+        TrackedItemsFilter.ERROR -> base.filter { it.state == TrackState.ERROR }
+    }
+}
+
+@Composable
+private fun TracksSections(
+    items: List<Track>,
+    sort: TrackedItemsSort,
+    pausedExpanded: Boolean,
+    onTogglePaused: () -> Unit,
+    onOpenTrack: (String) -> Unit,
+    onOpenEvents: (Track) -> Unit,
+    onPause: (Track) -> Unit,
+    onResume: (Track) -> Unit,
+    onRefresh: (Track) -> Unit,
+    onEdit: (Track) -> Unit,
+    onDelete: (Track) -> Unit,
+) {
+    val active = items.filter { it.state == TrackState.ACTIVE }.sortedWith(sortComparator(sort))
+    val paused = items.filter { it.state == TrackState.PAUSED }.sortedWith(sortComparator(sort))
+    val error = items.filter { it.state == TrackState.ERROR }.sortedWith(sortComparator(sort))
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        if (active.isNotEmpty()) {
+            item {
+                SectionCarousel(
+                    title = "Активные",
+                    tracks = active,
+                    onOpenTrack = onOpenTrack,
+                    onOpenEvents = onOpenEvents,
+                    onPause = onPause,
+                    onResume = onResume,
+                    onRefresh = onRefresh,
+                    onEdit = onEdit,
+                    onDelete = onDelete,
+                )
+            }
+        }
+        if (paused.isNotEmpty()) {
+            item {
+                SectionToggleHeader(
+                    title = "На паузе (${paused.size})",
+                    expanded = pausedExpanded,
+                    onToggle = onTogglePaused,
+                )
+            }
+            if (pausedExpanded) {
+                item {
+                TracksCarousel(
+                    tracks = paused,
+                    onOpenTrack = onOpenTrack,
+                    onOpenEvents = onOpenEvents,
+                    onPause = onPause,
+                    onResume = onResume,
+                    onRefresh = onRefresh,
+                    onEdit = onEdit,
+                    onDelete = onDelete,
+                )
+                }
+            }
+        }
+        if (error.isNotEmpty()) {
+            item {
+                SectionCarousel(
+                    title = "Ошибка",
+                    tracks = error,
+                    onOpenTrack = onOpenTrack,
+                    onOpenEvents = onOpenEvents,
+                    onPause = onPause,
+                    onResume = onResume,
+                    onRefresh = onRefresh,
+                    onEdit = onEdit,
+                    onDelete = onDelete,
+                )
+            }
+        }
+    }
+}
+
+private val carouselCardWidth = 280.dp
+private val newEventsGreen = Color(0xFF22C55E)
+
+@Composable
+private fun SectionCarousel(
+    title: String,
+    tracks: List<Track>,
+    onOpenTrack: (String) -> Unit,
+    onOpenEvents: (Track) -> Unit,
+    onPause: (Track) -> Unit,
+    onResume: (Track) -> Unit,
+    onRefresh: (Track) -> Unit,
+    onEdit: (Track) -> Unit,
+    onDelete: (Track) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        SectionHeader(title = title)
+        TracksCarousel(
+            tracks = tracks,
+            onOpenTrack = onOpenTrack,
+            onOpenEvents = onOpenEvents,
+            onPause = onPause,
+            onResume = onResume,
+            onRefresh = onRefresh,
+            onEdit = onEdit,
+            onDelete = onDelete,
+        )
+    }
+}
+
+@Composable
+private fun TracksCarousel(
+    tracks: List<Track>,
+    onOpenTrack: (String) -> Unit,
+    onOpenEvents: (Track) -> Unit,
+    onPause: (Track) -> Unit,
+    onResume: (Track) -> Unit,
+    onRefresh: (Track) -> Unit,
+    onEdit: (Track) -> Unit,
+    onDelete: (Track) -> Unit,
+) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp),
+    ) {
+        items(tracks) { track ->
+            TrackCard(
+                track = track,
+                onOpenTrack = onOpenTrack,
+                onOpenEvents = onOpenEvents,
+                onPause = onPause,
+                onResume = onResume,
+                onRefresh = onRefresh,
+                onEdit = onEdit,
+                onDelete = onDelete,
+                modifier = Modifier.width(carouselCardWidth),
+            )
+        }
+    }
+}
+
+private fun sortComparator(sort: TrackedItemsSort) = when (sort) {
+    TrackedItemsSort.NEW_EVENTS -> compareByDescending<Track> { it.stats.newEventsCount }
+        .thenByDescending { it.stats.lastEventAt ?: 0L }
+        .thenBy { it.title.lowercase() }
+    TrackedItemsSort.BEST_PRICE -> compareBy<Track> { it.stats.bestPrice?.minor ?: Long.MAX_VALUE }
+        .thenBy { it.title.lowercase() }
+    TrackedItemsSort.AZ -> compareBy { it.title.lowercase() }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
+    )
+}
+
+@Composable
+private fun SectionToggleHeader(
+    title: String,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onToggle() }
+            .padding(top = 8.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(text = title, style = MaterialTheme.typography.titleMedium)
+        Icon(
+            imageVector = if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+private fun TrackCard(
+    track: Track,
+    onOpenTrack: (String) -> Unit,
+    onOpenEvents: (Track) -> Unit,
+    onPause: (Track) -> Unit,
+    onResume: (Track) -> Unit,
+    onRefresh: (Track) -> Unit,
+    onEdit: (Track) -> Unit,
+    onDelete: (Track) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var menuExpanded by remember { mutableStateOf(false) }
+    val subtitle = buildSubtitle(track)
+    val updatedAt = formatUpdatedAtText(track.lastCheckedAt)
+    val freshnessLabel = updatedAt?.let { "Обновлено $it" }
+    val currencyCode = resolveUserCurrencyCode()
+    val bestPriceMajor = track.stats.bestPrice?.toMajor()
+    val bestPriceText = formatPriceText(bestPriceMajor, currencyCode)
+    val priceLabel = if (bestPriceMajor != null) "от $bestPriceText" else "Цена не указана"
+    val offersCount = track.stats.offersCount
+    val newEventsCount = track.stats.newEventsCount
+    val typeLabel = trackTypeLabel(track.type)
+    val sourcesCount = track.stats.sourcesCount
+
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        tonalElevation = 1.dp,
+        modifier = modifier.clickable { onOpenTrack(track.id) },
+    ) {
+        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = track.title,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    if (subtitle.isNotBlank()) {
+                        Text(
+                            text = subtitle,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
+                IconButton(onClick = { menuExpanded = true }) {
+                    Icon(Icons.Outlined.MoreVert, contentDescription = null)
+                }
+                DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
+                    DropdownMenuItem(text = { Text("Обновить") }, onClick = { menuExpanded = false; onRefresh(track) })
+                    DropdownMenuItem(text = { Text("События") }, onClick = { menuExpanded = false; onOpenEvents(track) })
+                    if (track.state == TrackState.ACTIVE) {
+                        DropdownMenuItem(text = { Text("Пауза") }, onClick = { menuExpanded = false; onPause(track) })
+                    } else if (track.state == TrackState.PAUSED) {
+                        DropdownMenuItem(text = { Text("Возобновить") }, onClick = { menuExpanded = false; onResume(track) })
+                    }
+                    DropdownMenuItem(text = { Text("Редактировать") }, onClick = { menuExpanded = false; onEdit(track) })
+                    DropdownMenuItem(text = { Text("Удалить") }, onClick = { menuExpanded = false; onDelete(track) })
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = typeLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (sourcesCount > 0) {
+                    Text(
+                        text = "Источников: $sourcesCount",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = priceLabel,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                if (!freshnessLabel.isNullOrBlank()) {
+                    Text(
+                        text = freshnessLabel,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "$offersCount предложений",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                )
+                if (newEventsCount > 0) {
+                    Text(
+                        text = "+$newEventsCount новых",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                        color = newEventsGreen,
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun buildSubtitle(track: Track): String {
+    val parts = listOfNotNull(
+        track.filters.region?.takeIf { it.isNotBlank() },
+        track.filters.delivery?.takeIf { it.isNotBlank() },
+        track.filters.condition?.takeIf { it.isNotBlank() },
+        track.filters.seller?.takeIf { it.isNotBlank() },
+    )
+    return parts.joinToString(" • ")
+}
+
+private fun trackTypeLabel(type: com.example.shoppingassistant.domain.tracks.TrackType): String = when (type) {
+    com.example.shoppingassistant.domain.tracks.TrackType.PRODUCT -> "Товар"
+    com.example.shoppingassistant.domain.tracks.TrackType.CATEGORY -> "Категория"
+    com.example.shoppingassistant.domain.tracks.TrackType.URL -> "Ссылка"
+    com.example.shoppingassistant.domain.tracks.TrackType.SEARCH -> "Поиск"
+}
+
+private fun resolveUserCurrencyCode(): String? = runCatching {
+    Currency.getInstance(Locale.getDefault()).currencyCode
+}.getOrNull()
+
+@Composable
+private fun EmptyBlock(onCreateTrack: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(text = "Пока нет отслеживаний", style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = "Создайте отслеживание, чтобы видеть предложения и сигналы.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Button(onClick = onCreateTrack, modifier = Modifier.heightIn(min = 44.dp)) {
+            Text("Создать отслеживание")
+        }
+    }
+}
+
+@Composable
+private fun ErrorBlock(message: String, onRetry: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(text = "Не удалось загрузить", style = MaterialTheme.typography.titleMedium)
+        Text(text = message, style = MaterialTheme.typography.bodySmall)
+        Button(onClick = onRetry, modifier = Modifier.heightIn(min = 44.dp)) {
+            Text("Повторить")
+        }
+    }
+}
+
+@Composable
+private fun TrackSkeleton() {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(92.dp),
+    ) {}
+}

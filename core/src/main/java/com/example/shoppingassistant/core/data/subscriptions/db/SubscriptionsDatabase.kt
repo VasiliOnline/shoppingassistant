@@ -1,0 +1,19 @@
+package com.example.shoppingassistant.core.data.subscriptions.db
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+
+const val subscriptionsDatabaseName: String = "subscriptions.db"
+
+@Database(
+    entities = [
+        SubscriptionEntity::class,
+        SubscriptionConditionEntity::class,
+        SubscriptionNotificationEntity::class
+    ],
+    version = 2,
+    exportSchema = true
+)
+abstract class SubscriptionsDatabase : RoomDatabase() {
+    abstract fun subscriptionsDao(): SubscriptionsDao
+}

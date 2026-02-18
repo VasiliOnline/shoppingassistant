@@ -1,0 +1,11 @@
+package com.example.shoppingassistant.server.auth
+
+/**
+ * Контракт отправки письма со ссылкой на сброс пароля.
+ */
+interface ResetNotificationSender {
+    /**
+     * Отправляет пользователю reset-токен (обычно в виде ссылки).
+     */
+    fun sendResetLink(email: String, resetToken: String)
+}

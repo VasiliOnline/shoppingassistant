@@ -1,0 +1,49 @@
+package com.example.shoppingassistant.feature.pages.offers.tasks
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun OfferCardStyleToggle(
+    style: OfferCardStyle,
+    onFlat: () -> Unit,
+    onTiles: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FilterChip(
+            selected = style == OfferCardStyle.Flat,
+            onClick = onFlat,
+            label = { Text("Плоский список") },
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+            ),
+        )
+        Spacer(Modifier.width(8.dp))
+        FilterChip(
+            selected = style == OfferCardStyle.Tiles,
+            onClick = onTiles,
+            label = { Text("Карточки") },
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+            ),
+        )
+    }
+}

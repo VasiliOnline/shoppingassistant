@@ -1,0 +1,12 @@
+package com.example.shoppingassistant.core.data.ingest
+
+import com.example.shoppingassistant.domain.ingest.RawOffer
+import com.example.shoppingassistant.domain.ingest.SourceType
+
+/**
+ * Базовый контракт парсера для внешнего источника.
+ */
+interface SourceParser {
+    val source: SourceType
+    suspend fun load(url: String): RawOffer
+}

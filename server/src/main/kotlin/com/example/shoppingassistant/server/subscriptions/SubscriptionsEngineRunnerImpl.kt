@@ -1,0 +1,192 @@
+package com.example.shoppingassistant.server.subscriptions
+
+import com.example.shoppingassistant.server.config.SubscriptionsEngineConfig
+import com.example.shoppingassistant.server.db.DatabaseFactory
+import com.example.shoppingassistant.server.offers.AlertsTable
+import com.example.shoppingassistant.server.offers.OfferPriceHistoryTable
+import kotlin.math.max
+import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greater
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.less
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertIgnore
+import org.jetbrains.exposed.sql.max
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.andWhere
+import java.util.concurrent.TimeUnit
+
+class SubscriptionsEngineRunnerImpl(
+    private val config: SubscriptionsEngineConfig,
+) : SubscriptionsEngineRunner {
+
+    override suspend fun runOnce(): SubscriptionsEngineRunResult {
+        if (!config.enabled) {
+            return SubscriptionsEngineRunResult(
+                processedHistoryRows = 0,
+                triggeredAlerts = 0,
+                notificationsCreated = 0,
+                lastHistoryId = null,
+            )
+        }
+
+        val windowMillis = TimeUnit.DAYS.toMillis(config.windowDays.toLong())
+
+        return DatabaseFactory.dbQuery {
+            val now = System.currentTimeMillis()
+
+            val state = SubscriptionsEngineStateTable
+                .selectAll()
+                .where { SubscriptionsEngineStateTable.key eq ENGINE_KEY }
+                .limit(1)
+                .singleOrNull()
+                ?: run {
+                    SubscriptionsEngineStateTable.insert {
+                        it[key] = ENGINE_KEY
+                        it[lastHistoryId] = 0
+                        it[updatedAt] = now
+                    }
+                    SubscriptionsEngineStateTable
+                        .selectAll()
+                        .where { SubscriptionsEngineStateTable.key eq ENGINE_KEY }
+                        .limit(1)
+                        .single()
+                }
+
+            val lastSeenHistoryId = state[SubscriptionsEngineStateTable.lastHistoryId]
+
+            val historyRows = OfferPriceHistoryTable
+                .selectAll()
+                .where { OfferPriceHistoryTable.id greater lastSeenHistoryId }
+                .orderBy(OfferPriceHistoryTable.id, SortOrder.ASC)
+                .limit(config.batchSize)
+                .toList()
+
+            var triggeredAlerts = 0
+            var notificationsCreated = 0
+
+            historyRows.forEach { historyRow ->
+                val historyId = historyRow[OfferPriceHistoryTable.id]
+                val offerId = historyRow[OfferPriceHistoryTable.offerId]
+                val currentPrice = historyRow[OfferPriceHistoryTable.priceMinor]
+                val collectedAt = historyRow[OfferPriceHistoryTable.collectedAt]
+                val currency = historyRow[OfferPriceHistoryTable.currency]
+
+                val prevPrice = OfferPriceHistoryTable
+                    .selectAll()
+                    .where { OfferPriceHistoryTable.offerId eq offerId }
+                    .andWhere { OfferPriceHistoryTable.id less historyId }
+                    .orderBy(OfferPriceHistoryTable.id, SortOrder.DESC)
+                    .limit(1)
+                    .singleOrNull()
+                    ?.get(OfferPriceHistoryTable.priceMinor)
+
+                if (prevPrice != null && currentPrice >= prevPrice) return@forEach
+
+                val windowStart = collectedAt - windowMillis
+                val maxPriceExpr = OfferPriceHistoryTable.priceMinor.max()
+                val baselinePrice = OfferPriceHistoryTable
+                    .select(maxPriceExpr)
+                    .where { OfferPriceHistoryTable.offerId eq offerId }
+                    .andWhere { OfferPriceHistoryTable.collectedAt greaterEq windowStart }
+                    .andWhere { OfferPriceHistoryTable.collectedAt lessEq collectedAt }
+                    .limit(1)
+                    .singleOrNull()
+                    ?.get(maxPriceExpr)
+                    ?: return@forEach
+
+                if (baselinePrice <= 0L || baselinePrice <= currentPrice) return@forEach
+
+                val dropPercent = ((baselinePrice - currentPrice).toDouble() * 100.0) / baselinePrice.toDouble()
+
+                val alerts = AlertsTable
+                    .selectAll()
+                    .where { AlertsTable.isActive eq true }
+                    .andWhere { AlertsTable.offerId eq offerId }
+                    .andWhere { AlertsTable.alertType eq "PERCENT_DROP" }
+                    .toList()
+
+                alerts.forEach { alertRow ->
+                    val alertId = alertRow[AlertsTable.id]
+                    val userId = alertRow[AlertsTable.userId]
+                    val threshold = alertRow[AlertsTable.thresholdValue]
+                    val lastTriggeredAt = alertRow[AlertsTable.lastTriggeredAt]
+                    val minIntervalMinutes = alertRow[AlertsTable.minIntervalMinutes]
+                    val effectiveCooldownMinutes = max(config.cooldownMinutes, minIntervalMinutes)
+                    val cooldownMillis = TimeUnit.MINUTES.toMillis(effectiveCooldownMinutes.toLong())
+                    val deliveryChannel = alertRow[AlertsTable.deliveryChannel]
+                        ?.trim()
+                        ?.uppercase()
+                        ?.takeIf { it.isNotEmpty() }
+                    val deliveryStatus = if (deliveryChannel == "EMAIL" || deliveryChannel == "PUSH") "PENDING" else "NONE"
+
+                    if (lastTriggeredAt != null && cooldownMillis > 0L) {
+                        val elapsed = collectedAt - lastTriggeredAt
+                        if (elapsed in 0 until cooldownMillis) return@forEach
+                    }
+
+                    if (dropPercent + 1e-9 < threshold) return@forEach
+
+                    val msg = "Снижение цены на ${"%.1f".format(dropPercent)}%: ${baselinePrice}→${currentPrice} $currency"
+
+                    val insert = SubscriptionNotificationsTable.insertIgnore { stmt ->
+                        stmt[SubscriptionNotificationsTable.userId] = userId
+                        stmt[SubscriptionNotificationsTable.alertId] = alertId
+                        stmt[SubscriptionNotificationsTable.offerId] = offerId
+                        stmt[SubscriptionNotificationsTable.priceHistoryId] = historyId
+                        stmt[SubscriptionNotificationsTable.createdAt] = now
+                        stmt[SubscriptionNotificationsTable.priceCollectedAt] = collectedAt
+                        stmt[SubscriptionNotificationsTable.isRead] = false
+                        stmt[SubscriptionNotificationsTable.deliveryChannel] = deliveryChannel
+                        stmt[SubscriptionNotificationsTable.deliveryStatus] = deliveryStatus
+                        stmt[SubscriptionNotificationsTable.deliveryAttempts] = 0
+                        stmt[SubscriptionNotificationsTable.lastDeliveryAttemptAt] = null
+                        stmt[SubscriptionNotificationsTable.deliveredAt] = null
+                        stmt[SubscriptionNotificationsTable.lastDeliveryError] = null
+                        stmt[SubscriptionNotificationsTable.message] = msg
+                        stmt[SubscriptionNotificationsTable.dropPercent] = dropPercent
+                        stmt[SubscriptionNotificationsTable.baselinePriceMinor] = baselinePrice
+                        stmt[SubscriptionNotificationsTable.currentPriceMinor] = currentPrice
+                        stmt[SubscriptionNotificationsTable.currency] = currency
+                    }
+
+                    val inserted = insert.insertedCount > 0
+                    if (inserted) {
+                        AlertsTable.update({ AlertsTable.id eq alertId }) { stmt ->
+                            stmt[AlertsTable.lastTriggeredAt] = collectedAt
+                        }
+
+                        triggeredAlerts += 1
+                        notificationsCreated += 1
+                    } else if (lastTriggeredAt == null) {
+                        AlertsTable.update({ AlertsTable.id eq alertId }) { stmt ->
+                            stmt[AlertsTable.lastTriggeredAt] = collectedAt
+                        }
+                    }
+                }
+            }
+
+            val newLastHistoryId = historyRows.lastOrNull()?.get(OfferPriceHistoryTable.id)
+            if (newLastHistoryId != null) {
+                SubscriptionsEngineStateTable.update({ SubscriptionsEngineStateTable.key eq ENGINE_KEY }) { stmt ->
+                    stmt[lastHistoryId] = newLastHistoryId
+                    stmt[updatedAt] = now
+                }
+            }
+
+            SubscriptionsEngineRunResult(
+                processedHistoryRows = historyRows.size,
+                triggeredAlerts = triggeredAlerts,
+                notificationsCreated = notificationsCreated,
+                lastHistoryId = newLastHistoryId,
+            )
+        }
+    }
+
+    private companion object {
+        private const val ENGINE_KEY = "subscriptions_engine_v1"
+    }
+}

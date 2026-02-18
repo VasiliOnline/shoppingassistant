@@ -1,0 +1,21 @@
+package com.example.shoppingassistant.server.plugins
+
+import com.example.shoppingassistant.server.config.ServerConfig
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.plugins.hsts.HSTS
+
+/**
+ * HSTS включается только если enableHsts=true в ServerConfig.
+ * Для прода рекомендуется заказывать TLS-терминацию на обратном прокси
+ * и включать эту опцию.
+ */
+fun Application.configureSecurity(config: ServerConfig) {
+    if (!config.enableHsts) return
+
+    install(HSTS) {
+        includeSubDomains = true
+        maxAgeInSeconds = 15552000 // 180 дней
+        preload = false
+    }
+}

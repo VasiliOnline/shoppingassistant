@@ -1,0 +1,33 @@
+{
+  "version": "2.1-L0",
+  "l0_code": "BEAUTY",
+  "required_leaf_codes": [
+    "BEAUTY.BODYCARE",
+    "BEAUTY.DEVICES",
+    "BEAUTY.FRAGRANCE",
+    "BEAUTY.HAIRCARE",
+    "BEAUTY.HEALTH",
+    "BEAUTY.MAKEUP",
+    "BEAUTY.SKINCARE"
+  ],
+  "requirements": {
+    "require_browse_path_to_each_leaf": true,
+    "min_aliases_per_leaf": 18,
+    "min_golden_queries_per_leaf": 20,
+    "max_blocked_share_of_aliases": 0.1
+  },
+  "gates": {
+    "coverage_leaf_reachability": "must_pass",
+    "aliases_density": "must_pass",
+    "golden_set_size": "must_pass",
+    "golden_set_pass_rate": 0.97
+  },
+  "report_schema": {
+    "leaf_code": "string",
+    "reachable_via_browse": "bool",
+    "aliases_count": "int",
+    "golden_queries_count": "int",
+    "status": "pass|fail",
+    "notes": "string"
+  }
+}

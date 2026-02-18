@@ -1,0 +1,192 @@
+package com.example.shoppingassistant.server.catalog
+
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueConstraint
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.catalog.constraints.CompatibilityRule
+import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.deleteAll
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertIgnore
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+
+/**
+ * Инициализация справочников категорий/атрибутов из domain-сидов.
+ */
+object CatalogSeeder {
+    fun seedIfEmpty() {
+        if (CategoriesTable.selectAll().limit(1).empty()) {
+            seedProfiles(CatalogSeed.profiles)
+        }
+        syncConstraints(CatalogSeed.constraints)
+    }
+
+    private fun seedProfiles(profiles: List<CategoryProfile>) {
+        profiles.forEach { profile ->
+            CategoriesTable.insert { stmt ->
+                stmt[code] = profile.category.code
+                stmt[segment] = profile.category.segment.name
+                stmt[title] = profile.category.title
+                stmt[parentCode] = profile.category.parentCode
+                stmt[description] = profile.category.description
+            }
+
+            profile.attributes.forEach { def ->
+                AttributeDefsTable.insertIgnore { stmt ->
+                    stmt[code] = def.code
+                    stmt[title] = def.title
+                    stmt[dataType] = def.dataType.name
+                    stmt[requiredForSearch] = def.requiredForSearch
+                    stmt[requiredForOffer] = def.requiredForOffer
+                    stmt[requiredForExpress] = def.requiredForExpress
+                    stmt[facetEnabled] = def.facetEnabled
+                    stmt[multiValued] = def.multiValued
+                    stmt[valueDictCode] = def.valueDictCode
+                }
+            }
+
+            CategoryAttributesTable.batchInsert(profile.categoryAttributes) { attr ->
+                this[CategoryAttributesTable.categoryCode] = attr.categoryCode
+                this[CategoryAttributesTable.attributeCode] = attr.attributeCode
+                this[CategoryAttributesTable.uiOrder] = attr.uiOrder
+                this[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
+            }
+
+            profile.valueDictionaries
+                .flatMap { dict -> dict.entries.map { entry -> dict.attributeCode to entry } }
+                .distinctBy { pair -> "${pair.first}|${pair.second.canonicalCode}" }
+                .forEach { (attrCode, entry) ->
+                    AttributeValueDictTable.insertIgnore { stmt ->
+                        stmt[AttributeValueDictTable.attributeCode] = attrCode
+                        stmt[AttributeValueDictTable.canonicalCode] = entry.canonicalCode
+                        stmt[AttributeValueDictTable.canonicalValue] = entry.canonicalValue
+                        stmt[AttributeValueDictTable.synonyms] = entry.synonyms
+                    }
+                }
+        }
+    }
+
+    private fun syncConstraints(constraints: List<CatalogConstraints>) {
+        val seedRows = constraints
+            .map(::normalizeConstraintRow)
+            .sortedBy { it.key }
+
+        if (seedRows.isEmpty()) {
+            CatalogConstraintsTable.deleteAll()
+            return
+        }
+
+        val existingByKey = CatalogConstraintsTable
+            .selectAll()
+            .map { row ->
+                ExistingConstraintRow(
+                    id = row[CatalogConstraintsTable.id],
+                    payload = ConstraintPayload(
+                        scope = row[CatalogConstraintsTable.scope],
+                        categoryCode = row[CatalogConstraintsTable.categoryCode],
+                        brand = row[CatalogConstraintsTable.brand],
+                        model = row[CatalogConstraintsTable.model],
+                        attributeConstraints = row[CatalogConstraintsTable.attributeConstraints],
+                        compatibilityRules = row[CatalogConstraintsTable.compatibilityRules],
+                    ),
+                )
+            }
+            .groupBy { it.payload.key }
+
+        val currentByKey = LinkedHashMap<String, ExistingConstraintRow>()
+        val duplicateIdsToDelete = mutableListOf<Long>()
+        existingByKey.forEach { (key, rows) ->
+            val ordered = rows.sortedBy { it.id }
+            currentByKey[key] = ordered.first()
+            duplicateIdsToDelete += ordered.drop(1).map { it.id }
+        }
+
+        if (duplicateIdsToDelete.isNotEmpty()) {
+            CatalogConstraintsTable.deleteWhere { CatalogConstraintsTable.id inList duplicateIdsToDelete }
+        }
+
+        val seedKeys = seedRows.map { it.key }.toSet()
+        val staleIdsToDelete = currentByKey
+            .filterKeys { it !in seedKeys }
+            .values
+            .map { it.id }
+        if (staleIdsToDelete.isNotEmpty()) {
+            CatalogConstraintsTable.deleteWhere { CatalogConstraintsTable.id inList staleIdsToDelete }
+        }
+
+        val toInsert = mutableListOf<ConstraintPayload>()
+        seedRows.forEach { seedRow ->
+            val current = currentByKey[seedRow.key]?.payload
+            if (current == null) {
+                toInsert += seedRow
+                return@forEach
+            }
+            if (current != seedRow) {
+                val id = currentByKey[seedRow.key]?.id ?: return@forEach
+                CatalogConstraintsTable.update({ CatalogConstraintsTable.id eq id }) { stmt ->
+                    stmt[scope] = seedRow.scope
+                    stmt[categoryCode] = seedRow.categoryCode
+                    stmt[brand] = seedRow.brand
+                    stmt[model] = seedRow.model
+                    stmt[attributeConstraints] = seedRow.attributeConstraints
+                    stmt[compatibilityRules] = seedRow.compatibilityRules
+                }
+            }
+        }
+
+        if (toInsert.isNotEmpty()) {
+            CatalogConstraintsTable.batchInsert(toInsert) { row ->
+                this[CatalogConstraintsTable.scope] = row.scope
+                this[CatalogConstraintsTable.categoryCode] = row.categoryCode
+                this[CatalogConstraintsTable.brand] = row.brand
+                this[CatalogConstraintsTable.model] = row.model
+                this[CatalogConstraintsTable.attributeConstraints] = row.attributeConstraints
+                this[CatalogConstraintsTable.compatibilityRules] = row.compatibilityRules
+            }
+        }
+    }
+
+    private fun normalizeConstraintRow(constraint: CatalogConstraints): ConstraintPayload {
+        val scope = constraint.scope.name
+        val categoryCode = constraint.categoryCode?.trim()?.takeIf { it.isNotEmpty() }?.uppercase()
+        val brand = constraint.brand?.trim()?.takeIf { it.isNotEmpty() }
+        val model = constraint.model?.trim()?.takeIf { it.isNotEmpty() }
+        return ConstraintPayload(
+            scope = scope,
+            categoryCode = categoryCode,
+            brand = brand,
+            model = model,
+            attributeConstraints = constraint.attributeConstraints,
+            compatibilityRules = constraint.compatibilityRules,
+        )
+    }
+
+    private data class ExistingConstraintRow(
+        val id: Long,
+        val payload: ConstraintPayload,
+    )
+
+    private data class ConstraintPayload(
+        val scope: String,
+        val categoryCode: String?,
+        val brand: String?,
+        val model: String?,
+        val attributeConstraints: List<AttributeValueConstraint>,
+        val compatibilityRules: List<CompatibilityRule>,
+    ) {
+        val key: String = buildString {
+            append(scope)
+            append("|")
+            append(categoryCode.orEmpty())
+            append("|")
+            append(brand?.lowercase().orEmpty())
+            append("|")
+            append(model?.lowercase().orEmpty())
+        }
+    }
+}

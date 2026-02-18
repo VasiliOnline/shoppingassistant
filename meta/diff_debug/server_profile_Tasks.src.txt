@@ -1,0 +1,64 @@
+package com.example.shoppingassistant.server.profile
+
+/**
+ * Общий манифест задач/эндпойнтов backend-модуля "Профиль".
+ *
+ * Это аналог feature/.../profile/Tasks.kt на клиенте:
+ * здесь единообразно описываем всё, что умеет backend про профиль.
+ */
+enum class ProfileApiTaskId {
+    GET_DEMO,
+    GET_ME,
+    UPDATE_PROFILE,
+    UPDATE_PHOTOS,
+}
+
+/**
+ * Описание одной backend-задачи (ручки).
+ *
+ * method — HTTP-метод (GET/POST/…),
+ * path   — абсолютный путь,
+ * description — человекочитаемое описание.
+ */
+data class ProfileApiTaskDescriptor(
+    val id: ProfileApiTaskId,
+    val method: String,
+    val path: String,
+    val description: String,
+)
+
+/**
+ * Полный список задач backend-модуля "Профиль".
+ *
+ * Реализованы:
+ * - GET_DEMO — /api/profile/demo;
+ * - GET_ME   — /api/profile/me;
+ * - UPDATE_PROFILE — /api/profile/update;
+ * - UPDATE_PHOTOS — /api/profile/photos.
+ */
+val profileApiTasks: List<ProfileApiTaskDescriptor> = listOf(
+    ProfileApiTaskDescriptor(
+        id = ProfileApiTaskId.GET_DEMO,
+        method = "GET",
+        path = "/api/profile/demo",
+        description = "Демо-ручка: статический профиль для проверки интеграции и формата ответа.",
+    ),
+    ProfileApiTaskDescriptor(
+        id = ProfileApiTaskId.GET_ME,
+        method = "GET",
+        path = "/api/profile/me",
+        description = "Получение текущего авторизованного пользователя. Позже завяжем на реальную авторизацию.",
+    ),
+    ProfileApiTaskDescriptor(
+        id = ProfileApiTaskId.UPDATE_PROFILE,
+        method = "POST",
+        path = "/api/profile/update",
+        description = "Обновление полей профиля (город, имя, аватар и др.). Требует авторизации.",
+    ),
+    ProfileApiTaskDescriptor(
+        id = ProfileApiTaskId.UPDATE_PHOTOS,
+        method = "POST",
+        path = "/api/profile/photos",
+        description = "Сохранение списка URL фотографий пользователя.",
+    ),
+)

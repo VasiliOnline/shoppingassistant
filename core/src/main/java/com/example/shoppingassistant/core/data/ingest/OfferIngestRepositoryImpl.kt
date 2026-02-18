@@ -1,0 +1,158 @@
+package com.example.shoppingassistant.core.data.ingest
+
+import com.example.shoppingassistant.core.data.ingest.analytics.IngestAnalyticsLogger
+import com.example.shoppingassistant.core.data.ingest.analytics.IngestAttempt
+import com.example.shoppingassistant.core.data.ingest.cache.IngestCache
+import com.example.shoppingassistant.domain.ingest.IngestResult
+import com.example.shoppingassistant.domain.ingest.IngestStatus
+import com.example.shoppingassistant.domain.ingest.OfferIngestRepository
+import com.example.shoppingassistant.domain.ingest.RawOffer
+import com.example.shoppingassistant.domain.ingest.SourceRegistry
+import com.example.shoppingassistant.domain.ingest.SourceType
+import com.example.shoppingassistant.domain.ingest.UrlNormalizer
+
+/**
+ * Реализация репозитория ingest-загрузки, роутит запрос на конкретный SourceParser.
+ */
+class OfferIngestRepositoryImpl(
+    private val parsers: Map<SourceType, SourceParser>,
+    private val sourceRegistry: SourceRegistry,
+    private val urlNormalizer: UrlNormalizer,
+    private val analyticsLogger: IngestAnalyticsLogger,
+    private val cache: IngestCache,
+) : OfferIngestRepository {
+
+    constructor(
+        parsers: List<SourceParser>,
+        sourceRegistry: SourceRegistry,
+        urlNormalizer: UrlNormalizer,
+        analyticsLogger: IngestAnalyticsLogger,
+        cache: IngestCache,
+    ) : this(
+        parsers = parsers.associateBy { it.source },
+        sourceRegistry = sourceRegistry,
+        urlNormalizer = urlNormalizer,
+        analyticsLogger = analyticsLogger,
+        cache = cache,
+    )
+
+    override suspend fun loadRawOffer(source: SourceType, url: String): IngestResult {
+        val normalized = urlNormalizer.normalize(url)
+        val normalizedUrl = normalized.normalized
+        cache.get(normalizedUrl)?.let { return it }
+
+        val entry = sourceRegistry.findBySourceType(source)
+        if (entry == null || !entry.rolloutEnabled || !entry.capabilities.canIngest) {
+            val result = buildResult(
+                source = source,
+                sourceId = entry?.id,
+                url = normalizedUrl,
+                status = IngestStatus.UNSUPPORTED,
+                message = "Source is not enabled for ingest",
+            )
+            logAttempt(entry?.id, source, normalized.host, result, null)
+            return result
+        }
+
+        val parser = parsers[source]
+        if (parser == null) {
+            val result = buildResult(
+                source = source,
+                sourceId = entry.id,
+                url = normalizedUrl,
+                status = IngestStatus.UNSUPPORTED,
+                message = "Parser not found",
+            )
+            logAttempt(entry.id, source, normalized.host, result, null)
+            return result
+        }
+
+        val startedAt = System.currentTimeMillis()
+        val parsed = runCatching { parser.load(normalizedUrl) }
+            .getOrElse { err ->
+                val result = buildResult(
+                    source = source,
+                    sourceId = entry.id,
+                    url = normalizedUrl,
+                    status = IngestStatus.NETWORK_ERROR,
+                    message = err.message,
+                    latencyMs = System.currentTimeMillis() - startedAt,
+                    parserVersion = parser.parserVersion,
+                )
+                logAttempt(entry.id, source, normalized.host, result, parser.parserVersion)
+                return result
+            }
+        val latencyMs = System.currentTimeMillis() - startedAt
+        val status = if (parsed.status == IngestStatus.OK && parsed.offer == null) {
+            IngestStatus.PARSE_ERROR
+        } else {
+            parsed.status
+        }
+        val result = buildResult(
+            source = source,
+            sourceId = entry.id,
+            url = normalizedUrl,
+            status = status,
+            message = parsed.message,
+            httpStatus = parsed.httpStatus,
+            latencyMs = latencyMs,
+            bytes = parsed.bytes,
+            parserVersion = parser.parserVersion,
+            offer = parsed.offer,
+        )
+
+        logAttempt(entry.id, source, normalized.host, result, parser.parserVersion)
+
+        if (result.status == IngestStatus.OK) {
+            cache.put(normalizedUrl, result)
+        }
+        return result
+    }
+
+    private fun buildResult(
+        source: SourceType,
+        sourceId: String?,
+        url: String,
+        status: IngestStatus,
+        message: String? = null,
+        httpStatus: Int? = null,
+        latencyMs: Long? = null,
+        bytes: Long? = null,
+        parserVersion: String? = null,
+        offer: RawOffer? = null,
+    ): IngestResult {
+        return IngestResult(
+            status = status,
+            source = source,
+            url = url,
+            rawOffer = offer,
+            sourceId = sourceId,
+            message = message,
+            httpStatus = httpStatus,
+            latencyMs = latencyMs,
+            bytes = bytes,
+            parserVersion = parserVersion,
+        )
+    }
+
+    private fun logAttempt(
+        sourceId: String?,
+        sourceType: SourceType,
+        host: String?,
+        result: IngestResult,
+        parserVersion: String?,
+    ) {
+        analyticsLogger.log(
+            IngestAttempt(
+                sourceId = sourceId,
+                sourceType = sourceType,
+                host = host,
+                status = result.status,
+                latencyMs = result.latencyMs,
+                httpStatus = result.httpStatus,
+                bytes = result.bytes,
+                parserVersion = parserVersion ?: result.parserVersion,
+            ),
+        )
+    }
+}

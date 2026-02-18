@@ -1,0 +1,157 @@
+version: 2.1-L0
+l0_code: AUTO
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- как
+- инструкция
+- схема
+- форум
+- отзывы
+- скачать
+- игра
+- обои
+- pdf
+- каталог
+disambiguation_ordered_rules:
+- id: R.KIDS_CHILD_SEAT
+  if_any_tokens:
+  - детское автокресло
+  - автолюлька
+  - isofix
+  - бустер
+  then_route_canonical: KIDS.STROLLERS_CARSEATS
+  confidence: 0.82
+  notes: Child seats with explicit kids intent -> KIDS
+- id: R.KIDS_STROLLER
+  if_any_tokens:
+  - коляска
+  - прогулочная коляска
+  - люлька
+  then_route_canonical: KIDS.STROLLERS_CARSEATS
+  confidence: 0.75
+  notes: Stroller -> KIDS
+- id: R.KIDS_NURSERY_FURNITURE
+  if_any_tokens:
+  - кроватка детская
+  - манеж
+  - барьер безопасности
+  then_route_canonical: KIDS.NURSERY_FURNITURE
+  confidence: 0.7
+  notes: Nursery furniture -> KIDS
+- id: R.PHONE_ACCESSORY
+  if_any_tokens:
+  - зарядка usb c
+  - зарядка type c
+  - пауэрбанк
+  - powerbank
+  then_route_canonical: TECH.PHONES
+  confidence: 0.62
+  notes: Phone accessories not auto-specific
+- id: R.HOME_TOOLS_GENERAL
+  if_any_tokens:
+  - дрель
+  - шуруповерт
+  - перфоратор
+  - лобзик
+  - болгарка
+  - сварочный аппарат
+  then_route_canonical: HOME.REPAIR_TOOLS
+  confidence: 0.68
+  notes: General home tools -> HOME.REPAIR_TOOLS
+- id: R.TIRES_WHEELS
+  if_any_tokens:
+  - шины
+  - резина
+  - покрышк
+  - r16
+  - r17
+  - r18
+  - диски
+  - колеса
+  - колёса
+  - шиномонтаж
+  - балансировка
+  - ремонт шин
+  then_route_browse_node: BN.AUTO.TIRES
+  confidence: 0.86
+  notes: Tires/wheels/service
+- id: R.GARAGE_TOOLS
+  if_any_tokens:
+  - домкрат
+  - компрессор
+  - насос
+  - набор инструментов
+  - набор ключей
+  - трещотка
+  - obd
+  - obd2
+  - elm327
+  - сканер
+  - провода прикуривания
+  - мойка высокого давления
+  - ящик для инструментов
+  then_route_browse_node: BN.AUTO.TOOLS
+  confidence: 0.84
+  notes: Garage/tools/diagnostics
+- id: R.ACCESSORIES
+  if_any_tokens:
+  - коврики
+  - чехлы
+  - оплетка
+  - видеорегистратор
+  - радар
+  - антирадар
+  - магнитола
+  - автомагнитола
+  - держатель
+  - автозарядка
+  - fm трансмиттер
+  - багажник на крышу
+  - фаркоп
+  - дворники
+  - автохимия
+  - полироль
+  - шампунь для авто
+  - ароматизатор
+  then_route_browse_node: BN.AUTO.ACCESS
+  confidence: 0.82
+  notes: Auto accessories
+- id: R.PARTS
+  if_any_tokens:
+  - запчаст
+  - фильтр
+  - свечи
+  - ремень грм
+  - колодк
+  - диск тормозн
+  - амортиз
+  - стойк
+  - рычаг
+  - шрус
+  - аккумулятор автомобильный
+  - генератор
+  - стартер
+  - масло моторное
+  - антифриз
+  - лампы h7
+  - фара
+  - предохранител
+  then_route_browse_node: BN.AUTO.PARTS
+  confidence: 0.8
+  notes: Auto parts
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.AUTO
+  default_canonical: AUTO
+  if_only_generic_tokens_route_to_root: true

@@ -1,0 +1,1538 @@
+package com.example.shoppingassistant.feature.pages.draft.create
+
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.PlayCircleOutline
+import androidx.compose.material.icons.outlined.TextFields
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInParent
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.example.shoppingassistant.domain.catalog.AttributeDef
+import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.ugc.draft.DraftCondition
+import com.example.shoppingassistant.domain.ugc.draft.DraftContacts
+import com.example.shoppingassistant.domain.ugc.draft.DraftDelivery
+import com.example.shoppingassistant.domain.ugc.draft.DraftInputOrigin
+import com.example.shoppingassistant.domain.ugc.draft.DraftMedia
+import com.example.shoppingassistant.domain.ugc.draft.DraftOffer
+import com.example.shoppingassistant.domain.ugc.draft.DraftPriceType
+import com.example.shoppingassistant.feature.metrics.FlowMetrics
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import kotlin.math.roundToInt
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CreateDraftSheet(
+    visible: Boolean,
+    draftId: String? = null,
+    origin: DraftInputOrigin? = null,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CreateDraftViewModel = koinViewModel(),
+) {
+    if (!visible) return
+    val state by viewModel.state.collectAsState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(visible, draftId, origin) {
+        if (visible) {
+            FlowMetrics.markCreateSheetOpened()
+            viewModel.openDraft(draftId, origin)
+        }
+    }
+
+    BackHandler(enabled = state.subSheet != null) {
+        viewModel.closeSubSheet()
+    }
+
+    ModalBottomSheet(
+        onDismissRequest = {
+            viewModel.closeDraft()
+            onDismiss()
+        },
+        sheetState = sheetState,
+        modifier = modifier,
+    ) {
+        val draft = state.draft
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .imePadding()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (state.step != DraftStep.ENTRY) {
+                        IconButton(
+                            onClick = { viewModel.setStep(prevStep(state.step)) },
+                        ) {
+                            Icon(Icons.Outlined.ArrowBack, contentDescription = "Назад")
+                        }
+                    }
+                    Text(
+                        text = "Разместить",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        viewModel.closeDraft()
+                        onDismiss()
+                    },
+                ) {
+                    Icon(Icons.Outlined.Close, contentDescription = "Закрыть")
+                }
+            }
+
+            DraftSummaryCard(
+                draft = state.draft,
+                saved = state.savedDraft,
+                onOpenSummary = { viewModel.openSubSheet(DraftSubSheet.SUMMARY) },
+            )
+
+            AnimatedContent(
+                targetState = state.step,
+                label = "draft-step",
+            ) { step ->
+                when (step) {
+                    DraftStep.ENTRY -> EntryStep(
+                        onSelect = { viewModel.selectOrigin(it) },
+                    )
+                    DraftStep.MEDIA -> MediaStep(
+                        draft = draft,
+                        onUpdateMedia = { viewModel.updateMedia(it) },
+                    )
+                    DraftStep.TITLE_CATEGORY -> TitleCategoryStep(
+                        draft = draft,
+                        onTitleChange = viewModel::updateTitle,
+                        onTitleDone = viewModel::confirmTitle,
+                        onOpenCategory = { viewModel.openSubSheet(DraftSubSheet.CATEGORY) },
+                    )
+                    DraftStep.PRICE -> PriceStep(
+                        draft = draft,
+                        onPriceChange = viewModel::updatePriceInput,
+                        onPriceTypeChange = viewModel::updatePriceType,
+                        onConfirm = viewModel::confirmPrice,
+                    )
+                    DraftStep.ATTRIBUTES -> AttributesStep(
+                        draft = draft,
+                        state = state.attributesState,
+                        onPick = {
+                            viewModel.setActiveAttribute(it)
+                            viewModel.openSubSheet(DraftSubSheet.ATTR_VALUE)
+                        },
+                        onPickCondition = { viewModel.openSubSheet(DraftSubSheet.CONDITION) },
+                        onContinue = { viewModel.setStep(DraftStep.LOCATION_DELIVERY) },
+                    )
+                    DraftStep.LOCATION_DELIVERY -> LocationDeliveryStep(
+                        draft = draft,
+                        onOpenLocation = { viewModel.openSubSheet(DraftSubSheet.LOCATION) },
+                        onDeliveryChange = viewModel::updateDelivery,
+                        onContinue = { viewModel.setStep(DraftStep.CONTACTS) },
+                    )
+                    DraftStep.CONTACTS -> ContactsStep(
+                        draft = draft,
+                        onContactsChange = viewModel::updateContacts,
+                        onContinue = { viewModel.setStep(DraftStep.REVIEW_PUBLISH) },
+                    )
+                    DraftStep.REVIEW_PUBLISH -> ReviewPublishStep(
+                        draft = draft,
+                        requiredAttrs = state.attributesState.required,
+                        duplicateDraft = state.duplicateDraft,
+                        onPublish = {
+                            viewModel.publishDraft {
+                                scope.launch { sheetState.hide() }
+                                onDismiss()
+                            }
+                        },
+                        onFixMissing = { viewModel.setStep(it) },
+                        onOpenDuplicate = { viewModel.openExistingDraft(it) },
+                    )
+                }
+            }
+        }
+
+        if (state.subSheet == DraftSubSheet.CATEGORY) {
+            CategoryPickerSheet(
+                state = state.categoryState,
+                selectedCode = state.draft?.categoryCode,
+                onQueryChange = viewModel::setCategorySearch,
+                onPick = {
+                    viewModel.updateCategory(it.code)
+                    viewModel.closeSubSheet()
+                },
+                onDismiss = { viewModel.closeSubSheet() },
+            )
+        }
+
+        if (state.subSheet == DraftSubSheet.LOCATION) {
+            LocationPickerSheet(
+                current = state.draft?.location,
+                onApply = {
+                    viewModel.updateLocation(it)
+                    viewModel.closeSubSheet()
+                },
+                onDismiss = { viewModel.closeSubSheet() },
+            )
+        }
+
+        if (state.subSheet == DraftSubSheet.CONDITION) {
+            ConditionPickerSheet(
+                current = state.draft?.condition,
+                onPick = {
+                    viewModel.updateCondition(it)
+                    viewModel.closeSubSheet()
+                },
+                onDismiss = { viewModel.closeSubSheet() },
+            )
+        }
+
+        if (state.subSheet == DraftSubSheet.ATTR_VALUE) {
+            AttributeValueSheet(
+                attr = state.attributesState.activeAttr,
+                current = state.draft?.attributes?.get(state.attributesState.activeAttr?.code),
+                values = state.attributesState.activeValues,
+                onPick = { value ->
+                    state.attributesState.activeAttr?.code?.let { key ->
+                        viewModel.updateAttribute(key, value)
+                    }
+                    viewModel.closeSubSheet()
+                },
+                onDismiss = { viewModel.closeSubSheet() },
+            )
+        }
+
+        if (state.subSheet == DraftSubSheet.SUMMARY) {
+            DraftSummarySheet(
+                draft = state.savedDraft ?: state.draft,
+                requiredAttrs = state.attributesState.required,
+                onJump = { viewModel.setStep(it) },
+                onDismiss = { viewModel.closeSubSheet() },
+            )
+        }
+    }
+}
+
+@Composable
+private fun DraftSummaryCard(
+    draft: DraftOffer?,
+    saved: DraftOffer?,
+    onOpenSummary: () -> Unit,
+) {
+    val progress = draftProgress(saved ?: draft)
+    val fraction by animateFloatAsState(targetValue = progress.fraction, label = "draft-progress")
+    val fillColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.16f)
+    val shape = RoundedCornerShape(20.dp)
+
+    Surface(
+        shape = shape,
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onOpenSummary),
+    ) {
+        Box {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(
+                        color = fillColor,
+                        shape = shape,
+                    )
+                    .fillMaxWidth(fraction),
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                val title = draft?.title?.takeIf { it.isNotBlank() } ?: "Без названия"
+                val price = draft?.price?.let { buildPriceLabel(it.type, it.amountMajor, it.currency) }
+                val category = draft?.categoryCode?.takeIf { it.isNotBlank() }
+                val location = draft?.location?.publicLabel ?: draft?.location?.city
+                val locationText = locationSummary(draft?.location, location)
+                Text(title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    text = listOfNotNull(price, category).joinToString(" · ").ifBlank { "Добавьте цену и категорию" },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = locationText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EntryStep(
+    onSelect: (DraftInputOrigin) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            EntryTile(
+                icon = Icons.Outlined.CameraAlt,
+                label = "Фото/Видео",
+                onClick = { onSelect(DraftInputOrigin.PHOTO) },
+                modifier = Modifier.weight(1f),
+            )
+            EntryTile(
+                icon = Icons.Outlined.Mic,
+                label = "Голос",
+                onClick = { onSelect(DraftInputOrigin.VOICE) },
+                modifier = Modifier.weight(1f),
+            )
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            EntryTile(
+                icon = Icons.Outlined.TextFields,
+                label = "Текст",
+                onClick = { onSelect(DraftInputOrigin.TEXT) },
+                modifier = Modifier.weight(1f),
+            )
+            EntryTile(
+                icon = Icons.Outlined.Link,
+                label = "Ссылка",
+                onClick = { onSelect(DraftInputOrigin.LINK) },
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun EntryTile(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        shape = RoundedCornerShape(20.dp),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        color = MaterialTheme.colorScheme.surface,
+        modifier = modifier
+            .heightIn(min = 80.dp)
+            .clickable(onClick = onClick),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleSmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MediaStep(
+    draft: DraftOffer?,
+    onUpdateMedia: (List<DraftMedia>) -> Unit,
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val media = draft?.media.orEmpty()
+    val importer = remember { DraftMediaImporter(context) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            importer.importPhoto(uri)?.let { onUpdateMedia(media + it) }
+        }
+    }
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        if (bitmap == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            importer.importBitmap(bitmap)?.let { onUpdateMedia(media + it) }
+        }
+    }
+    val videoLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            importer.importVideo(uri)?.let { onUpdateMedia(media + it) }
+        }
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        MediaPreview(media = media)
+        MediaCarousel(
+            media = media,
+            onDelete = { id ->
+                onUpdateMedia(media.filterNot { it.id == id })
+            },
+            onReorder = onUpdateMedia,
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Button(
+                onClick = { cameraLauncher.launch(null) },
+                modifier = Modifier.weight(1f),
+            ) {
+                Icon(Icons.Outlined.CameraAlt, contentDescription = null)
+                Spacer(Modifier.width(6.dp))
+                Text("Снять")
+            }
+            OutlinedButton(
+                onClick = { galleryLauncher.launch("image/*") },
+                modifier = Modifier.weight(1f),
+            ) {
+                Icon(Icons.Outlined.Image, contentDescription = null)
+                Spacer(Modifier.width(6.dp))
+                Text("Добавить")
+            }
+        }
+        TextButton(onClick = { videoLauncher.launch("video/*") }) {
+            Icon(Icons.Outlined.PlayCircleOutline, contentDescription = null)
+            Spacer(Modifier.width(6.dp))
+            Text("Добавить видео")
+        }
+    }
+}
+
+@Composable
+private fun MediaPreview(media: List<DraftMedia>) {
+    val last = media.lastOrNull()
+    val shape = RoundedCornerShape(18.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 180.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant, shape),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (last?.localUri != null || last?.remoteUrl != null) {
+            AsyncImage(
+                model = last.localUri ?: last.remoteUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 180.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant, shape),
+            )
+        } else {
+            Icon(Icons.Outlined.Image, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+@Composable
+private fun MediaCarousel(
+    media: List<DraftMedia>,
+    onDelete: (String) -> Unit,
+    onReorder: (List<DraftMedia>) -> Unit,
+) {
+    if (media.isEmpty()) return
+    val positions = remember { mutableStateMapOf<String, Rect>() }
+    var draggingId by remember { mutableStateOf<String?>(null) }
+    var dragOffset by remember { mutableStateOf(Offset.Zero) }
+
+    Row(
+        modifier = Modifier
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        media.forEach { item ->
+            val isDragging = draggingId == item.id
+            Box(
+                modifier = Modifier
+                    .size(72.dp)
+                    .onGloballyPositioned { layout ->
+                        positions[item.id] = layout.boundsInParent()
+                    }
+                    .pointerInput(item.id) {
+                        detectDragGesturesAfterLongPress(
+                            onDragStart = { draggingId = item.id },
+                            onDragEnd = {
+                                draggingId = null
+                                dragOffset = Offset.Zero
+                            },
+                            onDragCancel = {
+                                draggingId = null
+                                dragOffset = Offset.Zero
+                            },
+                            onDrag = { change, offset ->
+                                change.consume()
+                                if (draggingId != item.id) return@detectDragGesturesAfterLongPress
+                                dragOffset += offset
+                                val current = positions[item.id] ?: return@detectDragGesturesAfterLongPress
+                                val centerX = current.center.x + dragOffset.x
+                                val target = positions.entries.firstOrNull { entry ->
+                                    centerX in entry.value.left..entry.value.right
+                                }?.key
+                                if (target != null && target != item.id) {
+                                    val currentIndex = media.indexOfFirst { it.id == item.id }
+                                    val targetIndex = media.indexOfFirst { it.id == target }
+                                    if (currentIndex >= 0 && targetIndex >= 0) {
+                                        val updated = media.toMutableList()
+                                        val moved = updated.removeAt(currentIndex)
+                                        updated.add(targetIndex, moved)
+                                        onReorder(updated)
+                                        dragOffset = Offset.Zero
+                                    }
+                                }
+                            },
+                        )
+                    }
+                    .offset {
+                        if (isDragging) IntOffset(dragOffset.x.roundToInt(), 0) else IntOffset.Zero
+                    },
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    AsyncImage(
+                        model = item.localUri ?: item.remoteUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+                IconButton(
+                    onClick = { onDelete(item.id) },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .size(24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = "Удалить",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TitleCategoryStep(
+    draft: DraftOffer?,
+    onTitleChange: (String) -> Unit,
+    onTitleDone: () -> Unit,
+    onOpenCategory: () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        OutlinedTextField(
+            value = draft?.title.orEmpty(),
+            onValueChange = onTitleChange,
+            label = { Text("Название") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { onTitleDone() }),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Surface(
+            shape = RoundedCornerShape(14.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onOpenCategory),
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Категория", style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        text = draft?.categoryCode?.takeIf { it.isNotBlank() } ?: "Выбрать",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null)
+            }
+        }
+        Text(
+            text = "Можно позже",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun PriceStep(
+    draft: DraftOffer?,
+    onPriceChange: (String) -> Unit,
+    onPriceTypeChange: (DraftPriceType) -> Unit,
+    onConfirm: () -> Unit,
+) {
+    val type = draft?.price?.type ?: DraftPriceType.FIXED
+    val raw = draft?.price?.rawInput.orEmpty()
+    val isValid = when (type) {
+        DraftPriceType.FIXED -> draft?.price?.amountMajor != null
+        DraftPriceType.NEGOTIABLE,
+        DraftPriceType.FREE,
+        DraftPriceType.EXCHANGE,
+        -> true
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        OutlinedTextField(
+            value = raw,
+            onValueChange = onPriceChange,
+            label = { Text("Цена") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(onDone = { if (isValid) onConfirm() }),
+            enabled = type == DraftPriceType.FIXED,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            PriceTypeChip("Фикс", type == DraftPriceType.FIXED) { onPriceTypeChange(DraftPriceType.FIXED) }
+            PriceTypeChip("Договорная", type == DraftPriceType.NEGOTIABLE) { onPriceTypeChange(DraftPriceType.NEGOTIABLE) }
+            PriceTypeChip("Бесплатно", type == DraftPriceType.FREE) { onPriceTypeChange(DraftPriceType.FREE) }
+        }
+        if (!isValid && type == DraftPriceType.FIXED) {
+            Text(
+                text = "Введите цену или выберите другой вариант",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+            )
+        }
+        Button(
+            onClick = onConfirm,
+            enabled = isValid,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Готово")
+        }
+    }
+}
+
+@Composable
+private fun PriceTypeChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.14f) else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(vertical = 6.dp, horizontal = 10.dp),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun AttributesStep(
+    draft: DraftOffer?,
+    state: DraftAttributesState,
+    onPick: (AttributeDef) -> Unit,
+    onPickCondition: () -> Unit,
+    onContinue: () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        if (state.defs.isEmpty()) {
+            Text(
+                text = "Атрибуты появятся после выбора категории",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        } else {
+            state.defs.forEach { def ->
+                if (def.code == CONDITION_ATTR_CODE) {
+                    val value = draft?.condition?.let { conditionLabel(it) }
+                    AttributeRow(
+                        title = def.title,
+                        value = value,
+                        required = def.code in state.required,
+                        onClick = onPickCondition,
+                    )
+                } else {
+                    val value = draft?.attributes?.get(def.code)
+                    AttributeRow(
+                        title = def.title,
+                        value = value,
+                        required = def.code in state.required,
+                        onClick = { onPick(def) },
+                    )
+                }
+            }
+        }
+        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) {
+            Text("Продолжить")
+        }
+    }
+}
+
+@Composable
+private fun AttributeRow(
+    title: String,
+    value: String?,
+    required: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = if (required) "$title · обязательно" else title,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Text(
+                    text = value?.takeIf { it.isNotBlank() } ?: "Не выбрано",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null)
+        }
+    }
+}
+
+@Composable
+private fun LocationDeliveryStep(
+    draft: DraftOffer?,
+    onOpenLocation: () -> Unit,
+    onDeliveryChange: (DraftDelivery) -> Unit,
+    onContinue: () -> Unit,
+) {
+    val delivery = draft?.delivery ?: DraftDelivery()
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        AttributeRow(
+            title = "Локация",
+            value = locationValue(draft?.location),
+            required = true,
+            onClick = onOpenLocation,
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            ToggleChip("Самовывоз", delivery.pickup) {
+                onDeliveryChange(delivery.copy(pickup = !delivery.pickup))
+            }
+            ToggleChip("Доставка", delivery.delivery) {
+                onDeliveryChange(delivery.copy(delivery = !delivery.delivery))
+            }
+            ToggleChip("Встреча", delivery.meeting) {
+                onDeliveryChange(delivery.copy(meeting = !delivery.meeting))
+            }
+        }
+        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) {
+            Text("Продолжить")
+        }
+    }
+}
+
+@Composable
+private fun ToggleChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.14f) else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(horizontal = 10.dp, vertical = 6.dp),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun ContactsStep(
+    draft: DraftOffer?,
+    onContactsChange: (DraftContacts) -> Unit,
+    onContinue: () -> Unit,
+) {
+    val contacts = draft?.contacts ?: DraftContacts()
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        ToggleRow(
+            label = "Чат в приложении",
+            checked = contacts.chatEnabled,
+            onToggle = { onContactsChange(contacts.copy(chatEnabled = !contacts.chatEnabled)) },
+        )
+        ToggleRow(
+            label = "Телефон",
+            checked = contacts.phoneEnabled,
+            onToggle = { onContactsChange(contacts.copy(phoneEnabled = !contacts.phoneEnabled)) },
+        )
+        if (contacts.phoneEnabled) {
+            OutlinedTextField(
+                value = contacts.phone.orEmpty(),
+                onValueChange = { onContactsChange(contacts.copy(phone = it)) },
+                label = { Text("Номер телефона") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        ToggleRow(
+            label = "Только сообщения",
+            checked = contacts.onlyMessages,
+            onToggle = { onContactsChange(contacts.copy(onlyMessages = !contacts.onlyMessages)) },
+        )
+        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) {
+            Text("Продолжить")
+        }
+    }
+}
+
+@Composable
+private fun ToggleRow(
+    label: String,
+    checked: Boolean,
+    onToggle: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onToggle),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(label, style = MaterialTheme.typography.bodyMedium)
+            if (checked) {
+                Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewPublishStep(
+    draft: DraftOffer?,
+    requiredAttrs: Set<String>,
+    duplicateDraft: DraftOffer?,
+    onPublish: () -> Unit,
+    onFixMissing: (DraftStep) -> Unit,
+    onOpenDuplicate: (String) -> Unit,
+) {
+    val validation = DraftPublishValidator.validate(draft, requiredAttrs)
+    val missing = buildMissingItems(validation.missing)
+    val canPublish = validation.isReady
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        if (duplicateDraft != null && duplicateDraft.id != draft?.id) {
+            DuplicateDraftCard(
+                duplicate = duplicateDraft,
+                onOpen = { onOpenDuplicate(duplicateDraft.id) },
+            )
+        }
+        ReviewPreviewCard(draft)
+        missing.forEach { item ->
+            ReviewChecklistItem(item)
+        }
+        Button(
+            onClick = {
+                if (canPublish) {
+                    onPublish()
+                } else {
+                    FlowMetrics.markPublishAttempted()
+                    FlowMetrics.markPublishFailed("missing_fields")
+                    onFixMissing(missing.first().step)
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(if (canPublish) "Опубликовать" else "Заполнить минимум")
+        }
+        if (!canPublish) {
+            Text(
+                text = "Нужно заполнить: ${missing.first().label}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DuplicateDraftCard(
+    duplicate: DraftOffer,
+    onOpen: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Похожий черновик",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Text(
+                    text = duplicate.title?.takeIf { it.isNotBlank() } ?: "Без названия",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = buildPriceLabel(duplicate.price.type, duplicate.price.amountMajor, duplicate.price.currency),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            TextButton(onClick = onOpen) {
+                Text("Открыть")
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewPreviewCard(draft: DraftOffer?) {
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            val cover = draft?.media?.firstOrNull()?.localUri ?: draft?.media?.firstOrNull()?.remoteUrl
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (cover != null) {
+                    AsyncImage(
+                        model = cover,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                } else {
+                    Icon(Icons.Outlined.Image, contentDescription = null)
+                }
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = draft?.title?.takeIf { it.isNotBlank() } ?: "Без названия",
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = buildPriceLabel(draft?.price?.type, draft?.price?.amountMajor, draft?.price?.currency),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = draft?.categoryCode?.orEmpty() ?: "Категория не выбрана",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewChecklistItem(item: MissingItem) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(text = item.label, style = MaterialTheme.typography.bodySmall)
+            Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CategoryPickerSheet(
+    state: DraftCategoryState,
+    selectedCode: String?,
+    onQueryChange: (String) -> Unit,
+    onPick: (Category) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Категория", style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Outlined.Close, contentDescription = null)
+                }
+            }
+            OutlinedTextField(
+                value = state.searchQuery,
+                onValueChange = onQueryChange,
+                label = { Text("Поиск категории") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            if (state.popular.isNotEmpty()) {
+                Text("Популярные", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    state.popular.forEach { cat ->
+                        CategoryChip(
+                            label = cat.title ?: cat.code,
+                            selected = cat.code == selectedCode,
+                            onClick = { onPick(cat) },
+                        )
+                    }
+                }
+            }
+            Divider()
+            val filtered = filterCategories(state.categories, state.searchQuery)
+            val tree = buildCategoryTree(filtered)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 120.dp, max = 360.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                tree.forEach { node ->
+                    CategoryNodeRow(node, selectedCode, onPick)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CategoryNodeRow(
+    node: CategoryNode,
+    selectedCode: String?,
+    onPick: (Category) -> Unit,
+    indent: Int = 0,
+) {
+    val padding = (indent * 12).dp
+    Column {
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = if (node.category.code == selectedCode) {
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = padding)
+                .clickable { onPick(node.category) },
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = node.category.title ?: node.category.code,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null)
+            }
+        }
+        node.children.forEach { child ->
+            CategoryNodeRow(child, selectedCode, onPick, indent + 1)
+        }
+    }
+}
+
+@Composable
+private fun CategoryChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.14f) else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(horizontal = 10.dp, vertical = 6.dp),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ConditionPickerSheet(
+    current: DraftCondition?,
+    onPick: (DraftCondition) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Состояние товара", style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Outlined.Close, contentDescription = null)
+                }
+            }
+            DraftCondition.values().forEach { condition ->
+                AttributeRow(
+                    title = conditionLabel(condition),
+                    value = if (condition == current) "Выбрано" else null,
+                    required = false,
+                    onClick = { onPick(condition) },
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun LocationPickerSheet(
+    current: com.example.shoppingassistant.domain.ugc.draft.DraftLocation?,
+    onApply: (com.example.shoppingassistant.domain.ugc.draft.DraftLocation) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var city by remember(current) { mutableStateOf(current?.city.orEmpty()) }
+    var label by remember(current) { mutableStateOf(current?.publicLabel.orEmpty()) }
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Локация", style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Outlined.Close, contentDescription = null)
+                }
+            }
+            OutlinedTextField(
+                value = city,
+                onValueChange = { city = it },
+                label = { Text("Город/район") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            OutlinedTextField(
+                value = label,
+                onValueChange = { label = it },
+                label = { Text("Публичная подпись (что увидят другие)") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Text(
+                text = "Точный адрес не показываем, только указанную подпись.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Button(
+                onClick = {
+                    onApply(
+                        com.example.shoppingassistant.domain.ugc.draft.DraftLocation(
+                            city = city.trim().ifBlank { null },
+                            publicLabel = label.trim().ifBlank { null },
+                            isDefault = false,
+                        )
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Готово")
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AttributeValueSheet(
+    attr: AttributeDef?,
+    current: String?,
+    values: List<String>,
+    onPick: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    if (attr == null) return
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var manual by remember(current) { mutableStateOf(current.orEmpty()) }
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(attr.title, style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Outlined.Close, contentDescription = null)
+                }
+            }
+            OutlinedTextField(
+                value = manual,
+                onValueChange = { manual = it },
+                label = { Text("Значение") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Button(
+                onClick = { onPick(manual) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Сохранить")
+            }
+            if (values.isNotEmpty()) {
+                Text("Популярные", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    values.take(12).forEach { value ->
+                        Text(
+                            text = value,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onPick(value) }
+                                .padding(vertical = 4.dp),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DraftSummarySheet(
+    draft: DraftOffer?,
+    requiredAttrs: Set<String>,
+    onJump: (DraftStep) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val missing = DraftPublishValidator.validate(draft, requiredAttrs).missing
+    val items = buildMissingItems(missing).ifEmpty { buildSummaryItems(draft) }
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Сводка черновика", style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Outlined.Close, contentDescription = null)
+                }
+            }
+            items.forEach { item ->
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onJump(item.step) },
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(text = item.label, style = MaterialTheme.typography.bodySmall)
+                        Icon(Icons.Outlined.KeyboardArrowRight, contentDescription = null)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private data class MissingItem(
+    val label: String,
+    val step: DraftStep,
+)
+
+private fun buildMissingItems(missing: List<DraftMissingField>): List<MissingItem> {
+    if (missing.isEmpty()) return emptyList()
+    return missing.mapNotNull { field ->
+        when (field) {
+            DraftMissingField.MEDIA -> MissingItem("Фото", DraftStep.MEDIA)
+            DraftMissingField.TITLE -> MissingItem("Название", DraftStep.TITLE_CATEGORY)
+            DraftMissingField.PRICE -> MissingItem("Цена", DraftStep.PRICE)
+            DraftMissingField.CATEGORY -> MissingItem("Категория", DraftStep.TITLE_CATEGORY)
+            DraftMissingField.ATTRIBUTES -> MissingItem("Атрибуты", DraftStep.ATTRIBUTES)
+            DraftMissingField.LOCATION -> MissingItem("Локация", DraftStep.LOCATION_DELIVERY)
+            DraftMissingField.CONTACTS -> MissingItem("Контакты", DraftStep.CONTACTS)
+            DraftMissingField.POLICY -> MissingItem("Ограничения", DraftStep.REVIEW_PUBLISH)
+        }
+    }
+}
+
+private fun buildSummaryItems(draft: DraftOffer?): List<MissingItem> {
+    if (draft == null) return emptyList()
+    return listOf(
+        MissingItem("Фото", DraftStep.MEDIA),
+        MissingItem("Название и категория", DraftStep.TITLE_CATEGORY),
+        MissingItem("Цена", DraftStep.PRICE),
+        MissingItem("Атрибуты", DraftStep.ATTRIBUTES),
+        MissingItem("Локация и доставка", DraftStep.LOCATION_DELIVERY),
+        MissingItem("Контакты", DraftStep.CONTACTS),
+    )
+}
+
+private fun draftProgress(draft: DraftOffer?): DraftProgress {
+    if (draft == null) return DraftProgress(0f, emptyList())
+    val items = listOf(
+        ProgressItem("Фото", draft.media.isNotEmpty(), 0.2f),
+        ProgressItem("Название", !draft.title.isNullOrBlank(), 0.15f),
+        ProgressItem("Цена", DraftPublishValidator.isPriceReady(draft), 0.15f),
+        ProgressItem("Категория", !draft.categoryCode.isNullOrBlank(), 0.15f),
+        ProgressItem("Локация", DraftPublishValidator.isLocationReady(draft.location), 0.1f),
+        ProgressItem("Состояние", draft.condition != null, 0.1f),
+        ProgressItem("Контакты", DraftPublishValidator.hasContacts(draft.contacts), 0.1f),
+        ProgressItem("Политики", !draft.policyState.restrictedCategory, 0.05f),
+    )
+    val fraction = items.filter { it.done }.sumOf { it.weight.toDouble() }.toFloat().coerceIn(0f, 1f)
+    return DraftProgress(fraction, items)
+}
+
+private data class DraftProgress(
+    val fraction: Float,
+    val items: List<ProgressItem>,
+)
+
+private data class ProgressItem(
+    val label: String,
+    val done: Boolean,
+    val weight: Float,
+)
+
+private fun locationSummary(
+    location: com.example.shoppingassistant.domain.ugc.draft.DraftLocation?,
+    label: String?,
+): String {
+    val safeLabel = label?.takeIf { it.isNotBlank() }
+    return when {
+        safeLabel == null -> "Локация: по умолчанию"
+        location?.isDefault == true -> "Локация: по умолчанию · $safeLabel"
+        else -> "Локация: $safeLabel"
+    }
+}
+
+private fun locationValue(location: com.example.shoppingassistant.domain.ugc.draft.DraftLocation?): String? {
+    val label = location?.publicLabel ?: location?.city
+    val safeLabel = label?.takeIf { it.isNotBlank() } ?: return null
+    return if (location?.isDefault == true) "По умолчанию · $safeLabel" else safeLabel
+}
+
+private fun buildPriceLabel(type: DraftPriceType?, amount: Double?, currency: String?): String {
+    return when (type ?: DraftPriceType.FIXED) {
+        DraftPriceType.FIXED -> amount?.let { "${it.toInt()} ${currency ?: "USD"}" } ?: "Цена"
+        DraftPriceType.NEGOTIABLE -> "Договорная"
+        DraftPriceType.FREE -> "Бесплатно"
+        DraftPriceType.EXCHANGE -> "Обмен"
+    }
+}
+
+private fun conditionLabel(condition: DraftCondition): String = when (condition) {
+    DraftCondition.NEW -> "Новое"
+    DraftCondition.LIKE_NEW -> "Как новое"
+    DraftCondition.GOOD -> "Хорошее"
+    DraftCondition.USED -> "Б/у"
+    DraftCondition.FOR_PARTS -> "На запчасти"
+}
+
+private const val CONDITION_ATTR_CODE = "condition"
+
+private fun prevStep(step: DraftStep): DraftStep = when (step) {
+    DraftStep.ENTRY -> DraftStep.ENTRY
+    DraftStep.MEDIA -> DraftStep.ENTRY
+    DraftStep.TITLE_CATEGORY -> DraftStep.MEDIA
+    DraftStep.PRICE -> DraftStep.TITLE_CATEGORY
+    DraftStep.ATTRIBUTES -> DraftStep.PRICE
+    DraftStep.LOCATION_DELIVERY -> DraftStep.ATTRIBUTES
+    DraftStep.CONTACTS -> DraftStep.LOCATION_DELIVERY
+    DraftStep.REVIEW_PUBLISH -> DraftStep.CONTACTS
+}
+
+private data class CategoryNode(
+    val category: Category,
+    val children: List<CategoryNode> = emptyList(),
+)
+
+private fun buildCategoryTree(categories: List<Category>): List<CategoryNode> {
+    val byParent = categories.groupBy { it.parentCode }
+    fun build(parent: String?): List<CategoryNode> =
+        byParent[parent].orEmpty().map { cat ->
+            CategoryNode(cat, build(cat.code))
+        }
+    return build(null)
+}
+
+private fun filterCategories(categories: List<Category>, query: String): List<Category> {
+    val trimmed = query.trim().lowercase()
+    if (trimmed.isBlank()) return categories
+    return categories.filter {
+        it.code.lowercase().contains(trimmed) ||
+            (it.title?.lowercase()?.contains(trimmed) == true)
+    }
+}

@@ -13,6 +13,8 @@ enum class QueryRouteType {
 data class QueryRoutingResult(
     val routeType: QueryRouteType,
     val primaryTargetCode: String? = null,
+    val facetCollectionCode: String? = null,
+    val facetPresetCode: String? = null,
     val extractedTokens: List<String> = emptyList(),
     val confidence: Double = 0.0,
 )

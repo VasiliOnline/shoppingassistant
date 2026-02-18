@@ -1,0 +1,296 @@
+// Last synced: 2025-11-23 18:38
+package com.example.shoppingassistant.server.di
+
+import com.example.shoppingassistant.domain.auth.AuthRepository
+import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
+import com.example.shoppingassistant.domain.auth.LoginUserUseCase
+import com.example.shoppingassistant.domain.auth.LogoutUseCase
+import com.example.shoppingassistant.domain.auth.RegisterUserUseCase
+import com.example.shoppingassistant.server.auth.DefaultPasswordHasher
+import com.example.shoppingassistant.server.auth.ExposedAuthRepository
+import com.example.shoppingassistant.server.auth.InMemorySessionStore
+import com.example.shoppingassistant.server.auth.LettuceSessionStore
+import com.example.shoppingassistant.server.auth.PasswordHasher
+import com.example.shoppingassistant.server.auth.RedisSessionManager
+import com.example.shoppingassistant.server.auth.SessionManager
+import com.example.shoppingassistant.server.auth.SessionStore
+import com.example.shoppingassistant.server.auth.InMemoryPasswordResetTokenStore
+import com.example.shoppingassistant.server.auth.LettucePasswordResetTokenStore
+import com.example.shoppingassistant.server.auth.PasswordResetService
+import com.example.shoppingassistant.server.auth.PasswordResetTokenManager
+import com.example.shoppingassistant.server.auth.PasswordResetTokenStore
+import com.example.shoppingassistant.server.auth.RedisPasswordResetTokenManager
+import com.example.shoppingassistant.server.config.RedisConfig
+import com.example.shoppingassistant.server.auth.InMemoryRateLimiter
+import com.example.shoppingassistant.server.auth.RateLimiter
+import com.example.shoppingassistant.server.auth.ResetNotificationSender
+import com.example.shoppingassistant.server.auth.LoggingResetNotificationSender
+import com.example.shoppingassistant.server.auth.SmtpResetNotificationSender
+import com.example.shoppingassistant.server.config.EmailConfig
+import com.example.shoppingassistant.server.auth.RedisRateLimiter
+import com.example.shoppingassistant.server.auth.EmailVerificationTokenManager
+import com.example.shoppingassistant.server.auth.EmailVerificationTokenStore
+import com.example.shoppingassistant.server.auth.InMemoryEmailVerificationTokenStore
+import com.example.shoppingassistant.server.auth.LettuceEmailVerificationTokenStore
+import com.example.shoppingassistant.server.auth.RedisEmailVerificationTokenManager
+import com.example.shoppingassistant.server.auth.EmailVerificationService
+import com.example.shoppingassistant.server.auth.VerificationNotificationSender
+import com.example.shoppingassistant.server.auth.SmtpVerificationNotificationSender
+import com.example.shoppingassistant.server.auth.LoggingVerificationNotificationSender
+import io.lettuce.core.RedisClient
+import org.koin.dsl.module
+import com.example.shoppingassistant.server.auth.AuthAuditService
+import com.example.shoppingassistant.server.auth.ChangeEmailService
+import com.example.shoppingassistant.server.auth.ChangeEmailTokenStore
+import com.example.shoppingassistant.server.auth.InMemoryChangeEmailTokenStore
+import com.example.shoppingassistant.server.auth.LoggingSmsResetNotificationSender
+import com.example.shoppingassistant.server.auth.SmsResetNotificationSender
+import com.example.shoppingassistant.server.auth.HttpSmsResetNotificationSender
+import com.example.shoppingassistant.server.config.SmsConfig
+import com.example.shoppingassistant.server.auth.SmsProviderClient
+import com.example.shoppingassistant.server.config.VerificationConfig
+import com.example.shoppingassistant.server.auth.ResendCooldownTracker
+import com.example.shoppingassistant.server.auth.PhoneVerificationTokenStore
+import com.example.shoppingassistant.server.auth.InMemoryPhoneVerificationTokenStore
+import com.example.shoppingassistant.server.auth.LettucePhoneVerificationTokenStore
+import com.example.shoppingassistant.server.auth.PhoneVerificationService
+import com.example.shoppingassistant.server.auth.PhoneVerificationNotificationSender
+import com.example.shoppingassistant.server.auth.LoggingPhoneVerificationNotificationSender
+import com.example.shoppingassistant.server.auth.SmsVerificationNotificationSender
+import com.example.shoppingassistant.server.config.DeletionConfig
+import com.example.shoppingassistant.server.auth.AccountDeletionService
+
+/**
+ * DI-модуль backend-а для авторизации.
+ *
+ * Здесь:
+ * - PasswordHasher
+ * - SessionStore / SessionManager (архитектура под Redis)
+ * - хранилище reset-токенов восстановления пароля
+ * - ExposedAuthRepository как реализация AuthRepository
+ * - UseCase'ы домена поверх AuthRepository
+ */
+val backendAuthModule = module {
+
+    // --- Password hashing ---
+
+    single { DefaultPasswordHasher() }
+    single<PasswordHasher> { get<DefaultPasswordHasher>() }
+
+    // --- Redis config ---
+
+    // enabled == true только если явно указан REDIS_URL.
+    single { RedisConfig.fromEnv() }
+    single { EmailConfig.fromEnv() }
+    single { SmsConfig.fromEnv() }
+    single { VerificationConfig.fromEnv() }
+    single { DeletionConfig.fromEnv() }
+    single { SmsProviderClient(config = get()) }
+    single { ResendCooldownTracker(cooldownMillis = get<VerificationConfig>().resendCooldownSeconds * 1000) }
+
+    // --- Rate limiter ---
+    single<RateLimiter> {
+        val redisConfig: RedisConfig = get()
+        if (redisConfig.enabled && !redisConfig.url.isNullOrBlank()) {
+            val client = RedisClient.create(redisConfig.url)
+            val connection = client.connect()
+            val commands = connection.sync()
+            RedisRateLimiter(commands = commands)
+        } else {
+            InMemoryRateLimiter()
+        }
+    }
+
+    // --- Reset notifications ---
+    single<ResetNotificationSender> {
+        val emailConfig: EmailConfig = get()
+        require(emailConfig.enabled) { "SMTP конфигурация обязательна: задайте SMTP_HOST и SMTP_FROM" }
+        SmtpResetNotificationSender(emailConfig)
+    }
+    single<SmsResetNotificationSender> {
+        val smsConfig: SmsConfig = get()
+        if (smsConfig.enabled) {
+            HttpSmsResetNotificationSender(get())
+        } else {
+            LoggingSmsResetNotificationSender()
+        }
+    }
+
+    // --- Email verification tokens ---
+    single<EmailVerificationTokenStore> {
+        val redisConfig: RedisConfig = get()
+        val verificationConfig: VerificationConfig = get()
+        if (redisConfig.enabled && !redisConfig.url.isNullOrBlank()) {
+            val client = RedisClient.create(redisConfig.url)
+            val connection = client.connect()
+            val commands = connection.sync()
+            LettuceEmailVerificationTokenStore(
+                commands = commands,
+                ttlSeconds = verificationConfig.tokenTtlSeconds,
+                keyPrefix = "email_verify:",
+            )
+        } else {
+            InMemoryEmailVerificationTokenStore(ttlSeconds = verificationConfig.tokenTtlSeconds)
+        }
+    }
+
+    single<EmailVerificationTokenManager> {
+        RedisEmailVerificationTokenManager(store = get())
+    }
+
+    single<VerificationNotificationSender> {
+        val emailConfig: EmailConfig = get()
+        require(emailConfig.enabled) { "SMTP конфигурация обязательна: задайте SMTP_HOST и SMTP_FROM" }
+        SmtpVerificationNotificationSender(emailConfig)
+    }
+
+    single {
+        EmailVerificationService(
+            tokenManager = get(),
+            notificationSender = get(),
+            cooldownTracker = get(),
+        )
+    }
+
+    // --- Phone verification ---
+    single<PhoneVerificationTokenStore> {
+        val redisConfig: RedisConfig = get()
+        val verificationConfig: VerificationConfig = get()
+        if (redisConfig.enabled && !redisConfig.url.isNullOrBlank()) {
+            val client = RedisClient.create(redisConfig.url)
+            val connection = client.connect()
+            val commands = connection.sync()
+            LettucePhoneVerificationTokenStore(
+                commands = commands,
+                ttlSeconds = verificationConfig.tokenTtlSeconds,
+                keyPrefix = "phone_verify:",
+            )
+        } else {
+            InMemoryPhoneVerificationTokenStore(ttlSeconds = verificationConfig.tokenTtlSeconds)
+        }
+    }
+
+    single<PhoneVerificationNotificationSender> {
+        val smsConfig: SmsConfig = get()
+        if (smsConfig.enabled) {
+            SmsVerificationNotificationSender(get())
+        } else {
+            LoggingPhoneVerificationNotificationSender()
+        }
+    }
+
+    single {
+        PhoneVerificationService(
+            tokenStore = get(),
+            notificationSender = get(),
+            cooldownTracker = get(),
+        )
+    }
+
+    // --- Change email tokens ---
+    single<ChangeEmailTokenStore> { InMemoryChangeEmailTokenStore() }
+
+    single {
+        ChangeEmailService(
+            store = get(),
+            notificationSender = get(),
+        )
+    }
+
+    // --- Audit ---
+    single { AuthAuditService() }
+
+    // --- Account deletion ---
+    single {
+        AccountDeletionService(
+            config = get<DeletionConfig>(),
+            sessionManager = get(),
+        )
+    }
+
+    // --- Session store (Redis / in-memory) ---
+    //
+    // Поведение:
+    // - если REDIS_URL не задан или подключение к Redis не удалось —
+    //   используем InMemorySessionStore (как сейчас);
+    // - если REDIS_URL задан и соединение успешно — используем LettuceSessionStore.
+
+    single<SessionStore> {
+        val redisConfig: RedisConfig = get()
+
+        require(redisConfig.enabled && !redisConfig.url.isNullOrBlank()) {
+            "REDIS_URL обязателен для прод-режима сессий"
+        }
+
+        val client = RedisClient.create(redisConfig.url)
+        val connection = client.connect()
+        val commands = connection.sync()
+        LettuceSessionStore(
+            commands = commands,
+            ttlSeconds = redisConfig.sessionTtlSeconds,
+            keyPrefix = "session:",
+        )
+    }
+
+    // --- Session manager ---
+
+    // RedisSessionManager работает поверх абстрактного SessionStore.
+    single<SessionManager> {
+        RedisSessionManager(
+            store = get(),
+        )
+    }
+
+    // --- Password reset tokens (Redis / in-memory) ---
+
+    single<PasswordResetTokenStore> {
+        val redisConfig: RedisConfig = get()
+
+        require(redisConfig.enabled && !redisConfig.url.isNullOrBlank()) {
+            "REDIS_URL обязателен для хранения reset-токенов"
+        }
+
+        val client = RedisClient.create(redisConfig.url)
+        val connection = client.connect()
+        val commands = connection.sync()
+        LettucePasswordResetTokenStore(
+            commands,
+            redisConfig.resetTokenTtlSeconds,
+            "password_reset:",
+        )
+    }
+
+    single<PasswordResetTokenManager> {
+        RedisPasswordResetTokenManager(
+            store = get(),
+        )
+    }
+
+    single {
+        PasswordResetService(
+            passwordHasher = get(),
+            tokenManager = get(),
+            resetNotificationSender = get(),
+            smsResetNotificationSender = get(),
+        )
+    }
+
+    // --- AuthRepository: Postgres/Exposed ---
+
+    // Реализация репозитория поверх Postgres/Exposed
+    single {
+        ExposedAuthRepository(
+            passwordHasher = get(), // здесь будет PasswordHasher
+        )
+    }
+
+    // Доменный контракт мапится на ExposedAuthRepository
+    single<AuthRepository> { get<ExposedAuthRepository>() }
+
+    // --- UseCase'ы домена ---
+
+    single { RegisterUserUseCase(get()) }
+    single { LoginUserUseCase(get()) }
+    single { GetCurrentUserUseCase(get()) }
+    single { LogoutUseCase(get()) }
+}

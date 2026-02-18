@@ -1,0 +1,1400 @@
+package com.example.shoppingassistant.feature.pages.subscriptions
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.shoppingassistant.core.config.SubscriptionsConfig
+import com.example.shoppingassistant.core.data.AttributeService
+import com.example.shoppingassistant.core.data.BrandModelRules
+import com.example.shoppingassistant.domain.auth.AuthRepository
+import com.example.shoppingassistant.core.push.SubscriptionsInboxRemoteDataSource
+import com.example.shoppingassistant.core.push.SubscriptionsNotificationsSettings
+import com.example.shoppingassistant.core.push.SubscriptionsNotificationsSettingsStorage
+import com.example.shoppingassistant.core.push.SubscriptionsPushScheduler
+import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.catalog.AttributeCondition
+import com.example.shoppingassistant.domain.catalog.AttributeConditionOp
+import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionsUnauthorizedException
+import com.example.shoppingassistant.domain.template.TemplateIdTask
+import com.example.shoppingassistant.domain.template.TemplateSubscription
+import com.example.shoppingassistant.domain.template.TemplateSubscriptionsRepository
+import com.example.shoppingassistant.domain.template.TemplateTrigger
+import com.example.shoppingassistant.domain.template.TemplateTriggerType
+import com.example.shoppingassistant.feature.metrics.FlowMetrics
+import com.example.shoppingassistant.feature.pages.common.buildSnapshotFromQuery
+import com.example.shoppingassistant.feature.pages.main.suggest.CategoryAnchorSuggest
+import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestEngine
+import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestItem
+import com.example.shoppingassistant.feature.pages.main.suggest.ProductAnchorSuggest
+import com.example.shoppingassistant.feature.pages.main.context.attributeCatalogFor
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
+import com.example.shoppingassistant.feature.pages.model.FilterStage
+import com.example.shoppingassistant.feature.pages.model.Product
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class SubscriptionsViewModel(
+    private val authRepository: AuthRepository,
+    private val templateSubscriptionsRepository: TemplateSubscriptionsRepository,
+    private val inboxRemote: SubscriptionsInboxRemoteDataSource,
+    private val settingsStorage: SubscriptionsNotificationsSettingsStorage,
+    private val pushScheduler: SubscriptionsPushScheduler,
+    private val catalogRepository: CatalogRepository,
+    private val attributeService: AttributeService,
+    private val constraintsResolver: CatalogConstraintsResolver,
+    private val suggestEngine: MainSuggestEngine,
+    private val templateIdTask: TemplateIdTask,
+) : ViewModel() {
+
+    private companion object {
+        const val NOTIFICATIONS_PAGE_SIZE: Int = 30
+    }
+
+    private val _state = MutableStateFlow(SubscriptionsState())
+    val state: StateFlow<SubscriptionsState> = _state.asStateFlow()
+    private var suggestJob: Job? = null
+
+    init {
+        loadNotificationSettings()
+        refreshAll()
+    }
+
+    fun setTab(tab: SubscriptionsTab) = _state.update { it.copy(tab = tab, actionMessage = null) }
+    fun consumeActionMessage() = _state.update { it.copy(actionMessage = null) }
+
+    fun refreshAll() {
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+            reloadSubscriptions()
+            reloadNotifications()
+        }
+    }
+
+    fun retryAuth() {
+        refreshAll()
+    }
+
+    fun reloadSubscriptions() {
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+            loadSubscriptions()
+        }
+    }
+
+    fun reloadNotifications() {
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+            loadNotifications()
+        }
+    }
+
+    fun loadMoreNotifications() {
+        viewModelScope.launch { loadMoreNotificationsInternal() }
+    }
+
+    fun markAllNotificationsRead() {
+        viewModelScope.launch { markAllNotificationsReadInternal() }
+    }
+
+    fun setNotificationsFilter(filter: NotificationsFilter) {
+        _state.update { it.copy(notificationsFilter = filter) }
+    }
+
+    fun setSearchQuery(value: String) {
+        _state.update { it.copy(searchQuery = value) }
+    }
+
+    fun setSubscriptionsGroupBy(groupBy: SubscriptionsGroupBy) {
+        _state.update { it.copy(subscriptionsGroupBy = groupBy) }
+    }
+
+    fun openCreateMode() {
+        _state.update { current ->
+            val retainedCategories = current.create.categories
+            val retainedLoading = current.create.categoriesLoading
+            val reset = SubscriptionsCreateState(
+                categories = retainedCategories,
+                categoriesLoading = retainedLoading,
+                categoryQuery = "",
+                categoryPathCodes = emptyList(),
+                sheet = CreateSheet.Category,
+            )
+            current.copy(
+                tab = SubscriptionsTab.SUBSCRIPTIONS,
+                mode = SubscriptionsMode.CREATE,
+                create = recomputeCreateState(reset),
+                editing = null,
+            )
+        }
+        FlowMetrics.markEvent("subs_create_open")
+        loadCategoriesIfNeeded()
+    }
+
+    fun requestCloseCreate() {
+        val create = state.value.create
+        if (create.hasChanges) {
+            updateCreate { it.copy(closeConfirmation = true) }
+        } else {
+            closeCreateMode()
+        }
+    }
+
+    fun confirmCloseCreate() {
+        closeCreateMode()
+    }
+
+    fun cancelCloseCreate() {
+        updateCreate { it.copy(closeConfirmation = false) }
+    }
+
+    fun openCategorySheet() {
+        updateCreate { it.copy(sheet = CreateSheet.Category) }
+        FlowMetrics.markEvent("subs_category_sheet_open")
+        loadCategoriesIfNeeded()
+    }
+
+    fun updateCategoryQuery(value: String) {
+        updateCreate { it.copy(categoryQuery = value) }
+        if (value.trim().length >= 2) {
+            FlowMetrics.markEvent("subs_category_search")
+        }
+    }
+
+    fun updateCategoryPath(path: List<String>) {
+        updateCreate { it.copy(categoryPathCodes = path) }
+    }
+
+    fun selectCategoryLeaf(code: String) {
+        val categories = state.value.create.categories
+        val byCode = categories.associateBy { it.code }
+        val pathCodes = buildCategoryPathCodes(code, byCode)
+        val pathTitles = pathCodes.map { pathCode -> byCode[pathCode]?.title ?: pathCode }
+        val breadcrumb = pathTitles.joinToString(" → ").takeIf { it.isNotBlank() }
+        updateCreateDraft { draft ->
+            draft.copy(
+                categoryCode = code,
+                categoryPath = pathTitles,
+                categoryBreadcrumb = breadcrumb,
+                isLeafCategory = true,
+                product = null,
+                brand = null,
+                model = null,
+                moreAttributes = emptyMap(),
+                generalAttributes = emptyMap(),
+                searchQuery = draft.searchQuery,
+            )
+        }
+        updateCreate { it.copy(sheet = null, categoryQuery = "", categoryPathCodes = pathCodes, existingSubscription = null) }
+        FlowMetrics.markEvent("subs_category_selected_leaf")
+        refreshAttributeCatalog()
+    }
+
+    fun updateCreateSearchQuery(value: String) {
+        updateCreateDraft { it.copy(searchQuery = value) }
+        updateSuggestions(value)
+    }
+
+    fun onSuggestionPicked(item: MainSuggestItem) {
+        when (item) {
+            is ProductAnchorSuggest -> handleProductSuggestion(item)
+            is CategoryAnchorSuggest -> handleCategorySuggestion(item)
+            else -> Unit
+        }
+    }
+
+    fun openBrandPicker() {
+        val def = state.value.create.attributeDefs.firstOrNull { it.key.equals("brand", ignoreCase = true) }
+        if (def == null) return
+        updateCreate { it.copy(sheet = CreateSheet.ValuePicker(def.key, def.title)) }
+        FlowMetrics.markEvent("subs_brand_open")
+    }
+
+    fun openModelPicker() {
+        val def = state.value.create.attributeDefs.firstOrNull { it.key.equals("model", ignoreCase = true) }
+        if (def == null) return
+        updateCreate { it.copy(sheet = CreateSheet.ValuePicker(def.key, def.title)) }
+        FlowMetrics.markEvent("subs_model_open")
+    }
+
+    fun setBrand(value: String) {
+        updateCreateDraft { draft ->
+            draft.copy(
+                brand = value,
+                model = null,
+                product = null,
+            )
+        }
+        FlowMetrics.markEvent("subs_brand_selected")
+        refreshAttributeCatalog()
+    }
+
+    fun setModel(value: String) {
+        updateCreateDraft { draft ->
+            draft.copy(
+                model = value,
+                product = null,
+            )
+        }
+        FlowMetrics.markEvent("subs_model_selected")
+        refreshAttributeCatalog()
+    }
+
+    fun openMoreAttributesSheet() {
+        updateCreate { it.copy(sheet = CreateSheet.Filter(CreateFilterTarget.MORE)) }
+        FlowMetrics.markEvent("subs_more_attrs_open")
+    }
+
+    fun openGeneralParamsSheet() {
+        updateCreate { it.copy(sheet = CreateSheet.Filter(CreateFilterTarget.GENERAL)) }
+        FlowMetrics.markEvent("subs_general_open")
+    }
+
+    fun openConditionsSheet() {
+        updateCreate { it.copy(sheet = CreateSheet.Conditions) }
+        FlowMetrics.markEvent("subs_conditions_open")
+    }
+
+    fun openCreateSettingsSheet() {
+        updateCreate { it.copy(sheet = CreateSheet.Settings) }
+    }
+
+    fun setCreateMinIntervalMinutes(value: Int) {
+        val clamped = value.coerceIn(
+            SubscriptionsConfig.MIN_ALERT_INTERVAL_MIN,
+            SubscriptionsConfig.MAX_ALERT_INTERVAL_MIN,
+        )
+        updateCreateDraft { draft -> draft.copy(minIntervalMinutes = clamped) }
+    }
+
+    fun setCreateSubscriptionActive(value: Boolean) {
+        updateCreateDraft { draft -> draft.copy(isActive = value) }
+    }
+
+    fun dismissCreateSheet() {
+        val sheet = state.value.create.sheet
+        updateCreate { create ->
+            create.copy(
+                sheet = null,
+                moreFilterSheet = create.moreFilterSheet.copy(stage = FilterStage.ATTRS, currentAttrKey = null),
+                generalFilterSheet = create.generalFilterSheet.copy(stage = FilterStage.ATTRS, currentAttrKey = null),
+            )
+        }
+        if (sheet is CreateSheet.Filter && sheet.target == CreateFilterTarget.GENERAL) {
+            FlowMetrics.markEvent("subs_general_apply")
+        }
+    }
+
+    fun pickFilterAttribute(target: CreateFilterTarget, def: AttributeDef) {
+        updateCreate { create ->
+            when (target) {
+                CreateFilterTarget.MORE -> create.copy(
+                    moreFilterSheet = create.moreFilterSheet.copy(stage = FilterStage.VALUES, currentAttrKey = def.key),
+                )
+                CreateFilterTarget.GENERAL -> create.copy(
+                    generalFilterSheet = create.generalFilterSheet.copy(stage = FilterStage.VALUES, currentAttrKey = def.key),
+                )
+            }
+        }
+    }
+
+    fun pickFilterValue(target: CreateFilterTarget, def: AttributeDef, value: String) {
+        updateCreateDraft { draft ->
+            when (target) {
+                CreateFilterTarget.MORE -> draft.copy(moreAttributes = draft.moreAttributes + (def.key to value))
+                CreateFilterTarget.GENERAL -> draft.copy(generalAttributes = draft.generalAttributes + (def.key to value))
+            }
+        }
+        updateCreate { create ->
+            when (target) {
+                CreateFilterTarget.MORE -> create.copy(
+                    moreFilterSheet = create.moreFilterSheet.copy(stage = FilterStage.ATTRS, currentAttrKey = null),
+                )
+                CreateFilterTarget.GENERAL -> create.copy(
+                    generalFilterSheet = create.generalFilterSheet.copy(stage = FilterStage.ATTRS, currentAttrKey = null),
+                )
+            }
+        }
+        FlowMetrics.markEvent("subs_attr_add")
+        refreshAttributeCatalog()
+    }
+
+    fun clearFilterValue(target: CreateFilterTarget, key: String) {
+        updateCreateDraft { draft ->
+            when (target) {
+                CreateFilterTarget.MORE -> draft.copy(moreAttributes = draft.moreAttributes - key)
+                CreateFilterTarget.GENERAL -> draft.copy(generalAttributes = draft.generalAttributes - key)
+            }
+        }
+        FlowMetrics.markEvent("subs_attr_remove")
+        refreshAttributeCatalog()
+    }
+
+    fun updateConditions(value: CreateConditions) {
+        val prev = state.value.create.draft.conditions
+        updateCreateDraft { draft -> draft.copy(conditions = value) }
+        if (prev.newOfferAppeared != value.newOfferAppeared) {
+            FlowMetrics.markEvent("subs_condition_toggle", "type=new_offer")
+        }
+        if (prev.maxPriceEnabled != value.maxPriceEnabled) {
+            FlowMetrics.markEvent("subs_condition_toggle", "type=max_price")
+        }
+        if (prev.dropPercentEnabled != value.dropPercentEnabled) {
+            FlowMetrics.markEvent("subs_condition_toggle", "type=drop_percent")
+        }
+        if (prev.maxPriceMajor != value.maxPriceMajor ||
+            prev.currency != value.currency ||
+            prev.dropPercent != value.dropPercent
+        ) {
+            FlowMetrics.markEvent("subs_condition_value_changed")
+        }
+    }
+
+    fun saveCreate() {
+        val create = state.value.create
+        val draft = create.draft
+        val validation = validateConditions(draft.conditions)
+        if (!draft.isLeafCategory || draft.categoryCode.isNullOrBlank()) {
+            updateCreate { it.copy(validationErrorSection = CreateSection.CATEGORY) }
+            _state.update { it.copy(actionMessage = "Выберите конечную категорию") }
+            FlowMetrics.markEvent("subs_create_save_error")
+            return
+        }
+        if (!validation.isValid) {
+            updateCreate { it.copy(validationErrorSection = CreateSection.CONDITIONS) }
+            _state.update { it.copy(actionMessage = validation.errorMessage ?: "Проверьте условия") }
+            FlowMetrics.markEvent("subs_create_save_error")
+            return
+        }
+        val missingRequired = missingRequiredKeys(create)
+        if (missingRequired.isNotEmpty()) {
+            val titleByKey = create.attributeDefs.associate { it.key to it.title }
+            val labels = missingRequired.map { key -> titleByKey[key] ?: key }
+            val message = "Заполните обязательные характеристики: ${labels.joinToString(", ")}"
+            _state.update { it.copy(actionMessage = message) }
+            FlowMetrics.markEvent("subs_create_save_error")
+            return
+        }
+
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+
+            updateCreate { it.copy(isSaving = true, saveError = null, validationErrorSection = null) }
+
+            val attrs = buildMap<String, String> {
+                putAll(draft.moreAttributes)
+                putAll(draft.generalAttributes)
+            }
+            val normalized = NormalizedQuery(
+                brand = draft.brand.orEmpty(),
+                model = draft.model.orEmpty(),
+                attributes = attrs,
+            )
+            val snapshot = buildSnapshotFromQuery(
+                query = normalized,
+                queryText = draft.searchQuery,
+                categoryCode = draft.categoryCode,
+                templateIdTask = templateIdTask,
+            )
+            if (snapshot == null) {
+                updateCreate { it.copy(isSaving = false) }
+                _state.update { it.copy(actionMessage = "Не удалось собрать подписку") }
+                FlowMetrics.markEvent("subs_create_save_error")
+                return@launch
+            }
+
+            val triggers = buildTriggers(draft.conditions)
+            if (triggers.isEmpty()) {
+                updateCreate { it.copy(isSaving = false) }
+                _state.update { it.copy(actionMessage = "Нужно включить хотя бы одно условие") }
+                FlowMetrics.markEvent("subs_create_save_error")
+                return@launch
+            }
+
+            val existing = findExistingSubscription(snapshot.templateId)
+            if (existing != null) {
+                FlowMetrics.markEvent("subs_dedup_hit")
+            }
+
+            val now = System.currentTimeMillis()
+            val subscription = TemplateSubscription(
+                templateId = snapshot.templateId,
+                snapshot = snapshot,
+                triggers = triggers,
+                minAlertIntervalMinutes = draft.minIntervalMinutes,
+                isActive = draft.isActive,
+                createdAtMillis = existing?.createdAtMillis ?: now,
+                updatedAtMillis = now,
+            )
+
+            val result = runCatching { templateSubscriptionsRepository.upsert(subscription) }
+            if (result.isFailure) {
+                updateCreate { it.copy(isSaving = false, saveError = "Не удалось сохранить подписку") }
+                _state.update { it.copy(actionMessage = "Не удалось сохранить подписку") }
+                FlowMetrics.markEvent("subs_save_error")
+                return@launch
+            }
+
+            val created = result.getOrDefault(false)
+            if (created) {
+                FlowMetrics.markEvent("subs_create_save_success")
+                updateCreate { it.copy(isSaving = false) }
+                _state.update { it.copy(actionMessage = "Отслеживание создано") }
+                closeCreateMode(keepCategories = true)
+                loadSubscriptions()
+            } else {
+                FlowMetrics.markEvent("subs_save_upsert")
+                updateCreate {
+                    it.copy(
+                        isSaving = false,
+                        existingSubscription = existing ?: subscription,
+                    )
+                }
+                _state.update { it.copy(actionMessage = "Уже отслеживается") }
+            }
+        }
+    }
+
+    fun openExistingFromCreate() {
+        val existing = state.value.create.existingSubscription ?: return
+        closeCreateMode(keepCategories = true)
+        openEdit(existing)
+    }
+
+    fun updateNotificationSettings(block: (SubscriptionsNotificationsSettings) -> SubscriptionsNotificationsSettings) {
+        val updated = normalizeSettings(block(state.value.notificationsSettings))
+        settingsStorage.set(updated)
+        if (updated.pushEnabled) {
+            pushScheduler.ensureScheduled()
+        } else {
+            pushScheduler.cancel()
+        }
+        _state.update { it.copy(notificationsSettings = updated) }
+    }
+
+    fun openEdit(s: TemplateSubscription) {
+        val current = state.value.subscriptions
+        if (current !is ListLoadState.Content || current.items.none { it.templateId == s.templateId }) return
+
+        val maxTrigger = s.triggers.firstOrNull { it.type == TemplateTriggerType.MAX_PRICE }
+        val dropTrigger = s.triggers.firstOrNull { it.type == TemplateTriggerType.PRICE_DROPPED_PERCENT }
+        val newOffer = s.triggers.any { it.type == TemplateTriggerType.NEW_OFFER_APPEARED }
+
+        _state.update {
+            it.copy(
+                editing = EditDraft(
+                    templateId = s.templateId,
+                    snapshot = s.snapshot,
+                    createdAtMillis = s.createdAtMillis,
+                    maxPriceMajor = maxTrigger?.moneyMinor?.let { m -> (m / 100.0).toString() } ?: "",
+                    currency = maxTrigger?.currency ?: SubscriptionsConfig.DEFAULT_CURRENCY,
+                    dropPercent = dropTrigger?.numberValue?.toString() ?: "",
+                    newOfferAppeared = newOffer,
+                    maxPriceEnabled = maxTrigger?.moneyMinor != null,
+                    dropPercentEnabled = dropTrigger?.numberValue != null,
+                    minIntervalMinutes = s.minAlertIntervalMinutes.toString(),
+                    isActive = s.isActive,
+                ),
+                actionMessage = null,
+            )
+        }
+    }
+
+    fun closeEdit() = _state.update { it.copy(editing = null) }
+
+    fun updateDraft(block: (EditDraft) -> EditDraft) {
+        val d = state.value.editing ?: return
+        _state.update { it.copy(editing = block(d)) }
+    }
+
+    fun applyEdit() {
+        val d = state.value.editing ?: return
+
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+
+            val maxPriceMinor = if (d.maxPriceEnabled) {
+                d.maxPriceMajor.trim().takeIf { it.isNotBlank() }?.let(::parseMoneyMinor)
+            } else null
+            if (d.maxPriceEnabled && maxPriceMinor == null) {
+                _state.update { it.copy(actionMessage = "Некорректная цена") }
+                return@launch
+            }
+
+            val drop = if (d.dropPercentEnabled) {
+                d.dropPercent.trim().takeIf { it.isNotBlank() }?.let(::parseDecimal)
+            } else null
+            if (d.dropPercentEnabled && drop == null) {
+                _state.update { it.copy(actionMessage = "Некорректный процент падения") }
+                return@launch
+            }
+            val dropClamped = drop?.coerceIn(SubscriptionsConfig.MIN_DROP_PERCENT, SubscriptionsConfig.MAX_DROP_PERCENT)
+
+            val minIntRaw = d.minIntervalMinutes.trim().toIntOrNull() ?: SubscriptionsConfig.DEFAULT_MIN_ALERT_INTERVAL_MIN
+            val minInt = minIntRaw.coerceIn(
+                SubscriptionsConfig.MIN_ALERT_INTERVAL_MIN,
+                SubscriptionsConfig.MAX_ALERT_INTERVAL_MIN,
+            )
+
+            val currency = d.currency.trim().ifBlank { SubscriptionsConfig.DEFAULT_CURRENCY }
+            val triggers = mutableListOf<TemplateTrigger>()
+            if (d.newOfferAppeared) {
+                triggers += TemplateTrigger(type = TemplateTriggerType.NEW_OFFER_APPEARED)
+            }
+            if (d.maxPriceEnabled && maxPriceMinor != null) {
+                triggers += TemplateTrigger(
+                    type = TemplateTriggerType.MAX_PRICE,
+                    moneyMinor = maxPriceMinor,
+                    currency = currency,
+                )
+            }
+            if (d.dropPercentEnabled && dropClamped != null) {
+                triggers += TemplateTrigger(
+                    type = TemplateTriggerType.PRICE_DROPPED_PERCENT,
+                    numberValue = dropClamped,
+                )
+            }
+            if (triggers.isEmpty()) {
+                triggers += TemplateTrigger(type = TemplateTriggerType.NEW_OFFER_APPEARED)
+            }
+
+            val ok = runCatching {
+                templateSubscriptionsRepository.upsert(
+                    TemplateSubscription(
+                        templateId = d.templateId,
+                        snapshot = d.snapshot,
+                        triggers = triggers,
+                        minAlertIntervalMinutes = minInt,
+                        isActive = d.isActive,
+                        createdAtMillis = d.createdAtMillis,
+                        updatedAtMillis = System.currentTimeMillis(),
+                    )
+                )
+            }.isSuccess
+
+            if (ok) {
+                _state.update { it.copy(editing = null) }
+                loadSubscriptions()
+            } else {
+                _state.update { it.copy(actionMessage = "Не удалось обновить подписку") }
+            }
+        }
+    }
+
+    fun setSubscriptionActive(templateId: String, isActive: Boolean) {
+        val s = (state.value.subscriptions as? ListLoadState.Content)
+            ?.items
+            ?.firstOrNull { it.templateId == templateId } ?: return
+
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+            val ok = runCatching {
+                templateSubscriptionsRepository.upsert(
+                    s.copy(
+                        isActive = isActive,
+                        updatedAtMillis = System.currentTimeMillis(),
+                    )
+                )
+            }.isSuccess
+
+            if (!ok) {
+                _state.update { it.copy(actionMessage = "Не удалось обновить подписку") }
+            }
+            loadSubscriptions()
+        }
+    }
+
+    fun removeSubscription(templateId: String) {
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+            runCatching { templateSubscriptionsRepository.delete(templateId) }
+            loadSubscriptions()
+        }
+    }
+
+    fun markNotificationAsRead(id: Long) {
+        viewModelScope.launch {
+            if (!ensureAuthorized()) return@launch
+
+            val prev = state.value.notifications
+            if (prev is ListLoadState.Content) {
+                _state.update {
+                    it.copy(
+                        notifications = ListLoadState.Content(
+                            prev.items.map { n -> if (n.id == id) n.copy(isRead = true) else n }
+                        ),
+                        actionMessage = null,
+                    )
+                }
+            }
+
+            val ok = runCatching { inboxRemote.markRead(id) }.getOrDefault(false)
+            if (!ok) {
+                _state.update { it.copy(actionMessage = "Не удалось отметить уведомление") }
+                loadNotifications()
+            }
+        }
+    }
+
+    private fun closeCreateMode(keepCategories: Boolean = false) {
+        suggestJob?.cancel()
+        _state.update { current ->
+            val retainedCategories = if (keepCategories) current.create.categories else emptyList()
+            val retainedLoading = if (keepCategories) current.create.categoriesLoading else false
+            val reset = SubscriptionsCreateState(
+                categories = retainedCategories,
+                categoriesLoading = retainedLoading,
+            )
+            current.copy(
+                mode = SubscriptionsMode.LIST,
+                create = recomputeCreateState(reset),
+            )
+        }
+        FlowMetrics.markEvent("subs_create_close")
+    }
+
+    private fun updateCreate(block: (SubscriptionsCreateState) -> SubscriptionsCreateState) {
+        _state.update { current ->
+            val updated = block(current.create)
+            current.copy(create = recomputeCreateState(updated))
+        }
+    }
+
+    private fun updateCreateDraft(block: (SubscriptionsCreateDraft) -> SubscriptionsCreateDraft) {
+        updateCreate { create ->
+            create.copy(
+                draft = block(create.draft),
+                validationErrorSection = null,
+                saveError = null,
+                existingSubscription = null,
+            )
+        }
+    }
+
+    private fun recomputeCreateState(create: SubscriptionsCreateState): SubscriptionsCreateState {
+        val canSave = isCreateDraftValid(create) && !create.isSaving
+        val hasChanges = hasCreateChanges(create.draft)
+        return create.copy(canSave = canSave, hasChanges = hasChanges)
+    }
+
+    private fun hasCreateChanges(draft: SubscriptionsCreateDraft): Boolean {
+        val defaultConditions = CreateConditions()
+        return !draft.categoryCode.isNullOrBlank() ||
+            draft.searchQuery.isNotBlank() ||
+            draft.product != null ||
+            !draft.brand.isNullOrBlank() ||
+            !draft.model.isNullOrBlank() ||
+            draft.moreAttributes.isNotEmpty() ||
+            draft.generalAttributes.isNotEmpty() ||
+            draft.conditions != defaultConditions ||
+            draft.minIntervalMinutes != SubscriptionsConfig.DEFAULT_MIN_ALERT_INTERVAL_MIN ||
+            !draft.isActive
+    }
+
+    private fun isCreateDraftValid(create: SubscriptionsCreateState): Boolean {
+        val draft = create.draft
+        if (draft.categoryCode.isNullOrBlank() || !draft.isLeafCategory) return false
+        if (!validateConditions(draft.conditions).isValid) return false
+        val missing = missingRequiredKeys(create)
+        return missing.isEmpty()
+    }
+
+    private fun missingRequiredKeys(create: SubscriptionsCreateState): List<String> {
+        val selected = selectedAttributes(create.draft)
+        val required = requiredKeysForSearch(
+            defs = create.attributeDefs,
+            rules = create.requiredIfRules,
+            selected = selected,
+        )
+        return required.filter { key -> selected[key].isNullOrBlank() }
+    }
+
+    private fun requiredKeysForSearch(
+        defs: List<AttributeDef>,
+        rules: List<RequiredIfRule>,
+        selected: Map<String, String>,
+    ): Set<String> {
+        val required = defs.filter { it.requiredForSearch }
+            .map { it.key }
+            .toMutableSet()
+        applyRequiredIfRules(required, rules, selected)
+        return required
+    }
+
+    private fun applyRequiredIfRules(
+        required: MutableSet<String>,
+        rules: List<RequiredIfRule>,
+        selected: Map<String, String>,
+    ) {
+        if (rules.isEmpty()) return
+        rules.forEach { rule ->
+            val ok = rule.whenAll.all { cond ->
+                val current = selected[cond.attributeCode]
+                matchesCondition(cond, current)
+            }
+            if (ok) required.add(rule.requiredAttributeCode)
+        }
+    }
+
+    private fun matchesCondition(cond: AttributeCondition, currentValue: String?): Boolean {
+        if (currentValue.isNullOrBlank()) return false
+        return when (cond.op) {
+            AttributeConditionOp.EQUALS_ANY ->
+                cond.values.any { v -> currentValue.equals(v, ignoreCase = true) }
+            AttributeConditionOp.STARTS_WITH_ANY ->
+                cond.values.any { v -> currentValue.startsWith(v, ignoreCase = true) }
+        }
+    }
+
+    private fun selectedAttributes(draft: SubscriptionsCreateDraft): Map<String, String> {
+        return buildMap {
+            draft.brand?.takeIf { it.isNotBlank() }?.let { put("brand", it) }
+            draft.model?.takeIf { it.isNotBlank() }?.let { put("model", it) }
+            draft.moreAttributes.forEach { (k, v) -> if (v.isNotBlank()) put(k, v) }
+            draft.generalAttributes.forEach { (k, v) -> if (v.isNotBlank()) put(k, v) }
+        }
+    }
+
+    private data class ConditionsValidation(
+        val isValid: Boolean,
+        val errorMessage: String? = null,
+    )
+
+    private fun validateConditions(conditions: CreateConditions): ConditionsValidation {
+        val anyEnabled = conditions.newOfferAppeared ||
+            conditions.maxPriceEnabled ||
+            conditions.dropPercentEnabled
+        if (!anyEnabled) {
+            return ConditionsValidation(false, "Нужно включить хотя бы одно условие")
+        }
+        if (conditions.maxPriceEnabled) {
+            val price = conditions.maxPriceMajor.trim().takeIf { it.isNotBlank() }?.let(::parseMoneyMinor)
+            if (price == null) return ConditionsValidation(false, "Некорректная цена")
+        }
+        if (conditions.dropPercentEnabled) {
+            val drop = conditions.dropPercent.trim().takeIf { it.isNotBlank() }?.let(::parseDecimal)
+            if (drop == null) return ConditionsValidation(false, "Некорректный процент падения")
+        }
+        return ConditionsValidation(true)
+    }
+
+    private fun buildTriggers(conditions: CreateConditions): List<TemplateTrigger> {
+        val triggers = mutableListOf<TemplateTrigger>()
+        if (conditions.newOfferAppeared) {
+            triggers += TemplateTrigger(type = TemplateTriggerType.NEW_OFFER_APPEARED)
+        }
+        if (conditions.maxPriceEnabled) {
+            val moneyMinor = conditions.maxPriceMajor.trim().takeIf { it.isNotBlank() }?.let(::parseMoneyMinor)
+            if (moneyMinor != null) {
+                val currency = conditions.currency.trim().ifBlank { SubscriptionsConfig.DEFAULT_CURRENCY }
+                triggers += TemplateTrigger(
+                    type = TemplateTriggerType.MAX_PRICE,
+                    moneyMinor = moneyMinor,
+                    currency = currency,
+                )
+            }
+        }
+        if (conditions.dropPercentEnabled) {
+            val drop = conditions.dropPercent.trim().takeIf { it.isNotBlank() }?.let(::parseDecimal)
+            if (drop != null) {
+                val clamped = drop.coerceIn(SubscriptionsConfig.MIN_DROP_PERCENT, SubscriptionsConfig.MAX_DROP_PERCENT)
+                triggers += TemplateTrigger(
+                    type = TemplateTriggerType.PRICE_DROPPED_PERCENT,
+                    numberValue = clamped,
+                )
+            }
+        }
+        return triggers
+    }
+
+    private fun loadCategoriesIfNeeded() {
+        val create = state.value.create
+        if (create.categories.isNotEmpty() || create.categoriesLoading) return
+        updateCreate { it.copy(categoriesLoading = true) }
+        viewModelScope.launch {
+            val categories = runCatching { catalogRepository.listCategories() }
+                .getOrElse { emptyList() }
+            updateCreate { it.copy(categories = categories, categoriesLoading = false) }
+            syncCategoryFromDraft(categories)
+        }
+    }
+
+    private fun syncCategoryFromDraft(categories: List<Category>) {
+        val draft = state.value.create.draft
+        val code = draft.categoryCode ?: return
+        val byCode = categories.associateBy { it.code }
+        if (!byCode.containsKey(code)) return
+        val pathCodes = buildCategoryPathCodes(code, byCode)
+        val pathTitles = pathCodes.map { pathCode -> byCode[pathCode]?.title ?: pathCode }
+        val breadcrumb = pathTitles.joinToString(" → ").takeIf { it.isNotBlank() }
+        val byParent = categories.groupBy { it.parentCode }
+        val isLeaf = byParent[code].isNullOrEmpty()
+        if (state.value.create.categoryPathCodes != pathCodes) {
+            updateCreate { it.copy(categoryPathCodes = pathCodes) }
+        }
+        if (draft.categoryBreadcrumb != breadcrumb || draft.isLeafCategory != isLeaf || draft.categoryPath != pathTitles) {
+            updateCreateDraft { current ->
+                current.copy(
+                    categoryPath = pathTitles,
+                    categoryBreadcrumb = breadcrumb,
+                    isLeafCategory = isLeaf,
+                )
+            }
+        }
+    }
+
+    private fun updateSuggestions(queryText: String) {
+        val trimmed = queryText.trim()
+        if (trimmed.length < 2) {
+            suggestJob?.cancel()
+            updateCreate { it.copy(suggestions = emptyList(), suggestionsLoading = false) }
+            return
+        }
+        suggestJob?.cancel()
+        updateCreate { it.copy(suggestionsLoading = true) }
+        suggestJob = viewModelScope.launch {
+            val items = runCatching { suggestEngine.suggest(trimmed) }.getOrElse { emptyList() }
+            val filtered = items.filter { it is ProductAnchorSuggest || it is CategoryAnchorSuggest }
+            if (state.value.create.draft.searchQuery.trim() != trimmed) return@launch
+            updateCreate { it.copy(suggestions = filtered, suggestionsLoading = false) }
+            if (filtered.isNotEmpty()) {
+                FlowMetrics.markEvent("subs_suggest_open")
+            }
+        }
+    }
+
+    private fun handleProductSuggestion(item: ProductAnchorSuggest) {
+        val suggestedCategory = item.categoryCode?.takeIf { it.isNotBlank() }
+        if (suggestedCategory != null) loadCategoriesIfNeeded()
+
+        val brand = item.brand?.takeIf { it.isNotBlank() }
+        val model = item.model?.takeIf { it.isNotBlank() }
+        val product = if (brand != null && model != null) {
+            Product(
+                id = item.productId.toString(),
+                title = item.text,
+                brand = brand,
+                model = model,
+                categoryCode = suggestedCategory ?: state.value.create.draft.categoryCode,
+            )
+        } else {
+            val parsed = BrandModelRules.fromRaw(item.text)
+            if (parsed.brand.isBlank() || parsed.model.isBlank()) null else Product(
+                id = item.productId.toString(),
+                title = item.text,
+                brand = parsed.brand,
+                model = parsed.model,
+                categoryCode = suggestedCategory ?: state.value.create.draft.categoryCode,
+            )
+        }
+
+        val categories = state.value.create.categories
+        val byCode = if (suggestedCategory != null) categories.associateBy { it.code } else emptyMap()
+        val byParent = if (suggestedCategory != null) categories.groupBy { it.parentCode } else emptyMap()
+
+        val isLeaf = suggestedCategory != null &&
+            categories.isNotEmpty() &&
+            byParent[suggestedCategory].isNullOrEmpty()
+
+        val pathCodes = if (suggestedCategory == null) {
+            emptyList()
+        } else {
+            if (categories.isEmpty()) listOf(suggestedCategory) else buildCategoryPathCodes(suggestedCategory, byCode)
+        }
+        val pathTitles = if (suggestedCategory != null && categories.isNotEmpty()) {
+            pathCodes.map { code -> byCode[code]?.title ?: code }
+        } else {
+            emptyList()
+        }
+        val breadcrumb = pathTitles.joinToString(" → ").takeIf { it.isNotBlank() }
+
+        updateCreateDraft { draft ->
+            val withCategory = when {
+                suggestedCategory == null -> draft
+                isLeaf -> draft.copy(
+                    categoryCode = suggestedCategory,
+                    categoryPath = pathTitles,
+                    categoryBreadcrumb = breadcrumb,
+                    isLeafCategory = true,
+                    moreAttributes = emptyMap(),
+                    generalAttributes = emptyMap(),
+                )
+                else -> draft.copy(
+                    categoryCode = null,
+                    categoryPath = emptyList(),
+                    categoryBreadcrumb = null,
+                    isLeafCategory = false,
+                    moreAttributes = emptyMap(),
+                    generalAttributes = emptyMap(),
+                )
+            }
+            withCategory.copy(
+                searchQuery = item.text,
+                product = product,
+                brand = product?.brand ?: withCategory.brand,
+                model = product?.model ?: withCategory.model,
+            )
+        }
+
+        if (suggestedCategory != null) {
+            updateCreate { create ->
+                create.copy(
+                    categoryPathCodes = pathCodes,
+                    categoryQuery = "",
+                    existingSubscription = null,
+                    sheet = if (isLeaf) null else CreateSheet.Category,
+                )
+            }
+            if (!isLeaf) _state.update { it.copy(actionMessage = "Выберите конечную категорию") }
+        }
+
+        updateCreate { it.copy(suggestions = emptyList(), suggestionsLoading = false) }
+        FlowMetrics.markEvent("subs_suggest_pick_product")
+        refreshAttributeCatalog()
+    }
+
+    private fun handleCategorySuggestion(item: CategoryAnchorSuggest) {
+        FlowMetrics.markEvent("subs_suggest_pick_category")
+        loadCategoriesIfNeeded()
+        val categories = state.value.create.categories
+        val byCode = categories.associateBy { it.code }
+        if (categories.isEmpty()) {
+            updateCreateDraft { draft ->
+                draft.copy(
+                    categoryCode = null,
+                    categoryPath = emptyList(),
+                    categoryBreadcrumb = null,
+                    isLeafCategory = false,
+                    product = null,
+                    brand = null,
+                    model = null,
+                    moreAttributes = emptyMap(),
+                    generalAttributes = emptyMap(),
+                )
+            }
+            updateCreate {
+                it.copy(
+                    sheet = CreateSheet.Category,
+                    categoryPathCodes = listOf(item.categoryCode),
+                )
+            }
+            return
+        }
+        val byParent = categories.groupBy { it.parentCode }
+        val isLeaf = byParent[item.categoryCode].isNullOrEmpty()
+        if (isLeaf) {
+            selectCategoryLeaf(item.categoryCode)
+        } else {
+            val path = buildCategoryPathCodes(item.categoryCode, byCode)
+            updateCreateDraft { draft ->
+                draft.copy(
+                    categoryCode = null,
+                    categoryPath = emptyList(),
+                    categoryBreadcrumb = null,
+                    isLeafCategory = false,
+                    product = null,
+                    brand = null,
+                    model = null,
+                    moreAttributes = emptyMap(),
+                    generalAttributes = emptyMap(),
+                )
+            }
+            updateCreate { it.copy(sheet = CreateSheet.Category, categoryPathCodes = path) }
+        }
+    }
+
+    private fun refreshAttributeCatalog() {
+        val draft = state.value.create.draft
+        val categoryCode = draft.categoryCode
+        if (categoryCode.isNullOrBlank()) {
+            updateCreate {
+                it.copy(
+                    attributeDefs = emptyList(),
+                    moreAttributeDefs = emptyList(),
+                    generalAttributeDefs = emptyList(),
+                    requiredIfRules = emptyList(),
+                )
+            }
+            return
+        }
+        val requestedBrand = draft.brand
+        val requestedModel = draft.model
+        viewModelScope.launch {
+            val selected = buildMap<String, String> {
+                draft.brand?.takeIf { it.isNotBlank() }?.let { put("brand", it) }
+                draft.model?.takeIf { it.isNotBlank() }?.let { put("model", it) }
+                putAll(draft.moreAttributes)
+                putAll(draft.generalAttributes)
+            }
+            val catalog = runCatching {
+                attributeCatalogFor(
+                    product = draft.product,
+                    svc = attributeService,
+                    catalog = catalogRepository,
+                    constraintsResolver = constraintsResolver,
+                    categoryCode = categoryCode,
+                    selectedFilters = selected,
+                )
+            }.getOrNull()
+            val defs = catalog?.defs.orEmpty()
+            val (generalDefs, moreDefs) = splitAttributeDefs(defs)
+            val sanitized = sanitizeDraftSelections(draft, defs)
+            val current = state.value.create.draft
+            if (current.categoryCode != categoryCode ||
+                current.brand != requestedBrand ||
+                current.model != requestedModel
+            ) {
+                return@launch
+            }
+            updateCreate { create ->
+                create.copy(
+                    draft = sanitized,
+                    attributeDefs = defs,
+                    moreAttributeDefs = moreDefs,
+                    generalAttributeDefs = generalDefs,
+                    requiredIfRules = catalog?.requiredIfRules.orEmpty(),
+                )
+            }
+        }
+    }
+
+    private fun splitAttributeDefs(defs: List<AttributeDef>): Pair<List<AttributeDef>, List<AttributeDef>> {
+        val general = defs.filter { def ->
+            val key = def.key.lowercase()
+            if (key == "brand" || key == "model") return@filter false
+            if (key in generalKeys) return@filter true
+            val title = def.title.lowercase()
+            title.contains("состояние") || title.contains("достав") || title.contains("гарант")
+        }
+        val generalKeysSet = general.map { it.key.lowercase() }.toSet()
+        val more = defs.filter { def ->
+            val key = def.key.lowercase()
+            key != "brand" && key != "model" && key !in generalKeysSet
+        }
+        return orderDefs(general) to orderDefs(more)
+    }
+
+    private fun orderDefs(defs: List<AttributeDef>): List<AttributeDef> {
+        return defs.sortedWith(
+            compareByDescending<AttributeDef> {
+                it.requiredForSearch || it.requiredForOffer || it.requiredForExpress
+            }.thenBy { it.title.lowercase() }
+        )
+    }
+
+    private fun sanitizeDraftSelections(
+        draft: SubscriptionsCreateDraft,
+        defs: List<AttributeDef>,
+    ): SubscriptionsCreateDraft {
+        val defByKey = defs.associateBy { it.key }
+        val cleanedBrand = draft.brand?.takeIf { isValueAllowed(defByKey["brand"], it) }
+        val cleanedModel = draft.model?.takeIf { isValueAllowed(defByKey["model"], it) }
+        val cleanedMore = sanitizeSelectedMap(draft.moreAttributes, defByKey)
+        val cleanedGeneral = sanitizeSelectedMap(draft.generalAttributes, defByKey)
+        return draft.copy(
+            brand = cleanedBrand,
+            model = cleanedModel,
+            moreAttributes = cleanedMore,
+            generalAttributes = cleanedGeneral,
+        )
+    }
+
+    private fun sanitizeSelectedMap(
+        selected: Map<String, String>,
+        defs: Map<String, AttributeDef>,
+    ): Map<String, String> {
+        if (selected.isEmpty()) return selected
+        return selected.filter { (key, value) ->
+            isValueAllowed(defs[key], value)
+        }
+    }
+
+    private fun isValueAllowed(def: AttributeDef?, raw: String): Boolean {
+        if (def == null) return false
+        val value = raw.trim()
+        if (value.isBlank()) return false
+        if (!def.selectionOnly) return true
+        val allowed = if (def.allowedValues.isNotEmpty()) {
+            def.allowedValues.map { it.canonical }
+        } else {
+            def.options
+        }
+        if (allowed.isEmpty()) return true
+        return allowed.any { it.equals(value, ignoreCase = true) }
+    }
+
+    private suspend fun findExistingSubscription(templateId: String): TemplateSubscription? {
+        val current = state.value.subscriptions as? ListLoadState.Content
+        current?.items?.firstOrNull { it.templateId == templateId }?.let { return it }
+        return runCatching {
+            templateSubscriptionsRepository.list().firstOrNull { it.templateId == templateId }
+        }.getOrNull()
+    }
+
+    private fun buildCategoryPathCodes(
+        code: String,
+        byCode: Map<String, Category>,
+    ): List<String> {
+        if (code.isBlank()) return emptyList()
+        val out = ArrayList<String>()
+        var cur = byCode[code]
+        val seen = HashSet<String>()
+        while (cur != null && seen.add(cur.code)) {
+            out.add(cur.code)
+            cur = cur.parentCode?.let { byCode[it] }
+        }
+        return out.asReversed()
+    }
+
+    private val generalKeys = setOf(
+        "condition",
+        "delivery",
+        "warranty",
+        "state",
+        "seller",
+        "purchase_format",
+    )
+
+    private suspend fun ensureAuthorized(): Boolean {
+        _state.update { it.copy(actionMessage = null) }
+
+        val token = runCatching { authRepository.currentToken() }
+            .getOrElse { e ->
+                _state.update {
+                    it.copy(
+                        auth = SubscriptionsAuthState.Error(e.message ?: "Не удалось проверить авторизацию"),
+                        subscriptions = ListLoadState.Error("Не удалось проверить авторизацию"),
+                        notifications = ListLoadState.Error("Не удалось проверить авторизацию"),
+                    )
+                }
+                return false
+            }
+
+        if (token.isNullOrBlank()) {
+            _state.update {
+                it.copy(
+                    auth = SubscriptionsAuthState.Unauthorized,
+                    subscriptions = ListLoadState.Unauthorized,
+                    notifications = ListLoadState.Unauthorized,
+                    editing = null,
+                )
+            }
+            return false
+        }
+
+        _state.update { it.copy(auth = SubscriptionsAuthState.Authorized) }
+        return true
+    }
+
+    private suspend fun loadSubscriptions() {
+        _state.update { it.copy(subscriptions = ListLoadState.Loading) }
+        runCatching { templateSubscriptionsRepository.list() }
+            .onSuccess { items ->
+                val token = authRepository.currentToken()
+                if (token.isNullOrBlank()) {
+                    _state.update {
+                        it.copy(
+                            auth = SubscriptionsAuthState.Unauthorized,
+                            subscriptions = ListLoadState.Unauthorized,
+                            notifications = ListLoadState.Unauthorized,
+                            editing = null,
+                        )
+                    }
+                    return@onSuccess
+                }
+                _state.update {
+                    it.copy(
+                        subscriptions = if (items.isEmpty()) ListLoadState.Empty else ListLoadState.Content(items),
+                        subscriptionsLastSyncAt = System.currentTimeMillis(),
+                    )
+                }
+            }
+            .onFailure { e ->
+                if (e is SubscriptionsUnauthorizedException) {
+                    _state.update {
+                        it.copy(
+                            auth = SubscriptionsAuthState.Unauthorized,
+                            subscriptions = ListLoadState.Unauthorized,
+                            notifications = ListLoadState.Unauthorized,
+                            editing = null,
+                        )
+                    }
+                } else {
+                    _state.update {
+                        it.copy(
+                            subscriptions = ListLoadState.Error(e.message ?: "Не удалось загрузить подписки"),
+                        )
+                    }
+                }
+            }
+    }
+
+    private suspend fun loadNotifications() {
+        _state.update {
+            it.copy(
+                notifications = ListLoadState.Loading,
+                notificationsCanLoadMore = false,
+                notificationsIsLoadingMore = false,
+            )
+        }
+
+        runCatching { inboxRemote.listNotificationsPage(limit = NOTIFICATIONS_PAGE_SIZE, offset = 0) }
+            .onSuccess { page ->
+                val token = authRepository.currentToken()
+                if (token.isNullOrBlank()) {
+                    _state.update {
+                        it.copy(
+                            auth = SubscriptionsAuthState.Unauthorized,
+                            subscriptions = ListLoadState.Unauthorized,
+                            notifications = ListLoadState.Unauthorized,
+                            notificationsCanLoadMore = false,
+                            notificationsIsLoadingMore = false,
+                            editing = null,
+                        )
+                    }
+                    return@onSuccess
+                }
+                val items = page.items
+                val canLoadMore = page.canLoadMore
+                _state.update {
+                    it.copy(
+                        notifications = if (items.isEmpty()) ListLoadState.Empty else ListLoadState.Content(items),
+                        notificationsCanLoadMore = canLoadMore,
+                        notificationsIsLoadingMore = false,
+                        notificationsLastSyncAt = System.currentTimeMillis(),
+                    )
+                }
+            }
+            .onFailure { e ->
+                if (e is SubscriptionsUnauthorizedException) {
+                    _state.update {
+                        it.copy(
+                            auth = SubscriptionsAuthState.Unauthorized,
+                            subscriptions = ListLoadState.Unauthorized,
+                            notifications = ListLoadState.Unauthorized,
+                            notificationsCanLoadMore = false,
+                            notificationsIsLoadingMore = false,
+                            editing = null,
+                        )
+                    }
+                } else {
+                    _state.update {
+                        it.copy(
+                            notifications = ListLoadState.Error(e.message ?: "Не удалось загрузить уведомления"),
+                            notificationsCanLoadMore = false,
+                            notificationsIsLoadingMore = false,
+                        )
+                    }
+                }
+            }
+    }
+
+    private suspend fun loadMoreNotificationsInternal() {
+        if (!ensureAuthorized()) return
+        val prev = state.value.notifications as? ListLoadState.Content ?: return
+        if (!state.value.notificationsCanLoadMore) return
+        if (state.value.notificationsIsLoadingMore) return
+
+        _state.update { it.copy(notificationsIsLoadingMore = true, actionMessage = null) }
+
+        runCatching { inboxRemote.listNotificationsPage(limit = NOTIFICATIONS_PAGE_SIZE, offset = prev.items.size) }
+            .onSuccess { page ->
+                val token = authRepository.currentToken()
+                if (token.isNullOrBlank()) {
+                    _state.update {
+                        it.copy(
+                            auth = SubscriptionsAuthState.Unauthorized,
+                            subscriptions = ListLoadState.Unauthorized,
+                            notifications = ListLoadState.Unauthorized,
+                            notificationsCanLoadMore = false,
+                            notificationsIsLoadingMore = false,
+                            editing = null,
+                        )
+                    }
+                    return@onSuccess
+                }
+                val merged = prev.items + page.items
+                val canLoadMore = page.canLoadMore
+                _state.update {
+                    it.copy(
+                        notifications = if (merged.isEmpty()) ListLoadState.Empty else ListLoadState.Content(merged),
+                        notificationsCanLoadMore = canLoadMore,
+                        notificationsIsLoadingMore = false,
+                    )
+                }
+            }
+            .onFailure { e ->
+                _state.update {
+                    it.copy(
+                        actionMessage = e.message ?: "Не удалось загрузить ещё уведомления",
+                        notificationsIsLoadingMore = false,
+                    )
+                }
+            }
+    }
+
+    private suspend fun markAllNotificationsReadInternal() {
+        if (!ensureAuthorized()) return
+
+        val prev = state.value.notifications
+        if (prev is ListLoadState.Content) {
+            _state.update {
+                it.copy(
+                    notifications = ListLoadState.Content(prev.items.map { n -> if (!n.isRead) n.copy(isRead = true) else n }),
+                    actionMessage = null,
+                )
+            }
+        }
+
+        val ok = runCatching { inboxRemote.markAllRead() }.isSuccess
+        if (!ok) {
+            _state.update { it.copy(actionMessage = "Не удалось отметить все уведомления") }
+            loadNotifications()
+        }
+    }
+
+    private fun loadNotificationSettings() {
+        val current = runCatching { settingsStorage.get() }.getOrElse { SubscriptionsNotificationsSettings() }
+        _state.update { it.copy(notificationsSettings = current) }
+        if (current.pushEnabled) {
+            pushScheduler.ensureScheduled()
+        }
+    }
+
+    private fun normalizeSettings(settings: SubscriptionsNotificationsSettings): SubscriptionsNotificationsSettings {
+        val start = settings.quietHoursStart.coerceIn(0, 23)
+        val end = settings.quietHoursEnd.coerceIn(0, 23)
+        return settings.copy(quietHoursStart = start, quietHoursEnd = end)
+    }
+
+    private fun parseDecimal(input: String): Double? =
+        input.trim().replace(',', '.').toDoubleOrNull()
+
+    private fun parseMoneyMinor(input: String): Long? {
+        val s = input.trim()
+            .replace(" ", "")
+            .replace(',', '.')
+        if (s.isBlank()) return null
+        if (s.startsWith("-")) return null
+
+        val parts = s.split('.', limit = 2)
+        if (parts.isEmpty() || parts.size > 2) return null
+
+        val wholeRaw = parts[0].ifBlank { "0" }
+        if (!wholeRaw.all { it.isDigit() }) return null
+
+        val fracRaw = if (parts.size == 2) parts[1] else ""
+        if (fracRaw.isNotBlank() && !fracRaw.all { it.isDigit() }) return null
+        if (fracRaw.length > 2) return null
+
+        val whole = wholeRaw.toLongOrNull() ?: return null
+        val frac = fracRaw.padEnd(2, '0').take(2).toLongOrNull() ?: 0L
+        return whole * 100L + frac
+    }
+}

@@ -1,0 +1,10 @@
+package com.example.shoppingassistant.di
+
+import com.example.shoppingassistant.AppSettingsViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
+
+val appModule = module {
+    viewModel { AppSettingsViewModel(get()) }
+}
+

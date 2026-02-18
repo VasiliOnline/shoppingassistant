@@ -1,0 +1,109 @@
+version: 2.1-L0
+l0_code: BEAUTY
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- как
+- инструкция
+- рецепт
+- домашний
+- своими руками
+- отзывы
+- форум
+- скачать
+- игра
+- обои
+disambiguation_ordered_rules:
+- id: R.PHONES_TABLETS
+  if_any_tokens:
+  - iphone
+  - айфон
+  - samsung
+  - xiaomi
+  - huawei
+  - galaxy
+  - pixel
+  and_none_tokens:
+  - чехол
+  - пленк
+  - стекл
+  then_route_canonical: TECH.PHONES
+  confidence: 0.92
+  notes: Phones -> TECH.PHONES
+- id: R.APPL_VACUUM
+  if_any_tokens:
+  - пылесос
+  - робот-пылесос
+  - робот пылесос
+  then_route_canonical: APPL.SMALL
+  confidence: 0.9
+  notes: Vacuum -> appliance
+- id: R.FASH_SHOES
+  if_any_tokens:
+  - кроссовк
+  - кед
+  - ботинк
+  - сапог
+  - туфл
+  - балетк
+  - обув
+  and_none_tokens:
+  - крем
+  - щетка
+  - щётка
+  - спрей
+  - дезодорант для обуви
+  then_route_canonical: FASH.SHOES
+  confidence: 0.78
+  notes: Footwear -> fashion; shoe-care excluded
+- id: R.HOME_SHOE_CARE
+  if_any_tokens:
+  - крем для обуви
+  - щетка для обуви
+  - щётка для обуви
+  - спрей для обуви
+  - дезодорант для обуви
+  then_route_canonical: HOME.CLEANING
+  confidence: 0.82
+  notes: Shoe care -> HOME.CLEANING
+- id: R.BEAUTY_DEVICES_VS_APPL
+  if_any_tokens:
+  - фен
+  - стайлер
+  - плойк
+  - утюжок
+  - эпилятор
+  - фотоэпилятор
+  - ирригатор
+  - электрическая зубная
+  then_route_canonical: BEAUTY.DEVICES
+  confidence: 0.86
+  notes: Beauty devices stay in BEAUTY.DEVICES
+- id: R.BEAUTY_HEALTH_MED
+  if_any_tokens:
+  - тонометр
+  - глюкометр
+  - пульсоксиметр
+  - линзы
+  - пластыри
+  - бинт
+  - корсет
+  - стельки
+  then_route_canonical: BEAUTY.HEALTH
+  confidence: 0.85
+  notes: Medical supplies -> BEAUTY.HEALTH
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.BEAUTY
+  default_canonical: BEAUTY
+  if_only_generic_tokens_route_to_root: true

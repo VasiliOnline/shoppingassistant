@@ -1,0 +1,54 @@
+package com.example.shoppingassistant.core.push
+
+import android.content.Context
+
+class SubscriptionsNotificationsSettingsStorageImpl(
+    context: Context,
+) : SubscriptionsNotificationsSettingsStorage {
+
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    override fun get(): SubscriptionsNotificationsSettings {
+        val pushEnabled = prefs.getBoolean(KEY_PUSH_ENABLED, true)
+        val quietEnabled = prefs.getBoolean(KEY_QUIET_ENABLED, false)
+        val quietStart = prefs.getInt(KEY_QUIET_START, 22)
+        val quietEnd = prefs.getInt(KEY_QUIET_END, 8)
+        val group = prefs.getBoolean(KEY_GROUP, true)
+        val priorityName = prefs.getString(KEY_PRIORITY, NotificationPriority.DEFAULT.name)
+        val priority = runCatching {
+            NotificationPriority.valueOf(priorityName ?: NotificationPriority.DEFAULT.name)
+        }.getOrDefault(NotificationPriority.DEFAULT)
+
+        return SubscriptionsNotificationsSettings(
+            pushEnabled = pushEnabled,
+            quietHoursEnabled = quietEnabled,
+            quietHoursStart = quietStart,
+            quietHoursEnd = quietEnd,
+            groupNotifications = group,
+            priority = priority,
+        )
+    }
+
+    override fun set(settings: SubscriptionsNotificationsSettings) {
+        val safeStart = settings.quietHoursStart.coerceIn(0, 23)
+        val safeEnd = settings.quietHoursEnd.coerceIn(0, 23)
+        prefs.edit()
+            .putBoolean(KEY_PUSH_ENABLED, settings.pushEnabled)
+            .putBoolean(KEY_QUIET_ENABLED, settings.quietHoursEnabled)
+            .putInt(KEY_QUIET_START, safeStart)
+            .putInt(KEY_QUIET_END, safeEnd)
+            .putBoolean(KEY_GROUP, settings.groupNotifications)
+            .putString(KEY_PRIORITY, settings.priority.name)
+            .apply()
+    }
+
+    private companion object {
+        private const val PREFS_NAME: String = "subscriptions_notifications_settings"
+        private const val KEY_PUSH_ENABLED: String = "push_enabled"
+        private const val KEY_QUIET_ENABLED: String = "quiet_enabled"
+        private const val KEY_QUIET_START: String = "quiet_start"
+        private const val KEY_QUIET_END: String = "quiet_end"
+        private const val KEY_GROUP: String = "group_notifications"
+        private const val KEY_PRIORITY: String = "priority"
+    }
+}

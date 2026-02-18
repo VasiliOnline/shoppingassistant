@@ -1,0 +1,97 @@
+[
+    {
+        "scope": "CATEGORY",
+        "categoryCode": "TECH.PHONES",
+        "brand": null,
+        "model": null,
+        "attributeConstraints": [],
+        "compatibilityRules": [
+            {
+                "whenAll": [
+                    {
+                        "attributeCode": "brand",
+                        "op": "EQUALS_ANY",
+                        "values": [
+                            "Apple"
+                        ]
+                    },
+                    {
+                        "attributeCode": "model",
+                        "op": "STARTS_WITH_ANY",
+                        "values": [
+                            "iPhone"
+                        ]
+                    }
+                ],
+                "apply": [
+                    {
+                        "attributeCode": "os_family",
+                        "allowedValues": [
+                            "IOS"
+                        ],
+                        "forbiddenValues": [],
+                        "reason": "Для iPhone доступна только iOS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "scope": "MODEL",
+        "categoryCode": "TECH.PHONES",
+        "brand": "Apple",
+        "model": "iPhone 16 Pro",
+        "attributeConstraints": [
+            {
+                "attributeCode": "memory_gb",
+                "allowedValues": [
+                    "256",
+                    "512",
+                    "1024"
+                ],
+                "forbiddenValues": [],
+                "reason": "Доступные варианты памяти для iPhone 16 Pro"
+            },
+            {
+                "attributeCode": "color",
+                "allowedValues": [
+                    "BLACK",
+                    "BLUE",
+                    "NATURAL_TITANIUM"
+                ],
+                "forbiddenValues": [],
+                "reason": "Доступные цвета для iPhone 16 Pro"
+            }
+        ],
+        "compatibilityRules": []
+    },
+    {
+        "scope": "MODEL",
+        "categoryCode": "TECH.PHONES",
+        "brand": "Apple",
+        "model": "iPhone 16",
+        "attributeConstraints": [
+            {
+                "attributeCode": "memory_gb",
+                "allowedValues": [
+                    "128",
+                    "256",
+                    "512"
+                ],
+                "forbiddenValues": [],
+                "reason": "Доступные варианты памяти для iPhone 16"
+            },
+            {
+                "attributeCode": "color",
+                "allowedValues": [
+                    "BLACK",
+                    "WHITE",
+                    "PINK"
+                ],
+                "forbiddenValues": [],
+                "reason": "Доступные цвета для iPhone 16"
+            }
+        ],
+        "compatibilityRules": []
+    }
+]

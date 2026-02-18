@@ -1,0 +1,16 @@
+package com.example.shoppingassistant.core.data
+
+import com.example.shoppingassistant.core.data.db.ProductDao
+
+data class AttributeDefRaw(val key: String, val values: List<String>)
+
+class AttributeService(private val dao: ProductDao) {
+    suspend fun defsFor(brand: String?, model: String?): List<AttributeDefRaw> {
+        val keys = dao.distinctAttrKeys(brand, model)
+        return keys.map { k -> AttributeDefRaw(k, dao.distinctAttrValues(brand, model, k)) }
+    }
+
+    suspend fun brands(): List<String> = dao.distinctBrands()
+
+    suspend fun models(brand: String?): List<String> = dao.distinctModels(brand)
+}

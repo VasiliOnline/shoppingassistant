@@ -1,0 +1,59 @@
+// FILE: feature/src/main/java/com/example/shoppingassistant/feature/pages/main/vision/PhotoWizardTasks.kt
+package com.example.shoppingassistant.feature.pages.main.vision
+
+import com.example.shoppingassistant.domain.vision.VisionNormalizeResult
+import com.example.shoppingassistant.domain.vision.VisionPhotoRole
+
+enum class PhotoWizardStep { APPEARANCE, SPECS }
+
+enum class PhotoSlotStatus { EMPTY, ADDED, DUPLICATE, ERROR }
+
+data class PhotoSlot(
+    val role: VisionPhotoRole,
+    val uri: String? = null,
+    val base64: String? = null,
+    val hash: String? = null,
+    val status: PhotoSlotStatus = PhotoSlotStatus.EMPTY,
+    val error: String? = null,
+)
+
+data class PhotoWizardState(
+    val visible: Boolean = false,
+    val step: PhotoWizardStep = PhotoWizardStep.APPEARANCE,
+    val appearanceSlots: List<PhotoSlot> = defaultAppearanceSlots(),
+    val techSlots: List<PhotoSlot> = defaultTechSlots(),
+    val pendingRole: VisionPhotoRole? = null,
+    val isRecognizing: Boolean = false,
+    val errorMessage: String? = null,
+    val lastResult: VisionNormalizeResult? = null,
+) {
+    fun allSlots(): List<PhotoSlot> = appearanceSlots + techSlots
+
+    fun totalPhotos(): Int = allSlots().count { !it.uri.isNullOrBlank() }
+
+    fun appearanceCount(): Int = appearanceSlots.count { !it.uri.isNullOrBlank() }
+
+    /**
+     * Требование для старта распознавания/поиска: должны быть минимум FRONT и BACK.
+     * (Остальные грани и TECH_* — опциональны.)
+     */
+    fun hasFrontAndBack(): Boolean {
+        val hasFront = appearanceSlots.any { it.role == VisionPhotoRole.FRONT && !it.uri.isNullOrBlank() }
+        val hasBack = appearanceSlots.any { it.role == VisionPhotoRole.BACK && !it.uri.isNullOrBlank() }
+        return hasFront && hasBack
+    }
+}
+
+fun defaultAppearanceSlots(): List<PhotoSlot> = listOf(
+    PhotoSlot(role = VisionPhotoRole.FRONT),
+    PhotoSlot(role = VisionPhotoRole.BACK),
+    PhotoSlot(role = VisionPhotoRole.LEFT),
+    PhotoSlot(role = VisionPhotoRole.RIGHT),
+    PhotoSlot(role = VisionPhotoRole.TOP),
+    PhotoSlot(role = VisionPhotoRole.BOTTOM),
+)
+
+fun defaultTechSlots(): List<PhotoSlot> = listOf(
+    PhotoSlot(role = VisionPhotoRole.TECH_1),
+    PhotoSlot(role = VisionPhotoRole.TECH_2),
+)

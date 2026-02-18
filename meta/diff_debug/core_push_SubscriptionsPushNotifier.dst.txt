@@ -1,0 +1,74 @@
+package com.example.shoppingassistant.core.push
+
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+
+class SubscriptionsPushNotifier(
+    private val context: Context,
+) {
+    fun canPostNotifications(): Boolean {
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return false
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            val granted = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) == PackageManager.PERMISSION_GRANTED
+            if (!granted) return false
+        }
+        return true
+    }
+
+    fun notifyText(id: Int, title: String, message: String, settings: SubscriptionsNotificationsSettings) {
+        val n = NotificationCompat.Builder(context, SubscriptionsNotificationsChannel.CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .setAutoCancel(true)
+            .setPriority(toCompatPriority(settings.priority))
+            .setGroup(if (settings.groupNotifications) GROUP_KEY else null)
+            .build()
+
+        NotificationManagerCompat.from(context).notify(id, n)
+    }
+
+    fun notifyInboxItem(item: SubscriptionsInboxNotification, settings: SubscriptionsNotificationsSettings) {
+        notifyText(
+            id = item.id.toInt(),
+            title = "Сработало отслеживание",
+            message = item.message,
+            settings = settings,
+        )
+    }
+
+    fun notifySummary(total: Int, settings: SubscriptionsNotificationsSettings) {
+        val message = "Новых уведомлений: $total"
+        val n = NotificationCompat.Builder(context, SubscriptionsNotificationsChannel.CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Отслеживания")
+            .setContentText(message)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .setAutoCancel(true)
+            .setGroup(GROUP_KEY)
+            .setGroupSummary(true)
+            .setPriority(toCompatPriority(settings.priority))
+            .build()
+
+        NotificationManagerCompat.from(context).notify(SUMMARY_ID, n)
+    }
+
+    private fun toCompatPriority(priority: NotificationPriority): Int = when (priority) {
+        NotificationPriority.LOW -> NotificationCompat.PRIORITY_LOW
+        NotificationPriority.DEFAULT -> NotificationCompat.PRIORITY_DEFAULT
+        NotificationPriority.HIGH -> NotificationCompat.PRIORITY_HIGH
+    }
+
+    private companion object {
+        private const val GROUP_KEY: String = "subscriptions_inbox"
+        private const val SUMMARY_ID: Int = 0
+    }
+}

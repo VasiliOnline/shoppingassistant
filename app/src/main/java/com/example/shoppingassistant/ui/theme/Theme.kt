@@ -7,46 +7,58 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.example.shoppingassistant.domain.profile.ProfileThemePreference
 
-// Светлая палитра (набор основных цветов приложения в светлой теме)
 private val LightColors: ColorScheme = lightColorScheme(
-    primary = Color(0xFF3B82F6),     // основной цвет (кнопки/акценты)
-    onPrimary = Color.White,
-    secondary = Color(0xFF22C55E),   // дополнительный (поддерживающий)
-    onSecondary = Color.White,
-    tertiary = Color(0xFFF59E0B),    // ещё один акцент (предупреждения/метки)
-    background = Color(0xFFF8FAFC),  // фон экранов
-    surface = Color(0xFFFFFFFF),     // фон карточек/панелей
-    onBackground = Color(0xFF0F172A),// текст на фоне
-    onSurface = Color(0xFF0F172A)    // текст на карточках
+    primary = Color(0xFF1E5EFF),
+    onPrimary = Color(0xFFFFFFFF),
+    secondary = Color(0xFF1E5EFF),
+    onSecondary = Color(0xFFFFFFFF),
+    tertiary = Color(0xFF1E5EFF),
+    onTertiary = Color(0xFFFFFFFF),
+    background = Color(0xFFF7F7F8),
+    surface = Color(0xFFFFFFFF),
+    surfaceVariant = Color(0xFFF1F2F4),
+    outline = Color(0xFFE0E3E8),
+    outlineVariant = Color(0xFFE6E9EE),
+    onBackground = Color(0xFF0B1220),
+    onSurface = Color(0xFF0B1220),
+    onSurfaceVariant = Color(0xFF4A4F58),
 )
 
-// Тёмная палитра (те же роли, но под тёмный фон)
 private val DarkColors: ColorScheme = darkColorScheme(
-    primary = Color(0xFF60A5FA),
-    onPrimary = Color(0xFF001027),
-    secondary = Color(0xFF34D399),
-    onSecondary = Color(0xFF002114),
-    tertiary = Color(0xFFFBBF24),
-    background = Color(0xFF131313),
-    surface = Color(0xFF111827),
-    onBackground = Color(0xFFE5E7EB),
-    onSurface = Color(0xFFE5E7EB)
+    primary = Color(0xFF7DBEFF),
+    onPrimary = Color(0xFF00111F),
+    secondary = Color(0xFF7DBEFF),
+    onSecondary = Color(0xFF00111F),
+    tertiary = Color(0xFF7DBEFF),
+    onTertiary = Color(0xFF00111F),
+    background = Color(0xFF14161A),
+    surface = Color(0xFF1A1D22),
+    surfaceVariant = Color(0xFF232831),
+    outline = Color(0xFF2C333D),
+    outlineVariant = Color(0xFF333B46),
+    onBackground = Color(0xFFE6ECF5),
+    onSurface = Color(0xFFE6ECF5),
+    onSurfaceVariant = Color(0xFFB5BDC9),
 )
 
-/**
- * AppTheme — «обёртка темы» (единый стиль) для всех экранов.
- * [isSystemInDarkTheme] — автоматически читает настройку темы на устройстве пользователя.
- */
 @Composable
 fun AppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(), // автоподстройка под систему
-    content: @Composable () -> Unit                // UI-вложение (экраны, карточки и т.п.)
+    themePreference: ProfileThemePreference = ProfileThemePreference.SYSTEM,
+    content: @Composable () -> Unit,
 ) {
+    val useDarkTheme = when (themePreference) {
+        ProfileThemePreference.LIGHT -> false
+        ProfileThemePreference.DARK -> true
+        ProfileThemePreference.SYSTEM -> isSystemInDarkTheme()
+    }
     val colors = if (useDarkTheme) DarkColors else LightColors
+
     MaterialTheme(
         colorScheme = colors,
-        // Typography() и Shapes() оставим по умолчанию — потом при желании настроим
-        content = content
+        typography = Typography,
+        shapes = Shapes,
+        content = content,
     )
 }

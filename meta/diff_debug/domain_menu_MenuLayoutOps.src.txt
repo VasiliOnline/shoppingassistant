@@ -1,0 +1,248 @@
+package com.example.shoppingassistant.domain.menu
+
+object MenuLayoutOps {
+    private val bottomRoles = setOf(
+        MenuActionId.DASHBOARD,
+        MenuActionId.SEARCH,
+        MenuActionId.SUBSCRIPTIONS,
+        MenuActionId.PROFILE,
+    )
+    private val rightRoles = setOf(
+        MenuActionId.POST,
+        MenuActionId.MESSAGES,
+        MenuActionId.NOTIFICATIONS,
+    )
+    private val bottomDefaults = listOf(
+        MenuActionId.DASHBOARD,
+        MenuActionId.SEARCH,
+        MenuActionId.SUBSCRIPTIONS,
+        MenuActionId.PROFILE,
+    )
+    private val rightDefaults = listOf(
+        MenuActionId.POST,
+        MenuActionId.MESSAGES,
+        MenuActionId.NOTIFICATIONS,
+    )
+    private const val MIN_BOTTOM = 2
+    private const val MIN_RIGHT = 2
+
+    fun normalize(layout: MenuLayout, config: MenuLayoutConfig): MenuLayout {
+        val right = normalizePanel(layout.right, config.rightSlots)
+        val bottom = normalizePanel(layout.bottom, config.bottomSlots)
+        val alpha = layout.slotBackgroundAlpha.coerceIn(0f, 0.4f)
+        val blur = layout.slotBackgroundBlur.coerceIn(0f, 24f)
+
+        val normalized = layout.copy(
+            right = right,
+            bottom = bottom,
+            slotBackgroundAlpha = alpha,
+            slotBackgroundBlur = blur,
+        )
+
+        val deduped = dedupe(enforceRoles(normalized))
+        val pinned = ensurePinned(deduped, config)
+        return fillMinimums(pinned, config)
+    }
+
+    fun applyDrop(
+        layout: MenuLayout,
+        config: MenuLayoutConfig,
+        actionId: MenuActionId,
+        to: MenuSlotRef?,
+        from: MenuSlotRef? = null,
+    ): MenuDropOutcome {
+        if (layout.pinned.contains(actionId) && from != null && to == null) {
+            return MenuDropOutcome(layout)
+        }
+
+        if (to == null) {
+            val removed = removeAction(layout, actionId)
+            return if (removed.layout == layout) {
+                MenuDropOutcome(layout)
+            } else {
+                MenuDropOutcome(removed.layout, removed.removed)
+            }
+        }
+
+        val existing = findSlot(layout, actionId)
+        val targetAction = getActionAt(layout, to)
+        if (targetAction != null && layout.pinned.contains(targetAction) && targetAction != actionId) {
+            return MenuDropOutcome(layout)
+        }
+
+        var next = setActionAt(layout, to, actionId)
+        if (existing != null && existing != to) {
+            next = setActionAt(next, existing, null)
+        }
+        val removed = if (targetAction != null && targetAction != actionId) targetAction else null
+        return MenuDropOutcome(next, removed = removed)
+    }
+
+    private fun enforceRoles(layout: MenuLayout): MenuLayout {
+        val right = layout.right.toMutableList()
+        val bottom = layout.bottom.toMutableList()
+
+        fun moveToEdge(action: MenuActionId) {
+            val targetEdge = roleEdge(action) ?: return
+            val targetList = if (targetEdge == MenuEdge.RIGHT) right else bottom
+            if (targetList.contains(action)) return
+            val emptyIndex = targetList.indexOfFirst { it == null }
+            if (emptyIndex >= 0) {
+                targetList[emptyIndex] = action
+            }
+        }
+
+        right.indices.forEach { index ->
+            val action = right[index] ?: return@forEach
+            if (roleEdge(action) != MenuEdge.RIGHT) {
+                right[index] = null
+                moveToEdge(action)
+            }
+        }
+
+        bottom.indices.forEach { index ->
+            val action = bottom[index] ?: return@forEach
+            if (roleEdge(action) != MenuEdge.BOTTOM) {
+                bottom[index] = null
+                moveToEdge(action)
+            }
+        }
+
+        return layout.copy(right = right, bottom = bottom)
+    }
+
+    private fun fillMinimums(layout: MenuLayout, config: MenuLayoutConfig): MenuLayout {
+        if (config.rightSlots == 0 && config.bottomSlots == 0) return layout
+        val used = HashSet<MenuActionId>()
+        layout.right.filterNotNull().forEach { used.add(it) }
+        layout.bottom.filterNotNull().forEach { used.add(it) }
+
+        val minRight = minSlots(config.rightSlots, MIN_RIGHT)
+        val minBottom = minSlots(config.bottomSlots, MIN_BOTTOM)
+
+        val right = fillEdge(layout.right.toMutableList(), rightDefaults, used, minRight)
+        val bottom = fillEdge(layout.bottom.toMutableList(), bottomDefaults, used, minBottom)
+
+        return layout.copy(right = right, bottom = bottom)
+    }
+
+    private fun fillEdge(
+        items: MutableList<MenuActionId?>,
+        defaults: List<MenuActionId>,
+        used: MutableSet<MenuActionId>,
+        minCount: Int,
+    ): List<MenuActionId?> {
+        var count = items.count { it != null }
+        if (count >= minCount) return items
+        defaults.forEach { action ->
+            if (count >= minCount) return@forEach
+            if (used.contains(action)) return@forEach
+            val emptyIndex = items.indexOfFirst { it == null }
+            if (emptyIndex < 0) return@forEach
+            items[emptyIndex] = action
+            used.add(action)
+            count += 1
+        }
+        return items
+    }
+
+    private fun minSlots(slots: Int, minRequired: Int): Int {
+        if (slots <= 0) return 0
+        return if (slots < minRequired) slots else minRequired
+    }
+
+    private fun normalizePanel(input: List<MenuActionId?>, slots: Int): List<MenuActionId?> {
+        if (slots <= 0) return emptyList()
+        val normalized = input.take(slots).toMutableList()
+        while (normalized.size < slots) {
+            normalized.add(null)
+        }
+        return normalized
+    }
+
+    private fun dedupe(layout: MenuLayout): MenuLayout {
+        val seen = HashSet<MenuActionId>()
+        val right = layout.right.map { action ->
+            if (action == null || seen.add(action)) action else null
+        }
+        val bottom = layout.bottom.map { action ->
+            if (action == null || seen.add(action)) action else null
+        }
+        return layout.copy(right = right, bottom = bottom)
+    }
+
+    private fun ensurePinned(layout: MenuLayout, config: MenuLayoutConfig): MenuLayout {
+        var right = layout.right
+        var bottom = layout.bottom
+        val all = right + bottom
+        layout.pinned.forEach { action ->
+            if (all.contains(action)) return@forEach
+            val targetEdge = roleEdge(action) ?: return@forEach
+            if (targetEdge == MenuEdge.RIGHT) {
+                val rightEmpty = right.indexOfFirst { it == null }
+                if (rightEmpty >= 0) {
+                    right = right.toMutableList().also { it[rightEmpty] = action }
+                    return@forEach
+                }
+                if (config.rightSlots > 0) {
+                    right = right.toMutableList().also { it[0] = action }
+                    return@forEach
+                }
+            } else {
+                val bottomEmpty = bottom.indexOfFirst { it == null }
+                if (bottomEmpty >= 0) {
+                    bottom = bottom.toMutableList().also { it[bottomEmpty] = action }
+                    return@forEach
+                }
+                if (config.bottomSlots > 0) {
+                    bottom = bottom.toMutableList().also { it[0] = action }
+                    return@forEach
+                }
+            }
+        }
+        return layout.copy(right = right, bottom = bottom)
+    }
+
+    private fun roleEdge(action: MenuActionId): MenuEdge? = when {
+        rightRoles.contains(action) -> MenuEdge.RIGHT
+        bottomRoles.contains(action) -> MenuEdge.BOTTOM
+        else -> null
+    }
+
+    private fun removeAction(layout: MenuLayout, actionId: MenuActionId): MenuDropOutcome {
+        if (layout.pinned.contains(actionId)) return MenuDropOutcome(layout)
+        val slot = findSlot(layout, actionId) ?: return MenuDropOutcome(layout)
+        val next = setActionAt(layout, slot, null)
+        return MenuDropOutcome(next, removed = actionId)
+    }
+
+    private fun findSlot(layout: MenuLayout, actionId: MenuActionId): MenuSlotRef? {
+        val rightIndex = layout.right.indexOf(actionId)
+        if (rightIndex >= 0) return MenuSlotRef(MenuEdge.RIGHT, rightIndex)
+        val bottomIndex = layout.bottom.indexOf(actionId)
+        if (bottomIndex >= 0) return MenuSlotRef(MenuEdge.BOTTOM, bottomIndex)
+        return null
+    }
+
+    private fun getActionAt(layout: MenuLayout, ref: MenuSlotRef): MenuActionId? {
+        val list = when (ref.edge) {
+            MenuEdge.RIGHT -> layout.right
+            MenuEdge.BOTTOM -> layout.bottom
+        }
+        if (ref.index !in list.indices) return null
+        return list[ref.index]
+    }
+
+    private fun setActionAt(layout: MenuLayout, ref: MenuSlotRef, action: MenuActionId?): MenuLayout {
+        val list = when (ref.edge) {
+            MenuEdge.RIGHT -> layout.right.toMutableList()
+            MenuEdge.BOTTOM -> layout.bottom.toMutableList()
+        }
+        if (ref.index !in list.indices) return layout
+        list[ref.index] = action
+        return when (ref.edge) {
+            MenuEdge.RIGHT -> layout.copy(right = list)
+            MenuEdge.BOTTOM -> layout.copy(bottom = list)
+        }
+    }
+}

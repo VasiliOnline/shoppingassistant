@@ -1,0 +1,30 @@
+// FILE: core/src/main/java/com/example/shoppingassistant/core/di/RankModule.kt
+package com.example.shoppingassistant.core.di
+
+import com.example.shoppingassistant.core.config.FeatureFlagsConfig
+import com.example.shoppingassistant.core.config.RankBoundsConfig
+import com.example.shoppingassistant.core.rank.RankService
+import com.example.shoppingassistant.core.rank.ScoringEngine
+import com.example.shoppingassistant.core.rank.ScoringEngineImpl
+import com.example.shoppingassistant.core.rank.Weights
+import com.example.shoppingassistant.core.rank.WeightsLoader
+import org.koin.dsl.module
+
+/**
+ * DI-модуль ранжирования.
+ * Читает конфиг из weights.json (флаги/границы) и создаёт единый движок + сервис.
+ */
+val rankModule = module {
+    // Конфигурации из weights.json (classpath или относительный путь)
+    single<FeatureFlagsConfig.FeatureFlags> { FeatureFlagsConfig.load() }
+    single<RankBoundsConfig.RankBounds> { RankBoundsConfig.load() }
+
+    // Веса из classpath/файла
+    single<Weights> { WeightsLoader.load() }
+
+    // Движок скоринга: веса + границы + фич-флаги
+    single<ScoringEngine> { ScoringEngineImpl(get(), get(), get()) }
+
+    // Единая точка ранжирования для repo/VM
+    single { RankService(get()) }
+}

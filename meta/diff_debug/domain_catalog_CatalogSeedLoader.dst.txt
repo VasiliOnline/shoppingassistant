@@ -1,0 +1,109 @@
+package com.example.shoppingassistant.domain.catalog
+
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import kotlinx.serialization.builtins.ListSerializer
+
+internal object CatalogSeedLoader {
+    private const val STAGE11_BASE = "taxonomy/stage1/1.1"
+    private const val STAGE12_BASE = "taxonomy/stage1/1.2"
+
+    val categories: List<Category> by lazy {
+        CatalogSeedResourceReader.readJson(
+            resourcePath = "$STAGE11_BASE/categories.json",
+            deserializer = ListSerializer(Category.serializer()),
+        )
+    }
+
+    val categoryAliases: List<CategoryAlias> by lazy {
+        CatalogSeedResourceReader.readJson(
+            resourcePath = "$STAGE11_BASE/category_aliases.json",
+            deserializer = ListSerializer(CategoryAlias.serializer()),
+        )
+    }
+
+    val browseNodes: List<BrowseNode> by lazy {
+        CatalogSeedResourceReader.readJson(
+            resourcePath = "$STAGE11_BASE/browse_nodes.json",
+            deserializer = ListSerializer(BrowseNode.serializer()),
+        )
+    }
+
+    val aliasEntries: List<AliasEntry> by lazy {
+        CatalogSeedResourceReader.readJson(
+            resourcePath = "$STAGE11_BASE/alias_entries.json",
+            deserializer = ListSerializer(AliasEntry.serializer()),
+        )
+    }
+
+    val googleMappings: List<GoogleTaxonomyMapping> by lazy {
+        CatalogSeedResourceReader.readJson(
+            resourcePath = "$STAGE12_BASE/google_taxonomy_mappings.json",
+            deserializer = ListSerializer(GoogleTaxonomyMapping.serializer()),
+        )
+    }
+
+    private val stage22Packages: List<Stage22PackageData> by lazy {
+        GenericStage22PackageLoader.loadAll()
+    }
+
+    private val validatedStage22Packages: List<Stage22PackageData> by lazy {
+        Stage22SeedValidator().validateOrThrow(
+            categories = categories,
+            packages = stage22Packages,
+        )
+        stage22Packages
+    }
+
+    init {
+        // Fail fast during seed initialization so invalid stage 2.2 data never reaches runtime.
+        validatedStage22Packages
+    }
+
+    val profiles: List<CategoryProfile> by lazy {
+        val profileByCode = LinkedHashMap<String, CategoryProfile>()
+        validatedStage22Packages
+            .flatMap { it.profiles }
+            .forEach { profile ->
+                profileByCode.putIfAbsent(profile.category.code, profile)
+            }
+
+        categories.map { category ->
+            profileByCode[category.code] ?: CategoryProfile(
+                category = category,
+                attributes = emptyList(),
+                categoryAttributes = emptyList(),
+                valueDictionaries = emptyList(),
+                requiredIfRules = emptyList(),
+            )
+        }
+    }
+
+    val constraints: List<CatalogConstraints> by lazy {
+        val ordered = buildList {
+            addAll(GenericStage22PackageLoader.loadGlobalConstraints())
+            addAll(validatedStage22Packages.flatMap { it.constraints })
+        }
+        dedupeConstraints(ordered)
+    }
+
+    private fun dedupeConstraints(constraints: List<CatalogConstraints>): List<CatalogConstraints> {
+        val deduped = LinkedHashMap<String, CatalogConstraints>()
+        constraints.forEach { constraint ->
+            val key = buildString {
+                append(constraint.scope.name)
+                append("|")
+                append(constraint.categoryCode.orEmpty())
+                append("|")
+                append(constraint.brand.orEmpty())
+                append("|")
+                append(constraint.model.orEmpty())
+                append("|")
+                append(constraint.attributeConstraints.joinToString { it.attributeCode })
+                append("|")
+                append(constraint.compatibilityRules.size)
+            }
+            deduped.putIfAbsent(key, constraint)
+        }
+        return deduped.values.toList()
+    }
+}

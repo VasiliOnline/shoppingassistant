@@ -1,0 +1,126 @@
+// Last synced: 2025-11-15 14:49
+// GPT task: FoundHint — pulse "Показать" button + blue blinking text after click
+package com.example.shoppingassistant.feature.pages.main.ui
+
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun FoundHint(
+    count: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    // Лёгкий пульс для кнопки "Показать".
+    val pulse by rememberInfiniteTransition(label = "hintPulse")
+        .animateFloat(
+            initialValue = 1f,
+            targetValue = 1.08f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(2000, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "pulseAnim",
+        )
+
+    // Мигание текста "Найдено N товаров" голубым после клика по подсказке.
+    val baseTextColor = MaterialTheme.colorScheme.onSurface
+    val highlightColor = MaterialTheme.colorScheme.primary
+    val textColorAnim = remember { Animatable(baseTextColor) }
+    var blinking by remember { mutableStateOf(false) }
+
+    LaunchedEffect(blinking, baseTextColor, highlightColor) {
+        if (!blinking) {
+            textColorAnim.snapTo(baseTextColor)
+        } else {
+            // Пару циклов мигания, чтобы подсказка явно «подмигнула» пользователю.
+            repeat(4) {
+                textColorAnim.animateTo(
+                    targetValue = highlightColor,
+                    animationSpec = tween(
+                        durationMillis = 220,
+                        easing = FastOutSlowInEasing,
+                    ),
+                )
+                textColorAnim.animateTo(
+                    targetValue = baseTextColor,
+                    animationSpec = tween(
+                        durationMillis = 220,
+                        easing = FastOutSlowInEasing,
+                    ),
+                )
+            }
+            blinking = false
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentWidth(Alignment.CenterHorizontally)
+            .padding(top = 6.dp),
+    ) {
+        Surface(
+            tonalElevation = 2.dp,
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            ) {
+                Text(
+                    text = "Найдено товаров $count",
+                    color = textColorAnim.value,
+                )
+                Spacer(Modifier.width(12.dp))
+                TextButton(
+                    onClick = {
+                        blinking = true
+                        onClick()
+                    },
+                    modifier = Modifier
+                        .graphicsLayer(
+                            scaleX = pulse,
+                            scaleY = pulse,
+                        )
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                            shape = MaterialTheme.shapes.medium,
+                        ),
+                ) {
+                    Text("Показать")
+                }
+            }
+        }
+    }
+}

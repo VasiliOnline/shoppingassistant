@@ -1,0 +1,298 @@
+package com.example.shoppingassistant.core.data.db
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.example.shoppingassistant.core.data.suggest.ProductSuggestCandidate
+
+@Dao
+interface ProductDao {
+
+    @Query("""
+        SELECT p.brand AS brand, p.model AS model, COUNT(*) AS count
+        FROM products p
+        WHERE p.brand IS NOT NULL AND trim(p.brand) <> ''
+          AND p.model IS NOT NULL AND trim(p.model) <> ''
+        GROUP BY p.brand, p.model
+        ORDER BY count DESC
+        LIMIT :limit
+    """)
+    suspend fun topBrandModels(limit: Int): List<BrandModelStat>
+
+    @Query("""
+        SELECT a.`key` AS `key`, a.`value` AS `value`, COUNT(*) AS count
+        FROM product_attributes a
+        JOIN products p ON p.id = a.productId
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+          AND trim(a.`value`) <> ''
+        GROUP BY a.`key`, a.`value`
+        ORDER BY count DESC
+    """)
+    suspend fun attributeValueStats(
+        brand: String?,
+        model: String?,
+    ): List<AttributeValueStat>
+
+    @Query("""
+SELECT DISTINCT a.`key`
+FROM product_attributes a
+JOIN products p ON p.id = a.productId
+WHERE (:brand IS NULL OR p.brand = :brand)
+  AND (:model IS NULL OR p.model = :model)
+ORDER BY a.`key`
+""")
+    suspend fun distinctAttrKeys(brand: String?, model: String?): List<String>
+
+    @Query("""
+SELECT DISTINCT a.`value`
+FROM product_attributes a
+JOIN products p ON p.id = a.productId
+WHERE (:brand IS NULL OR p.brand = :brand)
+  AND (:model IS NULL OR p.model = :model)
+  AND a.`key` = :key
+ORDER BY a.`value`
+""")
+    suspend fun distinctAttrValues(brand: String?, model: String?, key: String): List<String>
+
+
+    // === COUNT ===
+
+    @Query("""
+        SELECT COUNT(*) FROM products p
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+    """)
+    suspend fun countByBrandModel(brand: String?, model: String?): Int
+
+    // REPLACE this function in ProductDao.kt
+
+    @Query("""
+    SELECT COUNT(*) FROM (
+        SELECT p.id
+        FROM products p
+        JOIN product_attributes a ON a.productId = p.id
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+          AND (a.`key` || '=' || a.`value`) IN (:pairs)
+        GROUP BY p.id
+        HAVING COUNT(DISTINCT a.`key` || '=' || a.`value`) = :pairsCount
+    )
+""")
+    suspend fun countByBrandModelWithPairs(
+        brand: String?,
+        model: String?,
+        pairs: List<String>,
+        pairsCount: Int
+    ): Int
+
+    // === FACET COUNTS ===
+
+    @Query("""
+        SELECT a.`value` AS `value`, COUNT(DISTINCT a.productId) AS count
+        FROM product_attributes a
+        JOIN products p ON p.id = a.productId
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+          AND a.`key` = :facetKey
+        GROUP BY a.`value`
+    """)
+    suspend fun facetCountsWithoutPairs(
+        brand: String?,
+        model: String?,
+        facetKey: String,
+    ): List<FacetValueCountRow>
+
+    @Query("""
+        SELECT a.`value` AS `value`, COUNT(DISTINCT a.productId) AS count
+        FROM product_attributes a
+        JOIN (
+            SELECT p.id
+            FROM products p
+            JOIN product_attributes pa ON pa.productId = p.id
+            WHERE (:brand IS NULL OR p.brand = :brand)
+              AND (:model IS NULL OR p.model = :model)
+              AND (pa.`key` || '=' || pa.`value`) IN (:pairs)
+            GROUP BY p.id
+            HAVING COUNT(DISTINCT pa.`key`) = :keysCount
+        ) base ON base.id = a.productId
+        WHERE a.`key` = :facetKey
+        GROUP BY a.`value`
+    """)
+    suspend fun facetCountsWithPairs(
+        brand: String?,
+        model: String?,
+        facetKey: String,
+        pairs: List<String>,
+        keysCount: Int,
+    ): List<FacetValueCountRow>
+
+    @Query("""
+        SELECT COUNT(DISTINCT a.productId)
+        FROM product_attributes a
+        JOIN products p ON p.id = a.productId
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+          AND a.`key` = :facetKey
+          AND a.`value` IN (:selectedValues)
+    """)
+    suspend fun facetSelectedCountWithoutPairs(
+        brand: String?,
+        model: String?,
+        facetKey: String,
+        selectedValues: List<String>,
+    ): Int
+
+    @Query("""
+        SELECT COUNT(DISTINCT a.productId)
+        FROM product_attributes a
+        JOIN (
+            SELECT p.id
+            FROM products p
+            JOIN product_attributes pa ON pa.productId = p.id
+            WHERE (:brand IS NULL OR p.brand = :brand)
+              AND (:model IS NULL OR p.model = :model)
+              AND (pa.`key` || '=' || pa.`value`) IN (:pairs)
+            GROUP BY p.id
+            HAVING COUNT(DISTINCT pa.`key`) = :keysCount
+        ) base ON base.id = a.productId
+        WHERE a.`key` = :facetKey
+          AND a.`value` IN (:selectedValues)
+    """)
+    suspend fun facetSelectedCountWithPairs(
+        brand: String?,
+        model: String?,
+        facetKey: String,
+        pairs: List<String>,
+        keysCount: Int,
+        selectedValues: List<String>,
+    ): Int
+
+    @Query("""
+        SELECT a.`value` AS `value`, COUNT(DISTINCT a.productId) AS count
+        FROM product_attributes a
+        JOIN products p ON p.id = a.productId
+        LEFT JOIN product_attributes sel ON sel.productId = a.productId
+          AND sel.`key` = :facetKey
+          AND sel.`value` IN (:selectedValues)
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+          AND a.`key` = :facetKey
+          AND sel.productId IS NULL
+        GROUP BY a.`value`
+    """)
+    suspend fun facetCountsWithoutSelectedValues(
+        brand: String?,
+        model: String?,
+        facetKey: String,
+        selectedValues: List<String>,
+    ): List<FacetValueCountRow>
+
+    @Query("""
+        SELECT a.`value` AS `value`, COUNT(DISTINCT a.productId) AS count
+        FROM product_attributes a
+        JOIN (
+            SELECT p.id
+            FROM products p
+            JOIN product_attributes pa ON pa.productId = p.id
+            WHERE (:brand IS NULL OR p.brand = :brand)
+              AND (:model IS NULL OR p.model = :model)
+              AND (pa.`key` || '=' || pa.`value`) IN (:pairs)
+            GROUP BY p.id
+            HAVING COUNT(DISTINCT pa.`key`) = :keysCount
+        ) base ON base.id = a.productId
+        LEFT JOIN product_attributes sel ON sel.productId = a.productId
+          AND sel.`key` = :facetKey
+          AND sel.`value` IN (:selectedValues)
+        WHERE a.`key` = :facetKey
+          AND sel.productId IS NULL
+        GROUP BY a.`value`
+    """)
+    suspend fun facetCountsWithPairsWithoutSelectedValues(
+        brand: String?,
+        model: String?,
+        facetKey: String,
+        pairs: List<String>,
+        keysCount: Int,
+        selectedValues: List<String>,
+    ): List<FacetValueCountRow>
+
+
+    // === SEARCH CANDIDATES ===
+
+    @Query("""
+        SELECT * FROM products p
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+        ORDER BY p.priceCents ASC, p.deliveryDays ASC, p.sellerRating DESC
+        LIMIT :limit
+    """)
+    suspend fun searchTopOffersSimple(
+        brand: String?,
+        model: String?,
+        limit: Int
+    ): List<ProductEntity>
+
+    @Query("""
+        SELECT p.* FROM products p
+        JOIN product_attributes a ON a.productId = p.id
+        WHERE (:brand IS NULL OR p.brand = :brand)
+          AND (:model IS NULL OR p.model = :model)
+          AND (a.`key` || '=' || a.`value`) IN (:pairs)
+        GROUP BY p.id
+        HAVING COUNT(DISTINCT a.`key` || '=' || a.`value`) = :pairsCount
+        ORDER BY MIN(p.priceCents) ASC, MIN(p.deliveryDays) ASC, MAX(p.sellerRating) DESC
+        LIMIT :limit
+    """)
+    suspend fun searchTopOffersWithPairs(
+        brand: String?,
+        model: String?,
+        pairs: List<String>,
+        pairsCount: Int,
+        limit: Int
+    ): List<ProductEntity>
+
+    // === SUGGEST (anchors) ===
+
+    @Query("""
+        SELECT id, title, brand, model
+        FROM products
+        WHERE instr(lower(title), lower(:query)) > 0
+           OR (brand IS NOT NULL AND instr(lower(brand), lower(:query)) > 0)
+           OR (model IS NOT NULL AND instr(lower(model), lower(:query)) > 0)
+        ORDER BY
+            CASE WHEN lower(title) = lower(:query) THEN 0 ELSE 1 END,
+            sellerRating DESC,
+            priceCents ASC
+        LIMIT :limit
+    """)
+    suspend fun searchProductSuggestions(query: String, limit: Int): List<ProductSuggestCandidate>
+
+    // === DICTS (brand/model) ===
+
+    @Query("""
+        SELECT DISTINCT p.brand
+        FROM products p
+        WHERE p.brand IS NOT NULL AND trim(p.brand) <> ''
+        ORDER BY p.brand
+    """)
+    suspend fun distinctBrands(): List<String>
+
+    @Query("""
+        SELECT DISTINCT p.model
+        FROM products p
+        WHERE p.model IS NOT NULL AND trim(p.model) <> ''
+          AND (:brand IS NULL OR p.brand = :brand)
+        ORDER BY p.model
+    """)
+    suspend fun distinctModels(brand: String?): List<String>
+
+    // === INSERTS ===
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProducts(items: List<ProductEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAttributes(items: List<ProductAttributeEntity>)
+}

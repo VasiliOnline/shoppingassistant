@@ -1,0 +1,196 @@
+package com.example.shoppingassistant.server.auth
+
+import io.lettuce.core.api.sync.RedisCommands
+import io.lettuce.core.KeyScanCursor
+import io.lettuce.core.ScanArgs
+import io.lettuce.core.ScanCursor
+import java.security.SecureRandom
+import java.util.Base64
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
+
+/**
+ * Контракт менеджера сессий "токен → userId".
+ *
+ * HTTP-слой (AuthApi/ProfileApi) зависит только от этого интерфейса,
+ * не зная, где физически хранятся сессии (in-memory, Redis и т.п.).
+ */
+interface SessionManager {
+
+    /** Создаёт новую сессию для пользователя и возвращает bearer-токен. */
+    fun createSession(userId: Long): String
+
+    /** Возвращает userId по токену, либо null если сессия не найдена. */
+    fun getUserId(token: String): Long?
+
+    /** Удаляет сессию по токену (logout / expiry). */
+    fun invalidate(token: String)
+
+    /** Массовое удаление всех сессий пользователя (при logout-all/delete-account). */
+    fun invalidateAllForUser(userId: Long)
+}
+
+/**
+ * Минимальный контракт хранилища сессий.
+ *
+ * В продакшене это будет адаптер поверх Redis-клиента.
+ * В dev/тестовом окружении можем использовать in-memory реализацию.
+ */
+interface SessionStore {
+
+    /** Сохраняет связь токен → userId. */
+    fun save(token: String, userId: Long)
+
+    /** Возвращает userId по токену, либо null. */
+    fun findUserId(token: String): Long?
+
+    /** Удаляет сессию по токену. */
+    fun delete(token: String)
+
+    /** Удаляет все сессии пользователя. */
+    fun deleteByUserId(userId: Long)
+}
+
+/**
+ * Базовая реализация SessionManager поверх абстрактного SessionStore.
+ * Общая логика генерации токена и работы с хранилищем.
+ */
+open class BaseSessionManager(
+    private val store: SessionStore,
+    private val random: SecureRandom = SecureRandom(),
+) : SessionManager {
+
+    override fun createSession(userId: Long): String {
+        val token = generateToken()
+        store.save(token, userId)
+        return token
+    }
+
+    override fun getUserId(token: String): Long? =
+        store.findUserId(token)
+
+    override fun invalidate(token: String) {
+        store.delete(token)
+    }
+
+    override fun invalidateAllForUser(userId: Long) {
+        store.deleteByUserId(userId)
+    }
+
+    /**
+     * Генерирует криптостойкий токен в формате URL-safe Base64 без паддинга.
+     *
+     * Удобно использовать в заголовке Authorization: Bearer ...
+     */
+    protected fun generateToken(): String {
+        val bytes = ByteArray(32)
+        random.nextBytes(bytes)
+        return Base64.getUrlEncoder()
+            .withoutPadding()
+            .encodeToString(bytes)
+    }
+}
+
+/**
+ * In-memory реализация хранилища сессий.
+ *
+ * Используется по умолчанию (dev/тесты). При переходе на Redis
+ * достаточно реализовать SessionStore поверх клиента Redis
+ * и заменить биндинг в Koin.
+ */
+class InMemorySessionStore(
+    ttlSeconds: Long = TimeUnit.DAYS.toSeconds(7),
+) : SessionStore {
+
+    private data class Entry(val userId: Long, val expiresAtMillis: Long)
+
+    private val ttlMillis: Long = TimeUnit.SECONDS.toMillis(ttlSeconds)
+    private val sessions = ConcurrentHashMap<String, Entry>()
+
+    override fun save(token: String, userId: Long) {
+        val expiresAt = System.currentTimeMillis() + ttlMillis
+        sessions[token] = Entry(userId, expiresAt)
+    }
+
+    override fun findUserId(token: String): Long? {
+        val entry = sessions[token] ?: return null
+        return if (entry.expiresAtMillis < System.currentTimeMillis()) {
+            sessions.remove(token)
+            null
+        } else {
+            entry.userId
+        }
+    }
+
+    override fun delete(token: String) {
+        sessions.remove(token)
+    }
+
+    override fun deleteByUserId(userId: Long) {
+        sessions.entries.removeIf { it.value.userId == userId }
+    }
+}
+
+/**
+ * Реализация SessionStore поверх Redis (Lettuce, sync API).
+ *
+ * Хранит пары token → userId как строки и задаёт TTL сессии.
+ * Ключи в Redis дополнительно неймспейсятся через [keyPrefix],
+ * чтобы не пересекаться с другими данными.
+ */
+class LettuceSessionStore(
+    private val commands: RedisCommands<String, String>,
+    private val ttlSeconds: Long,
+    private val keyPrefix: String,
+) : SessionStore {
+
+    private fun key(token: String): String = keyPrefix + token
+
+    override fun save(token: String, userId: Long) {
+        // setex key ttl value: Redis сам удалит просроченную сессию.
+        commands.setex(key(token), ttlSeconds, userId.toString())
+    }
+
+    override fun findUserId(token: String): Long? =
+        commands.get(key(token))?.toLongOrNull()
+
+    override fun delete(token: String) {
+        commands.del(key(token))
+    }
+
+    override fun deleteByUserId(userId: Long) {
+        val args = ScanArgs().match("$keyPrefix*").limit(200)
+        var cursor: KeyScanCursor<String> = commands.scan(args)
+        while (true) {
+            cursor.keys.forEach { redisKey ->
+                val value = commands.get(redisKey)?.toLongOrNull()
+                if (value == userId) {
+                    commands.del(redisKey)
+                }
+            }
+            if (cursor.isFinished) break
+            cursor = commands.scan(cursor, args)
+        }
+    }
+}
+
+/**
+ * Redis-ориентированный менеджер сессий.
+ *
+ * Сейчас работает поверх абстрактного SessionStore.
+ * В момент, когда подключишь настоящий Redis и реализуешь SessionStore
+ * поверх него, менять этот класс и HTTP-слой не придётся.
+ */
+class RedisSessionManager(
+    store: SessionStore,
+    random: SecureRandom = SecureRandom(),
+) : BaseSessionManager(store, random)
+
+/**
+ * Backward-совместимая реализация для случаев, когда явно
+ * хочется использовать in-memory менеджер.
+ */
+class InMemorySessionManager(
+    store: SessionStore = InMemorySessionStore(),
+    random: SecureRandom = SecureRandom(),
+) : BaseSessionManager(store, random)

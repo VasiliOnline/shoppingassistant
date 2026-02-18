@@ -1,0 +1,99 @@
+package com.example.shoppingassistant.core.data.tracks
+
+import android.content.Context
+import com.example.shoppingassistant.domain.tracks.TrackFilterKey
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import androidx.core.content.edit
+
+const val TRACK_FILTER_HISTORY_DEFAULT_LIMIT: Int = 6
+
+interface TrackFilterOptionsHistoryStore {
+    suspend fun getRecent(
+        key: TrackFilterKey,
+        extraKey: String? = null,
+        limit: Int = TRACK_FILTER_HISTORY_DEFAULT_LIMIT,
+    ): List<String>
+    suspend fun record(key: TrackFilterKey, value: String, extraKey: String? = null)
+    suspend fun recordMany(key: TrackFilterKey, values: List<String>, extraKey: String? = null)
+}
+
+class TrackFilterOptionsHistoryStoreImpl(
+    context: Context,
+    private val clock: () -> Long = { System.currentTimeMillis() },
+) : TrackFilterOptionsHistoryStore {
+
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
+
+    override suspend fun getRecent(key: TrackFilterKey, extraKey: String?, limit: Int): List<String> =
+        withContext(Dispatchers.IO) {
+            val payload = readPayload()
+            val list = payload.recents[keyId(key, extraKey)].orEmpty()
+            list.take(limit)
+        }
+
+    override suspend fun record(key: TrackFilterKey, value: String, extraKey: String?) {
+        val trimmed = value.trim()
+        if (trimmed.isBlank()) return
+        withContext(Dispatchers.IO) {
+            val payload = readPayload()
+            val updated = payload.recents.toMutableMap()
+            val current = updated[keyId(key, extraKey)].orEmpty()
+            updated[keyId(key, extraKey)] = updateList(current, listOf(trimmed))
+            writePayload(payload.copy(recents = updated, lastUpdatedAt = clock()))
+        }
+    }
+
+    override suspend fun recordMany(key: TrackFilterKey, values: List<String>, extraKey: String?) {
+        val cleaned = values.mapNotNull { it.trim().takeIf(String::isNotBlank) }
+        if (cleaned.isEmpty()) return
+        withContext(Dispatchers.IO) {
+            val payload = readPayload()
+            val updated = payload.recents.toMutableMap()
+            val current = updated[keyId(key, extraKey)].orEmpty()
+            updated[keyId(key, extraKey)] = updateList(current, cleaned)
+            writePayload(payload.copy(recents = updated, lastUpdatedAt = clock()))
+        }
+    }
+
+    private fun keyId(key: TrackFilterKey, extraKey: String?): String {
+        val suffix = extraKey?.trim()?.takeIf { it.isNotBlank() }
+        return if (suffix == null) key.name else "${key.name}|$suffix"
+    }
+
+    private fun updateList(current: List<String>, incoming: List<String>): List<String> {
+        val normalized = incoming.map { it.trim() }.filter { it.isNotBlank() }
+        val cleaned = current.filterNot { value ->
+            normalized.any { it.equals(value, ignoreCase = true) }
+        }
+        return (normalized + cleaned).distinct().take(MAX_RECENTS)
+    }
+
+    private fun readPayload(): HistoryPayload {
+        val raw = prefs.getString(KEY_PAYLOAD, null) ?: return HistoryPayload()
+        return runCatching { json.decodeFromString(HistoryPayload.serializer(), raw) }.getOrElse { HistoryPayload() }
+    }
+
+    private fun writePayload(payload: HistoryPayload) {
+        val raw = json.encodeToString(HistoryPayload.serializer(), payload)
+        prefs.edit { putString(KEY_PAYLOAD, raw) }
+    }
+
+    @Serializable90
+    private data class HistoryPayload(
+        val recents: Map<String, List<String>> = emptyMap(),
+        val lastUpdatedAt: Long? = null,
+    )
+
+    private companion object {
+        private const val PREFS_NAME = "track_filter_options.prefs"
+        private const val KEY_PAYLOAD = "track.filter.options.history"
+        private const val MAX_RECENTS = 12
+    }
+}

@@ -1,0 +1,70 @@
+private fun BrandPickerSheet(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    availableBrands: List<String>,
+    selected: Set<String>,
+    onSelect: (String) -> Unit,
+    onReset: () -> Unit,
+    onDone: () -> Unit,
+    onBack: () -> Unit,
+) {
+    val searchText = query.trim()
+    val filtered = if (searchText.isBlank()) {
+        availableBrands
+    } else {
+        availableBrands.filter { it.contains(searchText, ignoreCase = true) }
+    }
+    val popular = availableBrands.take(8)
+    val grouped = filtered.groupBy { it.firstOrNull()?.uppercaseChar() ?: '#' }
+        .toSortedMap()
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        SheetTopBar(title = "Бренд", onBack = onBack)
+        CategorySearchField(
+            value = query,
+            placeholder = "Искать среди брендов",
+            onValueChange = onQueryChange,
+        )
+        if (searchText.isBlank() && popular.isNotEmpty()) {
+            Text(
+                text = "Популярные бренды",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(popular) { brand ->
+                    CategoryChip(
+                        text = brand,
+                        onClick = { onSelect(brand) },
+                        highlighted = brand in selected,
+                    )
+                }
+            }
+        }
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            grouped.forEach { (letter, brands) ->
+                item {
+                    Text(
+                        text = letter.toString(),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
+                items(brands, key = { it }) { brand ->
+                    BrandRow(
+                        brand = brand,
+                        selected = brand in selected,
+                        onClick = { onSelect(brand) },
+                    )
+                }
+            }
+        }

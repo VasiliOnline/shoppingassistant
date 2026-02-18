@@ -1,0 +1,32 @@
+package com.example.shoppingassistant.domain.model
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Нормализованный товар (шаблон), расширенный по сравнению с ProductDto.
+ */
+@Serializable
+data class ProductFull(
+    val id: String,
+    val brand: String?,
+    val model: String?,
+    val title: String,
+    val imageUrls: List<String> = emptyList(),
+    val specs: Map<String, String> = emptyMap(),
+    val description: String? = null,
+    val gtin: String? = null,
+    val mpn: String? = null,
+    val sku: String? = null,
+    val updatedAt: Long? = null,
+    val i18n: List<ProductI18n> = emptyList(),
+)
+
+/**
+ * Локализованные поля товара.
+ */
+@Serializable
+data class ProductI18n(
+    val lang: String,      // "ru","en","es","fr"
+    val title: String,
+    val description: String?,
+)

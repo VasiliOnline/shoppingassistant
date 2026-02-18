@@ -3,19 +3,18 @@ package com.example.shoppingassistant
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.shoppingassistant.feature.chat.ChatScreen
+
 /**
- * MainActivity — точка входа приложения (первый экран Android).
- * Здесь просто вызываем App(), который включает тему и навигацию.
+ * Main entry point of the Android application.
+ * Initializes the Compose content and draws the root of the app.
  */
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { AppRoot() }
+        setContent {
+            // Render the root composable which handles theme and navigation
+            AppRoot()
+        }
     }
 }
-

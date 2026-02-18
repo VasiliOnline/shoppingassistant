@@ -1,0 +1,76 @@
+package com.example.shoppingassistant.core.data.subscriptions.db
+
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import androidx.room.Relation
+
+@Entity(
+    tableName = "subscriptions",
+    indices = [
+        Index("scope"),
+        Index("updatedAtMillis"),
+        Index(value = ["ownerKey", "scope", "input"], unique = true),
+        Index(value = ["ownerKey", "updatedAtMillis"]),
+    ]
+)
+data class SubscriptionEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val ownerKey: String,
+    val scope: String,         // QUERY / OFFER
+    val input: String,         // запрос или url
+    val title: String,
+    val minAlertIntervalMinutes: Int,
+    val isActive: Boolean,
+    val createdAtMillis: Long,
+    val updatedAtMillis: Long
+)
+
+@Entity(
+    tableName = "subscription_conditions",
+    foreignKeys = [
+        ForeignKey(
+            entity = SubscriptionEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["subscriptionId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index("subscriptionId"), Index(value = ["subscriptionId", "type"])]
+)
+data class SubscriptionConditionEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val subscriptionId: Long,
+    val type: String,          // SubscriptionConditionType
+    val numberValue: Double?,  // проценты/шаги
+    val moneyMinor: Long?,     // цена
+    val currency: String?
+)
+
+@Entity(
+    tableName = "subscription_notifications",
+    indices = [
+        Index("subscriptionId"),
+        Index("createdAtMillis"),
+        Index(value = ["ownerKey", "createdAtMillis"]),
+    ]
+)
+data class SubscriptionNotificationEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val ownerKey: String,
+    val subscriptionId: Long?,
+    val text: String,
+    val createdAtMillis: Long,
+    val isRead: Boolean
+)
+
+data class SubscriptionWithConditions(
+    @Embedded val subscription: SubscriptionEntity,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "subscriptionId"
+    )
+    val conditions: List<SubscriptionConditionEntity>
+)

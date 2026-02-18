@@ -1,0 +1,9 @@
+package com.example.shoppingassistant.server.di
+
+import com.example.shoppingassistant.server.vision.StubVisionService
+import com.example.shoppingassistant.server.vision.VisionService
+import org.koin.dsl.module
+
+val backendVisionModule = module {
+    single<VisionService> { StubVisionService() }
+}

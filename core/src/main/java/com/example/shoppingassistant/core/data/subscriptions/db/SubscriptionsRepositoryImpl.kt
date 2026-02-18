@@ -1,0 +1,331 @@
+// Last synced: 2025-12-16 14:42:53
+package com.example.shoppingassistant.core.data.subscriptions.db
+
+import com.example.shoppingassistant.core.config.SubscriptionsConfig
+import com.example.shoppingassistant.domain.auth.AuthRepository
+import com.example.shoppingassistant.domain.subscriptions.AddSubscriptionRequest
+import com.example.shoppingassistant.domain.subscriptions.AddSubscriptionResult
+import com.example.shoppingassistant.domain.subscriptions.Subscription
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionCondition
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionConditionType
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionNotification
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionNotificationsPage
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionScope
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionsRepository
+import com.example.shoppingassistant.domain.subscriptions.SubscriptionsUnauthorizedException
+import com.example.shoppingassistant.domain.subscriptions.UpdateSubscriptionRequest
+import java.net.URI
+import java.security.MessageDigest
+
+class SubscriptionsRepositoryImpl(
+    private val dao: SubscriptionsDao,
+    private val authRepository: AuthRepository,
+) : SubscriptionsRepository {
+
+    override suspend fun listSubscriptions(): List<Subscription> {
+        val ownerKey = requireOwnerKey()
+        return dao.listSubscriptions(ownerKey).map { row ->
+            Subscription(
+                id = row.subscription.id,
+                scope = SubscriptionScope.valueOf(row.subscription.scope),
+                input = row.subscription.input,
+                title = row.subscription.title,
+                conditions = row.conditions.map { c ->
+                    SubscriptionCondition(
+                        type = SubscriptionConditionType.valueOf(c.type),
+                        numberValue = c.numberValue,
+                        moneyMinor = c.moneyMinor,
+                        currency = c.currency
+                    )
+                },
+                minAlertIntervalMinutes = row.subscription.minAlertIntervalMinutes,
+                isActive = row.subscription.isActive,
+                createdAtMillis = row.subscription.createdAtMillis,
+                updatedAtMillis = row.subscription.updatedAtMillis
+            )
+        }
+    }
+
+    override suspend fun listNotifications(): List<SubscriptionNotification> {
+        return listNotificationsPage(limit = SubscriptionsConfig.MAX_NOTIFICATIONS, offset = 0).items
+    }
+
+    override suspend fun listNotificationsPage(limit: Int, offset: Int): SubscriptionNotificationsPage {
+        val ownerKey = requireOwnerKey()
+        val safeLimit = limit.coerceIn(1, SubscriptionsConfig.MAX_NOTIFICATIONS)
+        val safeOffset = offset.coerceAtLeast(0)
+
+        val total = dao.countNotifications(ownerKey)
+        val rows = dao.listNotificationsPage(ownerKey = ownerKey, limit = safeLimit, offset = safeOffset)
+        val items = rows.map {
+            SubscriptionNotification(
+                id = it.id,
+                subscriptionId = it.subscriptionId,
+                text = it.text,
+                createdAtMillis = it.createdAtMillis,
+                isRead = it.isRead
+            )
+        }
+
+        return SubscriptionNotificationsPage(
+            items = items,
+            total = total,
+            offset = safeOffset,
+            limit = safeLimit,
+        )
+    }
+
+
+    override suspend fun addSubscription(request: AddSubscriptionRequest): AddSubscriptionResult {
+        val ownerKey = requireOwnerKey()
+        val raw = request.rawInput.trim()
+        if (raw.isBlank()) return AddSubscriptionResult.InvalidInput("Пустой ввод")
+
+        val isUrl = raw.startsWith("http://") || raw.startsWith("https://")
+        val scopeName = if (isUrl) SubscriptionScope.OFFER.name else SubscriptionScope.QUERY.name
+        val normalized = if (isUrl) {
+            canonicalizeUrl(raw) ?: return AddSubscriptionResult.InvalidInput("Некорректная ссылка")
+        } else {
+            normalizeQuery(raw)
+        }
+
+        // Дедуп до лимита: если уже есть - возвращаем existing id
+        dao.findSubscriptionId(ownerKey, scopeName, normalized.input)?.let { existingId ->
+            return AddSubscriptionResult.AlreadyExists(existingId)
+        }
+
+        val count = dao.countSubscriptions(ownerKey)
+        if (count >= SubscriptionsConfig.MAX_SUBSCRIPTIONS) {
+            return AddSubscriptionResult.LimitReached(SubscriptionsConfig.MAX_SUBSCRIPTIONS)
+        }
+
+        val now = System.currentTimeMillis()
+        val title = if (isUrl) {
+            normalized.host?.let { "Оффер: $it" } ?: "Оффер по ссылке"
+        } else {
+            normalized.input.take(60)
+        }
+
+        // Production: атомарное создание подписки (subscription + conditions + notification)
+        val subId = dao.createSubscription(
+
+            subscription = SubscriptionEntity(
+                ownerKey = ownerKey,
+                scope = scopeName,
+                input = normalized.input,
+                title = title,
+                minAlertIntervalMinutes = SubscriptionsConfig.DEFAULT_MIN_ALERT_INTERVAL_MIN,
+                isActive = true,
+                createdAtMillis = now,
+                updatedAtMillis = now
+            ),
+            conditions = SubscriptionsConfig.DEFAULT_LADDER_STEPS.map { step ->
+                SubscriptionConditionEntity(
+                    subscriptionId = 0,
+                    type = SubscriptionConditionType.LADDER_STEP_PERCENT.name,
+                    numberValue = step,
+                    moneyMinor = null,
+                    currency = null
+                )
+            },
+            notification = SubscriptionNotificationEntity(
+                ownerKey = ownerKey,
+                subscriptionId = null,
+                text = "Отслеживание создано: $title",
+                createdAtMillis = now,
+                isRead = false
+            )
+        )
+        if (subId == -1L) {
+            val existingId = dao.findSubscriptionId(ownerKey, scopeName, normalized.input)
+            if (existingId != null) return AddSubscriptionResult.AlreadyExists(existingId)
+            return AddSubscriptionResult.InvalidInput("Не удалось создать отслеживание")
+        }
+
+        dao.trimNotifications(ownerKey, SubscriptionsConfig.MAX_NOTIFICATIONS)
+
+        return AddSubscriptionResult.Created(subId)
+    }
+
+    override suspend fun updateSubscription(request: UpdateSubscriptionRequest): Boolean {
+        val ownerKey = requireOwnerKey()
+        val now = System.currentTimeMillis()
+        // ВАЖНО: title не портим - сохраняем как есть
+        val existingTitle = dao.getSubscriptionTitle(ownerKey, request.id) ?: return false
+
+        val minInterval = request.minAlertIntervalMinutes.coerceIn(
+            SubscriptionsConfig.MIN_ALERT_INTERVAL_MIN,
+            SubscriptionsConfig.MAX_ALERT_INTERVAL_MIN,
+        )
+        val currency = request.currency?.trim().orEmpty().ifBlank { SubscriptionsConfig.DEFAULT_CURRENCY }
+        val maxPriceMinor = request.maxPriceMinor?.takeIf { it >= 0L }
+        val dropPercent = request.dropPercent?.coerceIn(
+            SubscriptionsConfig.MIN_DROP_PERCENT,
+            SubscriptionsConfig.MAX_DROP_PERCENT,
+        )
+        val ladderSteps = request.ladderSteps
+            .filter { it in SubscriptionsConfig.ALLOWED_LADDER_STEPS }
+            .distinct()
+            .sorted()
+
+        val items = mutableListOf<SubscriptionConditionEntity>()
+
+        maxPriceMinor?.let { minor ->
+            items += SubscriptionConditionEntity(
+                subscriptionId = 0,
+                type = SubscriptionConditionType.MAX_PRICE.name,
+                numberValue = null,
+                moneyMinor = minor,
+                currency = currency
+            )
+        }
+        dropPercent?.let { p ->
+            items += SubscriptionConditionEntity(
+                subscriptionId = 0,
+                type = SubscriptionConditionType.DROP_PERCENT.name,
+                numberValue = p,
+                moneyMinor = null,
+                currency = null
+            )
+        }
+        if (request.analogAppeared) {
+            items += SubscriptionConditionEntity(
+                subscriptionId = 0,
+                type = SubscriptionConditionType.ANALOG_APPEARED.name,
+                numberValue = null,
+                moneyMinor = null,
+                currency = null
+            )
+        }
+        ladderSteps.forEach { step ->
+            items += SubscriptionConditionEntity(
+                subscriptionId = 0,
+                type = SubscriptionConditionType.LADDER_STEP_PERCENT.name,
+                numberValue = step,
+                moneyMinor = null,
+                currency = null
+            )
+        }
+
+        // Production: атомарное обновление (base + replace conditions + notification)
+        val ok = dao.updateSubscriptionWithConditions(
+            ownerKey = ownerKey,
+            id = request.id,
+            title = existingTitle,
+            minAlertIntervalMinutes = minInterval,
+            isActive = request.isActive,
+            updatedAtMillis = now,
+            conditions = items,
+            notification = SubscriptionNotificationEntity(
+                ownerKey = ownerKey,
+                subscriptionId = request.id,
+                text = "Отслеживание обновлено: $existingTitle",
+                createdAtMillis = now,
+                isRead = false
+            )
+        )
+        if (ok) {
+            dao.trimNotifications(ownerKey, SubscriptionsConfig.MAX_NOTIFICATIONS)
+        }
+        return ok
+
+    }
+
+    override suspend fun deleteSubscription(id: Long) {
+        val ownerKey = requireOwnerKey()
+        val now = System.currentTimeMillis()
+        val title = dao.getSubscriptionTitle(ownerKey, id)
+
+        // Production: атомарное удаление + уведомление
+        dao.deleteSubscriptionWithNotification(
+            ownerKey = ownerKey,
+            id = id,
+            notification = SubscriptionNotificationEntity(
+                ownerKey = ownerKey,
+                subscriptionId = null,
+                text = title?.let { "Отслеживание удалено: $it" } ?: "Отслеживание удалено",
+                createdAtMillis = now,
+                isRead = false
+            )
+        )
+        dao.trimNotifications(ownerKey, SubscriptionsConfig.MAX_NOTIFICATIONS)
+
+    }
+
+    override suspend fun markNotificationRead(id: Long) {
+        val ownerKey = requireOwnerKey()
+        dao.markRead(ownerKey, id)
+    }
+
+    override suspend fun markAllNotificationsRead() {
+        val ownerKey = requireOwnerKey()
+        dao.markAllRead(ownerKey)
+    }
+
+    private data class NormalizedInput(
+        val input: String,
+        val host: String? = null
+    )
+
+    private fun normalizeQuery(raw: String): NormalizedInput =
+        NormalizedInput(
+            input = raw.replace("\\s+".toRegex(), " ").trim()
+        )
+
+    private fun canonicalizeUrl(raw: String): NormalizedInput? {
+        return runCatching {
+            val uri = URI(raw.trim())
+            val scheme = (uri.scheme ?: return null).lowercase()
+            val host = (uri.host ?: return null).lowercase()
+
+            val path = (uri.rawPath ?: "/").let { p ->
+                val trimmed = p.trim()
+                if (trimmed.isBlank()) "/" else trimmed.trimEnd('/').ifBlank { "/" }
+            }
+            val filteredQuery = uri.rawQuery
+                ?.split("&")
+                ?.mapNotNull { part ->
+                    if (part.isBlank()) return@mapNotNull null
+                    val key = part.substringBefore("=").lowercase()
+                    val drop = key.startsWith("utm_") || key in setOf("gclid", "fbclid", "yclid", "igshid", "ref")
+                    if (drop) null else part
+                }
+                ?.joinToString("&")
+                ?.takeIf { it.isNotBlank() }
+            val portPart = when (uri.port) {
+                -1, 80, 443 -> ""
+                else -> ":${uri.port}"
+            }
+            val canonical = buildString {
+                append(scheme)
+                append("://")
+                append(host)
+                append(portPart)
+                append(path)
+                if (filteredQuery != null) {
+                    append("?")
+                    append(filteredQuery)
+                }
+            }
+
+            NormalizedInput(input = canonical, host = host)
+        }.getOrNull()
+    }
+
+    private suspend fun requireOwnerKey(): String {
+        val token = authRepository.currentToken() ?: throw SubscriptionsUnauthorizedException()
+        return sha256Hex(token)
+    }
+
+    private fun sha256Hex(text: String): String {
+        val digest = MessageDigest.getInstance("SHA-256").digest(text.toByteArray())
+        val hexChars = CharArray(digest.size * 2)
+        var i = 0
+        for (b in digest) {
+            val v = b.toInt() and 0xFF
+            hexChars[i++] = "0123456789abcdef"[v ushr 4]
+            hexChars[i++] = "0123456789abcdef"[v and 0x0F]
+        }
+        return String(hexChars)
+    }
+}

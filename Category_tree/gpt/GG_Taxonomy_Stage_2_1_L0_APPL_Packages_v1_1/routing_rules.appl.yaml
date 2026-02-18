@@ -1,0 +1,94 @@
+package: APPL
+version: 1.1
+scoring:
+  phrase_exact: 6
+  token_match: 2
+  edit_distance_close: 1
+  negative_token: -8
+  specificity_bonus_min: 1
+  specificity_bonus_max: 3
+  min_margin: 2
+disambiguation:
+  -
+    if_all_any:
+      -
+        - кондиционер
+      -
+        - волос
+        - шампун
+        - бальзам
+        - маска
+    route_to:
+      type: CANONICAL
+      id: BEAUTY.HAIRCARE
+    reason: "hair conditioner"
+  -
+    if_all_any:
+      -
+        - кондиционер
+      -
+        - белья
+        - ополаскиватель
+        - lenor
+        - vernel
+    route_to:
+      type: CANONICAL
+      id: HOME.CLEANING
+    reason: "fabric softener"
+  -
+    if_all_any:
+      -
+        - миксер
+        - микшер
+      -
+        - пульт
+        - dj
+        - микшерный
+    route_to:
+      type: CANONICAL
+      id: TECH.AUDIO
+    reason: "audio mixer"
+  -
+    if_all_any:
+      -
+        - сушилка
+      -
+        - напольная
+        - верёвка
+        - "для обуви"
+        - обуви
+    route_to:
+      type: CANONICAL
+      id: HOME.STORAGE
+    reason: "drying rack/shoe dryer"
+  -
+    if_all_any:
+      -
+        - плита
+      -
+        - osb
+        - дсп
+        - керамогранит
+        - плитка
+        - тротуарная
+    route_to:
+      type: CANONICAL
+      id: HOME.REPAIR_TOOLS
+    reason: "construction slab/tile"
+tie_breakers:
+  -
+    prefer_if_contains:
+      token: робот
+      node_id: bn_appl_homecare_robot_vacuums
+    reason: "robot vacuum"
+  -
+    prefer_if_contains:
+      token: мобильный
+      node_id: bn_appl_climate_portable_ac
+    reason: "portable AC"
+fallbacks:
+  if_low_confidence:
+    strategy: CANONICAL_L1
+    note: "если margin<min_margin — уходим на канонику L1"
+  if_no_match:
+    strategy: CANONICAL_L1

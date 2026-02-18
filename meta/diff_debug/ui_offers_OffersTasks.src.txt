@@ -1,0 +1,18 @@
+package com.example.shoppingassistant.feature.pages.main.ui.offers
+
+import androidx.compose.runtime.Composable
+import com.example.shoppingassistant.core.data.ExplainedItem
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+
+/**
+ * Контракты UI-тасок для нижнего листа офферов.
+ */
+data class OffersSheetProps(
+    val visible: Boolean,
+    val query: NormalizedQuery?,
+    val prefetchedItems: List<ExplainedItem> = emptyList(),
+    val onDismiss: () -> Unit,
+)
+
+//@Composable
+//fun OffersSheetTask(props: OffersSheetProps)

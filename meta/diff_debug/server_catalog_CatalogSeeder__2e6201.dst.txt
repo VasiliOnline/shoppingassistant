@@ -1,0 +1,63 @@
+package com.example.shoppingassistant.server.catalog
+
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertIgnore
+import org.jetbrains.exposed.sql.selectAll
+
+/**
+ * Инициализация справочников категорий/атрибутов из domain-сидов.
+ */
+object CatalogSeeder {
+    fun seedIfEmpty() {
+        if (CategoriesTable.selectAll().limit(1).empty()) {
+            seedProfiles(CatalogSeed.profiles)
+        }
+    }
+
+    private fun seedProfiles(profiles: List<CategoryProfile>) {
+        profiles.forEach { profile ->
+            CategoriesTable.insert { stmt ->
+                stmt[code] = profile.category.code
+                stmt[segment] = profile.category.segment.name
+                stmt[title] = profile.category.title
+                stmt[parentCode] = profile.category.parentCode
+                stmt[description] = profile.category.description
+            }
+
+            profile.attributes.forEach { def ->
+                AttributeDefsTable.insertIgnore { stmt ->
+                    stmt[code] = def.code
+                    stmt[title] = def.title
+                    stmt[dataType] = def.dataType.name
+                    stmt[requiredForSearch] = def.requiredForSearch
+                    stmt[requiredForOffer] = def.requiredForOffer
+                    stmt[requiredForExpress] = def.requiredForExpress
+                    stmt[facetEnabled] = def.facetEnabled
+                    stmt[multiValued] = def.multiValued
+                    stmt[valueDictCode] = def.valueDictCode
+                }
+            }
+
+            CategoryAttributesTable.batchInsert(profile.categoryAttributes) { attr ->
+                this[CategoryAttributesTable.categoryCode] = attr.categoryCode
+                this[CategoryAttributesTable.attributeCode] = attr.attributeCode
+                this[CategoryAttributesTable.uiOrder] = attr.uiOrder
+                this[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
+            }
+
+            AttributeValueDictTable.batchInsert(
+                profile.valueDictionaries.flatMap { dict ->
+                    dict.entries.map { entry -> dict.attributeCode to entry }
+                },
+            ) { (attrCode, entry) ->
+                this[AttributeValueDictTable.attributeCode] = attrCode
+                this[AttributeValueDictTable.canonicalCode] = entry.canonicalCode
+                this[AttributeValueDictTable.canonicalValue] = entry.canonicalValue
+                this[AttributeValueDictTable.synonyms] = entry.synonyms
+            }
+        }
+    }
+}

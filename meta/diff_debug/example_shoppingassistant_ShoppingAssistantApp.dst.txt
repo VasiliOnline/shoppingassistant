@@ -1,0 +1,57 @@
+package com.example.shoppingassistant
+
+import android.app.Application
+import com.example.shoppingassistant.core.data.tracks.TemplateSubscriptionsToTracksMigration
+import com.example.shoppingassistant.core.di.coreModule
+import com.example.shoppingassistant.core.di.domainModule
+import com.example.shoppingassistant.core.di.ingestModule
+import com.example.shoppingassistant.core.di.rankModule
+import com.example.shoppingassistant.di.appModule
+import com.example.shoppingassistant.core.push.TrackingPushScheduler
+import com.example.shoppingassistant.feature.pages.di.debugAuthModule
+import com.example.shoppingassistant.feature.pages.di.mainPageModule
+import com.example.shoppingassistant.feature.pages.di.profileModule
+import com.example.shoppingassistant.feature.pages.di.trackedItemsModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
+
+/**
+ * Application класс, объявленный в манифесте.
+ * Хранит глобальный контекст; остальная инициализация (Koin и т.п.)
+ * остаётся в MainActivity, как настроено сейчас.
+ */
+class ShoppingAssistantApp : Application() {
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    override fun onCreate() {
+        super.onCreate()
+
+        if (GlobalContext.getOrNull() == null) {
+            startKoin {
+                androidContext(this@ShoppingAssistantApp)
+                modules(
+                    coreModule,
+                    ingestModule,
+                    domainModule,
+                    rankModule,
+                    appModule,
+                    debugAuthModule,
+                    mainPageModule,
+                    profileModule,
+                    trackedItemsModule,
+                )
+            }
+        }
+
+        val koin = runCatching { GlobalContext.get() }.getOrNull() ?: return
+        appScope.launch {
+            runCatching { koin.get<TemplateSubscriptionsToTracksMigration>().migrateIfNeeded() }
+        }
+        runCatching { koin.get<TrackingPushScheduler>().ensureScheduled() }
+    }
+}

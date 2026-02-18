@@ -1,0 +1,238 @@
+package com.example.shoppingassistant.domain.template.presets
+
+import com.example.shoppingassistant.domain.template.TemplateAnchorType
+import com.example.shoppingassistant.domain.template.TemplateSnapshotAttr
+import com.example.shoppingassistant.domain.template.TemplateSnapshotData
+import com.example.shoppingassistant.domain.template.TemplateSnapshotMode
+
+object TemplatePresetsSeed {
+    val popular: List<TemplatePresetSpec> = buildPopularPresets()
+}
+
+private fun buildPopularPresets(): List<TemplatePresetSpec> {
+    val presets = mutableListOf<TemplatePresetSpec>()
+    presets += phonePresets()
+    presets += laptopPresets()
+    presets += strollerPresets()
+    presets += coffeeMachinePresets()
+    presets += sneakersPresets()
+    return presets
+}
+
+private data class ModelSeed(val brand: String, val model: String, val baseRank: Int)
+
+private fun phonePresets(): List<TemplatePresetSpec> {
+    val memories = listOf("128 GB", "256 GB", "512 GB")
+    val colors = listOf("Black", "Blue", "White")
+    val models = listOf(
+        ModelSeed("Apple", "iPhone 16 Pro", 1000),
+        ModelSeed("Apple", "iPhone 16", 990),
+        ModelSeed("Apple", "iPhone 15 Pro", 980),
+        ModelSeed("Apple", "iPhone 15", 970),
+        ModelSeed("Apple", "iPhone 14 Pro", 960),
+        ModelSeed("Samsung", "Galaxy S24 Ultra", 950),
+        ModelSeed("Samsung", "Galaxy S24", 940),
+        ModelSeed("Samsung", "Galaxy S23 Ultra", 930),
+        ModelSeed("Samsung", "Galaxy A55", 920),
+        ModelSeed("Google", "Pixel 8 Pro", 910),
+        ModelSeed("Google", "Pixel 8", 900),
+        ModelSeed("Xiaomi", "14 Pro", 890),
+        ModelSeed("Xiaomi", "14", 880),
+        ModelSeed("Xiaomi", "13 Pro", 870),
+        ModelSeed("OnePlus", "12", 860),
+        ModelSeed("OnePlus", "11", 850),
+        ModelSeed("Huawei", "P60 Pro", 840),
+        ModelSeed("Huawei", "Mate 60 Pro", 830),
+        ModelSeed("Oppo", "Find X7", 820),
+        ModelSeed("Vivo", "X100 Pro", 810),
+        ModelSeed("Realme", "GT 5", 800),
+        ModelSeed("Honor", "Magic6 Pro", 790),
+        ModelSeed("Motorola", "Edge 40", 780),
+        ModelSeed("Sony", "Xperia 1 VI", 770),
+        ModelSeed("Asus", "ROG Phone 8", 760),
+    )
+
+    val presets = mutableListOf<TemplatePresetSpec>()
+    models.forEach { m ->
+        memories.forEachIndexed { memIndex, memory ->
+            colors.forEachIndexed { colorIndex, color ->
+                val rank = m.baseRank - memIndex * 3 - colorIndex
+                presets += presetSpec(
+                    source = TemplatePresetSource.POPULAR,
+                    categoryCode = "TECH.PHONES",
+                    anchorType = TemplateAnchorType.PRODUCT,
+                    anchorId = "${m.brand} ${m.model}",
+                    title = "${m.brand} ${m.model}",
+                    rank = rank,
+                    attrs = mapOf(
+                        "brand" to m.brand,
+                        "model" to m.model,
+                        "memory" to memory,
+                        "color" to color,
+                        "condition" to "new",
+                    ),
+                )
+            }
+        }
+    }
+    return presets
+}
+
+private fun laptopPresets(): List<TemplatePresetSpec> {
+    val models = listOf(
+        ModelSeed("Apple", "MacBook Air M3", 700),
+        ModelSeed("Apple", "MacBook Pro 14", 690),
+        ModelSeed("Lenovo", "ThinkPad X1 Carbon", 680),
+        ModelSeed("Dell", "XPS 13", 670),
+        ModelSeed("ASUS", "ZenBook 14", 660),
+    )
+    val rams = listOf("16", "32")
+    val storages = listOf("512", "1024")
+
+    val presets = mutableListOf<TemplatePresetSpec>()
+    models.forEach { m ->
+        rams.forEachIndexed { rIndex, ram ->
+            storages.forEachIndexed { sIndex, storage ->
+                val rank = m.baseRank - rIndex * 4 - sIndex
+                presets += presetSpec(
+                    source = TemplatePresetSource.POPULAR,
+                    categoryCode = "TECH.LAPTOPS",
+                    anchorType = TemplateAnchorType.PRODUCT,
+                    anchorId = "${m.brand} ${m.model}",
+                    title = "${m.brand} ${m.model}",
+                    rank = rank,
+                    attrs = mapOf(
+                        "brand" to m.brand,
+                        "model" to m.model,
+                        "ram_gb" to ram,
+                        "storage_gb" to storage,
+                        "storage_type" to "SSD",
+                        "os_family" to "Windows",
+                        "condition" to "new",
+                    ),
+                )
+            }
+        }
+    }
+    return presets
+}
+
+private fun strollerPresets(): List<TemplatePresetSpec> {
+    val models = listOf(
+        ModelSeed("Cybex", "Priam", 620),
+        ModelSeed("Bugaboo", "Fox 5", 610),
+        ModelSeed("Chicco", "Bravo", 600),
+        ModelSeed("Joie", "Versatrax", 590),
+    )
+    val types = listOf("Travel", "Transformer", "Jogger", "Carriage")
+
+    val presets = mutableListOf<TemplatePresetSpec>()
+    models.forEachIndexed { index, m ->
+        val type = types[index % types.size]
+        presets += presetSpec(
+            source = TemplatePresetSource.POPULAR,
+            categoryCode = "KIDS.STROLLERS_CARSEATS",
+            anchorType = TemplateAnchorType.PRODUCT,
+            anchorId = "${m.brand} ${m.model}",
+            title = "${m.brand} ${m.model}",
+            rank = m.baseRank,
+            attrs = mapOf(
+                "brand" to m.brand,
+                "model" to m.model,
+                "stroller_type" to type,
+                "condition" to "new",
+                "color" to "Black",
+            ),
+        )
+    }
+    return presets
+}
+
+private fun coffeeMachinePresets(): List<TemplatePresetSpec> {
+    val models = listOf(
+        ModelSeed("DeLonghi", "Magnifica", 560),
+        ModelSeed("Philips", "Series 3200", 550),
+        ModelSeed("Nespresso", "Vertuo Next", 540),
+        ModelSeed("Krups", "Evidence", 530),
+    )
+    val types = listOf("Espresso", "Capsule", "Drip", "Geyser")
+
+    val presets = mutableListOf<TemplatePresetSpec>()
+    models.forEachIndexed { index, m ->
+        val type = types[index % types.size]
+        presets += presetSpec(
+            source = TemplatePresetSource.POPULAR,
+            categoryCode = "APPL.SMALL",
+            anchorType = TemplateAnchorType.PRODUCT,
+            anchorId = "${m.brand} ${m.model}",
+            title = "${m.brand} ${m.model}",
+            rank = m.baseRank,
+            attrs = mapOf(
+                "brand" to m.brand,
+                "model" to m.model,
+                "coffee_type" to type,
+                "used_for" to "Home",
+                "condition" to "new",
+                "color" to "Black",
+            ),
+        )
+    }
+    return presets
+}
+
+private fun sneakersPresets(): List<TemplatePresetSpec> {
+    val models = listOf(
+        ModelSeed("Nike", "Air Force 1", 520),
+        ModelSeed("Nike", "Air Max 90", 510),
+        ModelSeed("Adidas", "Ultraboost", 500),
+        ModelSeed("Adidas", "Superstar", 490),
+        ModelSeed("New Balance", "574", 480),
+        ModelSeed("Puma", "Suede Classic", 470),
+    )
+
+    val presets = mutableListOf<TemplatePresetSpec>()
+    models.forEach { m ->
+        presets += presetSpec(
+            source = TemplatePresetSource.POPULAR,
+            categoryCode = "FASH.SHOES",
+            anchorType = TemplateAnchorType.PRODUCT,
+            anchorId = "${m.brand} ${m.model}",
+            title = "${m.brand} ${m.model}",
+            rank = m.baseRank,
+            attrs = mapOf(
+                "brand" to m.brand,
+                "model_line" to m.model,
+                "gender" to "Unisex",
+                "condition" to "new",
+                "size_eu" to "42",
+            ),
+        )
+    }
+    return presets
+}
+
+private fun presetSpec(
+    source: TemplatePresetSource,
+    categoryCode: String,
+    anchorType: TemplateAnchorType,
+    anchorId: String,
+    title: String,
+    attrs: Map<String, String>,
+    rank: Int,
+): TemplatePresetSpec {
+    val attrList = attrs.map { (key, value) ->
+        TemplateSnapshotAttr(key = key, value = value)
+    }
+    return TemplatePresetSpec(
+        source = source,
+        title = title,
+        rank = rank,
+        snapshot = TemplateSnapshotData(
+            anchorType = anchorType,
+            anchorId = anchorId,
+            categoryCode = categoryCode,
+            attrs = attrList,
+            mode = TemplateSnapshotMode.SEARCH,
+        ),
+    )
+}

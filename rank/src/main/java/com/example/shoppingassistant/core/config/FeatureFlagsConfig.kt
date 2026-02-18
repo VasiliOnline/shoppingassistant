@@ -1,0 +1,51 @@
+package com.example.shoppingassistant.core.config
+
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.nio.charset.Charset
+import java.nio.file.Files
+import java.nio.file.Paths
+
+/**
+ * Фич-флаги для ранжирования: trust/stock.
+ */
+object FeatureFlagsConfig {
+
+    private const val CLASSPATH = "/assets/weights.json"
+    private const val RELATIVE =
+        "core/src/main/java/com/example/shoppingassistant/core/main/assets/weights.json"
+
+    data class FeatureFlags(
+        val useSellerTrustScore: Boolean,
+        val useStockAvailability: Boolean,
+    )
+
+    fun load(): FeatureFlags {
+        val text = loadFromClasspath() ?: loadFromFile(RELATIVE) ?: return FeatureFlags(false, false)
+        return parse(text)
+    }
+
+    private fun loadFromClasspath(): String? = runCatching {
+        val s = FeatureFlagsConfig::class.java.getResourceAsStream(CLASSPATH) ?: return null
+        BufferedReader(InputStreamReader(s, Charset.forName("UTF-8"))).use { it.readText() }
+    }.getOrNull()
+
+    private fun loadFromFile(path: String): String? = runCatching {
+        val p = Paths.get(path); if (!Files.exists(p)) return null
+        Files.newBufferedReader(p, Charset.forName("UTF-8")).use { it.readText() }
+    }.getOrNull()
+
+    private fun parse(json: String): FeatureFlags {
+        fun bool(key: String, def: Boolean): Boolean {
+            val rx = Regex(""""$key"\s*:\s*(true|false)""", RegexOption.IGNORE_CASE)
+            return when (rx.find(json)?.groupValues?.getOrNull(1)?.lowercase()) {
+                "true" -> true
+                "false" -> false
+                else -> def
+            }
+        }
+        val trust = bool("useSellerTrustScore", false)
+        val stock = bool("useStockAvailability", false)
+        return FeatureFlags(trust, stock)
+    }
+}

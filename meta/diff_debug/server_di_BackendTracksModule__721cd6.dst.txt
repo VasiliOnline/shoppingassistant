@@ -1,0 +1,12 @@
+package com.example.shoppingassistant.server.di
+
+import com.example.shoppingassistant.server.tracks.TrackEventsRepository
+import com.example.shoppingassistant.server.tracks.TrackEventsRepositoryImpl
+import com.example.shoppingassistant.server.tracks.TracksRepository
+import com.example.shoppingassistant.server.tracks.TracksRepositoryImpl
+import org.koin.dsl.module
+
+val backendTracksModule = module {
+    single<TrackEventsRepository> { TrackEventsRepositoryImpl() }
+    single<TracksRepository> { TracksRepositoryImpl(eventsRepository = get()) }
+}

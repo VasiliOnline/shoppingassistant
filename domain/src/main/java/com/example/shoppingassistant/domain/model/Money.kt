@@ -1,0 +1,9 @@
+package com.example.shoppingassistant.domain.model
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+@JvmInline
+value class Money(val minor: Long) { // cents/копейки
+    fun toMajor(): Double = minor / 100.0
+}

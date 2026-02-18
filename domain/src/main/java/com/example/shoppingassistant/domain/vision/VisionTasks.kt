@@ -1,0 +1,152 @@
+// Last synced: 2025-12-21 14:31:42
+package com.example.shoppingassistant.domain.vision
+
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+import kotlinx.serialization.Serializable
+
+/**
+ * Контракты vision-нормализации (камера → бренд/модель/атрибуты).
+ */
+interface VisionRepository {
+    /**
+        * Возвращает нормализованный запрос по base64 фото или null, если распознать не удалось.
+        */
+    suspend fun normalizeImage(base64: String): NormalizedQuery?
+
+    /**
+     * Нормализация набора фото с ролями (multi-photo).
+     */
+    suspend fun normalizePhotos(request: VisionNormalizeRequest): VisionNormalizeResult?
+}
+
+@Serializable
+enum class VisionPhotoRole {
+    FRONT,
+    BACK,
+    LEFT,
+    RIGHT,
+    TOP,
+    BOTTOM,
+    TECH_1,
+    TECH_2,
+}
+
+@Serializable
+data class VisionPhotoInput(
+    val role: VisionPhotoRole,
+    val base64: String,
+)
+
+@Serializable
+data class VisionCategoryCandidate(
+    val code: String,
+    val title: String? = null,
+    val score: Float? = null,
+)
+
+@Serializable
+enum class VisionSource {
+    TECH_OCR,
+    VISUAL,
+}
+
+@Serializable
+enum class VisionNextAction {
+    ADD_TECH_PHOTO,
+    ADD_BACK_PHOTO,
+    RETAKE_CLEAR_TEXT,
+    RETAKE_PHOTO,
+}
+
+@Serializable
+data class VisionNormalizeRequest(
+    val photos: List<VisionPhotoInput>,
+    val userKey: String? = null,
+    val locale: String? = null,
+    val categoryHint: String? = null,
+    val hints: Map<String, String> = emptyMap(),
+    val parseFrontBackOnly: Boolean = false,
+    val usageConsumed: Boolean = false,
+)
+
+@Serializable
+data class VisionNormalizeResult(
+    val normalizedQuery: NormalizedQuery? = null,
+    val categoryCode: String? = null,
+    val categoryCandidates: List<VisionCategoryCandidate> = emptyList(),
+    val title: String? = null,
+    val missingRequiredKeys: List<String> = emptyList(),
+    val confidence: Float? = null,
+    val usedSources: Set<VisionSource> = emptySet(),
+    val warnings: List<String> = emptyList(),
+    val errors: List<String> = emptyList(),
+    val nextAction: VisionNextAction? = null,
+)
+
+@Serializable
+data class VisionUsage(
+    val remainingToday: Int,
+    val remainingTotal: Int,
+    val resetAtMillis: Long? = null,
+    val updatedAtMillis: Long = System.currentTimeMillis(),
+)
+
+@Serializable
+enum class VisionUsageStatus {
+    OK,
+    LIMIT_EXCEEDED,
+    ERROR,
+}
+
+@Serializable
+enum class VisionUsageMode {
+    TECH_ONLY,
+    VISUAL,
+}
+
+@Serializable
+data class VisionUsageResult(
+    val status: VisionUsageStatus,
+    val usage: VisionUsage? = null,
+    val message: String? = null,
+)
+
+@Serializable
+data class VisionConsumeRequest(
+    val userKey: String? = null,
+    val units: Int,
+    val mode: VisionUsageMode = VisionUsageMode.VISUAL,
+)
+
+interface VisionUsageRepository {
+    suspend fun getUsage(userKey: String?): VisionUsageResult
+    suspend fun consume(request: VisionConsumeRequest): VisionUsageResult
+}
+
+class NormalizeImageUseCase(
+    private val repository: VisionRepository,
+) {
+    suspend operator fun invoke(imageBase64: String): NormalizedQuery? =
+        repository.normalizeImage(imageBase64)
+}
+
+class NormalizePhotosUseCase(
+    private val repository: VisionRepository,
+) {
+    suspend operator fun invoke(request: VisionNormalizeRequest): VisionNormalizeResult? =
+        repository.normalizePhotos(request)
+}
+
+class GetVisionUsageUseCase(
+    private val repository: VisionUsageRepository,
+) {
+    suspend operator fun invoke(userKey: String?): VisionUsageResult =
+        repository.getUsage(userKey)
+}
+
+class ConsumeVisionUsageUseCase(
+    private val repository: VisionUsageRepository,
+) {
+    suspend operator fun invoke(request: VisionConsumeRequest): VisionUsageResult =
+        repository.consume(request)
+}

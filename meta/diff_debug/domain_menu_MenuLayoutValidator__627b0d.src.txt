@@ -1,0 +1,82 @@
+package com.example.shoppingassistant.domain.menu
+
+enum class MenuLayoutIssueType {
+    SIZE_MISMATCH,
+    DUPLICATE,
+    PINNED_MISSING,
+    ROLE_MISMATCH,
+    BELOW_MINIMUM,
+}
+
+data class MenuLayoutIssue(
+    val type: MenuLayoutIssueType,
+    val actionId: MenuActionId? = null,
+    val edge: MenuEdge? = null,
+)
+
+object MenuLayoutValidator {
+    private val bottomRoles = setOf(
+        MenuActionId.DASHBOARD,
+        MenuActionId.SEARCH,
+        MenuActionId.SUBSCRIPTIONS,
+        MenuActionId.PROFILE,
+    )
+    private val rightRoles = setOf(
+        MenuActionId.POST,
+        MenuActionId.MESSAGES,
+        MenuActionId.NOTIFICATIONS,
+    )
+    private const val MIN_BOTTOM = 2
+    private const val MIN_RIGHT = 2
+
+    fun validate(layout: MenuLayout, config: MenuLayoutConfig): List<MenuLayoutIssue> {
+        val issues = mutableListOf<MenuLayoutIssue>()
+        if (layout.right.size != config.rightSlots) {
+            issues += MenuLayoutIssue(MenuLayoutIssueType.SIZE_MISMATCH, edge = MenuEdge.RIGHT)
+        }
+        if (layout.bottom.size != config.bottomSlots) {
+            issues += MenuLayoutIssue(MenuLayoutIssueType.SIZE_MISMATCH, edge = MenuEdge.BOTTOM)
+        }
+        val seen = HashSet<MenuActionId>()
+        layout.right.forEach { action ->
+            if (action == null) return@forEach
+            if (!rightRoles.contains(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.ROLE_MISMATCH, actionId = action, edge = MenuEdge.RIGHT)
+            }
+            if (!seen.add(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.DUPLICATE, actionId = action)
+            }
+        }
+        layout.bottom.forEach { action ->
+            if (action == null) return@forEach
+            if (!bottomRoles.contains(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.ROLE_MISMATCH, actionId = action, edge = MenuEdge.BOTTOM)
+            }
+            if (!seen.add(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.DUPLICATE, actionId = action)
+            }
+        }
+        layout.pinned.forEach { action ->
+            if (!seen.contains(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.PINNED_MISSING, actionId = action)
+            }
+        }
+
+        val minRight = minSlots(config.rightSlots, MIN_RIGHT)
+        val minBottom = minSlots(config.bottomSlots, MIN_BOTTOM)
+        val rightCount = layout.right.count { it != null }
+        val bottomCount = layout.bottom.count { it != null }
+        if (rightCount < minRight) {
+            issues += MenuLayoutIssue(MenuLayoutIssueType.BELOW_MINIMUM, edge = MenuEdge.RIGHT)
+        }
+        if (bottomCount < minBottom) {
+            issues += MenuLayoutIssue(MenuLayoutIssueType.BELOW_MINIMUM, edge = MenuEdge.BOTTOM)
+        }
+        return issues
+    }
+
+    private fun minSlots(slots: Int, minRequired: Int): Int {
+        if (slots <= 0) return 0
+        return if (slots < minRequired) slots else minRequired
+    }
+}

@@ -1,0 +1,132 @@
+package com.example.shoppingassistant.feature.pages.subscriptions
+
+import com.example.shoppingassistant.core.config.SubscriptionsConfig
+import com.example.shoppingassistant.core.push.SubscriptionsInboxNotification
+import com.example.shoppingassistant.core.push.SubscriptionsNotificationsSettings
+import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.template.TemplateSnapshot
+import com.example.shoppingassistant.domain.template.TemplateSubscription
+import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestItem
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
+import com.example.shoppingassistant.feature.pages.model.FilterStage
+import com.example.shoppingassistant.feature.pages.model.Product
+
+enum class SubscriptionsTab { NOTIFICATIONS, SUBSCRIPTIONS }
+enum class NotificationsFilter { ALL, UNREAD }
+enum class SubscriptionsGroupBy { NONE, CATEGORY, BRAND }
+enum class SubscriptionsMode { LIST, CREATE }
+
+enum class CreateSection { CATEGORY, CONDITIONS }
+
+enum class CreateFilterTarget { MORE, GENERAL }
+
+sealed interface CreateSheet {
+    data object Category : CreateSheet
+    data class ValuePicker(val key: String, val title: String) : CreateSheet
+    data class Filter(val target: CreateFilterTarget) : CreateSheet
+    data object Conditions : CreateSheet
+    data object Settings : CreateSheet
+}
+
+sealed interface SubscriptionsAuthState {
+    data object Loading : SubscriptionsAuthState
+    data object Authorized : SubscriptionsAuthState
+    data object Unauthorized : SubscriptionsAuthState
+    data class Error(val message: String) : SubscriptionsAuthState
+}
+
+sealed interface ListLoadState<out T> {
+    data object Loading : ListLoadState<Nothing>
+    data class Content<T>(val items: List<T>) : ListLoadState<T>
+    data object Empty : ListLoadState<Nothing>
+    data class Error(val message: String) : ListLoadState<Nothing>
+    data object Unauthorized : ListLoadState<Nothing>
+}
+
+data class EditDraft(
+    val templateId: String,
+    val snapshot: TemplateSnapshot,
+    val createdAtMillis: Long,
+    val maxPriceMajor: String,
+    val currency: String,
+    val dropPercent: String,
+    val newOfferAppeared: Boolean,
+    val maxPriceEnabled: Boolean,
+    val dropPercentEnabled: Boolean,
+    val minIntervalMinutes: String,
+    val isActive: Boolean,
+)
+
+data class CreateConditions(
+    val newOfferAppeared: Boolean = true,
+    val maxPriceEnabled: Boolean = false,
+    val maxPriceMajor: String = "",
+    val currency: String = SubscriptionsConfig.DEFAULT_CURRENCY,
+    val dropPercentEnabled: Boolean = false,
+    val dropPercent: String = "",
+)
+
+data class CreateFilterSheetState(
+    val stage: FilterStage = FilterStage.ATTRS,
+    val currentAttrKey: String? = null,
+)
+
+data class SubscriptionsCreateDraft(
+    val categoryCode: String? = null,
+    val categoryPath: List<String> = emptyList(),
+    val categoryBreadcrumb: String? = null,
+    val isLeafCategory: Boolean = false,
+    val searchQuery: String = "",
+    val product: Product? = null,
+    val brand: String? = null,
+    val model: String? = null,
+    val moreAttributes: Map<String, String> = emptyMap(),
+    val generalAttributes: Map<String, String> = emptyMap(),
+    val conditions: CreateConditions = CreateConditions(),
+    val minIntervalMinutes: Int = SubscriptionsConfig.DEFAULT_MIN_ALERT_INTERVAL_MIN,
+    val isActive: Boolean = true,
+)
+
+data class SubscriptionsCreateState(
+    val draft: SubscriptionsCreateDraft = SubscriptionsCreateDraft(),
+    val categories: List<Category> = emptyList(),
+    val categoriesLoading: Boolean = false,
+    val categoryQuery: String = "",
+    val categoryPathCodes: List<String> = emptyList(),
+    val suggestions: List<MainSuggestItem> = emptyList(),
+    val suggestionsLoading: Boolean = false,
+    val attributeDefs: List<AttributeDef> = emptyList(),
+    val moreAttributeDefs: List<AttributeDef> = emptyList(),
+    val generalAttributeDefs: List<AttributeDef> = emptyList(),
+    val requiredIfRules: List<RequiredIfRule> = emptyList(),
+    val sheet: CreateSheet? = null,
+    val moreFilterSheet: CreateFilterSheetState = CreateFilterSheetState(),
+    val generalFilterSheet: CreateFilterSheetState = CreateFilterSheetState(),
+    val isSaving: Boolean = false,
+    val saveError: String? = null,
+    val closeConfirmation: Boolean = false,
+    val validationErrorSection: CreateSection? = null,
+    val existingSubscription: TemplateSubscription? = null,
+    val canSave: Boolean = false,
+    val hasChanges: Boolean = false,
+)
+
+data class SubscriptionsState(
+    val tab: SubscriptionsTab = SubscriptionsTab.SUBSCRIPTIONS,
+    val mode: SubscriptionsMode = SubscriptionsMode.LIST,
+    val auth: SubscriptionsAuthState = SubscriptionsAuthState.Loading,
+    val subscriptions: ListLoadState<TemplateSubscription> = ListLoadState.Loading,
+    val notifications: ListLoadState<SubscriptionsInboxNotification> = ListLoadState.Loading,
+    val notificationsCanLoadMore: Boolean = false,
+    val notificationsIsLoadingMore: Boolean = false,
+    val notificationsFilter: NotificationsFilter = NotificationsFilter.ALL,
+    val notificationsSettings: SubscriptionsNotificationsSettings = SubscriptionsNotificationsSettings(),
+    val notificationsLastSyncAt: Long? = null,
+    val subscriptionsLastSyncAt: Long? = null,
+    val searchQuery: String = "",
+    val subscriptionsGroupBy: SubscriptionsGroupBy = SubscriptionsGroupBy.NONE,
+    val actionMessage: String? = null,
+    val editing: EditDraft? = null,
+    val create: SubscriptionsCreateState = SubscriptionsCreateState(),
+)

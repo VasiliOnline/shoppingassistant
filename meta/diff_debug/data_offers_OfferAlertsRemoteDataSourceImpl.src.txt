@@ -1,0 +1,108 @@
+package com.example.shoppingassistant.core.data.offers
+
+import com.example.shoppingassistant.core.config.BackendConfig
+import com.example.shoppingassistant.core.network.BackendClient
+import com.example.shoppingassistant.domain.auth.AuthRepository
+import io.ktor.client.call.body
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import kotlinx.serialization.Serializable
+
+/**
+ * HTTP-реализация алертов на backend-е.
+ * Требует авторизации: bearer берётся из AuthRepository, но можно передать вручную.
+ */
+class OfferAlertsRemoteDataSourceImpl(
+    private val backendClient: BackendClient,
+    private val authRepository: AuthRepository,
+): OfferAlertsRemoteDataSource {
+
+    private val baseUrl get() = BackendConfig.BASE_URL
+
+    override suspend fun listAlerts(bearerToken: String): List<AlertDto> =
+        backendClient.client.get("$baseUrl/api/offers/alerts") {
+            header("Authorization", ensureBearer(bearerToken))
+        }.let { response ->
+            if (response.status == HttpStatusCode.Unauthorized) {
+                authRepository.logout()
+                emptyList()
+            } else {
+                response.body()
+            }
+        }
+
+    override suspend fun createPriceDropAlert(
+        offerId: String,
+        percentDrop: Int,
+        deliveryChannel: String?,
+        minIntervalMinutes: Int?,
+        bearerToken: String,
+    ) {
+        val client = backendClient.client
+        val response: HttpResponse = client.post("$baseUrl/api/offers/alerts/price-drop") {
+            header("Authorization", ensureBearer(bearerToken))
+            contentType(ContentType.Application.Json)
+            setBody(
+                PriceAlertRequest(
+                    offerId = offerId,
+                    percentDrop = percentDrop,
+                    deliveryChannel = deliveryChannel,
+                    minIntervalMinutes = minIntervalMinutes,
+                ),
+            )
+        }
+        when (response.status) {
+            HttpStatusCode.OK, HttpStatusCode.Created -> Unit
+            HttpStatusCode.Unauthorized -> {
+                authRepository.logout()
+                throw IllegalStateException("Необходимо войти снова")
+            }
+            else -> {
+                throw IllegalStateException("Не удалось создать алерт: ${response.status}")
+            }
+        }
+    }
+
+    override suspend fun deactivateAlert(id: Long, bearerToken: String) {
+        val client = backendClient.client
+        val response = client.delete("$baseUrl/api/offers/alerts/$id") {
+            header("Authorization", ensureBearer(bearerToken))
+        }
+        when (response.status) {
+            HttpStatusCode.OK -> Unit
+            HttpStatusCode.Unauthorized -> {
+                authRepository.logout()
+                throw IllegalStateException("Необходимо войти снова")
+            }
+            else -> throw IllegalStateException("Не удалось отключить алерт: ${response.status}")
+        }
+    }
+
+    suspend fun createPriceDropAlertWithSession(
+        offerId: String,
+        percentDrop: Int,
+        deliveryChannel: String? = null,
+    ) {
+        val token = authRepository.currentToken()
+            ?: throw IllegalStateException("Требуется авторизация для создания алерта")
+        createPriceDropAlert(offerId, percentDrop, deliveryChannel, token)
+    }
+
+    private fun ensureBearer(token: String): String =
+        if (token.startsWith("Bearer ")) token else "Bearer $token"
+}
+
+@Serializable
+private data class PriceAlertRequest(
+    val offerId: String,
+    val percentDrop: Int,
+    val deliveryChannel: String? = null,
+    val minIntervalMinutes: Int? = null,
+)

@@ -44,9 +44,11 @@ class SeedAliasFirstQueryRouter(
             AliasKind.ATTRIBUTE_HINT,
             -> return null
         }
+        val normalizedTargetCode = targetCode.trim()
         return QueryRoutingResult(
             routeType = routeType,
-            primaryTargetCode = targetCode.trim(),
+            primaryTargetCode = normalizedTargetCode,
+            facetCollectionCode = if (routeType == QueryRouteType.OPEN_BROWSE) normalizedTargetCode else null,
             extractedTokens = Stage21QueryTextNormalizer.tokenize(normalizedQuery),
             confidence = aliasWeightToConfidence(weight),
         )

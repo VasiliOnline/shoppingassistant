@@ -2,7 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    //alias(libs.plugins.ksp) // подключим, когда понадобится Room/генерация
+    alias(libs.plugins.ksp) // подключим, когда понадобится Room/генерация
+}
+
+// Чтобы сборка не падала без `app/google-services.json`:
+// плагин Google Services подключаем только когда файл реально присутствует.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
 }
 
 android {
@@ -19,7 +25,10 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
@@ -32,6 +41,7 @@ android {
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
+    buildToolsVersion = "36.0.0"
 }
 
 dependencies {
@@ -47,19 +57,30 @@ dependencies {
 
     implementation(libs.activity.compose)
     implementation(libs.navigation.compose)
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.compose.material:material-icons-extended") // ← добавить
     implementation("androidx.compose.foundation:foundation")
     implementation(project(":core"))
     implementation(project(":feature"))
+    implementation(project(":domain"))
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    implementation(libs.lifecycle.viewmodel.ktx)
     // Koin + Compose
     implementation("io.insert-koin:koin-android:4.0.0")
     implementation("io.insert-koin:koin-androidx-compose:4.0.0")
     implementation("io.coil-kt:coil:2.7.0")
     implementation("io.coil-kt:coil-compose:2.7.0")
 
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.common.jvm)
+    ksp(libs.androidx.room.compiler)
 
+    testImplementation("junit:junit:4.13.2")
+
+    // FCM push (реальные push-уведомления через Firebase Cloud Messaging)
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
 }

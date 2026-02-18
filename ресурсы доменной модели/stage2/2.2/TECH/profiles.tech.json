@@ -1,0 +1,547 @@
+[
+  {
+    "category": {
+      "code": "TECH",
+      "segment": "TECH",
+      "title": "Электроника",
+      "parentCode": null,
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.PHONES",
+      "segment": "TECH",
+      "title": "Смартфоны",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "memory_gb",
+        "title": "Память (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "network_type",
+        "title": "Сеть",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "network_type"
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "os_family",
+        "title": "ОС",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "os_family"
+      },
+      {
+        "code": "dual_sim",
+        "title": "Dual SIM",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "region_code",
+        "title": "Регион",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "battery_health_percent",
+        "title": "Состояние батареи (%)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "memory_gb",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "network_type",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "ram_gb",
+        "uiOrder": 6,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "os_family",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "dual_sim",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "region_code",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "battery_health_percent",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "color",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "battery_health_percent",
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "used"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.PHONE_ACCESSORIES",
+      "segment": "TECH",
+      "title": "Аксессуары для телефонов",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.LAPTOPS",
+      "segment": "TECH",
+      "title": "Ноутбуки",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "cpu_family",
+        "title": "CPU",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "gpu_type",
+        "title": "GPU",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "os_family",
+        "title": "ОС",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "os_family"
+      },
+      {
+        "code": "keyboard_layout",
+        "title": "Раскладка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "keyboard_layout"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "cpu_family",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "ram_gb",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "storage_type",
+        "uiOrder": 6,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "storage_gb",
+        "uiOrder": 7,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 8,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "gpu_type",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "os_family",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.LAPTOPS",
+        "attributeCode": "keyboard_layout",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.PC_COMPONENTS",
+      "segment": "TECH",
+      "title": "ПК и комплектующие",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.TABLETS_EBOOKS",
+      "segment": "TECH",
+      "title": "Планшеты и электронные книги",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.TV_VIDEO",
+      "segment": "TECH",
+      "title": "ТВ и видео",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.AUDIO",
+      "segment": "TECH",
+      "title": "Аудио и наушники",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.GAMING",
+      "segment": "TECH",
+      "title": "Игровые приставки и игры",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.CAMERAS",
+      "segment": "TECH",
+      "title": "Фото и видеокамеры",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "TECH.SMART_HOME",
+      "segment": "TECH",
+      "title": "Умный дом и гаджеты",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  }
+]

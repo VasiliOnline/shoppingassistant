@@ -1,0 +1,133 @@
+package com.example.shoppingassistant.server.auth
+
+import com.example.shoppingassistant.server.db.AuthUsersTable
+import com.example.shoppingassistant.server.db.DatabaseFactory
+import io.lettuce.core.api.sync.RedisCommands
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
+import java.security.SecureRandom
+import java.util.Base64
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
+
+interface EmailVerificationTokenManager {
+    fun createToken(userId: Long): String
+    fun consumeToken(token: String): Long?
+}
+
+interface EmailVerificationTokenStore {
+    fun save(token: String, userId: Long)
+    fun findUserId(token: String): Long?
+    fun delete(token: String)
+}
+
+private fun generateVerificationToken(random: SecureRandom): String {
+    val bytes = ByteArray(32)
+    random.nextBytes(bytes)
+    return Base64.getUrlEncoder()
+        .withoutPadding()
+        .encodeToString(bytes)
+}
+
+open class BaseEmailVerificationTokenManager(
+    private val store: EmailVerificationTokenStore,
+    private val random: SecureRandom = SecureRandom(),
+) : EmailVerificationTokenManager {
+    override fun createToken(userId: Long): String {
+        val token = generateVerificationToken(random)
+        store.save(token, userId)
+        return token
+    }
+
+    override fun consumeToken(token: String): Long? {
+        val userId = store.findUserId(token) ?: return null
+        store.delete(token)
+        return userId
+    }
+}
+
+class InMemoryEmailVerificationTokenStore(
+    ttlSeconds: Long = TimeUnit.HOURS.toSeconds(24),
+) : EmailVerificationTokenStore {
+    private data class Entry(val userId: Long, val expiresAt: Long)
+    private val ttlMillis = TimeUnit.SECONDS.toMillis(ttlSeconds)
+    private val tokens = ConcurrentHashMap<String, Entry>()
+
+    override fun save(token: String, userId: Long) {
+        tokens[token] = Entry(userId, System.currentTimeMillis() + ttlMillis)
+    }
+
+    override fun findUserId(token: String): Long? {
+        val entry = tokens[token] ?: return null
+        return if (entry.expiresAt < System.currentTimeMillis()) {
+            tokens.remove(token)
+            null
+        } else entry.userId
+    }
+
+    override fun delete(token: String) {
+        tokens.remove(token)
+    }
+}
+
+class LettuceEmailVerificationTokenStore(
+    private val commands: RedisCommands<String, String>,
+    private val ttlSeconds: Long,
+    private val keyPrefix: String = "email_verify:",
+) : EmailVerificationTokenStore {
+    override fun save(token: String, userId: Long) {
+        commands.setex(keyPrefix + token, ttlSeconds, userId.toString())
+    }
+
+    override fun findUserId(token: String): Long? =
+        commands.get(keyPrefix + token)?.toLongOrNull()
+
+    override fun delete(token: String) {
+        commands.del(keyPrefix + token)
+    }
+}
+
+class RedisEmailVerificationTokenManager(
+    store: EmailVerificationTokenStore,
+    random: SecureRandom = SecureRandom(),
+) : BaseEmailVerificationTokenManager(store, random)
+
+class EmailVerificationService(
+    private val tokenManager: EmailVerificationTokenManager,
+    private val notificationSender: VerificationNotificationSender,
+    private val cooldownTracker: ResendCooldownTracker,
+) {
+    suspend fun startVerification(userId: Long, email: String): Boolean {
+        if (!cooldownTracker.tryAcquire("verify-email:$userId")) return false
+        val token = tokenManager.createToken(userId)
+        notificationSender.sendVerificationLink(email, token)
+        return true
+    }
+
+    suspend fun confirm(token: String): Boolean {
+        val userId = tokenManager.consumeToken(token) ?: return false
+        val now = System.currentTimeMillis()
+        return DatabaseFactory.dbQuery {
+            val updated = AuthUsersTable.update(
+                where = { (AuthUsersTable.id eq userId) and (AuthUsersTable.isDeleted eq false) },
+            ) {
+                it[emailVerified] = true
+                it[emailVerifiedAt] = now
+            }
+            updated > 0
+        }
+    }
+}
+
+interface VerificationNotificationSender {
+    fun sendVerificationLink(email: String, token: String)
+}
+
+class LoggingVerificationNotificationSender : VerificationNotificationSender {
+    private val logger = org.slf4j.LoggerFactory.getLogger(LoggingVerificationNotificationSender::class.java)
+    override fun sendVerificationLink(email: String, token: String) {
+        logger.info("Email verification token for $email : $token")
+    }
+}

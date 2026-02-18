@@ -1,0 +1,337 @@
+[
+  {
+    "category": {
+      "code": "BEAUTY",
+      "segment": "BEAUTY",
+      "title": "Красота и здоровье",
+      "parentCode": null,
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.SKINCARE",
+      "segment": "BEAUTY",
+      "title": "Уход за лицом и кожей",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.HAIRCARE",
+      "segment": "BEAUTY",
+      "title": "Уход за волосами",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.BODYCARE",
+      "segment": "BEAUTY",
+      "title": "Уход за телом и гигиена",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.MAKEUP",
+      "segment": "BEAUTY",
+      "title": "Декоративная косметика",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.FRAGRANCE",
+      "segment": "BEAUTY",
+      "title": "Парфюмерия",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.DEVICES",
+      "segment": "BEAUTY",
+      "title": "Техника для красоты и здоровья",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "BEAUTY.HEALTH",
+      "segment": "BEAUTY",
+      "title": "Товары для здоровья (витамины, мед-товары)",
+      "parentCode": "BEAUTY",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "form_factor",
+        "title": "Форма выпуска",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "dosage_unit",
+        "title": "Ед. дозировки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "dosage_unit"
+      },
+      {
+        "code": "dosage_per_serving",
+        "title": "Доза за приём",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "servings_count",
+        "title": "Порций",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "flavor",
+        "title": "Вкус",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "flavor"
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_sugar_free",
+        "title": "Без сахара",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_lactose_free",
+        "title": "Без лактозы",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_gluten_free",
+        "title": "Без глютена",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "protein_per_serving_gram",
+        "title": "Белка за порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "protein_percent",
+        "title": "Белок (%)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "substance_code",
+        "title": "Действующее вещество",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "substance_code"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "form_factor",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "dosage_unit",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "dosage_per_serving",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "servings_count",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "flavor",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "is_sugar_free",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "is_lactose_free",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "is_gluten_free",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "protein_per_serving_gram",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "protein_percent",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "substance_code",
+        "uiOrder": 13,
+        "isRequiredForCategory": true
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  }
+]

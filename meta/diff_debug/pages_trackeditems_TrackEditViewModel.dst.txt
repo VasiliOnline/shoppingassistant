@@ -1,0 +1,270 @@
+package com.example.shoppingassistant.feature.pages.trackeditems
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.shoppingassistant.domain.tracks.TrackFilters
+import com.example.shoppingassistant.domain.tracks.TrackRepository
+import com.example.shoppingassistant.domain.tracks.UpdateTrackFiltersTask
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class TrackEditViewModel(
+    private val trackRepository: TrackRepository,
+    private val updateTrackFilters: UpdateTrackFiltersTask,
+) : ViewModel() {
+
+    private companion object {
+        const val MAX_EXTRA: Int = 5
+    }
+
+    private val _state = MutableStateFlow(TrackEditState())
+    val state: StateFlow<TrackEditState> = _state.asStateFlow()
+
+    fun load(trackId: String) {
+        if (trackId.isBlank()) return
+        val current = _state.value
+        if (current.trackId == trackId && !current.isLoading && current.errorMessage == null) return
+
+        _state.update {
+            it.copy(
+                trackId = trackId,
+                isLoading = true,
+                errorMessage = null,
+                closeRequested = false,
+            )
+        }
+        viewModelScope.launch {
+            runCatching { trackRepository.getTrack(trackId) }
+                .onSuccess { track ->
+                    val normalized = normalizeFilters(track.filters)
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            trackTitle = track.title,
+                            original = normalized,
+                            edited = normalized,
+                            activeCount = activeCount(normalized),
+                            hasUnsavedChanges = false,
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = error.message ?: "Не удалось загрузить фильтры",
+                        )
+                    }
+                }
+        }
+    }
+
+    fun retry() {
+        val trackId = _state.value.trackId
+        if (trackId.isBlank()) return
+        load(trackId)
+    }
+
+    fun openSheet(sheet: TrackEditSheet) {
+        _state.update { it.copy(openSheet = sheet) }
+    }
+
+    fun closeSheet() {
+        _state.update { it.copy(openSheet = null) }
+    }
+
+    fun updateRegion(value: String?) {
+        updateEdited(_state.value.edited.copy(region = value))
+    }
+
+    fun updateDelivery(value: String?) {
+        updateEdited(_state.value.edited.copy(delivery = value))
+    }
+
+    fun updateCondition(value: String?) {
+        updateEdited(_state.value.edited.copy(condition = value))
+    }
+
+    fun updateSeller(value: String?) {
+        updateEdited(_state.value.edited.copy(seller = value))
+    }
+
+    fun updateExtra(key: String, value: String) {
+        val trimmedKey = key.trim()
+        val trimmedValue = value.trim()
+        if (trimmedKey.isBlank()) return
+
+        val current = _state.value.edited.extra.toMutableMap()
+        val exists = current.containsKey(trimmedKey)
+        if (!exists && current.size >= MAX_EXTRA) {
+            _state.update {
+                it.copy(
+                    actionMessage = "Можно добавить не более $MAX_EXTRA параметров",
+                    actionLabel = null,
+                    actionTrackId = null,
+                )
+            }
+            return
+        }
+        if (trimmedValue.isBlank()) {
+            current.remove(trimmedKey)
+        } else {
+            current[trimmedKey] = trimmedValue
+        }
+        updateEdited(_state.value.edited.copy(extra = current))
+    }
+
+    fun removeExtra(key: String) {
+        val trimmedKey = key.trim()
+        if (trimmedKey.isBlank()) return
+        val current = _state.value.edited.extra.toMutableMap()
+        current.remove(trimmedKey)
+        updateEdited(_state.value.edited.copy(extra = current))
+    }
+
+    fun resetAll() {
+        updateEdited(TrackFilters())
+    }
+
+    fun apply() {
+        val current = _state.value
+        if (current.isSaving || !current.hasUnsavedChanges) return
+        val trackId = current.trackId
+        if (trackId.isBlank()) return
+
+        val normalized = normalizeFilters(current.edited)
+        _state.update { it.copy(isSaving = true, errorMessage = null) }
+
+        viewModelScope.launch {
+            runCatching { updateTrackFilters(trackId, normalized) }
+                .onSuccess { updated ->
+                    val savedFilters = normalizeFilters(updated.filters)
+                    val nextActiveCount = activeCount(savedFilters)
+                    if (updated.id != trackId) {
+                        _state.update {
+                            it.copy(
+                                isSaving = false,
+                                original = savedFilters,
+                                edited = savedFilters,
+                                activeCount = nextActiveCount,
+                                hasUnsavedChanges = false,
+                                actionMessage = "Такой трек уже существует",
+                                actionLabel = "Открыть",
+                                actionTrackId = updated.id,
+                            )
+                        }
+                    } else {
+                        _state.update {
+                            it.copy(
+                                isSaving = false,
+                                original = savedFilters,
+                                edited = savedFilters,
+                                activeCount = nextActiveCount,
+                                hasUnsavedChanges = false,
+                                closeRequested = true,
+                            )
+                        }
+                    }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isSaving = false,
+                            errorMessage = error.message ?: "Не удалось сохранить фильтры",
+                        )
+                    }
+                }
+        }
+    }
+
+    fun onBackPressed() {
+        val current = _state.value
+        if (current.openSheet != null) {
+            closeSheet()
+            return
+        }
+        if (current.hasUnsavedChanges) {
+            _state.update { it.copy(confirmDiscardVisible = true) }
+        } else {
+            _state.update { it.copy(closeRequested = true) }
+        }
+    }
+
+    fun confirmDiscard() {
+        _state.update { it.copy(confirmDiscardVisible = false, closeRequested = true) }
+    }
+
+    fun cancelDiscard() {
+        _state.update { it.copy(confirmDiscardVisible = false) }
+    }
+
+    fun consumeAction() {
+        _state.update { it.copy(actionMessage = null, actionLabel = null, actionTrackId = null) }
+    }
+
+    fun consumeCloseRequest() {
+        _state.update { it.copy(closeRequested = false) }
+    }
+
+    private fun updateEdited(filters: TrackFilters) {
+        val normalized = normalizeFilters(filters)
+        val original = _state.value.original
+        _state.update {
+            it.copy(
+                edited = normalized,
+                activeCount = activeCount(normalized),
+                hasUnsavedChanges = normalized != original,
+            )
+        }
+    }
+
+    private fun normalizeFilters(filters: TrackFilters): TrackFilters {
+        val region = normalizeValue(filters.region)
+        val delivery = normalizeValue(filters.delivery)
+        val condition = normalizeValue(filters.condition)
+        val seller = normalizeValue(filters.seller)
+        val extra = normalizeExtra(filters.extra)
+        return TrackFilters(
+            region = region,
+            delivery = delivery,
+            condition = condition,
+            seller = seller,
+            extra = extra,
+        )
+    }
+
+    private fun normalizeValue(value: String?): String? {
+        val trimmed = value?.trim().orEmpty()
+        return trimmed.takeIf { it.isNotBlank() }
+    }
+
+    private fun normalizeExtra(extra: Map<String, String>): Map<String, String> {
+        if (extra.isEmpty()) return emptyMap()
+        val cleaned = extra.entries
+            .mapNotNull { (key, value) ->
+                val normalizedKey = key.trim()
+                val normalizedValue = value.trim()
+                if (normalizedKey.isBlank() || normalizedValue.isBlank()) null
+                else normalizedKey to normalizedValue
+            }
+            .sortedBy { it.first.lowercase() }
+            .take(MAX_EXTRA)
+        if (cleaned.isEmpty()) return emptyMap()
+        return LinkedHashMap<String, String>().apply {
+            cleaned.forEach { (key, value) -> put(key, value) }
+        }
+    }
+
+    private fun activeCount(filters: TrackFilters): Int {
+        val base = listOf(
+            filters.region,
+            filters.delivery,
+            filters.condition,
+            filters.seller,
+        ).count { !it.isNullOrBlank() }
+        return base + filters.extra.size
+    }
+}

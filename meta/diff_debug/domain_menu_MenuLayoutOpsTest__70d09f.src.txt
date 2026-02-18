@@ -1,0 +1,98 @@
+package com.example.shoppingassistant.domain.menu
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Test
+
+class MenuLayoutOpsTest {
+    private val config = MenuLayoutConfig(rightSlots = 3, bottomSlots = 4)
+
+    @Test
+    fun replaceAlways_onOccupiedSlot_removesTargetAndMovesAction() {
+        val layout = MenuLayout(
+            right = listOf(MenuActionId.DASHBOARD, MenuActionId.SEARCH, MenuActionId.POST),
+            bottom = listOf(MenuActionId.PROFILE, null, null, null),
+        )
+
+        val result = MenuLayoutOps.applyDrop(
+            layout = layout,
+            config = config,
+            actionId = MenuActionId.PROFILE,
+            from = MenuSlotRef(MenuEdge.BOTTOM, 0),
+            to = MenuSlotRef(MenuEdge.RIGHT, 1),
+        )
+
+        assertEquals(MenuActionId.PROFILE, result.layout.right[1])
+        assertNull(result.layout.bottom[0])
+        assertEquals(MenuActionId.SEARCH, result.removed)
+    }
+
+    @Test
+    fun pinnedAction_cannotBeReplaced() {
+        val layout = MenuLayout(
+            right = listOf(MenuActionId.DASHBOARD, MenuActionId.SEARCH, MenuActionId.POST),
+            bottom = listOf(null, null, null, null),
+            pinned = setOf(MenuActionId.DASHBOARD),
+        )
+
+        val result = MenuLayoutOps.applyDrop(
+            layout = layout,
+            config = config,
+            actionId = MenuActionId.SEARCH,
+            from = MenuSlotRef(MenuEdge.RIGHT, 1),
+            to = MenuSlotRef(MenuEdge.RIGHT, 0),
+        )
+
+        assertEquals(layout, result.layout)
+    }
+
+    @Test
+    fun deleteDrop_removesNonPinnedAction() {
+        val layout = MenuLayout(
+            right = listOf(MenuActionId.DASHBOARD, MenuActionId.SEARCH, MenuActionId.POST),
+            bottom = listOf(null, null, null, null),
+        )
+
+        val result = MenuLayoutOps.applyDrop(
+            layout = layout,
+            config = config,
+            actionId = MenuActionId.SEARCH,
+            from = MenuSlotRef(MenuEdge.RIGHT, 1),
+            to = null,
+        )
+
+        assertNull(result.layout.right[1])
+        assertEquals(MenuActionId.SEARCH, result.removed)
+    }
+
+    @Test
+    fun normalize_removesDuplicates_andKeepsPinned() {
+        val layout = MenuLayout(
+            right = listOf(MenuActionId.DASHBOARD, MenuActionId.SEARCH, MenuActionId.SEARCH),
+            bottom = listOf(MenuActionId.PROFILE, MenuActionId.PROFILE, null, null),
+        )
+
+        val normalized = MenuLayoutOps.normalize(layout, config)
+
+        val all = normalized.right + normalized.bottom
+        assertEquals(1, all.count { it == MenuActionId.SEARCH })
+        assertEquals(1, all.count { it == MenuActionId.PROFILE })
+        assertEquals(1, all.count { it == MenuActionId.DASHBOARD })
+    }
+
+    @Test
+    fun validator_flagsSizeMismatch_andDuplicates() {
+        val layout = MenuLayout(
+            right = listOf(MenuActionId.DASHBOARD, MenuActionId.SEARCH),
+            bottom = listOf(MenuActionId.SEARCH),
+        )
+
+        val issues = MenuLayoutValidator.validate(layout, config)
+
+        val types = issues.map { it.type }.toSet()
+        assertEquals(true, types.contains(MenuLayoutIssueType.SIZE_MISMATCH))
+        assertEquals(true, types.contains(MenuLayoutIssueType.DUPLICATE))
+        assertEquals(true, types.contains(MenuLayoutIssueType.ROLE_MISMATCH))
+        assertEquals(true, types.contains(MenuLayoutIssueType.BELOW_MINIMUM))
+    }
+}

@@ -1,0 +1,63 @@
+package com.example.shoppingassistant.core.data.ugc
+
+import com.example.shoppingassistant.core.config.BackendConfig
+import com.example.shoppingassistant.core.network.BackendClient
+import com.example.shoppingassistant.domain.ugc.UgcMirrorRepository
+import com.example.shoppingassistant.domain.ugc.UgcMirrorResult
+import io.ktor.client.call.body
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import kotlinx.serialization.Serializable
+
+/**
+ * HTTP-клиент для UGC-зеркала по ссылке.
+ *
+ * Делает запрос на backend-ручку (будет реализована в server/ugc),
+ * получает сырые нормализованные данные и мапит их в доменную модель.
+ */
+class UgcMirrorRemoteRepository(
+    private val backendClient: BackendClient,
+) : UgcMirrorRepository {
+
+    private val baseUrl: String
+        get() = BackendConfig.BASE_URL
+
+    override suspend fun mirrorByUrl(url: String): UgcMirrorResult {
+        val payload = MirrorRequest(url = url)
+
+        val response = backendClient.client.post("$baseUrl/api/ugc/mirror") {
+            contentType(ContentType.Application.Json)
+            setBody(payload)
+        }
+
+        val dto: MirrorResponse = response.body()
+
+        return UgcMirrorResult(
+            sourceUrl = dto.sourceUrl,
+            title = dto.title,
+            description = dto.description,
+            priceRaw = dto.priceRaw,
+            currency = dto.currency,
+            imageUrls = dto.imageUrls.orEmpty(),
+            attributes = dto.attributes.orEmpty(),
+        )
+    }
+
+    @Serializable
+    private data class MirrorRequest(
+        val url: String,
+    )
+
+    @Serializable
+    private data class MirrorResponse(
+        val sourceUrl: String,
+        val title: String? = null,
+        val description: String? = null,
+        val priceRaw: String? = null,
+        val currency: String? = null,
+        val imageUrls: List<String>? = null,
+        val attributes: Map<String, String>? = null,
+    )
+}

@@ -1,0 +1,41 @@
+package com.example.shoppingassistant.server.tracks.top10.refresh
+
+import com.example.shoppingassistant.domain.tracks.Track
+import com.example.shoppingassistant.domain.tracks.TrackFilters
+import com.example.shoppingassistant.domain.tracks.TrackTarget
+import com.example.shoppingassistant.domain.tracks.TrackType
+import com.example.shoppingassistant.server.tracks.TracksRepository
+import com.example.shoppingassistant.server.tracks.top10.TrackTop10SnapshotRepository
+
+class TrackTop10RefreshService(
+    private val tracksRepository: TracksRepository,
+    private val snapshotRepository: TrackTop10SnapshotRepository,
+    private val builder: TrackTop10SnapshotBuilder,
+    private val clock: () -> Long = { System.currentTimeMillis() },
+) {
+    suspend fun refreshNow(userId: Long, trackId: Long): com.example.shoppingassistant.domain.tracks.TrackTop10? {
+        val track = tracksRepository.get(userId, trackId) ?: return null
+        val candidate = track.toCandidate(trackId, userId)
+        val now = clock()
+        val snapshot = builder.buildSnapshot(candidate)
+        snapshotRepository.upsertSnapshot(trackId, snapshot, now)
+        snapshotRepository.markSuccess(trackId, now)
+        return snapshot
+    }
+
+    suspend fun enqueue(trackId: Long) {
+        snapshotRepository.scheduleRefresh(trackId, clock())
+    }
+
+    private fun Track.toCandidate(trackId: Long, userId: Long): TrackRefreshCandidate {
+        return TrackRefreshCandidate(
+            trackId = trackId,
+            userId = userId,
+            type = type,
+            target = target,
+            filters = filters,
+            title = title,
+            failCount = 0,
+        )
+    }
+}

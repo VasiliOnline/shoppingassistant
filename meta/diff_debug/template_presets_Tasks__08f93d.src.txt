@@ -1,0 +1,39 @@
+package com.example.shoppingassistant.domain.template.presets
+
+import com.example.shoppingassistant.domain.template.TemplateSnapshotData
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class TemplatePresetSource {
+    POPULAR,
+    GENERATED,
+}
+
+@Serializable
+data class TemplatePresetSpec(
+    val source: TemplatePresetSource,
+    val snapshot: TemplateSnapshotData,
+    val title: String? = null,
+    val rank: Int = 0,
+)
+
+@Serializable
+data class TemplatePreset(
+    val presetId: String,
+    val source: TemplatePresetSource,
+    val snapshot: TemplateSnapshotData,
+    val title: String? = null,
+    val rank: Int = 0,
+)
+
+/**
+ * Provides curated and generated template presets.
+ */
+interface TemplatePresetsRepository {
+    suspend fun listPresets(
+        source: TemplatePresetSource? = null,
+        limit: Int = 50,
+    ): List<TemplatePreset>
+
+    suspend fun upsertGenerated(presets: List<TemplatePreset>)
+}

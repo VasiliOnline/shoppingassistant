@@ -1,0 +1,182 @@
+package com.example.shoppingassistant.domain.tracks
+
+import com.example.shoppingassistant.domain.model.Money
+import kotlinx.serialization.Serializable
+
+typealias TrackId = String
+typealias OfferId = String
+typealias SellerId = String
+
+@Serializable
+enum class TrackType { PRODUCT, URL, SEARCH }
+
+@Serializable
+enum class TrackState { ACTIVE, PAUSED, ERROR }
+
+@Serializable
+data class TrackTarget(
+    val matchKey: String? = null,
+    val url: String? = null,
+    val query: String? = null,
+)
+
+@Serializable
+data class TrackFilters(
+    val region: String? = null,
+    val delivery: String? = null,
+    val condition: String? = null,
+    val seller: String? = null,
+    val extra: Map<String, String> = emptyMap(),
+)
+
+@Serializable
+data class AlertRule(
+    val type: String,
+    val value: String? = null,
+)
+
+@Serializable
+data class TrackStats(
+    val offersCount: Int,
+    val bestPrice: Money? = null,
+    val newEventsCount: Int = 0,
+    val lastEventAt: Long? = null, // epoch millis
+    val sourcesCount: Int = 0,
+)
+
+@Serializable
+data class Track(
+    val id: TrackId,
+    val title: String,
+    val categoryCode: String? = null,
+    val type: TrackType,
+    val target: TrackTarget,
+    val filters: TrackFilters = TrackFilters(),
+    val alertRules: List<AlertRule> = emptyList(),
+    val state: TrackState = TrackState.ACTIVE,
+    val createdAt: Long,
+    val updatedAt: Long,
+    val lastCheckedAt: Long? = null,
+    val freshnessSec: Int? = null,
+    val stats: TrackStats = TrackStats(offersCount = 0),
+)
+
+@Serializable
+data class RankExplanation(
+    val summary: String,
+    val details: List<String> = emptyList(),
+)
+
+@Serializable
+data class DeliveryInfo(
+    val price: Money? = null,
+    val etaDays: Int? = null,
+    val method: String? = null,
+    val isFree: Boolean = false,
+)
+
+@Serializable
+data class Badge(
+    val label: String,
+    val priority: Int = 0,
+)
+
+@Serializable
+data class RankedOffer(
+    val offerId: OfferId,
+    val sellerId: SellerId,
+    val price: Money,
+    val delivery: DeliveryInfo? = null,
+    val trustScore: Float? = null,
+    val distanceKm: Float? = null,
+    val badges: List<Badge> = emptyList(),
+    val deeplink: String,
+    val dedupKey: String,
+)
+
+@Serializable
+data class SourceStamp(
+    val sourceType: String,
+    val sourceName: String,
+    val fetchedAt: Long,
+    val ttlSec: Int,
+)
+
+@Serializable
+data class TrackTop10(
+    val trackId: TrackId,
+    val computedAt: Long,
+    val freshnessSec: Int,
+    val items: List<RankedOffer>,
+    val explanation: RankExplanation,
+    val sourceStamps: List<SourceStamp>,
+)
+
+@Serializable
+enum class TrackEventType { PRICE_DROP, NEW_OFFER, TARGET_HIT, OTHER }
+
+@Serializable
+data class TrackEvent(
+    val id: String,
+    val trackId: TrackId,
+    val type: TrackEventType,
+    val createdAt: Long,
+    val title: String,
+    val subtitle: String? = null,
+    val dedupKey: String,
+    val isRead: Boolean = false,
+)
+
+interface TrackRepository {
+    suspend fun listTracks(): List<Track>
+    suspend fun getTrack(trackId: TrackId): Track
+    suspend fun upsertTrack(track: Track): Track
+    suspend fun pause(trackId: TrackId)
+    suspend fun resume(trackId: TrackId)
+    suspend fun delete(trackId: TrackId)
+}
+
+interface TopOffersRepository {
+    suspend fun getTop10(trackId: TrackId, forceRefresh: Boolean = false): TrackTop10
+}
+
+class GetTrackedItemsListTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(): List<Track> = repo.listTracks()
+}
+
+class ObserveTrackEventsCountTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(trackId: TrackId): Int = repo.getTrack(trackId).stats.newEventsCount
+}
+
+class GetTop10Task(private val repo: TopOffersRepository) {
+    suspend operator fun invoke(trackId: TrackId, forceRefresh: Boolean = false): TrackTop10 =
+        repo.getTop10(trackId, forceRefresh)
+}
+
+class RefreshTop10Task(private val repo: TopOffersRepository) {
+    suspend operator fun invoke(trackId: TrackId): TrackTop10 = repo.getTop10(trackId, true)
+}
+
+class PauseTrackTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(trackId: TrackId) = repo.pause(trackId)
+}
+
+class ResumeTrackTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(trackId: TrackId) = repo.resume(trackId)
+}
+
+class DeleteTrackTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(trackId: TrackId) = repo.delete(trackId)
+}
+
+class UpdateTrackFiltersTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(trackId: TrackId, filters: TrackFilters): Track {
+        val current = repo.getTrack(trackId)
+        return repo.upsertTrack(current.copy(filters = filters))
+    }
+}
+
+class OpenSourcesInfoTask(private val repo: TopOffersRepository) {
+    suspend operator fun invoke(trackId: TrackId): List<SourceStamp> =
+        repo.getTop10(trackId, forceRefresh = false).sourceStamps
+}

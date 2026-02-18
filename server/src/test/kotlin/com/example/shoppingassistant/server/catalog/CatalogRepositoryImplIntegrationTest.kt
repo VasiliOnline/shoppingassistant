@@ -65,6 +65,24 @@ class CatalogRepositoryImplIntegrationTest {
         assertTrue(result.isEmpty())
     }
 
+    @Test
+    fun facetSchemaRepositories_returnSeededStage3Rows() = runBlocking {
+        Assume.assumeTrue("Docker is required for server integration tests.", dockerAvailable)
+
+        val repository = FacetSchemaRepositoryImpl()
+
+        val definitions = repository.listFacetDefinitions()
+        val presets = repository.listFacetPresets()
+        val collections = repository.listFacetCollections()
+
+        assertTrue(definitions.isNotEmpty(), "Expected seeded facet definitions")
+        assertTrue(presets.isNotEmpty(), "Expected seeded facet presets")
+        assertTrue(collections.isNotEmpty(), "Expected seeded facet collections")
+
+        val pizzaCollection = repository.getFacetCollectionByBrowseCode("B.FOOD.READY.05")
+        assertEquals("FP.FOOD.READY.PIZZA", pizzaCollection?.presetCode)
+    }
+
     private companion object {
         private var dockerAvailable: Boolean = false
         private var container: PostgreSQLContainer<*>? = null

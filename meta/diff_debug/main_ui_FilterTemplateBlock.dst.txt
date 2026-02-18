@@ -1,0 +1,510 @@
+package com.example.shoppingassistant.feature.pages.main.ui
+
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Label
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ColorLens
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.outlined.LocalOffer
+import androidx.compose.material.icons.outlined.Memory
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Straighten
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
+import java.util.LinkedHashSet
+import kotlin.math.absoluteValue
+
+private data class AttrRowState(
+    val key: String,
+    val title: String,
+    val value: String?,
+    val required: Boolean,
+    val canEdit: Boolean,
+    val canRemove: Boolean,
+    val isError: Boolean,
+    val errorText: String? = null,
+)
+
+
+private const val CardWidthFraction = 0.98f
+private val RowHeight = 44.dp
+
+private val IconPool = listOf(
+    Icons.Outlined.Tune,
+    Icons.Outlined.Star,
+    Icons.Outlined.LocalOffer,
+    Icons.Outlined.Language,
+    Icons.Outlined.Description,
+    Icons.Outlined.Image,
+    Icons.Outlined.Settings,
+    Icons.Outlined.Schedule,
+)
+
+@Composable
+fun FilterTemplateBlock(
+    chosenTitle: String,
+    attributes: List<AttributeDef>,
+    selected: Map<String, String>,
+    requiredKeys: Set<String>,
+    errorKeys: Set<String>,
+    errorMessages: Map<String, String?>,
+    onAddFilter: () -> Unit,
+    onCreateTemplate: () -> Unit,
+    canCreateTemplate: Boolean,
+    onAttributeClick: (String) -> Unit,
+    onRemoveAttribute: (String) -> Unit,
+    photosBlock: (@Composable () -> Unit)? = null,
+    scrollState: ScrollState? = null,
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
+    maxHeight: Dp,
+) {
+    val titleByKey = remember(attributes) { attributes.associate { it.key to it.title } }
+    val lockedByKey = remember(attributes) { attributes.associate { it.key to it.locked } }
+
+// Показываем только выбранные и (при необходимости) обязательные ключи,
+// чтобы пустые атрибуты не появлялись до действий пользователя.
+    val orderedKeys = remember(selected, attributes, requiredKeys) {
+        val ordered = LinkedHashSet<String>()
+
+        // 1) required (в порядке attributes)
+        attributes.forEach { def ->
+            if (def.key in requiredKeys) ordered.add(def.key)
+        }
+        // 2) выбранные (в порядке attributes)
+        attributes.forEach { def ->
+            if (def.key !in requiredKeys && selected.containsKey(def.key)) ordered.add(def.key)
+        }
+        // 3) если required/selected содержат ключи, которых нет в attributes — всё равно покажем
+        requiredKeys.forEach { ordered.add(it) }
+        selected.keys.forEach { ordered.add(it) }
+
+        ordered.toList()
+    }
+
+    val rows = remember(orderedKeys, selected, requiredKeys, errorKeys, errorMessages, titleByKey, lockedByKey) {
+        orderedKeys.map { key ->
+            val required = key in requiredKeys
+            val locked = lockedByKey[key] == true
+            AttrRowState(
+                key = key,
+                title = titleByKey[key] ?: key.replaceFirstChar { it.titlecase() },
+                value = selected[key],
+                required = required,
+                canEdit = !locked,
+                canRemove = !required && selected.containsKey(key) && !locked,
+                isError = key in errorKeys,
+                errorText = errorMessages[key],
+            )
+        }
+    }
+
+    val attributeKeys = remember(attributes) { attributes.map { it.key }.toSet() }
+    val filledCount = remember(selected, attributeKeys) {
+        selected.filterKeys { it in attributeKeys }.values.count { it.isNotBlank() }
+    }
+    val totalCount = remember(attributeKeys) { attributeKeys.size }
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (chosenTitle.isNotBlank()) {
+            Text(
+                text = chosenTitle,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .fillMaxWidth(CardWidthFraction)
+                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(CardWidthFraction)
+                .heightIn(max = maxHeight)
+                .animateContentSize(),
+            shape = RoundedCornerShape(16.dp),
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
+            color = Color.Transparent,
+        ) {
+            BoxWithScrollbar(
+                modifier = Modifier.fillMaxWidth(),
+                providedScrollState = scrollState,
+            ) { scrollModifier, showScrollbar, fraction, offsetFraction, containerHeightPx ->
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = scrollModifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 1.dp)
+                            .padding(bottom = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(1.dp),
+                    ) {
+                        EditTemplateRow(
+                            onEdit = onAddFilter,
+                            filledCount = filledCount,
+                            totalCount = totalCount,
+                            onCreateTemplate = onCreateTemplate,
+                            canCreateTemplate = canCreateTemplate,
+                        )
+
+                        if (rows.isEmpty()) {
+                            // ✅ Убрана подсказка "Добавьте характеристики"
+                           // Spacer(modifier = Modifier.height(2.dp))
+                        } else {
+                            rows.forEach { row ->
+                                AttributeRow(
+                                    row = row,
+                                    onClick = { onAttributeClick(row.key) },
+                                    onRemove = { onRemoveAttribute(row.key) },
+                                )
+                            }
+                        }
+
+                        photosBlock?.let { block ->
+                            block()
+                            Spacer(modifier = Modifier.height(1.dp))
+                        }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                    if (showScrollbar) {
+                        Scrollbar(
+                            modifier = Modifier.align(Alignment.CenterEnd),
+                            fraction = fraction,
+                            offsetFraction = offsetFraction,
+                            containerHeightPx = containerHeightPx,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EditTemplateRow(
+    onEdit: () -> Unit,
+    filledCount: Int,
+    totalCount: Int,
+    onCreateTemplate: () -> Unit,
+    canCreateTemplate: Boolean,
+) {
+    val iconTint = MaterialTheme.colorScheme.onSurfaceVariant
+    val colors = MaterialTheme.colorScheme
+    val createTextColor = if (canCreateTemplate) {
+        colors.onSurface
+    } else {
+        colors.onSurfaceVariant
+    }
+    val actionBackground = colors.surfaceVariant.copy(alpha = 0.16f)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Surface(
+            shape = RoundedCornerShape(14.dp),
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
+            color = actionBackground,
+            modifier = Modifier
+                .weight(1f)
+                .heightIn(min = 48.dp)
+                .clickable(onClick = onEdit)
+                .border(1.dp, colors.outline.copy(alpha = 0.45f), RoundedCornerShape(14.dp)),
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = null,
+                    tint = iconTint,
+                    modifier = Modifier.size(20.dp),
+                )
+                Text(
+                    text = "Редактировать",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = colors.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (totalCount > 0) {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = colors.surfaceVariant,
+                        tonalElevation = 0.dp,
+                        shadowElevation = 0.dp,
+                    ) {
+                        Text(
+                            text = "$filledCount/$totalCount",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colors.onSurfaceVariant,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            maxLines = 1,
+                        )
+                    }
+                }
+            }
+        }
+        Surface(
+            shape = RoundedCornerShape(14.dp),
+            color = if (canCreateTemplate) actionBackground else colors.surfaceVariant.copy(alpha = 0.12f),
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
+            modifier = Modifier
+                .weight(1f)
+                .heightIn(min = 48.dp)
+                .border(1.dp, colors.outline.copy(alpha = 0.35f), RoundedCornerShape(14.dp))
+                .alpha(if (canCreateTemplate) 1f else 0.5f)
+                .clickable(enabled = canCreateTemplate) { onCreateTemplate() },
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "Создать шаблон",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (canCreateTemplate) createTextColor else colors.onSurfaceVariant,
+                    maxLines = 1,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AttributeRow(
+    row: AttrRowState,
+    onClick: () -> Unit,
+    onRemove: () -> Unit,
+) {
+    val iconTint = MaterialTheme.colorScheme.onSurfaceVariant
+    val icon = pickAttrIconByKeyTitle(row.key, row.title)
+    val shownValue = row.value?.takeIf { it.isNotBlank() } ?: "—"
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = RowHeight)
+            .clickable(enabled = row.canEdit) { onClick() }
+            .padding(horizontal = 10.dp, vertical = 1.dp)
+            .animateContentSize(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Icon(
+            imageVector = if (row.isError) Icons.Outlined.ErrorOutline else icon,
+            contentDescription = null,
+            tint = iconTint,
+            modifier = Modifier.size(24.dp),
+        )
+        Column(
+            modifier = Modifier.weight(1f),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "${row.title}: ",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (row.isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                AnimatedContent(
+                    targetState = shownValue,
+                    transitionSpec = {
+                        (slideInVertically(
+                            animationSpec = tween(220, easing = FastOutSlowInEasing),
+                            initialOffsetY = { it / 2 },
+                        ) + fadeIn(animationSpec = tween(220))) togetherWith
+                            (slideOutVertically(
+                                animationSpec = tween(180, easing = FastOutSlowInEasing),
+                                targetOffsetY = { -it / 2 },
+                            ) + fadeOut(animationSpec = tween(180)))
+                    },
+                    label = "AttrValueAnimated",
+                ) { value ->
+                    Text(
+                        text = value,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = if (row.isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+            if (row.isError && !row.errorText.isNullOrBlank()) {
+                Text(
+                    text = row.errorText,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+        if (row.canRemove) {
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier.size(32.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = "Удалить атрибут",
+                    tint = iconTint,
+                )
+            }
+        }
+    }
+}
+@Composable
+private fun BoxWithScrollbar(
+    modifier: Modifier = Modifier,
+    providedScrollState: ScrollState? = null,
+    content: @Composable (Modifier, Boolean, Float, Float, Float) -> Unit,
+) {
+    BoxWithConstraints(modifier = modifier) {
+        val scrollState = providedScrollState ?: rememberScrollState()
+        val maxScroll = scrollState.maxValue
+        val containerHeightPx = constraints.maxHeight.toFloat()
+        val totalScrollPx = containerHeightPx + maxScroll.toFloat()
+        val fraction = if (totalScrollPx <= 0f) 1f else (containerHeightPx / totalScrollPx).coerceIn(0.1f, 1f)
+        val offsetFraction = if (maxScroll == 0) 0f else scrollState.value.toFloat() / maxScroll.toFloat()
+
+        content(
+            Modifier.verticalScroll(scrollState),
+            maxScroll > 0,
+            fraction,
+            offsetFraction.coerceIn(0f, 1f - fraction),
+            containerHeightPx,
+        )
+    }
+}
+
+@Composable
+private fun Scrollbar(
+    modifier: Modifier,
+    fraction: Float,
+    offsetFraction: Float,
+    containerHeightPx: Float,
+) {
+    val colors = MaterialTheme.colorScheme
+    val density = LocalDensity.current
+    val trackPaddingPx = with(density) { 6.dp.toPx() }
+    val minThumbPx = with(density) { 16.dp.toPx() }
+    val trackHeightPx = (containerHeightPx - trackPaddingPx * 2).coerceAtLeast(0f)
+    val thumbHeightPx = (trackHeightPx * fraction).coerceAtLeast(minThumbPx)
+    val containerHeightDp = with(density) { containerHeightPx.toDp() }
+    val thumbHeightDp = with(density) { thumbHeightPx.toDp() }
+    Box(
+        modifier = modifier
+            .fillMaxWidth(0.03f)
+            .height(containerHeightDp)
+            .padding(vertical = 6.dp),
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(colors.outline.copy(alpha = 0.15f), RoundedCornerShape(8.dp)),
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(1.dp)
+                .height(thumbHeightDp)
+                .background(colors.primary.copy(alpha = 0.45f), RoundedCornerShape(6.dp))
+                .graphicsLayer {
+                    val travel = (trackHeightPx - size.height).coerceAtLeast(0f)
+                    translationY = offsetFraction * travel
+                },
+        )
+    }
+}
+
+private fun pickAttrIconByKeyTitle(key: String, title: String): ImageVector {
+    val source = (key.ifBlank { title }).lowercase()
+    return when {
+        "price" in source || "цена" in source -> Icons.Outlined.LocalOffer
+        "currency" in source || "валют" in source -> Icons.Outlined.Language
+        "brand" in source || "бренд" in source -> Icons.Outlined.Star
+        "model" in source || "модель" in source -> Icons.AutoMirrored.Outlined.Label
+        "color" in source || "цвет" in source -> Icons.Outlined.ColorLens
+        "mem" in source || "память" in source || "gb" in source || "storage" in source -> Icons.Outlined.Memory
+        "size" in source || "размер" in source || "диагонал" in source -> Icons.Outlined.Straighten
+        "state" in source || "состояние" in source || "condition" in source -> Icons.Outlined.Schedule
+        "category" in source || "категор" in source -> Icons.Outlined.Tune
+        "link" in source || "url" in source -> Icons.Outlined.Link
+        "photo" in source || "image" in source -> Icons.Outlined.Image
+        else -> IconPool[(source.hashCode().absoluteValue) % IconPool.size]
+    }
+}

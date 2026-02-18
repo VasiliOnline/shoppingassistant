@@ -1,0 +1,29 @@
+package com.example.shoppingassistant.feature.pages.trackeditems
+
+import com.example.shoppingassistant.domain.tracks.TrackFilters
+
+sealed interface TrackEditSheet {
+    data object Region : TrackEditSheet
+    data object Delivery : TrackEditSheet
+    data object Condition : TrackEditSheet
+    data object Seller : TrackEditSheet
+    data class Extra(val key: String? = null) : TrackEditSheet
+}
+
+data class TrackEditState(
+    val trackId: String = "",
+    val isLoading: Boolean = true,
+    val isSaving: Boolean = false,
+    val trackTitle: String = "",
+    val original: TrackFilters = TrackFilters(),
+    val edited: TrackFilters = TrackFilters(),
+    val activeCount: Int = 0,
+    val hasUnsavedChanges: Boolean = false,
+    val errorMessage: String? = null,
+    val confirmDiscardVisible: Boolean = false,
+    val openSheet: TrackEditSheet? = null,
+    val actionMessage: String? = null,
+    val actionLabel: String? = null,
+    val actionTrackId: String? = null,
+    val closeRequested: Boolean = false,
+)

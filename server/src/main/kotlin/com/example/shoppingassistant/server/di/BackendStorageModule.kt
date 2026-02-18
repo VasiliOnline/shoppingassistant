@@ -1,0 +1,9 @@
+package com.example.shoppingassistant.server.di
+
+import com.example.shoppingassistant.server.storage.LocalPhotoStorageService
+import com.example.shoppingassistant.server.storage.PhotoStorageService
+import org.koin.dsl.module
+
+val backendStorageModule = module {
+    single<PhotoStorageService> { LocalPhotoStorageService() }
+}

@@ -1,0 +1,19 @@
+package com.example.shoppingassistant.feature.pages.useroffers.tasks
+
+import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCardUi
+import kotlinx.coroutines.flow.StateFlow
+
+/**
+ * Контракт хранилища для только что созданных офферов (локальный список),
+ * чтобы показывать их в "Мои товары" сразу после создания.
+ */
+interface UserOffersCreatedStore {
+    val items: StateFlow<List<UserOfferCardUi>>
+    val errorMessage: StateFlow<String?>
+    fun add(offer: UserOfferCardUi)
+    fun update(offer: UserOfferCardUi)
+    fun remove(offerId: String)
+    fun replaceId(oldId: String, newId: String)
+    fun replaceAll(items: List<UserOfferCardUi>)
+    fun clear()
+}

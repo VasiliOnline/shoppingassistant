@@ -1,0 +1,15 @@
+package com.example.shoppingassistant.feature.pages.ingest
+
+import com.example.shoppingassistant.domain.ingest.RawOffer
+import com.example.shoppingassistant.domain.ingest.SourceType
+
+/**
+ * Состояние тестового экрана ingest-парсера.
+ */
+data class IngestUiState(
+    val url: String = "",
+    val source: SourceType = SourceType.AVITO,
+    val loading: Boolean = false,
+    val result: RawOffer? = null,
+    val error: String? = null,
+)

@@ -1,0 +1,139 @@
+version: 2.1-L0
+l0_code: SPORT
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- как
+- упражнения
+- программа
+- инструкция
+- форум
+- отзывы
+- скачать
+- игра
+- обои
+disambiguation_ordered_rules:
+- id: R.SUPPLEMENTS_VITAMINS
+  if_any_tokens:
+  - витамин
+  - витамины
+  - омега
+  - бады
+  - коллаген
+  - магний
+  - цинк
+  then_route_canonical: BEAUTY.HEALTH
+  confidence: 0.8
+  notes: Supplements (general) -> BEAUTY.HEALTH
+- id: R.TOOLS_REPAIR
+  if_any_tokens:
+  - инструмент
+  - набор инструментов
+  - ремкомплект
+  then_route_canonical: HOME.REPAIR_TOOLS
+  confidence: 0.66
+  notes: Tools/repair kits -> HOME.REPAIR_TOOLS
+- id: R.BIKES_SCOOTERS
+  if_any_tokens:
+  - велосипед
+  - велос
+  - mtb
+  - самокат
+  - электросамокат
+  - e-scooter
+  - электровелосипед
+  - e-bike
+  - покрышка
+  - камера велосипедная
+  - велозамок
+  then_route_browse_node: BN.SPORT.BIKES
+  confidence: 0.86
+  notes: Bikes and scooters
+- id: R.OUTDOOR_CAMPING
+  if_any_tokens:
+  - палатка
+  - спальник
+  - рюкзак туристический
+  - горелка
+  - газовый баллон
+  - котелок
+  - каремат
+  - кемпинг
+  - трекинговые палки
+  - фонарь кемпинговый
+  - термос
+  then_route_browse_node: BN.SPORT.OUTDOOR
+  confidence: 0.84
+  notes: Outdoor and camping
+- id: R.FITNESS
+  if_any_tokens:
+  - гантели
+  - гири
+  - штанга
+  - коврик для йоги
+  - эспандер
+  - резинки для фитнеса
+  - турник
+  - беговая дорожка
+  - велотренажер
+  - эллипсоид
+  - гребной тренажер
+  - протеин
+  - креатин
+  - bcaa
+  - гейнер
+  - trx
+  then_route_browse_node: BN.SPORT.FITNESS
+  confidence: 0.82
+  notes: Fitness
+- id: R.SPORT_EQUIPMENT
+  if_any_tokens:
+  - мяч
+  - ракетка
+  - перчатки боксерские
+  - боксерская груша
+  - каппа
+  - лыжи
+  - сноуборд
+  - ролики
+  - скейтборд
+  - плавательные очки
+  - шапочка для плавания
+  then_route_browse_node: BN.SPORT.EQUIP
+  confidence: 0.78
+  notes: Sports equipment (ball sports/combat/swim/winter/skate)
+- id: R.HOBBY_CREATIVITY
+  if_any_tokens:
+  - краски
+  - кисти
+  - мольберт
+  - холст
+  - рукоделие
+  - пряжа
+  - вышивка
+  - алмазная мозаика
+  - гитара
+  - синтезатор
+  - моделизм
+  - сборная модель
+  - радиоуправляемая модель
+  - коллекционная
+  - монеты
+  then_route_browse_node: BN.SPORT.HOBBY
+  confidence: 0.74
+  notes: Hobby/creativity
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.SPORT
+  default_canonical: SPORT
+  if_only_generic_tokens_route_to_root: true

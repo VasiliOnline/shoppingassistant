@@ -1,0 +1,1575 @@
+package com.example.shoppingassistant.feature.pages.profile.tasks
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ExitToApp
+import androidx.compose.material.icons.automirrored.outlined.ViewList
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.ExpandLess
+import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material.icons.outlined.Fullscreen
+import androidx.compose.material.icons.outlined.FullscreenExit
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Verified
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.example.shoppingassistant.core.config.AboutConfig
+import com.example.shoppingassistant.feature.pages.profile.ProfileState
+import com.example.shoppingassistant.domain.model.AuthResult
+import com.example.shoppingassistant.domain.profile.ExternalLink
+import com.example.shoppingassistant.feature.pages.profile.ProfileViewModel
+import com.example.shoppingassistant.feature.ui.animations.ListAnimationsTask
+import com.example.shoppingassistant.feature.ui.animations.PressFeedbackTask
+import com.example.shoppingassistant.feature.ui.animations.ShimmerTask
+import com.example.shoppingassistant.feature.ui.animations.rememberListAnimationsTask
+import com.example.shoppingassistant.feature.ui.animations.rememberPressFeedbackTask
+import com.example.shoppingassistant.feature.ui.animations.rememberShimmerTask
+import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
+import com.example.shoppingassistant.feature.R
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.OpenableColumns
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
+/**
+ * Экран профиля в состоянии Authorized: фото, статистика, ссылки и действия.
+ */
+@Composable
+fun ProfileAuthorizedBlock(
+    profile: ProfileState.Authorized,
+    viewModel: ProfileViewModel,
+    onLogoutClick: () -> Unit,
+    onMyItemsClick: () -> Unit,
+    onTrackedItemsClick: () -> Unit,
+    onEditProfileClick: () -> Unit = {},
+    onProfileChanged: () -> Unit = {},
+    banner: ProfileBanner? = null,
+    isStale: Boolean = false,
+) {
+    val scroll = rememberScrollState()
+    val listAnimations = rememberListAnimationsTask()
+    val pressFeedback = rememberPressFeedbackTask()
+    val shimmerTask = rememberShimmerTask()
+
+    val context = LocalContext.current
+    val versionInfo = remember(context) { getAppVersionInfo(context) }
+    val maxPhotos = 10
+    val maxPhotoBytes = 5 * 1024 * 1024
+    val addPhotoLabel = stringResource(R.string.profile_add_photo)
+    val profilePhotoLabel = stringResource(R.string.profile_profile_photo)
+    val deletePhotoLabel = stringResource(R.string.profile_delete_photo)
+    val expandGalleryLabel = stringResource(R.string.profile_toggle_gallery_expand)
+    val collapseGalleryLabel = stringResource(R.string.profile_toggle_gallery_collapse)
+    val photoUploadingLabel = stringResource(R.string.profile_photo_uploading)
+    val photoRetryLabel = stringResource(R.string.profile_photo_retry)
+    val photoDismissLabel = stringResource(R.string.profile_photo_dismiss)
+    val photoLimitLabel = stringResource(R.string.profile_photo_limit, maxPhotos)
+    val photoReadFailedLabel = stringResource(R.string.profile_photo_read_failed)
+    val photoUploadFailedLabel = stringResource(R.string.profile_photo_upload_failed)
+    val photoSaveFailedLabel = stringResource(R.string.profile_photo_save_failed)
+    val photoDeleteFailedLabel = stringResource(R.string.profile_photo_delete_failed)
+    val phoneChangeFailedLabel = stringResource(R.string.profile_phone_change_failed)
+    val linkEmptyError = stringResource(R.string.profile_links_error_empty)
+    val linkDomainError = stringResource(R.string.profile_links_error_domain)
+    val bannerMessage = when (banner) {
+        ProfileBanner.OFFLINE -> stringResource(R.string.profile_banner_offline)
+        null -> null
+    }
+    var isSliderMode by remember { mutableStateOf(false) }
+    var linkDialogState by remember { mutableStateOf<LinkDialogState?>(null) }
+    var linkDraft by remember { mutableStateOf("") }
+    var linkError by remember { mutableStateOf<String?>(null) }
+    var activeOverlay by remember { mutableStateOf(ProfileOverlay.NONE) }
+    var photoUploadState by remember { mutableStateOf(PhotoUploadState()) }
+    val scope = rememberCoroutineScope()
+
+    val links = remember(profile.id, profile.externalLinks) {
+        mutableStateListOf<ExternalLink>().apply { addAll(profile.externalLinks) }
+    }
+    val aboutActions = listOf(
+        AboutAction(
+            label = stringResource(R.string.profile_about_privacy),
+            enabled = AboutConfig.PRIVACY_POLICY_URL.isNotBlank(),
+            onClick = { openExternalLink(context, AboutConfig.PRIVACY_POLICY_URL) },
+        ),
+        AboutAction(
+            label = stringResource(R.string.profile_about_terms),
+            enabled = AboutConfig.TERMS_URL.isNotBlank(),
+            onClick = { openExternalLink(context, AboutConfig.TERMS_URL) },
+        ),
+        AboutAction(
+            label = stringResource(R.string.profile_about_licenses),
+            enabled = AboutConfig.OSS_LICENSES_URL.isNotBlank(),
+            onClick = { openExternalLink(context, AboutConfig.OSS_LICENSES_URL) },
+        ),
+        AboutAction(
+            label = stringResource(R.string.profile_about_feedback),
+            enabled = AboutConfig.FEEDBACK_EMAIL.isNotBlank(),
+            onClick = { openFeedbackEmail(context, AboutConfig.FEEDBACK_EMAIL) },
+        ),
+    )
+
+    fun openOverlay(target: ProfileOverlay) {
+        activeOverlay = target
+        linkDialogState = null
+    }
+
+    fun openLinkDialog(mode: LinkDialogMode, index: Int? = null) {
+        linkDialogState = LinkDialogState(mode, index)
+        linkDraft = when (mode) {
+            LinkDialogMode.ADD -> ""
+            LinkDialogMode.EDIT -> links.getOrNull(index ?: -1)?.url.orEmpty()
+        }
+        linkError = null
+        activeOverlay = ProfileOverlay.NONE
+    }
+
+    val photos = remember(profile.id, profile.avatarUrl, profile.photos) {
+        mutableStateListOf<String>().apply {
+            profile.avatarUrl?.takeIf { it.isNotBlank() }?.let { add(it) }
+            profile.photos.forEach { url ->
+                if (url.isNotBlank() && !contains(url)) add(url)
+            }
+        }
+    }
+
+    val handlePickedUri: (Uri) -> Unit = handlePickedUri@{ uri ->
+
+    if (photos.size >= maxPhotos) {
+            photoUploadState = PhotoUploadState(
+                error = photoLimitLabel,
+            )
+            return@handlePickedUri
+        }
+        scope.launch {
+            photoUploadState = PhotoUploadState(isUploading = true, pendingUri = uri)
+            val payload = runCatching { readBytesFromUri(context, uri, maxPhotoBytes) }
+                .getOrElse { throwable ->
+                    photoUploadState = PhotoUploadState(
+                        error = throwable.message ?: photoReadFailedLabel,
+                        pendingUri = uri,
+                    )
+                    return@launch
+                }
+
+            val filename = resolveFileName(context, uri)
+            val contentType = context.contentResolver.getType(uri)
+            val uploadResult = runCatching {
+                viewModel.uploadPhoto(payload, filename, contentType)
+            }.getOrElse { throwable ->
+                photoUploadState = PhotoUploadState(
+                    error = throwable.message ?: photoUploadFailedLabel,
+                    pendingUri = uri,
+                )
+                return@launch
+            }
+
+            val updated = (photos + uploadResult).distinct()
+            val saved = runCatching { viewModel.updatePhotos(updated) }
+            if (saved.isFailure) {
+                photoUploadState = PhotoUploadState(
+                    error = saved.exceptionOrNull()?.message ?: photoSaveFailedLabel,
+                    pendingUri = uri,
+                )
+                return@launch
+            }
+
+            photos.clear()
+            photos.addAll(updated)
+            photoUploadState = PhotoUploadState()
+            onProfileChanged()
+        }
+    }
+
+    val pickerLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia(),
+    ) { uri ->
+        uri?.let { handlePickedUri(it) }
+    }
+    val legacyPickerLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent(),
+    ) { uri ->
+        uri?.let { handlePickedUri(it) }
+    }
+
+    val addPhoto: () -> Unit = addPhoto@{
+
+    if (photos.size >= maxPhotos) {
+            photoUploadState = PhotoUploadState(
+                error = photoLimitLabel,
+            )
+            return@addPhoto
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            pickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+            )
+        } else {
+            legacyPickerLauncher.launch("image/*")
+        }
+    }
+
+    val removePhoto: (Int) -> Unit = { index ->
+        if (index in photos.indices) {
+            val removed = photos.removeAt(index)
+            scope.launch {
+                val sanitized = photos.filter { it.isNotBlank() }
+                val result = runCatching { viewModel.updatePhotos(sanitized) }
+                if (result.isFailure) {
+                    photos.add(index, removed)
+                    photoUploadState = PhotoUploadState(
+                        error = result.exceptionOrNull()?.message ?: photoDeleteFailedLabel,
+                    )
+                } else {
+                    onProfileChanged()
+                }
+            }
+        }
+    }
+
+    val handlePhoneChange: suspend (String) -> Unit = { newPhone ->
+        runCatching { viewModel.updatePhone(newPhone) }
+            .onSuccess { onProfileChanged() }
+            .getOrElse { throwable ->
+                throw IllegalStateException(throwable.message ?: phoneChangeFailedLabel)
+            }
+    }
+
+    val handlePasswordChange: suspend (String, String) -> AuthResult = { oldPass, newPass ->
+        val result = viewModel.changePassword(oldPass, newPass)
+        if (result is AuthResult.Success) {
+            onProfileChanged()
+        }
+        result
+    }
+
+    val handleRequestEmailChange: suspend (String) -> Unit = { email ->
+        viewModel.requestEmailChange(email.trim())
+    }
+
+    val handleConfirmEmailChange: suspend (String) -> AuthResult = { token ->
+        val result = viewModel.confirmEmailChange(token.trim())
+        if (result is AuthResult.Success) {
+            onProfileChanged()
+        }
+        result
+    }
+
+    val handleDeleteAccount: suspend () -> Boolean = {
+        val result = viewModel.deleteAccount()
+        if (result) {
+            onProfileChanged()
+        }
+        result
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter,
+    ) {
+        // фон блока делаем прозрачным, чтобы не было двойного оттенка под шапкой
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.95f),
+            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+            color = Color.Transparent,
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scroll)
+                    .padding(
+                        start = LayoutDefaults.HorizontalPadding,
+                        end = LayoutDefaults.HorizontalPadding,
+                        top = 0.dp,
+                        bottom = LayoutDefaults.SectionSpacing,
+                    ),
+                verticalArrangement = Arrangement.spacedBy(LayoutDefaults.SectionSpacing),
+            ) {
+                if (bannerMessage != null) {
+                    ProfileStatusBanner(
+                        message = bannerMessage,
+                        isWarning = isStale,
+                    )
+                }
+                if (photoUploadState.isUploading || photoUploadState.error != null) {
+                    PhotoUploadBanner(
+                        state = photoUploadState,
+                        onRetry = {
+                            photoUploadState.pendingUri?.let { handlePickedUri(it) }
+                        },
+                        onDismiss = { photoUploadState = PhotoUploadState() },
+                        uploadingLabel = photoUploadingLabel,
+                        retryLabel = photoRetryLabel,
+                        dismissLabel = photoDismissLabel,
+                    )
+                }
+                AvatarCard(
+                    profile = profile,
+                    photos = photos,
+                    isSliderMode = isSliderMode,
+                    onToggleMode = { isSliderMode = !isSliderMode },
+                    onAddPhoto = addPhoto,
+                    onRemovePhoto = removePhoto,
+                    addPhotoLabel = addPhotoLabel,
+                    profilePhotoLabel = profilePhotoLabel,
+                    deletePhotoLabel = deletePhotoLabel,
+                    expandGalleryLabel = expandGalleryLabel,
+                    collapseGalleryLabel = collapseGalleryLabel,
+                    press = pressFeedback,
+                    shimmer = shimmerTask,
+                )
+
+                ProfileStatsSection(profile = profile)
+
+                // обновлённый блок "Мои страницы"
+                LinksSection(
+                    links = links,
+                    onAddClick = { openLinkDialog(LinkDialogMode.ADD) },
+                    onLinkClick = { link -> openExternalLink(context, link.url) },
+                    onLinkLongClick = { index -> openLinkDialog(LinkDialogMode.EDIT, index) },
+                    animations = listAnimations,
+                    press = pressFeedback,
+                )
+
+                // В обработчике нажатия на «Личные данные» открывать диалог
+                ProfileActionsSection(
+                    onMyItemsClick = onMyItemsClick,
+                    onTrackedItemsClick = onTrackedItemsClick,
+                    onEditProfileClick = {
+                        openOverlay(ProfileOverlay.PERSONAL_DATA)
+                    }
+                    ,
+                    // В обработчике кнопки «Настройки» открыть страницу
+                    onSettingsClick = { openOverlay(ProfileOverlay.SETTINGS) },
+                    onLogoutClick = onLogoutClick,
+                )
+
+                AboutSection(
+                    versionInfo = versionInfo,
+                    actions = aboutActions,
+                )
+            }
+        }
+
+        when (activeOverlay) {
+            ProfileOverlay.PERSONAL_DATA -> {
+                ProfilePersonalDataPage(
+                    profile = profile,
+                    onBackClick = { activeOverlay = ProfileOverlay.NONE },
+                    onPhoneChanged = handlePhoneChange,
+                    onPasswordChanged = handlePasswordChange,
+                    onRequestDelete = handleDeleteAccount,
+                    onRequestEmailChange = handleRequestEmailChange,
+                    onConfirmEmailChange = handleConfirmEmailChange,
+                )
+            }
+            ProfileOverlay.SETTINGS -> {
+                ProfileSettingsPage(
+                    settings = profile.settings,
+                    onSettingsChange = { updated ->
+                        viewModel.updateSettings(updated)
+                        onProfileChanged()
+                    },
+                    onBackClick = { activeOverlay = ProfileOverlay.NONE },
+                )
+            }
+            ProfileOverlay.NONE -> Unit
+        }
+
+        linkDialogState?.let { dialog ->
+            LinkEditorDialog(
+                mode = dialog.mode,
+                value = linkDraft,
+                error = linkError,
+                onValueChange = {
+                    linkDraft = it
+                    linkError = null
+                },
+                onCancel = {
+                    linkDialogState = null
+                    linkDraft = ""
+                    linkError = null
+                },
+                onConfirm = confirm@{
+                    val trimmed = linkDraft.trim()
+                    val error = validateLink(trimmed, linkEmptyError, linkDomainError)
+                    if (error != null) {
+                        linkError = error
+                        return@confirm
+                    }
+
+                    val normalized = normalizeLink(trimmed)
+                    val title = normalized
+                        .removePrefix("https://")
+                        .removePrefix("http://")
+
+                    when (dialog.mode) {
+                        LinkDialogMode.ADD -> {
+                            links.add(ExternalLink(title = title, url = normalized))
+                        }
+                        LinkDialogMode.EDIT -> {
+                            val index = dialog.index ?: return@confirm
+                            if (index in links.indices) {
+                                links[index] = ExternalLink(title = title, url = normalized)
+                            }
+                        }
+                    }
+
+                    viewModel.updateLinks(links)
+                    linkDialogState = null
+                    linkDraft = ""
+                    linkError = null
+                },
+                onDelete = if (dialog.mode == LinkDialogMode.EDIT) {
+                    delete@{
+                        val index = dialog.index ?: return@delete
+                        if (index in links.indices) {
+                            links.removeAt(index)
+                            viewModel.updateLinks(links)
+                        }
+                        linkDialogState = null
+                        linkDraft = ""
+                        linkError = null
+                    }
+                } else null,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun AvatarCard(
+    profile: ProfileState.Authorized,
+    photos: SnapshotStateList<String>,
+    isSliderMode: Boolean,
+    onToggleMode: () -> Unit,
+    onAddPhoto: () -> Unit,
+    onRemovePhoto: (Int) -> Unit,
+    addPhotoLabel: String,
+    profilePhotoLabel: String,
+    deletePhotoLabel: String,
+    expandGalleryLabel: String,
+    collapseGalleryLabel: String,
+    press: PressFeedbackTask,
+    shimmer: ShimmerTask,
+) {
+    val placeholderLetter = (profile.displayName.ifBlank { profile.email })
+        .firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clipToBounds(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = if (isSliderMode) 0.dp else 12.dp, bottom = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                if (isSliderMode) {
+                    val slides: List<String?> =
+                        if (photos.isEmpty()) listOf<String?>(null) else photos
+                    val pager = rememberPagerState { slides.size }
+                    val sliderInteraction = remember { MutableInteractionSource() }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .clip(RoundedCornerShape(18.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f))
+                            .then(with(press) { Modifier.pressEffect(interactionSource = sliderInteraction) })
+                            .clickable(
+                                interactionSource = sliderInteraction,
+                                indication = null,
+                                onClick = onAddPhoto,
+                            ),
+                    ) {
+                        HorizontalPager(
+                            state = pager,
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(horizontal = 0.dp),
+                            pageSpacing = 0.dp,
+                        ) { index ->
+                            val photo = slides[index]
+                            if (photo.isNullOrBlank()) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .then(with(shimmer) { Modifier.shimmer() }),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.PhotoCamera,
+                                        contentDescription = addPhotoLabel,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                                        modifier = Modifier.size(48.dp),
+                                    )
+                                }
+                            } else {
+                                var loading by remember(photo) { mutableStateOf(true) }
+                                AsyncImage(
+                                    model = photo,
+                                    contentDescription = profilePhotoLabel,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(RoundedCornerShape(18.dp))
+                                        .then(if (loading) with(shimmer) { Modifier.shimmer() } else Modifier),
+                                    onLoading = { loading = true },
+                                    onSuccess = { loading = false },
+                                    onError = { loading = false },
+                                )
+                            }
+                        }
+                        if (photos.isNotEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    onRemovePhoto(pager.currentPage.coerceAtMost(photos.lastIndex))
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(4.dp)
+                                    .sizeIn(minWidth = 48.dp, minHeight = 48.dp),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Delete,
+                                    contentDescription = deletePhotoLabel,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        val mainPhoto = photos.firstOrNull()
+                        val avatarInteraction = remember { MutableInteractionSource() }
+                        Box(
+                            modifier = Modifier
+                                .size(108.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f))
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                    shape = CircleShape,
+                                )
+                                .then(with(press) { Modifier.pressEffect(interactionSource = avatarInteraction) })
+                                .clickable(
+                                    interactionSource = avatarInteraction,
+                                    indication = null,
+                                    onClick = onAddPhoto,
+                                ),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (mainPhoto.isNullOrBlank()) {
+                                Text(
+                                    text = placeholderLetter,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    modifier = with(shimmer) { Modifier.shimmer() },
+                                )
+                            } else {
+                                var loading by remember(mainPhoto) { mutableStateOf(true) }
+                                AsyncImage(
+                                    model = mainPhoto,
+                                    contentDescription = profilePhotoLabel,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape)
+                                        .then(if (loading) with(shimmer) { Modifier.shimmer() } else Modifier),
+                                    onLoading = { loading = true },
+                                    onSuccess = { loading = false },
+                                    onError = { loading = false },
+                                )
+                            }
+                        }
+                    }
+                }
+                IconButton(
+                    onClick = onToggleMode,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(4.dp)
+                        .sizeIn(minWidth = 48.dp, minHeight = 48.dp),
+                ) {
+                    val toggleIcon =
+                        if (isSliderMode) Icons.Outlined.FullscreenExit else Icons.Outlined.Fullscreen
+                    Icon(
+                        imageVector = toggleIcon,
+                        contentDescription = if (isSliderMode) {
+                            collapseGalleryLabel
+                        } else {
+                            expandGalleryLabel
+                        },
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Text(
+                text = profile.displayName.ifBlank { profile.email },
+                style = MaterialTheme.typography.titleMedium,
+            )
+            VerificationRow(
+                emailVerified = profile.emailVerified,
+                phoneVerified = profile.phoneVerifiedAt != null,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PersonalInfoSection(
+    profile: ProfileState.Authorized,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+) {
+    var phone by remember(profile.id) { mutableStateOf(profile.phone.orEmpty()) }
+    var email by remember(profile.id) { mutableStateOf(profile.email) }
+    var city by remember(profile.id) { mutableStateOf(profile.city.orEmpty()) }
+    var birthDate by remember(profile.id) { mutableStateOf("") }
+    var address by remember(profile.id) { mutableStateOf("") }
+
+    var phoneError by remember(profile.id) { mutableStateOf<String?>(null) }
+    var emailError by remember(profile.id) { mutableStateOf<String?>(null) }
+    var cityError by remember(profile.id) { mutableStateOf<String?>(null) }
+    var birthDateError by remember(profile.id) { mutableStateOf<String?>(null) }
+    val personalTitle = stringResource(R.string.profile_personal_title)
+    val phoneLabel = stringResource(R.string.profile_personal_phone_label)
+    val phonePlaceholder = stringResource(R.string.profile_phone_input_placeholder)
+    val emailLabel = stringResource(R.string.profile_email_label)
+    val emailPlaceholder = stringResource(R.string.profile_email_placeholder)
+    val cityLabel = stringResource(R.string.profile_personal_city_label)
+    val cityPlaceholder = stringResource(R.string.profile_personal_city_placeholder)
+    val birthDateLabel = stringResource(R.string.profile_personal_birth_date_label)
+    val birthDatePlaceholder = stringResource(R.string.profile_personal_birth_date_placeholder)
+    val addressLabel = stringResource(R.string.profile_personal_address_label)
+    val addressPlaceholder = stringResource(R.string.profile_personal_address_placeholder)
+    val phoneRequiredError = stringResource(R.string.profile_personal_phone_required)
+    val phoneShortError = stringResource(R.string.profile_personal_phone_short)
+    val cityShortError = stringResource(R.string.profile_personal_city_short)
+    val birthDateInvalidError = stringResource(R.string.profile_personal_birth_date_invalid)
+    val emailRequiredText = stringResource(R.string.profile_auth_email_required)
+    val emailInvalidText = stringResource(R.string.profile_auth_email_invalid)
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onToggle),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Person,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = personalTitle,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Icon(
+                    imageVector = if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            if (expanded) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        value = phone,
+                        onValueChange = {
+                            phone = it
+                            phoneError = validateProfilePhone(
+                                it,
+                                phoneRequiredError,
+                                phoneShortError,
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        label = { Text(phoneLabel) },
+                        placeholder = { Text(phonePlaceholder) },
+                        isError = phoneError != null,
+                    )
+                    if (phoneError != null) {
+                        Text(
+                            text = phoneError!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = {
+                            email = it
+                            emailError = validateAuthEmail(
+                                it,
+                                emailRequiredText,
+                                emailInvalidText,
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        label = { Text(emailLabel) },
+                        placeholder = { Text(emailPlaceholder) },
+                        isError = emailError != null,
+                    )
+                    if (emailError != null) {
+                        Text(
+                            text = emailError!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = city,
+                        onValueChange = {
+                            city = it
+                            cityError = validateProfileCity(it, cityShortError)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        label = { Text(cityLabel) },
+                        placeholder = { Text(cityPlaceholder) },
+                        isError = cityError != null,
+                    )
+                    if (cityError != null) {
+                        Text(
+                            text = cityError!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = birthDate,
+                        onValueChange = {
+                            birthDate = it
+                            birthDateError = validateProfileBirthDate(
+                                it,
+                                birthDateInvalidError,
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        label = { Text(birthDateLabel) },
+                        placeholder = { Text(birthDatePlaceholder) },
+                        isError = birthDateError != null,
+                    )
+                    if (birthDateError != null) {
+                        Text(
+                            text = birthDateError!!,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
+                    OutlinedTextField(
+                        value = address,
+                        onValueChange = { address = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = false,
+                        label = { Text(addressLabel) },
+                        placeholder = { Text(addressPlaceholder) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun validateProfilePhone(
+    raw: String,
+    emptyError: String,
+    shortError: String,
+): String? {
+    val digits = raw.filter { it.isDigit() }
+    if (digits.isBlank()) return emptyError
+    if (digits.length < 10) return shortError
+    return null
+}
+
+private fun validateProfileCity(raw: String, shortError: String): String? {
+    val trimmed = raw.trim()
+    if (trimmed.isEmpty()) return null
+    if (trimmed.length < 2) return shortError
+    return null
+}
+
+
+private fun validateProfileBirthDate(raw: String, invalidError: String): String? {
+    val trimmed = raw.trim()
+    if (trimmed.isEmpty()) return null
+    val regex = Regex("""\d{2}\.\d{2}\.\d{4}""")
+    if (!regex.matches(trimmed)) {
+        return invalidError
+    }
+    return null
+}
+// 2. Обновлённый LinksSection: горизонтальный скролл и кнопка добавления первой
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun LinksSection(
+    links: List<ExternalLink>,
+    onAddClick: () -> Unit,
+    onLinkClick: (ExternalLink) -> Unit,
+    onLinkLongClick: (Int) -> Unit,
+    animations: ListAnimationsTask,
+    press: PressFeedbackTask,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Link,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = stringResource(R.string.profile_my_pages),
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 0.dp),
+        ) {
+            item {
+                Button(
+                    onClick = onAddClick,
+                    shape = RoundedCornerShape(50),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                        contentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    modifier = with(press) { Modifier.pressEffect() },
+                ) {
+                    Icon(Icons.Outlined.Add, contentDescription = null)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(stringResource(R.string.profile_add))
+                }
+            }
+            itemsIndexed(links) { index, link ->
+                AnimatedVisibility(
+                    visible = true,
+                    enter = animations.itemEnter(),
+                    exit = animations.itemExit(),
+                ) {
+                    LinkBadge(
+                        label = link.title,
+                        icon = Icons.Rounded.Link,
+                        onClick = { onLinkClick(link) },
+                        onLongClick = { onLinkLongClick(index) },
+                        isEmphasized = false,
+                        press = press,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LinkBadge(
+    label: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
+    isEmphasized: Boolean,
+    press: PressFeedbackTask? = null,
+    modifier: Modifier = Modifier,
+) {
+    val backgroundColor =
+        if (isEmphasized) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+        else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f)
+    val borderStroke =
+        if (isEmphasized) BorderStroke(0.dp, Color.Transparent)
+        else BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+        )
+
+    val clickableModifier = modifier
+        .then(press?.let { with(it) { Modifier.pressEffect() } } ?: Modifier)
+        .combinedClickable(
+            onClick = onClick,
+            onLongClick = onLongClick,
+        )
+
+    Surface(
+        modifier = clickableModifier,
+        shape = RoundedCornerShape(50),
+        color = backgroundColor,
+        border = borderStroke,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = if (isEmphasized) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
+
+@Composable
+private fun InfoRow(label: String, value: String) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Composable
+private fun ProfileStatsSection(profile: ProfileState.Authorized) {
+    val stats = buildList {
+        profile.dealsCount?.let { add(stringResource(R.string.profile_stats_deals) to it.toString()) }
+        profile.favoritesCount?.let { add(stringResource(R.string.profile_stats_favorites) to it.toString()) }
+        profile.alertsCount?.let { add(stringResource(R.string.profile_stats_alerts) to it.toString()) }
+        profile.trustScore?.let { add(stringResource(R.string.profile_stats_trust) to it.toString()) }
+    }
+    val registered = profile.registeredAt?.let { formatDate(it) }
+
+    if (stats.isEmpty() && registered == null) return
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (stats.isNotEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                stats.forEach { (label, value) ->
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = value,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
+        if (registered != null) {
+            InfoRow(label = stringResource(R.string.profile_stats_registered), value = registered)
+        }
+    }
+}
+
+// 3. Изменяем ProfileActionsSection: убираем «Предпочтения» и «Изменить пароль», добавляем «Настройки»
+@Composable
+private fun ProfileActionsSection(
+    onMyItemsClick: () -> Unit,
+    onTrackedItemsClick: () -> Unit,
+    onEditProfileClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onLogoutClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val smallButton = Modifier
+            .fillMaxWidth(0.6f)
+            .height(44.dp)
+
+        Button(
+            onClick = onEditProfileClick,
+            modifier = smallButton,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Icon(Icons.Outlined.Edit, contentDescription = null)
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(stringResource(R.string.profile_personal_data))
+        }
+
+        Button(
+            onClick = onTrackedItemsClick,
+            modifier = smallButton,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Icon(Icons.AutoMirrored.Outlined.ViewList, contentDescription = null)
+            Spacer(modifier = Modifier.width(6.dp))
+            Text("Отслеживаемые товары")
+        }
+
+        Button(
+            onClick = onSettingsClick,
+            modifier = smallButton,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Icon(Icons.Outlined.Settings, contentDescription = null)
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(stringResource(R.string.profile_settings_title))
+        }
+
+        TextButton(
+            onClick = onLogoutClick,
+            modifier = smallButton,
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.ExitToApp,
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(stringResource(R.string.profile_logout))
+        }
+    }
+}
+
+private data class AppVersionInfo(
+    val name: String,
+    val code: Long,
+)
+
+private data class AboutAction(
+    val label: String,
+    val enabled: Boolean,
+    val onClick: () -> Unit,
+)
+
+@Composable
+private fun AboutSection(
+    versionInfo: AppVersionInfo,
+    actions: List<AboutAction>,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Info,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = stringResource(R.string.profile_about_title),
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+        Text(
+            text = stringResource(
+                R.string.profile_about_version,
+                versionInfo.name,
+                versionInfo.code,
+            ),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        actions.forEach { action ->
+            val textColor = if (action.enabled) {
+                MaterialTheme.colorScheme.onSurface
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            }
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(enabled = action.enabled) { action.onClick() },
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = action.label,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = textColor,
+                    )
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = null,
+                        tint = textColor,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun formatDate(timestamp: Long): String =
+    runCatching {
+        val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        formatter.format(Date(timestamp))
+    }.getOrDefault("—")
+
+private enum class ProfileOverlay {
+    NONE,
+    PERSONAL_DATA,
+    SETTINGS,
+}
+
+private enum class LinkDialogMode { ADD, EDIT }
+
+private data class LinkDialogState(
+    val mode: LinkDialogMode,
+    val index: Int? = null,
+)
+
+private data class PhotoUploadState(
+    val isUploading: Boolean = false,
+    val error: String? = null,
+    val pendingUri: Uri? = null,
+)
+
+@Composable
+private fun ProfileStatusBanner(
+    message: String,
+    isWarning: Boolean,
+) {
+    val background = if (isWarning) {
+        MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f)
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+    }
+    val textColor = if (isWarning) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = background,
+        shape = RoundedCornerShape(14.dp),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Icon(
+                imageVector = if (isWarning) Icons.Outlined.Info else Icons.Outlined.Notifications,
+                contentDescription = null,
+                tint = textColor,
+            )
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodySmall,
+                color = textColor,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PhotoUploadBanner(
+    state: PhotoUploadState,
+    onRetry: () -> Unit,
+    onDismiss: () -> Unit,
+    uploadingLabel: String,
+    retryLabel: String,
+    dismissLabel: String,
+) {
+    val background = if (state.error != null) {
+        MaterialTheme.colorScheme.error.copy(alpha = 0.12f)
+    } else {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+    }
+    val textColor = if (state.error != null) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = background,
+        shape = RoundedCornerShape(14.dp),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            val text = state.error ?: uploadingLabel
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodySmall,
+                color = textColor,
+                modifier = Modifier.weight(1f),
+            )
+            if (state.error != null && state.pendingUri != null) {
+                TextButton(onClick = onRetry) { Text(retryLabel) }
+            } else if (state.error != null) {
+                TextButton(onClick = onDismiss) { Text(dismissLabel) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LinkEditorDialog(
+    mode: LinkDialogMode,
+    value: String,
+    error: String?,
+    onValueChange: (String) -> Unit,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+    onDelete: (() -> Unit)? = null,
+) {
+    val title = if (mode == LinkDialogMode.ADD) {
+        stringResource(R.string.profile_links_new_title)
+    } else {
+        stringResource(R.string.profile_links_edit_title)
+    }
+    val confirmLabel = if (mode == LinkDialogMode.ADD) {
+        stringResource(R.string.profile_links_add_action)
+    } else {
+        stringResource(R.string.profile_links_save_action)
+    }
+
+    AlertDialog(
+        onDismissRequest = onCancel,
+        confirmButton = {
+            TextButton(onClick = onConfirm) { Text(confirmLabel) }
+        },
+        dismissButton = {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (onDelete != null) {
+                    TextButton(onClick = onDelete) {
+                        Text(stringResource(R.string.profile_links_delete_action))
+                    }
+                }
+                TextButton(onClick = onCancel) { Text(stringResource(R.string.profile_links_cancel_action)) }
+            }
+        },
+        title = { Text(title) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    text = stringResource(R.string.profile_links_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                TextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    singleLine = true,
+                    placeholder = { Text(stringResource(R.string.profile_links_placeholder)) },
+                    isError = error != null,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                )
+                if (error != null) {
+                    Text(
+                        text = error,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        },
+    )
+}
+
+@Composable
+private fun VerificationRow(
+    emailVerified: Boolean,
+    phoneVerified: Boolean,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        VerificationChip(
+            label = if (emailVerified) {
+                stringResource(R.string.profile_verified_email)
+            } else {
+                stringResource(R.string.profile_unverified_email)
+            },
+            verified = emailVerified,
+        )
+        VerificationChip(
+            label = if (phoneVerified) {
+                stringResource(R.string.profile_verified_phone)
+            } else {
+                stringResource(R.string.profile_unverified_phone)
+            },
+            verified = phoneVerified,
+        )
+    }
+}
+
+@Composable
+private fun VerificationChip(
+    label: String,
+    verified: Boolean,
+) {
+    val background = if (verified) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+    }
+    val textColor = if (verified) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+    Surface(
+        color = background,
+        shape = RoundedCornerShape(50),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = if (verified) Icons.Outlined.Verified else Icons.Outlined.Info,
+                contentDescription = null,
+                tint = textColor,
+                modifier = Modifier.size(14.dp),
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = textColor,
+            )
+        }
+    }
+}
+
+private fun validateLink(
+    link: String,
+    emptyError: String,
+    domainError: String,
+): String? {
+    if (link.isBlank()) return emptyError
+    val hasScheme = link.startsWith("http://") || link.startsWith("https://")
+    val normalized = if (hasScheme) link else "https://$link"
+    if (!normalized.contains(".")) return domainError
+    return null
+}
+
+private fun normalizeLink(link: String): String =
+    if (link.startsWith("http://") || link.startsWith("https://")) link
+    else "https://$link"
+
+private fun getAppVersionInfo(context: android.content.Context): AppVersionInfo {
+    val packageManager = context.packageManager
+    val packageName = context.packageName
+    val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        packageManager.getPackageInfo(
+            packageName,
+            android.content.pm.PackageManager.PackageInfoFlags.of(0),
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        packageManager.getPackageInfo(packageName, 0)
+    }
+    val versionName = packageInfo.versionName ?: "—"
+    val versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        packageInfo.longVersionCode
+    } else {
+        @Suppress("DEPRECATION")
+        packageInfo.versionCode.toLong()
+    }
+    return AppVersionInfo(name = versionName, code = versionCode)
+}
+
+private fun openExternalLink(context: android.content.Context, url: String) {
+    val normalized = normalizeLink(url)
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(normalized)).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    runCatching { context.startActivity(intent) }
+}
+
+private fun openFeedbackEmail(context: android.content.Context, email: String) {
+    if (email.isBlank()) return
+    val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    runCatching { context.startActivity(intent) }
+}
+
+private fun readBytesFromUri(
+    context: android.content.Context,
+    uri: Uri,
+    maxBytes: Int,
+): ByteArray {
+    val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+        ?: throw IllegalStateException(context.getString(R.string.profile_photo_read_failed))
+    if (bytes.size > maxBytes) {
+        throw IllegalStateException(
+            context.getString(
+                R.string.profile_photo_too_large,
+                maxBytes / (1024 * 1024),
+            ),
+        )
+    }
+    return bytes
+}
+
+private fun resolveFileName(context: android.content.Context, uri: Uri): String {
+    val contentResolver = context.contentResolver
+    val cursor = contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+    cursor?.use {
+        if (it.moveToFirst()) {
+            val idx = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (idx >= 0) {
+                val name = it.getString(idx)
+                if (!name.isNullOrBlank()) return name
+            }
+        }
+    }
+    return "profile_${System.currentTimeMillis()}.jpg"
+}

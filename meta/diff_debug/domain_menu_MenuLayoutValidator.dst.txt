@@ -1,0 +1,38 @@
+package com.example.shoppingassistant.domain.menu
+
+enum class MenuLayoutIssueType {
+    SIZE_MISMATCH,
+    DUPLICATE,
+    PINNED_MISSING,
+}
+
+data class MenuLayoutIssue(
+    val type: MenuLayoutIssueType,
+    val actionId: MenuActionId? = null,
+    val edge: MenuEdge? = null,
+)
+
+object MenuLayoutValidator {
+    fun validate(layout: MenuLayout, config: MenuLayoutConfig): List<MenuLayoutIssue> {
+        val issues = mutableListOf<MenuLayoutIssue>()
+        if (layout.right.size != config.rightSlots) {
+            issues += MenuLayoutIssue(MenuLayoutIssueType.SIZE_MISMATCH, edge = MenuEdge.RIGHT)
+        }
+        if (layout.bottom.size != config.bottomSlots) {
+            issues += MenuLayoutIssue(MenuLayoutIssueType.SIZE_MISMATCH, edge = MenuEdge.BOTTOM)
+        }
+        val seen = HashSet<MenuActionId>()
+        (layout.right + layout.bottom).forEach { action ->
+            if (action == null) return@forEach
+            if (!seen.add(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.DUPLICATE, actionId = action)
+            }
+        }
+        layout.pinned.forEach { action ->
+            if (!seen.contains(action)) {
+                issues += MenuLayoutIssue(MenuLayoutIssueType.PINNED_MISSING, actionId = action)
+            }
+        }
+        return issues
+    }
+}

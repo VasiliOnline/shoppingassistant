@@ -1,0 +1,1018 @@
+package com.example.shoppingassistant.feature.pages.useroffers
+
+import android.content.Intent
+import android.provider.Settings
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.calculateBottomPadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.feature.pages.useroffers.bulk.rememberUserOffersBulkTask
+import com.example.shoppingassistant.feature.pages.useroffers.actions.UserOffersActionResult
+import com.example.shoppingassistant.feature.pages.useroffers.actions.rememberUserOffersActionsTask
+import com.example.shoppingassistant.feature.pages.useroffers.price.rememberUserOffersPriceTask
+import com.example.shoppingassistant.feature.pages.useroffers.screen.UserOffersEmptyReason
+import com.example.shoppingassistant.feature.pages.useroffers.screen.UserOffersScreenIssue
+import com.example.shoppingassistant.feature.pages.useroffers.screen.UserOffersScreenMode
+import com.example.shoppingassistant.feature.pages.useroffers.screen.userOffersScreenStateResolverTask
+import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersControls
+import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersCreatedStore
+import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersEmptyStateUi
+import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersListBlock
+import com.example.shoppingassistant.feature.pages.useroffers.state.rememberUserOffersState
+import com.example.shoppingassistant.feature.R
+import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
+import com.example.shoppingassistant.feature.ui.layout.ScreenRoot
+import com.example.shoppingassistant.feature.ui.state.StateHost
+import com.example.shoppingassistant.feature.ui.state.model.EmptyReason
+import com.example.shoppingassistant.feature.ui.state.model.LoadingPhase
+import com.example.shoppingassistant.feature.ui.state.model.OfflineMode
+import com.example.shoppingassistant.feature.ui.state.model.ScreenState
+import com.example.shoppingassistant.feature.ui.state.model.StateAction
+import com.example.shoppingassistant.feature.ui.state.model.StateActionType
+import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.get as koinGet
+
+@Composable
+fun UserOffersPage(
+    callbacks: UserOffersCallbacks = UserOffersCallbacks(),
+    initialTab: UserOffersTab = UserOffersTab.ACTIVE,
+    modifier: Modifier = Modifier,
+    applySafeInsets: Boolean = true,
+    extraBottomPadding: Dp = LayoutDefaults.ContentBottomSpacing,
+) {
+    val stateHandle = rememberUserOffersState()
+    val loadState = stateHandle.state
+    val createdStore: UserOffersCreatedStore = remember { koinGet(UserOffersCreatedStore::class.java) }
+    val bulkTask = rememberUserOffersBulkTask()
+    val actionsTask = rememberUserOffersActionsTask()
+    val priceTask = rememberUserOffersPriceTask()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    var selectedTab by remember { mutableStateOf(initialTab) }
+    var draftsLayout by remember { mutableStateOf(UserOffersLayout.HORIZONTAL) }
+    var activeLayout by remember { mutableStateOf(UserOffersLayout.HORIZONTAL) }
+    var completedLayout by remember { mutableStateOf(UserOffersLayout.HORIZONTAL) }
+    var draftsSort by remember { mutableStateOf(UserOffersSort.UPDATED_AT) }
+    var activeSort by remember { mutableStateOf(UserOffersSort.PUBLISHED_AT) }
+    var completedSort by remember { mutableStateOf(UserOffersSort.PUBLISHED_AT) }
+    var searchQuery by remember { mutableStateOf("") }
+    var quickFilters by remember { mutableStateOf(setOf<UserOfferQuickFilter>()) }
+    var activeStatusFilters by remember { mutableStateOf(DEFAULT_ACTIVE_STATUSES) }
+    var completedStatusFilters by remember { mutableStateOf(DEFAULT_COMPLETED_STATUSES) }
+
+    var selectionMode by remember { mutableStateOf(false) }
+    var selectedIds by remember { mutableStateOf(setOf<String>()) }
+    var pendingDelete by remember { mutableStateOf<UserOfferCardUi?>(null) }
+    var priceTargets by remember { mutableStateOf<List<UserOfferCardUi>>(emptyList()) }
+    var priceInput by remember { mutableStateOf("") }
+    var isPriceUpdating by remember { mutableStateOf(false) }
+
+
+    // ✅ Fix: state для bulk price sheet
+    var showBulkPriceSheet by remember { mutableStateOf(false) }
+    var bulkPriceInput by remember { mutableStateOf("") }
+
+    val draftOffers = remember(loadState.activeOffers) {
+        loadState.activeOffers.filter { it.status == UserOfferStatus.DRAFT }
+    }
+    val activeOffers = remember(loadState.activeOffers) {
+        loadState.activeOffers.filter { it.status != UserOfferStatus.DRAFT }
+    }
+
+    val draftFiltered = remember(
+        draftOffers,
+        searchQuery,
+        quickFilters,
+    ) {
+        applyFilters(draftOffers, DEFAULT_DRAFT_STATUSES, searchQuery, quickFilters)
+    }
+    val activeFiltered = remember(
+        activeOffers,
+        activeStatusFilters,
+        searchQuery,
+        quickFilters,
+    ) {
+        applyFilters(activeOffers, activeStatusFilters, searchQuery, quickFilters)
+    }
+    val completedFiltered = remember(
+        loadState.completedOffers,
+        completedStatusFilters,
+        searchQuery,
+        quickFilters,
+    ) {
+        applyFilters(loadState.completedOffers, completedStatusFilters, searchQuery, quickFilters)
+    }
+
+    val draftSorted = remember(draftFiltered, draftsSort) { sortOffers(draftFiltered, draftsSort) }
+    val activeSorted = remember(activeFiltered, activeSort) { sortOffers(activeFiltered, activeSort) }
+    val completedSorted = remember(completedFiltered, completedSort) { sortOffers(completedFiltered, completedSort) }
+
+    LaunchedEffect(selectedTab) {
+        selectionMode = false
+        selectedIds = emptySet()
+    }
+
+    val allOffers = loadState.activeOffers + loadState.completedOffers
+    val draftTotal = draftOffers.size
+    val activeTotal = activeOffers.size
+    val completedTotal = loadState.completedOffers.size
+    val screenStateResolver = remember { userOffersScreenStateResolverTask() }
+    val draftHasFilters = searchQuery.isNotBlank() || quickFilters.isNotEmpty()
+    val activeHasFilters = searchQuery.isNotBlank() ||
+        quickFilters.isNotEmpty() ||
+        activeStatusFilters != DEFAULT_ACTIVE_STATUSES
+    val completedHasFilters = searchQuery.isNotBlank() ||
+        quickFilters.isNotEmpty() ||
+        completedStatusFilters != DEFAULT_COMPLETED_STATUSES
+    val draftScreenState = screenStateResolver.resolve(
+        loadState = loadState,
+        filteredCount = draftFiltered.size,
+        totalCount = draftOffers.size,
+        hasFilters = draftHasFilters,
+    )
+    val activeScreenState = screenStateResolver.resolve(
+        loadState = loadState,
+        filteredCount = activeFiltered.size,
+        totalCount = activeOffers.size,
+        hasFilters = activeHasFilters,
+    )
+    val completedScreenState = screenStateResolver.resolve(
+        loadState = loadState,
+        filteredCount = completedFiltered.size,
+        totalCount = loadState.completedOffers.size,
+        hasFilters = completedHasFilters,
+    )
+    val currentScreenState = when (selectedTab) {
+        UserOffersTab.DRAFTS -> draftScreenState
+        UserOffersTab.ACTIVE -> activeScreenState
+        UserOffersTab.COMPLETED -> completedScreenState
+    }
+
+    fun toggleSelection(offer: UserOfferCardUi) {
+        selectedIds = if (offer.id in selectedIds) {
+            selectedIds - offer.id
+        } else {
+            selectedIds + offer.id
+        }
+        if (selectedIds.isEmpty()) selectionMode = false
+    }
+
+    suspend fun applyActionResult(
+        action: UserOfferAction,
+        result: UserOffersActionResult,
+        offer: UserOfferCardUi,
+    ) {
+        if (result.status == com.example.shoppingassistant.domain.useroffers.UserOfferActionStatus.SUCCESS) {
+            result.updatedOffer?.let { createdStore.update(it) }
+            result.newOffer?.let { createdStore.add(it) }
+            when (action) {
+                UserOfferAction.PAUSE -> callbacks.onPause(offer.id)
+                UserOfferAction.ACTIVATE -> callbacks.onActivate(offer.id)
+                UserOfferAction.MARK_FINISHED -> callbacks.onMarkFinished(offer.id)
+                UserOfferAction.DUPLICATE -> callbacks.onDuplicate(offer.id)
+                UserOfferAction.RENEW -> callbacks.onRenew(offer.id)
+                UserOfferAction.DELETE -> callbacks.onDelete(offer.id)
+                else -> Unit
+            }
+        } else {
+            snackbarHostState.showSnackbar(result.message ?: "Action failed")
+        }
+    }
+
+    fun handleRemoteAction(action: UserOfferAction, offer: UserOfferCardUi) {
+        scope.launch {
+            val result = actionsTask.perform(action, offer)
+            applyActionResult(action, result, offer)
+        }
+    }
+
+    fun handleRenew(offer: UserOfferCardUi) {
+        val now = System.currentTimeMillis()
+        val lastRenewed = offer.lastRenewedAtMillis ?: offer.publishedAtMillis ?: 0L
+        val availableAt = lastRenewed + RENEW_COOLDOWN_MS
+        if (availableAt > now) {
+            val hoursLeft = ((availableAt - now) / 3_600_000L).coerceAtLeast(1)
+            scope.launch {
+                snackbarHostState.showSnackbar("Продление доступно через $hoursLeft ч")
+            }
+            return
+        }
+        handleRemoteAction(UserOfferAction.RENEW, offer)
+    }
+
+    fun handleAction(action: UserOfferAction, offer: UserOfferCardUi) {
+        when (action) {
+            UserOfferAction.EDIT -> callbacks.onEdit(offer.id)
+            UserOfferAction.SHARE -> callbacks.onShare(offer.id)
+            UserOfferAction.SHARE_RADIUS -> callbacks.onShareNearby(offer.id)
+            UserOfferAction.PAUSE -> handleRemoteAction(action, offer)
+            UserOfferAction.ACTIVATE -> handleRemoteAction(action, offer)
+            UserOfferAction.MARK_FINISHED -> handleRemoteAction(action, offer)
+            UserOfferAction.DUPLICATE -> handleRemoteAction(action, offer)
+            UserOfferAction.RENEW -> handleRenew(offer)
+            UserOfferAction.EDIT_PRICE -> Unit
+            UserOfferAction.DELETE -> pendingDelete = offer
+        }
+    }
+
+    fun handleSwipeAction(action: UserOfferAction, offer: UserOfferCardUi) {
+        when (action) {
+            UserOfferAction.DELETE -> pendingDelete = offer
+            UserOfferAction.PAUSE,
+            UserOfferAction.ACTIVATE,
+            UserOfferAction.MARK_FINISHED,
+            -> handleAction(action, offer)
+            else -> Unit
+        }
+    }
+
+    fun handleBulkAction(action: UserOfferBulkAction) {
+        val targets = allOffers.filter { it.id in selectedIds }
+        if (targets.isEmpty()) return
+        scope.launch {
+            var failures = 0
+            when (action) {
+                UserOfferBulkAction.PAUSE,
+                UserOfferBulkAction.ACTIVATE,
+                UserOfferBulkAction.DELETE,
+                UserOfferBulkAction.RENEW,
+                -> {
+                    val mapped = when (action) {
+                        UserOfferBulkAction.PAUSE -> UserOfferAction.PAUSE
+                        UserOfferBulkAction.ACTIVATE -> UserOfferAction.ACTIVATE
+                        UserOfferBulkAction.DELETE -> UserOfferAction.DELETE
+                        UserOfferBulkAction.RENEW -> UserOfferAction.RENEW
+                        else -> null
+                    }
+                    if (mapped != null) {
+                        targets.forEach { offer ->
+                            val result = actionsTask.perform(mapped, offer)
+                            if (result.status == com.example.shoppingassistant.domain.useroffers.UserOfferActionStatus.SUCCESS) {
+                                result.updatedOffer?.let { createdStore.update(it) }
+                                result.newOffer?.let { createdStore.add(it) }
+                            } else {
+                                failures += 1
+                            }
+                        }
+                    }
+                    callbacks.onBulkAction(action, targets.map { it.id }, null)
+                }
+                UserOfferBulkAction.CHANGE_PRICE -> {
+                    showBulkPriceSheet = true
+                }
+                UserOfferBulkAction.EXPORT -> {
+                    callbacks.onBulkAction(action, targets.map { it.id }, null)
+                }
+            }
+            if (failures > 0) {
+                snackbarHostState.showSnackbar("Failed: $failures")
+            }
+        }
+    }
+
+    fun applyBulkPrice() {
+        val price = bulkPriceInput.replace(",", ".").toDoubleOrNull() ?: return
+        val targets = allOffers.filter { it.id in selectedIds }
+        targets.forEach { createdStore.update(it.copy(priceMajor = price, updatedAtMillis = System.currentTimeMillis())) }
+        callbacks.onBulkAction(UserOfferBulkAction.CHANGE_PRICE, targets.map { it.id }, price)
+        bulkPriceInput = ""
+        showBulkPriceSheet = false
+    }
+
+    fun resetActiveFilters() {
+        searchQuery = ""
+        quickFilters = emptySet()
+        activeStatusFilters = DEFAULT_ACTIVE_STATUSES
+    }
+
+    fun resetDraftFilters() {
+        searchQuery = ""
+        quickFilters = emptySet()
+    }
+
+    fun resetCompletedFilters() {
+        searchQuery = ""
+        quickFilters = emptySet()
+        completedStatusFilters = DEFAULT_COMPLETED_STATUSES
+    }
+
+    fun openNetworkSettings() {
+        val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        runCatching { context.startActivity(intent) }
+    }
+
+    fun filteredEmptyState(onReset: () -> Unit): UserOffersEmptyStateUi = UserOffersEmptyStateUi(
+        title = "Ничего не найдено",
+        subtitle = "Сбросьте фильтры или измените запрос.",
+        primaryCta = "Сбросить фильтры",
+        secondaryCta = null,
+        onPrimary = onReset,
+        onSecondary = null,
+        icon = Icons.Outlined.Search,
+        primaryType = StateActionType.RESET_FILTERS,
+    )
+
+    val activeDefaultEmptyState = UserOffersEmptyStateUi(
+        title = "Пока нет объявлений",
+        subtitle = "Создайте объявление или найдите товар для вдохновения.",
+        primaryCta = "Создать объявление",
+        secondaryCta = "Найти товар",
+        onPrimary = { callbacks.onCreate(UserOfferCreationMethod.PHOTO) },
+        onSecondary = callbacks.onFindOffers,
+        icon = Icons.Outlined.AddCircle,
+        primaryType = StateActionType.CREATE,
+        secondaryType = StateActionType.CHANGE_QUERY,
+    )
+    val draftDefaultEmptyState = UserOffersEmptyStateUi(
+        title = "Пока нет черновиков",
+        subtitle = "Создайте объявление или начните поиск товара.",
+        primaryCta = "Создать объявление",
+        secondaryCta = "Найти товар",
+        onPrimary = { callbacks.onCreate(UserOfferCreationMethod.PHOTO) },
+        onSecondary = callbacks.onFindOffers,
+        icon = Icons.Outlined.Description,
+        primaryType = StateActionType.CREATE,
+        secondaryType = StateActionType.CHANGE_QUERY,
+    )
+    val completedDefaultEmptyState = UserOffersEmptyStateUi(
+        title = "Здесь будут завершенные объявления",
+        subtitle = "После завершения или архивации они появятся в этом разделе.",
+        primaryCta = null,
+        secondaryCta = null,
+        onPrimary = null,
+        onSecondary = null,
+        icon = Icons.Outlined.Archive,
+    )
+
+    val activeEmptyState = if (activeScreenState.emptyReason == UserOffersEmptyReason.FILTERED) {
+        filteredEmptyState(onReset = ::resetActiveFilters)
+    } else {
+        activeDefaultEmptyState
+    }
+    val draftEmptyState = if (draftScreenState.emptyReason == UserOffersEmptyReason.FILTERED) {
+        filteredEmptyState(onReset = ::resetDraftFilters)
+    } else {
+        draftDefaultEmptyState
+    }
+    val completedEmptyState = if (completedScreenState.emptyReason == UserOffersEmptyReason.FILTERED) {
+        filteredEmptyState(onReset = ::resetCompletedFilters)
+    } else {
+        completedDefaultEmptyState
+    }
+
+    val currentEmptyState = when (selectedTab) {
+        UserOffersTab.DRAFTS -> draftEmptyState
+        UserOffersTab.ACTIVE -> activeEmptyState
+        UserOffersTab.COMPLETED -> completedEmptyState
+    }
+    val currentItems = when (selectedTab) {
+        UserOffersTab.DRAFTS -> draftSorted
+        UserOffersTab.ACTIVE -> activeSorted
+        UserOffersTab.COMPLETED -> completedSorted
+    }
+    val currentTotal = when (selectedTab) {
+        UserOffersTab.DRAFTS -> draftOffers.size
+        UserOffersTab.ACTIVE -> activeOffers.size
+        UserOffersTab.COMPLETED -> loadState.completedOffers.size
+    }
+    val hasContent = currentItems.isNotEmpty()
+    val retryLoad = {
+        stateHandle.refresh()
+        callbacks.onRetryLoad()
+    }
+
+    fun toStateAction(label: String?, action: (() -> Unit)?, type: StateActionType): StateAction? {
+        if (label.isNullOrBlank() || action == null) return null
+        return StateAction(label = label, onAction = action, type = type)
+    }
+
+    fun emptyStateFor(
+        state: UserOffersEmptyStateUi,
+        reason: UserOffersEmptyReason?,
+    ): ScreenState.Empty {
+        val mappedReason = when (reason) {
+            UserOffersEmptyReason.FILTERED -> EmptyReason.FILTERS_TOO_STRICT
+            UserOffersEmptyReason.NO_ITEMS -> EmptyReason.NO_OFFERS
+            null -> EmptyReason.OTHER
+        }
+        return ScreenState.Empty(
+            reason = mappedReason,
+            title = state.title,
+            message = state.subtitle,
+            primaryAction = toStateAction(state.primaryCta, state.onPrimary, state.primaryType),
+            secondaryAction = toStateAction(state.secondaryCta, state.onSecondary, state.secondaryType),
+            icon = state.icon,
+        )
+    }
+
+    val errorMessage = (currentScreenState.issue as? UserOffersScreenIssue.Error)?.message
+    val offlineMessage = (currentScreenState.issue as? UserOffersScreenIssue.Offline)?.message
+    val showRefreshing = loadState.isRefreshing && hasContent
+
+    val screenState: ScreenState = when {
+        loadState.isLoading && currentTotal == 0 -> ScreenState.Loading(LoadingPhase.INITIAL)
+        !loadState.isAuthorized -> ScreenState.Empty(
+            reason = EmptyReason.OTHER,
+            title = "Нужна авторизация",
+            message = "Войдите, чтобы видеть ваши товары.",
+            primaryAction = StateAction(
+                label = "Войти",
+                onAction = callbacks.onLogin,
+                type = StateActionType.LOGIN,
+            ),
+            secondaryAction = StateAction(
+                label = "Создать аккаунт",
+                onAction = callbacks.onRegister,
+                type = StateActionType.CREATE,
+            ),
+            icon = Icons.Outlined.Lock,
+        )
+        loadState.isOffline -> if (hasContent) {
+            ScreenState.Offline(
+                mode = OfflineMode.WITH_CACHE,
+                message = offlineMessage,
+                primaryAction = StateAction(
+                    label = stringResource(R.string.state_offline_banner_action),
+                    onAction = retryLoad,
+                    type = StateActionType.RETRY,
+                ),
+            )
+        } else {
+            ScreenState.Offline(
+                mode = OfflineMode.NO_CACHE,
+                message = offlineMessage,
+                primaryAction = StateAction(
+                    label = stringResource(R.string.state_offline_no_cache_action),
+                    onAction = retryLoad,
+                    type = StateActionType.RETRY,
+                ),
+                secondaryAction = StateAction(
+                    label = stringResource(R.string.state_offline_no_cache_settings_action),
+                    onAction = ::openNetworkSettings,
+                    type = StateActionType.OPEN_SETTINGS,
+                ),
+            )
+        }
+        errorMessage != null && !hasContent -> ScreenState.Error(
+            message = errorMessage,
+            title = stringResource(R.string.state_error_title),
+            primaryAction = StateAction(
+                label = stringResource(R.string.state_error_retry),
+                onAction = retryLoad,
+                type = StateActionType.RETRY,
+            ),
+            icon = Icons.Outlined.ErrorOutline,
+        )
+        currentScreenState.mode == UserOffersScreenMode.EMPTY -> emptyStateFor(
+            state = currentEmptyState,
+            reason = currentScreenState.emptyReason,
+        )
+        showRefreshing -> ScreenState.Loading(LoadingPhase.REFRESHING)
+        else -> ScreenState.Content()
+    }
+
+    if (pendingDelete != null) {
+        UserOfferDeleteDialog(
+            offer = pendingDelete!!,
+            onConfirm = {
+                pendingDelete?.let { handleRemoteAction(UserOfferAction.DELETE, it) }
+                pendingDelete = null
+            },
+            onDismiss = { pendingDelete = null },
+        )
+    }
+
+    bulkTask.PriceSheet(
+        visible = showBulkPriceSheet,
+        selectedCount = selectedIds.size,
+        priceInput = bulkPriceInput,
+        onPriceInputChange = { bulkPriceInput = it },
+        onApply = { applyBulkPrice() },
+        onDismiss = { showBulkPriceSheet = false },
+    )
+
+    ScreenRoot(
+        modifier = modifier.fillMaxSize(),
+        applySafeInsets = applySafeInsets,
+        extraBottomPadding = extraBottomPadding,
+    ) { contentPadding ->
+        val bottomInset = (contentPadding.calculateBottomPadding() - extraBottomPadding).coerceAtLeast(0.dp)
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            bottomBar = {
+                if (selectionMode && selectedIds.isNotEmpty()) {
+                    val targets = allOffers.filter { it.id in selectedIds }
+                    val hasActive = targets.any { it.status == UserOfferStatus.ACTIVE }
+                    val hasPaused = targets.any { it.status == UserOfferStatus.PAUSED }
+                    Box(modifier = Modifier.padding(bottom = bottomInset)) {
+                        bulkTask.ActionsBar(
+                            selectedCount = selectedIds.size,
+                            showActivate = hasPaused,
+                            showPause = hasActive,
+                            onAction = { handleBulkAction(it) },
+                            onClear = { selectionMode = false; selectedIds = emptySet() },
+                        )
+                    }
+                }
+            },
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        ) { padding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(
+                        horizontal = LayoutDefaults.HorizontalPadding,
+                        vertical = LayoutDefaults.SectionSpacing,
+                    ),
+            ) {
+                UserOffersTopBar(
+                    userName = loadState.userName,
+                    onBack = callbacks.onBack,
+                )
+
+                Spacer(Modifier.height(LayoutDefaults.SectionSpacing))
+
+                OffersTabsBar(
+                    selectedTab = selectedTab,
+                    draftCount = draftTotal,
+                    activeCount = activeTotal,
+                    completedCount = completedTotal,
+                    onTabSelected = { selectedTab = it },
+                )
+
+                Spacer(Modifier.height(LayoutDefaults.SectionSpacing))
+
+                StateHost(
+                    state = screenState,
+                    contentPadding = contentPadding,
+                    screenName = "user_offers",
+                    modifier = Modifier.weight(1f, fill = true),
+                ) { innerPadding ->
+                    Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                        when (selectedTab) {
+                            UserOffersTab.DRAFTS -> {
+                                OffersTabContent(
+                                    layout = draftsLayout,
+                                    onLayoutChange = { draftsLayout = it },
+                                    sort = draftsSort,
+                                    onSortChange = { draftsSort = it },
+                                    searchQuery = searchQuery,
+                                    onSearchQueryChange = { searchQuery = it },
+                                    resultsCount = draftSorted.size,
+                                    statusFilters = emptySet(),
+                                    availableStatuses = emptyList(),
+                                    onStatusToggle = { },
+                                    quickFilters = quickFilters,
+                                    onQuickFilterToggle = { quickFilters = toggleQuickFilter(quickFilters, it) },
+                                    offers = draftSorted,
+                                    actionsForOffer = { actionsForOffer(it) },
+                                    onAction = { action, offer -> handleAction(action, offer) },
+                                    onSwipeAction = { action, offer -> handleSwipeAction(action, offer) },
+                                    onOpen = { callbacks.onOpen(it.id) },
+                                    onLongPress = {
+                                        selectionMode = true
+                                        toggleSelection(it)
+                                    },
+                                    onToggleSelect = { toggleSelection(it) },
+                                    selectionMode = selectionMode,
+                                    selectedIds = selectedIds,
+                                    isLoading = false,
+                                    canLoadMore = loadState.activeHasMore,
+                                    isLoadingMore = loadState.isLoadingMoreActive,
+                                    onLoadMore = stateHandle.loadMoreActive,
+                                )
+                            }
+                            UserOffersTab.ACTIVE -> {
+                                OffersTabContent(
+                                    layout = activeLayout,
+                                    onLayoutChange = { activeLayout = it },
+                                    sort = activeSort,
+                                    onSortChange = { activeSort = it },
+                                    searchQuery = searchQuery,
+                                    onSearchQueryChange = { searchQuery = it },
+                                    resultsCount = activeSorted.size,
+                                    statusFilters = activeStatusFilters,
+                                    availableStatuses = ACTIVE_STATUS_FILTERS,
+                                    onStatusToggle = {
+                                        activeStatusFilters = toggleStatus(activeStatusFilters, it)
+                                    },
+                                    quickFilters = quickFilters,
+                                    onQuickFilterToggle = { quickFilters = toggleQuickFilter(quickFilters, it) },
+                                    offers = activeSorted,
+                                    actionsForOffer = { actionsForOffer(it) },
+                                    onAction = { action, offer -> handleAction(action, offer) },
+                                    onSwipeAction = { action, offer -> handleSwipeAction(action, offer) },
+                                    onOpen = { callbacks.onOpen(it.id) },
+                                    onLongPress = {
+                                        selectionMode = true
+                                        toggleSelection(it)
+                                    },
+                                    onToggleSelect = { toggleSelection(it) },
+                                    selectionMode = selectionMode,
+                                    selectedIds = selectedIds,
+                                    isLoading = false,
+                                    canLoadMore = loadState.activeHasMore,
+                                    isLoadingMore = loadState.isLoadingMoreActive,
+                                    onLoadMore = stateHandle.loadMoreActive,
+                                )
+                            }
+
+                            UserOffersTab.COMPLETED -> {
+                                OffersTabContent(
+                                    layout = completedLayout,
+                                    onLayoutChange = { completedLayout = it },
+                                    sort = completedSort,
+                                    onSortChange = { completedSort = it },
+                                    searchQuery = searchQuery,
+                                    onSearchQueryChange = { searchQuery = it },
+                                    resultsCount = completedSorted.size,
+                                    statusFilters = completedStatusFilters,
+                                    availableStatuses = COMPLETED_STATUS_FILTERS,
+                                    onStatusToggle = {
+                                        completedStatusFilters = toggleStatus(completedStatusFilters, it)
+                                    },
+                                    quickFilters = quickFilters,
+                                    onQuickFilterToggle = { quickFilters = toggleQuickFilter(quickFilters, it) },
+                                    offers = completedSorted,
+                                    actionsForOffer = { actionsForOffer(it) },
+                                    onAction = { action, offer -> handleAction(action, offer) },
+                                    onSwipeAction = { action, offer -> handleSwipeAction(action, offer) },
+                                    onOpen = { callbacks.onOpen(it.id) },
+                                    onLongPress = {
+                                        selectionMode = true
+                                        toggleSelection(it)
+                                    },
+                                    onToggleSelect = { toggleSelection(it) },
+                                    selectionMode = selectionMode,
+                                    selectedIds = selectedIds,
+                                    isLoading = false,
+                                    canLoadMore = loadState.completedHasMore,
+                                    isLoadingMore = loadState.isLoadingMoreCompleted,
+                                    onLoadMore = stateHandle.loadMoreCompleted,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun UserOfferDeleteDialog(
+    offer: UserOfferCardUi,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Удалить товар?") },
+        text = { Text("Товар \"${offer.title}\" будет удален.") },
+        confirmButton = {
+            TextButton(onClick = onConfirm) { Text("Удалить") }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text("Отмена") }
+        },
+    )
+}
+
+@Composable
+private fun UserOffersTopBar(
+    userName: String?,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        IconButton(onClick = onBack) {
+            Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Назад")
+        }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Text(
+                text = "Мои товары",
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+            userName?.takeIf { it.isNotBlank() }?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun OffersTabsBar(
+    selectedTab: UserOffersTab,
+    draftCount: Int,
+    activeCount: Int,
+    completedCount: Int,
+    onTabSelected: (UserOffersTab) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val tabs = remember(draftCount, activeCount, completedCount) {
+        listOf(
+            OfferTabUi(UserOffersTab.DRAFTS, "Черновики", draftCount),
+            OfferTabUi(UserOffersTab.ACTIVE, "Активные", activeCount),
+            OfferTabUi(UserOffersTab.COMPLETED, "Завершенные", completedCount),
+        )
+    }
+    val selectedIndex = tabs.indexOfFirst { it.id == selectedTab }.takeIf { it >= 0 } ?: 0
+
+    TabRow(
+        selectedTabIndex = selectedIndex,
+        containerColor = Color.Transparent,
+        indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedIndex]),
+                color = MaterialTheme.colorScheme.primary,
+            )
+        },
+        divider = {},
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        tabs.forEachIndexed { index, tab ->
+            Tab(
+                selected = selectedIndex == index,
+                onClick = { onTabSelected(tab.id) },
+                text = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(tab.title)
+                        Text(
+                            text = tab.count.toString(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                },
+            )
+        }
+    }
+}
+@Composable
+private fun OffersTabContent(
+    layout: UserOffersLayout,
+    onLayoutChange: (UserOffersLayout) -> Unit,
+    sort: UserOffersSort,
+    onSortChange: (UserOffersSort) -> Unit,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    resultsCount: Int,
+    statusFilters: Set<UserOfferStatus>,
+    availableStatuses: List<UserOfferStatus>,
+    onStatusToggle: (UserOfferStatus) -> Unit,
+    quickFilters: Set<UserOfferQuickFilter>,
+    onQuickFilterToggle: (UserOfferQuickFilter) -> Unit,
+    offers: List<UserOfferCardUi>,
+    actionsForOffer: (UserOfferCardUi) -> List<UserOfferAction>,
+    onAction: (UserOfferAction, UserOfferCardUi) -> Unit,
+    onSwipeAction: (UserOfferAction, UserOfferCardUi) -> Unit,
+    onOpen: (UserOfferCardUi) -> Unit,
+    onLongPress: (UserOfferCardUi) -> Unit,
+    onToggleSelect: (UserOfferCardUi) -> Unit,
+    selectionMode: Boolean,
+    selectedIds: Set<String>,
+    isLoading: Boolean,
+    canLoadMore: Boolean,
+    isLoadingMore: Boolean,
+    onLoadMore: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        UserOffersControls(
+            layout = layout,
+            onLayoutChange = onLayoutChange,
+            sort = sort,
+            onSortChange = onSortChange,
+            searchQuery = searchQuery,
+            onSearchQueryChange = onSearchQueryChange,
+            resultsCount = resultsCount,
+            statusFilters = statusFilters,
+            availableStatuses = availableStatuses,
+            onStatusToggle = onStatusToggle,
+            quickFilters = quickFilters,
+            onQuickFilterToggle = onQuickFilterToggle,
+        )
+        UserOffersListBlock(
+            offers = offers,
+            layout = layout,
+            actionsForOffer = actionsForOffer,
+            onAction = onAction,
+            onSwipeAction = onSwipeAction,
+            onOpen = onOpen,
+            onLongPress = onLongPress,
+            onToggleSelect = onToggleSelect,
+            selectionMode = selectionMode,
+            selectedIds = selectedIds,
+            isLoading = isLoading,
+            canLoadMore = canLoadMore,
+            isLoadingMore = isLoadingMore,
+            onLoadMore = onLoadMore,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+private data class OfferTabUi(
+    val id: UserOffersTab,
+    val title: String,
+    val count: Int,
+)
+
+private val ACTIVE_STATUS_FILTERS = listOf(
+    UserOfferStatus.ACTIVE,
+    UserOfferStatus.PAUSED,
+)
+
+private val DRAFT_STATUS_FILTERS = listOf(
+    UserOfferStatus.DRAFT,
+)
+
+private val COMPLETED_STATUS_FILTERS = listOf(
+    UserOfferStatus.FINISHED,
+    UserOfferStatus.ARCHIVED,
+)
+
+private val DEFAULT_ACTIVE_STATUSES = ACTIVE_STATUS_FILTERS.toSet()
+private val DEFAULT_DRAFT_STATUSES = DRAFT_STATUS_FILTERS.toSet()
+private val DEFAULT_COMPLETED_STATUSES = COMPLETED_STATUS_FILTERS.toSet()
+
+private fun applyFilters(
+    offers: List<UserOfferCardUi>,
+    statuses: Set<UserOfferStatus>,
+    query: String,
+    quickFilters: Set<UserOfferQuickFilter>,
+): List<UserOfferCardUi> {
+    val normalizedQuery = query.trim().lowercase()
+    val now = System.currentTimeMillis()
+    val filtered = offers.filter { offer ->
+        val statusOk = statuses.isEmpty() || offer.status in statuses
+        val queryOk = normalizedQuery.isBlank() || offer.title.lowercase().contains(normalizedQuery) ||
+            offer.category.orEmpty().lowercase().contains(normalizedQuery)
+        val withPhoto = UserOfferQuickFilter.WITH_PHOTO !in quickFilters || !offer.coverUrl.isNullOrBlank()
+        val withoutPhoto = UserOfferQuickFilter.WITHOUT_PHOTO !in quickFilters || offer.coverUrl.isNullOrBlank()
+        val expiringSoon = UserOfferQuickFilter.EXPIRING_SOON !in quickFilters ||
+            (offer.expiresAtMillis != null && offer.expiresAtMillis in now..(now + EXPIRING_SOON_WINDOW_MS))
+        val onModeration = UserOfferQuickFilter.ON_MODERATION !in quickFilters ||
+            offer.publicationStatus == UserOfferPublicationStatus.ON_MODERATION
+        val publishError = UserOfferQuickFilter.PUBLISH_ERROR !in quickFilters ||
+            offer.publicationStatus == UserOfferPublicationStatus.ERROR
+        val promoted = UserOfferQuickFilter.PROMOTED !in quickFilters || offer.isPromoted
+
+        statusOk && queryOk && withPhoto && withoutPhoto && expiringSoon && onModeration && publishError && promoted
+    }
+    return applyHealth(filtered)
+}
+
+private fun applyHealth(offers: List<UserOfferCardUi>): List<UserOfferCardUi> {
+    val viewValues = offers.mapNotNull { it.viewsCount }
+    if (viewValues.isEmpty()) return offers
+    val avg = viewValues.average()
+    return offers.map { offer ->
+        val views = offer.viewsCount
+        val computed = if (views != null && views < avg * 0.7) {
+            UserOfferHealth.BELOW_AVERAGE
+        } else if (views != null) {
+            UserOfferHealth.OK
+        } else {
+            null
+        }
+        offer.copy(health = offer.health ?: computed)
+    }
+}
+
+private fun sortOffers(
+    offers: List<UserOfferCardUi>,
+    sort: UserOffersSort,
+): List<UserOfferCardUi> = when (sort) {
+    UserOffersSort.CATEGORY -> offers.sortedWith(
+        compareBy<UserOfferCardUi> { it.category.orEmpty() }
+            .thenByDescending { it.publishedAtMillis ?: 0L }
+    )
+    UserOffersSort.PUBLISHED_AT -> offers.sortedByDescending { it.publishedAtMillis ?: 0L }
+    UserOffersSort.UPDATED_AT -> offers.sortedByDescending { it.updatedAtMillis ?: it.publishedAtMillis ?: 0L }
+    UserOffersSort.PRICE -> offers.sortedBy { it.priceMajor ?: Double.MAX_VALUE }
+    UserOffersSort.VIEWS -> offers.sortedByDescending { it.viewsCount ?: 0 }
+    UserOffersSort.EXPIRES_AT -> offers.sortedBy { it.expiresAtMillis ?: Long.MAX_VALUE }
+}
+
+private fun actionsForOffer(offer: UserOfferCardUi): List<UserOfferAction> = when (offer.status) {
+    UserOfferStatus.ACTIVE -> listOf(
+        UserOfferAction.EDIT,
+        UserOfferAction.PAUSE,
+        UserOfferAction.MARK_FINISHED,
+        UserOfferAction.DUPLICATE,
+        UserOfferAction.RENEW,
+        UserOfferAction.SHARE,
+        UserOfferAction.DELETE,
+    )
+    UserOfferStatus.PAUSED -> listOf(
+        UserOfferAction.ACTIVATE,
+        UserOfferAction.EDIT,
+        UserOfferAction.DUPLICATE,
+        UserOfferAction.SHARE,
+        UserOfferAction.DELETE,
+    )
+    UserOfferStatus.DRAFT -> listOf(
+        UserOfferAction.EDIT,
+        UserOfferAction.ACTIVATE,
+        UserOfferAction.DELETE,
+    )
+    UserOfferStatus.FINISHED -> listOf(
+        UserOfferAction.DUPLICATE,
+        UserOfferAction.RENEW,
+        UserOfferAction.SHARE,
+        UserOfferAction.DELETE,
+    )
+    UserOfferStatus.ARCHIVED -> listOf(
+        UserOfferAction.DUPLICATE,
+        UserOfferAction.SHARE,
+        UserOfferAction.DELETE,
+    )
+}
+
+private fun toggleStatus(
+    current: Set<UserOfferStatus>,
+    status: UserOfferStatus,
+): Set<UserOfferStatus> {
+    val next = if (status in current) current - status else current + status
+    return next.ifEmpty { current }
+}
+
+private fun toggleQuickFilter(
+    current: Set<UserOfferQuickFilter>,
+    filter: UserOfferQuickFilter,
+): Set<UserOfferQuickFilter> {
+    val updated = if (filter in current) current - filter else current + filter
+    return when (filter) {
+        UserOfferQuickFilter.WITH_PHOTO -> updated - UserOfferQuickFilter.WITHOUT_PHOTO
+        UserOfferQuickFilter.WITHOUT_PHOTO -> updated - UserOfferQuickFilter.WITH_PHOTO
+        else -> updated
+    }
+}
+
+private const val EXPIRING_SOON_WINDOW_MS = 24L * 60L * 60L * 1000L
+private const val RENEW_COOLDOWN_MS = 24L * 60L * 60L * 1000L

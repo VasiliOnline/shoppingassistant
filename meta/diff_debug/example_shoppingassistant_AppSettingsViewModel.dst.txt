@@ -1,0 +1,27 @@
+package com.example.shoppingassistant
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.shoppingassistant.core.data.profile.ProfileSettingsStore
+import com.example.shoppingassistant.domain.profile.ProfileSettings
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+
+class AppSettingsViewModel(
+    private val settingsStore: ProfileSettingsStore,
+) : ViewModel() {
+
+    val settings: StateFlow<ProfileSettings> = settingsStore.settings
+
+    init {
+        viewModelScope.launch { settingsStore.load() }
+    }
+
+    fun refresh(userId: String? = null) {
+        viewModelScope.launch { settingsStore.load(userId) }
+    }
+
+    fun update(userId: String? = null, settings: ProfileSettings) {
+        viewModelScope.launch { settingsStore.update(userId, settings) }
+    }
+}

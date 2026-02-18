@@ -1,0 +1,43 @@
+# Dockerfile.server — Ktor backend (dev-вариант)
+
+# 1. Build-слой: качаем Gradle и прогоняем простой билд, чтобы заполнить /root/.gradle
+FROM eclipse-temurin:21-jdk AS build
+
+WORKDIR /app
+
+ENV GRADLE_USER_HOME=/gradle
+ENV GRADLE_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
+ENV JAVA_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
+
+# Копируем весь проект внутрь build-образа
+COPY . .
+
+# Делаем gradlew исполняемым
+RUN chmod +x ./gradlew
+
+# Прогоняем лёгкую команду, чтобы Gradle скачал дистрибутив и настроился
+RUN ./gradlew --no-daemon --version
+
+# 2. Runtime-слой: собственно контейнер, который будет запускать сервер
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /app
+
+ENV GRADLE_USER_HOME=/gradle
+ENV GRADLE_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
+ENV JAVA_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
+
+# Копируем исходники проекта
+COPY . .
+
+# Копируем Gradle-кеш из build-слоя, чтобы не качать его в рантайме
+COPY --from=build /gradle /gradle
+
+RUN chmod +x ./gradlew
+
+# Значения по умолчанию (могут быть переопределены в docker-compose.yml)
+ENV APP_HOST=0.0.0.0
+ENV APP_PORT=8081
+
+# Запускаем Ktor так же, как ты делаешь локально
+CMD ["./gradlew", ":server:run", "--no-daemon"]

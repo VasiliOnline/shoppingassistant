@@ -1,0 +1,807 @@
+package com.example.shoppingassistant.feature.pages.trackeditems
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.example.shoppingassistant.domain.catalog.AttributeDataType
+import com.example.shoppingassistant.domain.catalog.AttributeDef
+import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
+import com.example.shoppingassistant.domain.tracks.TrackType
+import com.example.shoppingassistant.feature.metrics.FlowMetrics
+
+enum class TargetWizardMode { CREATE, EDIT }
+
+data class TrackTargetDraft(
+    val type: TrackType = TrackType.PRODUCT,
+    val brand: String = "",
+    val model: String = "",
+    val categoryCode: String? = null,
+    val attributes: Map<String, String> = emptyMap(),
+    val sourceLabel: String? = null,
+    val autoFilledAttributes: Set<String> = emptySet(),
+) {
+    fun matchKeyOrNull(): String? = TrackMatchKeyFactory.fromBrandModel(brand, model)
+
+    fun dedupKeyOrNull(): String? = when (type) {
+        TrackType.PRODUCT -> matchKeyOrNull()
+        TrackType.CATEGORY -> categoryCode?.trim()?.uppercase()?.takeIf { it.isNotBlank() }
+        else -> null
+    }
+}
+
+data class TrackTargetWizardResult(
+    val draft: TrackTargetDraft,
+    val title: String,
+    val dedupKey: String?,
+)
+
+private enum class SchemaStatus { LOADING, OK, EMPTY, FAILED }
+
+private enum class AttributeControl {
+    CHIPS,
+    DROPDOWN,
+    INPUT,
+}
+
+private data class AttributeFieldSchema(
+    val code: String,
+    val title: String,
+    val required: Boolean,
+    val values: List<String>,
+    val control: AttributeControl,
+    val order: Int,
+)
+
+private data class ValidationResult(
+    val brandError: String? = null,
+    val modelError: String? = null,
+    val categoryError: String? = null,
+    val attributeErrors: Map<String, String> = emptyMap(),
+) {
+    val isValid: Boolean
+        get() = brandError == null &&
+            modelError == null &&
+            categoryError == null &&
+            attributeErrors.isEmpty()
+}
+
+private fun TrackTargetDraft.withType(type: TrackType): TrackTargetDraft = when (type) {
+    TrackType.PRODUCT -> copy(type = TrackType.PRODUCT)
+    TrackType.CATEGORY -> copy(type = TrackType.CATEGORY, brand = "", model = "")
+    else -> copy(type = type)
+}
+
+@Composable
+fun rememberLeafCategories(catalogRepository: CatalogRepository): List<Category> {
+    var categories by remember { mutableStateOf<List<Category>>(emptyList()) }
+    LaunchedEffect(catalogRepository) {
+        categories = runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+    }
+    return remember(categories) {
+        val parents = categories.mapNotNull { it.parentCode }.toSet()
+        categories
+            .filter { !it.code.isNullOrBlank() && !parents.contains(it.code) }
+            .sortedBy { (it.title ?: it.code).lowercase() }
+    }
+}
+
+fun TrackTargetDraft.isValid(profile: CategoryProfile?): Boolean {
+    val baseValid = when (type) {
+        TrackType.PRODUCT -> !matchKeyOrNull().isNullOrBlank()
+        TrackType.CATEGORY -> !categoryCode.isNullOrBlank()
+        else -> false
+    }
+    if (!baseValid) return false
+    val required = profile?.attributes.orEmpty().filter { it.requiredForSearch }
+    if (required.isEmpty()) return true
+    return required.all { def ->
+        attributes[def.code]?.trim()?.isNotBlank() == true
+    }
+}
+
+fun TrackTargetDraft.previewTitle(categories: List<Category>): String {
+    return when (type) {
+        TrackType.PRODUCT -> listOf(brand, model)
+            .joinToString(" ")
+            .trim()
+            .ifBlank { "Товар" }
+        TrackType.CATEGORY -> {
+            val code = categoryCode?.trim().orEmpty()
+            if (code.isBlank()) {
+                "Категория"
+            } else {
+                categories.firstOrNull { it.code == code }?.title
+                    ?: code
+            }
+        }
+        else -> "Цель"
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+fun TrackTargetAttributesWizardSheet(
+    mode: TargetWizardMode,
+    entrypoint: String,
+    initial: TrackTargetDraft,
+    categories: List<Category>,
+    catalogRepository: CatalogRepository,
+    countryCode: String,
+    onDismiss: () -> Unit,
+    onSave: (TrackTargetWizardResult) -> Unit,
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val autoFilledInitial = remember(mode, initial) {
+        if (mode == TargetWizardMode.CREATE && initial.autoFilledAttributes.isEmpty()) {
+            initial.attributes.keys
+        } else {
+            initial.autoFilledAttributes
+        }
+    }
+    var draft by remember(initial, autoFilledInitial) {
+        mutableStateOf(initial.copy(autoFilledAttributes = autoFilledInitial))
+    }
+    var showCategoryPicker by remember { mutableStateOf(false) }
+    var schemaStatus by remember { mutableStateOf(SchemaStatus.EMPTY) }
+    var schemaFields by remember { mutableStateOf(minimalFallbackSchema()) }
+    var schemaErrorMessage by remember { mutableStateOf<String?>(null) }
+    var showOptionalAttributes by remember { mutableStateOf(false) }
+    var showUnknownMap by remember { mutableStateOf(false) }
+    var saveAttempted by remember { mutableStateOf(false) }
+    var touchedFields by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var schemaVersion by remember { mutableStateOf(0) }
+    var closeLogged by remember { mutableStateOf(false) }
+
+    fun closeWithReason(reason: String, action: () -> Unit) {
+        if (!closeLogged) {
+            TargetWizardAnalytics.closed(reason)
+            closeLogged = true
+        }
+        action()
+    }
+
+    val selectedCategoryTitle = remember(draft.categoryCode, categories) {
+        categories.firstOrNull { it.code == draft.categoryCode }?.title ?: draft.categoryCode.orEmpty()
+    }
+
+    LaunchedEffect(mode, entrypoint) {
+        TargetWizardAnalytics.opened(mode, entrypoint)
+    }
+
+    LaunchedEffect(draft.categoryCode, schemaVersion) {
+        val code = draft.categoryCode?.trim().orEmpty()
+        if (code.isBlank()) {
+            schemaStatus = SchemaStatus.EMPTY
+            schemaFields = minimalFallbackSchema()
+            schemaErrorMessage = null
+            return@LaunchedEffect
+        }
+
+        schemaStatus = SchemaStatus.LOADING
+        schemaErrorMessage = null
+        val profile = runCatching { catalogRepository.getCategoryProfile(code) }
+            .onFailure {
+                schemaStatus = SchemaStatus.FAILED
+                schemaFields = minimalFallbackSchema()
+                schemaErrorMessage = "Не удалось загрузить параметры категории"
+                TargetWizardAnalytics.schemaLoadFailed(code, it::class.simpleName ?: "unknown")
+            }
+            .getOrNull()
+
+        if (profile == null) {
+            if (schemaStatus != SchemaStatus.FAILED) {
+                schemaStatus = SchemaStatus.EMPTY
+                schemaFields = minimalFallbackSchema()
+            }
+            return@LaunchedEffect
+        }
+
+        val fromSchema = buildSchemaFields(profile)
+        if (fromSchema.isEmpty()) {
+            schemaStatus = SchemaStatus.EMPTY
+            schemaFields = minimalFallbackSchema()
+        } else {
+            schemaStatus = SchemaStatus.OK
+            schemaFields = fromSchema
+        }
+    }
+
+    val validation = remember(draft, schemaFields) {
+        validateDraft(draft, schemaFields)
+    }
+
+    val knownSchemaCodes = remember(schemaFields) { schemaFields.map { it.code }.toSet() }
+    val unknownMapEntries = remember(draft.attributes, knownSchemaCodes) {
+        draft.attributes.entries
+            .filter { !knownSchemaCodes.contains(it.key) }
+            .sortedBy { it.key.lowercase() }
+    }
+
+    val requiredFields = remember(schemaFields) { schemaFields.filter { it.required } }
+    val optionalFields = remember(schemaFields) { schemaFields.filterNot { it.required } }
+    val visibleOptionalFields = remember(optionalFields, showOptionalAttributes) {
+        if (showOptionalAttributes) optionalFields else optionalFields.take(6)
+    }
+    val visibleFields = remember(requiredFields, visibleOptionalFields) {
+        requiredFields + visibleOptionalFields
+    }
+
+    ModalBottomSheet(
+        onDismissRequest = { closeWithReason("back") { onDismiss() } },
+        sheetState = sheetState,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = "Параметры отслеживания",
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    TextButton(
+                        onClick = {
+                            TargetWizardAnalytics.saveTapped(validation.isValid)
+                            saveAttempted = true
+                            if (!validation.isValid) return@TextButton
+
+                            val normalized = normalizeDraftForSave(draft)
+                            closeWithReason("save") {
+                                onSave(
+                                    TrackTargetWizardResult(
+                                        draft = normalized,
+                                        title = normalized.previewTitle(categories),
+                                        dedupKey = normalized.dedupKeyOrNull(),
+                                    ),
+                                )
+                            }
+                        },
+                        enabled = validation.isValid,
+                    ) {
+                        Text(if (mode == TargetWizardMode.CREATE) "Готово" else "Сохранить")
+                    }
+                    IconButton(onClick = { closeWithReason("cancel") { onDismiss() } }) {
+                        Icon(Icons.Outlined.Close, contentDescription = "Закрыть")
+                    }
+                }
+            }
+
+            Text("Цель", style = MaterialTheme.typography.titleSmall)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TargetTypeChip(
+                    label = "Товар",
+                    selected = draft.type == TrackType.PRODUCT,
+                    onClick = {
+                        draft = draft.withType(TrackType.PRODUCT).copy(sourceLabel = null)
+                        touchedFields = touchedFields + setOf("brand", "model")
+                        TargetWizardAnalytics.targetChanged(draft)
+                    },
+                )
+                TargetTypeChip(
+                    label = "Категория",
+                    selected = draft.type == TrackType.CATEGORY,
+                    onClick = {
+                        draft = draft.withType(TrackType.CATEGORY).copy(sourceLabel = null)
+                        touchedFields = touchedFields + "category"
+                        TargetWizardAnalytics.targetChanged(draft)
+                    },
+                )
+            }
+
+            if (draft.type == TrackType.PRODUCT) {
+                OutlinedTextField(
+                    value = draft.brand,
+                    onValueChange = {
+                        draft = draft.copy(brand = it, sourceLabel = null)
+                        touchedFields = touchedFields + "brand"
+                        TargetWizardAnalytics.targetChanged(draft)
+                    },
+                    label = { Text("Бренд") },
+                    supportingText = {
+                        val showError = saveAttempted || touchedFields.contains("brand")
+                        if (showError && validation.brandError != null) {
+                            Text(validation.brandError ?: "", color = MaterialTheme.colorScheme.error)
+                        }
+                    },
+                    isError = (saveAttempted || touchedFields.contains("brand")) && validation.brandError != null,
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                OutlinedTextField(
+                    value = draft.model,
+                    onValueChange = {
+                        draft = draft.copy(model = it, sourceLabel = null)
+                        touchedFields = touchedFields + "model"
+                        TargetWizardAnalytics.targetChanged(draft)
+                    },
+                    label = { Text("Модель") },
+                    supportingText = {
+                        val showError = saveAttempted || touchedFields.contains("model")
+                        if (showError && validation.modelError != null) {
+                            Text(validation.modelError ?: "", color = MaterialTheme.colorScheme.error)
+                        }
+                    },
+                    isError = (saveAttempted || touchedFields.contains("model")) && validation.modelError != null,
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
+            CategoryPickerRow(
+                categoryTitle = selectedCategoryTitle,
+                isError = (saveAttempted || touchedFields.contains("category")) && validation.categoryError != null,
+                errorMessage = validation.categoryError,
+                onClick = {
+                    touchedFields = touchedFields + "category"
+                    showCategoryPicker = true
+                },
+            )
+
+            TargetPreviewCard(
+                title = draft.previewTitle(categories),
+                type = draft.type,
+                countryCode = countryCode,
+                sourceLabel = draft.sourceLabel,
+            )
+
+            Text("Атрибуты", style = MaterialTheme.typography.titleSmall)
+
+            when (schemaStatus) {
+                SchemaStatus.LOADING -> {
+                    Text(
+                        text = "Загружаем параметры категории…",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                SchemaStatus.FAILED -> {
+                    SchemaErrorBanner(
+                        message = schemaErrorMessage ?: "Не удалось загрузить параметры категории",
+                        onRetry = { schemaVersion += 1 },
+                    )
+                }
+                SchemaStatus.EMPTY -> {
+                    Text(
+                        text = "Схема категории недоступна. Показаны общие атрибуты.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                SchemaStatus.OK -> Unit
+            }
+
+            if (visibleFields.isEmpty()) {
+                Text(
+                    text = "Атрибуты не заданы для этой категории.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 340.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    items(visibleFields, key = { it.code }) { field ->
+                        val value = draft.attributes[field.code].orEmpty()
+                        val showError = saveAttempted || touchedFields.contains(field.code)
+                        val fieldError = if (showError) validation.attributeErrors[field.code] else null
+                        val isAutofilled = draft.autoFilledAttributes.contains(field.code)
+
+                        AttributeFieldEditor(
+                            field = field,
+                            value = value,
+                            isAutofilled = isAutofilled,
+                            errorMessage = fieldError,
+                            onValueChange = { nextValue ->
+                                val wasAutoFilled = draft.autoFilledAttributes.contains(field.code)
+                                touchedFields = touchedFields + field.code
+                                draft = draft.withAttribute(field.code, nextValue, userEdited = true)
+                                TargetWizardAnalytics.attributeChanged(
+                                    code = field.code,
+                                    controlType = field.control.name.lowercase(),
+                                    isAutoFilled = wasAutoFilled,
+                                    toEmpty = nextValue.isBlank(),
+                                )
+                            },
+                            onClear = {
+                                val wasAutoFilled = draft.autoFilledAttributes.contains(field.code)
+                                touchedFields = touchedFields + field.code
+                                draft = draft.withAttribute(field.code, "", userEdited = true)
+                                TargetWizardAnalytics.attributeChanged(
+                                    code = field.code,
+                                    controlType = field.control.name.lowercase(),
+                                    isAutoFilled = wasAutoFilled,
+                                    toEmpty = true,
+                                )
+                            },
+                        )
+                    }
+                }
+
+                if (optionalFields.size > visibleOptionalFields.size) {
+                    TextButton(onClick = { showOptionalAttributes = !showOptionalAttributes }) {
+                        Text(if (showOptionalAttributes) "Скрыть лишние" else "Показать ещё")
+                    }
+                }
+            }
+
+            if (schemaStatus == SchemaStatus.OK && unknownMapEntries.isNotEmpty()) {
+                TextButton(onClick = { showUnknownMap = !showUnknownMap }) {
+                    Text(if (showUnknownMap) "Скрыть map-поля" else "Advanced: Показать всё из map")
+                }
+                if (showUnknownMap) {
+                    unknownMapEntries.forEach { (code, value) ->
+                        OutlinedTextField(
+                            value = value,
+                            onValueChange = {
+                                touchedFields = touchedFields + code
+                                draft = draft.withAttribute(code, it, userEdited = true)
+                                TargetWizardAnalytics.attributeChanged(
+                                    code = code,
+                                    controlType = "input",
+                                    isAutoFilled = false,
+                                    toEmpty = it.isBlank(),
+                                )
+                            },
+                            label = { Text(code) },
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(
+                    onClick = {
+                        TargetWizardAnalytics.resetTapped()
+                        draft = if (mode == TargetWizardMode.EDIT) initial.copy(autoFilledAttributes = emptySet()) else TrackTargetDraft()
+                        touchedFields = emptySet()
+                        saveAttempted = false
+                    },
+                ) {
+                    Text("Сбросить")
+                }
+                Button(
+                    enabled = validation.isValid,
+                    onClick = {
+                        TargetWizardAnalytics.saveTapped(validation.isValid)
+                        saveAttempted = true
+                        if (!validation.isValid) return@Button
+
+                        val normalized = normalizeDraftForSave(draft)
+                        closeWithReason("save") {
+                            onSave(
+                                TrackTargetWizardResult(
+                                    draft = normalized,
+                                    title = normalized.previewTitle(categories),
+                                    dedupKey = normalized.dedupKeyOrNull(),
+                                ),
+                            )
+                        }
+                    },
+                ) {
+                    Text(if (mode == TargetWizardMode.CREATE) "Готово" else "Сохранить")
+                }
+            }
+        }
+    }
+
+    if (showCategoryPicker) {
+        CategoryLeafPickerSheet(
+            categories = categories,
+            selectedCode = draft.categoryCode,
+            onDismiss = { showCategoryPicker = false },
+            onSelect = { category ->
+                showCategoryPicker = false
+                draft = draft.copy(categoryCode = category.code, sourceLabel = null)
+                touchedFields = touchedFields + "category"
+                TargetWizardAnalytics.categoryPicked(category.code)
+                TargetWizardAnalytics.targetChanged(draft)
+            },
+        )
+    }
+}
+
+private fun normalizeDraftForSave(draft: TrackTargetDraft): TrackTargetDraft {
+    val normalizedCategory = draft.categoryCode?.trim()?.uppercase()?.takeIf { it.isNotBlank() }
+    val normalizedAttributes = sanitizeAttributes(draft.attributes)
+    return when (draft.type) {
+        TrackType.PRODUCT -> draft.copy(
+            brand = draft.brand.trim(),
+            model = draft.model.trim(),
+            categoryCode = normalizedCategory,
+            attributes = normalizedAttributes,
+            autoFilledAttributes = draft.autoFilledAttributes.intersect(normalizedAttributes.keys),
+        )
+        TrackType.CATEGORY -> draft.copy(
+            brand = "",
+            model = "",
+            categoryCode = normalizedCategory,
+            attributes = normalizedAttributes,
+            autoFilledAttributes = draft.autoFilledAttributes.intersect(normalizedAttributes.keys),
+        )
+        else -> draft.copy(
+            categoryCode = normalizedCategory,
+            attributes = normalizedAttributes,
+            autoFilledAttributes = draft.autoFilledAttributes.intersect(normalizedAttributes.keys),
+        )
+    }
+}
+
+private fun sanitizeAttributes(values: Map<String, String>): Map<String, String> {
+    if (values.isEmpty()) return emptyMap()
+    return values.entries
+        .mapNotNull { (key, value) ->
+            val normalizedKey = key.trim()
+            val normalizedValue = value.trim()
+            if (normalizedKey.isBlank() || normalizedValue.isBlank()) null
+            else normalizedKey to normalizedValue
+        }
+        .sortedBy { it.first.lowercase() }
+        .toMap(LinkedHashMap())
+}
+
+private fun buildSchemaFields(profile: CategoryProfile): List<AttributeFieldSchema> {
+    val attrsByCode = profile.attributes.associateBy { it.code }
+    val categoryAttrByCode = profile.categoryAttributes.associateBy { it.attributeCode }
+    val dictionaryByCode = profile.valueDictionaries.associateBy { it.attributeCode }
+
+    val orderedCodes = buildList {
+        profile.categoryAttributes
+            .sortedBy { it.uiOrder }
+            .forEach { add(it.attributeCode) }
+        profile.attributes.forEach { def ->
+            if (!contains(def.code)) add(def.code)
+        }
+    }
+
+    return orderedCodes
+        .mapNotNull { code ->
+            val def = attrsByCode[code] ?: return@mapNotNull null
+            val catAttr = categoryAttrByCode[code]
+            val values = resolveValues(def, dictionaryByCode[code]?.entries?.map { it.canonicalCode }.orEmpty())
+            val control = when {
+                def.dataType == AttributeDataType.BOOL -> AttributeControl.CHIPS
+                values.isNotEmpty() && values.size <= 6 -> AttributeControl.CHIPS
+                values.isNotEmpty() -> AttributeControl.DROPDOWN
+                else -> AttributeControl.INPUT
+            }
+            AttributeFieldSchema(
+                code = code,
+                title = def.title,
+                required = def.requiredForSearch || (catAttr?.isRequiredForCategory == true),
+                values = values,
+                control = control,
+                order = catAttr?.uiOrder ?: Int.MAX_VALUE,
+            )
+        }
+        .sortedWith(
+            compareByDescending<AttributeFieldSchema> { it.required }
+                .thenBy { it.order }
+                .thenBy { it.title.lowercase() },
+        )
+}
+
+private fun resolveValues(def: AttributeDef, dictionaryValues: List<String>): List<String> {
+    if (def.dataType == AttributeDataType.BOOL) return listOf("true", "false")
+    if (dictionaryValues.isEmpty()) return emptyList()
+    return dictionaryValues
+        .map { it.trim() }
+        .filter { it.isNotBlank() }
+        .distinct()
+}
+
+private fun minimalFallbackSchema(): List<AttributeFieldSchema> = listOf(
+    AttributeFieldSchema(
+        code = "condition",
+        title = "Состояние",
+        required = false,
+        values = listOf("new", "used"),
+        control = AttributeControl.CHIPS,
+        order = 0,
+    ),
+    AttributeFieldSchema(
+        code = "delivery",
+        title = "Доставка",
+        required = false,
+        values = listOf("delivery", "pickup"),
+        control = AttributeControl.CHIPS,
+        order = 1,
+    ),
+    AttributeFieldSchema(
+        code = "priceCap",
+        title = "Лимит цены",
+        required = false,
+        values = emptyList(),
+        control = AttributeControl.INPUT,
+        order = 2,
+    ),
+)
+
+private fun validateDraft(
+    draft: TrackTargetDraft,
+    fields: List<AttributeFieldSchema>,
+): ValidationResult {
+    val brandError = if (draft.type == TrackType.PRODUCT && TrackMatchKeyFactory.normalizePart(draft.brand).isNullOrBlank()) {
+        "Выберите бренд"
+    } else {
+        null
+    }
+    val modelError = if (draft.type == TrackType.PRODUCT && TrackMatchKeyFactory.normalizePart(draft.model).isNullOrBlank()) {
+        "Выберите модель"
+    } else {
+        null
+    }
+    val categoryError = if (draft.type == TrackType.CATEGORY && draft.categoryCode.isNullOrBlank()) {
+        "Выберите категорию"
+    } else {
+        null
+    }
+
+    val requiredErrors = fields
+        .filter { it.required }
+        .mapNotNull { field ->
+            val value = draft.attributes[field.code]?.trim().orEmpty()
+            if (value.isBlank()) field.code to "Заполните \"${field.title}\"" else null
+        }
+        .toMap(LinkedHashMap())
+
+    return ValidationResult(
+        brandError = brandError,
+        modelError = modelError,
+        categoryError = categoryError,
+        attributeErrors = requiredErrors,
+    )
+}
+
+private fun TrackTargetDraft.withAttribute(
+    code: String,
+    value: String,
+    userEdited: Boolean,
+): TrackTargetDraft {
+    val trimmedCode = code.trim()
+    if (trimmedCode.isBlank()) return this
+    val trimmedValue = value.trim()
+    val nextAttributes = if (trimmedValue.isBlank()) {
+        attributes - trimmedCode
+    } else {
+        attributes + (trimmedCode to trimmedValue)
+    }
+    val nextAutoFilled = if (userEdited) {
+        autoFilledAttributes - trimmedCode
+    } else {
+        autoFilledAttributes
+    }
+    return copy(attributes = nextAttributes, autoFilledAttributes = nextAutoFilled)
+}
+
+@Composable
+private fun CategoryPickerRow(
+    categoryTitle: String,
+    isError: Boolean,
+    errorMessage: String?,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text("Категория (leaf)", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = categoryTitle.ifBlank { "Не выбрана" },
+                style = MaterialTheme.typography.bodySmall,
+                color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (isError && !errorMessage.isNullOrBlank()) {
+                Text(
+                    text = errorMessage,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TargetPreviewCard(
+    title: String,
+    type: TrackType,
+    countryCode: String,
+    sourceLabel: String?,
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = if (type == TrackType.CATEGORY) "Тип: категория" else "Тип: товар",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = "Страна: ${countryCode.uppercase().ifBlank { "-" }}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (!sourceLabel.isNullOrBlank()) {
+                Text(
+                    text = sourceLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+    }
+}

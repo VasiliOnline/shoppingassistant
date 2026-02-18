@@ -1,0 +1,42 @@
+package com.example.shoppingassistant.feature.pages.offers.tasks
+
+import com.example.shoppingassistant.core.data.ExplainedItem
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+
+/**
+ * Контракт UI-таски нижнего листа офферов.
+ */
+data class OffersSheetProps(
+    val visible: Boolean,
+    val query: NormalizedQuery?,
+    val prefetchedItems: List<ExplainedItem> = emptyList(),
+    val onDismiss: () -> Unit,
+    val onAction: (OfferCardMenuAction, ExplainedItem) -> Unit = { _, _ -> },
+)
+
+/**
+ * Общие UI-модели офферов.
+ */
+enum class OffersBadge {
+    None,
+    BestPrice,
+    BestRating,
+    Nearest,
+}
+
+enum class OfferCardStyle {
+    Flat,
+    Tiles,
+}
+
+enum class OfferCardMenuAction {
+    Favorite,
+    Hide,
+    Share,
+    Report,
+    CopyLink,
+    OpenSellerProfile,
+    OpenChat,
+    OpenExternalLink,
+    OpenExpressDetails,
+}

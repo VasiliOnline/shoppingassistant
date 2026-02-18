@@ -1,0 +1,84 @@
+package com.example.shoppingassistant.feature.pages.offers.tasks
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun OffersSkeleton(
+    horizontal: Boolean,
+    cardStyle: OfferCardStyle = OfferCardStyle.Tiles,
+    modifier: Modifier = Modifier,
+) {
+    val shape = RoundedCornerShape(18.dp)
+    val baseColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+    val borderColor = if (cardStyle == OfferCardStyle.Flat) {
+        MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+    } else {
+        null
+    }
+
+    if (horizontal) {
+        LazyRow(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            items(3) {
+                Box(
+                    modifier = Modifier
+                        .width(260.dp)
+                        .height(150.dp)
+                        .clip(shape)
+                        .background(baseColor)
+                        .then(
+                            if (borderColor != null) {
+                                Modifier.border(1.dp, borderColor, shape)
+                            } else {
+                                Modifier
+                            },
+                        ),
+                )
+            }
+        }
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            repeat(3) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .clip(shape)
+                        .background(baseColor)
+                        .then(
+                            if (borderColor != null) {
+                                Modifier.border(1.dp, borderColor, shape)
+                            } else {
+                                Modifier
+                            },
+                        ),
+                )
+            }
+        }
+    }
+}

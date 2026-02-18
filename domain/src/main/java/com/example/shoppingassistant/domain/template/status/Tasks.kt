@@ -1,0 +1,45 @@
+package com.example.shoppingassistant.domain.template.status
+
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.template.TemplateSnapshotData
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class TemplateStatus {
+    DRAFT,
+    VALID,
+    LOCKED_FOR_ACTIONS,
+}
+
+@Serializable
+enum class TemplateReadyAction {
+    SEARCH,
+    EXPRESS,
+    SUBSCRIPTION,
+}
+
+@Serializable
+data class TemplateStatusResult(
+    val status: TemplateStatus,
+    val readyFor: Set<TemplateReadyAction> = emptySet(),
+    val errors: Map<String, String> = emptyMap(),
+    val firstErrorKey: String? = null,
+)
+
+@Serializable
+data class TemplateStatusContext(
+    val template: TemplateSnapshotData,
+    val profile: CategoryProfile? = null,
+    val constraints: List<CatalogConstraints> = emptyList(),
+    val requiredIfRules: List<RequiredIfRule> = emptyList(),
+    val hasPhotos: Boolean = false,
+)
+
+/**
+ * Computes Draft/Valid status and readiness for actions.
+ */
+interface TemplateStatusResolver {
+    fun resolve(context: TemplateStatusContext): TemplateStatusResult
+}

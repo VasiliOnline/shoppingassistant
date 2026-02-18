@@ -1,6 +1,9 @@
 package com.example.shoppingassistant.domain.catalog
 
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.facet.FacetCollection
+import com.example.shoppingassistant.domain.facet.FacetDefinition
+import com.example.shoppingassistant.domain.facet.FacetPreset
 
 /**
  * Public facade for catalog seed data.
@@ -14,6 +17,9 @@ object CatalogSeed {
     val googleMappings: List<GoogleTaxonomyMapping> by lazy { CatalogSeedLoader.googleMappings }
     val profiles: List<CategoryProfile> by lazy { CatalogSeedLoader.profiles }
     val constraints: List<CatalogConstraints> by lazy { CatalogSeedLoader.constraints }
+    val facetDefinitions: List<FacetDefinition> by lazy { CatalogSeedLoader.facetDefinitions }
+    val facetPresets: List<FacetPreset> by lazy { CatalogSeedLoader.facetPresets }
+    val facetCollections: List<FacetCollection> by lazy { CatalogSeedLoader.facetCollections }
 
     internal val stage21TechGoldenQueries: List<GoldenQuery> by lazy { Stage21TechPackageLoader.goldenQueries }
     internal val stage21TechCoverageGate: Stage21CoverageGate by lazy { Stage21TechPackageLoader.coverageGate }

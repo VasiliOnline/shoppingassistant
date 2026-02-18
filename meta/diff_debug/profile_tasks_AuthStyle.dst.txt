@@ -1,0 +1,117 @@
+package com.example.shoppingassistant.feature.pages.profile.tasks
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+
+/**
+ * Палитра и формы для экрана логина / регистрации.
+ */
+object AuthPalette {
+
+    // фон экрана (бирюзовый под профайлом)
+    val ScreenBackground: Color = Color(0xFF0B7C7F)
+
+    // базовый фон полей
+    val FieldBase: Color = Color(0xFF4A8A87)
+
+    // базовый цвет кнопки "Sign in / Sign up"
+    val ButtonContainer: Color = Color(0xFF2E3E3B)
+
+    // основной цвет текста/иконок на тёмном фоне
+    val OnPrimary: Color = Color.White
+
+    // фон ошибки (для текста ошибок, а не для контейнера поля)
+    val ErrorContainer: Color = Color(0xFFB3261E).copy(alpha = 0.85f)
+
+    // цвет текста ошибок
+    val ErrorText: Color = Color(0xFFFFDAD6)
+
+    // контур подсказок (тонкий тёмный бирюзовый)
+    val HintBorder: Color = Color(0xFF066C6E)
+
+    // цвет текста подсказок
+    val HintText: Color = OnPrimary.copy(alpha = 0.9f)
+
+    // цвет иконки успешной валидации
+    val SuccessIcon: Color = Color(0xFF6EE7B7)
+
+    // цвет иконки ошибки валидации
+    val ErrorIcon: Color = Color(0xFFFF9A8A)
+}
+
+/**
+ * Скругления для полей и кнопок авторизации.
+ */
+object AuthShapes {
+    val FieldShape = RoundedCornerShape(28.dp)
+    val ButtonShape = RoundedCornerShape(28.dp)
+}
+
+/**
+ * Цвета TextField в стиле авторизации.
+ *
+ * Важно: isError больше НЕ красит фон поля в красный цвет,
+ * вся индикация ошибки переносится на текст и иконки.
+ */
+@Composable
+fun authTextFieldColors(isError: Boolean): TextFieldColors {
+    val base = AuthPalette.FieldBase
+    val unfocusedContainer = base.copy(alpha = 0.78f)
+    val focusedContainer = base.copy(alpha = 0.92f)
+    val disabledContainer = base.copy(alpha = 0.45f)
+
+    return TextFieldDefaults.colors(
+        focusedTextColor = AuthPalette.OnPrimary,
+        unfocusedTextColor = AuthPalette.OnPrimary,
+        disabledTextColor = AuthPalette.OnPrimary.copy(alpha = 0.6f),
+        errorTextColor = AuthPalette.ErrorText,
+
+        focusedLabelColor = AuthPalette.OnPrimary,
+        unfocusedLabelColor = AuthPalette.OnPrimary.copy(alpha = 0.85f),
+        disabledLabelColor = AuthPalette.OnPrimary.copy(alpha = 0.5f),
+        errorLabelColor = AuthPalette.ErrorText,
+
+        cursorColor = AuthPalette.OnPrimary,
+        errorCursorColor = AuthPalette.OnPrimary,
+
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        errorIndicatorColor = Color.Transparent,
+
+        focusedContainerColor = focusedContainer,
+        unfocusedContainerColor = unfocusedContainer,
+        disabledContainerColor = disabledContainer,
+
+        // контейнер при ошибке оставляем тем же, чтобы убрать "мигание" красным фоном
+        errorContainerColor = focusedContainer,
+    )
+}
+
+/**
+ * Цвета основной кнопки входа/регистрации.
+ *
+ * Контейнер делаем прозрачным — настоящий фон задаётся градиентом
+ * внутри AuthPrimaryButton. Здесь управляем только цветом контента.
+ */
+@Composable
+fun authPrimaryButtonColors(
+    enabled: Boolean,
+    pressed: Boolean,
+): ButtonColors {
+    val contentColor = AuthPalette.OnPrimary
+    val disabledContent = contentColor.copy(alpha = 0.55f)
+
+    return ButtonDefaults.buttonColors(
+        containerColor = Color.Transparent,
+        contentColor = contentColor,
+        disabledContainerColor = Color.Transparent,
+        disabledContentColor = disabledContent,
+    )
+}

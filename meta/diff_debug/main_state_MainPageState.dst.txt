@@ -1,0 +1,115 @@
+package com.example.shoppingassistant.feature.pages.main.state
+
+import com.example.shoppingassistant.domain.model.ProductDto
+import com.example.shoppingassistant.feature.pages.main.ui.InputMode
+import com.example.shoppingassistant.feature.pages.main.vision.PhotoWizardState
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
+import com.example.shoppingassistant.feature.pages.model.BoundSegment
+import com.example.shoppingassistant.feature.pages.model.FilterStage
+import com.example.shoppingassistant.feature.pages.model.Product
+import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestItem
+import com.example.shoppingassistant.core.data.ExplainedItem
+import com.example.shoppingassistant.core.data.nearby.NearbyFiltersState
+import com.example.shoppingassistant.domain.offers.CreateTrackedOfferStatus
+import com.example.shoppingassistant.feature.pages.main.voice.VoiceWizardState
+
+data class CategoryChipUi(
+    val code: String,
+    val title: String,
+    val breadcrumb: String? = null,
+)
+
+data class NearbyBrandFacet(
+    val id: String,
+    val name: String,
+    val count: Int,
+)
+
+enum class NearbyLocationPermission {
+    Unknown,
+    Granted,
+    DeniedTemporary,
+    DeniedPermanent,
+}
+
+enum class NearbyErrorKind {
+    Network,
+    Location,
+}
+
+enum class NearbyRetryAction {
+    Feed,
+    Count,
+}
+
+data class NearbyErrorState(
+    val kind: NearbyErrorKind,
+    val message: String,
+)
+
+data class MainPageState(
+    val inputMode: InputMode = InputMode.Text,
+    val template: UiTemplate = UiTemplate.Empty,
+    val queryText: String = "",
+    val chosenText: String? = null,
+    val product: Product? = null,
+    val attributeDefs: List<AttributeDef> = emptyList(),
+    val selectedFilters: Map<String, String> = emptyMap(),
+    val boundSegments: List<BoundSegment> = emptyList(),
+    val requiredKeys: Set<String> = emptySet(),
+    val errorKeys: Set<String> = emptySet(),
+    val errorMessages: Map<String, String> = emptyMap(),
+    val photoUrl: String? = null,
+    val photoUrls: List<String> = emptyList(),
+    val photoPlaceholderCategory: String? = null,
+    val linkMeta: TemplateLinkMeta? = null,
+    val templateMode: TemplateMode = TemplateMode.SearchOrSubscribe,
+    val isTemplateActive: Boolean = false,
+    val templatePrefillDone: Boolean = false,
+    val isLoading: Boolean = false,
+    val createOfferLoading: Boolean = false,
+    val createOfferStatus: CreateTrackedOfferStatus? = null,
+    val createOfferMessage: String? = null,
+    val lastCreatedOfferId: String? = null,
+    val currentUserId: String? = null,
+    val nearbyProfileCity: String? = null,
+    val nearbyUserLocation: String? = null,
+    val nearbyUserCountry: String? = null,
+    val nearbyUserLat: Double? = null,
+    val nearbyUserLon: Double? = null,
+    val nearbyLocationPermission: NearbyLocationPermission = NearbyLocationPermission.Unknown,
+    val nearbyFilters: NearbyFiltersState = NearbyFiltersState(),
+    val nearbyLeafCategoryCode: String? = null,
+    val nearbyBrandFacets: List<NearbyBrandFacet> = emptyList(),
+    val nearbyFetchLimit: Int = 20,
+    val nearbyVisibleCount: Int = 12,
+    val nearbyIsLoadingMore: Boolean = false,
+    val nearbyFoundCount: Int? = null,
+    val nearbyOffers: List<ExplainedItem> = emptyList(),
+    val nearbyDraftCount: Int? = null,
+    val nearbyDraftLoading: Boolean = false,
+    val nearbyError: NearbyErrorState? = null,
+    val nearbyLastAction: NearbyRetryAction? = null,
+    val foundCount: Int? = null,
+    val showFilterSheet: Boolean = false,
+    val filterStage: FilterStage = FilterStage.ATTRS,
+    val currentAttrKey: String? = null,
+    val facetCountsKey: String? = null,
+    val facetCounts: Map<String, Int>? = null,
+    val facetCountsLoading: Boolean = false,
+    val attrFacetCounts: Map<String, Int> = emptyMap(),
+    val attrFacetCountsLoading: Set<String> = emptySet(),
+    val expressFillActive: Boolean = false,
+    val expressFillQueue: List<String> = emptyList(),
+    val expressFillNeedsPhoto: Boolean = false,
+    val frequentCategories: List<CategoryChipUi> = emptyList(),
+    val popularCategories: List<CategoryChipUi> = emptyList(),
+    val nearbyCategoryChips: List<CategoryChipUi> = emptyList(),
+    val suggestions: List<MainSuggestItem> = emptyList(),
+    val topOffers: List<ProductDto> = emptyList(),
+    val prefetchedOffers: List<ExplainedItem> = emptyList(),
+    val showTopOffersSheet: Boolean = false,
+    val photoWizard: PhotoWizardState = PhotoWizardState(),
+    val voiceWizard: VoiceWizardState = VoiceWizardState(),
+    val categoryFallback: CategoryFallbackState = CategoryFallbackState(),
+)

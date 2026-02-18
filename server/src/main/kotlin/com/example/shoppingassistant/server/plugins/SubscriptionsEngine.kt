@@ -1,0 +1,85 @@
+package com.example.shoppingassistant.server.plugins
+
+import com.example.shoppingassistant.server.config.SubscriptionsDeliveryConfig
+import com.example.shoppingassistant.server.config.SubscriptionsEngineConfig
+import com.example.shoppingassistant.server.subscriptions.SubscriptionNotificationsDeliveryRunner
+import com.example.shoppingassistant.server.subscriptions.SubscriptionsEngineRunner
+import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationStarted
+import io.ktor.server.application.ApplicationStopped
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent
+import org.slf4j.LoggerFactory
+
+fun Application.configureSubscriptionsEngine() {
+    val config: SubscriptionsEngineConfig =
+        KoinJavaComponent.get(SubscriptionsEngineConfig::class.java)
+    val deliveryConfig: SubscriptionsDeliveryConfig =
+        KoinJavaComponent.get(SubscriptionsDeliveryConfig::class.java)
+
+    val engine: SubscriptionsEngineRunner =
+        KoinJavaComponent.get(SubscriptionsEngineRunner::class.java)
+    val delivery: SubscriptionNotificationsDeliveryRunner =
+        KoinJavaComponent.get(SubscriptionNotificationsDeliveryRunner::class.java)
+
+    val engineLogger = LoggerFactory.getLogger("SubscriptionsEngine")
+    val deliveryLogger = LoggerFactory.getLogger("SubscriptionsDelivery")
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    monitor.subscribe(ApplicationStarted) {
+        if (config.enabled) {
+            scope.launch {
+                while (isActive) {
+                    runCatching { engine.runOnce() }
+                        .onSuccess { result ->
+                            if (result.processedHistoryRows > 0 || result.notificationsCreated > 0) {
+                                engineLogger.info(
+                                    "Engine run: processedHistoryRows={}, notificationsCreated={}, lastHistoryId={}",
+                                    result.processedHistoryRows,
+                                    result.notificationsCreated,
+                                    result.lastHistoryId,
+                                )
+                            }
+                        }
+                        .onFailure { t ->
+                            engineLogger.error("Engine run failed", t)
+                        }
+                    delay(config.intervalMillis)
+                }
+            }
+        }
+
+        if (deliveryConfig.enabled) {
+            scope.launch {
+                while (isActive) {
+                    runCatching { delivery.runOnce() }
+                        .onSuccess { result ->
+                            if (result.picked > 0 || result.sent > 0 || result.failed > 0) {
+                                deliveryLogger.info(
+                                    "Delivery run: picked={}, sent={}, failed={}, skipped={}",
+                                    result.picked,
+                                    result.sent,
+                                    result.failed,
+                                    result.skipped,
+                                )
+                            }
+                        }
+                        .onFailure { t ->
+                            deliveryLogger.error("Delivery run failed", t)
+                        }
+                    delay(deliveryConfig.intervalMillis)
+                }
+            }
+        }
+    }
+
+    monitor.subscribe(ApplicationStopped) {
+        scope.cancel("Application stopping")
+    }
+}

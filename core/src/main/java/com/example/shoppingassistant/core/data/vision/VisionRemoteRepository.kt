@@ -1,0 +1,104 @@
+// Last synced: 2025-12-21 15:56:37
+package com.example.shoppingassistant.core.data.vision
+
+import com.example.shoppingassistant.core.config.BackendConfig
+import com.example.shoppingassistant.core.network.BackendClient
+import com.example.shoppingassistant.domain.model.NormalizedQuery
+import com.example.shoppingassistant.domain.vision.VisionNormalizeRequest
+import com.example.shoppingassistant.domain.vision.VisionNormalizeResult
+import com.example.shoppingassistant.domain.vision.VisionRepository
+import io.ktor.client.call.body
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import kotlinx.serialization.Serializable
+import java.security.MessageDigest
+
+/**
+ * HTTP-репозиторий для vision-нормализации через backend (/api/vision/normalize).
+ */
+class VisionRemoteRepository(
+    private val backendClient: BackendClient,
+    private val cacheStorage: VisionCacheStorage,
+) : VisionRepository {
+
+    private val baseUrl: String
+        get() = BackendConfig.BASE_URL
+
+    override suspend fun normalizeImage(base64: String): NormalizedQuery? {
+        if (base64.isBlank()) return null
+
+        val response = backendClient.client.post("$baseUrl/api/vision/normalize") {
+            contentType(ContentType.Application.Json)
+            setBody(VisionNormalizeRequestDto(imageBase64 = base64))
+        }
+
+        if (response.status != HttpStatusCode.OK) return null
+
+        val dto: VisionNormalizeResponseDto = response.body()
+        return dto.normalized
+    }
+
+    override suspend fun normalizePhotos(request: VisionNormalizeRequest): VisionNormalizeResult? {
+        if (request.photos.isEmpty()) return null
+        val cacheKey = buildCacheKey(request)
+        val cached = cacheStorage.get(cacheKey)
+        if (cached != null) return cached
+
+        val response = backendClient.client.post("$baseUrl/api/vision/normalizePhotos") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+
+        if (response.status != HttpStatusCode.OK) return null
+
+        val dto: VisionNormalizePhotosResponseDto = response.body()
+        val result = dto.result
+        val cacheable = result?.errors?.filterNot { it == "NOT_IN_CATALOG" }.orEmpty().isEmpty()
+        if (result != null && cacheable) {
+            cacheStorage.put(cacheKey, result)
+        }
+        return result
+    }
+
+    @Serializable
+    private data class VisionNormalizeRequestDto(
+        val imageBase64: String,
+    )
+
+    @Serializable
+    private data class VisionNormalizeResponseDto(
+        val status: String,
+        val normalized: NormalizedQuery? = null,
+    )
+
+    @Serializable
+    private data class VisionNormalizePhotosResponseDto(
+        val status: String,
+        val result: VisionNormalizeResult? = null,
+    )
+
+    private fun buildCacheKey(request: VisionNormalizeRequest): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        fun addPart(value: String) {
+            digest.update(value.toByteArray(Charsets.UTF_8))
+        }
+        addPart(request.userKey ?: "")
+        addPart(request.locale ?: "")
+        addPart(request.categoryHint ?: "")
+        addPart(request.parseFrontBackOnly.toString())
+        addPart(request.usageConsumed.toString())
+        request.hints.toSortedMap().forEach { (key, value) ->
+            addPart(key)
+            addPart(value)
+        }
+        request.photos.forEachIndexed { index, photo ->
+            addPart(index.toString())
+            addPart(photo.role.name)
+            addPart(photo.base64)
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+}

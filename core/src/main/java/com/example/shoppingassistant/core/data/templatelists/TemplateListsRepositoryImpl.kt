@@ -1,0 +1,130 @@
+package com.example.shoppingassistant.core.data.templatelists
+
+import android.content.Context
+import com.example.shoppingassistant.domain.template.TemplateListEntry
+import com.example.shoppingassistant.domain.template.TemplateListMeta
+import com.example.shoppingassistant.domain.template.TemplateListsRepository
+import com.example.shoppingassistant.domain.template.TemplateSnapshot
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import java.util.UUID
+
+class TemplateListsRepositoryImpl(
+    context: Context,
+    private val json: Json = Json { ignoreUnknownKeys = true; encodeDefaults = true },
+) : TemplateListsRepository {
+
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    override suspend fun listLists(): List<TemplateListMeta> = withContext(Dispatchers.IO) {
+        loadState().lists.sortedBy { it.createdAtMillis }
+    }
+
+    override suspend fun createList(title: String): TemplateListMeta = withContext(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
+        val safeTitle = title.trim().ifBlank { DEFAULT_LIST_TITLE }
+        val meta = TemplateListMeta(
+            listId = UUID.randomUUID().toString(),
+            title = safeTitle,
+            createdAtMillis = now,
+        )
+        val state = loadState()
+        saveState(state.copy(lists = state.lists + meta))
+        meta
+    }
+
+    override suspend fun renameList(listId: String, title: String): Boolean = withContext(Dispatchers.IO) {
+        val safeTitle = title.trim().ifBlank { DEFAULT_LIST_TITLE }
+        val state = loadState()
+        val index = state.lists.indexOfFirst { it.listId == listId }
+        if (index < 0) return@withContext false
+        val updated = state.lists.toMutableList().apply {
+            this[index] = this[index].copy(title = safeTitle)
+        }
+        saveState(state.copy(lists = updated))
+        true
+    }
+
+    override suspend fun deleteList(listId: String): Boolean = withContext(Dispatchers.IO) {
+        val state = loadState()
+        val updatedLists = state.lists.filterNot { it.listId == listId }
+        if (updatedLists.size == state.lists.size) return@withContext false
+        val updatedEntries = state.entries.filterNot { it.listId == listId }
+        saveState(state.copy(lists = updatedLists, entries = updatedEntries))
+        if (prefs.getString(KEY_SELECTED_LIST_ID, null) == listId) {
+            prefs.edit().remove(KEY_SELECTED_LIST_ID).apply()
+        }
+        true
+    }
+
+    override suspend fun listEntries(listId: String): List<TemplateListEntry> = withContext(Dispatchers.IO) {
+        loadState()
+            .entries
+            .filter { it.listId == listId }
+            .sortedByDescending { it.createdAtMillis }
+    }
+
+    override suspend fun upsertEntry(
+        listId: String,
+        snapshot: TemplateSnapshot,
+        createdAtMillis: Long,
+    ) = withContext(Dispatchers.IO) {
+        val state = loadState()
+        val existing = state.entries.firstOrNull {
+            it.listId == listId && it.snapshot.templateId == snapshot.templateId
+        }
+        val createdAt = existing?.createdAtMillis ?: createdAtMillis
+        val updatedEntry = TemplateListEntry(
+            listId = listId,
+            snapshot = snapshot,
+            createdAtMillis = createdAt,
+        )
+        val filtered = state.entries.filterNot {
+            it.listId == listId && it.snapshot.templateId == snapshot.templateId
+        }
+        saveState(state.copy(entries = filtered + updatedEntry))
+    }
+
+    override suspend fun deleteEntry(listId: String, templateId: String) = withContext(Dispatchers.IO) {
+        val state = loadState()
+        val updated = state.entries.filterNot { it.listId == listId && it.snapshot.templateId == templateId }
+        if (updated.size != state.entries.size) {
+            saveState(state.copy(entries = updated))
+        }
+    }
+
+    override suspend fun getSelectedListId(): String? = withContext(Dispatchers.IO) {
+        prefs.getString(KEY_SELECTED_LIST_ID, null)
+    }
+
+    override suspend fun setSelectedListId(listId: String?) = withContext(Dispatchers.IO) {
+        prefs.edit().putString(KEY_SELECTED_LIST_ID, listId).apply()
+    }
+
+    private fun loadState(): TemplateListsState {
+        val raw = prefs.getString(KEY_STATE, null) ?: return TemplateListsState()
+        return runCatching {
+            json.decodeFromString(TemplateListsState.serializer(), raw)
+        }.getOrElse { TemplateListsState() }
+    }
+
+    private fun saveState(state: TemplateListsState) {
+        val payload = json.encodeToString(TemplateListsState.serializer(), state)
+        prefs.edit().putString(KEY_STATE, payload).apply()
+    }
+
+    @Serializable
+    private data class TemplateListsState(
+        val lists: List<TemplateListMeta> = emptyList(),
+        val entries: List<TemplateListEntry> = emptyList(),
+    )
+
+    private companion object {
+        private const val PREFS_NAME = "template_lists.prefs"
+        private const val KEY_STATE = "template_lists.state"
+        private const val KEY_SELECTED_LIST_ID = "template_lists.selected_list_id"
+        private const val DEFAULT_LIST_TITLE = "Мой список"
+    }
+}

@@ -1,0 +1,53 @@
+package com.example.shoppingassistant.core.push
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Контракты "пуша" для подписок.
+ *
+ * В проде это может быть FCM/APNs, но в текущей реализации уведомления доставляются
+ * через периодический фоновой поллинг серверного inbox и показ системных нотификаций.
+ */
+interface SubscriptionsPushScheduler {
+    fun ensureScheduled()
+    fun cancel()
+}
+
+interface SubscriptionsPushStateStorage {
+    fun getLastNotifiedId(): Long
+    fun setLastNotifiedId(id: Long)
+}
+
+interface SubscriptionsInboxRemoteDataSource {
+    suspend fun listNotificationsPage(limit: Int, offset: Int): SubscriptionsInboxPage
+    suspend fun markRead(id: Long): Boolean
+    suspend fun markAllRead(): Int
+}
+
+interface SubscriptionsPushTokensRemoteDataSource {
+    suspend fun registerToken(platform: String, token: String, deviceId: String? = null)
+}
+
+@Serializable
+data class SubscriptionsInboxPage(
+    val items: List<SubscriptionsInboxNotification>,
+    val limit: Int,
+    val offset: Int,
+    val canLoadMore: Boolean,
+)
+
+@Serializable
+data class SubscriptionsInboxNotification(
+    val id: Long,
+    val alertId: Long,
+    val offerId: Long,
+    val priceHistoryId: Long,
+    val createdAt: Long,
+    val priceCollectedAt: Long,
+    val isRead: Boolean,
+    val message: String,
+    val dropPercent: Double,
+    val baselinePriceMinor: Long,
+    val currentPriceMinor: Long,
+    val currency: String,
+)
