@@ -1,0 +1,891 @@
+{
+  "schemaVersion": "1.0.0",
+  "dictionaries": [
+    {
+      "attributeCode": "base_type",
+      "entries": [
+        {
+          "valueCode": "CLASSIC",
+          "labels": {
+            "ru": "Classic",
+            "en": "Classic"
+          },
+          "aliases": [
+            "классическое"
+          ]
+        },
+        {
+          "valueCode": "WHOLEWHEAT",
+          "labels": {
+            "ru": "Whole wheat",
+            "en": "Whole wheat"
+          },
+          "aliases": [
+            "цельнозерновое"
+          ]
+        },
+        {
+          "valueCode": "GLUTEN_FREE",
+          "labels": {
+            "ru": "Gluten free",
+            "en": "Gluten free"
+          },
+          "aliases": [
+            "безглютеновое"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "coffee_type",
+      "entries": [
+        {
+          "valueCode": "ESPRESSO",
+          "labels": {
+            "ru": "Espresso",
+            "en": "Espresso"
+          },
+          "aliases": [
+            "рожковая"
+          ]
+        },
+        {
+          "valueCode": "CAPSULE",
+          "labels": {
+            "ru": "Capsule",
+            "en": "Capsule"
+          },
+          "aliases": [
+            "капсульная"
+          ]
+        },
+        {
+          "valueCode": "DRIP",
+          "labels": {
+            "ru": "Drip",
+            "en": "Drip"
+          },
+          "aliases": [
+            "капельная"
+          ]
+        },
+        {
+          "valueCode": "GEYSER",
+          "labels": {
+            "ru": "Geyser",
+            "en": "Geyser"
+          },
+          "aliases": [
+            "гейзерная"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "color",
+      "entries": [
+        {
+          "valueCode": "BLACK",
+          "labels": {
+            "ru": "Black",
+            "en": "Black"
+          },
+          "aliases": [
+            "черный",
+            "чёрный"
+          ]
+        },
+        {
+          "valueCode": "WHITE",
+          "labels": {
+            "ru": "White",
+            "en": "White"
+          },
+          "aliases": [
+            "белый"
+          ]
+        },
+        {
+          "valueCode": "GRAY",
+          "labels": {
+            "ru": "Gray",
+            "en": "Gray"
+          },
+          "aliases": [
+            "серый",
+            "silver"
+          ]
+        },
+        {
+          "valueCode": "BLUE",
+          "labels": {
+            "ru": "Blue",
+            "en": "Blue"
+          },
+          "aliases": [
+            "синий"
+          ]
+        },
+        {
+          "valueCode": "PINK",
+          "labels": {
+            "ru": "Pink",
+            "en": "Pink"
+          },
+          "aliases": [
+            "розовый"
+          ]
+        },
+        {
+          "valueCode": "NATURAL_TITANIUM",
+          "labels": {
+            "ru": "Natural Titanium",
+            "en": "Natural Titanium"
+          },
+          "aliases": [
+            "натуральный титан",
+            "титан"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "condition",
+      "entries": [
+        {
+          "valueCode": "NEW",
+          "labels": {
+            "ru": "new",
+            "en": "new"
+          },
+          "aliases": [
+            "новый"
+          ]
+        },
+        {
+          "valueCode": "LIKE_NEW",
+          "labels": {
+            "ru": "like new",
+            "en": "like new"
+          },
+          "aliases": [
+            "как новый"
+          ]
+        },
+        {
+          "valueCode": "USED",
+          "labels": {
+            "ru": "used",
+            "en": "used"
+          },
+          "aliases": [
+            "б/у"
+          ]
+        },
+        {
+          "valueCode": "REFURBISHED",
+          "labels": {
+            "ru": "refurbished",
+            "en": "refurbished"
+          },
+          "aliases": [
+            "восстановленный"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "cuisine_type",
+      "entries": [
+        {
+          "valueCode": "JAPANESE",
+          "labels": {
+            "ru": "Japanese",
+            "en": "Japanese"
+          },
+          "aliases": [
+            "японская"
+          ]
+        },
+        {
+          "valueCode": "ITALIAN",
+          "labels": {
+            "ru": "Italian",
+            "en": "Italian"
+          },
+          "aliases": [
+            "итальянская"
+          ]
+        },
+        {
+          "valueCode": "FUSION",
+          "labels": {
+            "ru": "Fusion",
+            "en": "Fusion"
+          },
+          "aliases": [
+            "фьюжн"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "dosage_unit",
+      "entries": [
+        {
+          "valueCode": "G",
+          "labels": {
+            "ru": "g",
+            "en": "g"
+          },
+          "aliases": [
+            "г"
+          ]
+        },
+        {
+          "valueCode": "MG",
+          "labels": {
+            "ru": "mg",
+            "en": "mg"
+          },
+          "aliases": [
+            "мг"
+          ]
+        },
+        {
+          "valueCode": "ML",
+          "labels": {
+            "ru": "ml",
+            "en": "ml"
+          },
+          "aliases": [
+            "мл"
+          ]
+        },
+        {
+          "valueCode": "SCOOP",
+          "labels": {
+            "ru": "scoop",
+            "en": "scoop"
+          },
+          "aliases": [
+            "мерка"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "fish_type_primary",
+      "entries": [
+        {
+          "valueCode": "SALMON",
+          "labels": {
+            "ru": "Salmon",
+            "en": "Salmon"
+          },
+          "aliases": [
+            "лосось",
+            "семга"
+          ]
+        },
+        {
+          "valueCode": "TUNA",
+          "labels": {
+            "ru": "Tuna",
+            "en": "Tuna"
+          },
+          "aliases": [
+            "тунец"
+          ]
+        },
+        {
+          "valueCode": "EEL",
+          "labels": {
+            "ru": "Eel",
+            "en": "Eel"
+          },
+          "aliases": [
+            "угорь"
+          ]
+        },
+        {
+          "valueCode": "SHRIMP",
+          "labels": {
+            "ru": "Shrimp",
+            "en": "Shrimp"
+          },
+          "aliases": [
+            "креветка"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "flavor",
+      "entries": [
+        {
+          "valueCode": "VANILLA",
+          "labels": {
+            "ru": "Vanilla",
+            "en": "Vanilla"
+          },
+          "aliases": [
+            "ваниль"
+          ]
+        },
+        {
+          "valueCode": "CHOCOLATE",
+          "labels": {
+            "ru": "Chocolate",
+            "en": "Chocolate"
+          },
+          "aliases": [
+            "шоколад"
+          ]
+        },
+        {
+          "valueCode": "STRAWBERRY",
+          "labels": {
+            "ru": "Strawberry",
+            "en": "Strawberry"
+          },
+          "aliases": [
+            "клубника"
+          ]
+        },
+        {
+          "valueCode": "UNFLAVORED",
+          "labels": {
+            "ru": "Unflavored",
+            "en": "Unflavored"
+          },
+          "aliases": [
+            "без вкуса"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "folding_type",
+      "entries": [
+        {
+          "valueCode": "BOOK",
+          "labels": {
+            "ru": "Book",
+            "en": "Book"
+          },
+          "aliases": [
+            "книжка"
+          ]
+        },
+        {
+          "valueCode": "UMBRELLA",
+          "labels": {
+            "ru": "Umbrella",
+            "en": "Umbrella"
+          },
+          "aliases": [
+            "трость"
+          ]
+        },
+        {
+          "valueCode": "ONE_HAND",
+          "labels": {
+            "ru": "One-hand",
+            "en": "One-hand"
+          },
+          "aliases": [
+            "одной рукой"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "form_factor",
+      "entries": [
+        {
+          "valueCode": "POWDER",
+          "labels": {
+            "ru": "Powder",
+            "en": "Powder"
+          },
+          "aliases": [
+            "порошок"
+          ]
+        },
+        {
+          "valueCode": "CAPSULE",
+          "labels": {
+            "ru": "Capsule",
+            "en": "Capsule"
+          },
+          "aliases": [
+            "капсула"
+          ]
+        },
+        {
+          "valueCode": "TABLET",
+          "labels": {
+            "ru": "Tablet",
+            "en": "Tablet"
+          },
+          "aliases": [
+            "таблетка"
+          ]
+        },
+        {
+          "valueCode": "LIQUID",
+          "labels": {
+            "ru": "Liquid",
+            "en": "Liquid"
+          },
+          "aliases": [
+            "жидкость"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "gender",
+      "entries": [
+        {
+          "valueCode": "UNISEX",
+          "labels": {
+            "ru": "Unisex",
+            "en": "Unisex"
+          },
+          "aliases": [
+            "унисекс"
+          ]
+        },
+        {
+          "valueCode": "MALE",
+          "labels": {
+            "ru": "Male",
+            "en": "Male"
+          },
+          "aliases": [
+            "мужской"
+          ]
+        },
+        {
+          "valueCode": "FEMALE",
+          "labels": {
+            "ru": "Female",
+            "en": "Female"
+          },
+          "aliases": [
+            "женский"
+          ]
+        },
+        {
+          "valueCode": "KIDS",
+          "labels": {
+            "ru": "Kids",
+            "en": "Kids"
+          },
+          "aliases": [
+            "детский"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "keyboard_layout",
+      "entries": [
+        {
+          "valueCode": "US",
+          "labels": {
+            "ru": "US",
+            "en": "US"
+          },
+          "aliases": [
+            "eng"
+          ]
+        },
+        {
+          "valueCode": "RU",
+          "labels": {
+            "ru": "RU",
+            "en": "RU"
+          },
+          "aliases": [
+            "рус"
+          ]
+        },
+        {
+          "valueCode": "EU",
+          "labels": {
+            "ru": "EU",
+            "en": "EU"
+          },
+          "aliases": [
+            "euro"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "material",
+      "entries": [
+        {
+          "valueCode": "CERAMIC",
+          "labels": {
+            "ru": "Ceramic",
+            "en": "Ceramic"
+          },
+          "aliases": [
+            "керамика",
+            "фарфор"
+          ]
+        },
+        {
+          "valueCode": "GLASS",
+          "labels": {
+            "ru": "Glass",
+            "en": "Glass"
+          },
+          "aliases": [
+            "стекло"
+          ]
+        },
+        {
+          "valueCode": "STEEL",
+          "labels": {
+            "ru": "Steel",
+            "en": "Steel"
+          },
+          "aliases": [
+            "сталь",
+            "нержавейка"
+          ]
+        },
+        {
+          "valueCode": "PLASTIC",
+          "labels": {
+            "ru": "Plastic",
+            "en": "Plastic"
+          },
+          "aliases": [
+            "пластик"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "network_type",
+      "entries": [
+        {
+          "valueCode": "5G",
+          "labels": {
+            "ru": "5g",
+            "en": "5g"
+          },
+          "aliases": []
+        },
+        {
+          "valueCode": "4G",
+          "labels": {
+            "ru": "4g",
+            "en": "4g"
+          },
+          "aliases": [
+            "lte"
+          ]
+        },
+        {
+          "valueCode": "3G",
+          "labels": {
+            "ru": "3g",
+            "en": "3g"
+          },
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "attributeCode": "os_family",
+      "entries": [
+        {
+          "valueCode": "ANDROID",
+          "labels": {
+            "ru": "Android",
+            "en": "Android"
+          },
+          "aliases": [
+            "андроид"
+          ]
+        },
+        {
+          "valueCode": "IOS",
+          "labels": {
+            "ru": "iOS",
+            "en": "iOS"
+          },
+          "aliases": [
+            "ios"
+          ]
+        },
+        {
+          "valueCode": "WINDOWS",
+          "labels": {
+            "ru": "Windows",
+            "en": "Windows"
+          },
+          "aliases": [
+            "win"
+          ]
+        },
+        {
+          "valueCode": "MACOS",
+          "labels": {
+            "ru": "macOS",
+            "en": "macOS"
+          },
+          "aliases": [
+            "mac os"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "set_type",
+      "entries": [
+        {
+          "valueCode": "ASSORTED",
+          "labels": {
+            "ru": "Assorted",
+            "en": "Assorted"
+          },
+          "aliases": [
+            "ассорти"
+          ]
+        },
+        {
+          "valueCode": "MAKI_SET",
+          "labels": {
+            "ru": "Maki set",
+            "en": "Maki set"
+          },
+          "aliases": [
+            "маки"
+          ]
+        },
+        {
+          "valueCode": "WARM_SET",
+          "labels": {
+            "ru": "Warm set",
+            "en": "Warm set"
+          },
+          "aliases": [
+            "тёплые роллы"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "spiciness_level",
+      "entries": [
+        {
+          "valueCode": "MILD",
+          "labels": {
+            "ru": "Mild",
+            "en": "Mild"
+          },
+          "aliases": [
+            "неострый"
+          ]
+        },
+        {
+          "valueCode": "MEDIUM",
+          "labels": {
+            "ru": "Medium",
+            "en": "Medium"
+          },
+          "aliases": [
+            "средний"
+          ]
+        },
+        {
+          "valueCode": "HOT",
+          "labels": {
+            "ru": "Hot",
+            "en": "Hot"
+          },
+          "aliases": [
+            "острый"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "storage_type",
+      "entries": [
+        {
+          "valueCode": "SSD",
+          "labels": {
+            "ru": "SSD",
+            "en": "SSD"
+          },
+          "aliases": [
+            "nvme"
+          ]
+        },
+        {
+          "valueCode": "HDD",
+          "labels": {
+            "ru": "HDD",
+            "en": "HDD"
+          },
+          "aliases": [
+            "hard drive"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "stroller_type",
+      "entries": [
+        {
+          "valueCode": "TRAVEL",
+          "labels": {
+            "ru": "Travel",
+            "en": "Travel"
+          },
+          "aliases": [
+            "прогулочная",
+            "трость"
+          ]
+        },
+        {
+          "valueCode": "TRANSFORMER",
+          "labels": {
+            "ru": "Transformer",
+            "en": "Transformer"
+          },
+          "aliases": [
+            "трансформер"
+          ]
+        },
+        {
+          "valueCode": "JOGGER",
+          "labels": {
+            "ru": "Jogger",
+            "en": "Jogger"
+          },
+          "aliases": [
+            "для бега"
+          ]
+        },
+        {
+          "valueCode": "CARRIAGE",
+          "labels": {
+            "ru": "Carriage",
+            "en": "Carriage"
+          },
+          "aliases": [
+            "люлька"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "substance_code",
+      "entries": [
+        {
+          "valueCode": "VITAMIN_D3",
+          "labels": {
+            "ru": "Vitamin D3",
+            "en": "Vitamin D3"
+          },
+          "aliases": [
+            "d3",
+            "витамин д3"
+          ]
+        },
+        {
+          "valueCode": "VITAMIN_C",
+          "labels": {
+            "ru": "Vitamin C",
+            "en": "Vitamin C"
+          },
+          "aliases": [
+            "аскорбинка"
+          ]
+        },
+        {
+          "valueCode": "MAGNESIUM",
+          "labels": {
+            "ru": "Magnesium",
+            "en": "Magnesium"
+          },
+          "aliases": [
+            "магний"
+          ]
+        },
+        {
+          "valueCode": "OMEGA3",
+          "labels": {
+            "ru": "Omega-3",
+            "en": "Omega-3"
+          },
+          "aliases": [
+            "омега",
+            "omega 3"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "thickness",
+      "entries": [
+        {
+          "valueCode": "THIN",
+          "labels": {
+            "ru": "Thin",
+            "en": "Thin"
+          },
+          "aliases": [
+            "тонкое"
+          ]
+        },
+        {
+          "valueCode": "TRADITIONAL",
+          "labels": {
+            "ru": "Traditional",
+            "en": "Traditional"
+          },
+          "aliases": [
+            "традиционное",
+            "пышное"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "used_for",
+      "entries": [
+        {
+          "valueCode": "HOME",
+          "labels": {
+            "ru": "Home",
+            "en": "Home"
+          },
+          "aliases": [
+            "дом"
+          ]
+        },
+        {
+          "valueCode": "OFFICE",
+          "labels": {
+            "ru": "Office",
+            "en": "Office"
+          },
+          "aliases": [
+            "офис"
+          ]
+        }
+      ]
+    }
+  ]
+}

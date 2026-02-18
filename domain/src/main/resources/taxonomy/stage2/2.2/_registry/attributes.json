@@ -1,0 +1,915 @@
+{
+  "schemaVersion": "1.0.0",
+  "attributes": [
+    {
+      "attributeCode": "age_from_months",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Возраст с (мес)",
+        "en": "age from months"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "age_to_months",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Возраст до (мес)",
+        "en": "age to months"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "base_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тесто/основание",
+        "en": "base type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "battery_health_percent",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Состояние батареи (%)",
+        "en": "battery health percent"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "brand",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Бренд",
+        "en": "brand"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "coffee_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тип кофе",
+        "en": "coffee type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "color",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Цвет",
+        "en": "color"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "colorway",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Окраска/колорвей",
+        "en": "colorway"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "condition",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Состояние",
+        "en": "condition"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "country_of_origin",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Страна производства",
+        "en": "country of origin"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cpu_family",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "CPU",
+        "en": "cpu family"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cuisine_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Кухня",
+        "en": "cuisine type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "diameter_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Диаметр (см)",
+        "en": "diameter cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "dosage_per_serving",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Доза за приём",
+        "en": "dosage per serving"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "dosage_unit",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Ед. дозировки",
+        "en": "dosage unit"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "dual_sim",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Dual SIM",
+        "en": "dual sim"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "fish_type_primary",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Рыба",
+        "en": "fish type primary"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "flavor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Вкус",
+        "en": "flavor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "folding_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Складование",
+        "en": "folding type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "form_factor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Форма выпуска",
+        "en": "form factor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "gender",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Пол",
+        "en": "gender"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "gpu_type",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "GPU",
+        "en": "gpu type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "has_cheese",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Сыр",
+        "en": "has cheese"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "has_lid",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Крышка",
+        "en": "has lid"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "included_accessories",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Комплектация",
+        "en": "included accessories"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "is_gluten_free",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Без глютена",
+        "en": "is gluten free"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "is_lactose_free",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Без лактозы",
+        "en": "is lactose free"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "is_sugar_free",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Без сахара",
+        "en": "is sugar free"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "is_thermal",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Термо",
+        "en": "is thermal"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "is_vegan",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Веган",
+        "en": "is vegan"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "is_vegetarian",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Вегетариан",
+        "en": "is vegetarian"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "keyboard_layout",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Раскладка",
+        "en": "keyboard layout"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "limited_edition",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Лимитированное издание",
+        "en": "limited edition"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "material",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Материал",
+        "en": "material"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "material_sole",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Материал подошвы",
+        "en": "material sole"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "material_upper",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Материал верха",
+        "en": "material upper"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "memory_gb",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Память (ГБ)",
+        "en": "memory gb"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Модель",
+        "en": "model"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model_line",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Линейка",
+        "en": "model line"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "network_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Сеть",
+        "en": "network type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "os_family",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "ОС",
+        "en": "os family"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pieces_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Кол-во кусочков",
+        "en": "pieces count"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "portion_size_gram",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Порция (г)",
+        "en": "portion size gram"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "power_watt",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Мощность (Вт)",
+        "en": "power watt"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "product_name",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Название продукта",
+        "en": "product name"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "protein_per_serving_gram",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Белка за порцию (г)",
+        "en": "protein per serving gram"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "protein_percent",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Белок (%)",
+        "en": "protein percent"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pump_pressure_bar",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Давление (бар)",
+        "en": "pump pressure bar"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "ram_gb",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "ОЗУ (ГБ)",
+        "en": "ram gb"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "region_code",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Регион",
+        "en": "region code"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "release_year",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Год релиза",
+        "en": "release year"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "restaurant_name",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Ресторан/сеть",
+        "en": "restaurant name"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "screen_size_inch",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Диагональ",
+        "en": "screen size inch"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "servings_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Порций",
+        "en": "servings count"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "set_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тип сета",
+        "en": "set type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "size_eu",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Размер EU",
+        "en": "size eu"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "size_uk",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Размер UK",
+        "en": "size uk"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "size_us",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Размер US",
+        "en": "size us"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "spiciness_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Острота",
+        "en": "spiciness level"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "storage_gb",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Накопитель (ГБ)",
+        "en": "storage gb"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "storage_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тип накопителя",
+        "en": "storage type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "stroller_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тип",
+        "en": "stroller type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "substance_code",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Действующее вещество",
+        "en": "substance code"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "thickness",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Толщина",
+        "en": "thickness"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "topping_signature",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Фирменная начинка",
+        "en": "topping signature"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "used_for",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Назначение",
+        "en": "used for"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "volume_ml",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Объём (мл)",
+        "en": "volume ml"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "water_tank_litre",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Объём бака (л)",
+        "en": "water tank litre"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "weight_kg",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Вес (кг)",
+        "en": "weight kg"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "weight_limit_kg",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Вес ребёнка до (кг)",
+        "en": "weight limit kg"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    }
+  ]
+}

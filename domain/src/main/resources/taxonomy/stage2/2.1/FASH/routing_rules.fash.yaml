@@ -1,0 +1,158 @@
+version: 2.1-L0
+l0_code: FASH
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- выкройка
+- выкройки
+- как сшить
+- как связать
+- схема вязания
+- мастер класс
+- мк
+- крючком
+- спицами
+- скачать
+- игра
+- обои
+- инструкция
+- ремонт
+- переделка
+disambiguation_ordered_rules:
+- id: R.KIDS_GEAR_STROLLERS
+  if_any_tokens:
+  - коляск
+  - автокресл
+  - люлька
+  - база isofix
+  - isofix
+  then_route_canonical: KIDS.STROLLERS_CARSEATS
+  confidence: 0.92
+  notes: Strollers/carseats are KIDS gear, not clothing
+- id: R.KIDS_GEAR_BABY
+  if_any_tokens:
+  - подгузник
+  - пеленк
+  - бутылочк
+  - соска
+  - пустышк
+  - слинг
+  - кокон
+  then_route_canonical: KIDS.BABY_GEAR
+  confidence: 0.9
+  notes: Baby care items -> KIDS.BABY_GEAR
+- id: R.KIDS_TOYS
+  if_any_tokens:
+  - игрушк
+  - lego
+  - лего
+  - конструктор
+  - настольная игра
+  - пазл
+  then_route_canonical: KIDS.TOYS_GAMES
+  confidence: 0.88
+  notes: Toys/games -> KIDS.TOYS_GAMES
+- id: R.BEAUTY_FRAGRANCE
+  if_any_tokens:
+  - духи
+  - парфюм
+  - туалетная вода
+  - одеколон
+  - edp
+  - edt
+  then_route_canonical: BEAUTY.FRAGRANCE
+  confidence: 0.93
+  notes: Perfume -> Beauty
+- id: R.TECH_WEARABLES
+  if_any_tokens:
+  - apple watch
+  - smartwatch
+  - смарт
+  - фитнес браслет
+  - fitbit
+  - garmin
+  - mi band
+  and_any_tokens:
+  - часы
+  - браслет
+  - трекер
+  then_route_canonical: TECH.SMART_HOME
+  confidence: 0.9
+  notes: Wearables -> TECH.SMART_HOME
+- id: R.HOME_HOUSEHOLD_GLOVES
+  if_any_tokens:
+  - перчатк
+  and_any_tokens:
+  - хозяйствен
+  - для уборки
+  - для мытья посуды
+  - латекс
+  - нитрил
+  then_route_canonical: HOME.CLEANING
+  confidence: 0.82
+  notes: Household gloves are HOME.CLEANING
+- id: R.SPORT_BIKES_SCOOTERS
+  if_any_tokens:
+  - велосипед
+  - самокат
+  then_route_canonical: SPORT.BIKES_SCOOTERS
+  confidence: 0.8
+  notes: Bikes/scooters -> SPORT.BIKES_SCOOTERS
+- id: R.SPORT_FITNESS
+  if_any_tokens:
+  - гантели
+  - штанга
+  then_route_canonical: SPORT.FITNESS
+  confidence: 0.8
+  notes: Fitness weights -> SPORT.FITNESS
+- id: R.SPORT_OUTDOOR
+  if_any_tokens:
+  - палатка
+  - спальник
+  - рюкзак турист
+  - каремат
+  then_route_canonical: SPORT.OUTDOOR
+  confidence: 0.8
+  notes: Camping/outdoor gear -> SPORT.OUTDOOR
+- id: R.TECH_SEWING_MACHINE
+  if_any_tokens:
+  - швейная машинка
+  - швейн
+  and_any_tokens:
+  - машин
+  then_route_canonical: TECH.SMART_HOME
+  confidence: 0.72
+  notes: Sewing machine is treated as TECH in this package
+- id: R.BAG_VS_LAPTOP
+  if_any_tokens:
+  - ноутбук
+  - macbook
+  - thinkpad
+  - lenovo
+  - asus
+  - hp
+  - dell
+  and_none_tokens:
+  - сумк
+  - рюкзак
+  - чехол
+  - портфель
+  - кейс
+  then_route_canonical: TECH.LAPTOPS
+  confidence: 0.74
+  notes: If it's laptop without bag tokens -> TECH.LAPTOPS
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.FASH
+  default_canonical: FASH
+  if_only_generic_tokens_route_to_root: true

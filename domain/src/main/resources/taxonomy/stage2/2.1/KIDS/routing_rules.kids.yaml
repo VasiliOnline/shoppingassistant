@@ -1,0 +1,131 @@
+version: 2.1-L0
+l0_code: KIDS
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- скачать
+- игра
+- обои
+- как
+- своими руками
+- инструкция
+- выкройка
+- схема
+- книга
+- сказки
+- раскраска
+disambiguation_ordered_rules:
+- id: R.FASH_KIDS_CLOTHING
+  if_any_tokens:
+  - одежд
+  - куртк
+  - плать
+  - школьн
+  - брюк
+  - джинс
+  - комбинезон
+  and_any_tokens:
+  - детск
+  - для мальчик
+  - для девочк
+  - для ребенка
+  - для ребёнка
+  then_route_canonical: FASH.KIDS
+  confidence: 0.9
+  notes: Kids clothing belongs to FASH.KIDS
+- id: R.FASH_KIDS_SHOES
+  if_any_tokens:
+  - обув
+  - кроссовк
+  - кед
+  - ботинк
+  - сапог
+  and_any_tokens:
+  - детск
+  - для мальчик
+  - для девочк
+  - для ребенка
+  - для ребёнка
+  then_route_canonical: FASH.KIDS
+  confidence: 0.88
+  notes: Kids shoes are treated as FASH.KIDS in this taxonomy slice
+- id: R.PET_FOOD_EXCLUDE
+  if_any_tokens:
+  - корм
+  - кот
+  - кошка
+  - котенок
+  - котёнок
+  - собак
+  - щенок
+  then_route_canonical: HOME
+  confidence: 0.6
+  notes: Pet-related queries should not land in KIDS (fallback to HOME/other)
+- id: R.TECH_PHONES
+  if_any_tokens:
+  - смартфон
+  - iphone
+  - айфон
+  - samsung
+  - galaxy
+  - xiaomi
+  then_route_canonical: TECH.PHONES
+  confidence: 0.75
+  notes: Phones -> TECH.PHONES
+- id: R.TOYS_LEGO
+  if_any_tokens:
+  - lego
+  - лего
+  - duplo
+  - дупло
+  - конструктор
+  - пазл
+  - настольн
+  - кукла
+  - машинка игрушка
+  - фигурк
+  - мягкая игрушка
+  then_route_browse_node: BN.KIDS.TOYS
+  confidence: 0.82
+  notes: Toys/games -> KIDS.TOYS_GAMES
+- id: R.STROLLERS_CARSEATS
+  if_any_tokens:
+  - коляск
+  - автокресл
+  - автолюльк
+  - isofix
+  - бустер
+  then_route_browse_node: BN.KIDS.STROLLERS
+  confidence: 0.92
+  notes: Strollers & car seats
+- id: R.NURSERY_FURNITURE
+  if_any_tokens:
+  - кроватк
+  - матрас
+  - комод
+  - пеленальн
+  - манеж
+  - стульчик для кормления
+  - ворота безопасности
+  - блокиратор
+  - видеоняня
+  - радионяня
+  - ночник
+  then_route_browse_node: BN.KIDS.NURSERY
+  confidence: 0.84
+  notes: Nursery furniture & home safety
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.KIDS
+  default_canonical: KIDS
+  if_only_generic_tokens_route_to_root: true

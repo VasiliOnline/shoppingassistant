@@ -1,0 +1,213 @@
+[
+  {
+    "category": {
+      "code": "APPL",
+      "segment": "APPL",
+      "title": "Бытовая техника",
+      "parentCode": null,
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "APPL.MAJOR",
+      "segment": "APPL",
+      "title": "Крупная техника (холодильники, стиралки и т.п.)",
+      "parentCode": "APPL",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "APPL.SMALL",
+      "segment": "APPL",
+      "title": "Малая техника (пылесосы, кухня и т.п.)",
+      "parentCode": "APPL",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "coffee_type",
+        "title": "Тип кофе",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "coffee_type"
+      },
+      {
+        "code": "used_for",
+        "title": "Назначение",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "used_for"
+      },
+      {
+        "code": "power_watt",
+        "title": "Мощность (Вт)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pump_pressure_bar",
+        "title": "Давление (бар)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "water_tank_litre",
+        "title": "Объём бака (л)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "coffee_type",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "used_for",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "power_watt",
+        "uiOrder": 6,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "pump_pressure_bar",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "water_tank_litre",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "APPL.SMALL",
+        "attributeCode": "color",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "APPL.CLIMATE",
+      "segment": "APPL",
+      "title": "Климат (кондиционеры, обогреватели, очистители)",
+      "parentCode": "APPL",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  }
+]

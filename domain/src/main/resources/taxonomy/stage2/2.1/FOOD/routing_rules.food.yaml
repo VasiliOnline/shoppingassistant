@@ -1,0 +1,144 @@
+version: 2.1-L0
+l0_code: FOOD
+locale: ru-RU
+normalization:
+  lowercase: true
+  replace_yo: true
+  strip_punct: true
+  collapse_spaces: true
+  tokenize: whitespace+basic_punct
+blocked_noise_tokens:
+- рецепт
+- как приготовить
+- как сделать
+- калорийность
+- бжу
+- диета
+- меню
+- форум
+- отзывы
+- скачать
+- игра
+- обои
+disambiguation_ordered_rules:
+- id: R.PETS_FOOD
+  if_any_tokens:
+  - корм
+  - whiskas
+  - royal canin
+  - purina
+  - felix
+  - pedigree
+  and_any_tokens:
+  - кот
+  - кошка
+  - котенок
+  - котёнок
+  - собак
+  - щенок
+  - питомц
+  then_route_canonical: PETS.FOOD
+  confidence: 0.92
+  notes: Pet food should not land in FOOD
+- id: R.BEAUTY_SUPPLEMENTS
+  if_any_tokens:
+  - витамин
+  - витамины
+  - омега
+  - бад
+  - бады
+  - магний
+  - цинк
+  - коллаген
+  then_route_canonical: BEAUTY.HEALTH
+  confidence: 0.86
+  notes: Supplements/vitamins -> BEAUTY.HEALTH
+- id: R.APPL_KITCHEN_APPLIANCES
+  if_any_tokens:
+  - микроволновк
+  - холодильник
+  - электрочайник
+  - чайник электрический
+  - блендер
+  - мультиварк
+  then_route_canonical: APPL.SMALL
+  confidence: 0.9
+  notes: Appliances -> APPL.SMALL
+- id: R.HOME_KITCHENWARE
+  if_any_tokens:
+  - посуда
+  - кастрюл
+  - сковород
+  - нож кухон
+  - тарелк
+  - контейнер для еды
+  - термос
+  - кружк
+  then_route_canonical: HOME.KITCHEN_DINING
+  confidence: 0.84
+  notes: Kitchenware -> HOME.KITCHEN_DINING
+- id: R.READY_MEALS
+  if_any_tokens:
+  - готовая еда
+  - готовые блюда
+  - ланч
+  - бизнес ланч
+  - салат
+  - суп
+  - роллы
+  - суши
+  - пицца
+  - бургер
+  - шаурма
+  - сэндвич
+  - вок
+  and_none_tokens:
+  - роллтон
+  then_route_browse_node: BN.FOOD.READY
+  confidence: 0.82
+  notes: Ready meals
+- id: R.DRINKS
+  if_any_tokens:
+  - вода
+  - напиток
+  - напитки
+  - сок
+  - чай
+  - кофе
+  - газировка
+  - кола
+  - лимонад
+  - энергетик
+  - морс
+  - компот
+  then_route_browse_node: BN.FOOD.DRINKS
+  confidence: 0.78
+  notes: Drinks
+- id: R.SNACKS_SWEETS
+  if_any_tokens:
+  - снеки
+  - сладост
+  - шоколад
+  - конфет
+  - печень
+  - вафл
+  - чипс
+  - сухарик
+  - орех
+  - сухофрукт
+  - батончик
+  - жвачк
+  - леденц
+  then_route_browse_node: BN.FOOD.SNACKS
+  confidence: 0.76
+  notes: Snacks and sweets
+scoring:
+  alias_match_weight: 1.0
+  token_overlap_weight: 0.7
+  exact_phrase_bonus: 0.4
+  leaf_preference_bonus: 0.2
+  min_confidence_to_route: 0.55
+fallback:
+  default_browse_node: BN.FOOD
+  default_canonical: FOOD
+  if_only_generic_tokens_route_to_root: true

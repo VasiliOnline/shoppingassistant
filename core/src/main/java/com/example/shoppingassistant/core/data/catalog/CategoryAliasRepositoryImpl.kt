@@ -1,0 +1,15 @@
+package com.example.shoppingassistant.core.data.catalog
+
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
+import com.example.shoppingassistant.domain.catalog.CategoryAlias
+import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
+
+/**
+ * MVP: in-memory алиасы категорий. Дальше можно заменить на БД/remote без изменения UI.
+ */
+class CategoryAliasRepositoryImpl(
+    private val seeded: List<CategoryAlias> = CatalogSeed.categoryAliases,
+) : CategoryAliasRepository {
+
+    override suspend fun listAliases(): List<CategoryAlias> = seeded
+}

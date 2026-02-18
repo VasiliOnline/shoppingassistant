@@ -1,0 +1,261 @@
+[
+  {
+    "category": {
+      "code": "KIDS",
+      "segment": "KIDS",
+      "title": "Детям",
+      "parentCode": null,
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "KIDS.STROLLERS_CARSEATS",
+      "segment": "KIDS",
+      "title": "Коляски и автокресла",
+      "parentCode": "KIDS",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "age_from_months",
+        "title": "Возраст с (мес)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "age_to_months",
+        "title": "Возраст до (мес)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "weight_limit_kg",
+        "title": "Вес ребёнка до (кг)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "stroller_type",
+        "title": "Тип",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "stroller_type"
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "included_accessories",
+        "title": "Комплектация",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "weight_kg",
+        "title": "Вес (кг)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "folding_type",
+        "title": "Складование",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "folding_type"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "age_from_months",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "age_to_months",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "weight_limit_kg",
+        "uiOrder": 6,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "stroller_type",
+        "uiOrder": 7,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "color",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "included_accessories",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "weight_kg",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "KIDS.STROLLERS_CARSEATS",
+        "attributeCode": "folding_type",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "KIDS.NURSERY_FURNITURE",
+      "segment": "KIDS",
+      "title": "Детская мебель и безопасность",
+      "parentCode": "KIDS",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "KIDS.TOYS_GAMES",
+      "segment": "KIDS",
+      "title": "Игрушки и игры",
+      "parentCode": "KIDS",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  },
+  {
+    "category": {
+      "code": "KIDS.BABY_GEAR",
+      "segment": "KIDS",
+      "title": "Товары для ухода за малышами",
+      "parentCode": "KIDS",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [],
+    "categoryAttributes": [],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  }
+]
