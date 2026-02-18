@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  model-gate:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +17,30 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: TaxonomyGate
+        run: ./gradlew :core:testDebugUnitTest --tests "com.example.shoppingassistant.core.data.catalog.TaxonomyGateTest"
+
+      - name: FacetSchemaGate
+        run: ./gradlew :core:testDebugUnitTest --tests "com.example.shoppingassistant.core.data.catalog.FacetSchemaGateTest"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: model-gate
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3

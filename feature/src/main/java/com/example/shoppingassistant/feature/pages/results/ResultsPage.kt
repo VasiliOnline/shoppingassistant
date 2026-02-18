@@ -48,7 +48,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -120,8 +119,13 @@ import com.example.shoppingassistant.domain.tracks.TrackState
 import com.example.shoppingassistant.domain.tracks.TrackTarget
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.domain.facet.FacetCollection
+import com.example.shoppingassistant.domain.facet.FacetDefinition
+import com.example.shoppingassistant.domain.facet.FacetPurchaseFormat
 import com.example.shoppingassistant.domain.facet.FacetPreset
+import com.example.shoppingassistant.domain.facet.FacetRuntimeFilters
+import com.example.shoppingassistant.domain.facet.FacetRuntimeFiltersApplier
 import com.example.shoppingassistant.domain.facet.GetFacetCollectionTask
+import com.example.shoppingassistant.domain.facet.GetFacetDefinitionsTask
 import com.example.shoppingassistant.domain.facet.GetFacetPresetTask
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get as koinGet
@@ -147,6 +151,7 @@ fun ResultsPage(
     val searchOffers: SearchOffersUseCase = remember { koinGet(SearchOffersUseCase::class.java) }
     val catalogRepository: CatalogRepository = remember { koinGet(CatalogRepository::class.java) }
     val trackRepository: TrackRepository = remember { koinGet(TrackRepository::class.java) }
+    val getFacetDefinitionsTask: GetFacetDefinitionsTask = remember { koinGet(GetFacetDefinitionsTask::class.java) }
     val getFacetCollectionTask: GetFacetCollectionTask = remember { koinGet(GetFacetCollectionTask::class.java) }
     val getFacetPresetTask: GetFacetPresetTask = remember { koinGet(GetFacetPresetTask::class.java) }
     val profileSettings = LocalProfileSettings.current
@@ -159,6 +164,7 @@ fun ResultsPage(
     var brandQuery by rememberSaveable { mutableStateOf("") }
 
     var categories by remember { mutableStateOf<List<Category>>(emptyList()) }
+    var facetDefinitions by remember { mutableStateOf<List<FacetDefinition>>(emptyList()) }
     var categoryTreePath by remember { mutableStateOf<List<String>>(emptyList()) }
     val hiddenIds = remember { mutableStateListOf<String>() }
     var savedOfferIds by rememberSaveable { mutableStateOf(setOf<String>()) }
@@ -169,6 +175,12 @@ fun ResultsPage(
 
     LaunchedEffect(Unit) {
         categories = runCatching { catalogRepository.listCategories() }
+            .getOrElse { emptyList() }
+    }
+
+    LaunchedEffect(filters.categoryCode) {
+        val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
+        facetDefinitions = runCatching { getFacetDefinitionsTask(categoryCode) }
             .getOrElse { emptyList() }
     }
 
@@ -202,6 +214,10 @@ fun ResultsPage(
         if (selectedPathTitles != filters.categoryPath) {
             filters = filters.copy(categoryPath = selectedPathTitles)
         }
+    }
+
+    val facetUiFilters = remember(facetDefinitions) {
+        buildFacetUiFilters(facetDefinitions)
     }
 
     val criteria = remember(filters) {
@@ -709,6 +725,7 @@ fun ResultsPage(
             when (sheetScreen) {
                 ResultsSheet.Filters -> FilterHubSheet(
                     filters = workingFilters,
+                    facetFilters = facetUiFilters,
                     activeCount = workingFilters.activeFilterCount(),
                     onReset = { workingFilters = workingFilters.resetNonQuery() },
                     onDismiss = { sheetScreen = null },
@@ -716,34 +733,24 @@ fun ResultsPage(
                         sheetTarget = FilterSheetTarget.Draft
                         sheetScreen = ResultsSheet.Sort
                     },
-                    onOpenFormat = {
-                        sheetTarget = FilterSheetTarget.Draft
-                        sheetScreen = ResultsSheet.PurchaseFormat
-                    },
-                    onOpenCondition = {
-                        sheetTarget = FilterSheetTarget.Draft
-                        sheetScreen = ResultsSheet.Condition
-                    },
-                    onOpenPrice = {
-                        sheetTarget = FilterSheetTarget.Draft
-                        sheetScreen = ResultsSheet.Price
-                    },
                     onOpenCategory = {
                         sheetTarget = FilterSheetTarget.Draft
                         categoryQuery = ""
                         categoryTreePath = buildCategoryPath(workingFilters.categoryCode, categoriesByCode)
                         sheetScreen = ResultsSheet.Categories
                     },
-                    onOpenBrand = {
+                    onOpenFacet = { facetFilter ->
                         sheetTarget = FilterSheetTarget.Draft
-                        sheetScreen = ResultsSheet.Brands
+                        sheetScreen = when (facetFilter.type) {
+                            ResultsFacetFilterType.Brand -> ResultsSheet.Brands
+                            ResultsFacetFilterType.PriceRange -> ResultsSheet.Price
+                            ResultsFacetFilterType.Condition -> ResultsSheet.Condition
+                            ResultsFacetFilterType.Unsupported -> ResultsSheet.Filters
+                        }
                     },
                     onOpenLocation = {
                         sheetTarget = FilterSheetTarget.Draft
                         sheetScreen = ResultsSheet.Location
-                    },
-                    onToggleDelivery = { enabled ->
-                        workingFilters = workingFilters.copy(deliverableOnly = enabled)
                     },
                     onApply = {
                         filters = workingFilters
@@ -1280,11 +1287,12 @@ private fun FilterHubRow(
     title: String,
     summary: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -1293,7 +1301,7 @@ private fun FilterHubRow(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = summary,
@@ -1303,61 +1311,27 @@ private fun FilterHubRow(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        Icon(
-            imageVector = Icons.Outlined.KeyboardArrowRight,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
-}
-
-@Composable
-private fun FilterHubSwitchRow(
-    title: String,
-    summary: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = summary,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+        if (enabled) {
+            Icon(
+                imageVector = Icons.Outlined.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-        )
     }
 }
 
 @Composable
 private fun FilterHubSheet(
     filters: FilterState,
+    facetFilters: List<ResultsFacetFilter>,
     activeCount: Int,
     onReset: () -> Unit,
     onDismiss: () -> Unit,
     onOpenSort: () -> Unit,
-    onOpenFormat: () -> Unit,
-    onOpenCondition: () -> Unit,
-    onOpenPrice: () -> Unit,
     onOpenCategory: () -> Unit,
-    onOpenBrand: () -> Unit,
+    onOpenFacet: (ResultsFacetFilter) -> Unit,
     onOpenLocation: () -> Unit,
-    onToggleDelivery: (Boolean) -> Unit,
     onApply: () -> Unit,
 ) {
     Column(
@@ -1383,20 +1357,19 @@ private fun FilterHubSheet(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             item { FilterHubRow("Сортировка", sortLabel(filters.sort), onOpenSort) }
-            item { FilterHubRow("Формат покупки", filters.purchaseFormat.label, onOpenFormat) }
-            item { FilterHubRow("Состояние товара", filters.conditionsSummary(), onOpenCondition) }
-            item { FilterHubRow("Цена", filters.priceSummary(), onOpenPrice) }
             item { FilterHubRow("Категория", filters.categorySummary(), onOpenCategory) }
-            item { FilterHubRow("Бренд", filters.brandSummary(), onOpenBrand) }
-            item { FilterHubRow("Где находится / Радиус", filters.locationSummary(), onOpenLocation) }
-            item {
-                FilterHubSwitchRow(
-                    title = "Только с доставкой",
-                    summary = if (filters.deliverableOnly) "Только доставка" else "Любая",
-                    checked = filters.deliverableOnly,
-                    onCheckedChange = onToggleDelivery,
+            items(
+                items = facetFilters,
+                key = { facetFilter -> facetFilter.facetKey.lowercase() },
+            ) { facetFilter ->
+                FilterHubRow(
+                    title = facetFilter.title,
+                    summary = filters.summaryForFacet(facetFilter),
+                    onClick = { onOpenFacet(facetFilter) },
+                    enabled = facetFilter.type != ResultsFacetFilterType.Unsupported,
                 )
             }
+            item { FilterHubRow("Где находится / Радиус", filters.locationSummary(), onOpenLocation) }
         }
         Button(
             onClick = onApply,
@@ -2323,6 +2296,59 @@ private fun FilterState.locationSummary(): String {
     return safeRadius?.let { "$locationText · $it км" } ?: locationText
 }
 
+private enum class ResultsFacetFilterType {
+    Brand,
+    PriceRange,
+    Condition,
+    Unsupported,
+}
+
+private data class ResultsFacetFilter(
+    val facetKey: String,
+    val title: String,
+    val type: ResultsFacetFilterType,
+)
+
+private fun buildFacetUiFilters(definitions: List<FacetDefinition>): List<ResultsFacetFilter> =
+    definitions
+        .asSequence()
+        .filterNot { definition -> definition.ui.hidden }
+        .sortedWith(
+            compareBy<FacetDefinition> { definition -> definition.ui.order }
+                .thenBy { definition -> definition.titleRu.lowercase() },
+        )
+        .map { definition ->
+            val normalizedKey = definition.facetKey.trim().lowercase()
+            val type = when (normalizedKey) {
+                "brand" -> ResultsFacetFilterType.Brand
+                "price",
+                "price_rub",
+                -> ResultsFacetFilterType.PriceRange
+
+                "condition" -> ResultsFacetFilterType.Condition
+                else -> ResultsFacetFilterType.Unsupported
+            }
+            ResultsFacetFilter(
+                facetKey = normalizedKey,
+                title = definition.titleRu.ifBlank { definition.facetKey },
+                type = type,
+            )
+        }
+        .distinctBy { facetFilter -> facetFilter.facetKey }
+        .toList()
+
+private fun FilterState.summaryForFacet(facetFilter: ResultsFacetFilter): String = when (facetFilter.type) {
+    ResultsFacetFilterType.Brand -> brandSummary()
+    ResultsFacetFilterType.PriceRange -> priceSummary()
+    ResultsFacetFilterType.Condition -> conditionsSummary()
+    ResultsFacetFilterType.Unsupported -> {
+        presetAttributes[facetFilter.facetKey]
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
+            ?: "Задаётся пресетом"
+    }
+}
+
 private fun FilterState.toggleBrand(brand: String): FilterState {
     val updated = brands.toMutableSet()
     if (brand in updated) updated.remove(brand) else updated.add(brand)
@@ -2449,81 +2475,47 @@ private fun applyFacetPreset(
     collection: FacetCollection?,
     preset: FacetPreset?,
 ): FilterState {
-    if (collection == null && preset == null) return base
-
-    val presetAttributes = LinkedHashMap(base.presetAttributes)
-    var nextPriceMin = base.priceMin
-    var nextPriceMax = base.priceMax
-    val nextBrands = base.brands.toMutableSet()
-    val nextConditions = base.conditions.toMutableSet()
-    var nextPurchaseFormat = base.purchaseFormat
-
-    preset?.rules?.forEach { rule ->
-        val facetKey = rule.facetKey.trim().lowercase()
-        if (facetKey.isBlank()) return@forEach
-
-        when (facetKey) {
-            "brand" -> {
-                rule.includeValues
-                    .map { it.trim() }
-                    .filter { it.isNotBlank() }
-                    .forEach { nextBrands.add(it) }
-            }
-
-            "condition" -> {
-                nextConditions += mapConditionOptions(rule.includeValues.map { it.trim() })
-            }
-
-            "price",
-            "price_rub",
-            -> {
-                rule.minValue?.toInt()?.let { min ->
-                    nextPriceMin = if (nextPriceMin == null) min else maxOf(nextPriceMin ?: min, min)
-                }
-                rule.maxValue?.toInt()?.let { max ->
-                    nextPriceMax = if (nextPriceMax == null) max else minOf(nextPriceMax ?: max, max)
-                }
-            }
-
-            "purchase_format",
-            "delivery_channel",
-            "delivery",
-            -> {
-                val v = rule.includeValues.firstOrNull()?.trim()?.lowercase().orEmpty()
-                nextPurchaseFormat = when (v) {
-                    "pickup" -> PurchaseFormat.Pickup
-                    "delivery" -> PurchaseFormat.Delivery
-                    else -> nextPurchaseFormat
-                }
-            }
-
-            else -> {
-                val includeValue = rule.includeValues.firstOrNull()?.trim()?.takeIf { it.isNotBlank() }
-                if (includeValue != null) {
-                    presetAttributes[facetKey] = includeValue
-                } else if (rule.boolValue != null) {
-                    presetAttributes[facetKey] = rule.boolValue.toString()
-                }
-            }
-        }
-    }
-
-    val nextCategoryCode = collection?.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
-        ?: preset?.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
-        ?: base.categoryCode
-
-    return base.copy(
-        categoryCode = nextCategoryCode,
-        categoryPath = emptyList(),
-        facetCollectionCode = collection?.collectionCode ?: base.facetCollectionCode,
-        facetPresetCode = preset?.presetCode ?: base.facetPresetCode,
-        presetAttributes = presetAttributes,
-        brands = nextBrands,
-        priceMin = nextPriceMin,
-        priceMax = nextPriceMax,
-        conditions = nextConditions,
-        purchaseFormat = nextPurchaseFormat,
+    val applied = FacetRuntimeFiltersApplier.apply(
+        base = base.toFacetRuntimeFilters(),
+        collection = collection,
+        preset = preset,
     )
+    return base.copy(
+        categoryCode = applied.categoryCode,
+        categoryPath = emptyList(),
+        facetCollectionCode = applied.facetCollectionCode,
+        facetPresetCode = applied.facetPresetCode,
+        presetAttributes = applied.attributes,
+        brands = applied.brands,
+        priceMin = applied.priceMin,
+        priceMax = applied.priceMax,
+        conditions = mapConditionOptions(applied.conditions.toList()),
+        purchaseFormat = applied.purchaseFormat.toPurchaseFormat(base.purchaseFormat),
+    )
+}
+
+private fun FilterState.toFacetRuntimeFilters(): FacetRuntimeFilters = FacetRuntimeFilters(
+    categoryCode = categoryCode,
+    facetCollectionCode = facetCollectionCode,
+    facetPresetCode = facetPresetCode,
+    attributes = presetAttributes,
+    brands = brands,
+    priceMin = priceMin,
+    priceMax = priceMax,
+    conditions = conditions.map { option -> option.value }.toSet(),
+    purchaseFormat = purchaseFormat.toFacetPurchaseFormat(),
+)
+
+private fun PurchaseFormat.toFacetPurchaseFormat(): FacetPurchaseFormat? = when (this) {
+    PurchaseFormat.Pickup -> FacetPurchaseFormat.PICKUP
+    PurchaseFormat.Delivery -> FacetPurchaseFormat.DELIVERY
+    PurchaseFormat.All -> null
+}
+
+private fun FacetPurchaseFormat?.toPurchaseFormat(fallback: PurchaseFormat): PurchaseFormat = when (this) {
+    FacetPurchaseFormat.PICKUP -> PurchaseFormat.Pickup
+    FacetPurchaseFormat.DELIVERY -> PurchaseFormat.Delivery
+    null -> fallback
 }
 
 private fun buildOfferCardUi(

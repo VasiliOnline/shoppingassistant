@@ -3,6 +3,7 @@ package com.example.shoppingassistant.server.plugins
 
 import com.example.shoppingassistant.server.auth.SessionStore
 import com.example.shoppingassistant.server.auth.authRoutes
+import com.example.shoppingassistant.server.catalog.facetSchemaRoutes
 import com.example.shoppingassistant.server.config.RedisConfig
 import com.example.shoppingassistant.server.offers.offerRoutes
 import com.example.shoppingassistant.server.offers.offerAlertsRoutes
@@ -104,6 +105,9 @@ fun Application.configureRouting() {
         offerAlertsRoutes()
         offerAnalyticsRoutes()
         offerTrackingRoutes()
+
+        // Stage 3: facet schema runtime API
+        facetSchemaRoutes()
 
         // Мои товары (пользовательские офферы)
         userOffersRoutes()

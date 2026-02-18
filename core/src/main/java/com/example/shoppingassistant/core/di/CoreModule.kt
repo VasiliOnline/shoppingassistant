@@ -20,6 +20,9 @@ import com.example.shoppingassistant.core.data.catalog.CatalogDataSource
 import com.example.shoppingassistant.core.data.catalog.FacetCollectionRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.FacetDefinitionRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.FacetPresetRepositoryImpl
+import com.example.shoppingassistant.core.data.catalog.FacetCollectionApiRepository
+import com.example.shoppingassistant.core.data.catalog.FacetDefinitionApiRepository
+import com.example.shoppingassistant.core.data.catalog.FacetPresetApiRepository
 import com.example.shoppingassistant.core.data.catalog.FacetSchemaGate
 import com.example.shoppingassistant.core.data.catalog.CatalogRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.GoogleTaxonomyMappingRepositoryImpl
@@ -272,13 +275,16 @@ val coreModule: Module = module {
 
     // --- Stage 3.0 facet schema: definitions/presets/collections + gate ---
     single { FacetDefinitionRepositoryImpl() }
-    single<FacetDefinitionRepository> { get<FacetDefinitionRepositoryImpl>() }
+    single { FacetDefinitionApiRepository(get(), get<FacetDefinitionRepositoryImpl>()) }
+    single<FacetDefinitionRepository> { get<FacetDefinitionApiRepository>() }
 
     single { FacetPresetRepositoryImpl() }
-    single<FacetPresetRepository> { get<FacetPresetRepositoryImpl>() }
+    single { FacetPresetApiRepository(get(), get<FacetPresetRepositoryImpl>()) }
+    single<FacetPresetRepository> { get<FacetPresetApiRepository>() }
 
     single { FacetCollectionRepositoryImpl() }
-    single<FacetCollectionRepository> { get<FacetCollectionRepositoryImpl>() }
+    single { FacetCollectionApiRepository(get(), get<FacetCollectionRepositoryImpl>()) }
+    single<FacetCollectionRepository> { get<FacetCollectionApiRepository>() }
 
     single { FacetSchemaValidator() }
     single { FacetSchemaGate(get(), get(), get(), get(), get()) }
