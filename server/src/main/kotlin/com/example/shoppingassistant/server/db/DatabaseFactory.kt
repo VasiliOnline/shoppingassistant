@@ -71,38 +71,45 @@ object DatabaseFactory {
         TransactionManager.manager.defaultIsolationLevel =
             Connection.TRANSACTION_REPEATABLE_READ
 
+        // Для staging/prod с Flyway можно отключить auto-DDL Exposed:
+        // DB_SCHEMA_AUTOSYNC=false
+        val schemaAutosyncEnabled = (System.getenv("DB_SCHEMA_AUTOSYNC") ?: "true")
+            .equals("true", ignoreCase = true)
+
         // На этом шаге создаём недостающие таблицы/колонки и приводим данные в порядок.
         transaction(database) {
-            // В dev создаём недостающие таблицы/колонки (AuthUsersTable, AuthAuditTable и др.).
-            SchemaUtils.createMissingTablesAndColumns(
-                AuthUsersTable,
-                AuthAuditTable,
-                UserProfilesTable,
-                SellerStatsTable,
-                ProductsTable,
-                ProductI18nTable,
-                OffersTable,
-                OfferSourcesTable,
-                UserPreferencesTable,
-                UserReviewsTable,
-                AlertsTable,
-                OfferPriceHistoryTable,
-                SubscriptionNotificationsTable,
-                SubscriptionsEngineStateTable,
-                TracksTable,
-                TrackEventsTable,
-                TrackTop10SnapshotsTable,
-                PushTokensTable,
-                CategoriesTable,
-                AttributeDefsTable,
-                CategoryAttributesTable,
-                AttributeValueDictTable,
-                CatalogConstraintsTable,
-                FacetDefinitionsTable,
-                FacetPresetsTable,
-                FacetCollectionsTable,
-                VisionUsageTable,
-            )
+            if (schemaAutosyncEnabled) {
+                // В dev создаём недостающие таблицы/колонки (AuthUsersTable, AuthAuditTable и др.).
+                SchemaUtils.createMissingTablesAndColumns(
+                    AuthUsersTable,
+                    AuthAuditTable,
+                    UserProfilesTable,
+                    SellerStatsTable,
+                    ProductsTable,
+                    ProductI18nTable,
+                    OffersTable,
+                    OfferSourcesTable,
+                    UserPreferencesTable,
+                    UserReviewsTable,
+                    AlertsTable,
+                    OfferPriceHistoryTable,
+                    SubscriptionNotificationsTable,
+                    SubscriptionsEngineStateTable,
+                    TracksTable,
+                    TrackEventsTable,
+                    TrackTop10SnapshotsTable,
+                    PushTokensTable,
+                    CategoriesTable,
+                    AttributeDefsTable,
+                    CategoryAttributesTable,
+                    AttributeValueDictTable,
+                    CatalogConstraintsTable,
+                    FacetDefinitionsTable,
+                    FacetPresetsTable,
+                    FacetCollectionsTable,
+                    VisionUsageTable,
+                )
+            }
             // Если created_at добавился к уже существующим пользователям — заполняем null.
             AuthUsersTable.update({ AuthUsersTable.createdAt.isNull() }) { stmt ->
                 stmt[AuthUsersTable.createdAt] = System.currentTimeMillis()
