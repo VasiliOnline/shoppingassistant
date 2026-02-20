@@ -262,6 +262,23 @@ class CatalogModelQualityGateTest {
         )
     }
 
+    @Test
+    fun stage3_presets_must_not_contain_stub_markers() {
+        val stubbedPresets = CatalogSeed.facetPresets
+            .asSequence()
+            .filter { preset ->
+                preset.notes?.trim().orEmpty().equals(STAGE3_STUB_NOTE, ignoreCase = true)
+            }
+            .map { preset -> preset.presetCode.trim() }
+            .sorted()
+            .toList()
+
+        assertTrue(
+            "Stage3 preset catalog must be fully production-ready without stub markers: ${stubbedPresets.joinToString()}",
+            stubbedPresets.isEmpty(),
+        )
+    }
+
     private fun leafCategoryCodes(categories: List<Category>): Set<String> {
         val categoryCodes = categories
             .asSequence()

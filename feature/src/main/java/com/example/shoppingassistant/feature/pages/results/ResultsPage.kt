@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.CheckBox
@@ -93,11 +94,18 @@ import com.example.shoppingassistant.core.data.nearby.NEARBY_RADIUS_PRESETS
 import com.example.shoppingassistant.core.data.ExplainedItem
 import com.example.shoppingassistant.core.ui.LocalProfileSettings
 import com.example.shoppingassistant.core.usecase.SearchOffersUseCase
+import com.example.shoppingassistant.core.usecase.TrackPresetObservabilityEventsUseCase
+import com.example.shoppingassistant.domain.catalog.BrowseNode
 import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogDataVersion
 import com.example.shoppingassistant.domain.catalog.Category
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.GetBrowseNodesTask
 import com.example.shoppingassistant.domain.model.NormalizedQuery
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.model.PresetObservabilityEvent
+import com.example.shoppingassistant.domain.model.PresetObservabilityEventType
 import com.example.shoppingassistant.feature.metrics.FlowMetrics
 import com.example.shoppingassistant.feature.navigation.AppRoutes
 import com.example.shoppingassistant.feature.pages.offers.isDeliverableToUser
@@ -125,11 +133,14 @@ import com.example.shoppingassistant.domain.facet.FacetPreset
 import com.example.shoppingassistant.domain.facet.FacetRuntimeFilters
 import com.example.shoppingassistant.domain.facet.FacetRuntimeFiltersApplier
 import com.example.shoppingassistant.domain.facet.GetFacetCollectionTask
+import com.example.shoppingassistant.domain.facet.GetFacetCollectionsTask
 import com.example.shoppingassistant.domain.facet.GetFacetDefinitionsTask
 import com.example.shoppingassistant.domain.facet.GetFacetPresetTask
+import com.example.shoppingassistant.domain.facet.GetFacetPresetsTask
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get as koinGet
 import java.util.Locale
+import java.util.UUID
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -149,12 +160,23 @@ fun ResultsPage(
     val scope = rememberCoroutineScope()
     val clipboard = LocalClipboard.current
     val searchOffers: SearchOffersUseCase = remember { koinGet(SearchOffersUseCase::class.java) }
+    val trackPresetEvents: TrackPresetObservabilityEventsUseCase = remember {
+        koinGet(TrackPresetObservabilityEventsUseCase::class.java)
+    }
     val catalogRepository: CatalogRepository = remember { koinGet(CatalogRepository::class.java) }
     val trackRepository: TrackRepository = remember { koinGet(TrackRepository::class.java) }
+    val getBrowseNodesTask: GetBrowseNodesTask = remember { koinGet(GetBrowseNodesTask::class.java) }
     val getFacetDefinitionsTask: GetFacetDefinitionsTask = remember { koinGet(GetFacetDefinitionsTask::class.java) }
+    val getFacetCollectionsTask: GetFacetCollectionsTask = remember { koinGet(GetFacetCollectionsTask::class.java) }
     val getFacetCollectionTask: GetFacetCollectionTask = remember { koinGet(GetFacetCollectionTask::class.java) }
+    val getFacetPresetsTask: GetFacetPresetsTask = remember { koinGet(GetFacetPresetsTask::class.java) }
     val getFacetPresetTask: GetFacetPresetTask = remember { koinGet(GetFacetPresetTask::class.java) }
     val profileSettings = LocalProfileSettings.current
+    val querySessionId = rememberSaveable(payload.querySessionId) {
+        payload.querySessionId?.trim()?.takeIf { it.isNotEmpty() } ?: "qs-${UUID.randomUUID()}"
+    }
+    val sentImpressionKeys = remember(querySessionId) { hashSetOf<String>() }
+    val sentActionKeys = remember(querySessionId) { hashSetOf<String>() }
 
     var filters by remember { mutableStateOf(initialFilterState(payload)) }
     var workingFilters by remember { mutableStateOf(filters) }
@@ -162,9 +184,14 @@ fun ResultsPage(
     var sheetTarget by remember { mutableStateOf(FilterSheetTarget.Applied) }
     var categoryQuery by rememberSaveable { mutableStateOf("") }
     var brandQuery by rememberSaveable { mutableStateOf("") }
+    var showCatalogModelInspector by rememberSaveable { mutableStateOf(false) }
 
     var categories by remember { mutableStateOf<List<Category>>(emptyList()) }
+    var browseNodes by remember { mutableStateOf<List<BrowseNode>>(emptyList()) }
     var facetDefinitions by remember { mutableStateOf<List<FacetDefinition>>(emptyList()) }
+    var facetPresets by remember { mutableStateOf<List<FacetPreset>>(emptyList()) }
+    var facetCollections by remember { mutableStateOf<List<FacetCollection>>(emptyList()) }
+    var categoryProfile by remember { mutableStateOf<CategoryProfile?>(null) }
     var categoryTreePath by remember { mutableStateOf<List<String>>(emptyList()) }
     val hiddenIds = remember { mutableStateListOf<String>() }
     var savedOfferIds by rememberSaveable { mutableStateOf(setOf<String>()) }
@@ -178,10 +205,33 @@ fun ResultsPage(
             .getOrElse { emptyList() }
     }
 
+    LaunchedEffect(Unit) {
+        browseNodes = runCatching { getBrowseNodesTask() }
+            .getOrElse { emptyList() }
+    }
+
     LaunchedEffect(filters.categoryCode) {
         val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
         facetDefinitions = runCatching { getFacetDefinitionsTask(categoryCode) }
             .getOrElse { emptyList() }
+    }
+
+    LaunchedEffect(filters.categoryCode) {
+        val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
+        if (categoryCode == null) {
+            facetPresets = emptyList()
+            facetCollections = emptyList()
+            categoryProfile = null
+            return@LaunchedEffect
+        }
+        facetPresets = runCatching { getFacetPresetsTask(categoryCode) }
+            .getOrElse { emptyList() }
+            .sortedBy { preset -> preset.order }
+        facetCollections = runCatching { getFacetCollectionsTask(categoryCode) }
+            .getOrElse { emptyList() }
+            .sortedBy { collection -> collection.order }
+        categoryProfile = runCatching { catalogRepository.getCategoryProfile(categoryCode) }
+            .getOrNull()
     }
 
     LaunchedEffect(payload.facetCollectionCode, payload.facetPresetCode, payload.categoryCode) {
@@ -220,8 +270,11 @@ fun ResultsPage(
         buildFacetUiFilters(facetDefinitions)
     }
 
-    val criteria = remember(filters) {
-        buildCriteria(filters)
+    val criteria = remember(filters, querySessionId) {
+        buildCriteria(
+            filters = filters,
+            querySessionId = querySessionId,
+        )
     }
 
     var items by remember(criteria) { mutableStateOf<List<ExplainedItem>>(emptyList()) }
@@ -275,6 +328,41 @@ fun ResultsPage(
         filteredItems.filterNot { hiddenIds.contains(it.dto.id) }
     }
     val nominations = remember(visibleItems) { determineOfferNominations(visibleItems) }
+
+    LaunchedEffect(visibleItems, filters.categoryCode, filters.facetCollectionCode, filters.facetPresetCode, querySessionId) {
+        val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() } ?: return@LaunchedEffect
+        val presetCode = filters.facetPresetCode?.trim()?.takeIf { it.isNotEmpty() } ?: return@LaunchedEffect
+        val collectionCode = filters.facetCollectionCode?.trim()?.takeIf { it.isNotEmpty() }
+        if (visibleItems.isEmpty()) return@LaunchedEffect
+
+        val context = PresetEventContext(
+            querySessionId = querySessionId,
+            categoryCode = categoryCode,
+            facetCollectionCode = collectionCode,
+            facetPresetCode = presetCode,
+        )
+        val batch = buildList {
+            visibleItems.forEachIndexed { idx, item ->
+                val position = idx + 1
+                val idempotencyKey = "imp|${context.querySessionId}|${item.dto.id}|$position"
+                if (sentImpressionKeys.contains(idempotencyKey)) return@forEachIndexed
+                add(
+                    buildPresetEvent(
+                        context = context,
+                        eventType = PresetObservabilityEventType.IMPRESSION,
+                        idempotencyKey = idempotencyKey,
+                        offerId = item.dto.id,
+                        position = position,
+                    ),
+                )
+            }
+        }
+        if (batch.isEmpty()) return@LaunchedEffect
+        val response = runCatching { trackPresetEvents(batch) }.getOrNull() ?: return@LaunchedEffect
+        if (response.acceptedCount > 0 || response.dedupedCount > 0) {
+            batch.forEach { event -> sentImpressionKeys.add(event.idempotencyKey) }
+        }
+    }
 
     val canLoadMore = !isLoading &&
         !isLoadingMore &&
@@ -344,6 +432,59 @@ fun ResultsPage(
             append("&status=")
         }
         navController?.navigate(route)
+    }
+
+    suspend fun submitPresetEvents(events: List<PresetObservabilityEvent>) {
+        if (events.isEmpty()) return
+        runCatching { trackPresetEvents(events) }
+    }
+
+    fun eventContext(): PresetEventContext? {
+        val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        val presetCode = filters.facetPresetCode?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        val collectionCode = filters.facetCollectionCode?.trim()?.takeIf { it.isNotEmpty() }
+        return PresetEventContext(
+            querySessionId = querySessionId,
+            categoryCode = categoryCode,
+            facetCollectionCode = collectionCode,
+            facetPresetCode = presetCode,
+        )
+    }
+
+    fun trackClickEvent(offerId: String, position: Int) {
+        val context = eventContext() ?: return
+        val idempotencyKey = "clk|${context.querySessionId}|$offerId|$position"
+        if (!sentActionKeys.add(idempotencyKey)) return
+        scope.launch {
+            submitPresetEvents(
+                listOf(
+                    buildPresetEvent(
+                        context = context,
+                        eventType = PresetObservabilityEventType.CLICK,
+                        idempotencyKey = idempotencyKey,
+                        offerId = offerId,
+                        position = position,
+                    ),
+                ),
+            )
+        }
+    }
+
+    fun trackConversionEvent(actionCode: String) {
+        val context = eventContext() ?: return
+        val idempotencyKey = "cnv|${context.querySessionId}|$actionCode"
+        if (!sentActionKeys.add(idempotencyKey)) return
+        scope.launch {
+            submitPresetEvents(
+                listOf(
+                    buildPresetEvent(
+                        context = context,
+                        eventType = PresetObservabilityEventType.CONVERSION,
+                        idempotencyKey = idempotencyKey,
+                    ),
+                ),
+            )
+        }
     }
 
     fun toggleSavedOffer(offerId: String) {
@@ -439,6 +580,7 @@ fun ResultsPage(
                 created.id
             }
 
+            trackConversionEvent(actionCode = "track")
             navController?.navigate(AppRoutes.trackedItemsTop10(trackId))
         }
     }
@@ -617,6 +759,27 @@ fun ResultsPage(
             price = priceSummary,
         )
 
+        CatalogModelInspectorToggle(
+            expanded = showCatalogModelInspector,
+            onToggle = { showCatalogModelInspector = !showCatalogModelInspector },
+        )
+
+        if (showCatalogModelInspector) {
+            CatalogModelInspectorCard(
+                selectedCategoryCode = filters.categoryCode,
+                selectedCategoryPath = filters.categoryPath,
+                selectedFacetCollectionCode = filters.facetCollectionCode,
+                selectedFacetPresetCode = filters.facetPresetCode,
+                presetAttributes = filters.presetAttributes,
+                categoriesByCode = categoriesByCode,
+                browseNodes = browseNodes,
+                facetDefinitions = facetDefinitions,
+                facetPresets = facetPresets,
+                facetCollections = facetCollections,
+                categoryProfile = categoryProfile,
+            )
+        }
+
         if (showRecognitionCard) {
             RecognitionCard(
                 title = recognitionTitle,
@@ -646,7 +809,10 @@ fun ResultsPage(
             showCreate = payload.origin != ResultsOrigin.Text,
             hasResults = visibleItems.isNotEmpty(),
             onTrack = { handleTrack() },
-            onCreate = { payload.onCreate(navController, onOpenDraft, filters.query, filters.queryText, filters.categoryCode) },
+            onCreate = {
+                trackConversionEvent(actionCode = "create")
+                payload.onCreate(navController, onOpenDraft, filters.query, filters.queryText, filters.categoryCode)
+            },
         )
 
         StateHost(
@@ -686,12 +852,19 @@ fun ResultsPage(
                     bottom = paddingValues.calculateBottomPadding(),
                 ),
             ) {
-                items(visibleItems, key = { it.dto.id }) { item ->
+                itemsIndexed(visibleItems, key = { _, item -> item.dto.id }) { idx, item ->
+                    val position = idx + 1
                     val ui = buildOfferCardUi(
                         item = item,
                         isSaved = savedOfferIds.contains(item.dto.id),
                         onToggleSave = { toggleSavedOffer(item.dto.id) },
-                        onOpenDetails = { openChatFor(item) },
+                        onOpenDetails = {
+                            trackClickEvent(
+                                offerId = item.dto.id,
+                                position = position,
+                            )
+                            openChatFor(item)
+                        },
                         onOverflowAction = { action -> handleOverflow(action, item) },
                     )
                     OfferCard(
@@ -1128,6 +1301,214 @@ private fun ResultsSummaryRow(
         SummaryLine(label = "Категория", value = category)
         SummaryLine(label = "Бренд", value = brand)
         SummaryLine(label = "Цена", value = price)
+    }
+}
+
+@Composable
+private fun CatalogModelInspectorToggle(
+    expanded: Boolean,
+    onToggle: () -> Unit,
+) {
+    TextButton(
+        onClick = onToggle,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(if (expanded) "Скрыть модель каталога" else "Показать модель каталога")
+    }
+}
+
+@Composable
+private fun CatalogModelInspectorCard(
+    selectedCategoryCode: String?,
+    selectedCategoryPath: List<String>,
+    selectedFacetCollectionCode: String?,
+    selectedFacetPresetCode: String?,
+    presetAttributes: Map<String, String>,
+    categoriesByCode: Map<String, Category>,
+    browseNodes: List<BrowseNode>,
+    facetDefinitions: List<FacetDefinition>,
+    facetPresets: List<FacetPreset>,
+    facetCollections: List<FacetCollection>,
+    categoryProfile: CategoryProfile?,
+) {
+    val normalizedCategoryCode = selectedCategoryCode?.trim()?.takeIf { it.isNotEmpty() }
+    val selectedCategoryLabel = normalizedCategoryCode?.let { code ->
+        categoriesByCode[code]?.title?.takeIf { title -> title.isNotBlank() } ?: code
+    } ?: "Не выбрана"
+    val categoryChips = buildList {
+        if (normalizedCategoryCode != null) add(selectedCategoryLabel)
+        if (selectedCategoryPath.isNotEmpty()) add(selectedCategoryPath.joinToString(" → "))
+    }
+
+    val browsePairs = browseNodes
+        .asSequence()
+        .filter { node -> node.targetCategoryCode?.trim()?.equals(normalizedCategoryCode, ignoreCase = true) == true }
+        .sortedBy { node -> node.order }
+        .map { node ->
+            node.browseCode to "${node.titleRu.ifBlank { node.browseCode }} · ${node.browseCode}"
+        }
+        .toList()
+    val browseLabels = browsePairs.map { pair -> pair.second }
+
+    val facetLabels = facetDefinitions
+        .sortedWith(compareBy<FacetDefinition> { definition -> definition.ui.order }.thenBy { definition -> definition.facetKey })
+        .map { definition -> "${definition.titleRu.ifBlank { definition.facetKey }} · ${definition.facetKey}" }
+
+    val presetPairs = facetPresets
+        .sortedBy { preset -> preset.order }
+        .map { preset ->
+            preset.presetCode to "${preset.titleRu.ifBlank { preset.presetCode }} · ${preset.presetCode}"
+        }
+    val presetLabels = presetPairs.map { pair -> pair.second }
+    val highlightedPresetLabels = presetPairs
+        .filter { pair -> pair.first == selectedFacetPresetCode }
+        .map { pair -> pair.second }
+        .toSet()
+
+    val collectionPairs = facetCollections
+        .sortedBy { collection -> collection.order }
+        .map { collection ->
+            collection.collectionCode to "${collection.titleRu.ifBlank { collection.collectionCode }} · ${collection.collectionCode}"
+        }
+    val collectionLabels = collectionPairs.map { pair -> pair.second }
+    val highlightedCollectionLabels = collectionPairs
+        .filter { pair -> pair.first == selectedFacetCollectionCode }
+        .map { pair -> pair.second }
+        .toSet()
+
+    val presetAttributeLabels = presetAttributes
+        .toSortedMap()
+        .map { (key, value) -> "$key=$value" }
+
+    val profileAttributeLabels = categoryProfile
+        ?.attributes
+        .orEmpty()
+        .sortedWith(
+            compareByDescending<com.example.shoppingassistant.domain.catalog.AttributeDef> { attribute ->
+                attribute.requiredForOffer || attribute.requiredForSearch || attribute.requiredForExpress
+            }.thenBy { attribute -> attribute.code },
+        )
+        .map { attribute ->
+            buildString {
+                append(attribute.code)
+                if (attribute.requiredForOffer || attribute.requiredForSearch || attribute.requiredForExpress) {
+                    append(" · required")
+                }
+                if (attribute.facetEnabled) {
+                    append(" · facet")
+                }
+                attribute.valueDictCode?.trim()?.takeIf { code -> code.isNotEmpty() }?.let { dict ->
+                    append(" · dict:$dict")
+                }
+            }
+        }
+
+    val dictionaryValueLabels = categoryProfile
+        ?.valueDictionaries
+        .orEmpty()
+        .flatMap { dictionary ->
+            dictionary.entries
+                .sortedBy { entry -> entry.rank }
+                .take(8)
+                .map { entry -> "${dictionary.attributeCode}:${entry.canonicalCode}" }
+        }
+
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.65f)),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Инспектор модели каталога",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = "Категория: $selectedCategoryLabel · Узлы: ${browseLabels.size} · Фасеты: ${facetLabels.size} · Пресеты: ${presetLabels.size} · Коллекции: ${collectionLabels.size}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            CatalogInspectorSection(
+                title = "Категория и путь",
+                items = categoryChips,
+                emptyMessage = "Категория не выбрана.",
+            )
+            CatalogInspectorSection(
+                title = "Browse-узлы",
+                items = browseLabels,
+                emptyMessage = "Нет узлов для выбранной категории.",
+            )
+            CatalogInspectorSection(
+                title = "Facet definitions",
+                items = facetLabels,
+                emptyMessage = "Фасеты не найдены.",
+            )
+            CatalogInspectorSection(
+                title = "Facet presets",
+                items = presetLabels,
+                highlightedItems = highlightedPresetLabels,
+                emptyMessage = "Пресеты не найдены.",
+            )
+            CatalogInspectorSection(
+                title = "Facet collections",
+                items = collectionLabels,
+                highlightedItems = highlightedCollectionLabels,
+                emptyMessage = "Коллекции не найдены.",
+            )
+            CatalogInspectorSection(
+                title = "Активные preset-атрибуты",
+                items = presetAttributeLabels,
+                emptyMessage = "Preset-атрибуты не активированы.",
+            )
+            CatalogInspectorSection(
+                title = "Атрибуты категории",
+                items = profileAttributeLabels,
+                emptyMessage = "Профиль категории не загружен.",
+            )
+            CatalogInspectorSection(
+                title = "Словари значений (preview)",
+                items = dictionaryValueLabels,
+                emptyMessage = "Словари для категории не найдены.",
+            )
+        }
+    }
+}
+
+@Composable
+private fun CatalogInspectorSection(
+    title: String,
+    items: List<String>,
+    highlightedItems: Set<String> = emptySet(),
+    emptyMessage: String,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(
+            text = "$title (${items.size})",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        if (items.isEmpty()) {
+            Text(
+                text = emptyMessage,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        } else {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(items) { item ->
+                    CategoryChip(
+                        text = item,
+                        onClick = {},
+                        highlighted = item in highlightedItems,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -2056,7 +2437,10 @@ private fun isAncestor(
     return false
 }
 
-private fun buildCriteria(filters: FilterState): OfferSearchCriteria? {
+private fun buildCriteria(
+    filters: FilterState,
+    querySessionId: String,
+): OfferSearchCriteria? {
     val query = filters.query
     val hasAnyFilter = query != null ||
         !filters.categoryCode.isNullOrBlank() ||
@@ -2118,6 +2502,9 @@ private fun buildCriteria(filters: FilterState): OfferSearchCriteria? {
         userLanguage = locale.language.takeIf { it.isNotBlank() },
         limit = 20,
         sort = filters.sort,
+        querySessionId = querySessionId,
+        facetCollectionCode = filters.facetCollectionCode,
+        facetPresetCode = filters.facetPresetCode,
     )
 }
 
@@ -2517,6 +2904,32 @@ private fun FacetPurchaseFormat?.toPurchaseFormat(fallback: PurchaseFormat): Pur
     FacetPurchaseFormat.DELIVERY -> PurchaseFormat.Delivery
     null -> fallback
 }
+
+private data class PresetEventContext(
+    val querySessionId: String,
+    val categoryCode: String,
+    val facetCollectionCode: String?,
+    val facetPresetCode: String,
+)
+
+private fun buildPresetEvent(
+    context: PresetEventContext,
+    eventType: PresetObservabilityEventType,
+    idempotencyKey: String,
+    offerId: String? = null,
+    position: Int? = null,
+): PresetObservabilityEvent = PresetObservabilityEvent(
+    idempotencyKey = idempotencyKey,
+    eventType = eventType,
+    querySessionId = context.querySessionId,
+    categoryCode = context.categoryCode,
+    facetCollectionCode = context.facetCollectionCode,
+    facetPresetCode = context.facetPresetCode,
+    offerId = offerId,
+    position = position,
+    occurredAtMs = System.currentTimeMillis(),
+    dataVersion = CatalogDataVersion.current,
+)
 
 private fun buildOfferCardUi(
     item: ExplainedItem,

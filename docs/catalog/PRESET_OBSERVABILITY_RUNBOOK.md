@@ -78,6 +78,12 @@ After acceptance:
 
 ## Release Log
 
+`2026-02-20` (`dataVersion = 2.2.7`)
+
+1. Full Stage 3 preset stub-retirement completed: no presets remain with `Stage 3.0 baseline preset` marker.
+2. Quality gate upgraded: build fails if any Stage 3 preset is marked as stub.
+3. Catalog data baseline declared product-ready for visual UI verification.
+
 `2026-02-20` (`dataVersion = 2.2.6`)
 
 1. Top leaf presets `FP.TECH.LAPTOPS.DEFAULT`, `FP.FOOD.GROCERIES.DEFAULT`, `FP.FOOD.DRINKS.DEFAULT` removed from Stage 3.0 stub status.
