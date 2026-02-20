@@ -1,0 +1,197 @@
+name: Catalog Preprod Consistency
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "server/src/main/resources/db/migration/**"
+      - "server/src/main/resources/db/checks/**"
+      - "docs/catalog/**"
+      - "domain/src/main/resources/taxonomy/**"
+      - ".github/workflows/catalog-preprod-consistency.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "server/src/main/resources/db/migration/**"
+      - "server/src/main/resources/db/checks/**"
+      - ".github/workflows/catalog-preprod-consistency.yml"
+
+jobs:
+  sql-consistency:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_DB: shoppingassistant_ci
+          POSTGRES_USER: Boss
+          POSTGRES_PASSWORD: ci_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U Boss -d shoppingassistant_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGDATABASE: shoppingassistant_ci
+      PGUSER: Boss
+      PGPASSWORD: ci_password
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Wait For Postgres
+        shell: bash
+        run: |
+          for i in {1..40}; do
+            if pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE"; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Postgres did not become ready in time"
+          exit 1
+
+      - name: Bootstrap CI Schema Helpers
+        shell: bash
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE TABLE IF NOT EXISTS flyway_schema_history (
+              installed_rank INT PRIMARY KEY,
+              version VARCHAR(50),
+              description VARCHAR(200),
+              installed_on TIMESTAMP NOT NULL DEFAULT NOW(),
+              success BOOLEAN NOT NULL DEFAULT TRUE
+          );
+
+          CREATE TABLE IF NOT EXISTS tracks (
+              id BIGINT PRIMARY KEY,
+              category_code VARCHAR(64)
+          );
+          SQL
+
+      - name: Apply Target Migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          migrations=(
+            server/src/main/resources/db/migration/V4__catalog_taxonomy.sql
+            server/src/main/resources/db/migration/V6__track_top10_snapshots.sql
+            server/src/main/resources/db/migration/V9__catalog_constraints.sql
+            server/src/main/resources/db/migration/V10__catalog_stage3_facets.sql
+            server/src/main/resources/db/migration/V11__catalog_category_status.sql
+            server/src/main/resources/db/migration/V12__catalog_temporal_policy.sql
+            server/src/main/resources/db/migration/V13__catalog_preset_observability.sql
+          )
+
+          for file in "${migrations[@]}"; do
+            psql -v ON_ERROR_STOP=1 -f "$file"
+          done
+
+      - name: Seed Flyway History For Parity Checks
+        shell: bash
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          TRUNCATE TABLE flyway_schema_history;
+
+          INSERT INTO flyway_schema_history(installed_rank, version, description, success) VALUES
+            (1, '4', 'catalog_taxonomy', TRUE),
+            (2, '10', 'catalog_stage3_facets', TRUE),
+            (3, '11', 'catalog_category_status', TRUE),
+            (4, '12', 'catalog_temporal_policy', TRUE),
+            (5, '13', 'catalog_preset_observability', TRUE);
+          SQL
+
+      - name: Run Parity And Observability Checks
+        shell: bash
+        run: |
+          mkdir -p reports
+          psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_migration_parity_postcheck.sql -o reports/catalog_migration_postcheck_ci.txt
+          psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_preset_observability_checks.sql -o reports/catalog_preset_observability_checks_ci.txt
+          psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_preset_monthly_report.sql -o reports/catalog_preset_monthly_report_ci.txt
+
+      - name: Assert Parity Criteria
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          migration_ok=$(psql -t -A -v ON_ERROR_STOP=1 -c "
+            WITH applied AS (
+                SELECT version::text AS version, installed_rank
+                FROM flyway_schema_history
+                WHERE success = TRUE
+                  AND version IN ('4', '10', '11', '12', '13')
+            )
+            SELECT CASE
+                WHEN COUNT(*) = 5
+                 AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '10', '11', '12', '13']
+                THEN 1 ELSE 0
+            END
+            FROM applied;
+          ")
+
+          missing_columns=$(psql -t -A -v ON_ERROR_STOP=1 -c "
+            WITH expected(table_name, column_name) AS (
+                VALUES
+                    ('categories', 'status'),
+                    ('attribute_defs', 'required_by'),
+                    ('catalog_constraints', 'effective_from'),
+                    ('catalog_constraints', 'effective_to'),
+                    ('facet_definitions', 'effective_from'),
+                    ('facet_definitions', 'effective_to'),
+                    ('facet_presets', 'effective_from'),
+                    ('facet_presets', 'effective_to'),
+                    ('catalog_preset_events', 'idempotency_key'),
+                    ('catalog_preset_events', 'event_type'),
+                    ('catalog_preset_events', 'query_session_id'),
+                    ('catalog_preset_events', 'category_code'),
+                    ('catalog_preset_events', 'facet_preset_code'),
+                    ('catalog_preset_events', 'occurred_at'),
+                    ('catalog_preset_events', 'received_at'),
+                    ('catalog_preset_events', 'event_date')
+            )
+            SELECT COUNT(*)
+            FROM expected e
+            LEFT JOIN information_schema.columns c
+              ON c.table_schema = 'public'
+             AND c.table_name = e.table_name
+             AND c.column_name = e.column_name
+            WHERE c.column_name IS NULL;
+          ")
+
+          invalid_total=$(psql -t -A -v ON_ERROR_STOP=1 -c "
+            SELECT
+                (SELECT COUNT(*) FROM categories WHERE status IS NULL OR BTRIM(status) = '')
+              + (SELECT COUNT(*) FROM attribute_defs WHERE required_by IS NOT NULL AND required_by !~ '^\d{4}-\d{2}-\d{2}$')
+              + (SELECT COUNT(*) FROM catalog_constraints WHERE effective_from IS NOT NULL AND effective_to IS NOT NULL AND effective_from > effective_to)
+              + (SELECT COUNT(*) FROM facet_definitions WHERE effective_from IS NOT NULL AND effective_to IS NOT NULL AND effective_from > effective_to)
+              + (SELECT COUNT(*) FROM facet_presets WHERE effective_from IS NOT NULL AND effective_to IS NOT NULL AND effective_from > effective_to)
+              + (SELECT COUNT(*) FROM catalog_preset_events WHERE event_type NOT IN ('IMPRESSION', 'CLICK', 'CONVERSION'))
+              + (SELECT COUNT(*) FROM catalog_preset_events WHERE BTRIM(idempotency_key) = '' OR BTRIM(query_session_id) = '' OR BTRIM(category_code) = '' OR BTRIM(COALESCE(facet_preset_code, '')) = '' OR occurred_at <= 0 OR event_date IS NULL)
+              + (SELECT COUNT(*) FROM catalog_preset_events WHERE position IS NOT NULL AND position <= 0);
+          ")
+
+          if [[ "$migration_ok" != "1" ]]; then
+            echo "Migration order check failed"
+            exit 1
+          fi
+          if [[ "$missing_columns" != "0" ]]; then
+            echo "Missing required columns: $missing_columns"
+            exit 1
+          fi
+          if [[ "$invalid_total" != "0" ]]; then
+            echo "Invalid counters total is non-zero: $invalid_total"
+            exit 1
+          fi
+
+      - name: Upload SQL Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-preprod-sql-reports
+          path: reports/*.txt
