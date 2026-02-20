@@ -95,12 +95,9 @@ import com.example.shoppingassistant.core.data.ExplainedItem
 import com.example.shoppingassistant.core.ui.LocalProfileSettings
 import com.example.shoppingassistant.core.usecase.SearchOffersUseCase
 import com.example.shoppingassistant.core.usecase.TrackPresetObservabilityEventsUseCase
-import com.example.shoppingassistant.domain.catalog.BrowseNode
 import com.example.shoppingassistant.domain.catalog.CatalogRepository
 import com.example.shoppingassistant.domain.catalog.CatalogDataVersion
 import com.example.shoppingassistant.domain.catalog.Category
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
-import com.example.shoppingassistant.domain.catalog.GetBrowseNodesTask
 import com.example.shoppingassistant.domain.model.NormalizedQuery
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSort
@@ -133,10 +130,8 @@ import com.example.shoppingassistant.domain.facet.FacetPreset
 import com.example.shoppingassistant.domain.facet.FacetRuntimeFilters
 import com.example.shoppingassistant.domain.facet.FacetRuntimeFiltersApplier
 import com.example.shoppingassistant.domain.facet.GetFacetCollectionTask
-import com.example.shoppingassistant.domain.facet.GetFacetCollectionsTask
 import com.example.shoppingassistant.domain.facet.GetFacetDefinitionsTask
 import com.example.shoppingassistant.domain.facet.GetFacetPresetTask
-import com.example.shoppingassistant.domain.facet.GetFacetPresetsTask
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get as koinGet
 import java.util.Locale
@@ -165,11 +160,8 @@ fun ResultsPage(
     }
     val catalogRepository: CatalogRepository = remember { koinGet(CatalogRepository::class.java) }
     val trackRepository: TrackRepository = remember { koinGet(TrackRepository::class.java) }
-    val getBrowseNodesTask: GetBrowseNodesTask = remember { koinGet(GetBrowseNodesTask::class.java) }
     val getFacetDefinitionsTask: GetFacetDefinitionsTask = remember { koinGet(GetFacetDefinitionsTask::class.java) }
-    val getFacetCollectionsTask: GetFacetCollectionsTask = remember { koinGet(GetFacetCollectionsTask::class.java) }
     val getFacetCollectionTask: GetFacetCollectionTask = remember { koinGet(GetFacetCollectionTask::class.java) }
-    val getFacetPresetsTask: GetFacetPresetsTask = remember { koinGet(GetFacetPresetsTask::class.java) }
     val getFacetPresetTask: GetFacetPresetTask = remember { koinGet(GetFacetPresetTask::class.java) }
     val profileSettings = LocalProfileSettings.current
     val querySessionId = rememberSaveable(payload.querySessionId) {
@@ -184,14 +176,9 @@ fun ResultsPage(
     var sheetTarget by remember { mutableStateOf(FilterSheetTarget.Applied) }
     var categoryQuery by rememberSaveable { mutableStateOf("") }
     var brandQuery by rememberSaveable { mutableStateOf("") }
-    var showCatalogModelInspector by rememberSaveable { mutableStateOf(false) }
 
     var categories by remember { mutableStateOf<List<Category>>(emptyList()) }
-    var browseNodes by remember { mutableStateOf<List<BrowseNode>>(emptyList()) }
     var facetDefinitions by remember { mutableStateOf<List<FacetDefinition>>(emptyList()) }
-    var facetPresets by remember { mutableStateOf<List<FacetPreset>>(emptyList()) }
-    var facetCollections by remember { mutableStateOf<List<FacetCollection>>(emptyList()) }
-    var categoryProfile by remember { mutableStateOf<CategoryProfile?>(null) }
     var categoryTreePath by remember { mutableStateOf<List<String>>(emptyList()) }
     val hiddenIds = remember { mutableStateListOf<String>() }
     var savedOfferIds by rememberSaveable { mutableStateOf(setOf<String>()) }
@@ -205,33 +192,10 @@ fun ResultsPage(
             .getOrElse { emptyList() }
     }
 
-    LaunchedEffect(Unit) {
-        browseNodes = runCatching { getBrowseNodesTask() }
-            .getOrElse { emptyList() }
-    }
-
     LaunchedEffect(filters.categoryCode) {
         val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
         facetDefinitions = runCatching { getFacetDefinitionsTask(categoryCode) }
             .getOrElse { emptyList() }
-    }
-
-    LaunchedEffect(filters.categoryCode) {
-        val categoryCode = filters.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
-        if (categoryCode == null) {
-            facetPresets = emptyList()
-            facetCollections = emptyList()
-            categoryProfile = null
-            return@LaunchedEffect
-        }
-        facetPresets = runCatching { getFacetPresetsTask(categoryCode) }
-            .getOrElse { emptyList() }
-            .sortedBy { preset -> preset.order }
-        facetCollections = runCatching { getFacetCollectionsTask(categoryCode) }
-            .getOrElse { emptyList() }
-            .sortedBy { collection -> collection.order }
-        categoryProfile = runCatching { catalogRepository.getCategoryProfile(categoryCode) }
-            .getOrNull()
     }
 
     LaunchedEffect(payload.facetCollectionCode, payload.facetPresetCode, payload.categoryCode) {
@@ -759,27 +723,6 @@ fun ResultsPage(
             price = priceSummary,
         )
 
-        CatalogModelInspectorToggle(
-            expanded = showCatalogModelInspector,
-            onToggle = { showCatalogModelInspector = !showCatalogModelInspector },
-        )
-
-        if (showCatalogModelInspector) {
-            CatalogModelInspectorCard(
-                selectedCategoryCode = filters.categoryCode,
-                selectedCategoryPath = filters.categoryPath,
-                selectedFacetCollectionCode = filters.facetCollectionCode,
-                selectedFacetPresetCode = filters.facetPresetCode,
-                presetAttributes = filters.presetAttributes,
-                categoriesByCode = categoriesByCode,
-                browseNodes = browseNodes,
-                facetDefinitions = facetDefinitions,
-                facetPresets = facetPresets,
-                facetCollections = facetCollections,
-                categoryProfile = categoryProfile,
-            )
-        }
-
         if (showRecognitionCard) {
             RecognitionCard(
                 title = recognitionTitle,
@@ -1301,214 +1244,6 @@ private fun ResultsSummaryRow(
         SummaryLine(label = "Категория", value = category)
         SummaryLine(label = "Бренд", value = brand)
         SummaryLine(label = "Цена", value = price)
-    }
-}
-
-@Composable
-private fun CatalogModelInspectorToggle(
-    expanded: Boolean,
-    onToggle: () -> Unit,
-) {
-    TextButton(
-        onClick = onToggle,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(if (expanded) "Скрыть модель каталога" else "Показать модель каталога")
-    }
-}
-
-@Composable
-private fun CatalogModelInspectorCard(
-    selectedCategoryCode: String?,
-    selectedCategoryPath: List<String>,
-    selectedFacetCollectionCode: String?,
-    selectedFacetPresetCode: String?,
-    presetAttributes: Map<String, String>,
-    categoriesByCode: Map<String, Category>,
-    browseNodes: List<BrowseNode>,
-    facetDefinitions: List<FacetDefinition>,
-    facetPresets: List<FacetPreset>,
-    facetCollections: List<FacetCollection>,
-    categoryProfile: CategoryProfile?,
-) {
-    val normalizedCategoryCode = selectedCategoryCode?.trim()?.takeIf { it.isNotEmpty() }
-    val selectedCategoryLabel = normalizedCategoryCode?.let { code ->
-        categoriesByCode[code]?.title?.takeIf { title -> title.isNotBlank() } ?: code
-    } ?: "Не выбрана"
-    val categoryChips = buildList {
-        if (normalizedCategoryCode != null) add(selectedCategoryLabel)
-        if (selectedCategoryPath.isNotEmpty()) add(selectedCategoryPath.joinToString(" → "))
-    }
-
-    val browsePairs = browseNodes
-        .asSequence()
-        .filter { node -> node.targetCategoryCode?.trim()?.equals(normalizedCategoryCode, ignoreCase = true) == true }
-        .sortedBy { node -> node.order }
-        .map { node ->
-            node.browseCode to "${node.titleRu.ifBlank { node.browseCode }} · ${node.browseCode}"
-        }
-        .toList()
-    val browseLabels = browsePairs.map { pair -> pair.second }
-
-    val facetLabels = facetDefinitions
-        .sortedWith(compareBy<FacetDefinition> { definition -> definition.ui.order }.thenBy { definition -> definition.facetKey })
-        .map { definition -> "${definition.titleRu.ifBlank { definition.facetKey }} · ${definition.facetKey}" }
-
-    val presetPairs = facetPresets
-        .sortedBy { preset -> preset.order }
-        .map { preset ->
-            preset.presetCode to "${preset.titleRu.ifBlank { preset.presetCode }} · ${preset.presetCode}"
-        }
-    val presetLabels = presetPairs.map { pair -> pair.second }
-    val highlightedPresetLabels = presetPairs
-        .filter { pair -> pair.first == selectedFacetPresetCode }
-        .map { pair -> pair.second }
-        .toSet()
-
-    val collectionPairs = facetCollections
-        .sortedBy { collection -> collection.order }
-        .map { collection ->
-            collection.collectionCode to "${collection.titleRu.ifBlank { collection.collectionCode }} · ${collection.collectionCode}"
-        }
-    val collectionLabels = collectionPairs.map { pair -> pair.second }
-    val highlightedCollectionLabels = collectionPairs
-        .filter { pair -> pair.first == selectedFacetCollectionCode }
-        .map { pair -> pair.second }
-        .toSet()
-
-    val presetAttributeLabels = presetAttributes
-        .toSortedMap()
-        .map { (key, value) -> "$key=$value" }
-
-    val profileAttributeLabels = categoryProfile
-        ?.attributes
-        .orEmpty()
-        .sortedWith(
-            compareByDescending<com.example.shoppingassistant.domain.catalog.AttributeDef> { attribute ->
-                attribute.requiredForOffer || attribute.requiredForSearch || attribute.requiredForExpress
-            }.thenBy { attribute -> attribute.code },
-        )
-        .map { attribute ->
-            buildString {
-                append(attribute.code)
-                if (attribute.requiredForOffer || attribute.requiredForSearch || attribute.requiredForExpress) {
-                    append(" · required")
-                }
-                if (attribute.facetEnabled) {
-                    append(" · facet")
-                }
-                attribute.valueDictCode?.trim()?.takeIf { code -> code.isNotEmpty() }?.let { dict ->
-                    append(" · dict:$dict")
-                }
-            }
-        }
-
-    val dictionaryValueLabels = categoryProfile
-        ?.valueDictionaries
-        .orEmpty()
-        .flatMap { dictionary ->
-            dictionary.entries
-                .sortedBy { entry -> entry.rank }
-                .take(8)
-                .map { entry -> "${dictionary.attributeCode}:${entry.canonicalCode}" }
-        }
-
-    Surface(
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.65f)),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Text(
-                text = "Инспектор модели каталога",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = "Категория: $selectedCategoryLabel · Узлы: ${browseLabels.size} · Фасеты: ${facetLabels.size} · Пресеты: ${presetLabels.size} · Коллекции: ${collectionLabels.size}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            CatalogInspectorSection(
-                title = "Категория и путь",
-                items = categoryChips,
-                emptyMessage = "Категория не выбрана.",
-            )
-            CatalogInspectorSection(
-                title = "Browse-узлы",
-                items = browseLabels,
-                emptyMessage = "Нет узлов для выбранной категории.",
-            )
-            CatalogInspectorSection(
-                title = "Facet definitions",
-                items = facetLabels,
-                emptyMessage = "Фасеты не найдены.",
-            )
-            CatalogInspectorSection(
-                title = "Facet presets",
-                items = presetLabels,
-                highlightedItems = highlightedPresetLabels,
-                emptyMessage = "Пресеты не найдены.",
-            )
-            CatalogInspectorSection(
-                title = "Facet collections",
-                items = collectionLabels,
-                highlightedItems = highlightedCollectionLabels,
-                emptyMessage = "Коллекции не найдены.",
-            )
-            CatalogInspectorSection(
-                title = "Активные preset-атрибуты",
-                items = presetAttributeLabels,
-                emptyMessage = "Preset-атрибуты не активированы.",
-            )
-            CatalogInspectorSection(
-                title = "Атрибуты категории",
-                items = profileAttributeLabels,
-                emptyMessage = "Профиль категории не загружен.",
-            )
-            CatalogInspectorSection(
-                title = "Словари значений (preview)",
-                items = dictionaryValueLabels,
-                emptyMessage = "Словари для категории не найдены.",
-            )
-        }
-    }
-}
-
-@Composable
-private fun CatalogInspectorSection(
-    title: String,
-    items: List<String>,
-    highlightedItems: Set<String> = emptySet(),
-    emptyMessage: String,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(
-            text = "$title (${items.size})",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        if (items.isEmpty()) {
-            Text(
-                text = emptyMessage,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        } else {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(items) { item ->
-                    CategoryChip(
-                        text = item,
-                        onClick = {},
-                        highlighted = item in highlightedItems,
-                    )
-                }
-            }
-        }
     }
 }
 
