@@ -128,3 +128,24 @@ $env:PROD_DB_CONN="host=<prod-host> port=5432 dbname=<db> user=<user> password=<
   "host=localhost port=5432 dbname=shoppingassistant_preprod_local user=Boss password=<pwd> sslmode=disable" `
   -f "Проверки/preprod_smoke_cleanup.sql"
 ```
+
+---
+
+Ротация засвеченного DB-пароля (staging/prod)
+
+1) Сгенерировать новый пароль в secret manager (не в файлах репозитория).
+2) Выполнить в БД:
+
+```sql
+ALTER ROLE <db_user> WITH PASSWORD '<new-strong-password>';
+```
+
+3) Обновить секреты окружений:
+
+- `STAGING_DB_CONN`
+- `PROD_DB_CONN`
+- (если используется compose/.env) соответствующие `DB_PASSWORD`/`POSTGRES_PASSWORD`.
+
+4) Перезапустить backend/workers, которые держат пул соединений.
+5) Выполнить smoke-проверку подключения и один `run_preset_observability_release.ps1` на staging.
+6) Только после PASS staging запускать prod.
