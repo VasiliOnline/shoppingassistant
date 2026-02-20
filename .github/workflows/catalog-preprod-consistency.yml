@@ -15,9 +15,35 @@ on:
     paths:
       - "server/src/main/resources/db/migration/**"
       - "server/src/main/resources/db/checks/**"
+      - "domain/src/main/resources/taxonomy/**"
+      - "domain/src/test/java/com/example/shoppingassistant/domain/catalog/**"
+      - "domain/src/test/java/com/example/shoppingassistant/domain/facet/**"
       - ".github/workflows/catalog-preprod-consistency.yml"
 
 jobs:
+  domain-quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Run Domain Quality Gates
+        shell: bash
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon :domain:test \
+            --tests "com.example.shoppingassistant.domain.catalog.CatalogModelQualityGateTest" \
+            --tests "com.example.shoppingassistant.domain.catalog.CatalogGovernanceGateTest" \
+            --tests "com.example.shoppingassistant.domain.catalog.Stage3TopPresetsGateTest" \
+            --tests "com.example.shoppingassistant.domain.facet.FacetSchemaValidatorTest"
+
   sql-consistency:
     runs-on: ubuntu-latest
     services:

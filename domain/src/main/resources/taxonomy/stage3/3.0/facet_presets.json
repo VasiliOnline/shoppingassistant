@@ -1,5 +1,117 @@
 [
   {
+    "presetCode": "FP.FOOD.READY.DEFAULT",
+    "categoryCode": "FOOD.READY_MEALS",
+    "titleRu": "Готовая еда по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 2500.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "spiciness_level",
+        "includeValues": [
+          "MILD",
+          "MEDIUM"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "CHILLED",
+          "FROZEN"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+        "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.READY.PIZZA",
+    "categoryCode": "FOOD.READY_MEALS",
+    "titleRu": "Пицца",
+    "order": 30,
+    "rules": [
+      {
+        "facetKey": "cuisine",
+        "includeValues": [
+          "пицца"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "spiciness_level",
+        "includeValues": [
+          "MILD",
+          "MEDIUM"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "CHILLED"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+        "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.READY.SUSHI",
+    "categoryCode": "FOOD.READY_MEALS",
+    "titleRu": "Суши и роллы",
+    "order": 20,
+    "rules": [
+      {
+        "facetKey": "cuisine",
+        "includeValues": [
+          "суши",
+          "роллы"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "CHILLED"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+        "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
     "presetCode": "FP.TECH.PHONES.DEFAULT",
     "categoryCode": "TECH.PHONES",
     "titleRu": "Смартфоны по умолчанию",
@@ -25,12 +137,396 @@
         "boolValue": null
       }
     ],
-    "notes": "Stage 3.0 stub"
+        "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
-    "presetCode": "FP.FOOD.READY.DEFAULT",
-    "categoryCode": "FOOD.READY_MEALS",
-    "titleRu": "Готовая еда по умолчанию",
+    "presetCode": "FP.TECH.PHONES.BUDGET",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "Смартфоны до 50K",
+    "order": 20,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 50000.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "memory_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 64.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONES.PREMIUM",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "Смартфоны премиум",
+    "order": 30,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 100000.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "memory_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 256.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "ram_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 8.0,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.HAIRCARE.DEFAULT",
+    "categoryCode": "BEAUTY.HAIRCARE",
+    "titleRu": "Уход за волосами по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.BODYCARE.DEFAULT",
+    "categoryCode": "BEAUTY.BODYCARE",
+    "titleRu": "Уход за телом и гигиена по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.MAKEUP.DEFAULT",
+    "categoryCode": "BEAUTY.MAKEUP",
+    "titleRu": "Декоративная косметика по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.FRAGRANCE.DEFAULT",
+    "categoryCode": "BEAUTY.FRAGRANCE",
+    "titleRu": "Парфюмерия по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.DEVICES.DEFAULT",
+    "categoryCode": "BEAUTY.DEVICES",
+    "titleRu": "Техника для красоты и здоровья по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.HEALTH.DEFAULT",
+    "categoryCode": "BEAUTY.HEALTH",
+    "titleRu": "Товары для здоровья (витамины, мед-товары) по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.KIDS.STROLLERS_CARSEATS.DEFAULT",
+    "categoryCode": "KIDS.STROLLERS_CARSEATS",
+    "titleRu": "Коляски и автокресла по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 70000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.KIDS.NURSERY_FURNITURE.DEFAULT",
+    "categoryCode": "KIDS.NURSERY_FURNITURE",
+    "titleRu": "Детская мебель и безопасность по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 70000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.KIDS.TOYS_GAMES.DEFAULT",
+    "categoryCode": "KIDS.TOYS_GAMES",
+    "titleRu": "Игрушки и игры по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 70000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.KIDS.BABY_GEAR.DEFAULT",
+    "categoryCode": "KIDS.BABY_GEAR",
+    "titleRu": "Товары для ухода за малышами по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 70000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.GROCERIES.DEFAULT",
+    "categoryCode": "FOOD.GROCERIES",
+    "titleRu": "Продукты (бакалея, свежие и т.п.) по умолчанию",
     "order": 10,
     "rules": [
       {
@@ -38,42 +534,138 @@
         "includeValues": [],
         "excludeValues": [],
         "minValue": null,
-        "maxValue": 2500.0,
+        "maxValue": 5000.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "AMBIENT",
+          "CHILLED",
+          "FROZEN"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "allergen_profile",
+        "includeValues": [
+          "NONE"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
         "boolValue": null
       }
     ],
-    "notes": "Stage 3.0 stub"
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
-    "presetCode": "FP.FOOD.READY.SUSHI",
-    "categoryCode": "FOOD.READY_MEALS",
-    "titleRu": "Суши и роллы",
+    "presetCode": "FP.FOOD.GROCERIES.HEALTHY",
+    "categoryCode": "FOOD.GROCERIES",
+    "titleRu": "Полезный выбор",
     "order": 20,
     "rules": [
       {
-        "facetKey": "cuisine",
+        "facetKey": "is_gluten_free",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": true
+      },
+      {
+        "facetKey": "allergen_profile",
         "includeValues": [
-          "суши",
-          "роллы"
+          "NONE"
         ],
         "excludeValues": [],
         "minValue": null,
         "maxValue": null,
         "boolValue": null
+      },
+      {
+        "facetKey": "calories_kcal_per_serving",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 450.0,
+        "boolValue": null
       }
     ],
-    "notes": "Stage 3.0 stub"
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
-    "presetCode": "FP.FOOD.READY.PIZZA",
-    "categoryCode": "FOOD.READY_MEALS",
-    "titleRu": "Пицца",
+    "presetCode": "FP.FOOD.GROCERIES.LONG_SHELF",
+    "categoryCode": "FOOD.GROCERIES",
+    "titleRu": "Длительное хранение",
     "order": 30,
     "rules": [
       {
-        "facetKey": "cuisine",
+        "facetKey": "shelf_life_days",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 30.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
         "includeValues": [
-          "пицца"
+          "AMBIENT"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 3000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.DRINKS.DEFAULT",
+    "categoryCode": "FOOD.DRINKS",
+    "titleRu": "Напитки по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 3000.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "AMBIENT",
+          "CHILLED"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "allergen_profile",
+        "includeValues": [
+          "NONE"
         ],
         "excludeValues": [],
         "minValue": null,
@@ -81,6 +673,1475 @@
         "boolValue": null
       }
     ],
-    "notes": "Stage 3.0 stub"
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.DRINKS.LOW_CAL",
+    "categoryCode": "FOOD.DRINKS",
+    "titleRu": "Низкая калорийность",
+    "order": 20,
+    "rules": [
+      {
+        "facetKey": "calories_kcal_per_serving",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 120.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "volume_ml",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 1000.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "AMBIENT",
+          "CHILLED"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.DRINKS.PROTEIN",
+    "categoryCode": "FOOD.DRINKS",
+    "titleRu": "Протеиновые напитки",
+    "order": 30,
+    "rules": [
+      {
+        "facetKey": "protein_per_serving_gram",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 10.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "calories_kcal_per_serving",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 250.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "is_gluten_free",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": true
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.PETS.FOOD.DEFAULT",
+    "categoryCode": "PETS.FOOD",
+    "titleRu": "Корм по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 4000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.BEAUTY.SKINCARE.DEFAULT",
+    "categoryCode": "BEAUTY.SKINCARE",
+    "titleRu": "Уход за лицом и кожей по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 15000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.PETS.HYGIENE.DEFAULT",
+    "categoryCode": "PETS.HYGIENE",
+    "titleRu": "Гигиена и наполнители по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 4000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.PETS.ACCESSORIES.DEFAULT",
+    "categoryCode": "PETS.ACCESSORIES",
+    "titleRu": "Аксессуары по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 4000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.PETS.HEALTH.DEFAULT",
+    "categoryCode": "PETS.HEALTH",
+    "titleRu": "Здоровье и вет-товары по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 4000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.SPORT.FITNESS.DEFAULT",
+    "categoryCode": "SPORT.FITNESS",
+    "titleRu": "Фитнес и тренировки по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 60000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.SPORT.OUTDOOR.DEFAULT",
+    "categoryCode": "SPORT.OUTDOOR",
+    "titleRu": "Туризм и кемпинг по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 60000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.SPORT.BIKES_SCOOTERS.DEFAULT",
+    "categoryCode": "SPORT.BIKES_SCOOTERS",
+    "titleRu": "Велосипеды и самокаты по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 60000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.SPORT.EQUIPMENT.DEFAULT",
+    "categoryCode": "SPORT.EQUIPMENT",
+    "titleRu": "Спортивный инвентарь по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 60000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.SPORT.HOBBY.DEFAULT",
+    "categoryCode": "SPORT.HOBBY",
+    "titleRu": "Хобби и творчество по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 60000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.AUTO.PARTS.DEFAULT",
+    "categoryCode": "AUTO.PARTS",
+    "titleRu": "Запчасти по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 120000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.AUTO.TIRES_WHEELS.DEFAULT",
+    "categoryCode": "AUTO.TIRES_WHEELS",
+    "titleRu": "Шины и диски по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 120000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FOOD.SNACKS.DEFAULT",
+    "categoryCode": "FOOD.SNACKS",
+    "titleRu": "Снеки и сладкое по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 2000.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_regime",
+        "includeValues": [
+          "AMBIENT"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "allergen_profile",
+        "includeValues": [
+          "NONE"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FASH.BAGS.DEFAULT",
+    "categoryCode": "FASH.BAGS",
+    "titleRu": "Сумки и рюкзаки по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 30000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FASH.SHOES.DEFAULT",
+    "categoryCode": "FASH.SHOES",
+    "titleRu": "Обувь по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 30000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.AUTO.ACCESSORIES.DEFAULT",
+    "categoryCode": "AUTO.ACCESSORIES",
+    "titleRu": "Аксессуары по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 120000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONE_ACCESSORIES.DEFAULT",
+    "categoryCode": "TECH.PHONE_ACCESSORIES",
+    "titleRu": "Аксессуары для телефонов по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.LAPTOPS.DEFAULT",
+    "categoryCode": "TECH.LAPTOPS",
+    "titleRu": "Ноутбуки по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 256.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.LAPTOPS.STUDENT",
+    "categoryCode": "TECH.LAPTOPS",
+    "titleRu": "Ноутбуки для учёбы",
+    "order": 20,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 120000.0,
+        "boolValue": null
+      },
+      {
+        "facetKey": "ram_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 8.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "screen_size_inch",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 13.0,
+        "maxValue": 15.6,
+        "boolValue": null
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.LAPTOPS.PERFORMANCE",
+    "categoryCode": "TECH.LAPTOPS",
+    "titleRu": "Производительные ноутбуки",
+    "order": 30,
+    "rules": [
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 120000.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "ram_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 16.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 512.0,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Top category variant",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PC_COMPONENTS.DEFAULT",
+    "categoryCode": "TECH.PC_COMPONENTS",
+    "titleRu": "ПК и комплектующие по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.TABLETS_EBOOKS.DEFAULT",
+    "categoryCode": "TECH.TABLETS_EBOOKS",
+    "titleRu": "Планшеты и электронные книги по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "storage_gb",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 64.0,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.TV_VIDEO.DEFAULT",
+    "categoryCode": "TECH.TV_VIDEO",
+    "titleRu": "ТВ и видео по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.AUDIO.DEFAULT",
+    "categoryCode": "TECH.AUDIO",
+    "titleRu": "Аудио и наушники по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.GAMING.DEFAULT",
+    "categoryCode": "TECH.GAMING",
+    "titleRu": "Игровые приставки и игры по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.CAMERAS.DEFAULT",
+    "categoryCode": "TECH.CAMERAS",
+    "titleRu": "Фото и видеокамеры по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.SMART_HOME.DEFAULT",
+    "categoryCode": "TECH.SMART_HOME",
+    "titleRu": "Умный дом и гаджеты по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 200000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.APPL.MAJOR.DEFAULT",
+    "categoryCode": "APPL.MAJOR",
+    "titleRu": "Крупная техника (холодильники, стиралки и т.п.) по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 150000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.APPL.SMALL.DEFAULT",
+    "categoryCode": "APPL.SMALL",
+    "titleRu": "Малая техника (пылесосы, кухня и т.п.) по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 150000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FASH.ACCESSORIES.DEFAULT",
+    "categoryCode": "FASH.ACCESSORIES",
+    "titleRu": "Аксессуары по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 30000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.APPL.CLIMATE.DEFAULT",
+    "categoryCode": "APPL.CLIMATE",
+    "titleRu": "Климат (кондиционеры, обогреватели, очистители) по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 150000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.STORAGE.DEFAULT",
+    "categoryCode": "HOME.STORAGE",
+    "titleRu": "Хранение и организация по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.LIGHTING.DEFAULT",
+    "categoryCode": "HOME.LIGHTING",
+    "titleRu": "Освещение по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.TEXTILES.DEFAULT",
+    "categoryCode": "HOME.TEXTILES",
+    "titleRu": "Текстиль и интерьер по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.KITCHEN_DINING.DEFAULT",
+    "categoryCode": "HOME.KITCHEN_DINING",
+    "titleRu": "Посуда и кухня по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.CLEANING.DEFAULT",
+    "categoryCode": "HOME.CLEANING",
+    "titleRu": "Бытовая химия и уборка по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.REPAIR_TOOLS.DEFAULT",
+    "categoryCode": "HOME.REPAIR_TOOLS",
+    "titleRu": "Ремонт и инструменты по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.PLUMBING.DEFAULT",
+    "categoryCode": "HOME.PLUMBING",
+    "titleRu": "Сантехника по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.GARDEN.DEFAULT",
+    "categoryCode": "HOME.GARDEN",
+    "titleRu": "Дача и сад по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FASH.WOMEN.DEFAULT",
+    "categoryCode": "FASH.WOMEN",
+    "titleRu": "Женская одежда по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 30000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FASH.MEN.DEFAULT",
+    "categoryCode": "FASH.MEN",
+    "titleRu": "Мужская одежда по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 30000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.FASH.KIDS.DEFAULT",
+    "categoryCode": "FASH.KIDS",
+    "titleRu": "Детская одежда по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 30000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.HOME.FURNITURE.DEFAULT",
+    "categoryCode": "HOME.FURNITURE",
+    "titleRu": "Мебель по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 80000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.AUTO.TOOLS_GARAGE.DEFAULT",
+    "categoryCode": "AUTO.TOOLS_GARAGE",
+    "titleRu": "Гараж и инструменты по умолчанию",
+    "order": 10,
+    "rules": [
+      {
+        "facetKey": "condition",
+        "includeValues": [
+          "new",
+          "like_new",
+          "used"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      },
+      {
+        "facetKey": "price",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": 120000.0,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 baseline preset",
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   }
 ]

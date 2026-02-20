@@ -1,6 +1,8 @@
 package com.example.shoppingassistant.domain.facet
 
 import com.example.shoppingassistant.domain.catalog.Category
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 enum class FacetSchemaIssueSeverity {
     FAIL,
@@ -171,6 +173,29 @@ class FacetSchemaValidator {
             if (definition.titleRu.isBlank()) {
                 fail(issues, "FACET_TITLE_BLANK", "Facet '$facetKey' must have non-blank titleRu.")
             }
+            val effectiveFrom = parseIsoDate(definition.effectiveFrom)
+            val effectiveTo = parseIsoDate(definition.effectiveTo)
+            if (definition.effectiveFrom != null && effectiveFrom == null) {
+                fail(
+                    issues,
+                    "FACET_EFFECTIVE_FROM_INVALID",
+                    "Facet '$facetKey' has invalid effectiveFrom '${definition.effectiveFrom}'. Expected yyyy-MM-dd.",
+                )
+            }
+            if (definition.effectiveTo != null && effectiveTo == null) {
+                fail(
+                    issues,
+                    "FACET_EFFECTIVE_TO_INVALID",
+                    "Facet '$facetKey' has invalid effectiveTo '${definition.effectiveTo}'. Expected yyyy-MM-dd.",
+                )
+            }
+            if (effectiveFrom != null && effectiveTo != null && effectiveFrom.isAfter(effectiveTo)) {
+                fail(
+                    issues,
+                    "FACET_EFFECTIVE_WINDOW_INVALID",
+                    "Facet '$facetKey' has invalid window: effectiveFrom '$effectiveFrom' after effectiveTo '$effectiveTo'.",
+                )
+            }
             if (definition.appliesToCategoryCodes.isEmpty()) {
                 fail(issues, "FACET_APPLIES_EMPTY", "Facet '$facetKey' must reference at least one category.")
             }
@@ -233,6 +258,29 @@ class FacetSchemaValidator {
             if (preset.titleRu.isBlank()) {
                 fail(issues, "PRESET_TITLE_BLANK", "Preset '$presetCode' must have non-blank titleRu.")
             }
+            val effectiveFrom = parseIsoDate(preset.effectiveFrom)
+            val effectiveTo = parseIsoDate(preset.effectiveTo)
+            if (preset.effectiveFrom != null && effectiveFrom == null) {
+                fail(
+                    issues,
+                    "PRESET_EFFECTIVE_FROM_INVALID",
+                    "Preset '$presetCode' has invalid effectiveFrom '${preset.effectiveFrom}'. Expected yyyy-MM-dd.",
+                )
+            }
+            if (preset.effectiveTo != null && effectiveTo == null) {
+                fail(
+                    issues,
+                    "PRESET_EFFECTIVE_TO_INVALID",
+                    "Preset '$presetCode' has invalid effectiveTo '${preset.effectiveTo}'. Expected yyyy-MM-dd.",
+                )
+            }
+            if (effectiveFrom != null && effectiveTo != null && effectiveFrom.isAfter(effectiveTo)) {
+                fail(
+                    issues,
+                    "PRESET_EFFECTIVE_WINDOW_INVALID",
+                    "Preset '$presetCode' has invalid window: effectiveFrom '$effectiveFrom' after effectiveTo '$effectiveTo'.",
+                )
+            }
 
             val categoryCode = preset.categoryCode.trim()
             if (categoryCode.isBlank()) {
@@ -255,6 +303,7 @@ class FacetSchemaValidator {
                 warn(issues, "PRESET_RULES_EMPTY", "Preset '$presetCode' has no facet rules.")
             }
 
+            val seenRuleFacetKeys = HashSet<String>()
             preset.rules.forEach { rule ->
                 val facetKey = rule.facetKey.trim()
                 if (facetKey.isBlank()) {
@@ -264,6 +313,13 @@ class FacetSchemaValidator {
                         "Preset '$presetCode' contains rule with blank facet key.",
                     )
                     return@forEach
+                }
+                if (!seenRuleFacetKeys.add(facetKey)) {
+                    fail(
+                        issues,
+                        "PRESET_RULE_FACET_DUPLICATE",
+                        "Preset '$presetCode' has duplicate rule for facet '$facetKey'.",
+                    )
                 }
 
                 val definition = definitionsByKey[facetKey]
@@ -284,6 +340,39 @@ class FacetSchemaValidator {
                     )
                 }
 
+                val includeValues = rule.includeValues
+                    .map { value -> value.trim() }
+                    .filter { value -> value.isNotEmpty() }
+                val includeBlankCount = rule.includeValues.size - includeValues.size
+                if (includeBlankCount > 0) {
+                    fail(
+                        issues,
+                        "PRESET_RULE_INCLUDE_BLANK",
+                        "Preset '$presetCode' includes $includeBlankCount blank includeValues item(s) for '$facetKey'.",
+                    )
+                }
+
+                val excludeValues = rule.excludeValues
+                    .map { value -> value.trim() }
+                    .filter { value -> value.isNotEmpty() }
+                val excludeBlankCount = rule.excludeValues.size - excludeValues.size
+                if (excludeBlankCount > 0) {
+                    fail(
+                        issues,
+                        "PRESET_RULE_EXCLUDE_BLANK",
+                        "Preset '$presetCode' includes $excludeBlankCount blank excludeValues item(s) for '$facetKey'.",
+                    )
+                }
+
+                val overlap = includeValues.toSet().intersect(excludeValues.toSet())
+                if (overlap.isNotEmpty()) {
+                    fail(
+                        issues,
+                        "PRESET_RULE_INCLUDE_EXCLUDE_CONFLICT",
+                        "Preset '$presetCode' has include/exclude overlap for '$facetKey': ${overlap.take(5).joinToString(", ")}.",
+                    )
+                }
+
                 if (rule.minValue != null && rule.maxValue != null && rule.minValue > rule.maxValue) {
                     fail(
                         issues,
@@ -291,11 +380,39 @@ class FacetSchemaValidator {
                         "Preset '$presetCode' has invalid range for '$facetKey': minValue > maxValue.",
                     )
                 }
+
+                val hasNumericRange = rule.minValue != null || rule.maxValue != null
+                val hasSelectorPayload =
+                    includeValues.isNotEmpty() || excludeValues.isNotEmpty() || hasNumericRange || rule.boolValue != null
+                if (!hasSelectorPayload) {
+                    fail(
+                        issues,
+                        "PRESET_RULE_EMPTY",
+                        "Preset '$presetCode' rule for '$facetKey' is empty.",
+                    )
+                }
+
                 if (definition.valueType == FacetDataType.BOOL && rule.boolValue == null) {
                     fail(
                         issues,
                         "PRESET_BOOL_MISSING",
                         "Preset '$presetCode' must set boolValue for boolean facet '$facetKey'.",
+                    )
+                }
+                if (definition.valueType == FacetDataType.BOOL &&
+                    (includeValues.isNotEmpty() || excludeValues.isNotEmpty() || hasNumericRange)
+                ) {
+                    fail(
+                        issues,
+                        "PRESET_BOOL_HAS_EXTRA_FIELDS",
+                        "Preset '$presetCode' boolean facet '$facetKey' must use only boolValue.",
+                    )
+                }
+                if (definition.valueType != FacetDataType.BOOL && rule.boolValue != null) {
+                    fail(
+                        issues,
+                        "PRESET_NON_BOOL_HAS_BOOL_VALUE",
+                        "Preset '$presetCode' non-boolean facet '$facetKey' cannot set boolValue.",
                     )
                 }
             }
@@ -417,5 +534,14 @@ class FacetSchemaValidator {
         message: String,
     ) {
         issues += FacetSchemaValidationIssue(code = code, message = message, severity = FacetSchemaIssueSeverity.INFO)
+    }
+
+    private fun parseIsoDate(raw: String?): LocalDate? {
+        val value = raw?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        return try {
+            LocalDate.parse(value)
+        } catch (_: DateTimeParseException) {
+            null
+        }
     }
 }

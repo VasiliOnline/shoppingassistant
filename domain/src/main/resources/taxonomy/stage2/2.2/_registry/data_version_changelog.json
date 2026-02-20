@@ -1,0 +1,34 @@
+[
+  {
+    "version": "2.2.6",
+    "releaseDate": "2026-02-20",
+    "changes": [
+      "Top leaf defaults FP.TECH.LAPTOPS.DEFAULT, FP.FOOD.GROCERIES.DEFAULT, FP.FOOD.DRINKS.DEFAULT moved out of Stage 3.0 stub status.",
+      "Preset-to-collection chain completed for all Stage 3 presets (added anchors for TECH.PHONES.*, TECH.LAPTOPS.*, FOOD.GROCERIES.*, FOOD.DRINKS.* variants).",
+      "Facet preset validator hardened with duplicate-facet, include/exclude conflict, blank-value, and bool-shape checks.",
+      "CI workflow now runs domain quality gates on every catalog-related change."
+    ]
+  },
+  {
+    "version": "2.2.5",
+    "releaseDate": "2026-02-20",
+    "changes": [
+      "Preset observability contract promoted to production with V13 storage and quality checks.",
+      "A/B pass completed for FP.FOOD.READY.DEFAULT, FP.FOOD.READY.PIZZA, FP.FOOD.READY.SUSHI, FP.TECH.PHONES.DEFAULT.",
+      "Stage 3.0 stub notes removed from the approved preset set.",
+      "Monthly default vs non-default report wired into release governance."
+    ]
+  },
+  {
+    "version": "2.2.4",
+    "releaseDate": "2026-02-19",
+    "changes": [
+      "Leaf constraints coverage raised to 100%.",
+      "Stage3 facet schema expanded and synchronized with Stage2 facet-enabled attributes (PRODUCT/OFFER with allowlist).",
+      "FOOD mandatory fields (allergens/storage/shelf-life/base nutrition) enabled for validation and facets.",
+      "Top leaf categories now have >=3 working presets each.",
+      "Temporal policy fields effectiveFrom/effectiveTo/requiredBy enabled in contract and persistence.",
+      "Governance artifacts and migration/backlog runbooks added."
+    ]
+  }
+]
