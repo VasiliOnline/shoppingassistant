@@ -58,6 +58,15 @@ jobs:
           echo "Postgres did not become ready in time"
           exit 1
 
+      - name: Reset Public Schema (Clean DB)
+        shell: bash
+        run: |
+          psql -v ON_ERROR_STOP=1 <<'SQL'
+          DROP SCHEMA IF EXISTS public CASCADE;
+          CREATE SCHEMA public;
+          GRANT ALL ON SCHEMA public TO public;
+          SQL
+
       - name: Bootstrap CI Schema Helpers
         shell: bash
         run: |
@@ -88,6 +97,7 @@ jobs:
             server/src/main/resources/db/migration/V11__catalog_category_status.sql
             server/src/main/resources/db/migration/V12__catalog_temporal_policy.sql
             server/src/main/resources/db/migration/V13__catalog_preset_observability.sql
+            server/src/main/resources/db/migration/V14__catalog_preset_observability_hardening.sql
           )
 
           for file in "${migrations[@]}"; do
@@ -102,10 +112,13 @@ jobs:
 
           INSERT INTO flyway_schema_history(installed_rank, version, description, success) VALUES
             (1, '4', 'catalog_taxonomy', TRUE),
-            (2, '10', 'catalog_stage3_facets', TRUE),
-            (3, '11', 'catalog_category_status', TRUE),
-            (4, '12', 'catalog_temporal_policy', TRUE),
-            (5, '13', 'catalog_preset_observability', TRUE);
+            (2, '6', 'track_top10_snapshots', TRUE),
+            (3, '9', 'catalog_constraints', TRUE),
+            (4, '10', 'catalog_stage3_facets', TRUE),
+            (5, '11', 'catalog_category_status', TRUE),
+            (6, '12', 'catalog_temporal_policy', TRUE),
+            (7, '13', 'catalog_preset_observability', TRUE),
+            (8, '14', 'catalog_preset_observability_hardening', TRUE);
           SQL
 
       - name: Run Parity And Observability Checks
@@ -126,11 +139,11 @@ jobs:
                 SELECT version::text AS version, installed_rank
                 FROM flyway_schema_history
                 WHERE success = TRUE
-                  AND version IN ('4', '10', '11', '12', '13')
+                  AND version IN ('4', '6', '9', '10', '11', '12', '13', '14')
             )
             SELECT CASE
-                WHEN COUNT(*) = 5
-                 AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '10', '11', '12', '13']
+                WHEN COUNT(*) = 8
+                 AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '6', '9', '10', '11', '12', '13', '14']
                 THEN 1 ELSE 0
             END
             FROM applied;
