@@ -1,0 +1,17 @@
+{
+  "releaseCadence": "P1M",
+  "owner": "catalog-data@shoppingassistant.local",
+  "deprecation": {
+    "announceBeforeDays": 90,
+    "removeAfterDays": 180
+  },
+  "requiredArtifacts": [
+    "registry_meta.json",
+    "data_version_changelog.json",
+    "leaf_profile_empty_allowlist.json",
+    "taxonomy/stage4/4.0/immutable_attribute_schema.json",
+    "taxonomy/stage4/4.0/normalization_contract.json",
+    "taxonomy/stage4/4.0/dedup_keys.json",
+    "taxonomy/stage4/4.0/typed_constraints.json"
+  ]
+}

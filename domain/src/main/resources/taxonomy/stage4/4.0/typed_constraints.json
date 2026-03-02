@@ -1,0 +1,819 @@
+{
+  "stage": "4.0",
+  "schemaVersion": "1.0.0",
+  "constraints": [
+    {
+      "attributeCode": "age_from_months",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": 0.0,
+      "maxValue": 480.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "age_to_months",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": 0.0,
+      "maxValue": 480.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "allergen_profile",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "base_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_health_percent",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": 0.0,
+      "maxValue": 100.0,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.PHONES",
+          "whenAll": [
+            {
+              "attributeCode": "condition",
+              "op": "EQUALS_ANY",
+              "values": [
+                "used"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "brand",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "calories_kcal_per_serving",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "kcal",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "carbs_per_serving_gram",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "g",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "coffee_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "color",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "colorway",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "country_of_origin",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cpu_family",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cuisine_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "diameter_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dosage_per_serving",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dosage_unit",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dual_sim",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "expiration_date",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "fat_per_serving_gram",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "g",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "fish_type_primary",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "flavor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "folding_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "gender",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "gpu_type",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "has_cheese",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "has_lid",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "included_accessories",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ingredient_list",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_gluten_free",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_lactose_free",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_sugar_free",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_thermal",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_vegan",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_vegetarian",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "keyboard_layout",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "limited_edition",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "material",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "material_sole",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "material_upper",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "memory_gb",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "model",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "model_line",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "network_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "os_family",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pieces_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "portion_size_gram",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "power_watt",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "product_name",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "protein_per_serving_gram",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "protein_percent",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pump_pressure_bar",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ram_gb",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "region_code",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": "^[a-z]{2}(?:-[a-z0-9]{1,8})?$",
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "release_year",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": 1900.0,
+      "maxValue": 2100.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "restaurant_name",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "screen_size_inch",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "servings_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "set_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "shelf_life_days",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "day",
+      "regex": null,
+      "minValue": 0.0,
+      "maxValue": 3650.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "size_eu",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "size_uk",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "size_us",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "spiciness_level",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "storage_gb",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "storage_regime",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "storage_temp_max_c",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "C",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "storage_temp_min_c",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "C",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "storage_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "stroller_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "substance_code",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "thickness",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "topping_signature",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "used_for",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "volume_ml",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "water_tank_litre",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "weight_kg",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "weight_limit_kg",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    }
+  ]
+}

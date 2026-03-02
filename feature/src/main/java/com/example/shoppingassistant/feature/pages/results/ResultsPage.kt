@@ -560,19 +560,39 @@ fun ResultsPage(
         isLoading = false
     }
 
+    val sellerTrustStats = remember(items) { buildSellerTrustSignalStats(items) }
+    val availableSellerTrustSignals = remember(items, sellerTrustStats) {
+        if (items.isEmpty()) {
+            SellerTrustSignal.entries.toSet()
+        } else {
+            sellerTrustStats
+                .filter { stats -> stats.available }
+                .mapTo(LinkedHashSet()) { stats -> stats.signal }
+        }
+    }
+    val dependencyContext = remember(facetDefinitions, availableSellerTrustSignals) {
+        FilterDependencyContext(
+            allowedTypedFacetKeys = buildAllowedTypedFacetKeys(facetDefinitions),
+            availableSellerTrustSignals = availableSellerTrustSignals,
+        )
+    }
+
     val filteredItems = remember(
         items,
         profileSettings.hideUndeliverable,
         criteria?.userCountry,
         filters.deliverableOnly,
         filters.location,
+        filters.sellerTrustSignals,
     ) {
         val mustBeDeliverable = profileSettings.hideUndeliverable || filters.deliverableOnly
         val location = filters.location?.trim()?.takeIf { it.isNotBlank() }?.lowercase()
+        val selectedTrustSignals = filters.sellerTrustSignals
         items.filter { item ->
             val deliverable = !mustBeDeliverable ||
                 isDeliverableToUser(item.dto.sellerShippingCountries, criteria?.userCountry)
             if (!deliverable) return@filter false
+            if (!matchesSellerTrustSignals(item, selectedTrustSignals)) return@filter false
             if (location.isNullOrBlank()) return@filter true
             val city = item.dto.sellerCity?.lowercase().orEmpty()
             val country = item.dto.sellerCountry?.lowercase().orEmpty()
@@ -1003,7 +1023,7 @@ fun ResultsPage(
             "filters_overlay_open",
             "screen=results active_count=${filters.activeFilterCount()}",
         )
-        workingFilters = filters
+        workingFilters = filters.normalizeWithDependencies(dependencyContext).state
         sheetTarget = FilterSheetTarget.Draft
         sheetScreen = ResultsSheet.Filters
     }
@@ -1012,7 +1032,7 @@ fun ResultsPage(
         buildCategoryPath(selectedCategoryCode, categoriesByCode).dropLast(1)
 
     fun openCategoryShortcut() {
-        workingFilters = filters
+        workingFilters = filters.normalizeWithDependencies(dependencyContext).state
         categoryQuery = ""
         categoryTreePath = categorySheetInitialPath(filters.categoryCode)
         sheetTarget = FilterSheetTarget.Applied
@@ -1031,7 +1051,7 @@ fun ResultsPage(
             decision = sortSheetExplicitApplyDecision,
             action = "open_sort_sheet",
         )
-        workingFilters = filters
+        workingFilters = filters.normalizeWithDependencies(dependencyContext).state
         sheetTarget = FilterSheetTarget.Applied
         sheetScreen = ResultsSheet.Sort
     }
@@ -1055,7 +1075,7 @@ fun ResultsPage(
     }
 
     fun openChipFilterEditor(chipKey: String) {
-        workingFilters = filters
+        workingFilters = filters.normalizeWithDependencies(dependencyContext).state
         sheetTarget = FilterSheetTarget.Draft
         when {
             chipKey == AppliedChipKey.Category -> {
@@ -1067,6 +1087,7 @@ fun ResultsPage(
             chipKey == AppliedChipKey.Price -> sheetScreen = ResultsSheet.Price
             chipKey == AppliedChipKey.Condition -> sheetScreen = ResultsSheet.Condition
             chipKey == AppliedChipKey.PurchaseFormat -> sheetScreen = ResultsSheet.PurchaseFormat
+            chipKey == AppliedChipKey.SellerTrust -> sheetScreen = ResultsSheet.SellerTrust
             chipKey == AppliedChipKey.Location -> sheetScreen = ResultsSheet.Location
             chipKey.startsWith(AppliedChipKey.TypedPrefix) -> {
                 activeTypedFacetKey = chipKey.removePrefix(AppliedChipKey.TypedPrefix)
@@ -1077,7 +1098,10 @@ fun ResultsPage(
     }
 
     fun clearAppliedChip(chipKey: String) {
-        val result = filters.clearAppliedChipWithDependencies(chipKey)
+        val result = filters.clearAppliedChipWithDependencies(
+            chipKey = chipKey,
+            context = dependencyContext,
+        )
         filters = result.state
         if (sheetTarget == FilterSheetTarget.Applied || sheetScreen == null) {
             workingFilters = result.state
@@ -1716,6 +1740,7 @@ fun ResultsPage(
                             ResultsFacetFilterType.PriceRange -> ResultsSheet.Price
                             ResultsFacetFilterType.Condition -> ResultsSheet.Condition
                             ResultsFacetFilterType.DeliveryChannel -> ResultsSheet.PurchaseFormat
+                            ResultsFacetFilterType.SellerTrust -> ResultsSheet.SellerTrust
                             ResultsFacetFilterType.TypedAttribute -> {
                                 activeTypedFacetKey = facetFilter.facetKey
                                 ResultsSheet.TypedAttribute
@@ -1748,8 +1773,16 @@ fun ResultsPage(
                             "filters_overlay_apply_tap",
                             "screen=results active_count=${workingFilters.activeFilterCount()}",
                         )
-                        val appliedCount = workingFilters.activeFilterCount()
-                        filters = workingFilters
+                        val normalized = workingFilters.normalizeWithDependencies(dependencyContext)
+                        if (normalized.invalidatedFilterIds.isNotEmpty()) {
+                            FlowMetrics.markEvent(
+                                "filters_dependency_invalidation",
+                                "screen=results origin=apply changed=overlay invalidated=${normalized.invalidatedFilterIds.joinToString(",")}",
+                            )
+                        }
+                        val appliedCount = normalized.state.activeFilterCount()
+                        filters = normalized.state
+                        workingFilters = normalized.state
                         FlowMetrics.markEvent(
                             "filters_overlay_apply_success",
                             "screen=results active_count=$appliedCount",
@@ -1792,6 +1825,7 @@ fun ResultsPage(
                         val result = workingFilters.applyCategoryWithDependencies(
                             code = code,
                             path = path,
+                            context = dependencyContext,
                         )
                         workingFilters = result.state
                         if (result.invalidatedFilterIds.isNotEmpty()) {
@@ -1832,7 +1866,9 @@ fun ResultsPage(
                         if (sheetTarget == FilterSheetTarget.Draft) {
                             sheetScreen = ResultsSheet.Filters
                         } else {
-                            filters = workingFilters
+                            val normalized = workingFilters.normalizeWithDependencies(dependencyContext)
+                            filters = normalized.state
+                            workingFilters = normalized.state
                             sheetScreen = null
                         }
                     },
@@ -1853,7 +1889,9 @@ fun ResultsPage(
                         if (sheetTarget == FilterSheetTarget.Draft) {
                             sheetScreen = ResultsSheet.Filters
                         } else {
-                            filters = workingFilters
+                            val normalized = workingFilters.normalizeWithDependencies(dependencyContext)
+                            filters = normalized.state
+                            workingFilters = normalized.state
                             sheetScreen = null
                         }
                     },
@@ -1909,7 +1947,9 @@ fun ResultsPage(
                         if (sheetTarget == FilterSheetTarget.Draft) {
                             sheetScreen = ResultsSheet.Filters
                         } else {
-                            filters = workingFilters
+                            val normalized = workingFilters.normalizeWithDependencies(dependencyContext)
+                            filters = normalized.state
+                            workingFilters = normalized.state
                             sheetScreen = null
                         }
                     },
@@ -1939,6 +1979,41 @@ fun ResultsPage(
                         }
                     },
                 )
+                ResultsSheet.SellerTrust -> SellerTrustSheet(
+                    currentPreset = workingFilters.sellerTrustPreset,
+                    selectedSignals = workingFilters.sellerTrustSignals,
+                    options = sellerTrustOptions(
+                        stats = sellerTrustStats,
+                        selectedSignals = workingFilters.sellerTrustSignals,
+                    ),
+                    onSelectPreset = { preset ->
+                        workingFilters = workingFilters.withSellerTrustPreset(
+                            preset = preset,
+                            availableSignals = dependencyContext.availableSellerTrustSignals,
+                        )
+                    },
+                    onToggleSignal = { signal, enabled ->
+                        workingFilters = workingFilters.toggleSellerTrustSignal(
+                            signal = signal,
+                            enabled = enabled,
+                            availableSignals = dependencyContext.availableSellerTrustSignals,
+                        )
+                    },
+                    onReset = {
+                        workingFilters = workingFilters.withSellerTrustPreset(
+                            preset = SellerTrustPreset.Any,
+                            availableSignals = dependencyContext.availableSellerTrustSignals,
+                        )
+                    },
+                    onBack = {
+                        if (sheetTarget == FilterSheetTarget.Draft) {
+                            sheetScreen = ResultsSheet.Filters
+                        } else {
+                            filters = workingFilters.normalizeWithDependencies(dependencyContext).state
+                            sheetScreen = null
+                        }
+                    },
+                )
                 ResultsSheet.TypedAttribute -> {
                     val facetKey = activeTypedFacetKey
                     val facetFilter = facetUiFilters.firstOrNull { it.facetKey == facetKey }
@@ -1963,7 +2038,9 @@ fun ResultsPage(
                                 if (sheetTarget == FilterSheetTarget.Draft) {
                                     sheetScreen = ResultsSheet.Filters
                                 } else {
-                                    filters = workingFilters
+                                    val normalized = workingFilters.normalizeWithDependencies(dependencyContext)
+                                    filters = normalized.state
+                                    workingFilters = normalized.state
                                     sheetScreen = null
                                 }
                             },
@@ -1992,7 +2069,9 @@ fun ResultsPage(
                         if (sheetTarget == FilterSheetTarget.Draft) {
                             sheetScreen = ResultsSheet.Filters
                         } else {
-                            filters = workingFilters
+                            val normalized = workingFilters.normalizeWithDependencies(dependencyContext)
+                            filters = normalized.state
+                            workingFilters = normalized.state
                             sheetScreen = null
                         }
                     },
@@ -3328,6 +3407,83 @@ private fun ConditionSheet(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun SellerTrustSheet(
+    currentPreset: SellerTrustPreset,
+    selectedSignals: Set<SellerTrustSignal>,
+    options: List<SellerTrustSignalOption>,
+    onSelectPreset: (SellerTrustPreset) -> Unit,
+    onToggleSignal: (SellerTrustSignal, Boolean) -> Unit,
+    onReset: () -> Unit,
+    onBack: () -> Unit,
+) {
+    val presetOptions = listOf(
+        SellerTrustPreset.Any,
+        SellerTrustPreset.Balanced,
+        SellerTrustPreset.Strict,
+        SellerTrustPreset.VerifiedOnly,
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        SheetTopBar(title = "Доверие продавца", onBack = onBack, onReset = onReset, resetLabel = "Очистить")
+        Text(
+            text = "Режим",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(presetOptions, key = { option -> option.presetId }) { preset ->
+                val selected = when {
+                    preset == SellerTrustPreset.Any && selectedSignals.isEmpty() -> true
+                    currentPreset == preset -> true
+                    else -> false
+                }
+                CategoryChip(
+                    text = preset.label,
+                    highlighted = selected,
+                    onClick = { onSelectPreset(preset) },
+                )
+            }
+        }
+        if (currentPreset == SellerTrustPreset.Custom && selectedSignals.isNotEmpty()) {
+            Text(
+                text = "Режим: пользовательский (${selectedSignals.size})",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Text(
+            text = "Сигналы",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            items(options, key = { option -> option.signal.signalId }) { option ->
+                val label = option.count?.let { value -> "${option.signal.title} ($value)" } ?: option.signal.title
+                SortOptionRow(
+                    label = label,
+                    selected = option.selected,
+                    enabled = option.enabled,
+                    supporting = option.supportingText,
+                    onClick = { onToggleSignal(option.signal, !option.selected) },
+                )
+            }
+        }
+        Text(
+            text = "Сигналы применяются только после «Показать результаты».",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -4739,33 +4895,27 @@ private fun FilterState.clearAppliedChipWithDependencies(
     )
 
     chipKey == AppliedChipKey.Brand -> copy(brands = emptySet()).normalizeWithDependencies(context)
-    chipKey == AppliedChipKey.Price -> FilterDependencyResult(
-        state = copy(
-            priceMin = null,
-            priceMax = null,
-        ),
-    )
+    chipKey == AppliedChipKey.Price -> copy(
+        priceMin = null,
+        priceMax = null,
+    ).normalizeWithDependencies(context)
 
     chipKey == AppliedChipKey.Condition -> copy(conditions = emptySet()).normalizeWithDependencies(context)
-    chipKey == AppliedChipKey.PurchaseFormat -> FilterDependencyResult(
-        state = copy(
-            purchaseFormat = PurchaseFormat.All,
-            deliverableOnly = false,
-        ),
-    )
+    chipKey == AppliedChipKey.PurchaseFormat -> copy(
+        purchaseFormat = PurchaseFormat.All,
+        deliverableOnly = false,
+    ).normalizeWithDependencies(context)
     chipKey == AppliedChipKey.SellerTrust -> copy(
         sellerTrustPreset = SellerTrustPreset.Any,
         sellerTrustSignals = emptySet(),
     ).normalizeWithDependencies(context)
 
-    chipKey == AppliedChipKey.Location -> FilterDependencyResult(
-        state = copy(
-            location = null,
-            radiusKm = null,
-            centerLat = null,
-            centerLon = null,
-        ),
-    )
+    chipKey == AppliedChipKey.Location -> copy(
+        location = null,
+        radiusKm = null,
+        centerLat = null,
+        centerLon = null,
+    ).normalizeWithDependencies(context)
 
     chipKey.startsWith(AppliedChipKey.TypedPrefix) -> {
         val facetKey = chipKey.removePrefix(AppliedChipKey.TypedPrefix).trim()
@@ -4879,6 +5029,16 @@ private fun buildFacetUiFilters(definitions: List<FacetDefinition>): List<Result
         .distinctBy { facetFilter -> facetFilter.facetKey }
 }
 
+private fun buildAllowedTypedFacetKeys(definitions: List<FacetDefinition>): Set<String> =
+    definitions
+        .asSequence()
+        .filter { definition -> definition.isActiveForToday() }
+        .filterNot { definition -> definition.ui.hidden }
+        .map { definition -> definition.facetKey.trim().lowercase() }
+        .filter { facetKey -> facetKey.isNotBlank() }
+        .filterNot { facetKey -> facetKey in systemFacetKeys }
+        .toCollection(LinkedHashSet())
+
 private fun FilterState.summaryForFacet(facetFilter: ResultsFacetFilter): String = when (facetFilter.type) {
     ResultsFacetFilterType.Brand -> brandSummary()
     ResultsFacetFilterType.PriceRange -> priceSummary()
@@ -4915,6 +5075,155 @@ private fun FilterState.withCondition(option: ConditionOption): FilterState {
         updated.add(option)
     }
     return copy(conditions = updated)
+}
+
+private fun normalizeSellerTrustSignals(signals: Set<SellerTrustSignal>): Set<SellerTrustSignal> =
+    SellerTrustSignal.entries
+        .filter { signal -> signal in signals }
+        .toCollection(LinkedHashSet())
+
+private fun inferSellerTrustPreset(signals: Set<SellerTrustSignal>): SellerTrustPreset {
+    val normalized = normalizeSellerTrustSignals(signals)
+    if (normalized.isEmpty()) return SellerTrustPreset.Any
+    return when (normalized) {
+        normalizeSellerTrustSignals(SellerTrustPreset.Balanced.signals) -> SellerTrustPreset.Balanced
+        normalizeSellerTrustSignals(SellerTrustPreset.Strict.signals) -> SellerTrustPreset.Strict
+        normalizeSellerTrustSignals(SellerTrustPreset.VerifiedOnly.signals) -> SellerTrustPreset.VerifiedOnly
+        else -> SellerTrustPreset.Custom
+    }
+}
+
+private fun FilterState.withSellerTrustPreset(
+    preset: SellerTrustPreset,
+    availableSignals: Set<SellerTrustSignal>,
+): FilterState {
+    val selectedSignals = when (preset) {
+        SellerTrustPreset.Any -> emptySet()
+        SellerTrustPreset.Custom -> sellerTrustSignals
+        else -> preset.signals
+    }
+    val normalized = normalizeSellerTrustSignals(selectedSignals)
+        .filterTo(LinkedHashSet()) { signal -> signal in availableSignals }
+    return copy(
+        sellerTrustSignals = normalized,
+        sellerTrustPreset = inferSellerTrustPreset(normalized),
+    )
+}
+
+private fun FilterState.toggleSellerTrustSignal(
+    signal: SellerTrustSignal,
+    enabled: Boolean,
+    availableSignals: Set<SellerTrustSignal>,
+): FilterState {
+    if (signal !in availableSignals) return this
+    val next = sellerTrustSignals.toMutableSet()
+    if (enabled) {
+        next += signal
+    } else {
+        next -= signal
+    }
+    val normalized = normalizeSellerTrustSignals(next)
+    return copy(
+        sellerTrustSignals = normalized,
+        sellerTrustPreset = inferSellerTrustPreset(normalized),
+    )
+}
+
+private fun sellerTrustOptions(
+    stats: List<SellerTrustSignalStats>,
+    selectedSignals: Set<SellerTrustSignal>,
+): List<SellerTrustSignalOption> =
+    stats.map { state ->
+        SellerTrustSignalOption(
+            signal = state.signal,
+            selected = state.signal in selectedSignals,
+            enabled = state.available,
+            count = if (state.available && !state.partial) state.positiveCount else null,
+            supportingText = state.supportingText,
+        )
+    }
+
+private fun buildSellerTrustSignalStats(items: List<ExplainedItem>): List<SellerTrustSignalStats> {
+    val total = items.size
+    return SellerTrustSignal.entries.map { signal ->
+        val evaluations = items.map { item -> evaluateSellerTrustSignal(item, signal) }
+        val knownCount = evaluations.count { value -> value != null }
+        val positiveCount = evaluations.count { value -> value == true }
+        val available = when (signal) {
+            SellerTrustSignal.ProfileAge90d -> false
+            else -> knownCount > 0 || total == 0
+        }
+        val partial = total > 0 && knownCount in 1 until total
+        val supporting = when {
+            !available -> signal.unsupportedHint
+            partial -> signal.partialHint
+            else -> signal.description
+        }
+        SellerTrustSignalStats(
+            signal = signal,
+            totalCount = total,
+            knownCount = knownCount,
+            positiveCount = positiveCount,
+            available = available,
+            partial = partial,
+            supportingText = supporting,
+        )
+    }
+}
+
+private fun matchesSellerTrustSignals(
+    item: ExplainedItem,
+    selectedSignals: Set<SellerTrustSignal>,
+): Boolean {
+    if (selectedSignals.isEmpty()) return true
+    return selectedSignals.all { signal ->
+        evaluateSellerTrustSignal(item, signal) == true
+    }
+}
+
+private fun evaluateSellerTrustSignal(
+    item: ExplainedItem,
+    signal: SellerTrustSignal,
+): Boolean? {
+    val dto = item.dto
+    val badges = dto.sellerBadges
+        .joinToString(separator = " ") { badge -> badge.trim().lowercase(Locale.ROOT) }
+        .trim()
+    return when (signal) {
+        SellerTrustSignal.VerifiedSeller -> {
+            when {
+                badges.isNotEmpty() && (
+                    badges.contains("verified") ||
+                        badges.contains("trusted") ||
+                        badges.contains("official") ||
+                        badges.contains("провер")
+                    ) -> true
+
+                badges.isNotEmpty() || dto.sellerType != null -> false
+                dto.trustScore != null -> dto.trustScore >= 0.75
+                else -> null
+            }
+        }
+
+        SellerTrustSignal.HighRating -> dto.sellerRating?.let { rating -> rating >= 4.5 }
+        SellerTrustSignal.LowDisputeRate -> dto.trustScore?.let { trust -> trust >= 0.70 }
+        SellerTrustSignal.ReturnAvailable -> {
+            when {
+                badges.isNotEmpty() && (
+                    badges.contains("return") ||
+                        badges.contains("refund") ||
+                        badges.contains("warranty") ||
+                        badges.contains("гарант") ||
+                        badges.contains("возврат")
+                    ) -> true
+
+                badges.isNotEmpty() -> false
+                else -> null
+            }
+        }
+
+        SellerTrustSignal.ProfileAge90d -> null
+    }
 }
 
 private fun buildRecognitionTitle(filters: FilterState): String {
@@ -4989,6 +5298,11 @@ private fun buildTrackFiltersExtra(filters: FilterState): Map<String, String> {
     if (filters.deliverableOnly) {
         putExtra("delivery", "true")
     }
+    filters.sellerTrustSignals
+        .sortedBy { signal -> signal.signalId }
+        .forEach { signal ->
+            putExtra(signal.attributeKey, "true")
+        }
 
     filters.typedAttributeFilters.forEach { (rawKey, draft) ->
         val key = rawKey.trim().lowercase()

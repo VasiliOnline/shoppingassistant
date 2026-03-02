@@ -1,0 +1,65 @@
+{
+  "stage": "4.0",
+  "schemaVersion": "1.0.0",
+  "templates": [
+    {
+      "entity": "ATTRIBUTE_SCHEMA",
+      "template": "{attributeCode}",
+      "fields": [
+        "attributeCode"
+      ],
+      "description": "Stable key for immutable attribute schema entries."
+    },
+    {
+      "entity": "DICTIONARY_VALUE",
+      "template": "{attributeCode}|{valueCode}",
+      "fields": [
+        "attributeCode",
+        "valueCode"
+      ],
+      "description": "Stable key for dictionary value normalization entries."
+    },
+    {
+      "entity": "CATEGORY_PROFILE_ATTRIBUTE",
+      "template": "{categoryCode}|{attributeCode}",
+      "fields": [
+        "categoryCode",
+        "attributeCode"
+      ],
+      "description": "Stable key for category profile attribute bindings."
+    },
+    {
+      "entity": "FACET_DEFINITION",
+      "template": "{facetKey}",
+      "fields": [
+        "facetKey"
+      ],
+      "description": "Stable key for Stage 3 facet definitions."
+    },
+    {
+      "entity": "FACET_PRESET",
+      "template": "{presetCode}",
+      "fields": [
+        "presetCode"
+      ],
+      "description": "Stable key for Stage 3 facet presets."
+    },
+    {
+      "entity": "FACET_COLLECTION",
+      "template": "{collectionCode}",
+      "fields": [
+        "collectionCode"
+      ],
+      "description": "Stable key for Stage 3 facet collections."
+    },
+    {
+      "entity": "CATEGORY_IDENTITY_SIGNATURE",
+      "template": "{categoryCode}|{identityAttributesHash}",
+      "fields": [
+        "categoryCode",
+        "identityAttributesHash"
+      ],
+      "description": "Stable key for per-category identity attribute signatures used in dedup."
+    }
+  ]
+}
