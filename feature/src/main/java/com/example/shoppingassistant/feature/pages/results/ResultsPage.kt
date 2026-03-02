@@ -5186,6 +5186,7 @@ private fun evaluateSellerTrustSignal(
     signal: SellerTrustSignal,
 ): Boolean? {
     val dto = item.dto
+    val trustScore = dto.trustScore
     val badges = dto.sellerBadges
         .joinToString(separator = " ") { badge -> badge.trim().lowercase(Locale.ROOT) }
         .trim()
@@ -5200,13 +5201,13 @@ private fun evaluateSellerTrustSignal(
                     ) -> true
 
                 badges.isNotEmpty() || dto.sellerType != null -> false
-                dto.trustScore != null -> dto.trustScore >= 0.75
+                trustScore != null -> trustScore >= 0.75
                 else -> null
             }
         }
 
         SellerTrustSignal.HighRating -> dto.sellerRating?.let { rating -> rating >= 4.5 }
-        SellerTrustSignal.LowDisputeRate -> dto.trustScore?.let { trust -> trust >= 0.70 }
+        SellerTrustSignal.LowDisputeRate -> trustScore?.let { trust -> trust >= 0.70 }
         SellerTrustSignal.ReturnAvailable -> {
             when {
                 badges.isNotEmpty() && (
