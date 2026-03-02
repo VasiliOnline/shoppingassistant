@@ -1,9 +1,0 @@
-package com.example.shoppingassistant.server.di
-
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
-import com.example.shoppingassistant.server.catalog.CatalogRepositoryImpl
-import org.koin.dsl.module
-
-val backendCatalogModule = module {
-    single<CatalogRepository> { CatalogRepositoryImpl() }
-}
