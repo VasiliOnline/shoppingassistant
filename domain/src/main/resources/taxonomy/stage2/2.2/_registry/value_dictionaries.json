@@ -2,6 +2,78 @@
   "schemaVersion": "1.0.0",
   "dictionaries": [
     {
+      "attributeCode": "allergen_profile",
+      "entries": [
+        {
+          "valueCode": "NONE",
+          "labels": {
+            "ru": "Без аллергенов",
+            "en": "none"
+          },
+          "aliases": [
+            "нет аллергенов",
+            "none"
+          ]
+        },
+        {
+          "valueCode": "CONTAINS_GLUTEN",
+          "labels": {
+            "ru": "Содержит глютен",
+            "en": "contains gluten"
+          },
+          "aliases": [
+            "глютен",
+            "contains gluten"
+          ]
+        },
+        {
+          "valueCode": "CONTAINS_NUTS",
+          "labels": {
+            "ru": "Содержит орехи",
+            "en": "contains nuts"
+          },
+          "aliases": [
+            "орехи",
+            "contains nuts"
+          ]
+        },
+        {
+          "valueCode": "CONTAINS_DAIRY",
+          "labels": {
+            "ru": "Содержит молоко/лактозу",
+            "en": "contains dairy"
+          },
+          "aliases": [
+            "молоко",
+            "лактоза",
+            "contains dairy"
+          ]
+        },
+        {
+          "valueCode": "CONTAINS_SOY",
+          "labels": {
+            "ru": "Содержит сою",
+            "en": "contains soy"
+          },
+          "aliases": [
+            "соя",
+            "contains soy"
+          ]
+        },
+        {
+          "valueCode": "CONTAINS_EGGS",
+          "labels": {
+            "ru": "Содержит яйца",
+            "en": "contains eggs"
+          },
+          "aliases": [
+            "яйца",
+            "contains eggs"
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "base_type",
       "entries": [
         {
@@ -714,6 +786,45 @@
           },
           "aliases": [
             "острый"
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "storage_regime",
+      "entries": [
+        {
+          "valueCode": "AMBIENT",
+          "labels": {
+            "ru": "Комнатная температура",
+            "en": "ambient"
+          },
+          "aliases": [
+            "комнатная",
+            "ambient"
+          ]
+        },
+        {
+          "valueCode": "CHILLED",
+          "labels": {
+            "ru": "Охлаждённый",
+            "en": "chilled"
+          },
+          "aliases": [
+            "охлажденный",
+            "охлаждённый",
+            "chilled"
+          ]
+        },
+        {
+          "valueCode": "FROZEN",
+          "labels": {
+            "ru": "Замороженный",
+            "en": "frozen"
+          },
+          "aliases": [
+            "замороженный",
+            "frozen"
           ]
         }
       ]

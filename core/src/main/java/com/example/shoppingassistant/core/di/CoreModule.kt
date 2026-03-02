@@ -5,6 +5,10 @@ import androidx.room.Room
 import com.example.shoppingassistant.core.analytics.LogcatProfileAnalyticsLogger
 import com.example.shoppingassistant.core.analytics.ProfileAnalyticsLogger
 import com.example.shoppingassistant.core.config.AuthRepositoryConfig
+import com.example.shoppingassistant.core.config.SearchFeatureGate
+import com.example.shoppingassistant.core.config.SearchFeatureGateImpl
+import com.example.shoppingassistant.core.config.SearchRemoteConfigService
+import com.example.shoppingassistant.core.config.SearchRemoteConfigServiceImpl
 import com.example.shoppingassistant.core.data.AttributeService
 import com.example.shoppingassistant.core.data.ProductRepository
 import com.example.shoppingassistant.core.data.ProductRepositoryImpl
@@ -16,6 +20,7 @@ import com.example.shoppingassistant.core.data.catalog.CategoryAliasRepositoryIm
 import com.example.shoppingassistant.core.data.catalog.AliasEntryRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.BrowseNodeRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.CategoryOfferCountsRepositoryImpl
+import com.example.shoppingassistant.core.data.catalog.CatalogApiDataSource
 import com.example.shoppingassistant.core.data.catalog.CatalogDataSource
 import com.example.shoppingassistant.core.data.catalog.FacetCollectionRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.FacetDefinitionRepositoryImpl
@@ -239,6 +244,8 @@ val coreModule: Module = module {
     // --- Core services ---
     single { AttributeService(get()) }
     single<ProfileAnalyticsLogger> { LogcatProfileAnalyticsLogger() }
+    single<SearchRemoteConfigService> { SearchRemoteConfigServiceImpl() }
+    single<SearchFeatureGate> { SearchFeatureGateImpl(get()) }
 
     // --- Facet counts ---
     single { FacetCountsRepositoryImpl(get()) }
@@ -246,7 +253,14 @@ val coreModule: Module = module {
 
     // --- Catalog ---
     single { SeededCatalogDataSource() }
-    single<CatalogDataSource> { get<SeededCatalogDataSource>() }
+    single {
+        CatalogApiDataSource(
+            backendClient = get(),
+            fallback = get<SeededCatalogDataSource>(),
+            allowSeedFallback = false,
+        )
+    }
+    single<CatalogDataSource> { get<CatalogApiDataSource>() }
 
     single { CatalogRepositoryImpl(get()) }
     single<CatalogRepository> { get<CatalogRepositoryImpl>() }
@@ -275,15 +289,33 @@ val coreModule: Module = module {
 
     // --- Stage 3.0 facet schema: definitions/presets/collections + gate ---
     single { FacetDefinitionRepositoryImpl() }
-    single { FacetDefinitionApiRepository(get(), get<FacetDefinitionRepositoryImpl>()) }
+    single {
+        FacetDefinitionApiRepository(
+            backendClient = get(),
+            fallback = get<FacetDefinitionRepositoryImpl>(),
+            allowSeedFallback = false,
+        )
+    }
     single<FacetDefinitionRepository> { get<FacetDefinitionApiRepository>() }
 
     single { FacetPresetRepositoryImpl() }
-    single { FacetPresetApiRepository(get(), get<FacetPresetRepositoryImpl>()) }
+    single {
+        FacetPresetApiRepository(
+            backendClient = get(),
+            fallback = get<FacetPresetRepositoryImpl>(),
+            allowSeedFallback = false,
+        )
+    }
     single<FacetPresetRepository> { get<FacetPresetApiRepository>() }
 
     single { FacetCollectionRepositoryImpl() }
-    single { FacetCollectionApiRepository(get(), get<FacetCollectionRepositoryImpl>()) }
+    single {
+        FacetCollectionApiRepository(
+            backendClient = get(),
+            fallback = get<FacetCollectionRepositoryImpl>(),
+            allowSeedFallback = false,
+        )
+    }
     single<FacetCollectionRepository> { get<FacetCollectionApiRepository>() }
 
     single { FacetSchemaValidator() }
@@ -466,6 +498,7 @@ val coreModule: Module = module {
             trackRepository = get(),
             nearbyFiltersStorage = get(),
             facetCountsRepository = get(),
+            catalogRepository = get(),
             categoryAliasRepository = get(),
             historyStore = get(),
         )

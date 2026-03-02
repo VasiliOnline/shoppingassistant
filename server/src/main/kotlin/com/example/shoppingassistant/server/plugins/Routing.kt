@@ -3,6 +3,7 @@ package com.example.shoppingassistant.server.plugins
 
 import com.example.shoppingassistant.server.auth.SessionStore
 import com.example.shoppingassistant.server.auth.authRoutes
+import com.example.shoppingassistant.server.catalog.catalogRoutes
 import com.example.shoppingassistant.server.catalog.facetSchemaRoutes
 import com.example.shoppingassistant.server.config.RedisConfig
 import com.example.shoppingassistant.server.offers.offerRoutes
@@ -105,6 +106,9 @@ fun Application.configureRouting() {
         offerAlertsRoutes()
         offerAnalyticsRoutes()
         offerTrackingRoutes()
+
+        // Stage 2/4: catalog runtime API (categories/profiles/constraints)
+        catalogRoutes()
 
         // Stage 3: facet schema runtime API
         facetSchemaRoutes()

@@ -751,7 +751,7 @@ private fun CreationTile(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val interaction = MutableInteractionSource()
+    val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (pressed) 0.96f else 1f,

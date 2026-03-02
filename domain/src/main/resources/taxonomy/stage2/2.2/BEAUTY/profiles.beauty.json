@@ -22,8 +22,112 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "form_factor",
+        "title": "Форма выпуска",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_vegan",
+        "title": "Веган",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.SKINCARE",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.SKINCARE",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.SKINCARE",
+        "attributeCode": "form_factor",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.SKINCARE",
+        "attributeCode": "volume_ml",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.SKINCARE",
+        "attributeCode": "is_vegan",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.SKINCARE",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -36,8 +140,112 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "form_factor",
+        "title": "Форма выпуска",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.HAIRCARE",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HAIRCARE",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HAIRCARE",
+        "attributeCode": "form_factor",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HAIRCARE",
+        "attributeCode": "volume_ml",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HAIRCARE",
+        "attributeCode": "color",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HAIRCARE",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -50,8 +258,112 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "form_factor",
+        "title": "Форма выпуска",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_vegan",
+        "title": "Веган",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.BODYCARE",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.BODYCARE",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.BODYCARE",
+        "attributeCode": "form_factor",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.BODYCARE",
+        "attributeCode": "volume_ml",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.BODYCARE",
+        "attributeCode": "is_vegan",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.BODYCARE",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -64,8 +376,95 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "form_factor",
+        "title": "Форма выпуска",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.MAKEUP",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.MAKEUP",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.MAKEUP",
+        "attributeCode": "color",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.MAKEUP",
+        "attributeCode": "form_factor",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.MAKEUP",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -78,8 +477,95 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "gender",
+        "title": "Пол",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "gender"
+      },
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.FRAGRANCE",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.FRAGRANCE",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.FRAGRANCE",
+        "attributeCode": "gender",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.FRAGRANCE",
+        "attributeCode": "volume_ml",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.FRAGRANCE",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -92,8 +578,112 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "power_watt",
+        "title": "Мощность (Вт)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "weight_kg",
+        "title": "Вес (кг)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.DEVICES",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.DEVICES",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.DEVICES",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.DEVICES",
+        "attributeCode": "power_watt",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.DEVICES",
+        "attributeCode": "color",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.DEVICES",
+        "attributeCode": "weight_kg",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -335,3 +925,4 @@
     "requiredIfRules": []
   }
 ]
+

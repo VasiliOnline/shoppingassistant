@@ -25,6 +25,7 @@ enum class NearbyCondition(
 ) {
     Any("Любое", ""),
     New("Новое", "new"),
+    LikeNew("Как новый", "like_new"),
     Used("Б/у", "used"),
 }
 

@@ -23,6 +23,7 @@ data class TrackRefreshCandidate(
     val type: TrackType,
     val matchKey: String?,
     val categoryCode: String?,
+    val targetAttributes: Map<String, String>,
     val filters: TrackFilters,
     val userCountry: String?,
     val failCount: Int,
@@ -61,12 +62,21 @@ class TrackTop10RefreshPlanner(
 
     private fun mapCandidate(row: ResultRow): TrackRefreshCandidate {
         val failCount = row.getOrNull(TrackTop10SnapshotsTable.failCount) ?: 0
+        val storedTarget = row[TracksTable.target]
+        val storedTargetSpec = storedTarget.spec
         return TrackRefreshCandidate(
             trackId = row[TracksTable.id],
             userId = row[TracksTable.userId],
             type = TrackType.valueOf(row[TracksTable.type]),
-            matchKey = row[TracksTable.matchKey] ?: row[TracksTable.target].matchKey,
-            categoryCode = row[TracksTable.categoryCode],
+            matchKey = row[TracksTable.matchKey]
+                ?: storedTargetSpec?.matchKey,
+            categoryCode = row[TracksTable.targetCategoryCode]
+                ?: storedTargetSpec?.categoryCode,
+            targetAttributes = when {
+                row[TracksTable.targetAttributes]?.isNotEmpty() == true -> row[TracksTable.targetAttributes].orEmpty()
+                storedTargetSpec?.attributes?.isNotEmpty() == true -> storedTargetSpec.attributes
+                else -> emptyMap()
+            },
             filters = row[TracksTable.filters],
             userCountry = row.getOrNull(UserProfilesTable.countryCode),
             failCount = failCount,

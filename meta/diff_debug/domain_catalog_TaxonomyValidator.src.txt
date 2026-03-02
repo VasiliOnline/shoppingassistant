@@ -148,6 +148,7 @@ class TaxonomyValidator {
         "игрушки",
     )
     private val localeRegex = Regex("^[a-z]{2}-[a-z]{2}$", RegexOption.IGNORE_CASE)
+    private val allowedAliasLocales = setOf("ru-ru", "en-us")
 
     fun validate(
         categories: List<Category>,
@@ -626,11 +627,15 @@ class TaxonomyValidator {
         val exactAliasKeySeen = HashSet<String>()
         val localeKindTargetsByTerm = LinkedHashMap<String, MutableSet<String>>()
         val genericTermCounts = LinkedHashMap<String, Int>()
+        val localeCounts = LinkedHashMap<String, Int>()
         var collisionCount = 0
 
         aliasEntries.forEach { entry ->
             val locale = entry.locale.trim()
             val localeKey = locale.lowercase()
+            if (localeKey.isNotBlank()) {
+                localeCounts[localeKey] = (localeCounts[localeKey] ?: 0) + 1
+            }
             val normalized = normalizeAlias(entry.term)
             val normalizedTerm = entry.normalizedTerm.trim()
             val targetCode = entry.targetCode.trim()
@@ -642,6 +647,12 @@ class TaxonomyValidator {
                     issues,
                     "ALIAS_ENTRY_LOCALE_UNSUPPORTED",
                     "Alias entry '${entry.term}' has unsupported locale '$locale'.",
+                )
+            } else if (localeKey !in allowedAliasLocales) {
+                fail(
+                    issues,
+                    "ALIAS_ENTRY_LOCALE_NOT_ALLOWED",
+                    "Alias entry '${entry.term}' uses locale '$locale' outside allowed set: ${allowedAliasLocales.sorted().joinToString(", ")}.",
                 )
             }
             if (normalized.isBlank()) {
@@ -748,6 +759,20 @@ class TaxonomyValidator {
                     }
 
                     GenericAliasClass.NONE -> Unit
+                }
+            }
+        }
+
+        val totalLocaleCount = localeCounts.values.sum()
+        if (totalLocaleCount > 0) {
+            val nonPrimaryCount = totalLocaleCount - (localeCounts[PRIMARY_ALIAS_LOCALE] ?: 0)
+            if (nonPrimaryCount > 0) {
+                val share = nonPrimaryCount.toDouble() / totalLocaleCount.toDouble()
+                val message = "Non-primary alias locales share=${"%.4f".format(share)} ($nonPrimaryCount/$totalLocaleCount). Primary locale is '$PRIMARY_ALIAS_LOCALE'."
+                if (share > NON_PRIMARY_ALIAS_LOCALE_WARN_SHARE) {
+                    warn(issues, "ALIAS_ENTRY_NON_PRIMARY_LOCALE_SHARE", message)
+                } else {
+                    info(issues, "ALIAS_ENTRY_NON_PRIMARY_LOCALE_SHARE", message)
                 }
             }
         }
@@ -1055,5 +1080,7 @@ class TaxonomyValidator {
     private companion object {
         private const val SOFT_GENERIC_WARN_WEIGHT = 90
         private const val GENERIC_TOP_LIMIT = 8
+        private const val PRIMARY_ALIAS_LOCALE = "ru-ru"
+        private const val NON_PRIMARY_ALIAS_LOCALE_WARN_SHARE = 0.20
     }
 }

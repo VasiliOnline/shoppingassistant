@@ -1,1 +1,229 @@
-[]
+[
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "FOOD.READY_MEALS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "spiciness_level",
+        "allowedValues": [
+          "MILD",
+          "MEDIUM",
+          "HOT"
+        ],
+        "forbiddenValues": [],
+        "reason": "Для готовой еды поддерживаем весь профиль остроты."
+      },
+      {
+        "attributeCode": "allergen_profile",
+        "allowedValues": [
+          "NONE",
+          "CONTAINS_GLUTEN",
+          "CONTAINS_NUTS",
+          "CONTAINS_DAIRY",
+          "CONTAINS_SOY",
+          "CONTAINS_EGGS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Фиксируем допустимые valueCode аллергического профиля."
+      },
+      {
+        "attributeCode": "storage_regime",
+        "allowedValues": [
+          "CHILLED",
+          "FROZEN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Режимы хранения зависят от подкатегории FOOD."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "cuisine_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "JAPANESE"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "fish_type_primary",
+            "allowedValues": [
+              "SALMON",
+              "TUNA",
+              "EEL",
+              "SHRIMP"
+            ],
+            "forbiddenValues": [],
+            "reason": "Ограничиваем типы рыбы для японской кухни в каталоге."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "FOOD.GROCERIES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "form_factor",
+        "allowedValues": [
+          "POWDER",
+          "CAPSULE",
+          "TABLET",
+          "LIQUID"
+        ],
+        "forbiddenValues": [],
+        "reason": "Поддерживаем нормализованные форм-факторы продуктов."
+      },
+      {
+        "attributeCode": "flavor",
+        "allowedValues": [
+          "VANILLA",
+          "CHOCOLATE",
+          "STRAWBERRY",
+          "UNFLAVORED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовые вкусы для бакалеи и смежных товаров."
+      },
+      {
+        "attributeCode": "allergen_profile",
+        "allowedValues": [
+          "NONE",
+          "CONTAINS_GLUTEN",
+          "CONTAINS_NUTS",
+          "CONTAINS_DAIRY",
+          "CONTAINS_SOY",
+          "CONTAINS_EGGS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Фиксируем допустимые valueCode аллергического профиля."
+      },
+      {
+        "attributeCode": "storage_regime",
+        "allowedValues": [
+          "AMBIENT",
+          "CHILLED",
+          "FROZEN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Режимы хранения зависят от подкатегории FOOD."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "FOOD.DRINKS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "form_factor",
+        "allowedValues": [
+          "LIQUID"
+        ],
+        "forbiddenValues": [],
+        "reason": "Категория напитков ограничена жидкой формой."
+      },
+      {
+        "attributeCode": "flavor",
+        "allowedValues": [
+          "VANILLA",
+          "CHOCOLATE",
+          "STRAWBERRY",
+          "UNFLAVORED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Поддерживаем унифицированный набор вкусов в напитках."
+      },
+      {
+        "attributeCode": "allergen_profile",
+        "allowedValues": [
+          "NONE",
+          "CONTAINS_GLUTEN",
+          "CONTAINS_NUTS",
+          "CONTAINS_DAIRY",
+          "CONTAINS_SOY",
+          "CONTAINS_EGGS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Фиксируем допустимые valueCode аллергического профиля."
+      },
+      {
+        "attributeCode": "storage_regime",
+        "allowedValues": [
+          "AMBIENT",
+          "CHILLED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Режимы хранения зависят от подкатегории FOOD."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "FOOD.SNACKS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "spiciness_level",
+        "allowedValues": [
+          "MILD",
+          "MEDIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Для снеков используем мягкий и средний уровни остроты."
+      },
+      {
+        "attributeCode": "flavor",
+        "allowedValues": [
+          "CHOCOLATE",
+          "STRAWBERRY",
+          "UNFLAVORED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовые вкусы для категории снеков."
+      },
+      {
+        "attributeCode": "allergen_profile",
+        "allowedValues": [
+          "NONE",
+          "CONTAINS_GLUTEN",
+          "CONTAINS_NUTS",
+          "CONTAINS_DAIRY",
+          "CONTAINS_SOY",
+          "CONTAINS_EGGS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Фиксируем допустимые valueCode аллергического профиля."
+      },
+      {
+        "attributeCode": "storage_regime",
+        "allowedValues": [
+          "AMBIENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "Режимы хранения зависят от подкатегории FOOD."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  }
+]

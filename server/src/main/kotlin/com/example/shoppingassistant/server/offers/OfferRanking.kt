@@ -2,6 +2,7 @@ package com.example.shoppingassistant.server.offers
 
 import com.example.shoppingassistant.domain.model.OfferFull
 import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.model.asDoubleOrNull
 
 /**
  * Заглушка ранжирования: пока просто пробрасываем список.
@@ -22,6 +23,6 @@ object OfferRanking {
             ?: attributes["distanceKm"]
             ?: attributes["distance"]
             ?: return null
-        return raw.toDoubleOrNull()
+        return raw.asDoubleOrNull()
     }
 }

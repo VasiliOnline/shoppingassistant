@@ -4,6 +4,7 @@ import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstrain
 import com.example.shoppingassistant.domain.facet.FacetCollection
 import com.example.shoppingassistant.domain.facet.FacetDefinition
 import com.example.shoppingassistant.domain.facet.FacetPreset
+import java.util.Locale
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -83,6 +84,22 @@ internal object CatalogSeedLoader {
         )
     }
 
+    val stage40ImmutableSchema: Stage40ImmutableSchemaDocument by lazy {
+        Stage40ContractLoader.loadImmutableSchema()
+    }
+
+    val stage40NormalizationContract: Stage40NormalizationContractDocument by lazy {
+        Stage40ContractLoader.loadNormalizationContract()
+    }
+
+    val stage40DedupKeys: Stage40DedupKeysDocument by lazy {
+        Stage40ContractLoader.loadDedupKeys()
+    }
+
+    val stage40TypedConstraints: Stage40TypedConstraintsDocument by lazy {
+        Stage40ContractLoader.loadTypedConstraints()
+    }
+
     private val stage22Packages: List<Stage22PackageData> by lazy {
         GenericStage22PackageLoader.loadAll()
     }
@@ -104,6 +121,7 @@ internal object CatalogSeedLoader {
         val profileByCode = LinkedHashMap<String, CategoryProfile>()
         validatedStage22Packages
             .flatMap { it.profiles }
+            .map(::enrichProfileSearchRequiredAttributes)
             .forEach { profile ->
                 profileByCode.putIfAbsent(profile.category.code, profile)
             }
@@ -119,6 +137,28 @@ internal object CatalogSeedLoader {
         }
     }
 
+    private fun enrichProfileSearchRequiredAttributes(profile: CategoryProfile): CategoryProfile {
+        if (profile.attributes.isEmpty() || profile.categoryAttributes.isEmpty()) return profile
+
+        val requiredByCategory = profile.categoryAttributes
+            .asSequence()
+            .filter { attribute -> attribute.isRequiredForCategory }
+            .map { attribute -> normalizeAttributeCode(attribute.attributeCode) }
+            .filter { code -> code.isNotEmpty() }
+            .toSet()
+        if (requiredByCategory.isEmpty()) return profile
+
+        val patchedAttributes = profile.attributes.map { attribute ->
+            val normalizedCode = normalizeAttributeCode(attribute.code)
+            if (!attribute.requiredForSearch && normalizedCode in requiredByCategory) {
+                attribute.copy(requiredForSearch = true)
+            } else {
+                attribute
+            }
+        }
+        return profile.copy(attributes = patchedAttributes)
+    }
+
     val constraints: List<CatalogConstraints> by lazy {
         val ordered = buildList {
             addAll(GenericStage22PackageLoader.loadGlobalConstraints())
@@ -130,22 +170,95 @@ internal object CatalogSeedLoader {
     private fun dedupeConstraints(constraints: List<CatalogConstraints>): List<CatalogConstraints> {
         val deduped = LinkedHashMap<String, CatalogConstraints>()
         constraints.forEach { constraint ->
-            val key = buildString {
-                append(constraint.scope.name)
-                append("|")
-                append(constraint.categoryCode.orEmpty())
-                append("|")
-                append(constraint.brand.orEmpty())
-                append("|")
-                append(constraint.model.orEmpty())
-                append("|")
-                append(constraint.attributeConstraints.joinToString { it.attributeCode })
-                append("|")
-                append(constraint.compatibilityRules.size)
-            }
+            val key = constraint.deterministicKey()
             deduped.putIfAbsent(key, constraint)
         }
         return deduped.values.toList()
+    }
+
+    private fun CatalogConstraints.deterministicKey(): String = buildString {
+        append(scope.name)
+        append("|")
+        append(categoryCode?.trim()?.uppercase().orEmpty())
+        append("|")
+        append(brand?.trim()?.lowercase().orEmpty())
+        append("|")
+        append(model?.trim()?.lowercase().orEmpty())
+        append("|")
+        append(effectiveFrom?.trim().orEmpty())
+        append("|")
+        append(effectiveTo?.trim().orEmpty())
+        append("|")
+        append(
+            attributeConstraints
+                .asSequence()
+                .map { rule ->
+                    RuleKey(
+                        attributeCode = rule.attributeCode.trim(),
+                        allowed = rule.allowedValues.map { it.trim() }.filter { it.isNotEmpty() }.sorted(),
+                        forbidden = rule.forbiddenValues.map { it.trim() }.filter { it.isNotEmpty() }.sorted(),
+                        reason = rule.reason?.trim().orEmpty(),
+                    )
+                }
+                .sortedBy { it.sortKey() }
+                .joinToString(";") { key ->
+                    "${key.attributeCode}:${key.allowed.joinToString(",")}!${key.forbidden.joinToString(",")}@${key.reason}"
+                },
+        )
+        append("|")
+        append(
+            compatibilityRules
+                .asSequence()
+                .map { rule ->
+                    val whenKey = rule.whenAll
+                        .asSequence()
+                        .map { condition ->
+                            ConditionKey(
+                                attributeCode = condition.attributeCode.trim(),
+                                op = condition.op.name,
+                                values = condition.values.map { it.trim() }.filter { it.isNotEmpty() }.sorted(),
+                            )
+                        }
+                        .sortedBy { key -> key.sortKey() }
+                        .joinToString(",") { key ->
+                            "${key.attributeCode}:${key.op}:${key.values.joinToString(":")}"
+                        }
+                    val applyKey = rule.apply
+                        .asSequence()
+                        .map { apply ->
+                            RuleKey(
+                                attributeCode = apply.attributeCode.trim(),
+                                allowed = apply.allowedValues.map { it.trim() }.filter { it.isNotEmpty() }.sorted(),
+                                forbidden = apply.forbiddenValues.map { it.trim() }.filter { it.isNotEmpty() }.sorted(),
+                                reason = apply.reason?.trim().orEmpty(),
+                            )
+                        }
+                        .sortedBy { key -> key.sortKey() }
+                        .joinToString(",") { key ->
+                            "${key.attributeCode}:${key.allowed.joinToString(":")}!${key.forbidden.joinToString(":")}@${key.reason}"
+                        }
+                    "$whenKey->$applyKey"
+                }
+                .sorted()
+                .joinToString(";"),
+        )
+    }
+
+    private data class RuleKey(
+        val attributeCode: String,
+        val allowed: List<String>,
+        val forbidden: List<String>,
+        val reason: String,
+    ) {
+        fun sortKey(): String = "$attributeCode|${allowed.joinToString(",")}|${forbidden.joinToString(",")}|$reason"
+    }
+
+    private data class ConditionKey(
+        val attributeCode: String,
+        val op: String,
+        val values: List<String>,
+    ) {
+        fun sortKey(): String = "$attributeCode|$op|${values.joinToString(",")}"
     }
 
     private fun <T> readListOrEmpty(
@@ -160,4 +273,9 @@ internal object CatalogSeedLoader {
             deserializer = ListSerializer(serializer),
         )
     }
+
+    private fun normalizeAttributeCode(rawCode: String): String =
+        rawCode.trim()
+            .lowercase(Locale.ROOT)
+            .replace('ё', 'е')
 }

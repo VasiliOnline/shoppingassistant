@@ -18,7 +18,7 @@ object BrandModelRules {
         return NormalizedQuery(
             brand = brand.trim(),
             model = model.trim(),
-            attributes = Normalization.normalizeAttrs(attrs),
+            attributes = Normalization.normalizeTypedAttrs(attrs),
         )
     }
 

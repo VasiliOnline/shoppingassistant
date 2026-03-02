@@ -6,6 +6,7 @@ import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueCo
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.CompatibilityRule
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -69,6 +70,36 @@ class CatalogConstraintsSelectionTest {
             listOf(ConstraintScope.GLOBAL, ConstraintScope.CATEGORY),
             selected.map { it.scope },
         )
+    }
+
+    @Test
+    fun select_excludes_constraints_outside_effective_window() {
+        val selected = CatalogConstraintsSelection.select(
+            constraints = listOf(
+                CatalogConstraints(
+                    scope = ConstraintScope.GLOBAL,
+                    effectiveFrom = "2099-01-01",
+                ),
+                CatalogConstraints(
+                    scope = ConstraintScope.CATEGORY,
+                    categoryCode = "TECH.PHONES",
+                    effectiveTo = "2020-01-01",
+                ),
+                CatalogConstraints(
+                    scope = ConstraintScope.CATEGORY,
+                    categoryCode = "TECH.PHONES",
+                    effectiveFrom = "2020-01-01",
+                    effectiveTo = "2099-01-01",
+                ),
+            ),
+            categoryCode = "TECH.PHONES",
+            brand = null,
+            model = null,
+            onDate = LocalDate.parse("2026-02-19"),
+        )
+
+        assertEquals(1, selected.size)
+        assertEquals(ConstraintScope.CATEGORY, selected.single().scope)
     }
 
     private fun sampleConstraints(): List<CatalogConstraints> = listOf(

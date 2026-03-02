@@ -14,6 +14,9 @@ import com.example.shoppingassistant.server.di.backendSubscriptionsModule
 import com.example.shoppingassistant.server.di.backendTracksModule
 import com.example.shoppingassistant.server.di.backendUgcModule
 import com.example.shoppingassistant.server.di.backendVisionModule
+import com.example.shoppingassistant.server.offers.Stage4RuntimeBackfillService
+import com.example.shoppingassistant.server.tracks.TrackDedupBackfillService
+import com.example.shoppingassistant.server.tracks.TrackTargetPostMigrationGuardService
 import com.example.shoppingassistant.server.plugins.configureMonitoring
 import com.example.shoppingassistant.server.plugins.configurePriceFetcherEngine
 import com.example.shoppingassistant.server.plugins.configureSubscriptionsEngine
@@ -25,6 +28,7 @@ import com.example.shoppingassistant.server.plugins.configureTrackTop10RefreshEn
 import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import kotlinx.coroutines.runBlocking
 import org.koin.core.context.startKoin
 
 /**
@@ -45,7 +49,7 @@ fun main() {
     //
     // Важно: используем только backend-* модули (репозитории + use-case'ы),
     // без Android-специфичных coreModule/rankModule и DI из app-модуля.
-    startKoin {
+    val koinApp = startKoin {
         modules(
             backendAuthModule,
             backendCatalogModule,
@@ -59,6 +63,46 @@ fun main() {
             backendSubscriptionsModule,
             backendTracksModule,
         )
+    }
+
+    val runStage4Backfill = envFlag("STAGE4_RUNTIME_BACKFILL_ON_STARTUP")
+    val backfillExitAfterRun = envFlag("STAGE4_RUNTIME_BACKFILL_EXIT_AFTER_RUN")
+    if (runStage4Backfill) {
+        val backfillBatchSize = System.getenv("STAGE4_RUNTIME_BACKFILL_BATCH_SIZE")
+            ?.trim()
+            ?.toIntOrNull()
+            ?: 500
+        runBlocking {
+            val service = koinApp.koin.get<Stage4RuntimeBackfillService>()
+            service.runHistoricalBackfill(batchSize = backfillBatchSize)
+        }
+        if (backfillExitAfterRun) {
+            return
+        }
+    }
+
+    val runTrackDedupBackfill = envFlag("TRACK_DEDUP_BACKFILL_ON_STARTUP")
+    val trackDedupBackfillExitAfterRun = envFlag("TRACK_DEDUP_BACKFILL_EXIT_AFTER_RUN")
+    if (runTrackDedupBackfill) {
+        runBlocking {
+            val service = koinApp.koin.get<TrackDedupBackfillService>()
+            service.runBackfill()
+        }
+        if (trackDedupBackfillExitAfterRun) {
+            return
+        }
+    }
+
+    val skipTrackTargetGuards = envFlag("TRACK_TARGET_GUARDS_SKIP")
+    if (!skipTrackTargetGuards) {
+        val guardLimit = System.getenv("TRACK_TARGET_GUARDS_LIMIT")
+            ?.trim()
+            ?.toIntOrNull()
+            ?: 20_000
+        runBlocking {
+            val service = koinApp.koin.get<TrackTargetPostMigrationGuardService>()
+            service.runChecks(limit = guardLimit)
+        }
     }
 
     embeddedServer(
@@ -85,3 +129,6 @@ fun Application.shoppingAssistantModule(config: ServerConfig) {
     configurePriceFetcherEngine()
     configureTrackTop10RefreshEngine()
 }
+
+private fun envFlag(name: String): Boolean =
+    (System.getenv(name) ?: "false").equals("true", ignoreCase = true)

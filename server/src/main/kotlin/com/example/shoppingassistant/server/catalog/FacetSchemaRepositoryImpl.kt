@@ -98,6 +98,8 @@ private fun ResultRow.toFacetDefinition(): FacetDefinition = FacetDefinition(
     appliesToCategoryCodes = this[FacetDefinitionsTable.appliesToCategoryCodes],
     source = runCatching { FacetValueSource.valueOf(this[FacetDefinitionsTable.valueSource]) }
         .getOrDefault(FacetValueSource.OFFER),
+    effectiveFrom = this[FacetDefinitionsTable.effectiveFrom],
+    effectiveTo = this[FacetDefinitionsTable.effectiveTo],
     ui = FacetUiConfig(
         order = this[FacetDefinitionsTable.uiOrder],
         pinned = this[FacetDefinitionsTable.uiPinned],
@@ -111,6 +113,8 @@ private fun ResultRow.toFacetPreset(): FacetPreset = FacetPreset(
     categoryCode = this[FacetPresetsTable.categoryCode],
     titleRu = this[FacetPresetsTable.titleRu],
     order = this[FacetPresetsTable.order],
+    effectiveFrom = this[FacetPresetsTable.effectiveFrom],
+    effectiveTo = this[FacetPresetsTable.effectiveTo],
     rules = this[FacetPresetsTable.rules],
     notes = this[FacetPresetsTable.notes],
 )

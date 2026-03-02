@@ -14,11 +14,18 @@ import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
 import com.example.shoppingassistant.domain.model.OfferSource
 import com.example.shoppingassistant.domain.model.ProductDto
+import com.example.shoppingassistant.domain.model.asTextOrNull
+import com.example.shoppingassistant.domain.model.ValueFacet
+import com.example.shoppingassistant.domain.model.asFloatOrNull
+import java.net.URI
 
 data class SearchOffersWithFacetsResult(
     val items: List<ExplainedItem>,
     val total: Int,
     val brandFacets: List<BrandFacet>,
+    val conditionFacets: List<ValueFacet>,
+    val deliveryChannelFacets: List<ValueFacet>,
+    val attributeFacets: Map<String, List<ValueFacet>> = emptyMap(),
 )
 
 class SearchOffersWithFacetsUseCase(
@@ -38,6 +45,9 @@ class SearchOffersWithFacetsUseCase(
                 items = emptyList(),
                 total = response.total,
                 brandFacets = response.facets.brands,
+                conditionFacets = response.facets.conditions,
+                deliveryChannelFacets = response.facets.deliveryChannels,
+                attributeFacets = response.facets.attributes,
             )
         }
 
@@ -57,6 +67,9 @@ class SearchOffersWithFacetsUseCase(
             items = items,
             total = response.total,
             brandFacets = response.facets.brands,
+            conditionFacets = response.facets.conditions,
+            deliveryChannelFacets = response.facets.deliveryChannels,
+            attributeFacets = response.facets.attributes,
         )
     }
 }
@@ -68,8 +81,10 @@ private fun OfferSearchCriteria.toNormalizedQuery(): NormalizedQuery =
         attributes = attributes,
     )
 
-private fun OfferFull.toProductDto(): ProductDto =
-    ProductDto(
+private fun OfferFull.toProductDto(): ProductDto {
+    val offerOpenUrls = resolveFacetSearchOfferOpenUrls()
+    val externalUrl = offerOpenUrls.externalUrl
+    return ProductDto(
         id = id,
         title = product.title,
         brand = product.brand,
@@ -86,19 +101,70 @@ private fun OfferFull.toProductDto(): ProductDto =
         sellerName = seller.name,
         sellerAvatarUrl = seller.avatarUrl,
         sellerType = null,
-        source = OfferSource.EXPRESS,
-        sourceName = "Express",
-        externalUrl = null,
+        source = if (externalUrl == null) OfferSource.EXPRESS else OfferSource.EXTERNAL,
+        sourceName = sourceNameFromUrl(externalUrl) ?: "Express",
+        externalUrl = externalUrl,
+        redirectUrl = offerOpenUrls.redirectUrl,
+        deeplinkUrl = offerOpenUrls.deeplinkUrl,
         imageUrls = (imageUrls + product.imageUrls).filter { it.isNotBlank() }.distinct(),
         updatedAt = updatedAt ?: product.updatedAt,
         trustScore = null,
         distanceKm = distanceKmOrNull(),
     )
+}
+
+private data class FacetSearchOfferOpenUrls(
+    val externalUrl: String?,
+    val redirectUrl: String?,
+    val deeplinkUrl: String?,
+)
+
+private fun OfferFull.resolveFacetSearchOfferOpenUrls(): FacetSearchOfferOpenUrls {
+    fun pick(keys: List<String>): String? {
+        keys.forEach { key ->
+            val direct = attributes[key]?.asTextOrNull()?.trim()?.takeIf { value -> value.isNotEmpty() }
+                ?: attributes.entries
+                    .firstOrNull { (attrKey, _) -> attrKey.equals(key, ignoreCase = true) }
+                    ?.value
+                    ?.asTextOrNull()
+                    ?.trim()
+                    ?.takeIf { value -> value.isNotEmpty() }
+            if (direct != null) return direct
+        }
+        return null
+    }
+
+    val redirectUrl = pick(listOf("redirect_url", "redirectUrl", "track_url", "trackUrl"))
+    val deeplinkUrl = pick(
+        listOf(
+            "deeplink_url",
+            "deeplinkUrl",
+            "deeplink",
+            "external_url",
+            "externalUrl",
+            "source_url",
+            "sourceUrl",
+            "url",
+        ),
+    )
+    val externalUrl = redirectUrl ?: deeplinkUrl
+
+    return FacetSearchOfferOpenUrls(
+        externalUrl = externalUrl,
+        redirectUrl = redirectUrl,
+        deeplinkUrl = deeplinkUrl,
+    )
+}
+
+private fun sourceNameFromUrl(url: String?): String? {
+    val raw = url?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+    return runCatching { URI(raw).host?.removePrefix("www.") }.getOrNull()
+}
 
 private fun OfferFull.distanceKmOrNull(): Float? {
     val raw = attributes["distance_km"]
         ?: attributes["distanceKm"]
         ?: attributes["distance"]
         ?: return null
-    return raw.toFloatOrNull()
+    return raw.asFloatOrNull()
 }

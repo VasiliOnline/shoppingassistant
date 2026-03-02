@@ -5,11 +5,13 @@ import com.example.shoppingassistant.domain.catalog.CategoryProfile
 import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueConstraint
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.CompatibilityRule
+import com.example.shoppingassistant.domain.facet.FacetCollection
+import com.example.shoppingassistant.domain.facet.FacetDefinition
+import com.example.shoppingassistant.domain.facet.FacetPreset
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -20,54 +22,197 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
  */
 object CatalogSeeder {
     fun seedIfEmpty() {
-        if (CategoriesTable.selectAll().limit(1).empty()) {
-            seedProfiles(CatalogSeed.profiles)
-        }
+        syncProfiles(CatalogSeed.profiles)
         syncConstraints(CatalogSeed.constraints)
+        syncFacetDefinitions(CatalogSeed.facetDefinitions)
+        syncFacetPresets(CatalogSeed.facetPresets)
+        syncFacetCollections(CatalogSeed.facetCollections)
+        syncStage40Contract()
     }
 
-    private fun seedProfiles(profiles: List<CategoryProfile>) {
-        profiles.forEach { profile ->
-            CategoriesTable.insert { stmt ->
-                stmt[code] = profile.category.code
-                stmt[segment] = profile.category.segment.name
-                stmt[title] = profile.category.title
-                stmt[parentCode] = profile.category.parentCode
-                stmt[description] = profile.category.description
-            }
+    private fun syncProfiles(profiles: List<CategoryProfile>) {
+        val normalizedProfiles = profiles
+            .map(::normalizeProfile)
+            .filter { it.category.code.isNotEmpty() }
+            .distinctBy { it.category.code }
+            .sortedBy { it.category.code }
 
-            profile.attributes.forEach { def ->
-                AttributeDefsTable.insertIgnore { stmt ->
+        syncCategories(normalizedProfiles.map { it.category })
+        syncAttributeDefs(normalizedProfiles.flatMap { it.attributes })
+        syncCategoryAttributes(normalizedProfiles.flatMap { it.categoryAttributes })
+        syncAttributeValueDict(normalizedProfiles)
+    }
+
+    private fun syncCategories(categories: List<com.example.shoppingassistant.domain.catalog.Category>) {
+        val seedRows = categories
+            .map { category ->
+                category.copy(
+                    code = category.code.trim(),
+                    title = category.title?.trim()?.takeIf { it.isNotEmpty() },
+                    parentCode = category.parentCode?.trim()?.takeIf { it.isNotEmpty() },
+                    description = category.description?.trim()?.takeIf { it.isNotEmpty() },
+                )
+            }
+            .filter { it.code.isNotEmpty() }
+            .distinctBy { it.code }
+            .sortedBy { it.code }
+
+        val seedCodes = seedRows.map { it.code }.toSet()
+        val existingCodes = CategoriesTable
+            .selectAll()
+            .map { row -> row[CategoriesTable.code] }
+            .toSet()
+
+        val staleCodes = existingCodes - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            CategoriesTable.deleteWhere { CategoriesTable.code inList staleCodes.toList() }
+        }
+
+        seedRows.forEach { category ->
+            val updated = CategoriesTable.update({ CategoriesTable.code eq category.code }) { stmt ->
+                stmt[segment] = category.segment.name
+                stmt[status] = category.status.name
+                stmt[title] = category.title
+                stmt[parentCode] = category.parentCode
+                stmt[description] = category.description
+            }
+            if (updated == 0) {
+                CategoriesTable.insert { stmt ->
+                    stmt[code] = category.code
+                    stmt[segment] = category.segment.name
+                    stmt[status] = category.status.name
+                    stmt[title] = category.title
+                    stmt[parentCode] = category.parentCode
+                    stmt[description] = category.description
+                }
+            }
+        }
+    }
+
+    private fun syncAttributeDefs(attributes: List<com.example.shoppingassistant.domain.catalog.AttributeDef>) {
+        val seedRows = attributes
+            .map { def ->
+                def.copy(
+                    code = def.code.trim(),
+                    title = def.title.trim(),
+                    requiredBy = def.requiredBy?.trim()?.takeIf { it.isNotEmpty() },
+                    valueDictCode = def.valueDictCode?.trim()?.takeIf { it.isNotEmpty() },
+                )
+            }
+            .filter { it.code.isNotEmpty() }
+            .distinctBy { it.code }
+            .sortedBy { it.code }
+
+        val seedCodes = seedRows.map { it.code }.toSet()
+        val existingCodes = AttributeDefsTable
+            .selectAll()
+            .map { row -> row[AttributeDefsTable.code] }
+            .toSet()
+        val staleCodes = existingCodes - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            AttributeDefsTable.deleteWhere { AttributeDefsTable.code inList staleCodes.toList() }
+        }
+
+        seedRows.forEach { def ->
+            val updated = AttributeDefsTable.update({ AttributeDefsTable.code eq def.code }) { stmt ->
+                stmt[title] = def.title
+                stmt[dataType] = def.dataType.name
+                stmt[requiredForSearch] = def.requiredForSearch
+                stmt[requiredForOffer] = def.requiredForOffer
+                stmt[requiredForExpress] = def.requiredForExpress
+                stmt[requiredBy] = def.requiredBy
+                stmt[facetEnabled] = def.facetEnabled
+                stmt[multiValued] = def.multiValued
+                stmt[valueDictCode] = def.valueDictCode
+            }
+            if (updated == 0) {
+                AttributeDefsTable.insert { stmt ->
                     stmt[code] = def.code
                     stmt[title] = def.title
                     stmt[dataType] = def.dataType.name
                     stmt[requiredForSearch] = def.requiredForSearch
                     stmt[requiredForOffer] = def.requiredForOffer
                     stmt[requiredForExpress] = def.requiredForExpress
+                    stmt[requiredBy] = def.requiredBy
                     stmt[facetEnabled] = def.facetEnabled
                     stmt[multiValued] = def.multiValued
                     stmt[valueDictCode] = def.valueDictCode
                 }
             }
+        }
+    }
 
-            CategoryAttributesTable.batchInsert(profile.categoryAttributes) { attr ->
+    private fun syncCategoryAttributes(categoryAttributes: List<com.example.shoppingassistant.domain.catalog.CategoryAttribute>) {
+        val knownCategoryCodes = CategoriesTable
+            .selectAll()
+            .map { row -> row[CategoriesTable.code] }
+            .toSet()
+        val knownAttributeCodes = AttributeDefsTable
+            .selectAll()
+            .map { row -> row[AttributeDefsTable.code] }
+            .toSet()
+
+        val seedRows = categoryAttributes
+            .map { attr ->
+                attr.copy(
+                    categoryCode = attr.categoryCode.trim(),
+                    attributeCode = attr.attributeCode.trim(),
+                )
+            }
+            .filter { it.categoryCode in knownCategoryCodes && it.attributeCode in knownAttributeCodes }
+            .distinctBy { "${it.categoryCode}|${it.attributeCode}" }
+            .sortedWith(compareBy<com.example.shoppingassistant.domain.catalog.CategoryAttribute> { it.categoryCode }.thenBy { it.uiOrder }.thenBy { it.attributeCode })
+
+        CategoryAttributesTable.deleteAll()
+        if (seedRows.isNotEmpty()) {
+            CategoryAttributesTable.batchInsert(seedRows) { attr ->
                 this[CategoryAttributesTable.categoryCode] = attr.categoryCode
                 this[CategoryAttributesTable.attributeCode] = attr.attributeCode
                 this[CategoryAttributesTable.uiOrder] = attr.uiOrder
                 this[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
             }
+        }
+    }
 
-            profile.valueDictionaries
-                .flatMap { dict -> dict.entries.map { entry -> dict.attributeCode to entry } }
-                .distinctBy { pair -> "${pair.first}|${pair.second.canonicalCode}" }
-                .forEach { (attrCode, entry) ->
-                    AttributeValueDictTable.insertIgnore { stmt ->
-                        stmt[AttributeValueDictTable.attributeCode] = attrCode
-                        stmt[AttributeValueDictTable.canonicalCode] = entry.canonicalCode
-                        stmt[AttributeValueDictTable.canonicalValue] = entry.canonicalValue
-                        stmt[AttributeValueDictTable.synonyms] = entry.synonyms
-                    }
+    private fun syncAttributeValueDict(profiles: List<CategoryProfile>) {
+        val knownAttributeCodes = AttributeDefsTable
+            .selectAll()
+            .map { row -> row[AttributeDefsTable.code] }
+            .toSet()
+
+        val seedRows = profiles
+            .flatMap { profile ->
+                profile.valueDictionaries.flatMap { dict ->
+                    dict.entries.map { entry -> dict.attributeCode to entry }
                 }
+            }
+            .mapNotNull { (attributeCode, entry) ->
+                val normalizedAttributeCode = attributeCode.trim()
+                if (normalizedAttributeCode !in knownAttributeCodes) return@mapNotNull null
+                val canonicalCode = entry.canonicalCode.trim()
+                val canonicalValue = entry.canonicalValue.trim()
+                if (canonicalCode.isEmpty() || canonicalValue.isEmpty()) return@mapNotNull null
+                AttributeDictRow(
+                    attributeCode = normalizedAttributeCode,
+                    canonicalCode = canonicalCode,
+                    canonicalValue = canonicalValue,
+                    synonyms = entry.synonyms
+                        .map { synonym -> synonym.trim() }
+                        .filter { synonym -> synonym.isNotEmpty() }
+                        .distinct(),
+                )
+            }
+            .distinctBy { row -> "${row.attributeCode}|${row.canonicalCode}" }
+            .sortedWith(compareBy<AttributeDictRow> { it.attributeCode }.thenBy { it.canonicalCode })
+
+        AttributeValueDictTable.deleteAll()
+        if (seedRows.isNotEmpty()) {
+            AttributeValueDictTable.batchInsert(seedRows) { row ->
+                this[AttributeValueDictTable.attributeCode] = row.attributeCode
+                this[AttributeValueDictTable.canonicalCode] = row.canonicalCode
+                this[AttributeValueDictTable.canonicalValue] = row.canonicalValue
+                this[AttributeValueDictTable.synonyms] = row.synonyms
+            }
         }
     }
 
@@ -91,6 +236,8 @@ object CatalogSeeder {
                         categoryCode = row[CatalogConstraintsTable.categoryCode],
                         brand = row[CatalogConstraintsTable.brand],
                         model = row[CatalogConstraintsTable.model],
+                        effectiveFrom = row[CatalogConstraintsTable.effectiveFrom],
+                        effectiveTo = row[CatalogConstraintsTable.effectiveTo],
                         attributeConstraints = row[CatalogConstraintsTable.attributeConstraints],
                         compatibilityRules = row[CatalogConstraintsTable.compatibilityRules],
                     ),
@@ -133,6 +280,8 @@ object CatalogSeeder {
                     stmt[CatalogConstraintsTable.categoryCode] = seedRow.categoryCode
                     stmt[CatalogConstraintsTable.brand] = seedRow.brand
                     stmt[CatalogConstraintsTable.model] = seedRow.model
+                    stmt[CatalogConstraintsTable.effectiveFrom] = seedRow.effectiveFrom
+                    stmt[CatalogConstraintsTable.effectiveTo] = seedRow.effectiveTo
                     stmt[CatalogConstraintsTable.attributeConstraints] = seedRow.attributeConstraints
                     stmt[CatalogConstraintsTable.compatibilityRules] = seedRow.compatibilityRules
                 }
@@ -145,22 +294,613 @@ object CatalogSeeder {
                 this[CatalogConstraintsTable.categoryCode] = row.categoryCode
                 this[CatalogConstraintsTable.brand] = row.brand
                 this[CatalogConstraintsTable.model] = row.model
+                this[CatalogConstraintsTable.effectiveFrom] = row.effectiveFrom
+                this[CatalogConstraintsTable.effectiveTo] = row.effectiveTo
                 this[CatalogConstraintsTable.attributeConstraints] = row.attributeConstraints
                 this[CatalogConstraintsTable.compatibilityRules] = row.compatibilityRules
             }
         }
     }
 
+    private fun syncFacetDefinitions(definitions: List<FacetDefinition>) {
+        val seedRows = definitions
+            .map { definition ->
+                definition.copy(
+                    facetKey = definition.facetKey.trim(),
+                    titleRu = definition.titleRu.trim(),
+                    effectiveFrom = definition.effectiveFrom?.trim()?.takeIf { it.isNotEmpty() },
+                    effectiveTo = definition.effectiveTo?.trim()?.takeIf { it.isNotEmpty() },
+                    appliesToCategoryCodes = definition.appliesToCategoryCodes
+                        .map { it.trim() }
+                        .filter { it.isNotEmpty() }
+                        .distinct(),
+                )
+            }
+            .filter { it.facetKey.isNotEmpty() }
+            .distinctBy { it.facetKey }
+            .sortedBy { it.facetKey }
+
+        val seedKeys = seedRows.map { it.facetKey }.toSet()
+        val existingRows = FacetDefinitionsTable.selectAll().map { row ->
+            ExistingFacetDefinitionRow(
+                facetKey = row[FacetDefinitionsTable.facetKey],
+                payload = FacetDefinition(
+                    facetKey = row[FacetDefinitionsTable.facetKey],
+                    titleRu = row[FacetDefinitionsTable.titleRu],
+                    valueType = com.example.shoppingassistant.domain.facet.FacetDataType.valueOf(row[FacetDefinitionsTable.valueType]),
+                    appliesToCategoryCodes = row[FacetDefinitionsTable.appliesToCategoryCodes],
+                    source = com.example.shoppingassistant.domain.facet.FacetValueSource.valueOf(row[FacetDefinitionsTable.valueSource]),
+                    effectiveFrom = row[FacetDefinitionsTable.effectiveFrom],
+                    effectiveTo = row[FacetDefinitionsTable.effectiveTo],
+                    ui = com.example.shoppingassistant.domain.facet.FacetUiConfig(
+                        order = row[FacetDefinitionsTable.uiOrder],
+                        pinned = row[FacetDefinitionsTable.uiPinned],
+                        hidden = row[FacetDefinitionsTable.uiHidden],
+                        format = row[FacetDefinitionsTable.uiFormat],
+                    ),
+                ),
+            )
+        }.associateBy { it.facetKey }
+
+        val staleKeys = existingRows.keys - seedKeys
+        if (staleKeys.isNotEmpty()) {
+            FacetDefinitionsTable.deleteWhere { FacetDefinitionsTable.facetKey inList staleKeys.toList() }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.facetKey]?.payload
+            if (existing == null) {
+                FacetDefinitionsTable.insert { stmt ->
+                    stmt[FacetDefinitionsTable.facetKey] = seed.facetKey
+                    stmt[FacetDefinitionsTable.titleRu] = seed.titleRu
+                    stmt[FacetDefinitionsTable.valueType] = seed.valueType.name
+                    stmt[FacetDefinitionsTable.valueSource] = seed.source.name
+                    stmt[FacetDefinitionsTable.effectiveFrom] = seed.effectiveFrom
+                    stmt[FacetDefinitionsTable.effectiveTo] = seed.effectiveTo
+                    stmt[FacetDefinitionsTable.appliesToCategoryCodes] = seed.appliesToCategoryCodes
+                    stmt[FacetDefinitionsTable.uiOrder] = seed.ui.order
+                    stmt[FacetDefinitionsTable.uiPinned] = seed.ui.pinned
+                    stmt[FacetDefinitionsTable.uiHidden] = seed.ui.hidden
+                    stmt[FacetDefinitionsTable.uiFormat] = seed.ui.format
+                }
+            } else if (existing != seed) {
+                FacetDefinitionsTable.update({ FacetDefinitionsTable.facetKey eq seed.facetKey }) { stmt ->
+                    stmt[FacetDefinitionsTable.titleRu] = seed.titleRu
+                    stmt[FacetDefinitionsTable.valueType] = seed.valueType.name
+                    stmt[FacetDefinitionsTable.valueSource] = seed.source.name
+                    stmt[FacetDefinitionsTable.effectiveFrom] = seed.effectiveFrom
+                    stmt[FacetDefinitionsTable.effectiveTo] = seed.effectiveTo
+                    stmt[FacetDefinitionsTable.appliesToCategoryCodes] = seed.appliesToCategoryCodes
+                    stmt[FacetDefinitionsTable.uiOrder] = seed.ui.order
+                    stmt[FacetDefinitionsTable.uiPinned] = seed.ui.pinned
+                    stmt[FacetDefinitionsTable.uiHidden] = seed.ui.hidden
+                    stmt[FacetDefinitionsTable.uiFormat] = seed.ui.format
+                }
+            }
+        }
+    }
+
+    private fun syncFacetPresets(presets: List<FacetPreset>) {
+        val seedRows = presets
+            .map { preset ->
+                preset.copy(
+                    presetCode = preset.presetCode.trim(),
+                    categoryCode = preset.categoryCode.trim(),
+                    titleRu = preset.titleRu.trim(),
+                    effectiveFrom = preset.effectiveFrom?.trim()?.takeIf { it.isNotEmpty() },
+                    effectiveTo = preset.effectiveTo?.trim()?.takeIf { it.isNotEmpty() },
+                )
+            }
+            .filter { it.presetCode.isNotEmpty() && it.categoryCode.isNotEmpty() }
+            .distinctBy { it.presetCode }
+            .sortedBy { it.presetCode }
+
+        val seedCodes = seedRows.map { it.presetCode }.toSet()
+        val existingRows = FacetPresetsTable.selectAll().map { row ->
+            ExistingFacetPresetRow(
+                presetCode = row[FacetPresetsTable.presetCode],
+                payload = FacetPreset(
+                    presetCode = row[FacetPresetsTable.presetCode],
+                    categoryCode = row[FacetPresetsTable.categoryCode],
+                    titleRu = row[FacetPresetsTable.titleRu],
+                    order = row[FacetPresetsTable.order],
+                    effectiveFrom = row[FacetPresetsTable.effectiveFrom],
+                    effectiveTo = row[FacetPresetsTable.effectiveTo],
+                    rules = row[FacetPresetsTable.rules],
+                    notes = row[FacetPresetsTable.notes],
+                ),
+            )
+        }.associateBy { it.presetCode }
+
+        val staleCodes = existingRows.keys - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            FacetPresetsTable.deleteWhere { FacetPresetsTable.presetCode inList staleCodes.toList() }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.presetCode]?.payload
+            if (existing == null) {
+                FacetPresetsTable.insert { stmt ->
+                    stmt[FacetPresetsTable.presetCode] = seed.presetCode
+                    stmt[FacetPresetsTable.categoryCode] = seed.categoryCode
+                    stmt[FacetPresetsTable.titleRu] = seed.titleRu
+                    stmt[FacetPresetsTable.order] = seed.order
+                    stmt[FacetPresetsTable.effectiveFrom] = seed.effectiveFrom
+                    stmt[FacetPresetsTable.effectiveTo] = seed.effectiveTo
+                    stmt[FacetPresetsTable.rules] = seed.rules
+                    stmt[FacetPresetsTable.notes] = seed.notes
+                }
+            } else if (existing != seed) {
+                FacetPresetsTable.update({ FacetPresetsTable.presetCode eq seed.presetCode }) { stmt ->
+                    stmt[FacetPresetsTable.categoryCode] = seed.categoryCode
+                    stmt[FacetPresetsTable.titleRu] = seed.titleRu
+                    stmt[FacetPresetsTable.order] = seed.order
+                    stmt[FacetPresetsTable.effectiveFrom] = seed.effectiveFrom
+                    stmt[FacetPresetsTable.effectiveTo] = seed.effectiveTo
+                    stmt[FacetPresetsTable.rules] = seed.rules
+                    stmt[FacetPresetsTable.notes] = seed.notes
+                }
+            }
+        }
+    }
+
+    private fun syncFacetCollections(collections: List<FacetCollection>) {
+        val seedRows = collections
+            .map { collection ->
+                collection.copy(
+                    collectionCode = collection.collectionCode.trim(),
+                    categoryCode = collection.categoryCode.trim(),
+                    titleRu = collection.titleRu.trim(),
+                    browseCode = collection.browseCode?.trim()?.takeIf { it.isNotEmpty() },
+                    presetCode = collection.presetCode?.trim()?.takeIf { it.isNotEmpty() },
+                    tags = collection.tags.map { it.trim() }.filter { it.isNotEmpty() }.distinct(),
+                )
+            }
+            .filter { it.collectionCode.isNotEmpty() && it.categoryCode.isNotEmpty() }
+            .distinctBy { it.collectionCode }
+            .sortedBy { it.collectionCode }
+
+        val seedCodes = seedRows.map { it.collectionCode }.toSet()
+        val existingRows = FacetCollectionsTable.selectAll().map { row ->
+            ExistingFacetCollectionRow(
+                collectionCode = row[FacetCollectionsTable.collectionCode],
+                payload = FacetCollection(
+                    collectionCode = row[FacetCollectionsTable.collectionCode],
+                    categoryCode = row[FacetCollectionsTable.categoryCode],
+                    titleRu = row[FacetCollectionsTable.titleRu],
+                    browseCode = row[FacetCollectionsTable.browseCode],
+                    presetCode = row[FacetCollectionsTable.presetCode],
+                    order = row[FacetCollectionsTable.order],
+                    tags = row[FacetCollectionsTable.tags],
+                    notes = row[FacetCollectionsTable.notes],
+                ),
+            )
+        }.associateBy { it.collectionCode }
+
+        val staleCodes = existingRows.keys - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            FacetCollectionsTable.deleteWhere { FacetCollectionsTable.collectionCode inList staleCodes.toList() }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.collectionCode]?.payload
+            if (existing == null) {
+                FacetCollectionsTable.insert { stmt ->
+                    stmt[FacetCollectionsTable.collectionCode] = seed.collectionCode
+                    stmt[FacetCollectionsTable.categoryCode] = seed.categoryCode
+                    stmt[FacetCollectionsTable.titleRu] = seed.titleRu
+                    stmt[FacetCollectionsTable.browseCode] = seed.browseCode
+                    stmt[FacetCollectionsTable.presetCode] = seed.presetCode
+                    stmt[FacetCollectionsTable.order] = seed.order
+                    stmt[FacetCollectionsTable.tags] = seed.tags
+                    stmt[FacetCollectionsTable.notes] = seed.notes
+                }
+            } else if (existing != seed) {
+                FacetCollectionsTable.update({ FacetCollectionsTable.collectionCode eq seed.collectionCode }) { stmt ->
+                    stmt[FacetCollectionsTable.categoryCode] = seed.categoryCode
+                    stmt[FacetCollectionsTable.titleRu] = seed.titleRu
+                    stmt[FacetCollectionsTable.browseCode] = seed.browseCode
+                    stmt[FacetCollectionsTable.presetCode] = seed.presetCode
+                    stmt[FacetCollectionsTable.order] = seed.order
+                    stmt[FacetCollectionsTable.tags] = seed.tags
+                    stmt[FacetCollectionsTable.notes] = seed.notes
+                }
+            }
+        }
+    }
+
+    private fun syncStage40Contract() {
+        val immutableDoc = CatalogSeed.stage40ImmutableSchema
+        val normalizationDoc = CatalogSeed.stage40NormalizationContract
+        val dedupDoc = CatalogSeed.stage40DedupKeys
+        val typedConstraintsDoc = CatalogSeed.stage40TypedConstraints
+
+        syncStage40Meta(immutableDoc)
+        syncStage40ImmutableAttributes(immutableDoc.attributes)
+        syncStage40NormalizationRules(normalizationDoc.rules)
+        syncStage40DedupTemplates(dedupDoc.templates)
+        syncStage40TypedConstraints(typedConstraintsDoc.constraints)
+    }
+
+    private fun syncStage40Meta(
+        immutableDoc: com.example.shoppingassistant.domain.catalog.Stage40ImmutableSchemaDocument,
+    ) {
+        val stage = immutableDoc.stage.trim()
+        if (stage.isEmpty()) return
+
+        val seed = Stage40MetaPayload(
+            stage = stage,
+            schemaVersion = immutableDoc.schemaVersion.trim(),
+            stage22DataVersion = immutableDoc.generatedFrom.stage22DataVersion.trim(),
+            stage22SchemaVersion = immutableDoc.generatedFrom.stage22SchemaVersion.trim(),
+            stage22GeneratedAt = immutableDoc.generatedFrom.stage22GeneratedAt.trim(),
+            stage3Version = immutableDoc.generatedFrom.stage3Version.trim(),
+        )
+
+        val existingRows = CatalogStage4ContractMetaTable.selectAll().map { row ->
+            Stage40MetaPayload(
+                stage = row[CatalogStage4ContractMetaTable.stage],
+                schemaVersion = row[CatalogStage4ContractMetaTable.schemaVersion],
+                stage22DataVersion = row[CatalogStage4ContractMetaTable.stage22DataVersion],
+                stage22SchemaVersion = row[CatalogStage4ContractMetaTable.stage22SchemaVersion],
+                stage22GeneratedAt = row[CatalogStage4ContractMetaTable.stage22GeneratedAt],
+                stage3Version = row[CatalogStage4ContractMetaTable.stage3Version],
+            )
+        }.associateBy { it.stage }
+
+        val staleStages = existingRows.keys - setOf(seed.stage)
+        if (staleStages.isNotEmpty()) {
+            CatalogStage4ContractMetaTable.deleteWhere { CatalogStage4ContractMetaTable.stage inList staleStages.toList() }
+        }
+
+        val existing = existingRows[seed.stage]
+        if (existing == null) {
+            CatalogStage4ContractMetaTable.insert { stmt ->
+                stmt[CatalogStage4ContractMetaTable.stage] = seed.stage
+                stmt[CatalogStage4ContractMetaTable.schemaVersion] = seed.schemaVersion
+                stmt[CatalogStage4ContractMetaTable.stage22DataVersion] = seed.stage22DataVersion
+                stmt[CatalogStage4ContractMetaTable.stage22SchemaVersion] = seed.stage22SchemaVersion
+                stmt[CatalogStage4ContractMetaTable.stage22GeneratedAt] = seed.stage22GeneratedAt
+                stmt[CatalogStage4ContractMetaTable.stage3Version] = seed.stage3Version
+                stmt[CatalogStage4ContractMetaTable.updatedAt] = System.currentTimeMillis()
+            }
+        } else if (existing != seed) {
+            CatalogStage4ContractMetaTable.update({ CatalogStage4ContractMetaTable.stage eq seed.stage }) { stmt ->
+                stmt[CatalogStage4ContractMetaTable.schemaVersion] = seed.schemaVersion
+                stmt[CatalogStage4ContractMetaTable.stage22DataVersion] = seed.stage22DataVersion
+                stmt[CatalogStage4ContractMetaTable.stage22SchemaVersion] = seed.stage22SchemaVersion
+                stmt[CatalogStage4ContractMetaTable.stage22GeneratedAt] = seed.stage22GeneratedAt
+                stmt[CatalogStage4ContractMetaTable.stage3Version] = seed.stage3Version
+                stmt[CatalogStage4ContractMetaTable.updatedAt] = System.currentTimeMillis()
+            }
+        }
+    }
+
+    private fun syncStage40ImmutableAttributes(
+        attributes: List<com.example.shoppingassistant.domain.catalog.Stage40ImmutableAttribute>,
+    ) {
+        val seedRows = attributes
+            .map { attribute ->
+                Stage40ImmutableAttributePayload(
+                    attributeCode = attribute.attributeCode.trim(),
+                    valueType = attribute.valueType.name,
+                    valueSetType = attribute.valueSetType.name,
+                    unit = attribute.unit?.trim()?.takeIf { it.isNotEmpty() },
+                    isIdentity = attribute.isIdentity,
+                    isFacet = attribute.isFacet,
+                    normalization = attribute.normalization?.trim()?.takeIf { it.isNotEmpty() },
+                    dictionaryRequired = attribute.dictionaryRequired,
+                    immutableFingerprint = attribute.immutableFingerprint.trim(),
+                )
+            }
+            .filter { it.attributeCode.isNotEmpty() }
+            .distinctBy { it.attributeCode }
+            .sortedBy { it.attributeCode }
+
+        val seedCodes = seedRows.map { it.attributeCode }.toSet()
+        val existingRows = CatalogStage4ImmutableAttributesTable.selectAll().map { row ->
+            Stage40ImmutableAttributePayload(
+                attributeCode = row[CatalogStage4ImmutableAttributesTable.attributeCode],
+                valueType = row[CatalogStage4ImmutableAttributesTable.valueType],
+                valueSetType = row[CatalogStage4ImmutableAttributesTable.valueSetType],
+                unit = row[CatalogStage4ImmutableAttributesTable.unit],
+                isIdentity = row[CatalogStage4ImmutableAttributesTable.isIdentity],
+                isFacet = row[CatalogStage4ImmutableAttributesTable.isFacet],
+                normalization = row[CatalogStage4ImmutableAttributesTable.normalization],
+                dictionaryRequired = row[CatalogStage4ImmutableAttributesTable.dictionaryRequired],
+                immutableFingerprint = row[CatalogStage4ImmutableAttributesTable.immutableFingerprint],
+            )
+        }.associateBy { it.attributeCode }
+
+        val staleCodes = existingRows.keys - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            CatalogStage4ImmutableAttributesTable.deleteWhere {
+                CatalogStage4ImmutableAttributesTable.attributeCode inList staleCodes.toList()
+            }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.attributeCode]
+            if (existing == null) {
+                CatalogStage4ImmutableAttributesTable.insert { stmt ->
+                    stmt[CatalogStage4ImmutableAttributesTable.attributeCode] = seed.attributeCode
+                    stmt[CatalogStage4ImmutableAttributesTable.valueType] = seed.valueType
+                    stmt[CatalogStage4ImmutableAttributesTable.valueSetType] = seed.valueSetType
+                    stmt[CatalogStage4ImmutableAttributesTable.unit] = seed.unit
+                    stmt[CatalogStage4ImmutableAttributesTable.isIdentity] = seed.isIdentity
+                    stmt[CatalogStage4ImmutableAttributesTable.isFacet] = seed.isFacet
+                    stmt[CatalogStage4ImmutableAttributesTable.normalization] = seed.normalization
+                    stmt[CatalogStage4ImmutableAttributesTable.dictionaryRequired] = seed.dictionaryRequired
+                    stmt[CatalogStage4ImmutableAttributesTable.immutableFingerprint] = seed.immutableFingerprint
+                }
+            } else if (existing != seed) {
+                CatalogStage4ImmutableAttributesTable.update({
+                    CatalogStage4ImmutableAttributesTable.attributeCode eq seed.attributeCode
+                }) { stmt ->
+                    stmt[CatalogStage4ImmutableAttributesTable.valueType] = seed.valueType
+                    stmt[CatalogStage4ImmutableAttributesTable.valueSetType] = seed.valueSetType
+                    stmt[CatalogStage4ImmutableAttributesTable.unit] = seed.unit
+                    stmt[CatalogStage4ImmutableAttributesTable.isIdentity] = seed.isIdentity
+                    stmt[CatalogStage4ImmutableAttributesTable.isFacet] = seed.isFacet
+                    stmt[CatalogStage4ImmutableAttributesTable.normalization] = seed.normalization
+                    stmt[CatalogStage4ImmutableAttributesTable.dictionaryRequired] = seed.dictionaryRequired
+                    stmt[CatalogStage4ImmutableAttributesTable.immutableFingerprint] = seed.immutableFingerprint
+                }
+            }
+        }
+    }
+
+    private fun syncStage40NormalizationRules(
+        rules: List<com.example.shoppingassistant.domain.catalog.Stage40NormalizationRule>,
+    ) {
+        val seedRows = rules
+            .map { rule ->
+                Stage40NormalizationRulePayload(
+                    attributeCode = rule.attributeCode.trim(),
+                    normalization = rule.normalization.trim(),
+                    valueSetType = rule.valueSetType.name,
+                    dictionaryBacked = rule.dictionaryBacked,
+                    acceptsFreeText = rule.acceptsFreeText,
+                    canonicalSource = rule.canonicalSource.trim(),
+                    dedupTokenMode = rule.dedupTokenMode.name,
+                )
+            }
+            .filter { it.attributeCode.isNotEmpty() }
+            .distinctBy { it.attributeCode }
+            .sortedBy { it.attributeCode }
+
+        val seedCodes = seedRows.map { it.attributeCode }.toSet()
+        val existingRows = CatalogStage4NormalizationRulesTable.selectAll().map { row ->
+            Stage40NormalizationRulePayload(
+                attributeCode = row[CatalogStage4NormalizationRulesTable.attributeCode],
+                normalization = row[CatalogStage4NormalizationRulesTable.normalization],
+                valueSetType = row[CatalogStage4NormalizationRulesTable.valueSetType],
+                dictionaryBacked = row[CatalogStage4NormalizationRulesTable.dictionaryBacked],
+                acceptsFreeText = row[CatalogStage4NormalizationRulesTable.acceptsFreeText],
+                canonicalSource = row[CatalogStage4NormalizationRulesTable.canonicalSource],
+                dedupTokenMode = row[CatalogStage4NormalizationRulesTable.dedupTokenMode],
+            )
+        }.associateBy { it.attributeCode }
+
+        val staleCodes = existingRows.keys - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            CatalogStage4NormalizationRulesTable.deleteWhere {
+                CatalogStage4NormalizationRulesTable.attributeCode inList staleCodes.toList()
+            }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.attributeCode]
+            if (existing == null) {
+                CatalogStage4NormalizationRulesTable.insert { stmt ->
+                    stmt[CatalogStage4NormalizationRulesTable.attributeCode] = seed.attributeCode
+                    stmt[CatalogStage4NormalizationRulesTable.normalization] = seed.normalization
+                    stmt[CatalogStage4NormalizationRulesTable.valueSetType] = seed.valueSetType
+                    stmt[CatalogStage4NormalizationRulesTable.dictionaryBacked] = seed.dictionaryBacked
+                    stmt[CatalogStage4NormalizationRulesTable.acceptsFreeText] = seed.acceptsFreeText
+                    stmt[CatalogStage4NormalizationRulesTable.canonicalSource] = seed.canonicalSource
+                    stmt[CatalogStage4NormalizationRulesTable.dedupTokenMode] = seed.dedupTokenMode
+                }
+            } else if (existing != seed) {
+                CatalogStage4NormalizationRulesTable.update({
+                    CatalogStage4NormalizationRulesTable.attributeCode eq seed.attributeCode
+                }) { stmt ->
+                    stmt[CatalogStage4NormalizationRulesTable.normalization] = seed.normalization
+                    stmt[CatalogStage4NormalizationRulesTable.valueSetType] = seed.valueSetType
+                    stmt[CatalogStage4NormalizationRulesTable.dictionaryBacked] = seed.dictionaryBacked
+                    stmt[CatalogStage4NormalizationRulesTable.acceptsFreeText] = seed.acceptsFreeText
+                    stmt[CatalogStage4NormalizationRulesTable.canonicalSource] = seed.canonicalSource
+                    stmt[CatalogStage4NormalizationRulesTable.dedupTokenMode] = seed.dedupTokenMode
+                }
+            }
+        }
+    }
+
+    private fun syncStage40DedupTemplates(
+        templates: List<com.example.shoppingassistant.domain.catalog.Stage40DedupTemplate>,
+    ) {
+        val seedRows = templates
+            .map { template ->
+                Stage40DedupTemplatePayload(
+                    entity = template.entity.name,
+                    templateExpr = template.template.trim(),
+                    fields = template.fields
+                        .map { field -> field.trim() }
+                        .filter { field -> field.isNotEmpty() },
+                    description = template.description.trim(),
+                )
+            }
+            .filter { it.entity.isNotEmpty() && it.templateExpr.isNotEmpty() }
+            .distinctBy { it.entity }
+            .sortedBy { it.entity }
+
+        val seedEntities = seedRows.map { it.entity }.toSet()
+        val existingRows = CatalogStage4DedupTemplatesTable.selectAll().map { row ->
+            Stage40DedupTemplatePayload(
+                entity = row[CatalogStage4DedupTemplatesTable.entity],
+                templateExpr = row[CatalogStage4DedupTemplatesTable.templateExpr],
+                fields = row[CatalogStage4DedupTemplatesTable.fieldNames],
+                description = row[CatalogStage4DedupTemplatesTable.description],
+            )
+        }.associateBy { it.entity }
+
+        val staleEntities = existingRows.keys - seedEntities
+        if (staleEntities.isNotEmpty()) {
+            CatalogStage4DedupTemplatesTable.deleteWhere {
+                CatalogStage4DedupTemplatesTable.entity inList staleEntities.toList()
+            }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.entity]
+            if (existing == null) {
+                CatalogStage4DedupTemplatesTable.insert { stmt ->
+                    stmt[CatalogStage4DedupTemplatesTable.entity] = seed.entity
+                    stmt[CatalogStage4DedupTemplatesTable.templateExpr] = seed.templateExpr
+                    stmt[CatalogStage4DedupTemplatesTable.fieldNames] = seed.fields
+                    stmt[CatalogStage4DedupTemplatesTable.description] = seed.description
+                }
+            } else if (existing != seed) {
+                CatalogStage4DedupTemplatesTable.update({
+                    CatalogStage4DedupTemplatesTable.entity eq seed.entity
+                }) { stmt ->
+                    stmt[CatalogStage4DedupTemplatesTable.templateExpr] = seed.templateExpr
+                    stmt[CatalogStage4DedupTemplatesTable.fieldNames] = seed.fields
+                    stmt[CatalogStage4DedupTemplatesTable.description] = seed.description
+                }
+            }
+        }
+    }
+
+    private fun syncStage40TypedConstraints(
+        constraints: List<com.example.shoppingassistant.domain.catalog.Stage40TypedConstraint>,
+    ) {
+        val seedRows = constraints
+            .mapNotNull { constraint ->
+                val attributeCode = constraint.attributeCode.trim()
+                if (attributeCode.isEmpty()) return@mapNotNull null
+                Stage40TypedConstraintPayload(
+                    attributeCode = attributeCode,
+                    valueType = constraint.valueType.name,
+                    enumOnly = constraint.enumOnly,
+                    expectedUnit = constraint.unit?.trim()?.takeIf { it.isNotEmpty() },
+                    regexPattern = constraint.regex?.trim()?.takeIf { it.isNotEmpty() },
+                    minValue = constraint.minValue,
+                    maxValue = constraint.maxValue,
+                    requiredIf = normalizeStage40RequiredIfRules(constraint.requiredIf),
+                )
+            }
+            .distinctBy { it.attributeCode }
+            .sortedBy { it.attributeCode }
+
+        val seedCodes = seedRows.map { it.attributeCode }.toSet()
+        val existingRows = CatalogStage4TypedConstraintsTable.selectAll().map { row ->
+            Stage40TypedConstraintPayload(
+                attributeCode = row[CatalogStage4TypedConstraintsTable.attributeCode],
+                valueType = row[CatalogStage4TypedConstraintsTable.valueType],
+                enumOnly = row[CatalogStage4TypedConstraintsTable.enumOnly],
+                expectedUnit = row[CatalogStage4TypedConstraintsTable.expectedUnit],
+                regexPattern = row[CatalogStage4TypedConstraintsTable.regexPattern],
+                minValue = row[CatalogStage4TypedConstraintsTable.minValue],
+                maxValue = row[CatalogStage4TypedConstraintsTable.maxValue],
+                requiredIf = normalizeStage40RequiredIfRules(
+                    row[CatalogStage4TypedConstraintsTable.requiredIf],
+                ),
+            )
+        }.associateBy { it.attributeCode }
+
+        val staleCodes = existingRows.keys - seedCodes
+        if (staleCodes.isNotEmpty()) {
+            CatalogStage4TypedConstraintsTable.deleteWhere {
+                CatalogStage4TypedConstraintsTable.attributeCode inList staleCodes.toList()
+            }
+        }
+
+        seedRows.forEach { seed ->
+            val existing = existingRows[seed.attributeCode]
+            if (existing == null) {
+                CatalogStage4TypedConstraintsTable.insert { stmt ->
+                    stmt[CatalogStage4TypedConstraintsTable.attributeCode] = seed.attributeCode
+                    stmt[CatalogStage4TypedConstraintsTable.valueType] = seed.valueType
+                    stmt[CatalogStage4TypedConstraintsTable.enumOnly] = seed.enumOnly
+                    stmt[CatalogStage4TypedConstraintsTable.expectedUnit] = seed.expectedUnit
+                    stmt[CatalogStage4TypedConstraintsTable.regexPattern] = seed.regexPattern
+                    stmt[CatalogStage4TypedConstraintsTable.minValue] = seed.minValue
+                    stmt[CatalogStage4TypedConstraintsTable.maxValue] = seed.maxValue
+                    stmt[CatalogStage4TypedConstraintsTable.requiredIf] = seed.requiredIf
+                    stmt[CatalogStage4TypedConstraintsTable.updatedAt] = System.currentTimeMillis()
+                }
+            } else if (existing != seed) {
+                CatalogStage4TypedConstraintsTable.update({
+                    CatalogStage4TypedConstraintsTable.attributeCode eq seed.attributeCode
+                }) { stmt ->
+                    stmt[CatalogStage4TypedConstraintsTable.valueType] = seed.valueType
+                    stmt[CatalogStage4TypedConstraintsTable.enumOnly] = seed.enumOnly
+                    stmt[CatalogStage4TypedConstraintsTable.expectedUnit] = seed.expectedUnit
+                    stmt[CatalogStage4TypedConstraintsTable.regexPattern] = seed.regexPattern
+                    stmt[CatalogStage4TypedConstraintsTable.minValue] = seed.minValue
+                    stmt[CatalogStage4TypedConstraintsTable.maxValue] = seed.maxValue
+                    stmt[CatalogStage4TypedConstraintsTable.requiredIf] = seed.requiredIf
+                    stmt[CatalogStage4TypedConstraintsTable.updatedAt] = System.currentTimeMillis()
+                }
+            }
+        }
+    }
+
+    private fun normalizeStage40RequiredIfRules(
+        rules: List<com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule>,
+    ): List<com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule> =
+        rules
+            .mapNotNull { rule ->
+                val categoryCode = rule.categoryCode.trim().uppercase()
+                if (categoryCode.isEmpty()) return@mapNotNull null
+                val whenAll = rule.whenAll
+                    .mapNotNull { condition ->
+                        val attributeCode = condition.attributeCode.trim()
+                        val values = condition.values
+                            .map { value -> value.trim() }
+                            .filter { value -> value.isNotEmpty() }
+                        if (attributeCode.isEmpty() || values.isEmpty()) {
+                            null
+                        } else {
+                            com.example.shoppingassistant.domain.catalog.Stage40RequiredIfCondition(
+                                attributeCode = attributeCode,
+                                op = condition.op,
+                                values = values,
+                            )
+                        }
+                    }
+                    .sortedWith(
+                        compareBy<com.example.shoppingassistant.domain.catalog.Stage40RequiredIfCondition> { it.attributeCode }
+                            .thenBy { it.op.name }
+                            .thenBy { it.values.joinToString("|") },
+                    )
+                if (whenAll.isEmpty()) return@mapNotNull null
+                com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule(
+                    categoryCode = categoryCode,
+                    whenAll = whenAll,
+                )
+            }
+            .distinct()
+            .sortedWith(
+                compareBy<com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule> { it.categoryCode }
+                    .thenBy { it.whenAll.joinToString("|") { c -> "${c.attributeCode}:${c.op}:${c.values.joinToString(",")}" } },
+            )
+
     private fun normalizeConstraintRow(constraint: CatalogConstraints): ConstraintPayload {
         val scope = constraint.scope.name
         val categoryCode = constraint.categoryCode?.trim()?.takeIf { it.isNotEmpty() }?.uppercase()
         val brand = constraint.brand?.trim()?.takeIf { it.isNotEmpty() }
         val model = constraint.model?.trim()?.takeIf { it.isNotEmpty() }
+        val effectiveFrom = constraint.effectiveFrom?.trim()?.takeIf { it.isNotEmpty() }
+        val effectiveTo = constraint.effectiveTo?.trim()?.takeIf { it.isNotEmpty() }
         return ConstraintPayload(
             scope = scope,
             categoryCode = categoryCode,
             brand = brand,
             model = model,
+            effectiveFrom = effectiveFrom,
+            effectiveTo = effectiveTo,
             attributeConstraints = constraint.attributeConstraints,
             compatibilityRules = constraint.compatibilityRules,
         )
@@ -171,11 +911,84 @@ object CatalogSeeder {
         val payload: ConstraintPayload,
     )
 
+    private data class ExistingFacetDefinitionRow(
+        val facetKey: String,
+        val payload: FacetDefinition,
+    )
+
+    private data class ExistingFacetPresetRow(
+        val presetCode: String,
+        val payload: FacetPreset,
+    )
+
+    private data class ExistingFacetCollectionRow(
+        val collectionCode: String,
+        val payload: FacetCollection,
+    )
+
+    private data class AttributeDictRow(
+        val attributeCode: String,
+        val canonicalCode: String,
+        val canonicalValue: String,
+        val synonyms: List<String>,
+    )
+
+    private data class Stage40MetaPayload(
+        val stage: String,
+        val schemaVersion: String,
+        val stage22DataVersion: String,
+        val stage22SchemaVersion: String,
+        val stage22GeneratedAt: String,
+        val stage3Version: String,
+    )
+
+    private data class Stage40ImmutableAttributePayload(
+        val attributeCode: String,
+        val valueType: String,
+        val valueSetType: String,
+        val unit: String?,
+        val isIdentity: Boolean,
+        val isFacet: Boolean,
+        val normalization: String?,
+        val dictionaryRequired: Boolean,
+        val immutableFingerprint: String,
+    )
+
+    private data class Stage40NormalizationRulePayload(
+        val attributeCode: String,
+        val normalization: String,
+        val valueSetType: String,
+        val dictionaryBacked: Boolean,
+        val acceptsFreeText: Boolean,
+        val canonicalSource: String,
+        val dedupTokenMode: String,
+    )
+
+    private data class Stage40DedupTemplatePayload(
+        val entity: String,
+        val templateExpr: String,
+        val fields: List<String>,
+        val description: String,
+    )
+
+    private data class Stage40TypedConstraintPayload(
+        val attributeCode: String,
+        val valueType: String,
+        val enumOnly: Boolean,
+        val expectedUnit: String?,
+        val regexPattern: String?,
+        val minValue: Double?,
+        val maxValue: Double?,
+        val requiredIf: List<com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule>,
+    )
+
     private data class ConstraintPayload(
         val scope: String,
         val categoryCode: String?,
         val brand: String?,
         val model: String?,
+        val effectiveFrom: String?,
+        val effectiveTo: String?,
         val attributeConstraints: List<AttributeValueConstraint>,
         val compatibilityRules: List<CompatibilityRule>,
     ) {
@@ -187,6 +1000,55 @@ object CatalogSeeder {
             append(brand?.lowercase().orEmpty())
             append("|")
             append(model?.lowercase().orEmpty())
+            append("|")
+            append(effectiveFrom.orEmpty())
+            append("|")
+            append(effectiveTo.orEmpty())
         }
+    }
+
+    private fun normalizeProfile(profile: CategoryProfile): CategoryProfile {
+        val normalizedCategory = profile.category.copy(
+            code = profile.category.code.trim(),
+            title = profile.category.title?.trim()?.takeIf { it.isNotEmpty() },
+            parentCode = profile.category.parentCode?.trim()?.takeIf { it.isNotEmpty() },
+            description = profile.category.description?.trim()?.takeIf { it.isNotEmpty() },
+        )
+        val normalizedAttributes = profile.attributes.map { attribute ->
+            attribute.copy(
+                code = attribute.code.trim(),
+                title = attribute.title.trim(),
+                valueDictCode = attribute.valueDictCode?.trim()?.takeIf { it.isNotEmpty() },
+            )
+        }
+        val normalizedCategoryAttributes = profile.categoryAttributes.map { categoryAttribute ->
+            categoryAttribute.copy(
+                categoryCode = categoryAttribute.categoryCode.trim(),
+                attributeCode = categoryAttribute.attributeCode.trim(),
+            )
+        }
+        val normalizedDicts = profile.valueDictionaries.map { dictionary ->
+            dictionary.copy(
+                attributeCode = dictionary.attributeCode.trim(),
+                code = dictionary.code?.trim()?.takeIf { it.isNotEmpty() },
+                entries = dictionary.entries.map { entry ->
+                    entry.copy(
+                        canonicalCode = entry.canonicalCode.trim(),
+                        canonicalValue = entry.canonicalValue.trim(),
+                        synonyms = entry.synonyms
+                            .map { synonym -> synonym.trim() }
+                            .filter { synonym -> synonym.isNotEmpty() }
+                            .distinct(),
+                    )
+                },
+            )
+        }
+
+        return profile.copy(
+            category = normalizedCategory,
+            attributes = normalizedAttributes,
+            categoryAttributes = normalizedCategoryAttributes,
+            valueDictionaries = normalizedDicts,
+        )
     }
 }

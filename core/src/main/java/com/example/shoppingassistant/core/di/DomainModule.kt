@@ -9,6 +9,7 @@ import com.example.shoppingassistant.core.usecase.CreateOfferPriceAlertUseCase
 import com.example.shoppingassistant.core.usecase.GetTop3FromCandidatesUseCase
 import com.example.shoppingassistant.core.usecase.SearchOffersUseCase
 import com.example.shoppingassistant.core.usecase.SearchOffersWithFacetsUseCase
+import com.example.shoppingassistant.core.usecase.TrackPresetObservabilityEventsUseCase
 import com.example.shoppingassistant.domain.auth.ChangePasswordUseCase
 import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
 import com.example.shoppingassistant.domain.auth.LoginUserUseCase
@@ -67,6 +68,7 @@ val domainModule = module {
     single { GetTop3FromCandidatesUseCase(get()) }
     single { SearchOffersUseCase(get(), get(), get()) }
     single { SearchOffersWithFacetsUseCase(get(), get(), get()) }
+    single { TrackPresetObservabilityEventsUseCase(get(), get()) }
     single { CreateOfferPriceAlertUseCase(get(), get()) }
 
     single { RegisterUserUseCase(get()) }

@@ -36,7 +36,6 @@ interface TracksRemoteDataSource {
 data class TrackCreateRequest(
     val type: TrackType,
     val target: TrackTarget,
-    val categoryCode: String? = null,
     val filters: TrackFilters = TrackFilters(),
     val title: String? = null,
 )
@@ -51,9 +50,7 @@ data class TrackUpdateRequest(
 @Serializable
 data class TrackTargetUpdateRequest(
     val type: TrackType,
-    val matchKey: String? = null,
-    val categoryCode: String? = null,
-    val attributes: Map<String, String> = emptyMap(),
+    val target: TrackTarget,
     val title: String? = null,
 )
 

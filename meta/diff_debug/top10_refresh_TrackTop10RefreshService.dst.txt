@@ -2,7 +2,6 @@ package com.example.shoppingassistant.server.tracks.top10.refresh
 
 import com.example.shoppingassistant.domain.tracks.Track
 import com.example.shoppingassistant.domain.tracks.TrackFilters
-import com.example.shoppingassistant.domain.tracks.TrackTarget
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.server.tracks.TracksRepository
 import com.example.shoppingassistant.server.tracks.top10.TrackTop10SnapshotRepository
@@ -32,9 +31,11 @@ class TrackTop10RefreshService(
             trackId = trackId,
             userId = userId,
             type = type,
-            target = target,
+            matchKey = target.spec?.matchKey ?: target.matchKey,
+            categoryCode = target.spec?.categoryCode ?: target.categoryCode ?: categoryCode,
+            targetAttributes = target.spec?.attributes ?: target.attributes.ifEmpty { filters.extra },
             filters = filters,
-            title = title,
+            userCountry = null,
             failCount = 0,
         )
     }

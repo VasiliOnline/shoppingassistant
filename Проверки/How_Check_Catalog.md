@@ -9,6 +9,7 @@
 Где смотреть
 
 SQL: catalog_model_backlog.sql
+SQL (Stage 4 drift): catalog_stage4_contract_checks.sql
 SLA и процесс: PROD_BACKLOG_LOOP.md
 Миграции и parity: MIGRATION_PARITY_RUNBOOK.md
 Наблюдаемость пресетов: PRESET_OBSERVABILITY_RUNBOOK.md
@@ -17,6 +18,10 @@ SLA и процесс: PROD_BACKLOG_LOOP.md
 psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PASSWORD sslmode=require" \
   -f server/src/main/resources/db/checks/catalog_model_backlog.sql \
   -o "catalog_backlog_prod_$(date +%F).txt"
+
+psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PASSWORD sslmode=require" \
+  -f server/src/main/resources/db/checks/catalog_stage4_contract_checks.sql \
+  -o "catalog_stage4_contract_checks_prod_$(date +%F).txt"
 Как читать отчет
 
 ZERO_RESULTS
@@ -31,6 +36,11 @@ NORMALIZATION_CONFLICT
 Сигнал: значение не совпало со словарем (canonical/synonyms).
 SLA: +7 дней.
 
+STAGE4_CONTRACT_DRIFT
+Сигнал: дрейф между текущей моделью Stage2/Stage3 в БД и Stage4 runtime-контрактом.
+SLA: +1 день.
+Критично: любой `stage4_*_mismatch_count`/`stage4_*_missing_*_count`/`stage4_*_extra_*_count` > 0.
+
 Как формировать задачи автоматически (Jira/Linear)
 
 Для каждой строки результата строишь уникальный ключ:
@@ -41,6 +51,7 @@ issue_type|category_code|issue_key
 Приоритет ставишь по типу и объему:
 ZERO_RESULTS с большим issue_count -> High
 UNKNOWN_ATTRIBUTE/NORMALIZATION_CONFLICT -> Medium/High по объему
+STAGE4_CONTRACT_DRIFT -> High/Critical
 Минимальные поля задачи
 
 Title: [Catalog][ZERO_RESULTS] FOOD.DRINKS | no-items
@@ -115,9 +126,24 @@ $env:PROD_DB_CONN="host=<prod-host> port=5432 dbname=<db> user=<user> password=<
 Скрипт выполняет:
 
 1) `V13__catalog_preset_observability.sql`
-2) `catalog_migration_parity_postcheck.sql`
-3) `catalog_preset_observability_checks.sql`
-4) `catalog_preset_monthly_report.sql`
+2) `V14__catalog_preset_observability_hardening.sql`
+3) `V15__catalog_stage4_contract.sql`
+4) `V16__catalog_stage4_runtime_execution.sql`
+5) `catalog_migration_parity_postcheck.sql`
+6) `catalog_preset_observability_checks.sql`
+7) `catalog_preset_monthly_report.sql`
+8) `catalog_stage4_contract_checks.sql`
+
+---
+
+Runtime-backfill исторических данных через Stage 4:
+
+```powershell
+$env:STAGE4_RUNTIME_BACKFILL_ON_STARTUP="true"
+$env:STAGE4_RUNTIME_BACKFILL_EXIT_AFTER_RUN="true"
+$env:STAGE4_RUNTIME_BACKFILL_BATCH_SIZE="500"
+./gradlew :server:run
+```
 
 ---
 

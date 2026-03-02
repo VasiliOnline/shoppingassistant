@@ -28,6 +28,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "allergen_profile",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Аллергены",
+        "en": "allergen profile"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "base_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -63,6 +76,32 @@
       "labels": {
         "ru": "Бренд",
         "en": "brand"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "calories_kcal_per_serving",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "kcal",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Калории на порцию (ккал)",
+        "en": "calories kcal per serving"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "carbs_per_serving_gram",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "g",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Углеводы на порцию (г)",
+        "en": "carbs per serving gram"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -210,6 +249,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "expiration_date",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Годен до",
+        "en": "expiration date"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "fat_per_serving_gram",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "g",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Жиры на порцию (г)",
+        "en": "fat per serving gram"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "fish_type_primary",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -323,6 +388,19 @@
       "labels": {
         "ru": "Комплектация",
         "en": "included accessories"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "ingredient_list",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Состав (ингредиенты)",
+        "en": "ingredient list"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -592,7 +670,7 @@
       "valueSetType": "OPEN",
       "unit": null,
       "isIdentity": false,
-      "isFacet": false,
+      "isFacet": true,
       "labels": {
         "ru": "Белка за порцию (г)",
         "en": "protein per serving gram"
@@ -717,6 +795,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "shelf_life_days",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "day",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Срок годности (дней)",
+        "en": "shelf life days"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "size_eu",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -778,6 +869,45 @@
       "labels": {
         "ru": "Накопитель (ГБ)",
         "en": "storage gb"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "storage_regime",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Режим хранения",
+        "en": "storage regime"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "storage_temp_max_c",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "C",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Температура хранения до (C)",
+        "en": "storage temp max c"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "storage_temp_min_c",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "C",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Температура хранения от (C)",
+        "en": "storage temp min c"
       },
       "normalization": "stage22.query_normalizer_v1"
     },

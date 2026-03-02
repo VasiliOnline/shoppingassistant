@@ -54,6 +54,7 @@ fun Route.offerTrackingRoutes() {
                     message = com.example.shoppingassistant.domain.offers.RefreshTrackedOfferResult(
                         status = RefreshTrackedOfferStatus.INVALID_INPUT,
                         message = "offerId must be numeric",
+                        reasonCodes = listOf("OFFER_ID_NOT_NUMERIC"),
                     ),
                 )
                 return@put

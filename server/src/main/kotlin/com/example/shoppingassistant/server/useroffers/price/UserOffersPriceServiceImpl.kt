@@ -8,6 +8,7 @@ import com.example.shoppingassistant.domain.useroffers.UserOfferPriceUpdateReque
 import com.example.shoppingassistant.domain.useroffers.UserOfferPriceUpdateResult
 import com.example.shoppingassistant.domain.useroffers.UserOfferStatus
 import com.example.shoppingassistant.domain.useroffers.UserOfferSummary
+import com.example.shoppingassistant.domain.model.Money
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import com.example.shoppingassistant.server.offers.OfferPriceHistoryTable
 import com.example.shoppingassistant.server.offers.OfferSourcesTable
@@ -15,7 +16,6 @@ import com.example.shoppingassistant.server.offers.OffersTable
 import com.example.shoppingassistant.server.offers.ProductsTable
 import java.net.URI
 import java.util.Locale
-import kotlin.math.roundToLong
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.andWhere
@@ -98,7 +98,7 @@ class UserOffersPriceServiceImpl : UserOffersPriceService {
             )
 
         val currency = normalizeCurrency(request.currency) ?: existing[OffersTable.currency]
-        if (currency.length != CURRENCY_CODE_LENGTH) {
+        if (normalizeCurrency(currency) == null) {
             return invalid(request.offerId, "Currency code must be ISO-4217")
         }
 
@@ -150,13 +150,12 @@ class UserOffersPriceServiceImpl : UserOffersPriceService {
     private fun priceMajorToCents(priceMajor: Double): Long? {
         if (!priceMajor.isFinite()) return null
         if (priceMajor <= 0.0) return null
-        if (priceMajor > MAX_PRICE_MAJOR) return null
-        val cents = (priceMajor * PRICE_SCALE).roundToLong()
-        return cents.takeIf { it >= MIN_PRICE_CENTS }
+        val money = Money.fromMajorOrNull(priceMajor) ?: return null
+        return money.minor.takeIf { it >= MIN_PRICE_CENTS }
     }
 
     private fun normalizeCurrency(raw: String?): String? =
-        raw?.trim()?.uppercase()?.takeIf { it.isNotEmpty() }
+        Money.normalizeCurrencyCode(raw)
 
     private fun ResultRow.toSummary(): UserOfferSummary {
         val offerIdLong = this[OffersTable.id]
@@ -251,7 +250,7 @@ class UserOffersPriceServiceImpl : UserOffersPriceService {
         return "$scheme://${host.removePrefix("www.")}/favicon.ico"
     }
 
-    private fun Long.toMajor(): Double = this.toDouble() / PRICE_SCALE
+    private fun Long.toMajor(): Double = Money(this).toMajor()
 
     private fun String.toUserOfferStatus(): UserOfferStatus =
         runCatching { UserOfferStatus.valueOf(this) }.getOrDefault(UserOfferStatus.ACTIVE)
@@ -262,10 +261,7 @@ class UserOffersPriceServiceImpl : UserOffersPriceService {
     )
 
     private companion object {
-        const val PRICE_SCALE = 100.0
-        const val CURRENCY_CODE_LENGTH = 3
         const val MIN_PRICE_CENTS = 1L
         const val PRICE_HISTORY_SOURCE = "user_update"
-        const val MAX_PRICE_MAJOR = Long.MAX_VALUE / PRICE_SCALE
     }
 }

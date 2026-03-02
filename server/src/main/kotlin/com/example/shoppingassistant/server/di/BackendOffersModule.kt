@@ -1,7 +1,15 @@
 package com.example.shoppingassistant.server.di
 
 import com.example.shoppingassistant.domain.model.OfferRepository
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepository
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepositoryImpl
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayer
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayerImpl
 import com.example.shoppingassistant.server.offers.OfferRepositoryImpl
+import com.example.shoppingassistant.server.offers.PresetObservabilityRepository
+import com.example.shoppingassistant.server.offers.PresetObservabilityRepositoryImpl
+import com.example.shoppingassistant.server.offers.Stage4RuntimeBackfillService
+import com.example.shoppingassistant.server.offers.Stage4RuntimeBackfillServiceImpl
 import com.example.shoppingassistant.domain.offers.TrackedOfferRepository
 import com.example.shoppingassistant.server.offers.TrackedOfferRepositoryImpl
 import com.example.shoppingassistant.server.useroffers.UserOffersBackendRepository
@@ -13,9 +21,13 @@ import com.example.shoppingassistant.server.useroffers.price.UserOffersPriceServ
 import org.koin.dsl.module
 
 val backendOffersModule = module {
-    single<OfferRepository> { OfferRepositoryImpl(get()) }
-    single<TrackedOfferRepository> { TrackedOfferRepositoryImpl(get(), get()) }
+    single<Stage4ExecutionLayer> { Stage4ExecutionLayerImpl() }
+    single<Stage4ExecutionObservabilityRepository> { Stage4ExecutionObservabilityRepositoryImpl() }
+    single<OfferRepository> { OfferRepositoryImpl(get(), get()) }
+    single<PresetObservabilityRepository> { PresetObservabilityRepositoryImpl(get(), get()) }
+    single<TrackedOfferRepository> { TrackedOfferRepositoryImpl(get(), get(), get(), get()) }
+    single<Stage4RuntimeBackfillService> { Stage4RuntimeBackfillServiceImpl(get(), get()) }
     single<UserOffersBackendRepository> { UserOffersRepositoryImpl() }
-    single<UserOffersActionsService> { UserOffersActionsServiceImpl() }
+    single<UserOffersActionsService> { UserOffersActionsServiceImpl(get(), get()) }
     single<UserOffersPriceService> { UserOffersPriceServiceImpl() }
 }

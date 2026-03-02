@@ -22,7 +22,7 @@ object GptApi {
             NormalizedQuery(
                 brand = input.trim(),
                 model = "",
-                attributes = Normalization.normalizeAttrs(attrs)
+                attributes = Normalization.normalizeTypedAttrs(attrs)
             )
         }
     }

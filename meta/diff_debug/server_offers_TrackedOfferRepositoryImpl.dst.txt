@@ -9,15 +9,22 @@ import com.example.shoppingassistant.domain.offers.RefreshTrackedOfferResult
 import com.example.shoppingassistant.domain.offers.RefreshTrackedOfferStatus
 import com.example.shoppingassistant.domain.ingest.SourceRegistry
 import com.example.shoppingassistant.domain.ingest.UrlNormalizer
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionMetricSample
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepository
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepositoryImpl
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionStream
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayer
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import java.math.BigDecimal
 import java.math.RoundingMode
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
+import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.andWhere
+import org.slf4j.LoggerFactory
 
 /**
  * Репозиторий создания отслеживаемых офферов в Postgres (Exposed).
@@ -26,14 +33,18 @@ import org.jetbrains.exposed.sql.andWhere
 class TrackedOfferRepositoryImpl(
     private val urlNormalizer: UrlNormalizer,
     private val sourceRegistry: SourceRegistry,
+    private val stage4ExecutionLayer: Stage4ExecutionLayer,
+    private val stage4ExecutionObservabilityRepository: Stage4ExecutionObservabilityRepository =
+        Stage4ExecutionObservabilityRepositoryImpl(),
 ) : TrackedOfferRepository {
 
     override suspend fun createTrackedOffer(request: TrackedOfferInput): CreateTrackedOfferResult =
         DatabaseFactory.dbQuery {
-            validate(request)?.let { msg ->
+            validate(request)?.let { issue ->
                 return@dbQuery CreateTrackedOfferResult(
                     status = CreateTrackedOfferStatus.INVALID_INPUT,
-                    message = msg,
+                    message = issue.message,
+                    reasonCodes = listOf(issue.code),
                 )
             }
 
@@ -41,6 +52,7 @@ class TrackedOfferRepositoryImpl(
                 ?: return@dbQuery CreateTrackedOfferResult(
                     status = CreateTrackedOfferStatus.INVALID_INPUT,
                     message = "userId must be numeric",
+                    reasonCodes = listOf("USER_ID_NOT_NUMERIC"),
                 )
 
             val normalizedSource = urlNormalizer.normalize(request.source.url)
@@ -77,6 +89,7 @@ class TrackedOfferRepositoryImpl(
                     existingOfferId = existingOfferId,
                     offerId = existingOfferId,
                     message = "Offer already exists for this user and URL",
+                    reasonCodes = listOf("ALREADY_EXISTS"),
                 )
             }
 
@@ -85,14 +98,45 @@ class TrackedOfferRepositoryImpl(
             val priceCents = toMinorUnits(request.priceValue)
 
             // Собираем характеристики (primaryAttribute кладём как отдельный ключ, если есть).
-            val attrs = buildMap<String, String> {
+            val rawAttrs = buildMap<String, String> {
                 putAll(request.attributes.filterValues { it.isNotBlank() })
                 request.primaryAttribute?.let { put("primary_attribute", it) }
             }
+            val normalizationOutcome = stage4ExecutionLayer.normalizeAttributesForIngestStrict(
+                categoryCode = request.category.name,
+                attributes = rawAttrs,
+            )
+            val attrs = normalizationOutcome.normalizedAttributes
+            val typedAttrs = stage4ExecutionLayer.toTypedAttributes(attrs)
             val condition = normalizeCondition(attrs["condition"])
             val deliveryChannel = normalizeDeliveryChannel(
                 attrs["delivery_channel"] ?: attrs["delivery"]
             )
+
+            stage4ExecutionObservabilityRepository.recordInTransaction(
+                Stage4ExecutionMetricSample(
+                    stream = Stage4ExecutionStream.OFFERS_INGEST,
+                    normalizedCount = normalizationOutcome.normalizedCount,
+                    droppedCount = normalizationOutcome.droppedCount,
+                    logicalDedupCount = normalizationOutcome.logicalDedupCount,
+                    unknownAttributeCount = normalizationOutcome.unknownAttributeCount,
+                    reasonCodes = normalizationOutcome.reasonCodes,
+                    metadata = mapOf(
+                        "operation" to "create",
+                        "categoryCode" to request.category.name,
+                    ),
+                    createdAtMs = now,
+                ),
+            )
+            if (normalizationOutcome.reasonCodes.isNotEmpty()) {
+                logger.info(
+                    "stage4.ingest.validation operation=create userId={} category={} reasons={}",
+                    userId,
+                    request.category.name,
+                    normalizationOutcome.reasonCodes.joinToString(","),
+                )
+            }
+
             val brand = request.brand?.trim()?.ifBlank { null }
             val model = request.model?.trim()?.ifBlank { null }
             val images = request.imageUrls.filter { it.isNotBlank() }
@@ -103,13 +147,14 @@ class TrackedOfferRepositoryImpl(
                 stmt[ProductsTable.model] = model
                 stmt[ProductsTable.titleNorm] = request.title
                 stmt[ProductsTable.imageUrls] = images
-                stmt[ProductsTable.specs] = if (attrs.isNotEmpty()) attrs else null
+                stmt[ProductsTable.specs] = if (typedAttrs.isNotEmpty()) typedAttrs else null
                 stmt[ProductsTable.description] = request.description
                 stmt[ProductsTable.updatedAt] = now
             }.resultedValues?.single()?.get(ProductsTable.id)
                 ?: return@dbQuery CreateTrackedOfferResult(
                     status = CreateTrackedOfferStatus.INVALID_INPUT,
                     message = "Failed to insert product",
+                    reasonCodes = listOf("PRODUCT_INSERT_FAILED"),
                 )
 
             val offerId = OffersTable.insert { stmt ->
@@ -117,7 +162,7 @@ class TrackedOfferRepositoryImpl(
                 stmt[OffersTable.userId] = userId
                 stmt[OffersTable.priceCents] = priceCents
                 stmt[OffersTable.currency] = currency
-                stmt[OffersTable.attributes] = if (attrs.isNotEmpty()) attrs else null
+                stmt[OffersTable.attributes] = if (typedAttrs.isNotEmpty()) typedAttrs else null
                 stmt[OffersTable.description] = request.description
                 stmt[OffersTable.imageUrls] = images
                 stmt[OffersTable.condition] = condition
@@ -128,6 +173,7 @@ class TrackedOfferRepositoryImpl(
                 ?: return@dbQuery CreateTrackedOfferResult(
                     status = CreateTrackedOfferStatus.INVALID_INPUT,
                     message = "Failed to insert offer",
+                    reasonCodes = listOf("OFFER_INSERT_FAILED"),
                 )
 
             val registryEntry = sourceRegistry.findBySourceType(request.source.sourceType)
@@ -160,6 +206,7 @@ class TrackedOfferRepositoryImpl(
                 status = CreateTrackedOfferStatus.CREATED,
                 offerId = offerId.toString(),
                 message = "Created",
+                reasonCodes = normalizationOutcome.reasonCodes,
             )
         }
 
@@ -169,6 +216,7 @@ class TrackedOfferRepositoryImpl(
                 ?: return@dbQuery RefreshTrackedOfferResult(
                     status = RefreshTrackedOfferStatus.INVALID_INPUT,
                     message = "offerId must be numeric",
+                    reasonCodes = listOf("OFFER_ID_NOT_NUMERIC"),
                 )
 
             val price = request.priceValue
@@ -177,39 +225,80 @@ class TrackedOfferRepositoryImpl(
                 return@dbQuery RefreshTrackedOfferResult(
                     status = RefreshTrackedOfferStatus.INVALID_INPUT,
                     message = "Invalid price or currency",
+                    reasonCodes = listOf("PRICE_OR_CURRENCY_INVALID"),
                 )
             }
             val existing = run {
-                val q = OffersTable.selectAll()
+                val q = OffersTable
+                    .innerJoin(ProductsTable, { OffersTable.productId }, { ProductsTable.id })
+                    .selectAll()
                 q.andWhere { OffersTable.id eq offerId }
                 q.limit(1).singleOrNull()
             }
                 ?: return@dbQuery RefreshTrackedOfferResult(
                     status = RefreshTrackedOfferStatus.NOT_FOUND,
                     message = "Offer not found",
+                    reasonCodes = listOf("OFFER_NOT_FOUND"),
                 )
 
-            val newAttrs = request.attributes.filterValues { it.isNotBlank() }
-            val currentAttrs = existing[OffersTable.attributes]
-            val merged = if (newAttrs.isNotEmpty()) {
-                (currentAttrs ?: emptyMap()) + newAttrs
+            val currentAttrs = stage4ExecutionLayer.toRawStringAttributes(
+                existing[OffersTable.attributes].orEmpty(),
+            )
+            val mergedRaw = if (request.attributes.isNotEmpty()) {
+                currentAttrs + request.attributes.filterValues { it.isNotBlank() }
             } else {
                 currentAttrs
             }
-            val condition = normalizeCondition(merged?.get("condition"))
+            val normalizationOutcome = stage4ExecutionLayer.normalizeAttributesForIngestStrict(
+                categoryCode = existing[ProductsTable.category],
+                attributes = mergedRaw,
+            )
+            val merged = normalizationOutcome.normalizedAttributes
+            val mergedTyped = stage4ExecutionLayer.toTypedAttributes(merged)
+            val condition = normalizeCondition(merged["condition"])
                 ?: existing[OffersTable.condition]
             val deliveryChannel = normalizeDeliveryChannel(
-                merged?.get("delivery_channel") ?: merged?.get("delivery")
+                merged["delivery_channel"] ?: merged["delivery"]
             ) ?: existing[OffersTable.deliveryChannel]
 
+            stage4ExecutionObservabilityRepository.recordInTransaction(
+                Stage4ExecutionMetricSample(
+                    stream = Stage4ExecutionStream.OFFERS_INGEST,
+                    normalizedCount = normalizationOutcome.normalizedCount,
+                    droppedCount = normalizationOutcome.droppedCount,
+                    logicalDedupCount = normalizationOutcome.logicalDedupCount,
+                    unknownAttributeCount = normalizationOutcome.unknownAttributeCount,
+                    reasonCodes = normalizationOutcome.reasonCodes,
+                    metadata = mapOf(
+                        "operation" to "refresh",
+                        "offerId" to offerId.toString(),
+                        "categoryCode" to existing[ProductsTable.category],
+                    ),
+                ),
+            )
+            if (normalizationOutcome.reasonCodes.isNotEmpty()) {
+                logger.info(
+                    "stage4.ingest.validation operation=refresh offerId={} category={} reasons={}",
+                    offerId,
+                    existing[ProductsTable.category],
+                    normalizationOutcome.reasonCodes.joinToString(","),
+                )
+            }
+
             val priceCents = toMinorUnits(price)
+            val updatedAtMs = System.currentTimeMillis()
             OffersTable.update({ OffersTable.id eq offerId }) { stmt ->
                 stmt[OffersTable.priceCents] = priceCents
                 stmt[OffersTable.currency] = currency.uppercase()
-                stmt[OffersTable.attributes] = merged
+                stmt[OffersTable.attributes] = mergedTyped.ifEmpty { null }
                 stmt[OffersTable.condition] = condition
                 stmt[OffersTable.deliveryChannel] = deliveryChannel
-                stmt[OffersTable.updatedAt] = System.currentTimeMillis()
+                stmt[OffersTable.updatedAt] = updatedAtMs
+            }
+
+            ProductsTable.update({ ProductsTable.id eq existing[OffersTable.productId] }) { stmt ->
+                stmt[ProductsTable.specs] = mergedTyped.ifEmpty { null }
+                stmt[ProductsTable.updatedAt] = updatedAtMs
             }
 
             OfferPriceHistoryTable.insert { stmt ->
@@ -223,24 +312,41 @@ class TrackedOfferRepositoryImpl(
             RefreshTrackedOfferResult(
                 status = RefreshTrackedOfferStatus.UPDATED,
                 message = "Updated",
+                reasonCodes = normalizationOutcome.reasonCodes,
             )
         }
 
-    private fun validate(request: TrackedOfferInput): String? {
+    private fun validate(request: TrackedOfferInput): ValidationIssue? {
         val title = request.title.trim()
-        if (title.length !in 3..160) return "Title length must be 3..160"
-        if (request.category.name.isBlank()) return "Category is required"
+        if (title.length !in 3..160) {
+            return ValidationIssue("TITLE_LENGTH_INVALID", "Title length must be 3..160")
+        }
+        if (request.category.name.isBlank()) {
+            return ValidationIssue("CATEGORY_REQUIRED", "Category is required")
+        }
         val brand = request.brand?.trim()
-        if (brand != null && brand.length > 120) return "Brand is too long"
+        if (brand != null && brand.length > 120) {
+            return ValidationIssue("BRAND_TOO_LONG", "Brand is too long")
+        }
         val model = request.model
-        if (model != null && model.length > 160) return "Model is too long"
+        if (model != null && model.length > 160) {
+            return ValidationIssue("MODEL_TOO_LONG", "Model is too long")
+        }
         val price = request.priceValue
-        if (price.isNaN() || price <= 0) return "Price must be greater than zero"
+        if (price.isNaN() || price <= 0) {
+            return ValidationIssue("PRICE_INVALID", "Price must be greater than zero")
+        }
         val currency = request.currency.trim()
-        if (currency.length != 3) return "Currency must be ISO-4217 code"
-        if (request.imageUrls.none { it.isNotBlank() }) return "At least one imageUrl is required"
+        if (currency.length != 3) {
+            return ValidationIssue("CURRENCY_INVALID", "Currency must be ISO-4217 code")
+        }
+        if (request.imageUrls.none { it.isNotBlank() }) {
+            return ValidationIssue("IMAGE_URL_REQUIRED", "At least one imageUrl is required")
+        }
         val url = request.source.url.trim()
-        if (url.isEmpty()) return "Source URL is required"
+        if (url.isEmpty()) {
+            return ValidationIssue("SOURCE_URL_REQUIRED", "Source URL is required")
+        }
         return null
     }
 
@@ -250,8 +356,7 @@ class TrackedOfferRepositoryImpl(
             .longValueExact()
 
     private fun normalizeCondition(value: String?): String? {
-        val trimmed = value?.trim()?.lowercase().orEmpty()
-        return trimmed.takeIf { it.isNotBlank() }
+        return normalizeOfferCondition(value)
     }
 
     private fun normalizeDeliveryChannel(value: String?): String? {
@@ -260,5 +365,14 @@ class TrackedOfferRepositoryImpl(
             "delivery", "pickup", "meeting" -> trimmed
             else -> null
         }
+    }
+
+    private data class ValidationIssue(
+        val code: String,
+        val message: String,
+    )
+
+    private companion object {
+        private val logger = LoggerFactory.getLogger(TrackedOfferRepositoryImpl::class.java)
     }
 }

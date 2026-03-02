@@ -55,6 +55,7 @@ import com.example.shoppingassistant.domain.tracks.TrackFilterKey
 import com.example.shoppingassistant.domain.tracks.TrackFilterOption
 import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackRepository
+import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackTargetUpdateInput
 import com.example.shoppingassistant.domain.tracks.TrackTargetUpdateResult
 import com.example.shoppingassistant.domain.tracks.TrackType
@@ -361,9 +362,18 @@ fun TrackEditPage(
                             trackId = trackId,
                             input = TrackTargetUpdateInput(
                                 type = saveResult.draft.type,
-                                categoryCode = saveResult.draft.categoryCode,
-                                matchKey = saveResult.draft.matchKeyOrNull(),
-                                attributes = saveResult.draft.attributes,
+                                targetSpec = TrackTargetSpec(
+                                    categoryCode = saveResult.draft.categoryCode,
+                                    attributes = saveResult.draft.attributes,
+                                    attributesMulti = saveResult.draft.attributesMulti,
+                                    attributesRange = saveResult.draft.attributesRange,
+                                    matchKey = saveResult.draft.matchKeyOrNull(),
+                                    queryText = saveResult.draft.queryText,
+                                    schemaVersion = saveResult.draft.schemaVersion,
+                                    taxonomyVersion = saveResult.draft.taxonomyVersion,
+                                    locale = saveResult.draft.locale,
+                                    unboundTokens = saveResult.draft.unboundTokens,
+                                ),
                                 title = saveResult.title,
                             ),
                         )
@@ -718,7 +728,8 @@ private fun sheetTitle(sheet: SheetOptionsState): String {
 }
 
 private fun Track.toTargetDraft(): TrackTargetDraft {
-    val (brand, model) = TrackMatchKeyFactory.parse(target.matchKey) ?: ("" to "")
+    val resolvedMatchKey = target.spec?.matchKey
+    val (brand, model) = TrackMatchKeyFactory.parse(resolvedMatchKey) ?: ("" to "")
     val normalizedType = when (type) {
         TrackType.CATEGORY -> TrackType.CATEGORY
         else -> TrackType.PRODUCT
@@ -727,8 +738,15 @@ private fun Track.toTargetDraft(): TrackTargetDraft {
         type = normalizedType,
         brand = brand,
         model = model,
-        categoryCode = categoryCode,
-        attributes = filters.extra,
+        categoryCode = target.spec?.categoryCode ?: categoryCode,
+        attributes = target.spec?.attributes.orEmpty(),
+        attributesMulti = target.spec?.attributesMulti.orEmpty(),
+        attributesRange = target.spec?.attributesRange.orEmpty(),
+        queryText = target.spec?.queryText,
+        schemaVersion = target.spec?.schemaVersion ?: 1,
+        taxonomyVersion = target.spec?.taxonomyVersion,
+        locale = target.spec?.locale,
+        unboundTokens = target.spec?.unboundTokens.orEmpty(),
     )
 }
 
@@ -736,7 +754,14 @@ private fun TrackTargetDraft?.toTargetLabel(): String {
     val draft = this ?: return "Не выбрано"
     return when (draft.type) {
         TrackType.CATEGORY -> draft.categoryCode?.takeIf { it.isNotBlank() } ?: "Категория"
-        TrackType.PRODUCT -> listOf(draft.brand, draft.model).joinToString(" ").trim().ifBlank { "Товар" }
+        TrackType.PRODUCT -> {
+            val brandModel = listOf(draft.brand, draft.model).joinToString(" ").trim()
+            when {
+                brandModel.isNotBlank() -> brandModel
+                !draft.categoryCode.isNullOrBlank() -> "Товар в ${draft.categoryCode}"
+                else -> "Товар"
+            }
+        }
         else -> "Цель"
     }
 }

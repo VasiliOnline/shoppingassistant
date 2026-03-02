@@ -1,7 +1,5 @@
 package com.example.shoppingassistant
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +49,6 @@ import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 import com.example.shoppingassistant.ui.theme.AppTheme as UiAppTheme
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun AppRoot(modifier: Modifier = Modifier) {
     val nav = rememberNavController()
@@ -264,29 +261,56 @@ fun AppRoot(modifier: Modifier = Modifier) {
                 }
 
                 composable(
-                    route = "chat?offerId={offerId}&sellerName={sellerName}&offerTitle={offerTitle}&price={price}&status={status}",
+                    route = AppRoutes.ChatRoute,
                     arguments = listOf(
-                        navArgument("offerId") { defaultValue = "" },
-                        navArgument("sellerName") { defaultValue = "" },
-                        navArgument("offerTitle") { defaultValue = "" },
-                        navArgument("price") { defaultValue = "" },
-                        navArgument("status") { defaultValue = "" },
+                        navArgument(AppRoutes.ArgOfferId) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgSellerName) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgOfferTitle) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgPrice) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgStatus) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgExternalUrl) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgRedirectUrl) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgDeeplinkUrl) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgSourceName) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgQuerySessionId) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgPosition) { defaultValue = "" },
                     ),
                 ) { entry ->
+                    val offerId = entry.arguments?.getString(AppRoutes.ArgOfferId).orEmpty().ifBlank { null }
                     val sellerName =
-                        entry.arguments?.getString("sellerName").orEmpty().ifBlank { "Продавец" }
+                        entry.arguments?.getString(AppRoutes.ArgSellerName).orEmpty().ifBlank { "Продавец" }
                     val offerTitle =
-                        entry.arguments?.getString("offerTitle").orEmpty().ifBlank { "Предложение" }
-                    val priceStr = entry.arguments?.getString("price").orEmpty()
+                        entry.arguments?.getString(AppRoutes.ArgOfferTitle).orEmpty().ifBlank { "Предложение" }
+                    val priceStr = entry.arguments?.getString(AppRoutes.ArgPrice).orEmpty()
                     val status =
-                        entry.arguments?.getString("status").orEmpty().takeIf { it.isNotBlank() }
+                        entry.arguments?.getString(AppRoutes.ArgStatus).orEmpty().takeIf { it.isNotBlank() }
+                    val externalUrlFallback =
+                        entry.arguments?.getString(AppRoutes.ArgExternalUrl).orEmpty().takeIf { it.isNotBlank() }
+                    val redirectUrl =
+                        entry.arguments?.getString(AppRoutes.ArgRedirectUrl).orEmpty().takeIf { it.isNotBlank() }
+                    val deeplinkUrl =
+                        entry.arguments?.getString(AppRoutes.ArgDeeplinkUrl).orEmpty().takeIf { it.isNotBlank() }
+                            ?: externalUrlFallback
+                    val sourceName =
+                        entry.arguments?.getString(AppRoutes.ArgSourceName).orEmpty().takeIf { it.isNotBlank() }
+                    val querySessionId =
+                        entry.arguments?.getString(AppRoutes.ArgQuerySessionId).orEmpty().takeIf { it.isNotBlank() }
+                    val position =
+                        entry.arguments?.getString(AppRoutes.ArgPosition)?.toIntOrNull()
 
                     ChatPage(
                         props = ChatProps(
+                            offerId = offerId,
                             sellerName = sellerName,
                             sellerStatus = status,
                             offerTitle = offerTitle,
                             offerPrice = priceStr.toDoubleOrNull(),
+                            externalUrl = externalUrlFallback,
+                            redirectUrl = redirectUrl,
+                            deeplinkUrl = deeplinkUrl,
+                            sourceName = sourceName,
+                            searchSessionId = querySessionId,
+                            offerPosition = position,
                             onBack = { nav.popBackStack() },
                         ),
                     )

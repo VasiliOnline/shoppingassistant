@@ -12,6 +12,9 @@ class TemplateIdTaskImpl : TemplateIdTask {
     }
 
     private fun canonicalString(data: TemplateSnapshotData): String {
+        // Keep ID stability for existing history/subscriptions:
+        // additive metadata fields (schema/taxonomy/locale/unbound/multi/range)
+        // are intentionally not part of v1 canonicalization.
         val attrs = data.attrs
             .asSequence()
             .map { a ->
@@ -53,4 +56,3 @@ class TemplateIdTaskImpl : TemplateIdTask {
         return String(hexChars)
     }
 }
-

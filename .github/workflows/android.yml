@@ -28,9 +28,48 @@ jobs:
       - name: FacetSchemaGate
         run: ./gradlew :core:testDebugUnitTest --tests "com.example.shoppingassistant.core.data.catalog.FacetSchemaGateTest"
 
-  build:
+      - name: CatalogModelQualityGate
+        run: >
+          ./gradlew :domain:test
+          --tests "com.example.shoppingassistant.domain.catalog.CatalogModelQualityGateTest"
+          --tests "com.example.shoppingassistant.domain.catalog.Stage3TopPresetsGateTest"
+          --tests "com.example.shoppingassistant.domain.catalog.CatalogGovernanceGateTest"
+
+      - name: WizardRequiredIfGate
+        run: >
+          ./gradlew :feature:testDebugUnitTest
+          --tests "com.example.shoppingassistant.feature.pages.trackeditems.TrackTargetWizardRequiredIfRulesTest"
+
+  server-integration:
     runs-on: ubuntu-latest
     needs: model-gate
+    env:
+      SERVER_IT_STRICT: "true"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Server Catalog Integration Tests
+        run: ./gradlew :server:test --tests "com.example.shoppingassistant.server.catalog.CatalogRepositoryImplIntegrationTest"
+
+      - name: Server Catalog/Tracks Contract Tests
+        run: >
+          ./gradlew :server:test
+          --tests "com.example.shoppingassistant.server.contracts.CatalogTracksContractIntegrationTest"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [model-gate, server-integration]
 
     steps:
       - name: Checkout code

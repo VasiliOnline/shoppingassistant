@@ -13,7 +13,15 @@ object OfferRanking {
         OfferSort.PRICE_ASC -> offers.sortedBy { it.price.minor }
         OfferSort.PRICE_DESC -> offers.sortedByDescending { it.price.minor }
         OfferSort.RATING_DESC -> offers.sortedByDescending { it.seller.rating?.value ?: 0.0 }
-        OfferSort.DELIVERY_ASC -> offers // нет поля delivery, оставляем как есть
+        OfferSort.DELIVERY_ASC, OfferSort.DISTANCE_ASC -> offers.sortedBy { it.distanceKmOrNull() ?: Double.MAX_VALUE }
         OfferSort.NEWEST -> offers.sortedByDescending { it.updatedAt ?: 0L }
+    }
+
+    private fun OfferFull.distanceKmOrNull(): Double? {
+        val raw = attributes["distance_km"]
+            ?: attributes["distanceKm"]
+            ?: attributes["distance"]
+            ?: return null
+        return raw.toDoubleOrNull()
     }
 }

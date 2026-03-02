@@ -4,6 +4,8 @@ import com.example.shoppingassistant.domain.model.OfferFull
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsResponse
+import com.example.shoppingassistant.domain.model.PresetObservabilityBatchRequest
+import com.example.shoppingassistant.domain.model.PresetObservabilityBatchResponse
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,6 +19,11 @@ interface OfferRemoteDataSource {
         req: OfferSearchWithFacetsRequest,
         bearerToken: String? = null,
     ): OfferSearchWithFacetsResponse
+
+    suspend fun submitPresetObservabilityBatch(
+        req: PresetObservabilityBatchRequest,
+        bearerToken: String? = null,
+    ): PresetObservabilityBatchResponse
 }
 
 @Serializable

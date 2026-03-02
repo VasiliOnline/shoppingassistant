@@ -444,13 +444,7 @@ internal class Stage22SeedValidator(
             }
         }
 
-        val knownAttributeCodes = LinkedHashSet<String>()
-        knownAttributeCodes.addAll(registry.attributes.keys)
-        profiles.forEach { profile ->
-            profile.attributes.forEach { attribute ->
-                knownAttributeCodes.add(attribute.code)
-            }
-        }
+        val knownAttributeCodes = registry.attributes.keys
 
         val allConstraints = buildList {
             addAll(globalConstraints)

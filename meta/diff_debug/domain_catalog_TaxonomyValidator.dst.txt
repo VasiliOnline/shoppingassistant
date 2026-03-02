@@ -3,6 +3,7 @@ package com.example.shoppingassistant.domain.catalog
 enum class TaxonomyIssueSeverity {
     FAIL,
     WARN,
+    INFO,
 }
 
 data class CoverageReport(
@@ -18,15 +19,32 @@ data class TaxonomyValidationIssue(
     val severity: TaxonomyIssueSeverity = TaxonomyIssueSeverity.FAIL,
 )
 
+data class TaxonomyValidationStats(
+    val categoriesCount: Int = 0,
+    val browseNodesCount: Int = 0,
+    val aliasEntriesCount: Int = 0,
+    val maxChildren: Int = 0,
+    val nodesOver10: Int = 0,
+    val nodesOver12: Int = 0,
+    val aliasLocales: Map<String, Int> = emptyMap(),
+    val collisionCount: Int = 0,
+    val unreachableLeavesCount: Int = 0,
+    val genericAliasTop: List<String> = emptyList(),
+)
+
 data class TaxonomyValidationReport(
     val issues: List<TaxonomyValidationIssue>,
     val coverage: List<CoverageReport> = emptyList(),
+    val stats: TaxonomyValidationStats = TaxonomyValidationStats(),
 ) {
     val failIssues: List<TaxonomyValidationIssue>
         get() = issues.filter { it.severity == TaxonomyIssueSeverity.FAIL }
 
     val warnIssues: List<TaxonomyValidationIssue>
         get() = issues.filter { it.severity == TaxonomyIssueSeverity.WARN }
+
+    val infoIssues: List<TaxonomyValidationIssue>
+        get() = issues.filter { it.severity == TaxonomyIssueSeverity.INFO }
 
     val isValid: Boolean
         get() = failIssues.isEmpty()
@@ -35,7 +53,7 @@ data class TaxonomyValidationReport(
         if (issues.isEmpty()) return "Taxonomy validation passed."
         val limit = maxIssues.coerceAtLeast(1)
         val orderedIssues = issues.sortedWith(
-            compareBy<TaxonomyValidationIssue>({ if (it.severity == TaxonomyIssueSeverity.FAIL) 0 else 1 }, { it.code }),
+            compareBy<TaxonomyValidationIssue>({ severityRank(it.severity) }, { it.code }),
         )
         val top = orderedIssues.take(limit)
         val hidden = (orderedIssues.size - top.size).coerceAtLeast(0)
@@ -44,7 +62,7 @@ data class TaxonomyValidationReport(
         return buildString {
             appendLine(
                 "Taxonomy validation ${if (isValid) "completed with warnings" else "failed"}: " +
-                    "${failIssues.size} fail(s), ${warnIssues.size} warning(s).",
+                    "${failIssues.size} fail(s), ${warnIssues.size} warning(s), ${infoIssues.size} info.",
             )
             top.forEachIndexed { index, issue ->
                 appendLine("${index + 1}. [${issue.severity}] [${issue.code}] ${issue.message}")
@@ -52,11 +70,28 @@ data class TaxonomyValidationReport(
             if (hidden > 0) {
                 appendLine("... and $hidden more issue(s).")
             }
+            appendLine(
+                "Stats: categories=${stats.categoriesCount}, browseNodes=${stats.browseNodesCount}, aliasEntries=${stats.aliasEntriesCount}, " +
+                    "maxChildren=${stats.maxChildren}, nodesOver10=${stats.nodesOver10}, nodesOver12=${stats.nodesOver12}, " +
+                    "collisions=${stats.collisionCount}, unreachableLeaves=${stats.unreachableLeavesCount}.",
+            )
+            if (stats.aliasLocales.isNotEmpty()) {
+                appendLine("Alias locales: ${stats.aliasLocales.entries.joinToString { "${it.key}:${it.value}" }}")
+            }
+            if (stats.genericAliasTop.isNotEmpty()) {
+                appendLine("Top generic aliases: ${stats.genericAliasTop.joinToString()}")
+            }
             if (unreachable.isNotEmpty()) {
                 appendLine("Unreachable canonical leaves: ${unreachable.take(10).joinToString { it.canonicalLeafCode }}")
             }
             append("Hint: verify canonical codes, parent links, browse graph, aliases, google mapping and coverage.")
         }
+    }
+
+    private fun severityRank(severity: TaxonomyIssueSeverity): Int = when (severity) {
+        TaxonomyIssueSeverity.FAIL -> 0
+        TaxonomyIssueSeverity.WARN -> 1
+        TaxonomyIssueSeverity.INFO -> 2
     }
 }
 
@@ -75,13 +110,42 @@ class TaxonomyValidator {
         "B.SPORT",
         "B.AUTO",
     )
-    private val genericAliasTerms = setOf(
+    private val hardGenericAliasTerms = setOf(
         "товар",
+        "товары",
         "вещь",
+        "вещи",
         "покупка",
+        "покупки",
+        "штука",
+        "штуки",
+        "каталог",
+        "ассортимент",
+    )
+    private val softGenericAliasTerms = setOf(
         "магазин",
         "лучшее",
         "новинка",
+        "телефон",
+        "смартфон",
+        "пицца",
+        "роллы",
+        "суши",
+        "еда",
+        "обувь",
+        "куртка",
+        "платье",
+        "косметика",
+        "игрушки",
+    )
+    private val softGenericAliasAllowList = setOf(
+        "смартфон",
+        "пицца",
+        "роллы",
+        "суши",
+        "еда",
+        "косметика",
+        "игрушки",
     )
     private val localeRegex = Regex("^[a-z]{2}-[a-z]{2}$", RegexOption.IGNORE_CASE)
 
@@ -161,8 +225,20 @@ class TaxonomyValidator {
         validateMappings(categoriesByCode, mappings, issues)
 
         val shouldRunStage2Checks = browseNodes.isNotEmpty() || aliasEntries.isNotEmpty()
+        val baseBrowseStats = computeBrowseStats(browseNodes)
         if (!shouldRunStage2Checks) {
-            return TaxonomyValidationReport(issues = issues)
+            return TaxonomyValidationReport(
+                issues = issues,
+                stats = TaxonomyValidationStats(
+                    categoriesCount = categoriesByCode.size,
+                    browseNodesCount = browseNodes.size,
+                    aliasEntriesCount = aliasEntries.size,
+                    maxChildren = baseBrowseStats.maxChildren,
+                    nodesOver10 = baseBrowseStats.nodesOver10,
+                    nodesOver12 = baseBrowseStats.nodesOver12,
+                    aliasLocales = buildAliasLocaleBreakdown(aliasEntries),
+                ),
+            )
         }
 
         val parentCodes = categoriesByCode.values
@@ -194,7 +270,7 @@ class TaxonomyValidator {
             }
         }
 
-        validateAliasEntries(
+        val aliasValidationStats = validateAliasEntries(
             aliasEntries = effectiveAliasEntries,
             categoriesByCode = categoriesByCode,
             browseByCode = browseByCode,
@@ -218,9 +294,31 @@ class TaxonomyValidator {
                 )
             }
 
+        if (aliasValidationStats.genericTopTerms.isNotEmpty()) {
+            info(
+                issues,
+                "ALIAS_ENTRY_GENERIC_TOP",
+                "Top generic aliases by frequency: ${aliasValidationStats.genericTopTerms.joinToString(", ")}.",
+            )
+        }
+
+        val browseStats = computeBrowseStats(browseByCode.values)
+        val unreachableLeavesCount = coverage.count { !it.reachableViaBrowse && !it.reachableViaAlias }
         return TaxonomyValidationReport(
             issues = issues,
             coverage = coverage,
+            stats = TaxonomyValidationStats(
+                categoriesCount = categoriesByCode.size,
+                browseNodesCount = browseByCode.size,
+                aliasEntriesCount = effectiveAliasEntries.size,
+                maxChildren = browseStats.maxChildren,
+                nodesOver10 = browseStats.nodesOver10,
+                nodesOver12 = browseStats.nodesOver12,
+                aliasLocales = buildAliasLocaleBreakdown(effectiveAliasEntries),
+                collisionCount = aliasValidationStats.collisionCount,
+                unreachableLeavesCount = unreachableLeavesCount,
+                genericAliasTop = aliasValidationStats.genericTopTerms,
+            ),
         )
     }
 
@@ -524,9 +622,11 @@ class TaxonomyValidator {
         browseByCode: Map<String, BrowseNode>,
         leafCodes: Set<String>,
         issues: MutableList<TaxonomyValidationIssue>,
-    ) {
+    ): AliasValidationStats {
         val exactAliasKeySeen = HashSet<String>()
         val localeKindTargetsByTerm = LinkedHashMap<String, MutableSet<String>>()
+        val genericTermCounts = LinkedHashMap<String, Int>()
+        var collisionCount = 0
 
         aliasEntries.forEach { entry ->
             val locale = entry.locale.trim()
@@ -625,17 +725,36 @@ class TaxonomyValidator {
                 }
             }
 
-            if (!entry.isBlocked && isGenericAliasTerm(normalizedTerm)) {
-                warn(
-                    issues,
-                    "ALIAS_ENTRY_GENERIC_TERM",
-                    "Alias entry '$normalizedTerm' is too generic and may hurt routing quality.",
-                )
+            if (!entry.isBlocked) {
+                when (classifyGenericAliasTerm(normalizedTerm)) {
+                    GenericAliasClass.HARD -> {
+                        genericTermCounts[normalizedTerm] = (genericTermCounts[normalizedTerm] ?: 0) + 1
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_GENERIC_HARD",
+                            "Alias entry '$normalizedTerm' is too generic and blocked by quality gate.",
+                        )
+                    }
+
+                    GenericAliasClass.SOFT -> {
+                        genericTermCounts[normalizedTerm] = (genericTermCounts[normalizedTerm] ?: 0) + 1
+                        if (shouldWarnSoftGenericAlias(entry, normalizedTerm)) {
+                            warn(
+                                issues,
+                                "ALIAS_ENTRY_GENERIC_TERM",
+                                "Alias entry '$normalizedTerm' is generic and may hurt routing quality.",
+                            )
+                        }
+                    }
+
+                    GenericAliasClass.NONE -> Unit
+                }
             }
         }
 
         localeKindTargetsByTerm.forEach { (key, targets) ->
             if (targets.size > 1) {
+                collisionCount += 1
                 val sortedTargets = targets.sorted().joinToString(", ")
                 fail(
                     issues,
@@ -666,6 +785,16 @@ class TaxonomyValidator {
                 )
             }
         }
+
+        val topGenericTerms = genericTermCounts.entries
+            .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+            .take(GENERIC_TOP_LIMIT)
+            .map { (term, count) -> "$term($count)" }
+
+        return AliasValidationStats(
+            collisionCount = collisionCount,
+            genericTopTerms = topGenericTerms,
+        )
     }
 
     private fun buildCoverageReport(
@@ -832,8 +961,40 @@ class TaxonomyValidator {
         .removeSuffix("я")
         .removeSuffix("s")
 
-    private fun isGenericAliasTerm(term: String): Boolean =
-        term.length <= 2 || term in genericAliasTerms
+    private fun classifyGenericAliasTerm(term: String): GenericAliasClass {
+        if (term.isBlank()) return GenericAliasClass.NONE
+        if (term in hardGenericAliasTerms) return GenericAliasClass.HARD
+        if (term in softGenericAliasTerms || term.length <= 2) return GenericAliasClass.SOFT
+        return GenericAliasClass.NONE
+    }
+
+    private fun shouldWarnSoftGenericAlias(entry: AliasEntry, normalizedTerm: String): Boolean {
+        if (normalizedTerm in softGenericAliasAllowList) return false
+        return entry.matchKind == AliasMatchKind.EXACT && entry.weight >= SOFT_GENERIC_WARN_WEIGHT
+    }
+
+    private fun computeBrowseStats(browseNodes: Collection<BrowseNode>): BrowseStats {
+        if (browseNodes.isEmpty()) return BrowseStats()
+        val childCounts = browseNodes
+            .groupingBy { it.parentBrowseCode?.trim().orEmpty() }
+            .eachCount()
+            .filterKeys { it.isNotEmpty() }
+        if (childCounts.isEmpty()) return BrowseStats()
+        val maxChildren = childCounts.values.maxOrNull() ?: 0
+        val nodesOver10 = childCounts.values.count { it > 10 }
+        val nodesOver12 = childCounts.values.count { it > 12 }
+        return BrowseStats(
+            maxChildren = maxChildren,
+            nodesOver10 = nodesOver10,
+            nodesOver12 = nodesOver12,
+        )
+    }
+
+    private fun buildAliasLocaleBreakdown(aliasEntries: List<AliasEntry>): Map<String, Int> =
+        aliasEntries
+            .groupingBy { it.locale.trim().lowercase().ifBlank { "<blank>" } }
+            .eachCount()
+            .toSortedMap()
 
     private fun normalizeParentCode(parentBrowseCode: String?): String =
         parentBrowseCode?.trim()?.takeIf(String::isNotEmpty).orEmpty()
@@ -860,5 +1021,39 @@ class TaxonomyValidator {
             message = message,
             severity = TaxonomyIssueSeverity.WARN,
         )
+    }
+
+    private fun info(
+        issues: MutableList<TaxonomyValidationIssue>,
+        code: String,
+        message: String,
+    ) {
+        issues += TaxonomyValidationIssue(
+            code = code,
+            message = message,
+            severity = TaxonomyIssueSeverity.INFO,
+        )
+    }
+
+    private data class BrowseStats(
+        val maxChildren: Int = 0,
+        val nodesOver10: Int = 0,
+        val nodesOver12: Int = 0,
+    )
+
+    private data class AliasValidationStats(
+        val collisionCount: Int = 0,
+        val genericTopTerms: List<String> = emptyList(),
+    )
+
+    private enum class GenericAliasClass {
+        NONE,
+        SOFT,
+        HARD,
+    }
+
+    private companion object {
+        private const val SOFT_GENERIC_WARN_WEIGHT = 90
+        private const val GENERIC_TOP_LIMIT = 8
     }
 }

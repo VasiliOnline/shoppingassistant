@@ -4,10 +4,12 @@ import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueCo
 import com.example.shoppingassistant.domain.catalog.constraints.CompatibilityRule
 import com.example.shoppingassistant.domain.facet.FacetPresetRule
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.kotlin.datetime.date
 import org.jetbrains.exposed.sql.json.jsonb
 
 private val json = Json { ignoreUnknownKeys = true }
@@ -15,6 +17,7 @@ private val json = Json { ignoreUnknownKeys = true }
 object CategoriesTable : Table("categories") {
     val code = varchar("code", 64)
     val segment = varchar("segment", 16)
+    val status = varchar("status", 16).default("ACTIVE")
     val title = varchar("title", 255).nullable()
     val parentCode = varchar("parent_code", 64).nullable()
     val description = text("description").nullable()
@@ -29,6 +32,7 @@ object AttributeDefsTable : Table("attribute_defs") {
     val requiredForSearch = bool("required_for_search").default(false)
     val requiredForOffer = bool("required_for_offer").default(false)
     val requiredForExpress = bool("required_for_express").default(false)
+    val requiredBy = varchar("required_by", 10).nullable()
     val facetEnabled = bool("facet_enabled").default(false)
     val multiValued = bool("multi_valued").default(false)
     val valueDictCode = varchar("value_dict_code", 64).nullable()
@@ -60,6 +64,8 @@ object CatalogConstraintsTable : Table("catalog_constraints") {
     val categoryCode = varchar("category_code", 64).nullable()
     val brand = varchar("brand", 255).nullable()
     val model = varchar("model", 255).nullable()
+    val effectiveFrom = varchar("effective_from", 10).nullable()
+    val effectiveTo = varchar("effective_to", 10).nullable()
     val attributeConstraints = jsonb(
         "attribute_constraints",
         json,
@@ -79,6 +85,8 @@ object FacetDefinitionsTable : Table("facet_definitions") {
     val titleRu = varchar("title_ru", 255)
     val valueType = varchar("value_type", 32)
     val valueSource = varchar("source", 32)
+    val effectiveFrom = varchar("effective_from", 10).nullable()
+    val effectiveTo = varchar("effective_to", 10).nullable()
     val appliesToCategoryCodes = jsonb(
         "applies_to_category_codes",
         json,
@@ -97,6 +105,8 @@ object FacetPresetsTable : Table("facet_presets") {
     val categoryCode = varchar("category_code", 64).references(CategoriesTable.code, onDelete = ReferenceOption.CASCADE)
     val titleRu = varchar("title_ru", 255)
     val order = integer("order_index").default(0)
+    val effectiveFrom = varchar("effective_from", 10).nullable()
+    val effectiveTo = varchar("effective_to", 10).nullable()
     val rules = jsonb(
         "rules",
         json,
@@ -118,4 +128,93 @@ object FacetCollectionsTable : Table("facet_collections") {
     val notes = text("notes").nullable()
 
     override val primaryKey = PrimaryKey(collectionCode)
+}
+
+object CatalogStage4ContractMetaTable : Table("catalog_stage4_contract_meta") {
+    val stage = varchar("stage", 8)
+    val schemaVersion = varchar("schema_version", 16)
+    val stage22DataVersion = varchar("stage22_data_version", 32)
+    val stage22SchemaVersion = varchar("stage22_schema_version", 16)
+    val stage22GeneratedAt = varchar("stage22_generated_at", 64)
+    val stage3Version = varchar("stage3_version", 16)
+    val updatedAt = long("updated_at")
+
+    override val primaryKey = PrimaryKey(stage)
+}
+
+object CatalogStage4ImmutableAttributesTable : Table("catalog_stage4_immutable_attributes") {
+    val attributeCode = varchar("attribute_code", 64)
+    val valueType = varchar("value_type", 16)
+    val valueSetType = varchar("value_set_type", 16)
+    val unit = varchar("unit", 32).nullable()
+    val isIdentity = bool("is_identity")
+    val isFacet = bool("is_facet")
+    val normalization = varchar("normalization", 128).nullable()
+    val dictionaryRequired = bool("dictionary_required")
+    val immutableFingerprint = varchar("immutable_fingerprint", 128)
+
+    override val primaryKey = PrimaryKey(attributeCode)
+}
+
+object CatalogStage4NormalizationRulesTable : Table("catalog_stage4_normalization_rules") {
+    val attributeCode = varchar("attribute_code", 64)
+    val normalization = varchar("normalization", 128)
+    val valueSetType = varchar("value_set_type", 16)
+    val dictionaryBacked = bool("dictionary_backed")
+    val acceptsFreeText = bool("accepts_free_text")
+    val canonicalSource = varchar("canonical_source", 255)
+    val dedupTokenMode = varchar("dedup_token_mode", 32)
+
+    override val primaryKey = PrimaryKey(attributeCode)
+}
+
+object CatalogStage4DedupTemplatesTable : Table("catalog_stage4_dedup_templates") {
+    val entity = varchar("entity", 64)
+    val templateExpr = varchar("template_expr", 255)
+    val fieldNames = jsonb("fields", json, ListSerializer(String.serializer()))
+    val description = text("description")
+
+    override val primaryKey = PrimaryKey(entity)
+}
+
+object CatalogStage4TypedConstraintsTable : Table("catalog_stage4_typed_constraints") {
+    val attributeCode = varchar("attribute_code", 64)
+    val valueType = varchar("value_type", 16)
+    val enumOnly = bool("enum_only").default(false)
+    val expectedUnit = varchar("expected_unit", 32).nullable()
+    val regexPattern = varchar("regex_pattern", 255).nullable()
+    val minValue = double("min_value").nullable()
+    val maxValue = double("max_value").nullable()
+    val requiredIf = jsonb(
+        "required_if",
+        json,
+        ListSerializer(com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule.serializer()),
+    )
+    val updatedAt = long("updated_at")
+
+    override val primaryKey = PrimaryKey(attributeCode)
+}
+
+object CatalogStage4ExecutionMetricsTable : Table("catalog_stage4_execution_metrics") {
+    val id = long("id").autoIncrement()
+    val metricDate = date("metric_date")
+    val stream = varchar("stream", 64)
+    val normalizedCount = integer("normalized_count")
+    val droppedCount = integer("dropped_count")
+    val logicalDedupCount = integer("logical_dedup_count")
+    val unknownAttributeCount = integer("unknown_attribute_count")
+    val reasonCodes = jsonb("reason_codes", json, ListSerializer(String.serializer()))
+    val metadata = jsonb(
+        "metadata",
+        json,
+        MapSerializer(String.serializer(), String.serializer()),
+    )
+    val createdAt = long("created_at")
+
+    override val primaryKey = PrimaryKey(id)
+
+    init {
+        index(false, metricDate, stream)
+        index(false, createdAt)
+    }
 }

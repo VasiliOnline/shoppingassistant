@@ -68,6 +68,14 @@ function Get-Priority {
             if ($IssueCount -ge 100) { return 2 }
             return 3
         }
+        "STAGE4_UNKNOWN_CLOSED_SET_VALUE" {
+            if ($IssueCount -ge 50) { return 2 }
+            return 3
+        }
+        "STAGE4_INCOMPATIBLE_VALUE" {
+            if ($IssueCount -ge 50) { return 2 }
+            return 3
+        }
         default { return 3 }
     }
 }
@@ -173,10 +181,105 @@ GROUP BY oa.category_code, oa.attribute_code, oa.raw_value
 ORDER BY issue_count DESC, oa.category_code, oa.attribute_code, oa.raw_value;
 "@
 
+$sqlStage4UnknownClosedSet = @"
+WITH offer_attrs AS (
+    SELECT
+        p.category AS category_code,
+        LOWER(BTRIM(key)) AS attribute_code,
+        LOWER(BTRIM(value)) AS raw_value
+    FROM offers o
+    JOIN products p ON p.id = o.product_id
+    CROSS JOIN LATERAL JSONB_EACH_TEXT(COALESCE(o.attributes, '{}'::jsonb))
+    WHERE value IS NOT NULL
+      AND BTRIM(value) <> ''
+),
+stage4_closed_set_attrs AS (
+    SELECT LOWER(attribute_code) AS attribute_code
+    FROM catalog_stage4_normalization_rules
+    WHERE dictionary_backed = TRUE
+      AND accepts_free_text = FALSE
+),
+dict_tokens AS (
+    SELECT LOWER(attribute_code) AS attribute_code, LOWER(canonical_code) AS token
+    FROM attribute_value_dict
+    UNION ALL
+    SELECT LOWER(attribute_code) AS attribute_code, LOWER(canonical_value) AS token
+    FROM attribute_value_dict
+    UNION ALL
+    SELECT LOWER(d.attribute_code) AS attribute_code, LOWER(elem.value) AS token
+    FROM attribute_value_dict d
+    CROSS JOIN LATERAL JSONB_ARRAY_ELEMENTS_TEXT(COALESCE(d.synonyms, '[]'::jsonb)) AS elem(value)
+)
+SELECT
+    'STAGE4_UNKNOWN_CLOSED_SET_VALUE' AS issue_type,
+    oa.category_code,
+    oa.attribute_code || ':' || oa.raw_value AS issue_key,
+    COUNT(*)::int AS issue_count,
+    NULL::text AS first_seen_at,
+    NULL::text AS last_seen_at,
+    (CURRENT_DATE + INTERVAL '3 day')::date::text AS sla_due_date
+FROM offer_attrs oa
+JOIN stage4_closed_set_attrs s4
+    ON s4.attribute_code = oa.attribute_code
+LEFT JOIN dict_tokens dt
+    ON dt.attribute_code = oa.attribute_code
+   AND dt.token = oa.raw_value
+WHERE dt.token IS NULL
+GROUP BY oa.category_code, oa.attribute_code, oa.raw_value
+ORDER BY issue_count DESC, oa.category_code, oa.attribute_code, oa.raw_value;
+"@
+
+$sqlStage4Incompatible = @"
+WITH offer_attrs AS (
+    SELECT
+        p.category AS category_code,
+        LOWER(BTRIM(key)) AS attribute_code,
+        BTRIM(value) AS raw_value
+    FROM offers o
+    JOIN products p ON p.id = o.product_id
+    CROSS JOIN LATERAL JSONB_EACH_TEXT(COALESCE(o.attributes, '{}'::jsonb))
+    WHERE value IS NOT NULL
+      AND BTRIM(value) <> ''
+),
+stage4_types AS (
+    SELECT
+        LOWER(attribute_code) AS attribute_code,
+        value_type
+    FROM catalog_stage4_immutable_attributes
+),
+typed_offer_attrs AS (
+    SELECT
+        oa.category_code,
+        oa.attribute_code,
+        oa.raw_value,
+        st.value_type
+    FROM offer_attrs oa
+    JOIN stage4_types st
+        ON st.attribute_code = oa.attribute_code
+)
+SELECT
+    'STAGE4_INCOMPATIBLE_VALUE' AS issue_type,
+    toa.category_code,
+    toa.attribute_code || ':' || toa.raw_value AS issue_key,
+    COUNT(*)::int AS issue_count,
+    NULL::text AS first_seen_at,
+    NULL::text AS last_seen_at,
+    (CURRENT_DATE + INTERVAL '3 day')::date::text AS sla_due_date
+FROM typed_offer_attrs toa
+WHERE (toa.value_type = 'NUMBER' AND BTRIM(REGEXP_REPLACE(toa.raw_value, '\s+', '', 'g')) !~ '^-?[0-9]+([.,][0-9]+)?$')
+   OR (toa.value_type = 'BOOLEAN' AND LOWER(BTRIM(toa.raw_value)) NOT IN (
+        'true', 'false', '1', '0', 'yes', 'no', 'y', 'n', 'да', 'нет', 'истина', 'ложь'
+   ))
+GROUP BY toa.category_code, toa.attribute_code, toa.raw_value
+ORDER BY issue_count DESC, toa.category_code, toa.attribute_code, toa.raw_value;
+"@
+
 $rows = @()
 $rows += Invoke-PsqlCsv -Sql $sqlZeroResults
 $rows += Invoke-PsqlCsv -Sql $sqlUnknownAttribute
 $rows += Invoke-PsqlCsv -Sql $sqlNormalizationConflict
+$rows += Invoke-PsqlCsv -Sql $sqlStage4UnknownClosedSet
+$rows += Invoke-PsqlCsv -Sql $sqlStage4Incompatible
 
 $issues = @(
     $rows | ForEach-Object {

@@ -4,19 +4,29 @@ import com.example.shoppingassistant.domain.model.Normalization
 import com.example.shoppingassistant.domain.model.NormalizedQuery
 
 object BrandModelRules {
+
     fun fromRaw(raw: String, attrs: Map<String, String> = emptyMap()): NormalizedQuery {
-        val s = raw.trim()
+        val s = raw.trim().replace("\\s+".toRegex(), " ")
+
         val (brand, model) = when {
-            s.startsWith("iphone", ignoreCase = true) -> "Apple" to s
-            s.startsWith("galaxy", ignoreCase = true) -> "Samsung" to s
+            s.startsWith("iphone", ignoreCase = true) -> "Apple" to normalizePrefixedModel(s, "iphone", "iPhone")
+            s.startsWith("galaxy", ignoreCase = true) -> "Samsung" to normalizePrefixedModel(s, "galaxy", "Galaxy")
             else -> splitByFirstSpace(s)
         }
+
         return NormalizedQuery(
             brand = brand.trim(),
             model = model.trim(),
-            attributes = Normalization.normalizeAttrs(attrs)
+            attributes = Normalization.normalizeAttrs(attrs),
         )
     }
+
+    private fun normalizePrefixedModel(s: String, rawPrefix: String, prettyPrefix: String): String {
+        // s уже trim + single-space
+        val rest = s.drop(rawPrefix.length).trimStart()
+        return if (rest.isBlank()) prettyPrefix else "$prettyPrefix $rest"
+    }
+
     private fun splitByFirstSpace(s: String): Pair<String, String> {
         val i = s.indexOf(' ')
         return if (i > 0) s.substring(0, i) to s.substring(i + 1) else s to ""

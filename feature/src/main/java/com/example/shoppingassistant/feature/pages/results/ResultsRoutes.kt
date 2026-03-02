@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.decodeFromString
+import java.util.UUID
 
 @Serializable
 enum class ResultsMode {
@@ -28,6 +29,7 @@ data class ResultsPayload(
     val categoryCode: String? = null,
     val facetCollectionCode: String? = null,
     val facetPresetCode: String? = null,
+    val querySessionId: String? = null,
     val location: String? = null,
     val radiusKm: Int? = null,
     val conditions: List<String> = emptyList(),
@@ -46,7 +48,12 @@ object ResultsRoutes {
     }
 
     fun build(payload: ResultsPayload): String {
-        val raw = json.encodeToString(payload)
+        val effectivePayload = if (payload.querySessionId.isNullOrBlank()) {
+            payload.copy(querySessionId = "qs-${UUID.randomUUID()}")
+        } else {
+            payload
+        }
+        val raw = json.encodeToString(effectivePayload)
         return "$Route?$ArgPayload=${Uri.encode(raw)}"
     }
 

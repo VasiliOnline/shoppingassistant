@@ -18,6 +18,7 @@ import io.ktor.http.isSuccess
 class FacetDefinitionApiRepository(
     private val backendClient: BackendClient,
     private val fallback: FacetDefinitionRepository,
+    private val allowSeedFallback: Boolean = false,
 ) : FacetDefinitionRepository {
 
     private val baseUrl get() = BackendConfig.BASE_URL
@@ -25,12 +26,28 @@ class FacetDefinitionApiRepository(
     override suspend fun listFacetDefinitions(): List<FacetDefinition> {
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/definitions")
-        }.getOrNull() ?: return fallback.listFacetDefinitions()
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetDefinitions",
+                error = error,
+                fallbackCall = { fallback.listFacetDefinitions() },
+            )
+        }
 
         return if (response.status.isSuccess()) {
-            runCatching { response.body<List<FacetDefinition>>() }.getOrElse { fallback.listFacetDefinitions() }
+            runCatching { response.body<List<FacetDefinition>>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "listFacetDefinitions.decode",
+                    error = error,
+                    fallbackCall = { fallback.listFacetDefinitions() },
+                )
+            }
         } else {
-            fallback.listFacetDefinitions()
+            fallbackOrThrow(
+                operation = "listFacetDefinitions.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.listFacetDefinitions() },
+            )
         }
     }
 
@@ -42,12 +59,28 @@ class FacetDefinitionApiRepository(
             backendClient.client.get("$baseUrl/api/catalog/facets/definitions") {
                 parameter("categoryCode", normalized)
             }
-        }.getOrNull() ?: return fallback.listFacetDefinitions(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetDefinitionsByCategory",
+                error = error,
+                fallbackCall = { fallback.listFacetDefinitions(normalized) },
+            )
+        }
 
         return if (response.status.isSuccess()) {
-            runCatching { response.body<List<FacetDefinition>>() }.getOrElse { fallback.listFacetDefinitions(normalized) }
+            runCatching { response.body<List<FacetDefinition>>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "listFacetDefinitionsByCategory.decode",
+                    error = error,
+                    fallbackCall = { fallback.listFacetDefinitions(normalized) },
+                )
+            }
         } else {
-            fallback.listFacetDefinitions(normalized)
+            fallbackOrThrow(
+                operation = "listFacetDefinitionsByCategory.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.listFacetDefinitions(normalized) },
+            )
         }
     }
 
@@ -57,21 +90,45 @@ class FacetDefinitionApiRepository(
 
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/definitions/$normalized")
-        }.getOrNull() ?: return fallback.getFacetDefinition(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetDefinition",
+                error = error,
+                fallbackCall = { fallback.getFacetDefinition(normalized) },
+            )
+        }
 
         return when {
             response.status == HttpStatusCode.NotFound -> null
-            response.status.isSuccess() -> runCatching { response.body<FacetDefinition>() }.getOrElse {
-                fallback.getFacetDefinition(normalized)
+            response.status.isSuccess() -> runCatching { response.body<FacetDefinition>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "getFacetDefinition.decode",
+                    error = error,
+                    fallbackCall = { fallback.getFacetDefinition(normalized) },
+                )
             }
-            else -> fallback.getFacetDefinition(normalized)
+            else -> fallbackOrThrow(
+                operation = "getFacetDefinition.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.getFacetDefinition(normalized) },
+            )
         }
+    }
+
+    private suspend fun <T> fallbackOrThrow(
+        operation: String,
+        error: Throwable,
+        fallbackCall: suspend () -> T,
+    ): T {
+        if (allowSeedFallback) return fallbackCall()
+        throw IllegalStateException("Facet API call failed: $operation", error)
     }
 }
 
 class FacetPresetApiRepository(
     private val backendClient: BackendClient,
     private val fallback: FacetPresetRepository,
+    private val allowSeedFallback: Boolean = false,
 ) : FacetPresetRepository {
 
     private val baseUrl get() = BackendConfig.BASE_URL
@@ -79,12 +136,28 @@ class FacetPresetApiRepository(
     override suspend fun listFacetPresets(): List<FacetPreset> {
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/presets")
-        }.getOrNull() ?: return fallback.listFacetPresets()
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetPresets",
+                error = error,
+                fallbackCall = { fallback.listFacetPresets() },
+            )
+        }
 
         return if (response.status.isSuccess()) {
-            runCatching { response.body<List<FacetPreset>>() }.getOrElse { fallback.listFacetPresets() }
+            runCatching { response.body<List<FacetPreset>>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "listFacetPresets.decode",
+                    error = error,
+                    fallbackCall = { fallback.listFacetPresets() },
+                )
+            }
         } else {
-            fallback.listFacetPresets()
+            fallbackOrThrow(
+                operation = "listFacetPresets.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.listFacetPresets() },
+            )
         }
     }
 
@@ -96,12 +169,28 @@ class FacetPresetApiRepository(
             backendClient.client.get("$baseUrl/api/catalog/facets/presets") {
                 parameter("categoryCode", normalized)
             }
-        }.getOrNull() ?: return fallback.listFacetPresets(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetPresetsByCategory",
+                error = error,
+                fallbackCall = { fallback.listFacetPresets(normalized) },
+            )
+        }
 
         return if (response.status.isSuccess()) {
-            runCatching { response.body<List<FacetPreset>>() }.getOrElse { fallback.listFacetPresets(normalized) }
+            runCatching { response.body<List<FacetPreset>>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "listFacetPresetsByCategory.decode",
+                    error = error,
+                    fallbackCall = { fallback.listFacetPresets(normalized) },
+                )
+            }
         } else {
-            fallback.listFacetPresets(normalized)
+            fallbackOrThrow(
+                operation = "listFacetPresetsByCategory.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.listFacetPresets(normalized) },
+            )
         }
     }
 
@@ -111,21 +200,45 @@ class FacetPresetApiRepository(
 
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/presets/$normalized")
-        }.getOrNull() ?: return fallback.getFacetPreset(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetPreset",
+                error = error,
+                fallbackCall = { fallback.getFacetPreset(normalized) },
+            )
+        }
 
         return when {
             response.status == HttpStatusCode.NotFound -> null
-            response.status.isSuccess() -> runCatching { response.body<FacetPreset>() }.getOrElse {
-                fallback.getFacetPreset(normalized)
+            response.status.isSuccess() -> runCatching { response.body<FacetPreset>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "getFacetPreset.decode",
+                    error = error,
+                    fallbackCall = { fallback.getFacetPreset(normalized) },
+                )
             }
-            else -> fallback.getFacetPreset(normalized)
+            else -> fallbackOrThrow(
+                operation = "getFacetPreset.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.getFacetPreset(normalized) },
+            )
         }
+    }
+
+    private suspend fun <T> fallbackOrThrow(
+        operation: String,
+        error: Throwable,
+        fallbackCall: suspend () -> T,
+    ): T {
+        if (allowSeedFallback) return fallbackCall()
+        throw IllegalStateException("Facet API call failed: $operation", error)
     }
 }
 
 class FacetCollectionApiRepository(
     private val backendClient: BackendClient,
     private val fallback: FacetCollectionRepository,
+    private val allowSeedFallback: Boolean = false,
 ) : FacetCollectionRepository {
 
     private val baseUrl get() = BackendConfig.BASE_URL
@@ -133,12 +246,28 @@ class FacetCollectionApiRepository(
     override suspend fun listFacetCollections(): List<FacetCollection> {
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections")
-        }.getOrNull() ?: return fallback.listFacetCollections()
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetCollections",
+                error = error,
+                fallbackCall = { fallback.listFacetCollections() },
+            )
+        }
 
         return if (response.status.isSuccess()) {
-            runCatching { response.body<List<FacetCollection>>() }.getOrElse { fallback.listFacetCollections() }
+            runCatching { response.body<List<FacetCollection>>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "listFacetCollections.decode",
+                    error = error,
+                    fallbackCall = { fallback.listFacetCollections() },
+                )
+            }
         } else {
-            fallback.listFacetCollections()
+            fallbackOrThrow(
+                operation = "listFacetCollections.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.listFacetCollections() },
+            )
         }
     }
 
@@ -150,12 +279,28 @@ class FacetCollectionApiRepository(
             backendClient.client.get("$baseUrl/api/catalog/facets/collections") {
                 parameter("categoryCode", normalized)
             }
-        }.getOrNull() ?: return fallback.listFacetCollections(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetCollectionsByCategory",
+                error = error,
+                fallbackCall = { fallback.listFacetCollections(normalized) },
+            )
+        }
 
         return if (response.status.isSuccess()) {
-            runCatching { response.body<List<FacetCollection>>() }.getOrElse { fallback.listFacetCollections(normalized) }
+            runCatching { response.body<List<FacetCollection>>() }.getOrElse { error ->
+                fallbackOrThrow(
+                    operation = "listFacetCollectionsByCategory.decode",
+                    error = error,
+                    fallbackCall = { fallback.listFacetCollections(normalized) },
+                )
+            }
         } else {
-            fallback.listFacetCollections(normalized)
+            fallbackOrThrow(
+                operation = "listFacetCollectionsByCategory.status=${response.status}",
+                error = IllegalStateException("Unexpected status=${response.status}"),
+                fallbackCall = { fallback.listFacetCollections(normalized) },
+            )
         }
     }
 
@@ -165,9 +310,19 @@ class FacetCollectionApiRepository(
 
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections/$normalized")
-        }.getOrNull() ?: return fallback.getFacetCollection(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetCollection",
+                error = error,
+                fallbackCall = { fallback.getFacetCollection(normalized) },
+            )
+        }
 
-        return decodeFacetCollectionResponse(response, fallbackValue = fallback.getFacetCollection(normalized))
+        return decodeFacetCollectionResponse(
+            response = response,
+            operation = "getFacetCollection",
+            fallbackCall = { fallback.getFacetCollection(normalized) },
+        )
     }
 
     override suspend fun getFacetCollectionByBrowseCode(browseCode: String): FacetCollection? {
@@ -176,20 +331,47 @@ class FacetCollectionApiRepository(
 
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections/by-browse/$normalized")
-        }.getOrNull() ?: return fallback.getFacetCollectionByBrowseCode(normalized)
+        }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetCollectionByBrowseCode",
+                error = error,
+                fallbackCall = { fallback.getFacetCollectionByBrowseCode(normalized) },
+            )
+        }
 
         return decodeFacetCollectionResponse(
             response = response,
-            fallbackValue = fallback.getFacetCollectionByBrowseCode(normalized),
+            operation = "getFacetCollectionByBrowseCode",
+            fallbackCall = { fallback.getFacetCollectionByBrowseCode(normalized) },
         )
     }
 
     private suspend fun decodeFacetCollectionResponse(
         response: HttpResponse,
-        fallbackValue: FacetCollection?,
+        operation: String,
+        fallbackCall: suspend () -> FacetCollection?,
     ): FacetCollection? = when {
         response.status == HttpStatusCode.NotFound -> null
-        response.status.isSuccess() -> runCatching { response.body<FacetCollection>() }.getOrElse { fallbackValue }
-        else -> fallbackValue
+        response.status.isSuccess() -> runCatching { response.body<FacetCollection>() }.getOrElse { error ->
+            fallbackOrThrow(
+                operation = "$operation.decode",
+                error = error,
+                fallbackCall = fallbackCall,
+            )
+        }
+        else -> fallbackOrThrow(
+            operation = "$operation.status=${response.status}",
+            error = IllegalStateException("Unexpected status=${response.status}"),
+            fallbackCall = fallbackCall,
+        )
+    }
+
+    private suspend fun <T> fallbackOrThrow(
+        operation: String,
+        error: Throwable,
+        fallbackCall: suspend () -> T,
+    ): T {
+        if (allowSeedFallback) return fallbackCall()
+        throw IllegalStateException("Facet API call failed: $operation", error)
     }
 }

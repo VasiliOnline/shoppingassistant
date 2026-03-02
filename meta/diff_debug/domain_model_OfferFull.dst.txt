@@ -1,8 +1,11 @@
 package com.example.shoppingassistant.domain.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Конкретное предложение (объявление) со связями на товар и пользователя.
  */
+@Serializable
 data class OfferFull(
     val id: String,
     val product: ProductFull,
@@ -16,6 +19,7 @@ data class OfferFull(
     val updatedAt: Long? = null,
 )
 
+@Serializable
 enum class OfferStatus {
     ACTIVE,
     PENDING,

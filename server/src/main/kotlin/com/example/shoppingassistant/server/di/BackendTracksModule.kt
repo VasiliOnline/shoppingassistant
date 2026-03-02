@@ -3,6 +3,10 @@ package com.example.shoppingassistant.server.di
 import com.example.shoppingassistant.server.config.TrackTop10RefreshConfig
 import com.example.shoppingassistant.server.tracks.TrackEventsRepository
 import com.example.shoppingassistant.server.tracks.TrackEventsRepositoryImpl
+import com.example.shoppingassistant.server.tracks.TrackDedupBackfillService
+import com.example.shoppingassistant.server.tracks.TrackDedupBackfillServiceImpl
+import com.example.shoppingassistant.server.tracks.TrackTargetPostMigrationGuardService
+import com.example.shoppingassistant.server.tracks.TrackTargetPostMigrationGuardServiceImpl
 import com.example.shoppingassistant.server.tracks.TracksRepository
 import com.example.shoppingassistant.server.tracks.TracksRepositoryImpl
 import com.example.shoppingassistant.server.tracks.top10.TrackTop10SnapshotRepository
@@ -19,6 +23,8 @@ import org.koin.dsl.module
 val backendTracksModule = module {
     single<TrackEventsRepository> { TrackEventsRepositoryImpl() }
     single<TracksRepository> { TracksRepositoryImpl(eventsRepository = get(), offerRepository = get()) }
+    single<TrackDedupBackfillService> { TrackDedupBackfillServiceImpl() }
+    single<TrackTargetPostMigrationGuardService> { TrackTargetPostMigrationGuardServiceImpl() }
     single { TrackTop10RefreshConfig.fromEnv() }
     single<TrackTop10SnapshotRepository> { TrackTop10SnapshotRepositoryImpl() }
     single<RateLimiter> { NoopRateLimiter() }

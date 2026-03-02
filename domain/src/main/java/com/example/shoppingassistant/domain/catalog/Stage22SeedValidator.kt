@@ -2,6 +2,10 @@ package com.example.shoppingassistant.domain.catalog
 
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 internal data class Stage22SeedValidationIssue(
     val code: String,
@@ -40,6 +44,7 @@ internal object DefaultStage22AliasNormalizer : Stage22AliasNormalizer {
 
 internal class Stage22SeedValidator(
     private val aliasNormalizer: Stage22AliasNormalizer = DefaultStage22AliasNormalizer,
+    private val leafCategoryEmptyProfileAllowlist: Set<String> = Stage22LeafProfileAllowlist.default,
 ) {
     fun validate(
         categories: List<Category>,
@@ -65,6 +70,7 @@ internal class Stage22SeedValidator(
         validateAttributeDefIntegrity(registry.attributes.values.toList(), issues)
         validateClosedSetIntegrity(registry, issues)
         validateDeterminism(packages, issues)
+        validateLeafProfileAllowlist(categories, issues)
         validateProfileIntegrity(categories, stage22Profiles, issues)
         validateProfileReferential(registry, stage22Profiles, issues)
         validateConstraintsConflictGate(
@@ -321,7 +327,17 @@ internal class Stage22SeedValidator(
                     "Duplicate profile for category '$categoryCode' in L0 '$l0Code'.",
                 )
             }
-            if (categoryCode in leafCodes && profile.attributes.isEmpty()) return@forEach
+            if (categoryCode in leafCodes && profile.attributes.isEmpty()) {
+                if (categoryCode !in normalizedLeafEmptyProfileAllowlist) {
+                    issue(
+                        issues,
+                        "PROFILE_LEAF_ATTRIBUTES_EMPTY_NOT_ALLOWED",
+                        "Leaf category '$categoryCode' has empty attributes but is not in " +
+                            "taxonomy/stage2/2.2/_registry/leaf_profile_empty_allowlist.json.",
+                    )
+                }
+                return@forEach
+            }
 
             val sorted = profile.attributes
                 .sortedWith(compareBy<Stage22AttributeUsage> { it.uiOrder }.thenBy { it.attributeCode })
@@ -432,6 +448,27 @@ internal class Stage22SeedValidator(
                         "Profile '$categoryCode' has duplicate attribute '${attribute.code}'.",
                     )
                 }
+                val requiredBy = parseIsoDate(attribute.requiredBy)
+                if (attribute.requiredBy != null && requiredBy == null) {
+                    issue(
+                        issues,
+                        "REFERENTIAL_ATTRIBUTE_REQUIRED_BY_INVALID",
+                        "Attribute '${attribute.code}' in profile '$categoryCode' has invalid requiredBy " +
+                            "'${attribute.requiredBy}'. Expected ISO date yyyy-MM-dd.",
+                    )
+                }
+                if (requiredBy != null &&
+                    !attribute.requiredForOffer &&
+                    !attribute.requiredForSearch &&
+                    !attribute.requiredForExpress
+                ) {
+                    issue(
+                        issues,
+                        "REFERENTIAL_ATTRIBUTE_REQUIRED_BY_WITHOUT_REQUIREMENT",
+                        "Attribute '${attribute.code}' in profile '$categoryCode' defines requiredBy " +
+                            "but is not required for offer/search/express.",
+                    )
+                }
             }
 
             val expectedL0 = profile.category.code.substringBefore(".")
@@ -470,6 +507,33 @@ internal class Stage22SeedValidator(
         val categoryCode = constraint.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
         val brand = constraint.brand?.trim()?.takeIf { it.isNotEmpty() }
         val model = constraint.model?.trim()?.takeIf { it.isNotEmpty() }
+        val effectiveFrom = parseIsoDate(constraint.effectiveFrom)
+        val effectiveTo = parseIsoDate(constraint.effectiveTo)
+
+        if (constraint.effectiveFrom != null && effectiveFrom == null) {
+            issue(
+                issues,
+                "REFERENTIAL_CONSTRAINT_EFFECTIVE_FROM_INVALID",
+                "Constraint for category '${categoryCode ?: "*"}' has invalid effectiveFrom " +
+                    "'${constraint.effectiveFrom}'. Expected ISO date yyyy-MM-dd.",
+            )
+        }
+        if (constraint.effectiveTo != null && effectiveTo == null) {
+            issue(
+                issues,
+                "REFERENTIAL_CONSTRAINT_EFFECTIVE_TO_INVALID",
+                "Constraint for category '${categoryCode ?: "*"}' has invalid effectiveTo " +
+                    "'${constraint.effectiveTo}'. Expected ISO date yyyy-MM-dd.",
+            )
+        }
+        if (effectiveFrom != null && effectiveTo != null && effectiveFrom.isAfter(effectiveTo)) {
+            issue(
+                issues,
+                "REFERENTIAL_CONSTRAINT_EFFECTIVE_WINDOW_INVALID",
+                "Constraint for category '${categoryCode ?: "*"}' has invalid window: " +
+                    "effectiveFrom '$effectiveFrom' is after effectiveTo '$effectiveTo'.",
+            )
+        }
 
         when (constraint.scope) {
             ConstraintScope.GLOBAL -> Unit
@@ -567,16 +631,47 @@ internal class Stage22SeedValidator(
         val checkClosedValues: (String, List<String>, String) -> Unit = check@{ attributeCode, values, source ->
             val attributeDef = registry.attributes[attributeCode] ?: return@check
             if (attributeDef.valueSetType == Stage22ValueSetType.OPEN) return@check
-            val allowedValueCodes = registry.dictionaries[attributeCode]
+            val dictionary = registry.dictionaries[attributeCode]
+            val allowedValueCodes = dictionary
                 ?.entries
-                ?.map { entry -> entry.valueCode }
+                ?.map { entry -> entry.valueCode.trim() }
+                ?.filter { it.isNotEmpty() }
                 ?.toSet()
                 .orEmpty()
             if (allowedValueCodes.isEmpty()) return@check
 
+            val normalizedCodeToCanonical = allowedValueCodes
+                .associateBy { valueCode -> aliasNormalizer.normalize(valueCode) }
+            val normalizedAliasToCanonical = dictionary
+                ?.entries
+                ?.flatMap { entry ->
+                    buildList {
+                        entry.labels.values.forEach { label -> add(label to entry.valueCode) }
+                        entry.aliases.forEach { alias -> add(alias to entry.valueCode) }
+                    }
+                }
+                ?.mapNotNull { (token, canonicalCode) ->
+                    val normalized = aliasNormalizer.normalize(token)
+                    if (normalized.isBlank()) null else normalized to canonicalCode
+                }
+                ?.toMap(LinkedHashMap())
+                .orEmpty()
+
             values.forEach { value ->
                 val valueCode = value.trim()
-                if (!allowedValueCodes.contains(valueCode)) {
+                if (valueCode in allowedValueCodes) return@forEach
+
+                val normalizedValue = aliasNormalizer.normalize(valueCode)
+                val canonicalSuggestion = normalizedCodeToCanonical[normalizedValue]
+                    ?: normalizedAliasToCanonical[normalizedValue]
+                if (canonicalSuggestion != null) {
+                    issue(
+                        issues,
+                        "REFERENTIAL_VALUE_NOT_VALUE_CODE",
+                        "Constraint $source uses '$valueCode' for attribute '$attributeCode'. " +
+                            "Use valueCode '$canonicalSuggestion'.",
+                    )
+                } else {
                     issue(
                         issues,
                         "REFERENTIAL_VALUE_CODE_UNKNOWN",
@@ -622,5 +717,64 @@ internal class Stage22SeedValidator(
         message: String,
     ) {
         issues += Stage22SeedValidationIssue(code = code, message = message)
+    }
+
+    private fun parseIsoDate(raw: String?): LocalDate? {
+        val value = raw?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        return try {
+            LocalDate.parse(value)
+        } catch (_: DateTimeParseException) {
+            null
+        }
+    }
+
+    private fun validateLeafProfileAllowlist(
+        categories: List<Category>,
+        issues: MutableList<Stage22SeedValidationIssue>,
+    ) {
+        if (normalizedLeafEmptyProfileAllowlist.isEmpty()) return
+        val categoryCodes = categories.map { it.code.trim() }.toSet()
+        val parentCodes = categories
+            .mapNotNull { category -> category.parentCode?.trim()?.takeIf { it.isNotEmpty() } }
+            .toSet()
+        val leafCodes = categoryCodes - parentCodes
+
+        normalizedLeafEmptyProfileAllowlist.forEach { code ->
+            if (code !in categoryCodes) {
+                issue(
+                    issues,
+                    "PROFILE_EMPTY_ALLOWLIST_UNKNOWN_CATEGORY",
+                    "Leaf empty-profile allowlist contains unknown category '$code'.",
+                )
+            } else if (code !in leafCodes) {
+                issue(
+                    issues,
+                    "PROFILE_EMPTY_ALLOWLIST_NOT_LEAF",
+                    "Leaf empty-profile allowlist category '$code' is not a leaf category.",
+                )
+            }
+        }
+    }
+
+    private val normalizedLeafEmptyProfileAllowlist: Set<String> = leafCategoryEmptyProfileAllowlist
+        .asSequence()
+        .map { it.trim().uppercase() }
+        .filter { it.isNotEmpty() }
+        .toCollection(linkedSetOf())
+}
+
+internal object Stage22LeafProfileAllowlist {
+    private const val RESOURCE_PATH = "taxonomy/stage2/2.2/_registry/leaf_profile_empty_allowlist.json"
+
+    val default: Set<String> by lazy {
+        if (!CatalogSeedResourceReader.resourceExists(RESOURCE_PATH)) return@lazy emptySet()
+        CatalogSeedResourceReader.readJson(
+            resourcePath = RESOURCE_PATH,
+            deserializer = ListSerializer(String.serializer()),
+        )
+            .asSequence()
+            .map { it.trim().uppercase() }
+            .filter { it.isNotEmpty() }
+            .toCollection(linkedSetOf())
     }
 }

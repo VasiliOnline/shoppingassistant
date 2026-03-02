@@ -3,6 +3,7 @@ package com.example.shoppingassistant.core.data
 import com.example.shoppingassistant.core.data.db.ProductDao
 import com.example.shoppingassistant.domain.model.NormalizedQuery
 import com.example.shoppingassistant.domain.model.ProductDto
+import com.example.shoppingassistant.domain.model.toRawStringAttributes
 import com.example.shoppingassistant.core.rank.RankService
 
 class ProductRepositoryImpl(
@@ -12,7 +13,7 @@ class ProductRepositoryImpl(
 
     // Преобразуем Map атрибутов в "key=value" для SQL IN()
     override suspend fun offersCount(q: NormalizedQuery): Int {
-        val pairs = q.attributes.entries.map { (k, v) -> "${k.trim()}=${v.trim()}" }
+        val pairs = q.attributes.toRawStringAttributes().entries.map { (k, v) -> "${k.trim()}=${v.trim()}" }
         return if (pairs.isEmpty()) {
             dao.countByBrandModel(q.brand, q.model)
         } else {
@@ -22,7 +23,7 @@ class ProductRepositoryImpl(
 
 
     override suspend fun searchTop(q: NormalizedQuery, limit: Int): List<ProductDto> {
-        val pairs = q.attributes.entries.map { (k, v) -> "${k.trim()}=${v.trim()}" }
+        val pairs = q.attributes.toRawStringAttributes().entries.map { (k, v) -> "${k.trim()}=${v.trim()}" }
 
         val entities =
             if (pairs.isEmpty()) {

@@ -1,6 +1,5 @@
 package com.example.shoppingassistant.feature.pages.useroffers.tasks
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -85,6 +84,7 @@ import com.example.shoppingassistant.feature.pages.useroffers.UserOfferStatus
 import com.example.shoppingassistant.feature.pages.useroffers.UserOffersLayout
 import com.example.shoppingassistant.feature.pages.useroffers.UserOffersSort
 import com.example.shoppingassistant.feature.ui.animations.ShimmerTask
+import com.example.shoppingassistant.feature.ui.animations.rememberReduceMotionEnabled
 import com.example.shoppingassistant.feature.ui.animations.rememberListAnimationsTask
 import com.example.shoppingassistant.feature.ui.animations.rememberShimmerTask
 import com.example.shoppingassistant.feature.ui.state.model.StateActionType
@@ -617,11 +617,6 @@ private fun SwipeBackground(
                 .padding(horizontal = 16.dp),
         )
     }
-}
-
-@Composable
-private fun rememberReduceMotionEnabled(): Boolean = remember {
-    !ValueAnimator.areAnimatorsEnabled()
 }
 
 @Composable

@@ -19,3 +19,4 @@ Registry files:
 - `_registry/value_dictionaries.json` — canonical dictionaries for `CLOSED`/`SEMI_CLOSED` attributes (`valueCode`, labels, aliases).
 - `_registry/registry_meta.json` — schema/data versions and generation timestamp.
 - `_registry/package_descriptors.json` — deterministic list of Stage 2.2 L0 package descriptors.
+- `_registry/leaf_profile_empty_allowlist.json` — explicit allowlist of leaf categories that may keep empty attribute profile.

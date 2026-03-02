@@ -51,7 +51,7 @@ class Stage3RuntimeE2ETest {
         assertEquals("FOOD.READY_MEALS", applied.categoryCode)
         assertEquals("B.FOOD.READY.05", applied.facetCollectionCode)
         assertEquals("FP.FOOD.READY.PIZZA", applied.facetPresetCode)
-        assertEquals("пицца", applied.attributes["cuisine"])
+        assertEquals("пицца", applied.attributes["cuisine"]?.asRawString())
     }
 
     @Test

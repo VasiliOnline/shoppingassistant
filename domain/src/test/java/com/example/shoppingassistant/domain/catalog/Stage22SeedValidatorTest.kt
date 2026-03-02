@@ -141,4 +141,100 @@ class Stage22SeedValidatorTest {
 
         assertTrue(report.issues.any { it.code == "CONSTRAINTS_CONFLICT" })
     }
+
+    @Test
+    fun leaf_profile_without_attributes_requires_explicit_allowlist() {
+        val strictValidator = Stage22SeedValidator(leafCategoryEmptyProfileAllowlist = emptySet())
+        val categories = listOf(
+            Category(
+                code = "TECH",
+                segment = CategorySegment.TECH,
+                title = "TECH",
+                parentCode = null,
+            ),
+            Category(
+                code = "TECH.PHONES",
+                segment = CategorySegment.TECH,
+                title = "TECH.PHONES",
+                parentCode = "TECH",
+            ),
+        )
+        val packageData = Stage22PackageData(
+            descriptor = Stage22PackageDescriptor(
+                l0Code = "TECH",
+                basePath = "taxonomy/stage2/2.2/TECH",
+            ),
+            profiles = listOf(
+                CategoryProfile(
+                    category = categories[1],
+                    attributes = emptyList(),
+                    categoryAttributes = emptyList(),
+                    valueDictionaries = emptyList(),
+                    requiredIfRules = emptyList(),
+                ),
+            ),
+            constraints = emptyList(),
+            valueDicts = emptyList(),
+        )
+
+        val report = strictValidator.validate(
+            categories = categories,
+            registry = Stage22RegistryLoader.loadSnapshot(),
+            packages = listOf(packageData),
+            globalConstraints = emptyList(),
+        )
+
+        assertTrue(report.issues.any { it.code == "PROFILE_LEAF_ATTRIBUTES_EMPTY_NOT_ALLOWED" })
+    }
+
+    @Test
+    fun closed_set_constraints_must_use_value_codes_only() {
+        val sourcePackage = GenericStage22PackageLoader.loadAll()
+            .first { it.descriptor.l0Code == "TECH" }
+        val brokenPackage = sourcePackage.copy(
+            constraints = sourcePackage.constraints + CatalogConstraints(
+                scope = ConstraintScope.CATEGORY,
+                categoryCode = "TECH.PHONES",
+                attributeConstraints = listOf(
+                    AttributeValueConstraint(
+                        attributeCode = "color",
+                        allowedValues = listOf("Черный"),
+                    ),
+                ),
+            ),
+        )
+
+        val report = validator.validate(
+            categories = CatalogSeed.categories,
+            registry = Stage22RegistryLoader.loadSnapshot(),
+            packages = listOf(brokenPackage),
+            globalConstraints = emptyList(),
+        )
+
+        assertTrue(report.issues.any { it.code == "REFERENTIAL_VALUE_NOT_VALUE_CODE" })
+    }
+
+    @Test
+    fun invalid_constraint_effective_window_is_reported() {
+        val sourcePackage = GenericStage22PackageLoader.loadAll()
+            .first { it.descriptor.l0Code == "TECH" }
+        val brokenPackage = sourcePackage.copy(
+            constraints = sourcePackage.constraints + CatalogConstraints(
+                scope = ConstraintScope.CATEGORY,
+                categoryCode = "TECH.PHONES",
+                effectiveFrom = "2026-12-31",
+                effectiveTo = "2026-01-01",
+                attributeConstraints = emptyList(),
+            ),
+        )
+
+        val report = validator.validate(
+            categories = CatalogSeed.categories,
+            registry = Stage22RegistryLoader.loadSnapshot(),
+            packages = listOf(brokenPackage),
+            globalConstraints = emptyList(),
+        )
+
+        assertTrue(report.issues.any { it.code == "REFERENTIAL_CONSTRAINT_EFFECTIVE_WINDOW_INVALID" })
+    }
 }

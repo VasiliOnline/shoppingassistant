@@ -2,6 +2,7 @@ package com.example.shoppingassistant.server.plugins
 
 import com.example.shoppingassistant.server.auth.SessionStore
 import com.example.shoppingassistant.server.auth.authRoutes
+import com.example.shoppingassistant.server.catalog.facetSchemaRoutes
 import com.example.shoppingassistant.server.config.RedisConfig
 import com.example.shoppingassistant.server.offers.offerRoutes
 import com.example.shoppingassistant.server.offers.offerAlertsRoutes
@@ -11,6 +12,7 @@ import com.example.shoppingassistant.server.profile.profileRoutes
 import com.example.shoppingassistant.server.push.pushRoutes
 import com.example.shoppingassistant.server.storage.storageRoutes
 import com.example.shoppingassistant.server.subscriptions.subscriptionsRoutes
+import com.example.shoppingassistant.server.tracks.tracksRoutes
 import com.example.shoppingassistant.server.ugc.ugcRoutes
 import com.example.shoppingassistant.server.useroffers.userOffersRoutes
 import com.example.shoppingassistant.server.useroffers.actions.userOffersActionsRoutes
@@ -103,6 +105,9 @@ fun Application.configureRouting() {
         offerAnalyticsRoutes()
         offerTrackingRoutes()
 
+        // Stage 3: facet schema runtime API
+        facetSchemaRoutes()
+
         // Мои товары (пользовательские офферы)
         userOffersRoutes()
         userOffersActionsRoutes()
@@ -110,6 +115,9 @@ fun Application.configureRouting() {
 
         // Модуль подписок (уведомления по алертам)
         subscriptionsRoutes()
+
+        // Модуль треков (CRUD + events)
+        tracksRoutes()
 
         // Модуль push (FCM tokens)
         pushRoutes()

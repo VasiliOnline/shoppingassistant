@@ -13,7 +13,8 @@ enum class ConstraintScope {
 
 /**
  * Allowed/forbidden values for a single attribute.
- * Values are canonical display strings (same as AttributeValueDictEntry.canonicalValue).
+ * Values must be valueCode tokens from dictionary for CLOSED/SEMI_CLOSED attributes.
+ * For OPEN attributes values are treated as raw literals.
  */
 @Serializable
 data class AttributeValueConstraint(
@@ -41,6 +42,8 @@ data class CatalogConstraints(
     val categoryCode: String? = null,
     val brand: String? = null,
     val model: String? = null,
+    val effectiveFrom: String? = null, // ISO date (yyyy-MM-dd), inclusive
+    val effectiveTo: String? = null, // ISO date (yyyy-MM-dd), inclusive
     val attributeConstraints: List<AttributeValueConstraint> = emptyList(),
     val compatibilityRules: List<CompatibilityRule> = emptyList(),
 )

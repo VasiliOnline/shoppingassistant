@@ -27,12 +27,14 @@ class TrackTop10RefreshService(
     }
 
     private fun Track.toCandidate(trackId: Long, userId: Long): TrackRefreshCandidate {
+        val targetSpec = target.spec
         return TrackRefreshCandidate(
             trackId = trackId,
             userId = userId,
             type = type,
-            matchKey = target.matchKey,
-            categoryCode = categoryCode,
+            matchKey = targetSpec?.matchKey,
+            categoryCode = targetSpec?.categoryCode ?: categoryCode,
+            targetAttributes = targetSpec?.attributes.orEmpty(),
             filters = filters,
             userCountry = null,
             failCount = 0,

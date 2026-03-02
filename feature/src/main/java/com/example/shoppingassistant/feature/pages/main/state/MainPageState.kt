@@ -26,6 +26,12 @@ data class NearbyBrandFacet(
     val count: Int,
 )
 
+data class NearbyValueFacet(
+    val id: String,
+    val name: String,
+    val count: Int,
+)
+
 enum class NearbyLocationPermission {
     Unknown,
     Granted,
@@ -71,6 +77,7 @@ data class MainPageState(
     val createOfferLoading: Boolean = false,
     val createOfferStatus: CreateTrackedOfferStatus? = null,
     val createOfferMessage: String? = null,
+    val catalogErrorMessage: String? = null,
     val lastCreatedOfferId: String? = null,
     val currentUserId: String? = null,
     val nearbyProfileCity: String? = null,
@@ -83,6 +90,8 @@ data class MainPageState(
     val nearbyFilters: NearbyFiltersState = NearbyFiltersState(),
     val nearbyLeafCategoryCode: String? = null,
     val nearbyBrandFacets: List<NearbyBrandFacet> = emptyList(),
+    val nearbyConditionFacets: List<NearbyValueFacet> = emptyList(),
+    val nearbyDeliveryChannelFacets: List<NearbyValueFacet> = emptyList(),
     val nearbyFetchLimit: Int = 20,
     val nearbyVisibleCount: Int = 12,
     val nearbyIsLoadingMore: Boolean = false,

@@ -15,7 +15,6 @@
       "BEAUTY.DEVICES",
       "BEAUTY.FRAGRANCE",
       "BEAUTY.HAIRCARE",
-      "BEAUTY.HEALTH",
       "BEAUTY.MAKEUP",
       "BEAUTY.SKINCARE",
       "FASH.ACCESSORIES",
@@ -26,12 +25,10 @@
       "FASH.WOMEN",
       "FOOD.DRINKS",
       "FOOD.GROCERIES",
-      "FOOD.READY_MEALS",
       "FOOD.SNACKS",
       "HOME.CLEANING",
       "HOME.FURNITURE",
       "HOME.GARDEN",
-      "HOME.KITCHEN_DINING",
       "HOME.LIGHTING",
       "HOME.PLUMBING",
       "HOME.REPAIR_TOOLS",
@@ -67,7 +64,9 @@
       "pinned": true,
       "hidden": false,
       "format": null
-    }
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
     "facetKey": "price",
@@ -137,7 +136,9 @@
       "pinned": true,
       "hidden": false,
       "format": "RUB"
-    }
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
     "facetKey": "condition",
@@ -151,23 +152,15 @@
       "AUTO.PARTS",
       "AUTO.TIRES_WHEELS",
       "AUTO.TOOLS_GARAGE",
-      "BEAUTY.BODYCARE",
       "BEAUTY.DEVICES",
-      "BEAUTY.FRAGRANCE",
-      "BEAUTY.HAIRCARE",
-      "BEAUTY.HEALTH",
-      "BEAUTY.MAKEUP",
-      "BEAUTY.SKINCARE",
       "FASH.ACCESSORIES",
       "FASH.BAGS",
       "FASH.KIDS",
       "FASH.MEN",
       "FASH.SHOES",
       "FASH.WOMEN",
-      "HOME.CLEANING",
       "HOME.FURNITURE",
       "HOME.GARDEN",
-      "HOME.KITCHEN_DINING",
       "HOME.LIGHTING",
       "HOME.PLUMBING",
       "HOME.REPAIR_TOOLS",
@@ -178,9 +171,6 @@
       "KIDS.STROLLERS_CARSEATS",
       "KIDS.TOYS_GAMES",
       "PETS.ACCESSORIES",
-      "PETS.FOOD",
-      "PETS.HEALTH",
-      "PETS.HYGIENE",
       "SPORT.BIKES_SCOOTERS",
       "SPORT.EQUIPMENT",
       "SPORT.FITNESS",
@@ -203,16 +193,19 @@
       "pinned": true,
       "hidden": false,
       "format": null
-    }
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
     "facetKey": "storage_gb",
     "titleRu": "Память",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.TABLETS_EBOOKS",
-      "TECH.LAPTOPS"
+      "TECH.GAMING",
+      "TECH.LAPTOPS",
+      "TECH.PC_COMPONENTS",
+      "TECH.TABLETS_EBOOKS"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -220,7 +213,9 @@
       "pinned": false,
       "hidden": false,
       "format": "GB"
-    }
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   },
   {
     "facetKey": "cuisine",
@@ -235,6 +230,584 @@
       "pinned": false,
       "hidden": false,
       "format": null
-    }
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cuisine_type",
+    "titleRu": "Кухня (атрибут)",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FOOD.READY_MEALS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 60,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "color",
+    "titleRu": "Цвет",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "APPL.CLIMATE",
+      "APPL.MAJOR",
+      "APPL.SMALL",
+      "AUTO.ACCESSORIES",
+      "AUTO.PARTS",
+      "AUTO.TIRES_WHEELS",
+      "BEAUTY.DEVICES",
+      "BEAUTY.HAIRCARE",
+      "BEAUTY.MAKEUP",
+      "HOME.FURNITURE",
+      "HOME.LIGHTING",
+      "HOME.PLUMBING",
+      "HOME.STORAGE",
+      "HOME.TEXTILES",
+      "KIDS.BABY_GEAR",
+      "KIDS.NURSERY_FURNITURE",
+      "KIDS.STROLLERS_CARSEATS",
+      "KIDS.TOYS_GAMES",
+      "PETS.ACCESSORIES",
+      "SPORT.BIKES_SCOOTERS",
+      "TECH.AUDIO",
+      "TECH.CAMERAS",
+      "TECH.GAMING",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
+      "TECH.SMART_HOME",
+      "TECH.TABLETS_EBOOKS",
+      "TECH.TV_VIDEO"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 70,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "flavor",
+    "titleRu": "Вкус",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "BEAUTY.HEALTH",
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.SNACKS",
+      "PETS.FOOD",
+      "PETS.HEALTH"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 80,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "gender",
+    "titleRu": "Пол",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "BEAUTY.FRAGRANCE",
+      "FASH.ACCESSORIES",
+      "FASH.BAGS",
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.SHOES",
+      "FASH.WOMEN"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 90,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "material",
+    "titleRu": "Материал",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "AUTO.ACCESSORIES",
+      "AUTO.PARTS",
+      "AUTO.TOOLS_GARAGE",
+      "FASH.ACCESSORIES",
+      "FASH.BAGS",
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN",
+      "HOME.FURNITURE",
+      "HOME.GARDEN",
+      "HOME.KITCHEN_DINING",
+      "HOME.LIGHTING",
+      "HOME.PLUMBING",
+      "HOME.REPAIR_TOOLS",
+      "HOME.STORAGE",
+      "HOME.TEXTILES",
+      "KIDS.BABY_GEAR",
+      "KIDS.NURSERY_FURNITURE",
+      "KIDS.TOYS_GAMES",
+      "PETS.ACCESSORIES",
+      "PETS.HYGIENE",
+      "SPORT.BIKES_SCOOTERS",
+      "SPORT.EQUIPMENT",
+      "SPORT.FITNESS",
+      "SPORT.HOBBY",
+      "SPORT.OUTDOOR",
+      "TECH.AUDIO",
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 100,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "memory_gb",
+    "titleRu": "Память (встроенная)",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 110,
+      "pinned": false,
+      "hidden": false,
+      "format": "GB"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "model",
+    "titleRu": "Модель",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "APPL.CLIMATE",
+      "APPL.MAJOR",
+      "APPL.SMALL",
+      "AUTO.ACCESSORIES",
+      "AUTO.PARTS",
+      "AUTO.TIRES_WHEELS",
+      "AUTO.TOOLS_GARAGE",
+      "BEAUTY.DEVICES",
+      "HOME.FURNITURE",
+      "HOME.GARDEN",
+      "HOME.LIGHTING",
+      "HOME.PLUMBING",
+      "HOME.REPAIR_TOOLS",
+      "HOME.STORAGE",
+      "HOME.TEXTILES",
+      "KIDS.BABY_GEAR",
+      "KIDS.NURSERY_FURNITURE",
+      "KIDS.STROLLERS_CARSEATS",
+      "KIDS.TOYS_GAMES",
+      "PETS.ACCESSORIES",
+      "SPORT.BIKES_SCOOTERS",
+      "SPORT.EQUIPMENT",
+      "SPORT.FITNESS",
+      "SPORT.HOBBY",
+      "SPORT.OUTDOOR",
+      "TECH.AUDIO",
+      "TECH.CAMERAS",
+      "TECH.GAMING",
+      "TECH.LAPTOPS",
+      "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
+      "TECH.SMART_HOME",
+      "TECH.TABLETS_EBOOKS",
+      "TECH.TV_VIDEO"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 120,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "model_line",
+    "titleRu": "Линейка",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "FASH.ACCESSORIES",
+      "FASH.BAGS",
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.SHOES",
+      "FASH.WOMEN"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 130,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "network_type",
+    "titleRu": "Сеть",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES",
+      "TECH.SMART_HOME",
+      "TECH.TABLETS_EBOOKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 140,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "os_family",
+    "titleRu": "ОС",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING",
+      "TECH.LAPTOPS",
+      "TECH.PHONES",
+      "TECH.SMART_HOME",
+      "TECH.TABLETS_EBOOKS",
+      "TECH.TV_VIDEO"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 150,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ram_gb",
+    "titleRu": "ОЗУ",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.LAPTOPS",
+      "TECH.PC_COMPONENTS",
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 160,
+      "pinned": false,
+      "hidden": false,
+      "format": "GB"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "screen_size_inch",
+    "titleRu": "Диагональ экрана",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.LAPTOPS",
+      "TECH.TABLETS_EBOOKS",
+      "TECH.TV_VIDEO"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 170,
+      "pinned": false,
+      "hidden": false,
+      "format": "IN"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "size_eu",
+    "titleRu": "Размер EU",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.SHOES",
+      "FASH.WOMEN"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 180,
+      "pinned": false,
+      "hidden": false,
+      "format": "EU"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "size_uk",
+    "titleRu": "Размер UK",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FASH.SHOES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 190,
+      "pinned": false,
+      "hidden": false,
+      "format": "UK"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "size_us",
+    "titleRu": "Размер US",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FASH.SHOES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 200,
+      "pinned": false,
+      "hidden": false,
+      "format": "US"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "volume_ml",
+    "titleRu": "Объём",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "BEAUTY.BODYCARE",
+      "BEAUTY.FRAGRANCE",
+      "BEAUTY.HAIRCARE",
+      "BEAUTY.SKINCARE",
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "HOME.CLEANING",
+      "HOME.KITCHEN_DINING",
+      "HOME.STORAGE",
+      "PETS.HYGIENE"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 210,
+      "pinned": false,
+      "hidden": false,
+      "format": "ML"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "allergen_profile",
+    "titleRu": "Аллергены",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 220,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "storage_regime",
+    "titleRu": "Режим хранения",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 230,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "spiciness_level",
+    "titleRu": "Острота",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FOOD.READY_MEALS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 240,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "is_gluten_free",
+    "titleRu": "Без глютена",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 250,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "shelf_life_days",
+    "titleRu": "Срок годности (дней)",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 260,
+      "pinned": false,
+      "hidden": false,
+      "format": "DAY"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "calories_kcal_per_serving",
+    "titleRu": "Калории на порцию",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 270,
+      "pinned": false,
+      "hidden": false,
+      "format": "KCAL"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "protein_per_serving_gram",
+    "titleRu": "Белок на порцию (г)",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 280,
+      "pinned": false,
+      "hidden": false,
+      "format": "G"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "fat_per_serving_gram",
+    "titleRu": "Жиры на порцию (г)",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 290,
+      "pinned": false,
+      "hidden": false,
+      "format": "G"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "carbs_per_serving_gram",
+    "titleRu": "Углеводы на порцию (г)",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 300,
+      "pinned": false,
+      "hidden": false,
+      "format": "G"
+    },
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
   }
 ]

@@ -1,3 +1,5 @@
+import org.gradle.language.jvm.tasks.ProcessResources
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -33,4 +35,17 @@ tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
             ?: "false"
         )
     systemProperty("stage21.tech.golden.enforce", enforceGoldenGate)
+}
+
+tasks.named<ProcessResources>("processResources").configure {
+    from("src/main/resources") {
+        include("taxonomy/stage2/2.2/_registry/**")
+        include("taxonomy/stage2/2.2/_global/**")
+        includeEmptyDirs = false
+        eachFile {
+            path = path
+                .replace("taxonomy/stage2/2.2/_registry/", "taxonomy/stage2/2.2/registry/")
+                .replace("taxonomy/stage2/2.2/_global/", "taxonomy/stage2/2.2/global/")
+        }
+    }
 }

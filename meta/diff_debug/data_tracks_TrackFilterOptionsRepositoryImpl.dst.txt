@@ -3,6 +3,9 @@ package com.example.shoppingassistant.core.data.tracks
 import com.example.shoppingassistant.core.data.nearby.NearbyCondition
 import com.example.shoppingassistant.core.data.nearby.NearbyDelivery
 import com.example.shoppingassistant.core.data.nearby.NearbyFiltersStorage
+import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.CatalogRepository
 import com.example.shoppingassistant.domain.facet.FacetCountMode
 import com.example.shoppingassistant.domain.facet.FacetCountsQuery
 import com.example.shoppingassistant.domain.facet.FacetCountsRepository
@@ -20,6 +23,8 @@ class TrackFilterOptionsRepositoryImpl(
     private val trackRepository: TrackRepository,
     private val nearbyFiltersStorage: NearbyFiltersStorage,
     private val facetCountsRepository: FacetCountsRepository,
+    private val catalogRepository: CatalogRepository,
+    private val categoryAliasRepository: CategoryAliasRepository,
     private val historyStore: TrackFilterOptionsHistoryStore,
     private val clock: () -> Long = { System.currentTimeMillis() },
 ) : TrackFilterOptionsRepository {
@@ -28,6 +33,13 @@ class TrackFilterOptionsRepositoryImpl(
         val bundle: TrackFilterOptionsBundle,
         val createdAt: Long,
         val ttlSec: Int,
+    )
+
+    private data class ExtraFacetDescriptor(
+        val displayKey: String,
+        val facetKey: String,
+        val normalizedDisplayKey: String,
+        val normalizedFacetKey: String,
     )
 
     private val cache = LinkedHashMap<String, CacheEntry>()
@@ -49,7 +61,8 @@ class TrackFilterOptionsRepositoryImpl(
                 recordTrackFilters(track)
             }
             val categoryCode = resolveCategoryCode(track)
-            buildBundle(trackId, key, query, extraKey, categoryCode)
+            val categoryProfile = loadCategoryProfile(categoryCode)
+            buildBundle(trackId, key, query, extraKey, categoryCode, categoryProfile)
         } catch (_: Throwable) {
             buildFallbackBundle(trackId, key, query, extraKey, now, null)
         }
@@ -65,13 +78,27 @@ class TrackFilterOptionsRepositoryImpl(
         query: String?,
         extraKey: String?,
         categoryCode: String?,
+        categoryProfile: CategoryProfile?,
     ): TrackFilterOptionsBundle {
         val now = clock()
         val normalizedQuery = query?.trim().orEmpty().lowercase().takeIf { it.isNotBlank() }
         val recent = historyStore.getRecent(key, extraKey)
+        val extraDescriptors = buildExtraFacetDescriptors(categoryProfile)
         val suggested = suggestedOptionsFor(key)
-        val counts = loadFacetCounts(trackId, key, extraKey, categoryCode, normalizedQuery)
-        val seeded = seededOptionsFor(key, extraKey)
+        val counts = loadFacetCounts(
+            trackId = trackId,
+            key = key,
+            extraKey = extraKey,
+            categoryCode = categoryCode,
+            categoryProfile = categoryProfile,
+            extraDescriptors = extraDescriptors,
+            query = normalizedQuery,
+        )
+        val seeded = seededOptionsFor(
+            key = key,
+            extraKey = extraKey,
+            extraDescriptors = extraDescriptors,
+        )
         val filteredSuggested = filterByQuery(suggested, normalizedQuery)
         val filteredRecent = filterByQuery(recent, normalizedQuery)
         val filteredSeeded = mergeSeededWithCounts(seeded, counts, normalizedQuery)
@@ -105,7 +132,15 @@ class TrackFilterOptionsRepositoryImpl(
         val normalizedQuery = query?.trim().orEmpty().lowercase().takeIf { it.isNotBlank() }
         val recent = historyStore.getRecent(key, extraKey)
         val filteredRecent = filterByQuery(recent, normalizedQuery)
-        val counts = loadFacetCounts(trackId, key, extraKey, categoryCode, normalizedQuery)
+        val counts = loadFacetCounts(
+            trackId = trackId,
+            key = key,
+            extraKey = extraKey,
+            categoryCode = categoryCode,
+            categoryProfile = null,
+            extraDescriptors = emptyList(),
+            query = normalizedQuery,
+        )
         val options = mergeOptions(
             suggested = emptyList(),
             recent = filteredRecent,
@@ -149,6 +184,8 @@ class TrackFilterOptionsRepositoryImpl(
         key: TrackFilterKey,
         extraKey: String?,
         categoryCode: String?,
+        categoryProfile: CategoryProfile?,
+        extraDescriptors: List<ExtraFacetDescriptor>,
         query: String?,
     ): Map<String, Int> {
         val resolvedCategory = categoryCode ?: resolveCategoryCode(runCatching { trackRepository.getTrack(trackId) }.getOrNull())
@@ -156,15 +193,33 @@ class TrackFilterOptionsRepositoryImpl(
 
         return when (key) {
             TrackFilterKey.EXTRA_VALUE -> {
-                val facetKey = extraKey?.let(::mapExtraKeyToFacetKey) ?: return emptyMap()
+                val facetKey = extraKey?.let { mapExtraKeyToFacetKey(it, extraDescriptors) } ?: return emptyMap()
                 loadFacetCountsForFacet(resolvedCategory, facetKey, query)
             }
             TrackFilterKey.EXTRA_KEY -> {
+                val descriptors = if (extraDescriptors.isNotEmpty()) {
+                    extraDescriptors
+                } else {
+                    buildExtraFacetDescriptors(categoryProfile)
+                }
+                if (descriptors.isEmpty()) return emptyMap()
+                val narrowedByQuery = if (query.isNullOrBlank()) {
+                    descriptors
+                } else {
+                    descriptors.filter { descriptor ->
+                        descriptor.displayKey.lowercase().contains(query) ||
+                            descriptor.facetKey.lowercase().contains(query)
+                    }
+                }
+                val descriptorsForCounts = narrowedByQuery.take(MAX_EXTRA_KEYS_FOR_COUNTS)
                 val counts = LinkedHashMap<String, Int>()
-                EXTRA_KEY_FACET_MAP.forEach { (label, facetKey) ->
-                    val map = loadFacetCountsForFacet(resolvedCategory, facetKey, query)
+                descriptorsForCounts.forEach { descriptor ->
+                    val map = loadFacetCountsForFacet(resolvedCategory, descriptor.facetKey, query)
                     val total = map.values.sum()
-                    if (total > 0) counts[label] = total
+                    if (total > 0) {
+                        val existing = counts[descriptor.displayKey] ?: 0
+                        counts[descriptor.displayKey] = existing + total
+                    }
                 }
                 counts
             }
@@ -208,7 +263,11 @@ class TrackFilterOptionsRepositoryImpl(
         return filterByQuery(merged, query)
     }
 
-    private fun seededOptionsFor(key: TrackFilterKey, extraKey: String?): List<String> {
+    private fun seededOptionsFor(
+        key: TrackFilterKey,
+        extraKey: String?,
+        extraDescriptors: List<ExtraFacetDescriptor>,
+    ): List<String> {
         return when (key) {
             TrackFilterKey.REGION -> REGION_SEEDS
             TrackFilterKey.DELIVERY -> NearbyDelivery.entries.map { it.label }
@@ -216,7 +275,7 @@ class TrackFilterOptionsRepositoryImpl(
                 .filterNot { it == NearbyCondition.Any }
                 .map { it.label }
             TrackFilterKey.SELLER -> SELLER_SEEDS
-            TrackFilterKey.EXTRA_KEY -> EXTRA_KEY_SEEDS
+            TrackFilterKey.EXTRA_KEY -> extraDescriptors.map { it.displayKey }
             TrackFilterKey.EXTRA_VALUE -> {
                 if (extraKey.isNullOrBlank()) emptyList() else emptyList()
             }
@@ -291,36 +350,105 @@ class TrackFilterOptionsRepositoryImpl(
     private fun isExpired(entry: CacheEntry, now: Long): Boolean =
         entry.ttlSec > 0 && (now - entry.createdAt) > entry.ttlSec * 1000L
 
-    private fun resolveCategoryCode(track: Track?): String? {
-        val candidate = listOf(track?.target?.matchKey, track?.target?.query)
+    private suspend fun resolveCategoryCode(track: Track?): String? {
+        val explicit = track?.categoryCode?.trim()?.takeIf { it.isNotBlank() }
+        if (explicit != null) return explicit
+
+        val candidates = listOf(
+            track?.title,
+            track?.target?.matchKey,
+            track?.target?.query,
+            track?.target?.url,
+        )
             .mapNotNull { it?.trim()?.takeIf { value -> value.isNotBlank() } }
-            .firstOrNull { value -> CATEGORY_CODE_REGEX.matches(value) }
-        return candidate ?: FALLBACK_CATEGORY_CODE
+
+        if (candidates.isEmpty()) return null
+        val haystack = candidates.joinToString(" ").lowercase()
+
+        val aliases = runCatching { categoryAliasRepository.listAliases() }.getOrElse { emptyList() }
+        val match = aliases
+            .filter { it.alias.isNotBlank() && haystack.contains(it.alias.lowercase()) }
+            .maxByOrNull { it.alias.length }
+        return match?.categoryCode?.takeIf { it.isNotBlank() }
     }
 
-    private fun mapExtraKeyToFacetKey(extraKey: String): String? {
-        val normalized = extraKey.trim().lowercase()
-        return EXTRA_KEY_FACET_MAP.entries.firstOrNull { normalized == it.key.lowercase() }?.value
-            ?: when (normalized) {
-                "бренд" -> "brand"
-                "модель" -> "model"
-                "цвет" -> "color"
-                "размер" -> "size"
-                "материал" -> "material"
-                "brand" -> "brand"
-                "model" -> "model"
-                "color" -> "color"
-                "size" -> "size"
-                "material" -> "material"
-                else -> null
-            }
+    private suspend fun loadCategoryProfile(categoryCode: String?): CategoryProfile? {
+        if (categoryCode.isNullOrBlank()) return null
+        return runCatching { catalogRepository.getCategoryProfile(categoryCode) }.getOrNull()
     }
+
+    private fun buildExtraFacetDescriptors(
+        categoryProfile: CategoryProfile?,
+    ): List<ExtraFacetDescriptor> {
+        categoryProfile ?: return emptyList()
+        if (categoryProfile.attributes.isEmpty()) return emptyList()
+
+        val defsByCode = categoryProfile.attributes.associateBy { def -> def.code }
+        val orderedCodes = buildList {
+            categoryProfile.categoryAttributes
+                .sortedBy { categoryAttribute -> categoryAttribute.uiOrder }
+                .forEach { categoryAttribute ->
+                    val code = categoryAttribute.attributeCode.trim()
+                    if (code.isNotBlank() && !contains(code)) add(code)
+                }
+            categoryProfile.attributes.forEach { def ->
+                val code = def.code.trim()
+                if (code.isNotBlank() && !contains(code)) add(code)
+            }
+        }
+
+        val descriptors = orderedCodes
+            .mapNotNull { code ->
+                val def = defsByCode[code] ?: return@mapNotNull null
+                if (!def.facetEnabled) return@mapNotNull null
+                val displayKey = def.title.trim().takeIf { it.isNotBlank() } ?: def.code.trim()
+                val facetKey = def.code.trim()
+                if (displayKey.isBlank() || facetKey.isBlank()) return@mapNotNull null
+                ExtraFacetDescriptor(
+                    displayKey = displayKey,
+                    facetKey = facetKey,
+                    normalizedDisplayKey = normalizeToken(displayKey),
+                    normalizedFacetKey = normalizeToken(facetKey),
+                )
+            }
+
+        return descriptors
+            .distinctBy { descriptor -> descriptor.normalizedFacetKey }
+            .sortedBy { descriptor -> descriptor.displayKey.lowercase() }
+    }
+
+    private fun mapExtraKeyToFacetKey(
+        extraKey: String,
+        descriptors: List<ExtraFacetDescriptor>,
+    ): String? {
+        val normalized = normalizeToken(extraKey)
+        if (normalized.isEmpty()) return null
+        descriptors.firstOrNull { descriptor ->
+            descriptor.normalizedDisplayKey == normalized ||
+                descriptor.normalizedFacetKey == normalized
+        }?.let { descriptor ->
+            return descriptor.facetKey
+        }
+
+        return extraKey.trim()
+            .lowercase()
+            .replace(' ', '_')
+            .takeIf { it.isNotBlank() }
+    }
+
+    private fun normalizeToken(value: String): String =
+        value.trim()
+            .lowercase()
+            .replace('ё', 'е')
+            .replace(MULTI_SPACES_REGEX, " ")
+            .trim()
+            .replace(' ', '_')
 
     private companion object {
         const val TTL_DYNAMIC_SEC = 120
         const val TTL_STATIC_SEC = 86_400
-        const val FALLBACK_CATEGORY_CODE = "TECH.SMARTPHONE"
-        val CATEGORY_CODE_REGEX = Regex("^[A-Z]+(\\.[A-Z0-9_]+)+$")
+        const val MAX_EXTRA_KEYS_FOR_COUNTS = 30
+        val MULTI_SPACES_REGEX = Regex("\\s+")
 
         val REGION_SEEDS = listOf(
             "Москва",
@@ -339,22 +467,6 @@ class TrackFilterOptionsRepositoryImpl(
             "Магазин",
             "Частное лицо",
             "Проверенный продавец",
-        )
-
-        val EXTRA_KEY_SEEDS = listOf(
-            "Бренд",
-            "Модель",
-            "Цвет",
-            "Размер",
-            "Материал",
-        )
-
-        val EXTRA_KEY_FACET_MAP = linkedMapOf(
-            "Бренд" to "brand",
-            "Модель" to "model",
-            "Цвет" to "color",
-            "Размер" to "size",
-            "Материал" to "material",
         )
     }
 }

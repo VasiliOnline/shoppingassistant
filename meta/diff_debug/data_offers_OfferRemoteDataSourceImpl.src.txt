@@ -7,6 +7,8 @@ import com.example.shoppingassistant.domain.model.OfferFull
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsResponse
+import com.example.shoppingassistant.domain.model.PresetObservabilityBatchRequest
+import com.example.shoppingassistant.domain.model.PresetObservabilityBatchResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -71,6 +73,32 @@ class OfferRemoteDataSourceImpl(
                 throw IllegalStateException("Unauthorized")
             }
             else -> throw IllegalStateException("Failed to fetch offers: ${response.status}")
+        }
+    }
+
+    override suspend fun submitPresetObservabilityBatch(
+        req: PresetObservabilityBatchRequest,
+        bearerToken: String?,
+    ): PresetObservabilityBatchResponse {
+        val client = backendClient.client
+        val token = bearerToken ?: authRepository.currentToken()
+
+        val response: HttpResponse = client.post("$baseUrl/api/offers/observability/preset-events/batch") {
+            contentType(ContentType.Application.Json)
+            if (!token.isNullOrBlank()) {
+                header("Authorization", ensureBearer(token))
+            }
+            setBody(req)
+        }
+
+        return when (response.status) {
+            HttpStatusCode.OK -> response.body()
+            HttpStatusCode.BadRequest -> response.body()
+            HttpStatusCode.Unauthorized -> {
+                authRepository.logout()
+                throw IllegalStateException("Unauthorized")
+            }
+            else -> throw IllegalStateException("Failed to submit preset observability events: ${response.status}")
         }
     }
 

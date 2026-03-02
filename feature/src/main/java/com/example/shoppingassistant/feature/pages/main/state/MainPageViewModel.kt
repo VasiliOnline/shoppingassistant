@@ -52,6 +52,11 @@ import com.example.shoppingassistant.domain.model.OfferFacetType
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
 import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.model.TypedAttributeFilter
+import com.example.shoppingassistant.domain.model.TypedAttributeOperator
+import com.example.shoppingassistant.domain.model.TypedAttributeValue
+import com.example.shoppingassistant.domain.model.ValueFacet
+import com.example.shoppingassistant.domain.model.toTypedAttributesGuess
 import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
 import com.example.shoppingassistant.domain.ingest.IngestStatus
@@ -64,9 +69,11 @@ import com.example.shoppingassistant.domain.facet.FacetCountsQuery
 import com.example.shoppingassistant.domain.facet.GetFacetCountsTask
 import com.example.shoppingassistant.domain.tracks.Track
 import com.example.shoppingassistant.domain.tracks.TrackFilters
+import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackRepository
 import com.example.shoppingassistant.domain.tracks.TrackState
 import com.example.shoppingassistant.domain.tracks.TrackTarget
+import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.domain.vision.NormalizePhotosUseCase
 import com.example.shoppingassistant.domain.vision.GetVisionUsageUseCase
@@ -199,6 +206,29 @@ class MainPageViewModel(
     fun setState(s: MainPageState) { _state.value = s }
     fun reduce(block: (MainPageState) -> MainPageState) = _state.update(block)
 
+    private fun showCatalogError(message: String) {
+        reduce { state -> state.copy(catalogErrorMessage = message) }
+    }
+
+    private fun clearCatalogError() {
+        reduce { state ->
+            if (state.catalogErrorMessage == null) state
+            else state.copy(catalogErrorMessage = null)
+        }
+    }
+
+    fun retryCatalogLoad() {
+        clearCatalogError()
+        categoryIndex = null
+        viewModelScope.launch {
+            ensureCategoryIndex()
+        }
+        refreshCategoryChips()
+        refreshAttributes()
+        refreshFacetCountsIfVisible()
+        refreshAttrFacetCountsIfVisible()
+    }
+
     private fun recordAtomicTemplate(base: UiTemplate) {
         val snapshot = buildSnapshot(base) ?: return
         recordTemplateUsage(snapshot)
@@ -208,7 +238,17 @@ class MainPageViewModel(
     private suspend fun ensureCategoryIndex(): CategoryIndex {
         val cached = categoryIndex
         if (cached != null) return cached
-        val categories = runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+        val categories = runCatching { catalogRepository.listCategories() }
+            .onFailure { throwable ->
+                showCatalogError(
+                    throwable.message
+                        ?: "Не удалось загрузить каталог. Доступен ограниченный режим.",
+                )
+            }
+            .getOrElse { categoryIndex?.byCode?.values?.toList().orEmpty() }
+        if (categories.isNotEmpty()) {
+            clearCatalogError()
+        }
         val index = buildCategoryIndex(categories)
         categoryIndex = index
         return index
@@ -827,7 +867,17 @@ class MainPageViewModel(
 
     private fun refreshCategoryChips() {
         viewModelScope.launch {
-            val categories = runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+            val categories = runCatching { catalogRepository.listCategories() }
+                .onFailure { throwable ->
+                    showCatalogError(
+                        throwable.message
+                            ?: "Не удалось обновить категории. Доступен кешированный режим.",
+                    )
+                }
+                .getOrElse { categoryIndex?.byCode?.values?.toList().orEmpty() }
+            if (categories.isNotEmpty()) {
+                clearCatalogError()
+            }
             val byCode = categories.associateBy { it.code }
 
             val history = runCatching { templateHistoryRepository.listRecent(limit = 30) }
@@ -1009,6 +1059,8 @@ class MainPageViewModel(
                 nearbyCategoryChips = categoryChips,
                 nearbyLeafCategoryCode = leafCategoryCode,
                 nearbyBrandFacets = if (leafCategoryCode == null) emptyList() else it.nearbyBrandFacets,
+                nearbyConditionFacets = if (leafCategoryCode == null) emptyList() else it.nearbyConditionFacets,
+                nearbyDeliveryChannelFacets = if (leafCategoryCode == null) emptyList() else it.nearbyDeliveryChannelFacets,
                 nearbyError = null,
                 nearbyLastAction = null,
                 nearbyDraftLoading = false,
@@ -1217,11 +1269,20 @@ class MainPageViewModel(
                 currentLon = _state.value.nearbyUserLon,
                 limit = fetchLimit,
             )
-            val includeBrandFacets = _state.value.nearbyLeafCategoryCode != null
+            val includeRuntimeFacets = _state.value.nearbyLeafCategoryCode != null
+            val requestedFacets = if (includeRuntimeFacets) {
+                setOf(
+                    OfferFacetType.BRAND,
+                    OfferFacetType.CONDITION,
+                    OfferFacetType.DELIVERY_CHANNEL,
+                )
+            } else {
+                emptySet()
+            }
             val request = OfferSearchWithFacetsRequest(
                 criteria = criteria,
-                facets = if (includeBrandFacets) setOf(OfferFacetType.BRAND) else emptySet(),
-                excludeFacetFilters = if (includeBrandFacets) setOf(OfferFacetType.BRAND) else emptySet(),
+                facets = requestedFacets,
+                excludeFacetFilters = requestedFacets,
             )
             val result = runCatching { searchOffersWithFacets(request) }
             if (result.isFailure) {
@@ -1235,10 +1296,20 @@ class MainPageViewModel(
             }
             val payload = result.getOrThrow()
             val items = payload.items
-            val brandFacets = if (includeBrandFacets) {
+            val brandFacets = if (includeRuntimeFacets) {
                 payload.brandFacets.map { facet ->
                     NearbyBrandFacet(id = facet.id, name = facet.name, count = facet.count)
                 }
+            } else {
+                emptyList()
+            }
+            val conditionFacets = if (includeRuntimeFacets) {
+                payload.conditionFacets.map { it.toNearbyValueFacet() }
+            } else {
+                emptyList()
+            }
+            val deliveryChannelFacets = if (includeRuntimeFacets) {
+                payload.deliveryChannelFacets.map { it.toNearbyValueFacet() }
             } else {
                 emptyList()
             }
@@ -1248,6 +1319,8 @@ class MainPageViewModel(
                     nearbyOffers = items,
                     nearbyFoundCount = payload.total,
                     nearbyBrandFacets = brandFacets,
+                    nearbyConditionFacets = conditionFacets,
+                    nearbyDeliveryChannelFacets = deliveryChannelFacets,
                     nearbyError = null,
                     nearbyFetchLimit = fetchLimit,
                     nearbyVisibleCount = visible,
@@ -1395,6 +1468,26 @@ class MainPageViewModel(
             NearbyScope.CITY -> resolvedLocation
             NearbyScope.COUNTRY -> null
         }
+        val attributeFilters = buildMap<String, TypedAttributeFilter> {
+            condition?.let { selectedCondition ->
+                put(
+                    "condition",
+                    TypedAttributeFilter(
+                        op = TypedAttributeOperator.EQ,
+                        value = TypedAttributeValue.Text(selectedCondition),
+                    ),
+                )
+            }
+            if (deliveryChannels.isNotEmpty()) {
+                put(
+                    "delivery_channel",
+                    TypedAttributeFilter(
+                        op = TypedAttributeOperator.IN,
+                        values = deliveryChannels.map { channel -> TypedAttributeValue.Text(channel) },
+                    ),
+                )
+            }
+        }
 
         return OfferSearchCriteria(
             brand = brandName,
@@ -1412,7 +1505,8 @@ class MainPageViewModel(
             condition = condition,
             conditions = listOfNotNull(condition),
             deliveryChannels = deliveryChannels,
-            attributes = attrs,
+            attributes = attrs.toTypedAttributesGuess(),
+            attributeFilters = attributeFilters,
             userCountry = locale.country.takeIf { it.isNotBlank() },
             userLanguage = locale.language.takeIf { it.isNotBlank() },
             limit = limit,
@@ -1446,11 +1540,109 @@ class MainPageViewModel(
                 return@launch
             }
 
+            val normalizedCategoryCode = current.categoryCode
+                ?.trim()
+                ?.uppercase(Locale.ROOT)
+                ?.takeIf { it.isNotBlank() }
+            val selectedFilters = stripCategoryFilters(current.asSelectedFilters())
+            val explicitBrand = selectedFilters.entries
+                .firstOrNull { (key, _) -> key.equals("brand", ignoreCase = true) }
+                ?.value
+                ?.trim()
+                ?.takeIf { it.isNotBlank() }
+            val explicitModel = selectedFilters.entries
+                .firstOrNull { (key, _) -> key.equals("model", ignoreCase = true) }
+                ?.value
+                ?.trim()
+                ?.takeIf { it.isNotBlank() }
+            val parsedQuery = BrandModelRules.fromRaw(query, Normalization.normalizeAttrs(selectedFilters))
+            val trackMatchKey = TrackMatchKeyFactory.fromBrandModel(
+                brand = explicitBrand ?: parsedQuery.brand,
+                model = explicitModel ?: parsedQuery.model,
+            )
+            if (normalizedCategoryCode == null) {
+                onResult(false)
+                return@launch
+            }
+
+            val trackExtra = LinkedHashMap<String, String>()
+            selectedFilters.forEach { (rawKey, rawValue) ->
+                val key = rawKey.trim()
+                val value = rawValue.trim()
+                if (key.isBlank() || value.isBlank()) return@forEach
+                trackExtra[key] = value
+            }
+            val normalizedBrandForTarget = (explicitBrand ?: parsedQuery.brand)
+                ?.trim()
+                ?.takeIf { it.isNotBlank() }
+            val normalizedModelForTarget = (explicitModel ?: parsedQuery.model)
+                ?.trim()
+                ?.takeIf { it.isNotBlank() }
+            if (normalizedBrandForTarget != null) {
+                trackExtra.putIfAbsent("brand", normalizedBrandForTarget)
+            }
+            if (normalizedModelForTarget != null) {
+                trackExtra.putIfAbsent("model", normalizedModelForTarget)
+            }
+            val trackFilters = TrackFilters(
+                extra = trackExtra.entries
+                    .sortedBy { (key, _) -> key.lowercase(Locale.ROOT) }
+                    .map { it.toPair() }
+                    .toMap(LinkedHashMap<String, String>()),
+            )
+            val hasTargetAttributes = trackFilters.extra.isNotEmpty() || trackMatchKey != null
+            val trackType = if (hasTargetAttributes) TrackType.PRODUCT else TrackType.CATEGORY
+            val effectiveMatchKey = trackMatchKey.takeIf { trackFilters.extra.isEmpty() }
+            val targetQueryText = query.trim().takeIf { it.isNotBlank() }
+            val targetSpec = TrackTargetSpec(
+                categoryCode = normalizedCategoryCode,
+                attributes = trackFilters.extra,
+                matchKey = effectiveMatchKey,
+                queryText = targetQueryText,
+                schemaVersion = 1,
+                taxonomyVersion = com.example.shoppingassistant.domain.catalog.CatalogDataVersion.current,
+                locale = Locale.getDefault().toLanguageTag().takeIf { it.isNotBlank() },
+            )
+
+            val normalizedExtra = trackFilters.extra
+                .mapKeys { it.key.trim().lowercase(Locale.ROOT) }
+                .mapValues { it.value.trim() }
+                .filterKeys { it.isNotBlank() }
+                .filterValues { it.isNotBlank() }
+                .toSortedMap()
             val existing = runCatching { trackRepository.listTracks() }
                 .getOrElse { emptyList() }
                 .firstOrNull { track ->
-                    track.type == TrackType.SEARCH &&
-                        track.target.query?.trim()?.equals(query, ignoreCase = true) == true
+                    if (track.type != trackType) return@firstOrNull false
+                    val sameCategory =
+                        track.categoryCode?.trim()?.uppercase(Locale.ROOT) == normalizedCategoryCode
+                    if (!sameCategory) return@firstOrNull false
+
+                    val trackExtra = track.target.spec?.attributes.orEmpty()
+                        .mapKeys { it.key.trim().lowercase(Locale.ROOT) }
+                        .mapValues { it.value.trim() }
+                        .filterKeys { it.isNotBlank() }
+                        .filterValues { it.isNotBlank() }
+                        .toSortedMap()
+                    if (trackExtra != normalizedExtra) return@firstOrNull false
+                    val normalizedTrackQueryText = track.target.spec?.queryText
+                        ?.replace("\\s+".toRegex(), " ")
+                        ?.trim()
+                        ?.lowercase(Locale.ROOT)
+                        .orEmpty()
+                    val normalizedTargetQueryText = targetQueryText
+                        ?.replace("\\s+".toRegex(), " ")
+                        ?.trim()
+                        ?.lowercase(Locale.ROOT)
+                        .orEmpty()
+                    if (normalizedTrackQueryText != normalizedTargetQueryText) return@firstOrNull false
+
+                    if (normalizedExtra.isNotEmpty()) {
+                        true
+                    } else {
+                        TrackMatchKeyFactory.parse(track.target.spec?.matchKey) ==
+                            TrackMatchKeyFactory.parse(effectiveMatchKey)
+                    }
                 }
             if (existing != null) {
                 onResult(false)
@@ -1463,10 +1655,31 @@ class MainPageViewModel(
                     Track(
                         id = "new",
                         title = heading.takeIf { !it.isNullOrBlank() }?.take(80) ?: query.take(80),
-                        categoryCode = current.categoryCode,
-                        type = TrackType.SEARCH,
-                        target = TrackTarget(query = query),
-                        filters = TrackFilters(),
+                        categoryCode = normalizedCategoryCode,
+                        type = trackType,
+                        target = if (trackType == TrackType.PRODUCT) {
+                            TrackTarget(
+                                spec = targetSpec,
+                                categoryCode = normalizedCategoryCode,
+                                attributes = trackFilters.extra,
+                                matchKey = effectiveMatchKey,
+                                queryText = targetQueryText,
+                                schemaVersion = 1,
+                                taxonomyVersion = com.example.shoppingassistant.domain.catalog.CatalogDataVersion.current,
+                                locale = Locale.getDefault().toLanguageTag().takeIf { it.isNotBlank() },
+                            )
+                        } else {
+                            TrackTarget(
+                                spec = targetSpec,
+                                categoryCode = normalizedCategoryCode,
+                                attributes = trackFilters.extra,
+                                queryText = targetQueryText,
+                                schemaVersion = 1,
+                                taxonomyVersion = com.example.shoppingassistant.domain.catalog.CatalogDataVersion.current,
+                                locale = Locale.getDefault().toLanguageTag().takeIf { it.isNotBlank() },
+                            )
+                        },
+                        filters = trackFilters,
                         alertRules = emptyList(),
                         state = TrackState.ACTIVE,
                         createdAt = now,
@@ -1500,6 +1713,9 @@ class MainPageViewModel(
                 TemplateMode.ExpressFromPhoto, TemplateMode.OfferFromVoice -> TemplateSnapshotMode.EXPRESS
                 TemplateMode.SearchOrSubscribe -> TemplateSnapshotMode.SEARCH
             },
+            schemaVersion = 1,
+            taxonomyVersion = com.example.shoppingassistant.domain.catalog.CatalogDataVersion.current,
+            locale = Locale.getDefault().toLanguageTag().takeIf { it.isNotBlank() },
         )
         val id = templateIdTask.computeId(data)
         return TemplateSnapshot(data = data, templateId = id)
@@ -1965,8 +2181,9 @@ class MainPageViewModel(
             normalized?.brand?.takeIf { it.isNotBlank() }?.let { put("brand", TemplateAttribute("brand", it, ValueSource.FromSuggestion)) }
             normalized?.model?.takeIf { it.isNotBlank() }?.let { put("model", TemplateAttribute("model", it, ValueSource.FromSuggestion)) }
             normalized?.attributes?.forEach { (code, value) ->
-                if (value.isNotBlank()) {
-                    put(code, TemplateAttribute(code, value, ValueSource.FromSuggestion))
+                val raw = value.asRawString().trim()
+                if (raw.isNotBlank()) {
+                    put(code, TemplateAttribute(code, raw, ValueSource.FromSuggestion))
                 }
             }
         }
@@ -2030,7 +2247,13 @@ class MainPageViewModel(
             }
             val fallbackCandidates = candidates.ifEmpty {
                 runCatching { catalogRepository.listCategories() }
-                    .getOrElse { emptyList() }
+                    .onFailure { throwable ->
+                        showCatalogError(
+                            throwable.message
+                                ?: "Не удалось загрузить категории. Повторите попытку.",
+                        )
+                    }
+                    .getOrElse { categoryIndex?.byCode?.values?.toList().orEmpty() }
                     .take(3)
                     .map { cat ->
                         com.example.shoppingassistant.domain.vision.VisionCategoryCandidate(
@@ -2048,6 +2271,9 @@ class MainPageViewModel(
                         message = "Не нашли точную категорию. Выберите подходящую:",
                     ),
                 )
+            }
+            if (fallbackCandidates.isNotEmpty()) {
+                clearCatalogError()
             }
         }
     }
@@ -2550,7 +2776,17 @@ class MainPageViewModel(
         facetCountsJob?.cancel()
         facetCountsJob = viewModelScope.launch {
             reduce { it.copy(facetCountsLoading = true, facetCountsKey = key, facetCounts = null) }
-            val counts = runCatching { getFacetCounts(query) }.getOrNull()
+            val countsResult = runCatching { getFacetCounts(query) }
+                .onFailure { throwable ->
+                    showCatalogError(
+                        throwable.message
+                            ?: "Не удалось загрузить facet-данные. Повторите попытку.",
+                    )
+                }
+            val counts = countsResult.getOrNull()
+            if (counts != null) {
+                clearCatalogError()
+            }
             val map = counts?.associate { normalizeFacetValue(it.value) to it.count }
             reduce { current ->
                 if (current.currentAttrKey != key || current.filterStage != FilterStage.VALUES) {
@@ -2586,7 +2822,17 @@ class MainPageViewModel(
         attrFacetCountsJobs[key]?.cancel()
         attrFacetCountsJobs[key] = viewModelScope.launch {
             reduce { it.copy(attrFacetCountsLoading = it.attrFacetCountsLoading + key) }
-            val counts = runCatching { getFacetCounts(query) }.getOrNull()
+            val countsResult = runCatching { getFacetCounts(query) }
+                .onFailure { throwable ->
+                    showCatalogError(
+                        throwable.message
+                            ?: "Не удалось загрузить facet-данные. Повторите попытку.",
+                    )
+                }
+            val counts = countsResult.getOrNull()
+            if (counts != null) {
+                clearCatalogError()
+            }
             val map = counts?.associate { normalizeFacetValue(it.value) to it.count }
             val resolved = if (map == null) null else map[normalizeFacetValue(value)] ?: 0
             reduce { current ->
@@ -2671,6 +2917,15 @@ class MainPageViewModel(
     private fun normalizeFacetValue(value: String): String =
         value.trim().lowercase()
 
+    private fun ValueFacet.toNearbyValueFacet(): NearbyValueFacet {
+        val normalizedName = name.trim().ifBlank { id.trim() }
+        return NearbyValueFacet(
+            id = id.trim(),
+            name = normalizedName,
+            count = count,
+        )
+    }
+
     fun toExpressWithPhoto(photoUrl: String?, placeholderCategory: String?) {
         val current = _state.value
         val urls = buildList {
@@ -2713,7 +2968,7 @@ class MainPageViewModel(
 
     fun attachLinkTemplate(linkTemplate: LinkTemplateRaw) {
         val resolvedCategoryCode = resolveCategoryCode(linkTemplate.category)
-        val uiCatalog = runCatching {
+        val uiCatalogResult = runCatching {
             runBlocking {
                 attributeCatalogFor(
                     product = null,
@@ -2723,13 +2978,23 @@ class MainPageViewModel(
                     categoryCode = resolvedCategoryCode,
                 )
             }
-        }.getOrElse {
+        }
+        uiCatalogResult.onFailure { throwable ->
+            showCatalogError(
+                throwable.message
+                    ?: "Не удалось загрузить атрибуты каталога. Доступен упрощённый режим.",
+            )
+        }
+        val uiCatalog = uiCatalogResult.getOrElse {
             com.example.shoppingassistant.feature.pages.main.context.CategoryUiCatalog(
                 categoryCode = resolvedCategoryCode,
                 defs = emptyList(),
                 requiredIfRules = emptyList(),
                 constraints = emptyList(),
             )
+        }
+        if (uiCatalogResult.isSuccess) {
+            clearCatalogError()
         }
 
         if (uiCatalog.defs.isNotEmpty()) {
@@ -3011,7 +3276,7 @@ class MainPageViewModel(
         viewModelScope.launch {
             val resolvedCategory = categoryCode?.takeIf { it.isNotBlank() }
                 ?: product?.categoryCode?.takeIf { it.isNotBlank() }
-            val uiCatalog = runCatching {
+            val uiCatalogResult = runCatching {
                 attributeCatalogFor(
                     product = product,
                     svc = attrSvc,
@@ -3020,13 +3285,23 @@ class MainPageViewModel(
                     categoryCode = resolvedCategory,
                     selectedFilters = stripCategoryFilters(_state.value.template.asSelectedFilters()),
                 )
-            }.getOrElse {
+            }
+            uiCatalogResult.onFailure { throwable ->
+                showCatalogError(
+                    throwable.message
+                        ?: "Не удалось загрузить атрибуты каталога. Доступен упрощённый режим.",
+                )
+            }
+            val uiCatalog = uiCatalogResult.getOrElse {
                 com.example.shoppingassistant.feature.pages.main.context.CategoryUiCatalog(
                     categoryCode = resolvedCategory,
                     defs = emptyList(),
                     requiredIfRules = emptyList(),
                     constraints = emptyList(),
                 )
+            }
+            if (uiCatalogResult.isSuccess) {
+                clearCatalogError()
             }
             runCatching { ensureCategoryIndex() }
             val template = _state.value.template

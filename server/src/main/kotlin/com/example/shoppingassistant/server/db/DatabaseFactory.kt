@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.server.db
 
+import com.example.shoppingassistant.domain.model.TypedAttributeValue
 import com.example.shoppingassistant.server.config.DatabaseConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.builtins.ListSerializer
@@ -18,6 +19,12 @@ import com.example.shoppingassistant.server.catalog.AttributeValueDictTable
 import com.example.shoppingassistant.server.catalog.CategoriesTable
 import com.example.shoppingassistant.server.catalog.CategoryAttributesTable
 import com.example.shoppingassistant.server.catalog.CatalogConstraintsTable
+import com.example.shoppingassistant.server.catalog.CatalogStage4ContractMetaTable
+import com.example.shoppingassistant.server.catalog.CatalogStage4DedupTemplatesTable
+import com.example.shoppingassistant.server.catalog.CatalogStage4ExecutionMetricsTable
+import com.example.shoppingassistant.server.catalog.CatalogStage4ImmutableAttributesTable
+import com.example.shoppingassistant.server.catalog.CatalogStage4NormalizationRulesTable
+import com.example.shoppingassistant.server.catalog.CatalogStage4TypedConstraintsTable
 import com.example.shoppingassistant.server.catalog.FacetCollectionsTable
 import com.example.shoppingassistant.server.catalog.FacetDefinitionsTable
 import com.example.shoppingassistant.server.catalog.FacetPresetsTable
@@ -30,6 +37,7 @@ import com.example.shoppingassistant.server.offers.UserReviewsTable
 import com.example.shoppingassistant.server.offers.UserProfilesTable
 import com.example.shoppingassistant.server.offers.SellerStatsTable
 import com.example.shoppingassistant.server.offers.AlertsTable
+import com.example.shoppingassistant.server.offers.CatalogPresetEventsTable
 import com.example.shoppingassistant.server.offers.OfferPriceHistoryTable
 import com.example.shoppingassistant.server.offers.OfferSourcesTable
 import com.example.shoppingassistant.server.auth.DefaultPasswordHasher
@@ -71,9 +79,25 @@ object DatabaseFactory {
         TransactionManager.manager.defaultIsolationLevel =
             Connection.TRANSACTION_REPEATABLE_READ
 
-        // Для staging/prod с Flyway можно отключить auto-DDL Exposed:
-        // DB_SCHEMA_AUTOSYNC=false
-        val schemaAutosyncEnabled = (System.getenv("DB_SCHEMA_AUTOSYNC") ?: "true")
+        // Для staging/prod по умолчанию отключаем auto-DDL Exposed:
+        // схема должна управляться только Flyway.
+        val appEnv = (System.getenv("APP_ENV")
+            ?: System.getenv("APP_STAGE")
+            ?: System.getenv("ENV")
+            ?: "local")
+            .trim()
+            .lowercase()
+        val autosyncDefault = when (appEnv) {
+            "prod", "production", "staging", "stage" -> "false"
+            else -> "true"
+        }
+        val schemaAutosyncEnabled = (System.getenv("DB_SCHEMA_AUTOSYNC") ?: autosyncDefault)
+            .equals("true", ignoreCase = true)
+        val catalogSeedSyncDefault = when (appEnv) {
+            "local", "dev", "development", "test", "testing", "ci" -> "true"
+            else -> "false"
+        }
+        val catalogSeedSyncEnabled = (System.getenv("CATALOG_SEED_SYNC_ENABLED") ?: catalogSeedSyncDefault)
             .equals("true", ignoreCase = true)
 
         // На этом шаге создаём недостающие таблицы/колонки и приводим данные в порядок.
@@ -93,6 +117,7 @@ object DatabaseFactory {
                     UserReviewsTable,
                     AlertsTable,
                     OfferPriceHistoryTable,
+                    CatalogPresetEventsTable,
                     SubscriptionNotificationsTable,
                     SubscriptionsEngineStateTable,
                     TracksTable,
@@ -107,6 +132,12 @@ object DatabaseFactory {
                     FacetDefinitionsTable,
                     FacetPresetsTable,
                     FacetCollectionsTable,
+                    CatalogStage4ContractMetaTable,
+                    CatalogStage4ImmutableAttributesTable,
+                    CatalogStage4NormalizationRulesTable,
+                    CatalogStage4DedupTemplatesTable,
+                    CatalogStage4TypedConstraintsTable,
+                    CatalogStage4ExecutionMetricsTable,
                     VisionUsageTable,
                 )
             }
@@ -123,7 +154,9 @@ object DatabaseFactory {
             if (seedEnabled && OffersTable.selectAll().limit(1).empty()) {
                 seedDemoOffers()
             }
-            CatalogSeeder.seedIfEmpty()
+            if (catalogSeedSyncEnabled) {
+                CatalogSeeder.seedIfEmpty()
+            }
         }
     }
 
@@ -190,7 +223,11 @@ private fun seedDemoOffers() {
             "https://images.unsplash.com/photo-1529618160092-2f8ccc8e087b",
             "https://images.unsplash.com/photo-1526170367222-4c45c0c3320d",
         )
-        it[specs] = mapOf("storage" to "128GB", "color" to "Black", "condition" to "New")
+        it[specs] = mapOf(
+            "storage" to TypedAttributeValue.Text("128GB"),
+            "color" to TypedAttributeValue.Text("Black"),
+            "condition" to TypedAttributeValue.Text("New"),
+        )
         it[description] = "Demo seeded product for local testing."
         it[updatedAt] = now
     }.resultedValues!!.single()[ProductsTable.id]
@@ -223,9 +260,9 @@ private fun seedDemoOffers() {
             it[this.priceCents] = offer.priceCents
             it[this.currency] = "RUB"
             it[this.attributes] = mapOf(
-                "storage" to "128GB",
-                "color" to offer.color,
-                "condition" to "new",
+                "storage" to TypedAttributeValue.Text("128GB"),
+                "color" to TypedAttributeValue.Text(offer.color),
+                "condition" to TypedAttributeValue.Text("new"),
             )
             it[this.description] = "Демо-оффер #${idx + 1} (${offer.color}, ${offer.city})"
             it[this.imageUrls] = listOf(

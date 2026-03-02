@@ -23,6 +23,8 @@ data class ProductDto(
     val source: OfferSource? = null,
     val sourceName: String? = null,
     val externalUrl: String? = null,
+    val redirectUrl: String? = null,
+    val deeplinkUrl: String? = null,
     val imageUrls: List<String> = emptyList(),
     val updatedAt: Long? = null,
     val trustScore: Double? = null,

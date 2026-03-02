@@ -8,21 +8,34 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class CategorySegment {
     TECH,
-    FOOD,
-    FASH,
-    KIDS,
+    APPL,
     HOME,
+    FASH,
+    BEAUTY,
+    KIDS,
+    FOOD,
+    PETS,
+    SPORT,
+    AUTO,
     SUPP,
     OTHER,
 }
 
 @Serializable
+enum class CategoryStatus {
+    ACTIVE,
+    DEPRECATED,
+    HIDDEN,
+}
+
+@Serializable
 data class Category(
-    val code: String,               // "TECH.SMARTPHONE"
+    val code: String,               // "TECH.PHONES"
     val segment: CategorySegment,   // TECH / FOOD / ...
     val title: String? = null,      // Человекочитаемое имя
     val parentCode: String? = null, // Иерархия при необходимости
     val description: String? = null,
+    val status: CategoryStatus = CategoryStatus.ACTIVE,
 )
 
 @Serializable

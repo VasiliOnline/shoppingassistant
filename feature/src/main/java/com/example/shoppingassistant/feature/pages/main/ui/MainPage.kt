@@ -19,7 +19,6 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -72,6 +71,7 @@ import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
@@ -133,6 +133,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -236,6 +237,7 @@ import com.example.shoppingassistant.feature.pages.main.state.NearbyErrorKind
 import com.example.shoppingassistant.feature.pages.main.state.NearbyErrorState
 import com.example.shoppingassistant.feature.pages.main.state.NearbyLocationPermission
 import com.example.shoppingassistant.feature.pages.main.state.NearbyRetryAction
+import com.example.shoppingassistant.feature.pages.main.state.NearbyValueFacet
 import com.example.shoppingassistant.feature.pages.main.state.defaultSort
 import com.example.shoppingassistant.feature.pages.main.state.resetSection
 import kotlinx.coroutines.launch
@@ -259,7 +261,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.shoppingassistant.core.data.nearby.NearbyDelivery
 import org.koin.java.KoinJavaComponent.get as koinGet
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun MainPage(
     modifier: Modifier = Modifier,
@@ -1303,6 +1304,17 @@ fun MainPage(
                         .padding(bottom = innerPadding.calculateBottomPadding()),
                     verticalArrangement = Arrangement.spacedBy(LayoutDefaults.LargeSectionSpacing),
                 ) {
+                    state.catalogErrorMessage
+                        ?.takeIf { it.isNotBlank() }
+                        ?.let { message ->
+                            MainCatalogErrorBanner(
+                                message = message,
+                                onRetry = { viewModel.retryCatalogLoad() },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = LayoutDefaults.HorizontalPadding),
+                            )
+                        }
                     when (rootMode) {
                         RootMode.Dashboard -> DashboardScreen(
                     state = dashboardState,
@@ -1573,6 +1585,8 @@ fun MainPage(
             activeCount = draftActiveCount,
             showBrandFilter = nearbyDraftLeafCategoryCode != null,
             brandFacets = state.nearbyBrandFacets,
+            conditionFacets = state.nearbyConditionFacets,
+            deliveryChannelFacets = state.nearbyDeliveryChannelFacets,
             userLocation = state.nearbyUserLocation,
             userCountry = state.nearbyUserCountry,
             locationPermission = state.nearbyLocationPermission,
@@ -1853,6 +1867,128 @@ private fun NearbyFiltersState.deliverySummary(): String {
     return if (labels.size == 1) labels.first() else "${labels.size} варианта"
 }
 
+private data class NearbyConditionOptionUi(
+    val condition: NearbyCondition,
+    val count: Int?,
+)
+
+private data class NearbyDeliveryOptionUi(
+    val delivery: NearbyDelivery,
+    val count: Int?,
+)
+
+private fun nearbyConditionOptions(
+    facets: List<NearbyValueFacet>,
+    selected: NearbyCondition,
+): List<NearbyConditionOptionUi> {
+    val counts = LinkedHashMap<NearbyCondition, Int>()
+    facets.forEach { facet ->
+        val option = nearbyConditionFromFacet(facet) ?: return@forEach
+        counts[option] = (counts[option] ?: 0) + facet.count
+    }
+    if (selected != NearbyCondition.Any && selected !in counts.keys && counts.isNotEmpty()) {
+        counts[selected] = 0
+    }
+    val values = if (counts.isEmpty()) {
+        NearbyCondition.entries.filterNot { it == NearbyCondition.Any }
+    } else {
+        NearbyCondition.entries.filter { option -> option != NearbyCondition.Any && option in counts.keys }
+    }
+    return buildList {
+        add(NearbyConditionOptionUi(condition = NearbyCondition.Any, count = null))
+        values.forEach { option ->
+            add(NearbyConditionOptionUi(condition = option, count = counts[option]))
+        }
+    }
+}
+
+private fun nearbyDeliveryOptions(
+    facets: List<NearbyValueFacet>,
+    selected: Set<NearbyDelivery>,
+): List<NearbyDeliveryOptionUi> {
+    val counts = LinkedHashMap<NearbyDelivery, Int>()
+    facets.forEach { facet ->
+        val option = nearbyDeliveryFromFacet(facet) ?: return@forEach
+        if (option == NearbyDelivery.Meeting) return@forEach
+        counts[option] = (counts[option] ?: 0) + facet.count
+    }
+    selected.forEach { option ->
+        if (option != NearbyDelivery.Meeting && option !in counts.keys && counts.isNotEmpty()) {
+            counts[option] = 0
+        }
+    }
+    val values = if (counts.isEmpty()) {
+        NearbyDelivery.entries.filterNot { option -> option == NearbyDelivery.Meeting }
+    } else {
+        NearbyDelivery.entries.filter { option -> option != NearbyDelivery.Meeting && option in counts.keys }
+    }
+    return values.map { option -> NearbyDeliveryOptionUi(delivery = option, count = counts[option]) }
+}
+
+private fun nearbyConditionFromFacet(facet: NearbyValueFacet): NearbyCondition? {
+    val normalized = normalizeNearbyFacetToken(facet.id)
+    val byName = normalizeNearbyFacetToken(facet.name)
+    val candidates = listOf(normalized, byName).filter { token -> token.isNotBlank() }
+    candidates.forEach { candidate ->
+        when (candidate) {
+            "new",
+            "novoe",
+            "novyi",
+            "новое",
+            "новый",
+            -> return NearbyCondition.New
+
+            "like_new",
+            "likenew",
+            "like-new",
+            "как_новый",
+            "какновый",
+            -> return NearbyCondition.LikeNew
+
+            "used",
+            "second_hand",
+            "secondhand",
+            "бу",
+            "б_у",
+            "б/у",
+            -> return NearbyCondition.Used
+        }
+    }
+    return null
+}
+
+private fun nearbyDeliveryFromFacet(facet: NearbyValueFacet): NearbyDelivery? {
+    val normalized = normalizeNearbyFacetToken(facet.id)
+    val byName = normalizeNearbyFacetToken(facet.name)
+    val candidates = listOf(normalized, byName).filter { token -> token.isNotBlank() }
+    candidates.forEach { candidate ->
+        when (candidate) {
+            "delivery",
+            "доставка",
+            "ship",
+            "shipping",
+            -> return NearbyDelivery.Delivery
+
+            "pickup",
+            "self_pickup",
+            "самовывоз",
+            -> return NearbyDelivery.Pickup
+
+            "meeting",
+            "meetup",
+            "встреча",
+            -> return NearbyDelivery.Meeting
+        }
+    }
+    return null
+}
+
+private fun normalizeNearbyFacetToken(raw: String): String =
+    raw.trim()
+        .lowercase(Locale.ROOT)
+        .replace("ё", "е")
+        .replace("\\s+".toRegex(), "_")
+
 private fun NearbyFiltersState.postedAtLabel(): String =
     if (postedAtIsActive()) postedAt.label else "Дата"
 
@@ -1899,7 +2035,47 @@ private fun categorySummary(categories: List<CategoryChipUi>): String {
 
 private val CategoryBreadcrumbSplitRegex = Regex("\\s*(?:→|/|>|\\u001A|->)\\s*")
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
+@Composable
+internal fun MainCatalogErrorBanner(
+    message: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.55f),
+        modifier = modifier.testTag("main_catalog_error_banner"),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ErrorOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+            )
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("main_catalog_error_message"),
+            )
+            TextButton(
+                onClick = onRetry,
+                modifier = Modifier.testTag("main_catalog_error_retry"),
+            ) {
+                Text(stringResource(R.string.state_error_retry))
+            }
+        }
+    }
+}
+
 @Composable
 private fun DashboardScreen(
     state: DashboardState,
@@ -2058,7 +2234,6 @@ private fun DashboardScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 private fun DashboardOverview(
     locationLabel: String,
@@ -2186,7 +2361,6 @@ private fun ExpandedTopBar(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 private fun NewOffersExpanded(
     locationLabel: String,
@@ -3022,7 +3196,6 @@ private fun formatDigestCount(value: Int): String =
         else -> value.toString()
     }
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 private fun NearbyFeedSection(
     locationLabel: String,
@@ -3088,7 +3261,6 @@ private fun NearbyFeedSection(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 private fun NewOffersFilters(
     locationDisplayLabel: String,
@@ -3281,7 +3453,6 @@ private fun NewOffersFilters(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 private fun FeedCategoriesSummary(
     selected: List<CategoryChipUi>,
@@ -3298,7 +3469,6 @@ private fun FeedCategoriesSummary(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 private fun TwoLineChipRow(
     labels: List<String>,
@@ -3367,7 +3537,8 @@ private fun TwoLineChipRow(
             while (lines[targetLine].isNotEmpty()) {
                 val needed = (if (lines[targetLine].isEmpty()) 0 else currentWidth + spacingPx) + showAllPlaceable.width
                 if (needed <= maxWidth) break
-                val removed = lines[targetLine].removeLast()
+                val removedIndex = lines[targetLine].lastIndex
+                val removed = lines[targetLine].removeAt(removedIndex)
                 currentWidth -= removed.width
                 if (lines[targetLine].isNotEmpty()) {
                     currentWidth -= spacingPx
@@ -3566,6 +3737,8 @@ private fun NearbyFiltersSheet(
     activeCount: Int,
     showBrandFilter: Boolean,
     brandFacets: List<NearbyBrandFacet>,
+    conditionFacets: List<NearbyValueFacet>,
+    deliveryChannelFacets: List<NearbyValueFacet>,
     applyLabel: String,
     applyHint: String?,
     userLocation: String?,
@@ -4009,6 +4182,12 @@ private fun NearbyFiltersSheet(
                         onBack = { onSectionChange(NearbyFilterSection.All) },
                         onReset = { onDraftChange(draft.resetSection(NearbyFilterSection.Condition)) },
                     )
+                    val options = remember(conditionFacets, draft.condition) {
+                        nearbyConditionOptions(
+                            facets = conditionFacets,
+                            selected = draft.condition,
+                        )
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -4016,11 +4195,12 @@ private fun NearbyFiltersSheet(
                             .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        NearbyCondition.entries.forEach { option ->
+                        options.forEach { option ->
                             NearbyRadioRow(
-                                label = option.label,
-                                selected = draft.condition == option,
-                                onSelect = { onDraftChange(draft.copy(condition = option)) },
+                                label = option.condition.label,
+                                count = option.count,
+                                selected = draft.condition == option.condition,
+                                onSelect = { onDraftChange(draft.copy(condition = option.condition)) },
                             )
                         }
                     }
@@ -4031,6 +4211,12 @@ private fun NearbyFiltersSheet(
                         onBack = { onSectionChange(NearbyFilterSection.All) },
                         onReset = { onDraftChange(draft.resetSection(NearbyFilterSection.Delivery)) },
                     )
+                    val options = remember(deliveryChannelFacets, draft.delivery) {
+                        nearbyDeliveryOptions(
+                            facets = deliveryChannelFacets,
+                            selected = draft.delivery,
+                        )
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -4038,18 +4224,17 @@ private fun NearbyFiltersSheet(
                             .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        NearbyDelivery.entries
-                            .filterNot { option -> option == NearbyDelivery.Meeting }
-                            .forEach { option ->
-                            val checked = draft.delivery.contains(option)
+                        options.forEach { option ->
+                            val checked = draft.delivery.contains(option.delivery)
                             NearbyCheckboxRow(
-                                label = option.label,
+                                label = option.delivery.label,
+                                count = option.count,
                                 checked = checked,
                                 onToggle = {
                                     val updated = if (checked) {
-                                        draft.delivery - option
+                                        draft.delivery - option.delivery
                                     } else {
-                                        draft.delivery + option
+                                        draft.delivery + option.delivery
                                     }
                                     onDraftChange(draft.copy(delivery = updated))
                                 },
@@ -4319,6 +4504,7 @@ private fun NearbyBrandRow(
 @Composable
 private fun NearbyRadioRow(
     label: String,
+    count: Int? = null,
     selected: Boolean,
     onSelect: () -> Unit,
 ) {
@@ -4331,13 +4517,25 @@ private fun NearbyRadioRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         RadioButton(selected = selected, onClick = onSelect)
-        Text(text = label, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f),
+        )
+        count?.let {
+            Text(
+                text = "($it)",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
 @Composable
 private fun NearbyCheckboxRow(
     label: String,
+    count: Int? = null,
     checked: Boolean,
     onToggle: () -> Unit,
 ) {
@@ -4350,7 +4548,18 @@ private fun NearbyCheckboxRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Checkbox(checked = checked, onCheckedChange = { onToggle() })
-        Text(text = label, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f),
+        )
+        count?.let {
+            Text(
+                text = "($it)",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 

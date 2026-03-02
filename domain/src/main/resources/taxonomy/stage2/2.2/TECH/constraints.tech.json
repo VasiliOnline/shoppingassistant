@@ -1,97 +1,517 @@
 [
-    {
-        "scope": "CATEGORY",
-        "categoryCode": "TECH.PHONES",
-        "brand": null,
-        "model": null,
-        "attributeConstraints": [],
-        "compatibilityRules": [
-            {
-                "whenAll": [
-                    {
-                        "attributeCode": "brand",
-                        "op": "EQUALS_ANY",
-                        "values": [
-                            "Apple"
-                        ]
-                    },
-                    {
-                        "attributeCode": "model",
-                        "op": "STARTS_WITH_ANY",
-                        "values": [
-                            "iPhone"
-                        ]
-                    }
-                ],
-                "apply": [
-                    {
-                        "attributeCode": "os_family",
-                        "allowedValues": [
-                            "IOS"
-                        ],
-                        "forbiddenValues": [],
-                        "reason": "Для iPhone доступна только iOS"
-                    }
-                ]
-            }
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PHONES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "brand",
+            "op": "EQUALS_ANY",
+            "values": [
+              "Apple"
+            ]
+          },
+          {
+            "attributeCode": "model",
+            "op": "STARTS_WITH_ANY",
+            "values": [
+              "iPhone"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "os_family",
+            "allowedValues": [
+              "IOS"
+            ],
+            "forbiddenValues": [],
+            "reason": "Для iPhone доступна только iOS"
+          }
         ]
-    },
-    {
-        "scope": "MODEL",
-        "categoryCode": "TECH.PHONES",
-        "brand": "Apple",
-        "model": "iPhone 16 Pro",
-        "attributeConstraints": [
-            {
-                "attributeCode": "memory_gb",
-                "allowedValues": [
-                    "256",
-                    "512",
-                    "1024"
-                ],
-                "forbiddenValues": [],
-                "reason": "Доступные варианты памяти для iPhone 16 Pro"
-            },
-            {
-                "attributeCode": "color",
-                "allowedValues": [
-                    "BLACK",
-                    "BLUE",
-                    "NATURAL_TITANIUM"
-                ],
-                "forbiddenValues": [],
-                "reason": "Доступные цвета для iPhone 16 Pro"
-            }
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "MODEL",
+    "categoryCode": "TECH.PHONES",
+    "brand": "Apple",
+    "model": "iPhone 16 Pro",
+    "attributeConstraints": [
+      {
+        "attributeCode": "memory_gb",
+        "allowedValues": [
+          "256",
+          "512",
+          "1024"
         ],
-        "compatibilityRules": []
-    },
-    {
-        "scope": "MODEL",
-        "categoryCode": "TECH.PHONES",
-        "brand": "Apple",
-        "model": "iPhone 16",
-        "attributeConstraints": [
-            {
-                "attributeCode": "memory_gb",
-                "allowedValues": [
-                    "128",
-                    "256",
-                    "512"
-                ],
-                "forbiddenValues": [],
-                "reason": "Доступные варианты памяти для iPhone 16"
-            },
-            {
-                "attributeCode": "color",
-                "allowedValues": [
-                    "BLACK",
-                    "WHITE",
-                    "PINK"
-                ],
-                "forbiddenValues": [],
-                "reason": "Доступные цвета для iPhone 16"
-            }
+        "forbiddenValues": [],
+        "reason": "Доступные варианты памяти для iPhone 16 Pro"
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "BLUE",
+          "NATURAL_TITANIUM"
         ],
-        "compatibilityRules": []
-    }
+        "forbiddenValues": [],
+        "reason": "Доступные цвета для iPhone 16 Pro"
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "MODEL",
+    "categoryCode": "TECH.PHONES",
+    "brand": "Apple",
+    "model": "iPhone 16",
+    "attributeConstraints": [
+      {
+        "attributeCode": "memory_gb",
+        "allowedValues": [
+          "128",
+          "256",
+          "512"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные варианты памяти для iPhone 16"
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "PINK"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные цвета для iPhone 16"
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.AUDIO",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.CAMERAS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.GAMING",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.LAPTOPS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "storage_type",
+        "allowedValues": [
+          "SSD",
+          "HDD"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'storage_type'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "keyboard_layout",
+        "allowedValues": [
+          "US",
+          "RU",
+          "EU"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'keyboard_layout'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PC_COMPONENTS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "storage_type",
+        "allowedValues": [
+          "SSD",
+          "HDD"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'storage_type'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PHONE_ACCESSORIES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.SMART_HOME",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "network_type",
+        "allowedValues": [
+          "5G",
+          "4G",
+          "3G"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.TABLETS_EBOOKS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "network_type",
+        "allowedValues": [
+          "5G",
+          "4G",
+          "3G"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.TV_VIDEO",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  }
 ]

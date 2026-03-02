@@ -7,7 +7,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
-class SubscriptionsPushNotifier(
+class TrackingPushNotifier(
     private val context: Context,
 ) {
     fun canPostNotifications(): Boolean {
@@ -22,8 +22,8 @@ class SubscriptionsPushNotifier(
         return true
     }
 
-    fun notifyText(id: Int, title: String, message: String, settings: SubscriptionsNotificationsSettings) {
-        val n = NotificationCompat.Builder(context, SubscriptionsNotificationsChannel.CHANNEL_ID)
+    fun notifyText(id: Int, title: String, message: String, settings: TrackingNotificationsSettings) {
+        val n = NotificationCompat.Builder(context, TrackingNotificationsChannel.CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title)
             .setContentText(message)
@@ -36,7 +36,7 @@ class SubscriptionsPushNotifier(
         NotificationManagerCompat.from(context).notify(id, n)
     }
 
-    fun notifyInboxItem(item: SubscriptionsInboxNotification, settings: SubscriptionsNotificationsSettings) {
+    fun notifyInboxItem(item: TrackingInboxNotification, settings: TrackingNotificationsSettings) {
         notifyText(
             id = item.id.toInt(),
             title = "Сработало отслеживание",
@@ -45,9 +45,9 @@ class SubscriptionsPushNotifier(
         )
     }
 
-    fun notifySummary(total: Int, settings: SubscriptionsNotificationsSettings) {
+    fun notifySummary(total: Int, settings: TrackingNotificationsSettings) {
         val message = "Новых уведомлений: $total"
-        val n = NotificationCompat.Builder(context, SubscriptionsNotificationsChannel.CHANNEL_ID)
+        val n = NotificationCompat.Builder(context, TrackingNotificationsChannel.CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle("Отслеживания")
             .setContentText(message)
@@ -68,7 +68,10 @@ class SubscriptionsPushNotifier(
     }
 
     private companion object {
-        private const val GROUP_KEY: String = "subscriptions_inbox"
+        private const val GROUP_KEY: String = "tracking_inbox"
         private const val SUMMARY_ID: Int = 0
     }
 }
+
+@Deprecated("Use TrackingPushNotifier")
+typealias SubscriptionsPushNotifier = TrackingPushNotifier

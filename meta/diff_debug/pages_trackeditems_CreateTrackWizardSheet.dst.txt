@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.shoppingassistant.core.data.suggest.ProductSuggestCandidate
 import com.example.shoppingassistant.core.data.suggest.ProductSuggestRepository
+import com.example.shoppingassistant.domain.catalog.CategoryProfile
 import com.example.shoppingassistant.domain.catalog.CatalogRepository
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
 import com.example.shoppingassistant.domain.ugc.MirrorByUrlUseCase
@@ -50,8 +51,10 @@ import com.example.shoppingassistant.domain.ugc.UgcMirrorResult
 import com.example.shoppingassistant.domain.tracks.CreateTrackTask
 import com.example.shoppingassistant.domain.tracks.TrackCreateInput
 import com.example.shoppingassistant.domain.tracks.TrackFilters
+import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.domain.vision.NormalizeImageUseCase
+import com.example.shoppingassistant.domain.model.toRawStringAttributes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get as koinGet
@@ -86,6 +89,8 @@ fun CreateTrackWizardSheet(
     var showCategoryPicker by remember { mutableStateOf(false) }
     var showTargetEditor by remember { mutableStateOf(false) }
     var countryCode by remember { mutableStateOf("") }
+    var validationProfile by remember { mutableStateOf<CategoryProfile?>(null) }
+    var validationProfileLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(getProfileCache) {
         val profileCountry = runCatching { getProfileCache()?.settings?.countryCode }.getOrNull().orEmpty()
@@ -111,7 +116,7 @@ fun CreateTrackWizardSheet(
                 type = TrackType.PRODUCT,
                 brand = normalized.brand,
                 model = normalized.model,
-                attributes = normalized.attributes,
+                attributes = normalized.attributes.toRawStringAttributes(),
                 autoFilledAttributes = normalized.attributes.keys,
                 sourceLabel = "из фото",
             )
@@ -132,6 +137,18 @@ fun CreateTrackWizardSheet(
             val haystack = listOfNotNull(category.title, category.code).joinToString(" ").lowercase()
             haystack.contains(q.lowercase())
         }.take(6)
+    }
+
+    LaunchedEffect(targetDraft.type, targetDraft.categoryCode, catalogRepository) {
+        val categoryCode = targetDraft.categoryCode?.trim().orEmpty()
+        if (categoryCode.isBlank()) {
+            validationProfile = null
+            validationProfileLoading = false
+            return@LaunchedEffect
+        }
+        validationProfileLoading = true
+        validationProfile = runCatching { catalogRepository.getCategoryProfile(categoryCode) }.getOrNull()
+        validationProfileLoading = false
     }
 
     ModalBottomSheet(
@@ -218,6 +235,7 @@ fun CreateTrackWizardSheet(
 
             TargetPreview(
                 target = targetDraft,
+                categories = leafCategories,
                 onReset = { targetDraft = TrackTargetDraft() },
                 onEdit = { showTargetEditor = true },
             )
@@ -230,11 +248,30 @@ fun CreateTrackWizardSheet(
                 )
             }
 
-            val canSave = when (targetDraft.type) {
-                TrackType.PRODUCT -> !targetDraft.matchKeyOrNull().isNullOrBlank()
-                TrackType.CATEGORY -> !targetDraft.categoryCode.isNullOrBlank()
+            val missingRequiredCodes = targetDraft.missingRequiredAttributeCodes(validationProfile)
+            val missingRequiredMessage = buildMissingRequiredMessage(
+                missingCodes = missingRequiredCodes,
+                profile = validationProfile,
+            )
+            if (validationProfileLoading) {
+                Text(
+                    text = "Проверяем обязательные параметры категории…",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else if (missingRequiredCodes.isNotEmpty() && message == null) {
+                Text(
+                    text = missingRequiredMessage,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+
+            val baseCanSave = when (targetDraft.type) {
+                TrackType.PRODUCT, TrackType.CATEGORY -> !targetDraft.categoryCode.isNullOrBlank()
                 else -> false
             }
+            val canSave = baseCanSave && !validationProfileLoading && missingRequiredCodes.isEmpty()
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -247,12 +284,20 @@ fun CreateTrackWizardSheet(
                     onClick = {
                         saving = true
                         scope.launch {
+                            if (missingRequiredCodes.isNotEmpty()) {
+                                saving = false
+                                message = missingRequiredMessage
+                                return@launch
+                            }
                             val matchKey = targetDraft.matchKeyOrNull()
                             val titlePreview = targetDraft.previewTitle(leafCategories)
                             val request = TrackCreateInput(
                                 type = targetDraft.type,
-                                categoryCode = targetDraft.categoryCode,
-                                matchKey = matchKey,
+                                targetSpec = TrackTargetSpec(
+                                    categoryCode = targetDraft.categoryCode,
+                                    attributes = sanitizeAttributes(targetDraft.attributes),
+                                    matchKey = matchKey,
+                                ),
                                 filters = TrackFilters(extra = sanitizeAttributes(targetDraft.attributes)),
                                 title = titlePreview.takeIf { it.isNotBlank() },
                             )
@@ -352,13 +397,36 @@ fun CreateTrackWizardSheet(
     }
 }
 
+private fun buildMissingRequiredMessage(
+    missingCodes: Set<String>,
+    profile: CategoryProfile?,
+): String {
+    if (missingCodes.isEmpty()) return ""
+    val titleByCode = profile?.attributes
+        .orEmpty()
+        .associate { def -> def.code.trim().lowercase() to def.title }
+    val labels = missingCodes
+        .map { code ->
+            val normalized = code.trim().lowercase()
+            titleByCode[normalized]?.takeIf { it.isNotBlank() } ?: code
+        }
+        .sorted()
+    val preview = labels.take(3).joinToString(", ")
+    return if (labels.size <= 3) {
+        "Заполните обязательные параметры: $preview"
+    } else {
+        "Заполните обязательные параметры: $preview и ещё ${labels.size - 3}"
+    }
+}
+
 @Composable
 private fun TargetPreview(
     target: TrackTargetDraft,
+    categories: List<com.example.shoppingassistant.domain.catalog.Category>,
     onReset: () -> Unit,
     onEdit: () -> Unit,
 ) {
-    val title = target.previewTitle(emptyList())
+    val title = target.previewTitle(categories)
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
@@ -499,20 +567,30 @@ private fun applyMirrorResult(result: UgcMirrorResult): TrackTargetDraft? {
             it.key.equals("category", ignoreCase = true)
     }?.value
 
+    val attrsWithoutCategory = attrs - listOf("categoryCode", "category")
+    val attrsWithoutCategoryAndBrandModel = attrsWithoutCategory - listOf("brand", "model")
+
     if (!brand.isNullOrBlank() && !model.isNullOrBlank()) {
         return TrackTargetDraft(
             type = TrackType.PRODUCT,
             brand = brand,
             model = model,
             categoryCode = categoryCode,
-            attributes = attrs - listOf("brand", "model", "categoryCode", "category"),
+            attributes = attrsWithoutCategoryAndBrandModel,
         )
     }
     if (!categoryCode.isNullOrBlank()) {
+        if (attrsWithoutCategoryAndBrandModel.isNotEmpty()) {
+            return TrackTargetDraft(
+                type = TrackType.PRODUCT,
+                categoryCode = categoryCode,
+                attributes = attrsWithoutCategoryAndBrandModel,
+            )
+        }
         return TrackTargetDraft(
             type = TrackType.CATEGORY,
             categoryCode = categoryCode,
-            attributes = attrs - listOf("categoryCode", "category"),
+            attributes = attrsWithoutCategory,
         )
     }
     val fromTitle = result.title.orEmpty().trim().split(Regex("\\s+")).filter { it.isNotBlank() }

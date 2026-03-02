@@ -212,11 +212,3 @@ internal fun Stage22RegistrySnapshot.toLegacyDicts(): List<AttributeValueDict> =
             },
         )
     }
-
-internal fun emptyStage22PackageData(descriptor: Stage22PackageDescriptor): Stage22PackageData =
-    Stage22PackageData(
-        descriptor = descriptor,
-        profiles = emptyList(),
-        constraints = emptyList(),
-        valueDicts = emptyList(),
-    )

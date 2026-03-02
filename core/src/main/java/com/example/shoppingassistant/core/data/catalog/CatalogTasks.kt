@@ -1,5 +1,7 @@
 package com.example.shoppingassistant.core.data.catalog
 
+import com.example.shoppingassistant.domain.catalog.AttributeValueDict
+import com.example.shoppingassistant.domain.catalog.Category
 import com.example.shoppingassistant.domain.catalog.CategoryProfile
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 
@@ -8,8 +10,14 @@ import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstrain
  * Реализации лежат в отдельных *Impl.
  */
 interface CatalogDataSource {
+    suspend fun listCategories(): List<Category>
     suspend fun listProfiles(): List<CategoryProfile>
     suspend fun getProfile(code: String): CategoryProfile?
-    suspend fun listConstraints(): List<CatalogConstraints>
+    suspend fun getAttributeValueDict(attributeCode: String): AttributeValueDict?
+    suspend fun listConstraints(
+        categoryCode: String,
+        brand: String? = null,
+        model: String? = null,
+    ): List<CatalogConstraints>
     suspend fun saveProfile(profile: CategoryProfile)
 }

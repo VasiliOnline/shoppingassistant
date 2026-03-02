@@ -7,6 +7,7 @@ data class OfferSearchWithFacetsRequest(
     val criteria: OfferSearchCriteria,
     val facets: Set<OfferFacetType> = emptySet(),
     val excludeFacetFilters: Set<OfferFacetType> = emptySet(),
+    val attributeFacetKeys: Set<String> = emptySet(),
 )
 
 @Serializable
@@ -21,6 +22,9 @@ data class OfferSearchWithFacetsResponse(
 @Serializable
 data class OfferSearchFacets(
     val brands: List<BrandFacet> = emptyList(),
+    val conditions: List<ValueFacet> = emptyList(),
+    val deliveryChannels: List<ValueFacet> = emptyList(),
+    val attributes: Map<String, List<ValueFacet>> = emptyMap(),
 )
 
 @Serializable
@@ -40,6 +44,15 @@ data class BrandFacet(
 )
 
 @Serializable
+data class ValueFacet(
+    val id: String,
+    val name: String,
+    val count: Int,
+)
+
+@Serializable
 enum class OfferFacetType {
     BRAND,
+    CONDITION,
+    DELIVERY_CHANNEL,
 }

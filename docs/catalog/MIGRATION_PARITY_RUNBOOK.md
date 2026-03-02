@@ -13,6 +13,10 @@ Required order:
 6. `V12__catalog_temporal_policy.sql`
 7. `V13__catalog_preset_observability.sql`
 8. `V14__catalog_preset_observability_hardening.sql`
+9. `V15__catalog_stage4_contract.sql`
+10. `V16__catalog_stage4_runtime_execution.sql`
+11. `V17__catalog_stage4_typed_constraints.sql`
+12. `V18__offers_geo_coalesce_index.sql`
 
 ## Inputs
 
@@ -67,6 +71,7 @@ Domain quality gates (must pass before staging/prod SQL run):
    - `invalid_preset_event_required_fields_count`
    - `invalid_preset_event_position_count`
 4. Domain quality gates are green (no stub in top presets, no preset/collection holes, no facet-rule conflicts).
+5. `idx_offers_geo_coalesce_gix` exists.
 
 ## Report Template
 
@@ -79,7 +84,7 @@ For each environment include:
 5. Invalid data counters: `<all zero | list non-zero>`
 6. Final status: `<PASS|FAIL>`
 
-## V13/V14 Rollout Evidence
+## V13-V18 Rollout Evidence
 
 For each environment (`staging`, `prod`) attach:
 

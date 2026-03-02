@@ -16,6 +16,13 @@ data class TemplateSnapshotAttr(
     val type: AttributeDataType = AttributeDataType.STRING,
 )
 
+@Serializable
+data class TemplateSnapshotRange(
+    val min: String? = null,
+    val max: String? = null,
+    val unit: String? = null,
+)
+
 /**
  * Канонические данные шаблона, из которых выводится стабильный `templateId`.
  */
@@ -25,8 +32,14 @@ data class TemplateSnapshotData(
     val anchorId: String,
     val categoryCode: String? = null,
     val attrs: List<TemplateSnapshotAttr> = emptyList(),
+    val attrsMulti: Map<String, List<TemplateSnapshotAttr>> = emptyMap(),
+    val attrsRange: Map<String, TemplateSnapshotRange> = emptyMap(),
     val freeText: String? = null,
     val mode: TemplateSnapshotMode = TemplateSnapshotMode.SEARCH,
+    val schemaVersion: Int = 1,
+    val taxonomyVersion: String? = null,
+    val locale: String? = null,
+    val unboundTokens: List<String> = emptyList(),
 )
 
 /**

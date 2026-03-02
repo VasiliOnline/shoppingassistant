@@ -57,6 +57,7 @@ data class CreateTrackedOfferResult(
     val offerId: String? = null,
     val existingOfferId: String? = null,
     val message: String? = null,
+    val reasonCodes: List<String> = emptyList(),
 )
 
 @Serializable
@@ -102,6 +103,7 @@ data class RefreshTrackedOfferInput(
 data class RefreshTrackedOfferResult(
     val status: RefreshTrackedOfferStatus,
     val message: String? = null,
+    val reasonCodes: List<String> = emptyList(),
 )
 
 @Serializable

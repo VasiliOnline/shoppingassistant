@@ -4,6 +4,8 @@ import com.example.shoppingassistant.domain.model.OfferFull
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSort
 import com.example.shoppingassistant.domain.model.OfferRepository
+import com.example.shoppingassistant.domain.model.asFloatOrNull
+import com.example.shoppingassistant.domain.model.toTypedAttributesGuess
 import com.example.shoppingassistant.domain.tracks.Badge
 import com.example.shoppingassistant.domain.tracks.RankExplanation
 import com.example.shoppingassistant.domain.tracks.RankedOffer
@@ -12,8 +14,10 @@ import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackTop10
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.domain.tracks.top10.DedupAndMerge
-import kotlin.math.max
+import com.example.shoppingassistant.server.tracks.TrackOfferCriteriaNormalizer
+import java.util.Locale
 import kotlin.math.min
+import org.slf4j.LoggerFactory
 
 class TrackTop10SnapshotBuilder(
     private val offerRepository: OfferRepository,
@@ -26,38 +30,68 @@ class TrackTop10SnapshotBuilder(
         const val NEW_BADGE_WINDOW_MS: Long = 3L * 24 * 60 * 60 * 1000
     }
 
+    private val logger = LoggerFactory.getLogger(TrackTop10SnapshotBuilder::class.java)
+
     suspend fun buildSnapshot(candidate: TrackRefreshCandidate): TrackTop10 {
         val now = clock()
         val categoryCode = candidate.categoryCode?.trim()?.takeIf { it.isNotBlank() }
-        val brandModel = if (candidate.type == TrackType.PRODUCT) {
-            TrackMatchKeyFactory.parse(candidate.matchKey)
+        val normalizedTargetAttributes = candidate.targetAttributes
+            .map { (key, value) -> key.trim() to value.trim() }
+            .filter { (key, value) -> key.isNotBlank() && value.isNotBlank() }
+            .sortedBy { (key, _) -> key.lowercase(Locale.ROOT) }
+            .toMap(LinkedHashMap())
+        val shouldUseMatchKey =
+            candidate.type == TrackType.PRODUCT &&
+                normalizedTargetAttributes.isEmpty() &&
+                !candidate.matchKey.isNullOrBlank()
+        val brandModel = if (shouldUseMatchKey) {
+            TrackMatchKeyFactory.parse(candidate.matchKey).also { parsed ->
+                if (parsed == null) {
+                    logger.warn(
+                        "tracks.top10.guardrail invalid-match-key trackId={} matchKey={}",
+                        candidate.trackId,
+                        candidate.matchKey,
+                    )
+                }
+            }
         } else {
             null
         }
 
-        if (candidate.type == TrackType.CATEGORY && categoryCode == null) {
+        if ((candidate.type == TrackType.CATEGORY || candidate.type == TrackType.PRODUCT) && categoryCode == null) {
+            logger.warn(
+                "tracks.top10.guardrail missing-category trackId={} type={} attrs={}",
+                candidate.trackId,
+                candidate.type,
+                candidate.targetAttributes.size,
+            )
             return emptySnapshot(candidate.trackId, now, "missing-category")
         }
-        if (candidate.type == TrackType.PRODUCT && brandModel == null) {
-            return emptySnapshot(candidate.trackId, now, "missing-match-key")
-        }
         if (candidate.type != TrackType.CATEGORY && candidate.type != TrackType.PRODUCT) {
+            logger.warn(
+                "tracks.top10.guardrail legacy-type trackId={} type={}",
+                candidate.trackId,
+                candidate.type,
+            )
             return emptySnapshot(candidate.trackId, now, "legacy-type")
         }
 
         if (!rateLimiter.acquire(SOURCE_KEY)) {
+            logger.info("tracks.top10.guardrail rate-limit trackId={}", candidate.trackId)
             return emptySnapshot(candidate.trackId, now, "rate-limit")
         }
 
+        val criteriaFilters = TrackOfferCriteriaNormalizer.toOfferCriteriaFilters(candidate.filters)
         val criteria = OfferSearchCriteria(
             brand = brandModel?.first,
             model = brandModel?.second,
             categoryCode = categoryCode,
-            attributes = candidate.filters.extra
-                .mapKeys { it.key.trim() }
-                .mapValues { it.value.trim() }
-                .filterKeys { it.isNotBlank() }
-                .filterValues { it.isNotBlank() },
+            location = criteriaFilters.location,
+            condition = criteriaFilters.condition,
+            conditions = criteriaFilters.conditions,
+            deliveryChannels = criteriaFilters.deliveryChannels,
+            sellerQuery = criteriaFilters.sellerQuery,
+            attributes = normalizedTargetAttributes.toTypedAttributesGuess(),
             userCountry = candidate.userCountry?.trim()?.takeIf { it.isNotBlank() },
             sellerCountryCode = candidate.userCountry?.trim()?.takeIf { it.isNotBlank() },
             limit = 50,
@@ -131,7 +165,7 @@ class TrackTop10SnapshotBuilder(
                 price = offer.price,
                 delivery = null,
                 trustScore = rating?.toFloat(),
-                distanceKm = offer.attributes["distance_km"]?.toFloatOrNull(),
+                distanceKm = offer.attributes["distance_km"]?.asFloatOrNull(),
                 badges = badges,
                 deeplink = "https://example.com/offers/${offer.id}",
                 dedupKey = DedupAndMerge.computeDedupKey(offer),
@@ -159,4 +193,5 @@ class TrackTop10SnapshotBuilder(
             ),
         )
     }
+
 }

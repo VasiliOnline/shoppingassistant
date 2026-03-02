@@ -1,5 +1,7 @@
 package com.example.shoppingassistant.server.offers
 
+import com.example.shoppingassistant.domain.catalog.CatalogDataVersion
+import com.example.shoppingassistant.domain.catalog.Stage40DedupEntity
 import com.example.shoppingassistant.domain.model.PresetObservabilityBatchRequest
 import com.example.shoppingassistant.domain.model.PresetObservabilityBatchResponse
 import com.example.shoppingassistant.domain.model.PresetObservabilityEvent
@@ -7,13 +9,21 @@ import com.example.shoppingassistant.domain.model.PresetObservabilityEventType
 import com.example.shoppingassistant.server.catalog.CategoriesTable
 import com.example.shoppingassistant.server.catalog.FacetCollectionsTable
 import com.example.shoppingassistant.server.catalog.FacetPresetsTable
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionMetricSample
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepository
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepositoryImpl
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionStream
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayer
+import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayerImpl
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.sql.SQLException
+import java.util.Locale
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.selectAll
 
@@ -23,23 +33,40 @@ interface PresetObservabilityRepository {
     ): PresetObservabilityBatchResponse
 }
 
-class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
+class PresetObservabilityRepositoryImpl(
+    private val stage4ExecutionLayer: Stage4ExecutionLayer = Stage4ExecutionLayerImpl(),
+    private val stage4ExecutionObservabilityRepository: Stage4ExecutionObservabilityRepository =
+        Stage4ExecutionObservabilityRepositoryImpl(),
+) : PresetObservabilityRepository {
 
     override suspend fun ingestBatch(
         request: PresetObservabilityBatchRequest,
     ): PresetObservabilityBatchResponse = DatabaseFactory.dbQuery {
+        val now = System.currentTimeMillis()
+        val rejectedEventKeys = mutableListOf<String>()
+        var acceptedCount = 0
+        var dedupedCount = 0
+        var rejectedCount = 0
+        var normalizedCount = 0
+
         if (request.events.isEmpty()) {
-            return@dbQuery PresetObservabilityBatchResponse(
+            rejectedCount = 1
+            rejectedEventKeys += "BATCH_EMPTY"
+            val response = PresetObservabilityBatchResponse(
                 acceptedCount = 0,
                 dedupedCount = 0,
                 rejectedCount = 1,
                 rejectedEventKeys = listOf("BATCH_EMPTY"),
             )
+            recordExecutionMetrics(
+                now = now,
+                normalizedCount = normalizedCount,
+                dedupedCount = dedupedCount,
+                rejectedCount = rejectedCount,
+                rejectedEventKeys = rejectedEventKeys,
+            )
+            return@dbQuery response
         }
-
-        val now = System.currentTimeMillis()
-        val rejectedEventKeys = mutableListOf<String>()
-        var rejectedCount = 0
 
         val candidateEvents = if (request.events.size > MAX_BATCH_SIZE) {
             rejectedCount += (request.events.size - MAX_BATCH_SIZE)
@@ -61,24 +88,38 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
                 }
             }
         }
+        normalizedCount = normalized.size
 
         if (normalized.isEmpty()) {
-            return@dbQuery PresetObservabilityBatchResponse(
+            val response = PresetObservabilityBatchResponse(
                 acceptedCount = 0,
                 dedupedCount = 0,
                 rejectedCount = rejectedCount,
                 rejectedEventKeys = rejectedEventKeys,
             )
+            recordExecutionMetrics(
+                now = now,
+                normalizedCount = normalizedCount,
+                dedupedCount = dedupedCount,
+                rejectedCount = rejectedCount,
+                rejectedEventKeys = rejectedEventKeys,
+            )
+            return@dbQuery response
         }
 
         val uniqueByKey = LinkedHashMap<String, NormalizedPresetEvent>()
-        var dedupedCount = 0
         normalized.forEach { event ->
             val previous = uniqueByKey.putIfAbsent(event.idempotencyKey, event)
             if (previous != null) dedupedCount += 1
         }
 
-        val uniqueEvents = uniqueByKey.values.toList()
+        val uniqueByLogicalKey = LinkedHashMap<String, NormalizedPresetEvent>()
+        uniqueByKey.values.forEach { event ->
+            val previous = uniqueByLogicalKey.putIfAbsent(event.logicalDedupKey, event)
+            if (previous != null) dedupedCount += 1
+        }
+
+        val uniqueEvents = uniqueByLogicalKey.values.toList()
         val referentiallyValidEvents = filterReferentiallyValidEvents(
             events = uniqueEvents,
             rejectedEventKeys = rejectedEventKeys,
@@ -86,12 +127,20 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
         )
 
         if (referentiallyValidEvents.isEmpty()) {
-            return@dbQuery PresetObservabilityBatchResponse(
+            val response = PresetObservabilityBatchResponse(
                 acceptedCount = 0,
                 dedupedCount = dedupedCount,
                 rejectedCount = rejectedCount,
                 rejectedEventKeys = rejectedEventKeys,
             )
+            recordExecutionMetrics(
+                now = now,
+                normalizedCount = normalizedCount,
+                dedupedCount = dedupedCount,
+                rejectedCount = rejectedCount,
+                rejectedEventKeys = rejectedEventKeys,
+            )
+            return@dbQuery response
         }
 
         val keys = referentiallyValidEvents.map { it.idempotencyKey }
@@ -102,9 +151,12 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
             .toSet()
 
         dedupedCount += existingKeys.size
-        val toInsert = referentiallyValidEvents.filterNot { event -> event.idempotencyKey in existingKeys }
+        val candidateToInsert = referentiallyValidEvents.filterNot { event -> event.idempotencyKey in existingKeys }
 
-        var acceptedCount = 0
+        val existingLogicalKeys = loadExistingLogicalDedupKeys(candidateToInsert)
+        dedupedCount += candidateToInsert.count { event -> event.logicalDedupKey in existingLogicalKeys }
+        val toInsert = candidateToInsert.filterNot { event -> event.logicalDedupKey in existingLogicalKeys }
+
         toInsert.forEach { event ->
             var rejectedByConstraint = false
             val inserted = try {
@@ -121,7 +173,11 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
                     stmt[receivedAt] = now
                     stmt[eventDate] = event.eventDate
                     stmt[dataVersion] = event.dataVersion
-                    stmt[payloadJson] = emptyMap()
+                    stmt[payloadJson] = mapOf(
+                        "stage4LogicalDedupKey" to event.logicalDedupKey,
+                        "stage4PresetKey" to event.stage4PresetKey,
+                        "stage4CollectionKey" to event.stage4CollectionKey.orEmpty(),
+                    )
                 }.insertedCount > 0
             } catch (exception: Throwable) {
                 if (isForeignKeyViolation(exception)) {
@@ -144,12 +200,20 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
             }
         }
 
-        PresetObservabilityBatchResponse(
+        val response = PresetObservabilityBatchResponse(
             acceptedCount = acceptedCount,
             dedupedCount = dedupedCount,
             rejectedCount = rejectedCount,
             rejectedEventKeys = rejectedEventKeys,
         )
+        recordExecutionMetrics(
+            now = now,
+            normalizedCount = normalizedCount,
+            dedupedCount = dedupedCount,
+            rejectedCount = rejectedCount,
+            rejectedEventKeys = rejectedEventKeys,
+        )
+        response
     }
 
     private fun normalize(
@@ -160,11 +224,11 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
             ?: return NormalizationResult.Rejected("IDEMPOTENCY_KEY_BLANK")
         val querySessionId = raw.querySessionId.trim().takeIf { it.isNotEmpty() }
             ?: return NormalizationResult.Rejected("QUERY_SESSION_ID_BLANK:$idempotencyKey")
-        val categoryCode = raw.categoryCode.trim().uppercase().takeIf { it.isNotEmpty() }
+        val categoryCode = stage4ExecutionLayer.normalizeCatalogCode(raw.categoryCode)
             ?: return NormalizationResult.Rejected("CATEGORY_CODE_BLANK:$idempotencyKey")
-        val facetPresetCode = raw.facetPresetCode.trim().uppercase().takeIf { it.isNotEmpty() }
+        val facetPresetCode = stage4ExecutionLayer.normalizeCatalogCode(raw.facetPresetCode)
             ?: return NormalizationResult.Rejected("FACET_PRESET_CODE_BLANK:$idempotencyKey")
-        val facetCollectionCode = raw.facetCollectionCode?.trim()?.uppercase()?.takeIf { it.isNotEmpty() }
+        val facetCollectionCode = stage4ExecutionLayer.normalizeCatalogCode(raw.facetCollectionCode)
         val offerId = raw.offerId?.trim()?.takeIf { it.isNotEmpty() }
         val position = raw.position
         if (position != null && position <= 0) {
@@ -184,6 +248,34 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
             .toLocalDateTime(TimeZone.UTC)
             .date
         val dataVersion = raw.dataVersion?.trim()?.takeIf { it.isNotEmpty() }
+            ?: return NormalizationResult.Rejected("DATA_VERSION_BLANK:$idempotencyKey")
+        if (!isCompatibleDataVersion(dataVersion)) {
+            return NormalizationResult.Rejected("DATA_VERSION_INCOMPATIBLE:$idempotencyKey")
+        }
+
+        val stage4PresetKey = stage4ExecutionLayer.renderDedupKey(
+            entity = Stage40DedupEntity.FACET_PRESET,
+            fields = mapOf("presetCode" to facetPresetCode),
+            fallback = facetPresetCode,
+        )
+        val stage4CollectionKey = facetCollectionCode?.let { collectionCode ->
+            stage4ExecutionLayer.renderDedupKey(
+                entity = Stage40DedupEntity.FACET_COLLECTION,
+                fields = mapOf("collectionCode" to collectionCode),
+                fallback = collectionCode,
+            )
+        }
+        val logicalDedupKey = buildLogicalDedupKey(
+            eventDate = eventDate,
+            eventType = raw.eventType.name,
+            querySessionId = querySessionId,
+            categoryCode = categoryCode,
+            stage4PresetKey = stage4PresetKey,
+            stage4CollectionKey = stage4CollectionKey,
+            offerId = offerId,
+            position = position,
+            occurredAtMs = raw.occurredAtMs,
+        )
 
         return NormalizationResult.Accepted(
             NormalizedPresetEvent(
@@ -198,8 +290,89 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
                 occurredAtMs = raw.occurredAtMs,
                 eventDate = eventDate,
                 dataVersion = dataVersion,
+                stage4PresetKey = stage4PresetKey,
+                stage4CollectionKey = stage4CollectionKey,
+                logicalDedupKey = logicalDedupKey,
             ),
         )
+    }
+
+    private fun loadExistingLogicalDedupKeys(
+        candidateEvents: List<NormalizedPresetEvent>,
+    ): Set<String> {
+        if (candidateEvents.isEmpty()) return emptySet()
+
+        val dates = candidateEvents.map { it.eventDate }.toSet()
+        val eventTypes = candidateEvents.map { it.eventType.name }.toSet()
+        val querySessionIds = candidateEvents.map { it.querySessionId }.toSet()
+
+        val query = CatalogPresetEventsTable.selectAll()
+        query.andWhere { CatalogPresetEventsTable.eventDate inList dates.toList() }
+        query.andWhere { CatalogPresetEventsTable.eventType inList eventTypes.toList() }
+        query.andWhere { CatalogPresetEventsTable.querySessionId inList querySessionIds.toList() }
+
+        return query.map { row ->
+            val categoryCode = stage4ExecutionLayer.normalizeCatalogCode(row[CatalogPresetEventsTable.categoryCode])
+                ?: row[CatalogPresetEventsTable.categoryCode]
+            val presetCode = stage4ExecutionLayer.normalizeCatalogCode(row[CatalogPresetEventsTable.facetPresetCode])
+                ?: row[CatalogPresetEventsTable.facetPresetCode]
+            val collectionCode = stage4ExecutionLayer.normalizeCatalogCode(row[CatalogPresetEventsTable.facetCollectionCode])
+
+            val stage4PresetKey = stage4ExecutionLayer.renderDedupKey(
+                entity = Stage40DedupEntity.FACET_PRESET,
+                fields = mapOf("presetCode" to presetCode),
+                fallback = presetCode,
+            )
+            val stage4CollectionKey = collectionCode?.let { normalizedCollectionCode ->
+                stage4ExecutionLayer.renderDedupKey(
+                    entity = Stage40DedupEntity.FACET_COLLECTION,
+                    fields = mapOf("collectionCode" to normalizedCollectionCode),
+                    fallback = normalizedCollectionCode,
+                )
+            }
+
+            buildLogicalDedupKey(
+                eventDate = row[CatalogPresetEventsTable.eventDate],
+                eventType = row[CatalogPresetEventsTable.eventType],
+                querySessionId = row[CatalogPresetEventsTable.querySessionId],
+                categoryCode = categoryCode,
+                stage4PresetKey = stage4PresetKey,
+                stage4CollectionKey = stage4CollectionKey,
+                offerId = row[CatalogPresetEventsTable.offerId],
+                position = row[CatalogPresetEventsTable.position],
+                occurredAtMs = row[CatalogPresetEventsTable.occurredAt],
+            )
+        }.toSet()
+    }
+
+    private fun buildLogicalDedupKey(
+        eventDate: LocalDate,
+        eventType: String,
+        querySessionId: String,
+        categoryCode: String,
+        stage4PresetKey: String,
+        stage4CollectionKey: String?,
+        offerId: String?,
+        position: Int?,
+        occurredAtMs: Long,
+    ): String = buildString {
+        append(eventDate.toString())
+        append("|")
+        append(eventType.trim().uppercase(Locale.ROOT))
+        append("|")
+        append(querySessionId.trim())
+        append("|")
+        append(categoryCode.trim())
+        append("|")
+        append(stage4PresetKey.trim())
+        append("|")
+        append(stage4CollectionKey?.trim().orEmpty())
+        append("|")
+        append(offerId?.trim().orEmpty())
+        append("|")
+        append(position ?: 0)
+        append("|")
+        append(occurredAtMs)
     }
 
     private fun filterReferentiallyValidEvents(
@@ -258,6 +431,37 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
         return validEvents
     }
 
+    private fun isCompatibleDataVersion(dataVersion: String): Boolean {
+        if (REQUIRED_DATA_VERSION == "unknown") return true
+        return dataVersion == REQUIRED_DATA_VERSION
+    }
+
+    private fun recordExecutionMetrics(
+        now: Long,
+        normalizedCount: Int,
+        dedupedCount: Int,
+        rejectedCount: Int,
+        rejectedEventKeys: List<String>,
+    ) {
+        stage4ExecutionObservabilityRepository.recordInTransaction(
+            Stage4ExecutionMetricSample(
+                stream = Stage4ExecutionStream.PRESET_EVENTS_INGEST,
+                normalizedCount = normalizedCount,
+                droppedCount = rejectedCount,
+                logicalDedupCount = dedupedCount,
+                unknownAttributeCount = 0,
+                reasonCodes = rejectedEventKeys
+                    .map { key -> key.substringBefore(':').trim() }
+                    .filter { key -> key.isNotEmpty() }
+                    .distinct(),
+                metadata = mapOf(
+                    "source" to "PresetObservabilityRepositoryImpl",
+                ),
+                createdAtMs = now,
+            ),
+        )
+    }
+
     private fun appendRejectedKey(
         rejectedEventKeys: MutableList<String>,
         key: String,
@@ -295,6 +499,9 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
         val occurredAtMs: Long,
         val eventDate: LocalDate,
         val dataVersion: String?,
+        val stage4PresetKey: String,
+        val stage4CollectionKey: String?,
+        val logicalDedupKey: String,
     )
 
     private companion object {
@@ -302,5 +509,7 @@ class PresetObservabilityRepositoryImpl : PresetObservabilityRepository {
         private const val MAX_REJECTED_KEYS = 50
         private const val MAX_FUTURE_SKEW_MS = 5 * 60 * 1000L
         private const val SQL_STATE_FOREIGN_KEY_VIOLATION = "23503"
+        private val REQUIRED_DATA_VERSION: String =
+            CatalogDataVersion.current.trim().ifEmpty { "unknown" }
     }
 }

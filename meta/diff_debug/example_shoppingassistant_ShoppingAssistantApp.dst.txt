@@ -1,6 +1,9 @@
 package com.example.shoppingassistant
 
 import android.app.Application
+import android.util.Log
+import com.example.shoppingassistant.core.data.catalog.FacetSchemaGate
+import com.example.shoppingassistant.core.data.catalog.TaxonomyGate
 import com.example.shoppingassistant.core.data.tracks.TemplateSubscriptionsToTracksMigration
 import com.example.shoppingassistant.core.di.coreModule
 import com.example.shoppingassistant.core.di.domainModule
@@ -16,9 +19,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
+import org.koin.core.Koin
 
 /**
  * Application класс, объявленный в манифесте.
@@ -49,9 +54,46 @@ class ShoppingAssistantApp : Application() {
         }
 
         val koin = runCatching { GlobalContext.get() }.getOrNull() ?: return
+        enforceTaxonomyGate(koin)
+        enforceFacetSchemaGate(koin)
+
         appScope.launch {
             runCatching { koin.get<TemplateSubscriptionsToTracksMigration>().migrateIfNeeded() }
         }
         runCatching { koin.get<TrackingPushScheduler>().ensureScheduled() }
+    }
+
+    private fun enforceTaxonomyGate(koin: Koin) {
+        val strictReleaseGate = true
+        val result = runCatching {
+            runBlocking {
+                koin.get<TaxonomyGate>().validateOrThrow()
+            }
+        }
+        val failure = result.exceptionOrNull() ?: return
+
+        if (BuildConfig.DEBUG || strictReleaseGate) {
+            throw IllegalStateException("Taxonomy gate failed", failure)
+        }
+        Log.e(TAG, "Taxonomy gate failed in release: ${failure.message}", failure)
+    }
+
+    private fun enforceFacetSchemaGate(koin: Koin) {
+        val strictReleaseGate = true
+        val result = runCatching {
+            runBlocking {
+                koin.get<FacetSchemaGate>().validateOrThrow()
+            }
+        }
+        val failure = result.exceptionOrNull() ?: return
+
+        if (BuildConfig.DEBUG || strictReleaseGate) {
+            throw IllegalStateException("Facet schema gate failed", failure)
+        }
+        Log.e(TAG, "Facet schema gate failed in release: ${failure.message}", failure)
+    }
+
+    private companion object {
+        private const val TAG = "ShoppingAssistantApp"
     }
 }

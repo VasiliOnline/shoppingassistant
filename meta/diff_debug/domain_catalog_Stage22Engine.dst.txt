@@ -75,9 +75,16 @@ internal class Stage22ProfileResolver(
 ) {
     private val profileByCategory: Map<String, Stage22CategoryProfile> =
         profiles
-            .sortedWith(compareBy<Stage22CategoryProfile> { it.sourceL0.orEmpty() }.thenBy { it.categoryCode })
             .groupBy { it.categoryCode }
-            .mapValues { (_, values) -> values.first() }
+            .mapValues { (_, values) ->
+                values.minWithOrNull(
+                    compareBy<Stage22CategoryProfile> { it.sourceL0.orEmpty() }
+                        .thenBy { it.categoryCode }
+                        .thenBy { profile -> profile.attributes.joinToString("|") { "${it.attributeCode}:${it.uiOrder}:${it.required}:${it.visibility}" } }
+                        .thenBy { profile -> profile.identityAttributes.joinToString("|") }
+                        .thenBy { profile -> profile.facetAttributes.joinToString("|") },
+                ) ?: values.first()
+            }
 
     fun resolve(categoryCode: String): Stage22ResolvedProfile {
         val resolvedCode = categoryCode.trim()
@@ -178,13 +185,13 @@ internal class Stage22ConstraintsResolver(
 ) {
     private val globalRules: List<CatalogConstraints> = globalConstraints
         .filter { it.scope == ConstraintScope.GLOBAL }
-        .sortedWith(compareBy<CatalogConstraints> { it.categoryCode.orEmpty() }.thenBy { it.brand.orEmpty() }.thenBy { it.model.orEmpty() })
+        .sortedWith(compareBy<CatalogConstraints> { it.categoryCode.orEmpty() }.thenBy { it.brand.orEmpty() }.thenBy { it.model.orEmpty() }.thenBy { it.deterministicKey() })
 
     private val categoryRulesByCode: Map<String, List<CatalogConstraints>> = categoryConstraints
         .filter { it.scope == ConstraintScope.CATEGORY }
         .groupBy { it.categoryCode.orEmpty() }
         .mapValues { (_, rules) ->
-            rules.sortedWith(compareBy<CatalogConstraints> { it.categoryCode.orEmpty() }.thenBy { it.brand.orEmpty() }.thenBy { it.model.orEmpty() })
+            rules.sortedWith(compareBy<CatalogConstraints> { it.categoryCode.orEmpty() }.thenBy { it.brand.orEmpty() }.thenBy { it.model.orEmpty() }.thenBy { it.deterministicKey() })
         }
 
     fun resolve(categoryCode: String): Stage22EffectiveConstraints {
@@ -324,6 +331,40 @@ internal class Stage22ConstraintsResolver(
             }
             .distinct()
             .toList()
+    }
+
+    private fun CatalogConstraints.deterministicKey(): String = buildString {
+        append(scope.name)
+        append("|")
+        append(categoryCode.orEmpty())
+        append("|")
+        append(brand.orEmpty())
+        append("|")
+        append(model.orEmpty())
+        append("|")
+        append(
+            attributeConstraints
+                .sortedBy { it.attributeCode }
+                .joinToString(";") { rule ->
+                    rule.attributeCode + ":" +
+                        rule.allowedValues.sorted().joinToString(",") + "!" +
+                        rule.forbiddenValues.sorted().joinToString(",")
+                },
+        )
+        append("|")
+        append(
+            compatibilityRules.joinToString(";") { rule ->
+                val whenKey = rule.whenAll.joinToString(",") { cond ->
+                    cond.attributeCode + ":" + cond.values.sorted().joinToString(":")
+                }
+                val applyKey = rule.apply.joinToString(",") { apply ->
+                    apply.attributeCode + ":" +
+                        apply.allowedValues.sorted().joinToString(":") + "!" +
+                        apply.forbiddenValues.sorted().joinToString(":")
+                }
+                "$whenKey->$applyKey"
+            },
+        )
     }
 }
 

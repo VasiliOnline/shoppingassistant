@@ -2,6 +2,8 @@ package com.example.shoppingassistant.domain.catalog
 
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -182,13 +184,16 @@ internal class Stage22ConstraintsResolver(
     private val registry: Stage22RegistrySnapshot,
     globalConstraints: List<CatalogConstraints>,
     categoryConstraints: List<CatalogConstraints>,
+    private val referenceDate: LocalDate = LocalDate.now(),
 ) {
     private val globalRules: List<CatalogConstraints> = globalConstraints
         .filter { it.scope == ConstraintScope.GLOBAL }
+        .filter { it.isEffective(referenceDate) }
         .sortedWith(compareBy<CatalogConstraints> { it.categoryCode.orEmpty() }.thenBy { it.brand.orEmpty() }.thenBy { it.model.orEmpty() }.thenBy { it.deterministicKey() })
 
     private val categoryRulesByCode: Map<String, List<CatalogConstraints>> = categoryConstraints
         .filter { it.scope == ConstraintScope.CATEGORY }
+        .filter { it.isEffective(referenceDate) }
         .groupBy { it.categoryCode.orEmpty() }
         .mapValues { (_, rules) ->
             rules.sortedWith(compareBy<CatalogConstraints> { it.categoryCode.orEmpty() }.thenBy { it.brand.orEmpty() }.thenBy { it.model.orEmpty() }.thenBy { it.deterministicKey() })
@@ -302,20 +307,11 @@ internal class Stage22ConstraintsResolver(
         values: List<String>,
     ): List<String> {
         val dictionary = registry.dictionaries[attributeCode]
-        val byValueCode = dictionary
+        val allowedValueCodes = dictionary
             ?.entries
-            ?.associateBy { it.valueCode }
-            .orEmpty()
-        val aliasToCode = dictionary
-            ?.entries
-            ?.flatMap { entry ->
-                buildList {
-                    add(entry.valueCode to entry.valueCode)
-                    entry.labels.values.forEach { label -> add(label to entry.valueCode) }
-                    entry.aliases.forEach { alias -> add(alias to entry.valueCode) }
-                }
-            }
-            ?.associate { (value, code) -> Stage21QueryTextNormalizer.normalize(value) to code }
+            ?.map { it.valueCode.trim() }
+            ?.filter { it.isNotEmpty() }
+            ?.toSet()
             .orEmpty()
 
         return values
@@ -323,10 +319,20 @@ internal class Stage22ConstraintsResolver(
             .map { it.trim() }
             .filter { it.isNotEmpty() }
             .map { value ->
-                if (byValueCode.containsKey(value)) {
+                if (allowedValueCodes.isEmpty()) {
+                    value
+                } else if (value in allowedValueCodes) {
                     value
                 } else {
-                    aliasToCode[Stage21QueryTextNormalizer.normalize(value)] ?: value
+                    val sampleCodes = allowedValueCodes
+                        .asSequence()
+                        .sorted()
+                        .take(8)
+                        .joinToString(", ")
+                    throw IllegalStateException(
+                        "Constraint value '$value' for attribute '$attributeCode' must be valueCode " +
+                            "from dictionary. Example valueCodes: [$sampleCodes].",
+                    )
                 }
             }
             .distinct()
@@ -341,6 +347,10 @@ internal class Stage22ConstraintsResolver(
         append(brand.orEmpty())
         append("|")
         append(model.orEmpty())
+        append("|")
+        append(effectiveFrom.orEmpty())
+        append("|")
+        append(effectiveTo.orEmpty())
         append("|")
         append(
             attributeConstraints
@@ -365,6 +375,23 @@ internal class Stage22ConstraintsResolver(
                 "$whenKey->$applyKey"
             },
         )
+    }
+
+    private fun CatalogConstraints.isEffective(onDate: LocalDate): Boolean {
+        val from = parseIsoDateOrNull(effectiveFrom)
+        val to = parseIsoDateOrNull(effectiveTo)
+        if (from != null && onDate.isBefore(from)) return false
+        if (to != null && onDate.isAfter(to)) return false
+        return true
+    }
+
+    private fun parseIsoDateOrNull(raw: String?): LocalDate? {
+        val value = raw?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        return try {
+            LocalDate.parse(value)
+        } catch (_: DateTimeParseException) {
+            null
+        }
     }
 }
 

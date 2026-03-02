@@ -12,7 +12,7 @@ data class OfferFull(
     val seller: UserProfile,
     val price: Money,
     val currency: String,
-    val attributes: Map<String, String> = emptyMap(),
+    val attributes: Map<String, TypedAttributeValue> = emptyMap(),
     val description: String? = null,
     val imageUrls: List<String> = emptyList(),
     val status: OfferStatus = OfferStatus.ACTIVE,

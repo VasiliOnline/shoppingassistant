@@ -9,10 +9,13 @@ import kotlinx.serialization.Serializable
 data class NormalizedQuery(
     val brand: String,
     val model: String,
-    val attributes: Map<String, String> = emptyMap(),
+    val attributes: Map<String, TypedAttributeValue> = emptyMap(),
     val brandKey: String = Normalization.key(brand),
     val modelKey: String = Normalization.key(model)
 )
+
+fun NormalizedQuery.rawAttributes(): Map<String, String> =
+    attributes.toRawStringAttributes()
 
 /** Единые правила нормализации ключей/атрибутов. */
 object Normalization {
@@ -24,4 +27,7 @@ object Normalization {
 
     fun normalizeAttrs(attrs: Map<String, String>): Map<String, String> =
         attrs.map { (k, v) -> key(k) to v.trim() }.toMap()
+
+    fun normalizeTypedAttrs(attrs: Map<String, String>): Map<String, TypedAttributeValue> =
+        normalizeAttrs(attrs).toTypedAttributesGuess()
 }

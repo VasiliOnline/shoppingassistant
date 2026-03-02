@@ -5,6 +5,7 @@ package com.example.shoppingassistant.feature.pages.main.context
 
 import com.example.shoppingassistant.domain.model.NormalizedQuery
 import com.example.shoppingassistant.domain.model.Normalization
+import com.example.shoppingassistant.domain.model.toTypedAttributesGuess
 import com.example.shoppingassistant.core.data.BrandModelRules
 import com.example.shoppingassistant.domain.template.TemplateAnchorType
 import com.example.shoppingassistant.feature.pages.main.state.UiTemplate
@@ -29,7 +30,7 @@ fun buildQuery(
                 !key.startsWith("category_level_") &&
                 key != "category"
         }
-    val normAttrs = Normalization.normalizeAttrs(selectedAttrs)
+    val normAttrs = Normalization.normalizeAttrs(selectedAttrs).toTypedAttributesGuess()
 
     val (brand, model) = when (template.anchorType) {
         TemplateAnchorType.PRODUCT -> {

@@ -55,6 +55,7 @@ import com.example.shoppingassistant.domain.tracks.TrackFilterKey
 import com.example.shoppingassistant.domain.tracks.TrackFilterOption
 import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackRepository
+import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackTargetUpdateInput
 import com.example.shoppingassistant.domain.tracks.TrackTargetUpdateResult
 import com.example.shoppingassistant.domain.tracks.TrackType
@@ -346,22 +347,34 @@ fun TrackEditPage(
     val initialDraft = targetDraft
     if (showTargetEditor && initialDraft != null) {
         TrackTargetAttributesWizardSheet(
+            mode = TargetWizardMode.EDIT,
+            entrypoint = "track.edit_target",
             initial = initialDraft,
             categories = leafCategories,
             catalogRepository = catalogRepository,
+            countryCode = countryCode,
             onDismiss = { showTargetEditor = false },
-            onSave = { next ->
+            onSave = { saveResult ->
                 showTargetEditor = false
-                targetDraft = next
                 scope.launch {
                     val result = runCatching {
                         updateTrackTarget(
                             trackId = trackId,
                             input = TrackTargetUpdateInput(
-                                type = next.type,
-                                categoryCode = next.categoryCode,
-                                matchKey = next.matchKeyOrNull(),
-                                attributes = next.attributes,
+                                type = saveResult.draft.type,
+                                targetSpec = TrackTargetSpec(
+                                    categoryCode = saveResult.draft.categoryCode,
+                                    attributes = saveResult.draft.attributes,
+                                    attributesMulti = saveResult.draft.attributesMulti,
+                                    attributesRange = saveResult.draft.attributesRange,
+                                    matchKey = saveResult.draft.matchKeyOrNull(),
+                                    queryText = saveResult.draft.queryText,
+                                    schemaVersion = saveResult.draft.schemaVersion,
+                                    taxonomyVersion = saveResult.draft.taxonomyVersion,
+                                    locale = saveResult.draft.locale,
+                                    unboundTokens = saveResult.draft.unboundTokens,
+                                ),
+                                title = saveResult.title,
                             ),
                         )
                     }.getOrElse {
@@ -371,12 +384,19 @@ fun TrackEditPage(
                     when (result) {
                         is TrackTargetUpdateResult.Updated -> {
                             targetDraft = result.track.toTargetDraft()
+                            FlowMetrics.markEvent(
+                                "Tracks.TargetUpdated",
+                                "trackId=$trackId dedupKey=${saveResult.dedupKey.orEmpty()}",
+                            )
                             viewModel.load(trackId)
                             snackbarHostState.showSnackbar("Цель обновлена")
                         }
                         is TrackTargetUpdateResult.AlreadyExists -> {
-                            snackbarHostState.showSnackbar("Такой трек уже существует")
-                            onOpenTrack(result.track.id)
+                            targetDedupConflictTrackId = result.track.id
+                            FlowMetrics.markEvent(
+                                "Tracks.DedupConflict",
+                                "requestedDedupKey=${saveResult.dedupKey.orEmpty()} existingTrackId=${result.track.id}",
+                            )
                         }
                         is TrackTargetUpdateResult.InvalidInput -> {
                             snackbarHostState.showSnackbar(result.reason.ifBlank { "Некорректная цель" })
@@ -385,6 +405,29 @@ fun TrackEditPage(
                             snackbarHostState.showSnackbar("Трек не найден")
                         }
                     }
+                }
+            },
+        )
+    }
+
+    targetDedupConflictTrackId?.let { existingTrackId ->
+        AlertDialog(
+            onDismissRequest = { targetDedupConflictTrackId = null },
+            title = { Text("Такой трек уже существует") },
+            text = { Text("Изменение цели создаёт дубликат существующего трека.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        targetDedupConflictTrackId = null
+                        onOpenTrack(existingTrackId)
+                    },
+                ) {
+                    Text("Открыть существующий")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { targetDedupConflictTrackId = null }) {
+                    Text("Отменить изменение")
                 }
             },
         )
@@ -685,7 +728,8 @@ private fun sheetTitle(sheet: SheetOptionsState): String {
 }
 
 private fun Track.toTargetDraft(): TrackTargetDraft {
-    val (brand, model) = TrackMatchKeyFactory.parse(target.matchKey) ?: ("" to "")
+    val resolvedMatchKey = target.spec?.matchKey ?: target.matchKey
+    val (brand, model) = TrackMatchKeyFactory.parse(resolvedMatchKey) ?: ("" to "")
     val normalizedType = when (type) {
         TrackType.CATEGORY -> TrackType.CATEGORY
         else -> TrackType.PRODUCT
@@ -694,8 +738,15 @@ private fun Track.toTargetDraft(): TrackTargetDraft {
         type = normalizedType,
         brand = brand,
         model = model,
-        categoryCode = categoryCode,
-        attributes = filters.extra,
+        categoryCode = target.spec?.categoryCode ?: target.categoryCode ?: categoryCode,
+        attributes = target.spec?.attributes ?: target.attributes.ifEmpty { filters.extra },
+        attributesMulti = target.spec?.attributesMulti ?: target.attributesMulti,
+        attributesRange = target.spec?.attributesRange ?: target.attributesRange,
+        queryText = target.spec?.queryText ?: target.queryText,
+        schemaVersion = target.spec?.schemaVersion ?: target.schemaVersion,
+        taxonomyVersion = target.spec?.taxonomyVersion ?: target.taxonomyVersion,
+        locale = target.spec?.locale ?: target.locale,
+        unboundTokens = (target.spec?.unboundTokens ?: target.unboundTokens),
     )
 }
 
@@ -703,7 +754,14 @@ private fun TrackTargetDraft?.toTargetLabel(): String {
     val draft = this ?: return "Не выбрано"
     return when (draft.type) {
         TrackType.CATEGORY -> draft.categoryCode?.takeIf { it.isNotBlank() } ?: "Категория"
-        TrackType.PRODUCT -> listOf(draft.brand, draft.model).joinToString(" ").trim().ifBlank { "Товар" }
+        TrackType.PRODUCT -> {
+            val brandModel = listOf(draft.brand, draft.model).joinToString(" ").trim()
+            when {
+                brandModel.isNotBlank() -> brandModel
+                !draft.categoryCode.isNullOrBlank() -> "Товар в ${draft.categoryCode}"
+                else -> "Товар"
+            }
+        }
         else -> "Цель"
     }
 }

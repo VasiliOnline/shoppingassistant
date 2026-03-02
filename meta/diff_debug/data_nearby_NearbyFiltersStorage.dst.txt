@@ -61,6 +61,12 @@ enum class NearbySort(
 }
 
 @Serializable
+data class NearbyBrand(
+    val id: String,
+    val name: String,
+)
+
+@Serializable
 data class NearbyPlace(
     val city: String? = null,
     val country: String? = null,
@@ -72,6 +78,7 @@ data class NearbyFiltersState(
     val radiusKm: Int = DEFAULT_NEARBY_RADIUS_KM,
     val selectedPlace: NearbyPlace? = null,
     val categoryCodes: Set<String> = emptySet(),
+    val brands: List<NearbyBrand> = emptyList(),
     val priceMin: Int? = null,
     val priceMax: Int? = null,
     val condition: NearbyCondition = NearbyCondition.Any,

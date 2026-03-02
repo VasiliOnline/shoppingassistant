@@ -624,8 +624,25 @@ private object RoutingRulesParser {
     }
 
     private fun compilePattern(raw: String): Regex {
-        // (?U) makes \b and \w Unicode-aware for Cyrillic tokens in rules.
-        val source = "(?U)$raw"
+        val source = normalizeUnicodeWordBoundaries(raw.trim())
         return Regex(source, RegexOption.IGNORE_CASE)
+    }
+
+    private fun normalizeUnicodeWordBoundaries(pattern: String): String {
+        val hasLeadingBoundary = pattern.startsWith("\\b")
+        val hasTrailingBoundary = pattern.endsWith("\\b")
+        if (!hasLeadingBoundary && !hasTrailingBoundary) return pattern
+
+        var core = pattern
+        if (hasLeadingBoundary) {
+            core = core.removePrefix("\\b")
+        }
+        if (hasTrailingBoundary) {
+            core = core.removeSuffix("\\b")
+        }
+
+        val prefix = if (hasLeadingBoundary) "(?<![\\p{L}\\p{N}_])" else ""
+        val suffix = if (hasTrailingBoundary) "(?![\\p{L}\\p{N}_])" else ""
+        return "$prefix(?:$core)$suffix"
     }
 }

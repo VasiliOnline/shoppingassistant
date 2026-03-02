@@ -1,1 +1,336 @@
-[]
+[
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.KITCHEN_DINING",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL"
+        ],
+        "forbiddenValues": [],
+        "reason": "Основные материалы посуды и кухонной утвари."
+      },
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW"
+        ],
+        "forbiddenValues": [],
+        "reason": "Для кухонной посуды приоритет на новые товары."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.LIGHTING",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Освещение допускает новые и восстановленные устройства."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [],
+        "forbiddenValues": [
+          "PINK"
+        ],
+        "reason": "Исключаем нетипичный цвет для базового ассортимента освещения."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.REPAIR_TOOLS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "used_for",
+            "op": "EQUALS_ANY",
+            "values": [
+              "OFFICE"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW"
+            ],
+            "forbiddenValues": [
+              "USED"
+            ],
+            "reason": "Офисный инструмент обычно выбирают в новом состоянии."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.PLUMBING",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Основные материалы сантехнических изделий."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "WHITE",
+          "GRAY"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовые цвета для сантехнических категорий."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.CLEANING",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "form_factor",
+        "allowedValues": [
+          "POWDER",
+          "CAPSULE",
+          "TABLET",
+          "LIQUID"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'form_factor'."
+      },
+      {
+        "attributeCode": "used_for",
+        "allowedValues": [
+          "HOME",
+          "OFFICE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.FURNITURE",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.GARDEN",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      },
+      {
+        "attributeCode": "used_for",
+        "allowedValues": [
+          "HOME",
+          "OFFICE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.STORAGE",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "HOME.TEXTILES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  }
+]

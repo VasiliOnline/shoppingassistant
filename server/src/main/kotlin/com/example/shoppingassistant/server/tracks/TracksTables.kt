@@ -2,6 +2,8 @@ package com.example.shoppingassistant.server.tracks
 
 import com.example.shoppingassistant.domain.tracks.TrackFilters
 import com.example.shoppingassistant.domain.tracks.TrackTarget
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import com.example.shoppingassistant.server.db.AuthUsersTable
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -11,11 +13,15 @@ import org.jetbrains.exposed.sql.json.jsonb
 private val json = Json { ignoreUnknownKeys = true }
 
 object TracksTable : Table("tracks") {
+    private val stringMapSerializer = MapSerializer(String.serializer(), String.serializer())
+
     val id = long("id").autoIncrement()
     val userId = long("user_id").references(AuthUsersTable.id, onDelete = ReferenceOption.CASCADE)
     val type = varchar("type", 16)
     val matchKey = varchar("match_key", 256).nullable()
     val categoryCode = varchar("category_code", 64).nullable()
+    val targetCategoryCode = varchar("target_category_code", 64).nullable()
+    val targetAttributes = jsonb("target_attributes_jsonb", json, stringMapSerializer).nullable()
     val target = jsonb("target", json, TrackTarget.serializer())
     val filters = jsonb("filters", json, TrackFilters.serializer())
     val title = varchar("title", 255)
@@ -33,6 +39,7 @@ object TracksTable : Table("tracks") {
         index(false, userId, state)
         index(false, userId, matchKey)
         index(false, userId, categoryCode)
+        index(false, userId, targetCategoryCode)
     }
 }
 

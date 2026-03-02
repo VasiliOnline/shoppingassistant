@@ -19,7 +19,15 @@ import com.example.shoppingassistant.domain.catalog.GetBrowseNodeTask
 import com.example.shoppingassistant.domain.catalog.GetBrowseNodesTask
 import com.example.shoppingassistant.domain.catalog.GetGoogleMappingForCategoryTask
 import com.example.shoppingassistant.domain.catalog.GetGoogleTaxonomyMappingsTask
+import com.example.shoppingassistant.domain.catalog.RouteQueryTask
+import com.example.shoppingassistant.domain.catalog.RunStage21TechGoldenTask
 import com.example.shoppingassistant.domain.facet.GetFacetCountsTask
+import com.example.shoppingassistant.domain.facet.GetFacetCollectionByBrowseCodeTask
+import com.example.shoppingassistant.domain.facet.GetFacetCollectionTask
+import com.example.shoppingassistant.domain.facet.GetFacetCollectionsTask
+import com.example.shoppingassistant.domain.facet.GetFacetDefinitionsTask
+import com.example.shoppingassistant.domain.facet.GetFacetPresetTask
+import com.example.shoppingassistant.domain.facet.GetFacetPresetsTask
 import com.example.shoppingassistant.domain.ingest.LoadRawOfferTask
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferTask
 import com.example.shoppingassistant.domain.useroffers.PerformUserOfferActionTask
@@ -67,12 +75,20 @@ val domainModule = module {
     single { ChangePasswordUseCase(get()) }
 
     single { GetFacetCountsTask(get()) }
+    single { GetFacetDefinitionsTask(get()) }
+    single { GetFacetPresetsTask(get()) }
+    single { GetFacetPresetTask(get()) }
+    single { GetFacetCollectionsTask(get()) }
+    single { GetFacetCollectionTask(get()) }
+    single { GetFacetCollectionByBrowseCodeTask(get()) }
     single { GetCategoryOfferCountsTask(get()) }
     single { GetBrowseNodesTask(get()) }
     single { GetBrowseNodeTask(get()) }
     single { GetAliasEntriesTask(get()) }
     single { GetGoogleTaxonomyMappingsTask(get()) }
     single { GetGoogleMappingForCategoryTask(get()) }
+    single { RouteQueryTask(get()) }
+    single { RunStage21TechGoldenTask(get()) }
 
     single { UpdateProfileTask(get()) }
     single { UpdateProfilePhotosTask(get()) }

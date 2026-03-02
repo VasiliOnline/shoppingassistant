@@ -5,6 +5,7 @@ import com.example.shoppingassistant.domain.useroffers.UserOfferStatus
 import com.example.shoppingassistant.domain.useroffers.UserOffersPage
 import com.example.shoppingassistant.domain.useroffers.UserOffersQuery
 import com.example.shoppingassistant.domain.useroffers.UserOfferSummary
+import com.example.shoppingassistant.domain.model.Money
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import com.example.shoppingassistant.server.offers.OfferPriceHistoryTable
 import com.example.shoppingassistant.server.offers.OfferSourcesTable
@@ -141,7 +142,7 @@ class UserOffersRepositoryImpl : UserOffersBackendRepository {
         )
     }
 
-    private fun Long.toMajor(): Double = this.toDouble() / 100.0
+    private fun Long.toMajor(): Double = Money(this).toMajor()
 
     private fun String.toUserOfferStatus(): UserOfferStatus =
         runCatching { UserOfferStatus.valueOf(this) }.getOrDefault(UserOfferStatus.ACTIVE)

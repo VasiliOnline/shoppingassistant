@@ -36,7 +36,7 @@ class RunStage21TechGoldenTask(
     suspend operator fun invoke(): Stage21TechGoldenReport = goldenRunner.run()
 }
 
-class RunStage21GoldenSuiteTask(
+internal class RunStage21GoldenSuiteTask(
     private val goldenSuiteRunner: Stage21GoldenSuiteRunner,
 ) {
     operator fun invoke(): Stage21GoldenSuiteReport = goldenSuiteRunner.run()

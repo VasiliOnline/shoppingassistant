@@ -32,6 +32,8 @@ data class FacetDefinition(
     val valueType: FacetDataType,
     val appliesToCategoryCodes: List<String>,
     val source: FacetValueSource = FacetValueSource.OFFER,
+    val effectiveFrom: String? = null, // ISO date (yyyy-MM-dd), inclusive
+    val effectiveTo: String? = null, // ISO date (yyyy-MM-dd), inclusive
     val ui: FacetUiConfig = FacetUiConfig(),
 )
 
@@ -51,6 +53,8 @@ data class FacetPreset(
     val categoryCode: String,
     val titleRu: String,
     val order: Int = 0,
+    val effectiveFrom: String? = null, // ISO date (yyyy-MM-dd), inclusive
+    val effectiveTo: String? = null, // ISO date (yyyy-MM-dd), inclusive
     val rules: List<FacetPresetRule> = emptyList(),
     val notes: String? = null,
 )

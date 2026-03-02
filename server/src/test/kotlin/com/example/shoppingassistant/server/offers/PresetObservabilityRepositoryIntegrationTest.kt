@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.server.offers
 
+import com.example.shoppingassistant.domain.catalog.CatalogDataVersion
 import com.example.shoppingassistant.domain.model.PresetObservabilityBatchRequest
 import com.example.shoppingassistant.domain.model.PresetObservabilityEvent
 import com.example.shoppingassistant.domain.model.PresetObservabilityEventType
@@ -110,11 +111,47 @@ class PresetObservabilityRepositoryIntegrationTest {
     }
 
     @Test
+    fun ingestBatch_dedups_by_stage4_logical_key_within_batch() = runBlocking {
+        requireDocker()
+        val repo = PresetObservabilityRepositoryImpl()
+        val first = validEvent(idempotencyKey = "imp|qs-logical|offer-1|a")
+        val second = validEvent(idempotencyKey = "imp|qs-logical|offer-1|b")
+            .copy(occurredAtMs = first.occurredAtMs)
+
+        val response = repo.ingestBatch(PresetObservabilityBatchRequest(events = listOf(first, second)))
+
+        assertEquals(1, response.acceptedCount)
+        assertEquals(1, response.dedupedCount)
+        assertEquals(0, response.rejectedCount)
+    }
+
+    @Test
+    fun ingestBatch_dedups_by_stage4_logical_key_across_batches() = runBlocking {
+        requireDocker()
+        val repo = PresetObservabilityRepositoryImpl()
+        val first = validEvent(idempotencyKey = "imp|qs-logical-x|offer-1|a")
+        val second = validEvent(idempotencyKey = "imp|qs-logical-x|offer-1|b")
+            .copy(occurredAtMs = first.occurredAtMs)
+
+        val firstResponse = repo.ingestBatch(PresetObservabilityBatchRequest(events = listOf(first)))
+        val secondResponse = repo.ingestBatch(PresetObservabilityBatchRequest(events = listOf(second)))
+
+        assertEquals(1, firstResponse.acceptedCount)
+        assertEquals(0, firstResponse.dedupedCount)
+        assertEquals(0, firstResponse.rejectedCount)
+
+        assertEquals(0, secondResponse.acceptedCount)
+        assertEquals(1, secondResponse.dedupedCount)
+        assertEquals(0, secondResponse.rejectedCount)
+    }
+
+    @Test
     fun ingestBatch_handles_mixed_accepted_deduped_and_rejected_events() = runBlocking {
         requireDocker()
         val repo = PresetObservabilityRepositoryImpl()
         val existingEvent = validEvent(idempotencyKey = "imp|qs-mixed|offer-1|1")
         val newEvent = validEvent(idempotencyKey = "imp|qs-mixed|offer-2|2")
+            .copy(offerId = "offer-2")
 
         repo.ingestBatch(PresetObservabilityBatchRequest(events = listOf(existingEvent)))
 
@@ -141,10 +178,62 @@ class PresetObservabilityRepositoryIntegrationTest {
         )
     }
 
+    @Test
+    fun ingestBatch_rejects_blank_dataVersion() = runBlocking {
+        requireDocker()
+        val repo = PresetObservabilityRepositoryImpl()
+
+        val response = repo.ingestBatch(
+            PresetObservabilityBatchRequest(
+                events = listOf(
+                    validEvent(
+                        idempotencyKey = "imp|qs-data-version-blank|offer-1|1",
+                        dataVersion = "   ",
+                    ),
+                ),
+            ),
+        )
+
+        assertEquals(0, response.acceptedCount)
+        assertEquals(0, response.dedupedCount)
+        assertEquals(1, response.rejectedCount)
+        assertTrue(
+            response.rejectedEventKeys.any { it.startsWith("DATA_VERSION_BLANK:") },
+            "Expected DATA_VERSION_BLANK rejection key",
+        )
+    }
+
+    @Test
+    fun ingestBatch_rejects_incompatible_dataVersion() = runBlocking {
+        requireDocker()
+        val repo = PresetObservabilityRepositoryImpl()
+
+        val incompatibleVersion = if (expectedDataVersion == "9.9.9") "9.9.8" else "9.9.9"
+        val response = repo.ingestBatch(
+            PresetObservabilityBatchRequest(
+                events = listOf(
+                    validEvent(
+                        idempotencyKey = "imp|qs-data-version-mismatch|offer-1|1",
+                        dataVersion = incompatibleVersion,
+                    ),
+                ),
+            ),
+        )
+
+        assertEquals(0, response.acceptedCount)
+        assertEquals(0, response.dedupedCount)
+        assertEquals(1, response.rejectedCount)
+        assertTrue(
+            response.rejectedEventKeys.any { it.startsWith("DATA_VERSION_INCOMPATIBLE:") },
+            "Expected DATA_VERSION_INCOMPATIBLE rejection key",
+        )
+    }
+
     private fun validEvent(
         idempotencyKey: String,
         facetPresetCode: String = "FP.FOOD.READY.DEFAULT",
         facetCollectionCode: String? = "B.FOOD.READY",
+        dataVersion: String? = expectedDataVersion,
     ): PresetObservabilityEvent = PresetObservabilityEvent(
         idempotencyKey = idempotencyKey,
         eventType = PresetObservabilityEventType.IMPRESSION,
@@ -155,7 +244,7 @@ class PresetObservabilityRepositoryIntegrationTest {
         offerId = "offer-1",
         position = 1,
         occurredAtMs = System.currentTimeMillis(),
-        dataVersion = "2.2.5",
+        dataVersion = dataVersion,
     )
 
     private fun requireDocker() {
@@ -172,6 +261,9 @@ class PresetObservabilityRepositoryIntegrationTest {
         private val strictIntegration: Boolean by lazy {
             System.getenv("SERVER_IT_STRICT")?.equals("true", ignoreCase = true) == true ||
                 System.getenv("CI")?.equals("true", ignoreCase = true) == true
+        }
+        private val expectedDataVersion: String by lazy {
+            CatalogDataVersion.current.trim().ifEmpty { "unknown" }
         }
         private var container: PostgreSQLContainer<*>? = null
 

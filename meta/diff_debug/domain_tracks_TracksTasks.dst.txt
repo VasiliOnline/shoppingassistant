@@ -8,16 +8,35 @@ typealias OfferId = String
 typealias SellerId = String
 
 @Serializable
-enum class TrackType { PRODUCT, URL, SEARCH }
+enum class TrackType {
+    PRODUCT,
+    CATEGORY,
+    @Deprecated("Legacy type. New tracks must use PRODUCT/CATEGORY.")
+    URL,
+    @Deprecated("Legacy type. New tracks must use PRODUCT/CATEGORY.")
+    SEARCH,
+}
 
 @Serializable
 enum class TrackState { ACTIVE, PAUSED, ERROR }
 
 @Serializable
 data class TrackTarget(
+    val spec: TrackTargetSpec? = null,
+    val categoryCode: String? = null,
+    val attributes: Map<String, String> = emptyMap(),
     val matchKey: String? = null,
+    @Deprecated("Legacy input method. URL is not persisted for new tracks.")
     val url: String? = null,
+    @Deprecated("Legacy input method. query is not persisted for new tracks.")
     val query: String? = null,
+)
+
+@Serializable
+data class TrackTargetSpec(
+    val categoryCode: String? = null,
+    val attributes: Map<String, String> = emptyMap(),
+    val matchKey: String? = null,
 )
 
 @Serializable
@@ -135,10 +154,55 @@ data class TrackEventsPage(
     val canLoadMore: Boolean,
 )
 
+@Serializable
+enum class TrackOfferSort {
+    PRICE_ASC,
+    NEWEST,
+    SELLER_RATING_DESC,
+}
+
+@Serializable
+data class TrackOffersPage(
+    val items: List<RankedOffer>,
+    val limit: Int,
+    val offset: Int,
+    val canLoadMore: Boolean,
+    val sort: TrackOfferSort,
+)
+
+@Serializable
+data class TrackCreateInput(
+    val type: TrackType,
+    val targetSpec: TrackTargetSpec? = null,
+    val filters: TrackFilters = TrackFilters(),
+    val title: String? = null,
+)
+
+@Serializable
+data class TrackTargetUpdateInput(
+    val type: TrackType,
+    val targetSpec: TrackTargetSpec? = null,
+    val title: String? = null,
+)
+
+@Serializable
+sealed class TrackTargetUpdateResult {
+    @Serializable data class Updated(val track: Track) : TrackTargetUpdateResult()
+    @Serializable data class AlreadyExists(val track: Track) : TrackTargetUpdateResult()
+    @Serializable data class InvalidInput(val reason: String) : TrackTargetUpdateResult()
+    @Serializable data object NotFound : TrackTargetUpdateResult()
+}
+
 interface TrackRepository {
     suspend fun listTracks(): List<Track>
     suspend fun getTrack(trackId: TrackId): Track
     suspend fun upsertTrack(track: Track): Track
+    suspend fun createTrack(input: TrackCreateInput): Track =
+        error("TrackRepository.createTrack is not implemented")
+    suspend fun updateTrackTarget(
+        trackId: TrackId,
+        input: TrackTargetUpdateInput,
+    ): TrackTargetUpdateResult = error("TrackRepository.updateTrackTarget is not implemented")
     suspend fun pause(trackId: TrackId)
     suspend fun resume(trackId: TrackId)
     suspend fun delete(trackId: TrackId)
@@ -146,6 +210,15 @@ interface TrackRepository {
 
 interface TopOffersRepository {
     suspend fun getTop10(trackId: TrackId, forceRefresh: Boolean = false): TrackTop10
+}
+
+interface TrackOffersRepository {
+    suspend fun listOffers(
+        trackId: TrackId,
+        limit: Int = 20,
+        offset: Int = 0,
+        sort: TrackOfferSort = TrackOfferSort.PRICE_ASC,
+    ): TrackOffersPage
 }
 
 interface TrackEventsRepository {
@@ -190,9 +263,29 @@ class UpdateTrackFiltersTask(private val repo: TrackRepository) {
     }
 }
 
+class CreateTrackTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(input: TrackCreateInput): Track = repo.createTrack(input)
+}
+
+class UpdateTrackTargetTask(private val repo: TrackRepository) {
+    suspend operator fun invoke(
+        trackId: TrackId,
+        input: TrackTargetUpdateInput,
+    ): TrackTargetUpdateResult = repo.updateTrackTarget(trackId, input)
+}
+
 class OpenSourcesInfoTask(private val repo: TopOffersRepository) {
     suspend operator fun invoke(trackId: TrackId): List<SourceStamp> =
         repo.getTop10(trackId, forceRefresh = false).sourceStamps
+}
+
+class GetTrackOffersPageTask(private val repo: TrackOffersRepository) {
+    suspend operator fun invoke(
+        trackId: TrackId,
+        limit: Int = 20,
+        offset: Int = 0,
+        sort: TrackOfferSort = TrackOfferSort.PRICE_ASC,
+    ): TrackOffersPage = repo.listOffers(trackId, limit, offset, sort)
 }
 
 class GetTrackEventsPageTask(private val repo: TrackEventsRepository) {

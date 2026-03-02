@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.server.offers
 
+import com.example.shoppingassistant.domain.model.TypedAttributeValue
 import com.example.shoppingassistant.server.db.AuthUsersTable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
@@ -8,6 +9,7 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.ColumnType
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.kotlin.datetime.date
 import org.jetbrains.exposed.sql.json.jsonb
 
 private val json = Json { ignoreUnknownKeys = true }
@@ -50,7 +52,11 @@ object ProductsTable : Table("products") {
     val model = varchar("model", 255).nullable()
     val titleNorm = varchar("title_norm", 512)
     val imageUrls = jsonb("image_urls", json, ListSerializer(String.serializer())).nullable()
-    val specs = jsonb("specs", json, MapSerializer(String.serializer(), String.serializer())).nullable()
+    val specs = jsonb(
+        "specs",
+        json,
+        MapSerializer(String.serializer(), TypedAttributeValue.serializer()),
+    ).nullable()
     val description = text("description").nullable()
     val gtin = varchar("gtin", 64).nullable()
     val mpn = varchar("mpn", 128).nullable()
@@ -78,7 +84,11 @@ object OffersTable : Table("offers") {
     val userId = long("user_id").references(AuthUsersTable.id, onDelete = ReferenceOption.RESTRICT)
     val priceCents = long("price_cents")
     val currency = varchar("currency", 8)
-    val attributes = jsonb("attributes", json, MapSerializer(String.serializer(), String.serializer())).nullable()
+    val attributes = jsonb(
+        "attributes",
+        json,
+        MapSerializer(String.serializer(), TypedAttributeValue.serializer()),
+    ).nullable()
     val description = text("description").nullable()
     val imageUrls = jsonb("image_urls", json, ListSerializer(String.serializer())).nullable()
     val condition = varchar("condition", 16).nullable()
@@ -176,4 +186,35 @@ object OfferPriceHistoryTable : Table("offer_price_history") {
     val collectedAt = long("collected_at").clientDefault { System.currentTimeMillis() }
     val dataSource = varchar("source", 64).nullable()
     override val primaryKey = PrimaryKey(id)
+}
+
+object CatalogPresetEventsTable : Table("catalog_preset_events") {
+    val id = long("id").autoIncrement()
+    val idempotencyKey = varchar("idempotency_key", 128)
+    val eventType = varchar("event_type", 16)
+    val querySessionId = varchar("query_session_id", 128)
+    val categoryCode = varchar("category_code", 64)
+    val facetCollectionCode = varchar("facet_collection_code", 64).nullable()
+    val facetPresetCode = varchar("facet_preset_code", 64)
+    val offerId = varchar("offer_id", 64).nullable()
+    val position = integer("position").nullable()
+    val occurredAt = long("occurred_at")
+    val receivedAt = long("received_at").clientDefault { System.currentTimeMillis() }
+    val eventDate = date("event_date")
+    val dataVersion = varchar("data_version", 32).nullable()
+    val payloadJson = jsonb(
+        "payload_json",
+        json,
+        MapSerializer(String.serializer(), String.serializer()),
+    )
+
+    override val primaryKey = PrimaryKey(id, eventDate)
+
+    init {
+        uniqueIndex(eventDate, idempotencyKey)
+        index(false, eventDate, categoryCode, facetPresetCode, eventType)
+        index(false, querySessionId, eventType, occurredAt)
+        index(false, receivedAt)
+        index(false, dataVersion, eventDate)
+    }
 }

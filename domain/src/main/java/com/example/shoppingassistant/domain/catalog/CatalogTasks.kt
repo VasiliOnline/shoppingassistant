@@ -56,6 +56,7 @@ data class AttributeDef(
     val requiredForSearch: Boolean = false,
     val requiredForOffer: Boolean = false,
     val requiredForExpress: Boolean = false,
+    val requiredBy: String? = null, // ISO date (yyyy-MM-dd) for policy rollout deadline
     val facetEnabled: Boolean = false,
     val multiValued: Boolean = false,
     val valueDictCode: String? = null,

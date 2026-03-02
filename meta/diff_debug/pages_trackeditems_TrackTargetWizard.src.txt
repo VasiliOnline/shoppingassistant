@@ -39,9 +39,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.shoppingassistant.domain.catalog.AttributeDataType
 import com.example.shoppingassistant.domain.catalog.AttributeDef
+import com.example.shoppingassistant.domain.catalog.AttributeCondition
+import com.example.shoppingassistant.domain.catalog.AttributeConditionOp
 import com.example.shoppingassistant.domain.catalog.CatalogRepository
 import com.example.shoppingassistant.domain.catalog.Category
 import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.tracks.TrackAttributeRange
 import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.feature.metrics.FlowMetrics
@@ -54,6 +57,13 @@ data class TrackTargetDraft(
     val model: String = "",
     val categoryCode: String? = null,
     val attributes: Map<String, String> = emptyMap(),
+    val attributesMulti: Map<String, List<String>> = emptyMap(),
+    val attributesRange: Map<String, TrackAttributeRange> = emptyMap(),
+    val queryText: String? = null,
+    val schemaVersion: Int = 1,
+    val taxonomyVersion: String? = null,
+    val locale: String? = null,
+    val unboundTokens: List<String> = emptyList(),
     val sourceLabel: String? = null,
     val autoFilledAttributes: Set<String> = emptySet(),
 ) {
@@ -61,6 +71,7 @@ data class TrackTargetDraft(
 
     fun dedupKeyOrNull(): String? = when (type) {
         TrackType.PRODUCT -> matchKeyOrNull()
+            ?: categoryCode?.trim()?.uppercase()?.takeIf { it.isNotBlank() }
         TrackType.CATEGORY -> categoryCode?.trim()?.uppercase()?.takeIf { it.isNotBlank() }
         else -> null
     }
@@ -124,31 +135,140 @@ fun rememberLeafCategories(catalogRepository: CatalogRepository): List<Category>
 
 fun TrackTargetDraft.isValid(profile: CategoryProfile?): Boolean {
     val baseValid = when (type) {
-        TrackType.PRODUCT -> !matchKeyOrNull().isNullOrBlank()
-        TrackType.CATEGORY -> !categoryCode.isNullOrBlank()
+        TrackType.PRODUCT, TrackType.CATEGORY -> !categoryCode.isNullOrBlank()
         else -> false
     }
     if (!baseValid) return false
-    val required = profile?.attributes.orEmpty().filter { it.requiredForSearch }
-    if (required.isEmpty()) return true
-    return required.all { def ->
-        attributes[def.code]?.trim()?.isNotBlank() == true
+    return missingRequiredAttributeCodes(profile).isEmpty()
+}
+
+fun TrackTargetDraft.requiredAttributeCodes(profile: CategoryProfile?): Set<String> {
+    profile ?: return emptySet()
+    if (profile.attributes.isEmpty()) return emptySet()
+
+    val required = LinkedHashSet<String>()
+    val requiredByCategory = profile.categoryAttributes
+        .asSequence()
+        .filter { attr -> attr.isRequiredForCategory }
+        .map { attr -> normalizeDraftAttributeCode(attr.attributeCode) }
+        .filter { code -> code.isNotEmpty() }
+        .toSet()
+
+    profile.attributes
+        .asSequence()
+        .forEach { def ->
+            val normalizedCode = normalizeDraftAttributeCode(def.code)
+            if (normalizedCode.isEmpty()) return@forEach
+            if (def.requiredForSearch || normalizedCode in requiredByCategory) {
+                required += def.code.trim()
+            }
+        }
+
+    val normalizedValues = normalizedDraftAttributesForValidation()
+    profile.requiredIfRules.forEach { rule ->
+        val requiredCode = rule.requiredAttributeCode.trim()
+        if (requiredCode.isBlank()) return@forEach
+        val shouldRequire = rule.whenAll.isNotEmpty() &&
+            rule.whenAll.all { condition ->
+                val currentValue = normalizedValues[normalizeDraftAttributeCode(condition.attributeCode)]
+                matchesDraftCondition(condition, currentValue)
+            }
+        if (shouldRequire) {
+            required += requiredCode
+        }
+    }
+
+    return required
+}
+
+fun TrackTargetDraft.missingRequiredAttributeCodes(profile: CategoryProfile?): Set<String> {
+    val requiredCodes = requiredAttributeCodes(profile)
+    if (requiredCodes.isEmpty()) return emptySet()
+
+    val normalizedValues = normalizedDraftAttributesForValidation()
+    return requiredCodes
+        .filter { code ->
+            val normalizedCode = normalizeDraftAttributeCode(code)
+            normalizedValues[normalizedCode].isNullOrBlank()
+        }
+        .toSet()
+}
+
+private fun normalizeDraftAttributeCode(rawCode: String): String =
+    rawCode.trim().lowercase()
+
+private fun TrackTargetDraft.normalizedDraftAttributesForValidation(): Map<String, String> {
+    val normalized = LinkedHashMap<String, String>()
+    attributes.forEach { (key, value) ->
+        val normalizedCode = normalizeDraftAttributeCode(key)
+        val normalizedValue = value.trim()
+        if (normalizedCode.isNotEmpty() && normalizedValue.isNotEmpty()) {
+            normalized[normalizedCode] = normalizedValue
+        }
+    }
+    val normalizedBrand = TrackMatchKeyFactory.normalizePart(brand)?.trim()?.takeIf { it.isNotEmpty() }
+    if (normalizedBrand != null) {
+        normalized.putIfAbsent("brand", normalizedBrand)
+    }
+    val normalizedModel = TrackMatchKeyFactory.normalizePart(model)?.trim()?.takeIf { it.isNotEmpty() }
+    if (normalizedModel != null) {
+        normalized.putIfAbsent("model", normalizedModel)
+    }
+    return normalized
+}
+
+private fun matchesDraftCondition(
+    condition: AttributeCondition,
+    currentValue: String?,
+): Boolean {
+    if (currentValue.isNullOrBlank()) return false
+    return when (condition.op) {
+        AttributeConditionOp.EQUALS_ANY ->
+            condition.values.any { value -> currentValue.equals(value, ignoreCase = true) }
+        AttributeConditionOp.STARTS_WITH_ANY ->
+            condition.values.any { value -> currentValue.startsWith(value, ignoreCase = true) }
     }
 }
 
 fun TrackTargetDraft.previewTitle(categories: List<Category>): String {
+    val resolvedCategoryTitle = categoryCode
+        ?.trim()
+        ?.takeIf { it.isNotBlank() }
+        ?.let { code -> categories.firstOrNull { it.code == code }?.title ?: code }
     return when (type) {
-        TrackType.PRODUCT -> listOf(brand, model)
-            .joinToString(" ")
-            .trim()
-            .ifBlank { "Товар" }
+        TrackType.PRODUCT -> {
+            val brandModel = listOf(brand, model)
+                .joinToString(" ")
+                .trim()
+                .takeIf { it.isNotBlank() }
+            if (brandModel != null) {
+                brandModel
+            } else {
+                val attributePreview = attributes.entries
+                    .asSequence()
+                    .map { (key, value) -> key.trim() to value.trim() }
+                    .filter { (key, value) -> key.isNotBlank() && value.isNotBlank() }
+                    .filterNot { (key, _) ->
+                        key.equals("brand", ignoreCase = true) ||
+                            key.equals("model", ignoreCase = true)
+                    }
+                    .sortedBy { (key, _) -> key.lowercase() }
+                    .take(2)
+                    .joinToString(", ") { (key, value) -> "$key=$value" }
+                    .takeIf { it.isNotBlank() }
+                when {
+                    !resolvedCategoryTitle.isNullOrBlank() && !attributePreview.isNullOrBlank() ->
+                        "$resolvedCategoryTitle · $attributePreview"
+                    !resolvedCategoryTitle.isNullOrBlank() -> resolvedCategoryTitle
+                    else -> "Товар"
+                }
+            }
+        }
         TrackType.CATEGORY -> {
-            val code = categoryCode?.trim().orEmpty()
-            if (code.isBlank()) {
+            if (resolvedCategoryTitle.isNullOrBlank()) {
                 "Категория"
             } else {
-                categories.firstOrNull { it.code == code }?.title
-                    ?: code
+                resolvedCategoryTitle
             }
         }
         else -> "Цель"
@@ -181,6 +301,7 @@ fun TrackTargetAttributesWizardSheet(
     var showCategoryPicker by remember { mutableStateOf(false) }
     var schemaStatus by remember { mutableStateOf(SchemaStatus.EMPTY) }
     var schemaFields by remember { mutableStateOf(minimalFallbackSchema()) }
+    var categoryProfile by remember { mutableStateOf<CategoryProfile?>(null) }
     var schemaErrorMessage by remember { mutableStateOf<String?>(null) }
     var showOptionalAttributes by remember { mutableStateOf(false) }
     var showUnknownMap by remember { mutableStateOf(false) }
@@ -210,6 +331,7 @@ fun TrackTargetAttributesWizardSheet(
         if (code.isBlank()) {
             schemaStatus = SchemaStatus.EMPTY
             schemaFields = minimalFallbackSchema()
+            categoryProfile = null
             schemaErrorMessage = null
             return@LaunchedEffect
         }
@@ -220,6 +342,7 @@ fun TrackTargetAttributesWizardSheet(
             .onFailure {
                 schemaStatus = SchemaStatus.FAILED
                 schemaFields = minimalFallbackSchema()
+                categoryProfile = null
                 schemaErrorMessage = "Не удалось загрузить параметры категории"
                 TargetWizardAnalytics.schemaLoadFailed(code, it::class.simpleName ?: "unknown")
             }
@@ -229,10 +352,12 @@ fun TrackTargetAttributesWizardSheet(
             if (schemaStatus != SchemaStatus.FAILED) {
                 schemaStatus = SchemaStatus.EMPTY
                 schemaFields = minimalFallbackSchema()
+                categoryProfile = null
             }
             return@LaunchedEffect
         }
 
+        categoryProfile = profile
         val fromSchema = buildSchemaFields(profile)
         if (fromSchema.isEmpty()) {
             schemaStatus = SchemaStatus.EMPTY
@@ -243,8 +368,8 @@ fun TrackTargetAttributesWizardSheet(
         }
     }
 
-    val validation = remember(draft, schemaFields) {
-        validateDraft(draft, schemaFields)
+    val validation = remember(draft, schemaFields, categoryProfile) {
+        validateDraft(draft, schemaFields, categoryProfile)
     }
 
     val knownSchemaCodes = remember(schemaFields) { schemaFields.map { it.code }.toSet() }
@@ -254,8 +379,22 @@ fun TrackTargetAttributesWizardSheet(
             .sortedBy { it.key.lowercase() }
     }
 
-    val requiredFields = remember(schemaFields) { schemaFields.filter { it.required } }
-    val optionalFields = remember(schemaFields) { schemaFields.filterNot { it.required } }
+    val requiredFieldCodes = remember(draft, categoryProfile, schemaFields) {
+        val dynamicRequired = draft.requiredAttributeCodes(categoryProfile)
+            .map(::normalizeDraftAttributeCode)
+            .toSet()
+        if (dynamicRequired.isNotEmpty()) {
+            dynamicRequired
+        } else {
+            schemaFields.filter { it.required }.map { normalizeDraftAttributeCode(it.code) }.toSet()
+        }
+    }
+    val requiredFields = remember(schemaFields, requiredFieldCodes) {
+        schemaFields.filter { field -> normalizeDraftAttributeCode(field.code) in requiredFieldCodes }
+    }
+    val optionalFields = remember(schemaFields, requiredFieldCodes) {
+        schemaFields.filterNot { field -> normalizeDraftAttributeCode(field.code) in requiredFieldCodes }
+    }
     val visibleOptionalFields = remember(optionalFields, showOptionalAttributes) {
         if (showOptionalAttributes) optionalFields else optionalFields.take(6)
     }
@@ -317,7 +456,7 @@ fun TrackTargetAttributesWizardSheet(
                     selected = draft.type == TrackType.PRODUCT,
                     onClick = {
                         draft = draft.withType(TrackType.PRODUCT).copy(sourceLabel = null)
-                        touchedFields = touchedFields + setOf("brand", "model")
+                        touchedFields = touchedFields + "category"
                         TargetWizardAnalytics.targetChanged(draft)
                     },
                 )
@@ -556,12 +695,23 @@ fun TrackTargetAttributesWizardSheet(
 private fun normalizeDraftForSave(draft: TrackTargetDraft): TrackTargetDraft {
     val normalizedCategory = draft.categoryCode?.trim()?.uppercase()?.takeIf { it.isNotBlank() }
     val normalizedAttributes = sanitizeAttributes(draft.attributes)
+    val normalizedAttributesMulti = sanitizeAttributesMulti(draft.attributesMulti)
+    val normalizedAttributesRange = sanitizeAttributesRange(draft.attributesRange)
+    val normalizedQueryText = sanitizeQueryText(draft.queryText)
+    val normalizedUnboundTokens = sanitizeUnboundTokens(draft.unboundTokens)
     return when (draft.type) {
         TrackType.PRODUCT -> draft.copy(
             brand = draft.brand.trim(),
             model = draft.model.trim(),
             categoryCode = normalizedCategory,
             attributes = normalizedAttributes,
+            attributesMulti = normalizedAttributesMulti,
+            attributesRange = normalizedAttributesRange,
+            queryText = normalizedQueryText,
+            schemaVersion = draft.schemaVersion.coerceAtLeast(1),
+            taxonomyVersion = draft.taxonomyVersion?.trim()?.takeIf { it.isNotBlank() },
+            locale = draft.locale?.trim()?.takeIf { it.isNotBlank() },
+            unboundTokens = normalizedUnboundTokens,
             autoFilledAttributes = draft.autoFilledAttributes.intersect(normalizedAttributes.keys),
         )
         TrackType.CATEGORY -> draft.copy(
@@ -569,11 +719,25 @@ private fun normalizeDraftForSave(draft: TrackTargetDraft): TrackTargetDraft {
             model = "",
             categoryCode = normalizedCategory,
             attributes = normalizedAttributes,
+            attributesMulti = normalizedAttributesMulti,
+            attributesRange = normalizedAttributesRange,
+            queryText = normalizedQueryText,
+            schemaVersion = draft.schemaVersion.coerceAtLeast(1),
+            taxonomyVersion = draft.taxonomyVersion?.trim()?.takeIf { it.isNotBlank() },
+            locale = draft.locale?.trim()?.takeIf { it.isNotBlank() },
+            unboundTokens = normalizedUnboundTokens,
             autoFilledAttributes = draft.autoFilledAttributes.intersect(normalizedAttributes.keys),
         )
         else -> draft.copy(
             categoryCode = normalizedCategory,
             attributes = normalizedAttributes,
+            attributesMulti = normalizedAttributesMulti,
+            attributesRange = normalizedAttributesRange,
+            queryText = normalizedQueryText,
+            schemaVersion = draft.schemaVersion.coerceAtLeast(1),
+            taxonomyVersion = draft.taxonomyVersion?.trim()?.takeIf { it.isNotBlank() },
+            locale = draft.locale?.trim()?.takeIf { it.isNotBlank() },
+            unboundTokens = normalizedUnboundTokens,
             autoFilledAttributes = draft.autoFilledAttributes.intersect(normalizedAttributes.keys),
         )
     }
@@ -591,6 +755,56 @@ private fun sanitizeAttributes(values: Map<String, String>): Map<String, String>
         .sortedBy { it.first.lowercase() }
         .toMap(LinkedHashMap())
 }
+
+private fun sanitizeAttributesMulti(values: Map<String, List<String>>): Map<String, List<String>> {
+    if (values.isEmpty()) return emptyMap()
+    return values.entries
+        .mapNotNull { (key, rawValues) ->
+            val normalizedKey = key.trim()
+            if (normalizedKey.isBlank()) return@mapNotNull null
+            val normalizedValues = rawValues
+                .asSequence()
+                .map { value -> value.trim() }
+                .filter { value -> value.isNotBlank() }
+                .distinct()
+                .toList()
+            if (normalizedValues.isEmpty()) null else normalizedKey to normalizedValues
+        }
+        .sortedBy { it.first.lowercase() }
+        .toMap(LinkedHashMap())
+}
+
+private fun sanitizeAttributesRange(values: Map<String, TrackAttributeRange>): Map<String, TrackAttributeRange> {
+    if (values.isEmpty()) return emptyMap()
+    return values.entries
+        .mapNotNull { (key, range) ->
+            val normalizedKey = key.trim()
+            if (normalizedKey.isBlank()) return@mapNotNull null
+            val normalizedRange = TrackAttributeRange(
+                min = range.min?.trim()?.takeIf { it.isNotBlank() },
+                max = range.max?.trim()?.takeIf { it.isNotBlank() },
+                unit = range.unit?.trim()?.takeIf { it.isNotBlank() },
+            )
+            if (normalizedRange.min == null && normalizedRange.max == null && normalizedRange.unit == null) {
+                null
+            } else {
+                normalizedKey to normalizedRange
+            }
+        }
+        .sortedBy { it.first.lowercase() }
+        .toMap(LinkedHashMap())
+}
+
+private fun sanitizeQueryText(raw: String?): String? =
+    raw?.replace("\\s+".toRegex(), " ")?.trim()?.takeIf { it.isNotBlank() }
+
+private fun sanitizeUnboundTokens(values: List<String>): List<String> =
+    values
+        .asSequence()
+        .map { token -> token.trim() }
+        .filter { token -> token.isNotBlank() }
+        .distinct()
+        .toList()
 
 private fun buildSchemaFields(profile: CategoryProfile): List<AttributeFieldSchema> {
     val attrsByCode = profile.attributes.associateBy { it.code }
@@ -672,34 +886,37 @@ private fun minimalFallbackSchema(): List<AttributeFieldSchema> = listOf(
 private fun validateDraft(
     draft: TrackTargetDraft,
     fields: List<AttributeFieldSchema>,
+    profile: CategoryProfile?,
 ): ValidationResult {
-    val brandError = if (draft.type == TrackType.PRODUCT && TrackMatchKeyFactory.normalizePart(draft.brand).isNullOrBlank()) {
-        "Выберите бренд"
-    } else {
-        null
-    }
-    val modelError = if (draft.type == TrackType.PRODUCT && TrackMatchKeyFactory.normalizePart(draft.model).isNullOrBlank()) {
-        "Выберите модель"
-    } else {
-        null
-    }
-    val categoryError = if (draft.type == TrackType.CATEGORY && draft.categoryCode.isNullOrBlank()) {
+    val categoryError = if (
+        (draft.type == TrackType.CATEGORY || draft.type == TrackType.PRODUCT) &&
+        draft.categoryCode.isNullOrBlank()
+    ) {
         "Выберите категорию"
     } else {
         null
     }
 
-    val requiredErrors = fields
-        .filter { it.required }
-        .mapNotNull { field ->
-            val value = draft.attributes[field.code]?.trim().orEmpty()
-            if (value.isBlank()) field.code to "Заполните \"${field.title}\"" else null
+    val valuesByCode = draft.normalizedDraftAttributesForValidation()
+    val fieldByCode = fields.associateBy { normalizeDraftAttributeCode(it.code) }
+    val requiredErrors = draft.requiredAttributeCodes(profile)
+        .mapNotNull { code ->
+            val normalizedCode = normalizeDraftAttributeCode(code)
+            val value = valuesByCode[normalizedCode]?.trim().orEmpty()
+            if (value.isNotBlank()) {
+                null
+            } else {
+                val field = fieldByCode[normalizedCode]
+                val title = field?.title ?: code
+                val errorKey = field?.code ?: code
+                errorKey to "Заполните \"$title\""
+            }
         }
         .toMap(LinkedHashMap())
 
     return ValidationResult(
-        brandError = brandError,
-        modelError = modelError,
+        brandError = null,
+        modelError = null,
         categoryError = categoryError,
         attributeErrors = requiredErrors,
     )

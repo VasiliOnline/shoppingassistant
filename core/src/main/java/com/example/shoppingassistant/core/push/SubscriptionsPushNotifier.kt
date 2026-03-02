@@ -1,6 +1,8 @@
 package com.example.shoppingassistant.core.push
 
+import android.annotation.SuppressLint
 import android.Manifest
+import android.app.Notification
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.NotificationCompat
@@ -33,7 +35,7 @@ class TrackingPushNotifier(
             .setGroup(if (settings.groupNotifications) GROUP_KEY else null)
             .build()
 
-        NotificationManagerCompat.from(context).notify(id, n)
+        postNotification(id, n)
     }
 
     fun notifyInboxItem(item: TrackingInboxNotification, settings: TrackingNotificationsSettings) {
@@ -58,7 +60,15 @@ class TrackingPushNotifier(
             .setPriority(toCompatPriority(settings.priority))
             .build()
 
-        NotificationManagerCompat.from(context).notify(SUMMARY_ID, n)
+        postNotification(SUMMARY_ID, n)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun postNotification(id: Int, notification: Notification) {
+        if (!canPostNotifications()) return
+        runCatching {
+            NotificationManagerCompat.from(context).notify(id, notification)
+        }
     }
 
     private fun toCompatPriority(priority: NotificationPriority): Int = when (priority) {

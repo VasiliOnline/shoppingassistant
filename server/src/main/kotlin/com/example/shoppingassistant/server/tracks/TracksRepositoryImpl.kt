@@ -3,6 +3,8 @@ package com.example.shoppingassistant.server.tracks
 import com.example.shoppingassistant.domain.model.OfferRepository
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.model.asFloatOrNull
+import com.example.shoppingassistant.domain.model.toTypedAttributesGuess
 import com.example.shoppingassistant.domain.tracks.Badge
 import com.example.shoppingassistant.domain.tracks.RankedOffer
 import com.example.shoppingassistant.domain.tracks.Track
@@ -13,6 +15,8 @@ import com.example.shoppingassistant.domain.tracks.TrackOffersPage
 import com.example.shoppingassistant.domain.tracks.TrackState
 import com.example.shoppingassistant.domain.tracks.TrackStats
 import com.example.shoppingassistant.domain.tracks.TrackTarget
+import com.example.shoppingassistant.domain.tracks.TrackAttributeRange
+import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.server.db.DatabaseFactory
@@ -20,13 +24,17 @@ import com.example.shoppingassistant.server.offers.UserProfilesTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.neq
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
-import kotlin.math.max
+import java.util.Locale
+import org.slf4j.LoggerFactory
 
 class TracksRepositoryImpl(
     private val eventsRepository: TrackEventsRepository,
@@ -38,14 +46,16 @@ class TracksRepositoryImpl(
         const val MAX_TRACKS_PER_USER: Int = 100
         const val MAX_TRACK_OFFERS_FETCH: Int = 500
         const val NEW_BADGE_WINDOW_MS: Long = 3L * 24 * 60 * 60 * 1000
+        const val MAX_TARGET_ATTRIBUTES: Int = 64
+        const val MAX_TARGET_ATTR_KEY_LENGTH: Int = 96
+        const val MAX_TARGET_ATTR_VALUE_LENGTH: Int = 256
+        const val MAX_TARGET_MULTI_VALUES_PER_KEY: Int = 16
+        const val MAX_TARGET_QUERY_TEXT_LENGTH: Int = 256
+        const val MAX_TARGET_UNBOUND_TOKENS: Int = 32
+        const val MAX_TARGET_UNBOUND_TOKEN_LENGTH: Int = 64
     }
 
-    private data class ValidatedTarget(
-        val type: TrackType,
-        val matchKey: String?,
-        val categoryCode: String?,
-        val dedupKey: String,
-    )
+    private val logger = LoggerFactory.getLogger(TracksRepositoryImpl::class.java)
 
     override suspend fun list(userId: Long): List<Track> = DatabaseFactory.dbQuery {
         val tracks = TracksTable
@@ -80,13 +90,32 @@ class TracksRepositoryImpl(
     }
 
     override suspend fun create(userId: Long, request: TrackCreateRequest): TrackCreateResult {
-        val validated = validateTarget(
+        val sanitizedFilters = sanitizeFilters(request.filters)
+        val targetSpec = resolveCreateTargetSpec(request)
+        val targetValidation = validateTarget(
             type = request.type,
-            matchKeyRaw = request.target.matchKey,
-            categoryCodeRaw = request.categoryCode,
+            targetSpec = targetSpec,
         )
+        val validated = targetValidation.target
         if (validated == null) {
-            return TrackCreateResult.InvalidInput("Only PRODUCT/CATEGORY targets are supported")
+            logger.warn(
+                "tracks.target.invalid.create userId={} type={} reason={} hasCategory={} attrs={}",
+                userId,
+                request.type,
+                targetValidation.reason,
+                !targetSpec.categoryCode.isNullOrBlank(),
+                targetSpec.attributes.size,
+            )
+            return TrackCreateResult.InvalidInput("Invalid target: ${targetValidation.reason}")
+        }
+        val runtimeFilters = sanitizedFilters.dropTargetAttributes(validated.attributes)
+        if (runtimeFilters.extra != sanitizedFilters.extra) {
+            logger.info(
+                "tracks.target.runtime_filters_stripped userId={} type={} droppedKeys={}",
+                userId,
+                request.type,
+                sanitizedFilters.extra.keys.subtract(runtimeFilters.extra.keys).joinToString(","),
+            )
         }
 
         return DatabaseFactory.dbQuery {
@@ -95,31 +124,31 @@ class TracksRepositoryImpl(
                 return@dbQuery TrackCreateResult.LimitReached(MAX_TRACKS_PER_USER)
             }
 
-            val existing = TracksTable
-                .selectAll()
-                .where {
-                    (TracksTable.userId eq userId) and (TracksTable.dedupKey eq validated.dedupKey)
-                }
-                .limit(1)
-                .singleOrNull()
+            val existing = findSemanticDuplicate(
+                userId = userId,
+                target = validated,
+                filters = runtimeFilters,
+            )
 
             if (existing != null) {
                 return@dbQuery TrackCreateResult.AlreadyExists(mapTrack(existing, emptyList()))
             }
 
             val now = clock()
-            val filters = sanitizeFilters(request.filters)
+            val dedupKey = buildDedupKey(validated, runtimeFilters)
             val title = buildTitle(validated, request.title)
             val id = TracksTable.insert { stmt ->
                 stmt[TracksTable.userId] = userId
                 stmt[TracksTable.type] = validated.type.name
                 stmt[TracksTable.matchKey] = validated.matchKey
                 stmt[TracksTable.categoryCode] = validated.categoryCode
-                stmt[TracksTable.target] = TrackTarget(matchKey = validated.matchKey)
-                stmt[TracksTable.filters] = filters
+                stmt[TracksTable.targetCategoryCode] = validated.categoryCode
+                stmt[TracksTable.targetAttributes] = validated.attributes
+                stmt[TracksTable.target] = toTargetPayload(validated, request.target)
+                stmt[TracksTable.filters] = runtimeFilters
                 stmt[TracksTable.title] = title
                 stmt[TracksTable.state] = TrackState.ACTIVE.name
-                stmt[TracksTable.dedupKey] = validated.dedupKey
+                stmt[TracksTable.dedupKey] = dedupKey
                 stmt[TracksTable.createdAt] = now
                 stmt[TracksTable.updatedAt] = now
             }[TracksTable.id]
@@ -156,6 +185,22 @@ class TracksRepositoryImpl(
             val updatedTitle = request.title?.trim()?.takeIf { it.isNotBlank() }
             val updatedFilters = request.filters?.let(::sanitizeFilters)
             val updatedState = request.isActive?.let { if (it) TrackState.ACTIVE.name else TrackState.PAUSED.name }
+            val validatedTarget = validatedTargetFromRow(row)
+
+            val nextDedupKey = if (updatedFilters != null && validatedTarget != null) {
+                val conflict = findSemanticDuplicate(
+                    userId = userId,
+                    target = validatedTarget,
+                    filters = updatedFilters,
+                    excludeTrackId = trackId,
+                )
+                if (conflict != null) {
+                    return@dbQuery mapTrack(conflict, emptyList())
+                }
+                buildDedupKey(validatedTarget, updatedFilters)
+            } else {
+                null
+            }
 
             if (updatedTitle != null || updatedFilters != null || updatedState != null) {
                 TracksTable.update(
@@ -164,6 +209,7 @@ class TracksRepositoryImpl(
                     updatedTitle?.let { stmt[TracksTable.title] = it }
                     updatedFilters?.let { stmt[TracksTable.filters] = it }
                     updatedState?.let { stmt[TracksTable.state] = it }
+                    nextDedupKey?.let { stmt[TracksTable.dedupKey] = it }
                     stmt[TracksTable.updatedAt] = now
                 }
 
@@ -193,30 +239,47 @@ class TracksRepositoryImpl(
             .singleOrNull()
             ?: return@dbQuery TrackTargetUpdateResult.NotFound
 
-        val validated = validateTarget(
+        val currentTargetSpec = resolveTargetSpecFromRow(row)
+        val requestedTargetSpec = resolveUpdateTargetSpec(request, currentTargetSpec)
+        val targetValidation = validateTarget(
             type = request.type,
-            matchKeyRaw = request.matchKey,
-            categoryCodeRaw = request.categoryCode,
-        ) ?: return@dbQuery TrackTargetUpdateResult.InvalidInput("Invalid target")
-
-        val conflict = TracksTable
-            .selectAll()
-            .where {
-                (TracksTable.userId eq userId) and
-                    (TracksTable.id neq trackId) and
-                    (TracksTable.dedupKey eq validated.dedupKey)
-            }
-            .limit(1)
-            .singleOrNull()
-        if (conflict != null) {
-            return@dbQuery TrackTargetUpdateResult.AlreadyExists(mapTrack(conflict, emptyList()))
+            targetSpec = requestedTargetSpec,
+        )
+        val validated = targetValidation.target
+        if (validated == null) {
+            logger.warn(
+                "tracks.target.invalid.update userId={} trackId={} type={} reason={} hasCategory={} attrs={}",
+                userId,
+                trackId,
+                request.type,
+                targetValidation.reason,
+                !requestedTargetSpec.categoryCode.isNullOrBlank(),
+                requestedTargetSpec.attributes.size,
+            )
+            return@dbQuery TrackTargetUpdateResult.InvalidInput("Invalid target: ${targetValidation.reason}")
         }
 
         val now = clock()
-        val mergedFilters = sanitizeFilters(
-            row[TracksTable.filters].copy(extra = sanitizeAttributes(request.attributes)),
+        val mergedFilters = sanitizeFilters(row[TracksTable.filters]).dropTargetAttributes(validated.attributes)
+        if (mergedFilters.extra != row[TracksTable.filters].extra) {
+            logger.info(
+                "tracks.target.runtime_filters_stripped_on_update userId={} trackId={} droppedKeys={}",
+                userId,
+                trackId,
+                row[TracksTable.filters].extra.keys.subtract(mergedFilters.extra.keys).joinToString(","),
+            )
+        }
+        val conflict = findSemanticDuplicate(
+            userId = userId,
+            target = validated,
+            filters = mergedFilters,
+            excludeTrackId = trackId,
         )
+        if (conflict != null) {
+            return@dbQuery TrackTargetUpdateResult.AlreadyExists(mapTrack(conflict, emptyList()))
+        }
         val title = request.title?.trim()?.takeIf { it.isNotBlank() } ?: row[TracksTable.title]
+        val dedupKey = buildDedupKey(validated, mergedFilters)
 
         TracksTable.update(
             where = { (TracksTable.userId eq userId) and (TracksTable.id eq trackId) },
@@ -224,10 +287,12 @@ class TracksRepositoryImpl(
             stmt[TracksTable.type] = validated.type.name
             stmt[TracksTable.matchKey] = validated.matchKey
             stmt[TracksTable.categoryCode] = validated.categoryCode
-            stmt[TracksTable.target] = TrackTarget(matchKey = validated.matchKey)
+            stmt[TracksTable.targetCategoryCode] = validated.categoryCode
+            stmt[TracksTable.targetAttributes] = validated.attributes
+            stmt[TracksTable.target] = toTargetPayload(validated, request.target, row[TracksTable.target])
             stmt[TracksTable.filters] = mergedFilters
             stmt[TracksTable.title] = title
-            stmt[TracksTable.dedupKey] = validated.dedupKey
+            stmt[TracksTable.dedupKey] = dedupKey
             stmt[TracksTable.updatedAt] = now
         }
 
@@ -265,20 +330,29 @@ class TracksRepositoryImpl(
             sort = sort,
         )
 
-        val categoryCode = track.categoryCode?.trim()?.takeIf { it.isNotBlank() }
-        val brandModel = if (track.type == TrackType.PRODUCT) {
-            TrackMatchKeyFactory.parse(track.target.matchKey)
+        val categoryCode = (track.target.spec?.categoryCode ?: track.categoryCode)
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
+        val targetAttributes = sanitizeAttributes(track.target.spec?.attributes.orEmpty())
+        val brandModel = if (track.type == TrackType.PRODUCT && targetAttributes.isEmpty()) {
+            TrackMatchKeyFactory.parse(track.target.spec?.matchKey)
         } else {
             null
         }
 
         val fetchLimit = (safeOffset + safeLimit + 1).coerceAtMost(MAX_TRACK_OFFERS_FETCH)
         val userCountry = resolveUserCountry(userId)
-        val criteria = OfferSearchCriteria(
-            brand = brandModel?.first,
-            model = brandModel?.second,
+            val criteriaFilters = TrackOfferCriteriaNormalizer.toOfferCriteriaFilters(track.filters)
+            val criteria = OfferSearchCriteria(
+                brand = brandModel?.first,
+                model = brandModel?.second,
             categoryCode = categoryCode,
-            attributes = sanitizeAttributes(track.filters.extra),
+            location = criteriaFilters.location,
+            condition = criteriaFilters.condition,
+            conditions = criteriaFilters.conditions,
+            deliveryChannels = criteriaFilters.deliveryChannels,
+            sellerQuery = criteriaFilters.sellerQuery,
+            attributes = targetAttributes.toTypedAttributesGuess(),
             userCountry = userCountry,
             sellerCountryCode = userCountry,
             limit = fetchLimit,
@@ -398,7 +472,7 @@ class TracksRepositoryImpl(
                 price = offer.price,
                 delivery = null,
                 trustScore = rating?.toFloat(),
-                distanceKm = offer.attributes["distance_km"]?.toFloatOrNull(),
+                distanceKm = offer.attributes["distance_km"]?.asFloatOrNull(),
                 badges = badges,
                 deeplink = "https://example.com/offers/${offer.id}",
                 dedupKey = "offer:${offer.id}",
@@ -427,21 +501,36 @@ class TracksRepositoryImpl(
         )
 
         val storedTarget = row[TracksTable.target]
-        val matchKey = row[TracksTable.matchKey] ?: storedTarget.matchKey
+        val resolvedTargetSpec = resolveTargetSpecFromRow(row)
+        val matchKey = resolvedTargetSpec.matchKey
+        val normalizedCategoryCode = resolvedTargetSpec.categoryCode ?: row[TracksTable.categoryCode]
         val type = runCatching { TrackType.valueOf(row[TracksTable.type]) }.getOrElse { TrackType.PRODUCT }
         val safeTarget = if (type == TrackType.URL || type == TrackType.SEARCH) {
             storedTarget
         } else {
-            TrackTarget(matchKey = matchKey)
+            TrackTarget(
+                spec = resolvedTargetSpec,
+                categoryCode = resolvedTargetSpec.categoryCode,
+                attributes = resolvedTargetSpec.attributes,
+                attributesMulti = resolvedTargetSpec.attributesMulti,
+                attributesRange = resolvedTargetSpec.attributesRange,
+                matchKey = matchKey,
+                queryText = resolvedTargetSpec.queryText,
+                schemaVersion = resolvedTargetSpec.schemaVersion,
+                taxonomyVersion = resolvedTargetSpec.taxonomyVersion,
+                locale = resolvedTargetSpec.locale,
+                unboundTokens = resolvedTargetSpec.unboundTokens,
+            )
         }
+        val sanitizedFilters = sanitizeFilters(row[TracksTable.filters])
 
         return Track(
             id = row[TracksTable.id].toString(),
             title = row[TracksTable.title],
-            categoryCode = row[TracksTable.categoryCode],
+            categoryCode = normalizedCategoryCode,
             type = type,
             target = safeTarget,
-            filters = sanitizeFilters(row[TracksTable.filters]),
+            filters = sanitizedFilters,
             alertRules = emptyList(),
             state = TrackState.valueOf(row[TracksTable.state]),
             createdAt = row[TracksTable.createdAt],
@@ -452,59 +541,106 @@ class TracksRepositoryImpl(
         )
     }
 
-    private fun buildTitle(target: ValidatedTarget, rawTitle: String?): String {
+    private fun buildTitle(target: TrackDedupTarget, rawTitle: String?): String {
         val explicit = rawTitle?.trim()?.takeIf { it.isNotBlank() }
         if (explicit != null) return explicit
         return when (target.type) {
             TrackType.CATEGORY -> target.categoryCode ?: "Категория"
             TrackType.PRODUCT -> {
                 val parsed = TrackMatchKeyFactory.parse(target.matchKey)
-                if (parsed == null) target.matchKey.orEmpty().take(80).ifBlank { "Товар" }
-                else "${parsed.first} ${parsed.second}".take(80)
+                when {
+                    parsed != null -> "${parsed.first} ${parsed.second}".take(80)
+                    !target.queryText.isNullOrBlank() -> target.queryText.take(80)
+                    !target.categoryCode.isNullOrBlank() -> "Товар в ${target.categoryCode}".take(80)
+                    else -> target.matchKey.orEmpty().take(80).ifBlank { "Товар" }
+                }
             }
             else -> "Отслеживание"
         }
     }
 
+    private data class TargetValidation(
+        val target: TrackDedupTarget?,
+        val reason: String,
+    )
+
     private fun validateTarget(
         type: TrackType,
-        matchKeyRaw: String?,
-        categoryCodeRaw: String?,
-    ): ValidatedTarget? {
-        return when (type) {
-            TrackType.PRODUCT -> {
-                val normalizedMatchKey = normalizeMatchKey(matchKeyRaw) ?: return null
-                val normalizedCategoryCode = normalizeCategoryCode(categoryCodeRaw)
-                ValidatedTarget(
-                    type = TrackType.PRODUCT,
-                    matchKey = normalizedMatchKey,
-                    categoryCode = normalizedCategoryCode,
-                    dedupKey = normalizedMatchKey.take(512),
-                )
-            }
-            TrackType.CATEGORY -> {
-                val normalizedCategoryCode = normalizeCategoryCode(categoryCodeRaw) ?: return null
-                ValidatedTarget(
-                    type = TrackType.CATEGORY,
-                    matchKey = null,
-                    categoryCode = normalizedCategoryCode,
-                    dedupKey = normalizedCategoryCode.take(512),
-                )
-            }
-            else -> null
+        targetSpec: TrackTargetSpec,
+    ): TargetValidation {
+        if (type != TrackType.PRODUCT && type != TrackType.CATEGORY) {
+            return TargetValidation(target = null, reason = "unsupported-type")
+        }
+        if (targetSpec.categoryCode.isNullOrBlank()) {
+            return TargetValidation(target = null, reason = "missing-category")
+        }
+        if (targetSpec.attributes.size > MAX_TARGET_ATTRIBUTES) {
+            return TargetValidation(target = null, reason = "too-many-target-attributes")
+        }
+        val invalidEntry = targetSpec.attributes.entries.firstOrNull { (key, value) ->
+            key.length > MAX_TARGET_ATTR_KEY_LENGTH || value.length > MAX_TARGET_ATTR_VALUE_LENGTH
+        }
+        if (invalidEntry != null) {
+            return TargetValidation(target = null, reason = "target-attribute-too-long")
+        }
+        if (targetSpec.attributesMulti.size > MAX_TARGET_ATTRIBUTES) {
+            return TargetValidation(target = null, reason = "too-many-target-attributes-multi")
+        }
+        val invalidMultiEntry = targetSpec.attributesMulti.entries.firstOrNull { (key, values) ->
+            key.length > MAX_TARGET_ATTR_KEY_LENGTH ||
+                values.size > MAX_TARGET_MULTI_VALUES_PER_KEY ||
+                values.any { value -> value.length > MAX_TARGET_ATTR_VALUE_LENGTH }
+        }
+        if (invalidMultiEntry != null) {
+            return TargetValidation(target = null, reason = "target-attributes-multi-invalid")
+        }
+        if (targetSpec.attributesRange.size > MAX_TARGET_ATTRIBUTES) {
+            return TargetValidation(target = null, reason = "too-many-target-attributes-range")
+        }
+        val invalidRangeEntry = targetSpec.attributesRange.entries.firstOrNull { (key, range) ->
+            key.length > MAX_TARGET_ATTR_KEY_LENGTH ||
+                (range.min?.length ?: 0) > MAX_TARGET_ATTR_VALUE_LENGTH ||
+                (range.max?.length ?: 0) > MAX_TARGET_ATTR_VALUE_LENGTH ||
+                (range.unit?.length ?: 0) > MAX_TARGET_ATTR_VALUE_LENGTH
+        }
+        if (invalidRangeEntry != null) {
+            return TargetValidation(target = null, reason = "target-attributes-range-invalid")
+        }
+        if ((targetSpec.queryText?.length ?: 0) > MAX_TARGET_QUERY_TEXT_LENGTH) {
+            return TargetValidation(target = null, reason = "target-query-too-long")
+        }
+        if (targetSpec.unboundTokens.size > MAX_TARGET_UNBOUND_TOKENS ||
+            targetSpec.unboundTokens.any { token -> token.length > MAX_TARGET_UNBOUND_TOKEN_LENGTH }
+        ) {
+            return TargetValidation(target = null, reason = "target-unbound-tokens-invalid")
+        }
+        val normalized = TrackDedupKeyFactory.normalizeTarget(
+            type = type,
+            matchKeyRaw = targetSpec.matchKey,
+            categoryCodeRaw = targetSpec.categoryCode,
+            attributesRaw = targetSpec.attributes,
+            attributesMultiRaw = targetSpec.attributesMulti,
+            attributesRangeRaw = targetSpec.attributesRange,
+            queryTextRaw = targetSpec.queryText,
+        )
+        return if (normalized == null) {
+            TargetValidation(target = null, reason = "normalization-failed")
+        } else {
+            TargetValidation(target = normalized, reason = "ok")
         }
     }
 
-    private fun normalizeMatchKey(raw: String?): String? {
-        val parsed = TrackMatchKeyFactory.parse(raw) ?: return null
-        return TrackMatchKeyFactory.fromBrandModel(parsed.first, parsed.second)
-    }
-
-    private fun normalizeCategoryCode(raw: String?): String? =
-        raw?.trim()?.takeIf { it.isNotBlank() }?.uppercase()
-
     private fun sanitizeFilters(filters: TrackFilters): TrackFilters =
-        filters.copy(extra = sanitizeAttributes(filters.extra))
+        TrackFilters(
+            region = sanitizeText(filters.region),
+            delivery = sanitizeText(filters.delivery),
+            condition = sanitizeText(filters.condition),
+            seller = sanitizeText(filters.seller),
+            extra = sanitizeAttributes(filters.extra),
+        )
+
+    private fun sanitizeText(value: String?): String? =
+        value?.trim()?.takeIf { it.isNotBlank() }
 
     private fun sanitizeAttributes(values: Map<String, String>): Map<String, String> {
         if (values.isEmpty()) return emptyMap()
@@ -518,6 +654,332 @@ class TracksRepositoryImpl(
             .sortedBy { it.first.lowercase() }
             .toMap(LinkedHashMap())
     }
+
+    private fun sanitizeAttributesMulti(values: Map<String, List<String>>): Map<String, List<String>> {
+        if (values.isEmpty()) return emptyMap()
+        return values.entries
+            .mapNotNull { (key, rawValues) ->
+                val normalizedKey = key.trim()
+                if (normalizedKey.isBlank()) return@mapNotNull null
+                val normalizedValues = rawValues
+                    .asSequence()
+                    .map { value -> value.trim() }
+                    .filter { value -> value.isNotBlank() }
+                    .distinct()
+                    .toList()
+                if (normalizedValues.isEmpty()) null else normalizedKey to normalizedValues
+            }
+            .sortedBy { it.first.lowercase() }
+            .toMap(LinkedHashMap())
+    }
+
+    private fun sanitizeAttributesRange(values: Map<String, TrackAttributeRange>): Map<String, TrackAttributeRange> {
+        if (values.isEmpty()) return emptyMap()
+        return values.entries
+            .mapNotNull { (key, range) ->
+                val normalizedKey = key.trim()
+                if (normalizedKey.isBlank()) return@mapNotNull null
+                val normalizedRange = TrackAttributeRange(
+                    min = range.min?.trim()?.takeIf { it.isNotBlank() },
+                    max = range.max?.trim()?.takeIf { it.isNotBlank() },
+                    unit = range.unit?.trim()?.takeIf { it.isNotBlank() },
+                )
+                if (normalizedRange.min == null && normalizedRange.max == null && normalizedRange.unit == null) {
+                    null
+                } else {
+                    normalizedKey to normalizedRange
+                }
+            }
+            .sortedBy { it.first.lowercase() }
+            .toMap(LinkedHashMap())
+    }
+
+    private fun sanitizeQueryText(raw: String?): String? =
+        raw?.replace("\\s+".toRegex(), " ")?.trim()?.takeIf { it.isNotBlank() }
+
+    private fun sanitizeCategoryCode(raw: String?): String? =
+        raw?.trim()?.takeIf { it.isNotBlank() }?.uppercase(Locale.ROOT)
+
+    private fun sanitizeLocale(raw: String?): String? =
+        raw?.trim()?.takeIf { it.isNotBlank() }
+
+    private fun sanitizeUnboundTokens(values: List<String>): List<String> =
+        values
+            .asSequence()
+            .map { token -> token.trim() }
+            .filter { token -> token.isNotBlank() }
+            .distinct()
+            .toList()
+
+    private fun resolveCreateTargetSpec(
+        request: TrackCreateRequest,
+    ): TrackTargetSpec {
+        val explicitSpec = request.target.spec
+        if (explicitSpec == null && (!request.target.categoryCode.isNullOrBlank() || !request.target.matchKey.isNullOrBlank())) {
+            logger.info("tracks.target.legacy_payload_detected mode=create")
+        }
+        val categoryCode = sanitizeCategoryCode(
+            explicitSpec?.categoryCode,
+        )
+        val matchKey = sanitizeText(
+            explicitSpec?.matchKey,
+        )
+        val attributes = sanitizeAttributes(
+            explicitSpec?.attributes.orEmpty(),
+        )
+        val attributesMulti = sanitizeAttributesMulti(
+            explicitSpec?.attributesMulti.orEmpty(),
+        )
+        val attributesRange = sanitizeAttributesRange(
+            explicitSpec?.attributesRange.orEmpty(),
+        )
+        val queryText = sanitizeQueryText(
+            explicitSpec?.queryText,
+        )
+        val schemaVersion = (explicitSpec?.schemaVersion ?: 1).coerceAtLeast(1)
+        val taxonomyVersion = sanitizeText(
+            explicitSpec?.taxonomyVersion,
+        )
+        val locale = sanitizeLocale(
+            explicitSpec?.locale,
+        )
+        val unboundTokens = sanitizeUnboundTokens(
+            explicitSpec?.unboundTokens.orEmpty(),
+        )
+        return TrackTargetSpec(
+            categoryCode = categoryCode,
+            attributes = attributes,
+            matchKey = matchKey,
+            attributesMulti = attributesMulti,
+            attributesRange = attributesRange,
+            queryText = queryText,
+            schemaVersion = schemaVersion,
+            taxonomyVersion = taxonomyVersion,
+            locale = locale,
+            unboundTokens = unboundTokens,
+        )
+    }
+
+    private fun resolveUpdateTargetSpec(
+        request: TrackTargetUpdateRequest,
+        current: TrackTargetSpec,
+    ): TrackTargetSpec {
+        val explicitSpec = request.target.spec
+        if (explicitSpec == null && (!request.target.categoryCode.isNullOrBlank() || !request.target.matchKey.isNullOrBlank())) {
+            logger.info("tracks.target.legacy_payload_detected mode=update")
+        }
+        val categoryCode = sanitizeCategoryCode(
+            explicitSpec?.categoryCode,
+        ) ?: current.categoryCode
+        val matchKey = sanitizeText(
+            explicitSpec?.matchKey,
+        ) ?: current.matchKey
+        val requestedAttributes = sanitizeAttributes(
+            explicitSpec?.attributes ?: current.attributes,
+        )
+        val requestedAttributesMulti = sanitizeAttributesMulti(
+            explicitSpec?.attributesMulti ?: current.attributesMulti,
+        )
+        val requestedAttributesRange = sanitizeAttributesRange(
+            explicitSpec?.attributesRange ?: current.attributesRange,
+        )
+        val queryText = sanitizeQueryText(
+            explicitSpec?.queryText,
+        ) ?: current.queryText
+        val schemaVersion = (explicitSpec?.schemaVersion ?: current.schemaVersion)
+            .takeIf { it > 0 }
+            ?: current.schemaVersion
+        val taxonomyVersion = sanitizeText(
+            explicitSpec?.taxonomyVersion,
+        ) ?: current.taxonomyVersion
+        val locale = sanitizeLocale(
+            explicitSpec?.locale,
+        ) ?: current.locale
+        val unboundTokens = sanitizeUnboundTokens(
+            explicitSpec?.unboundTokens ?: current.unboundTokens,
+        )
+        return TrackTargetSpec(
+            categoryCode = categoryCode,
+            attributes = requestedAttributes,
+            matchKey = matchKey,
+            attributesMulti = requestedAttributesMulti,
+            attributesRange = requestedAttributesRange,
+            queryText = queryText,
+            schemaVersion = schemaVersion,
+            taxonomyVersion = taxonomyVersion,
+            locale = locale,
+            unboundTokens = unboundTokens,
+        )
+    }
+
+    private fun resolveTargetSpecFromRow(row: ResultRow): TrackTargetSpec {
+        val storedTarget = row[TracksTable.target]
+        val storedTargetSpec = storedTarget.spec
+        val categoryCode = sanitizeCategoryCode(
+            row[TracksTable.targetCategoryCode]
+                ?: storedTargetSpec?.categoryCode
+        )
+        val matchKey = sanitizeText(
+            row[TracksTable.matchKey]
+                ?: storedTargetSpec?.matchKey
+        )
+        val attributes = sanitizeAttributes(
+            when {
+                row[TracksTable.targetAttributes]?.isNotEmpty() == true -> row[TracksTable.targetAttributes].orEmpty()
+                storedTargetSpec?.attributes?.isNotEmpty() == true -> storedTargetSpec.attributes
+                else -> emptyMap()
+            },
+        )
+        val attributesMulti = sanitizeAttributesMulti(
+            when {
+                storedTargetSpec?.attributesMulti?.isNotEmpty() == true -> storedTargetSpec.attributesMulti
+                else -> emptyMap()
+            },
+        )
+        val attributesRange = sanitizeAttributesRange(
+            when {
+                storedTargetSpec?.attributesRange?.isNotEmpty() == true -> storedTargetSpec.attributesRange
+                else -> emptyMap()
+            },
+        )
+        val queryText = sanitizeQueryText(
+            storedTargetSpec?.queryText,
+        )
+        val schemaVersion = (storedTargetSpec?.schemaVersion ?: 1).coerceAtLeast(1)
+        val taxonomyVersion = sanitizeText(
+            storedTargetSpec?.taxonomyVersion,
+        )
+        val locale = sanitizeLocale(
+            storedTargetSpec?.locale,
+        )
+        val unboundTokens = sanitizeUnboundTokens(
+            when {
+                storedTargetSpec?.unboundTokens?.isNotEmpty() == true -> storedTargetSpec.unboundTokens
+                else -> emptyList()
+            },
+        )
+        return TrackTargetSpec(
+            categoryCode = categoryCode,
+            attributes = attributes,
+            matchKey = matchKey,
+            attributesMulti = attributesMulti,
+            attributesRange = attributesRange,
+            queryText = queryText,
+            schemaVersion = schemaVersion,
+            taxonomyVersion = taxonomyVersion,
+            locale = locale,
+            unboundTokens = unboundTokens,
+        )
+    }
+
+    private fun toTargetPayload(
+        validated: TrackDedupTarget,
+        base: TrackTarget,
+        previous: TrackTarget? = null,
+    ): TrackTarget {
+        val sourceSpec = base.spec ?: previous?.spec
+        val queryText = sanitizeQueryText(sourceSpec?.queryText ?: base.queryText ?: previous?.queryText)
+        val schemaVersion = (sourceSpec?.schemaVersion ?: base.schemaVersion).coerceAtLeast(1)
+        val taxonomyVersion = sanitizeText(sourceSpec?.taxonomyVersion ?: base.taxonomyVersion ?: previous?.taxonomyVersion)
+        val locale = sanitizeLocale(sourceSpec?.locale ?: base.locale ?: previous?.locale)
+        val unboundTokens = sanitizeUnboundTokens(
+            when {
+                sourceSpec?.unboundTokens?.isNotEmpty() == true -> sourceSpec.unboundTokens
+                base.unboundTokens.isNotEmpty() -> base.unboundTokens
+                else -> previous?.unboundTokens.orEmpty()
+            },
+        )
+        val spec = TrackTargetSpec(
+            categoryCode = validated.categoryCode,
+            attributes = validated.attributes,
+            attributesMulti = validated.attributesMulti,
+            attributesRange = validated.attributesRange,
+            matchKey = validated.matchKey,
+            queryText = queryText,
+            schemaVersion = schemaVersion,
+            taxonomyVersion = taxonomyVersion,
+            locale = locale,
+            unboundTokens = unboundTokens,
+        )
+        return TrackTarget(
+            spec = spec,
+            categoryCode = validated.categoryCode,
+            attributes = validated.attributes,
+            attributesMulti = validated.attributesMulti,
+            attributesRange = validated.attributesRange,
+            matchKey = validated.matchKey,
+            queryText = queryText,
+            schemaVersion = schemaVersion,
+            taxonomyVersion = taxonomyVersion,
+            locale = locale,
+            unboundTokens = unboundTokens,
+            url = base.url ?: previous?.url,
+            query = base.query ?: previous?.query,
+        )
+    }
+
+    private fun TrackFilters.dropTargetAttributes(targetAttributes: Map<String, String>): TrackFilters {
+        if (targetAttributes.isEmpty() || extra.isEmpty()) return this
+        val runtimeExtra = extra.filterKeys { key -> !targetAttributes.containsKey(key) }
+        return copy(extra = runtimeExtra)
+    }
+
+    private fun validatedTargetFromRow(row: ResultRow): TrackDedupTarget? {
+        val type = runCatching { TrackType.valueOf(row[TracksTable.type]) }.getOrNull()
+            ?: return null
+        val resolvedTargetSpec = resolveTargetSpecFromRow(row)
+        return validateTarget(
+            type = type,
+            targetSpec = resolvedTargetSpec,
+        ).target
+    }
+
+    private fun findSemanticDuplicate(
+        userId: Long,
+        target: TrackDedupTarget,
+        filters: TrackFilters,
+        excludeTrackId: Long? = null,
+    ): ResultRow? {
+        val targetType = target.type
+        val targetCategoryCode = target.categoryCode ?: ""
+        val normalizedFilters = sanitizeFilters(filters).dropTargetAttributes(target.attributes)
+        val targetFingerprint = TrackDedupKeyFactory.buildSemanticFingerprint(target, normalizedFilters)
+
+        val query = TracksTable.selectAll()
+        query.andWhere { TracksTable.userId eq userId }
+        excludeTrackId?.let { excluded ->
+            query.andWhere { TracksTable.id neq excluded }
+        }
+
+        when (targetType) {
+            TrackType.PRODUCT -> {
+                query.andWhere { TracksTable.type eq TrackType.PRODUCT.name }
+                query.andWhere { TracksTable.targetCategoryCode eq targetCategoryCode }
+                val normalizedMatchKey = target.matchKey?.trim()?.takeIf { it.isNotBlank() }
+                if (normalizedMatchKey != null) {
+                    query.andWhere { TracksTable.matchKey eq normalizedMatchKey }
+                } else {
+                    query.andWhere { TracksTable.matchKey.isNull() or (TracksTable.matchKey eq "") }
+                }
+            }
+            TrackType.CATEGORY -> {
+                query.andWhere { TracksTable.type eq TrackType.CATEGORY.name }
+                query.andWhere { TracksTable.targetCategoryCode eq targetCategoryCode }
+            }
+            else -> return null
+        }
+
+        return query
+            .toList()
+            .firstOrNull { row ->
+                val rowTarget = validatedTargetFromRow(row) ?: return@firstOrNull false
+                val rowFilters = sanitizeFilters(row[TracksTable.filters]).dropTargetAttributes(rowTarget.attributes)
+                TrackDedupKeyFactory.buildSemanticFingerprint(rowTarget, rowFilters) == targetFingerprint
+            }
+    }
+
+    private fun buildDedupKey(target: TrackDedupTarget, filters: TrackFilters): String =
+        TrackDedupKeyFactory.buildDedupKey(target, filters)
 
     private fun TrackOfferSort.toOfferSort(): OfferSort = when (this) {
         TrackOfferSort.PRICE_ASC -> OfferSort.PRICE_ASC

@@ -2,6 +2,7 @@ package com.example.shoppingassistant.feature.pages.results
 
 import android.net.Uri
 import com.example.shoppingassistant.domain.model.NormalizedQuery
+import com.example.shoppingassistant.domain.model.OfferSort
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
@@ -25,6 +26,12 @@ data class ResultsPayload(
     val query: NormalizedQuery? = null,
     val queryText: String = "",
     val categoryCode: String? = null,
+    val facetCollectionCode: String? = null,
+    val facetPresetCode: String? = null,
+    val location: String? = null,
+    val radiusKm: Int? = null,
+    val conditions: List<String> = emptyList(),
+    val sort: OfferSort = OfferSort.RANK,
     val mode: ResultsMode = ResultsMode.Offers,
     val origin: ResultsOrigin = ResultsOrigin.Text,
 )

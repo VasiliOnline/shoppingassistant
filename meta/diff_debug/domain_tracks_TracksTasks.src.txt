@@ -21,12 +21,43 @@ enum class TrackType {
 enum class TrackState { ACTIVE, PAUSED, ERROR }
 
 @Serializable
+data class TrackAttributeRange(
+    val min: String? = null,
+    val max: String? = null,
+    val unit: String? = null,
+)
+
+@Serializable
 data class TrackTarget(
+    val spec: TrackTargetSpec? = null,
+    val categoryCode: String? = null,
+    val attributes: Map<String, String> = emptyMap(),
+    val attributesMulti: Map<String, List<String>> = emptyMap(),
+    val attributesRange: Map<String, TrackAttributeRange> = emptyMap(),
     val matchKey: String? = null,
+    val queryText: String? = null,
+    val schemaVersion: Int = 1,
+    val taxonomyVersion: String? = null,
+    val locale: String? = null,
+    val unboundTokens: List<String> = emptyList(),
     @Deprecated("Legacy input method. URL is not persisted for new tracks.")
     val url: String? = null,
     @Deprecated("Legacy input method. query is not persisted for new tracks.")
     val query: String? = null,
+)
+
+@Serializable
+data class TrackTargetSpec(
+    val categoryCode: String? = null,
+    val attributes: Map<String, String> = emptyMap(),
+    val attributesMulti: Map<String, List<String>> = emptyMap(),
+    val attributesRange: Map<String, TrackAttributeRange> = emptyMap(),
+    val matchKey: String? = null,
+    val queryText: String? = null,
+    val schemaVersion: Int = 1,
+    val taxonomyVersion: String? = null,
+    val locale: String? = null,
+    val unboundTokens: List<String> = emptyList(),
 )
 
 @Serializable
@@ -163,8 +194,7 @@ data class TrackOffersPage(
 @Serializable
 data class TrackCreateInput(
     val type: TrackType,
-    val categoryCode: String? = null,
-    val matchKey: String? = null,
+    val targetSpec: TrackTargetSpec? = null,
     val filters: TrackFilters = TrackFilters(),
     val title: String? = null,
 )
@@ -172,9 +202,7 @@ data class TrackCreateInput(
 @Serializable
 data class TrackTargetUpdateInput(
     val type: TrackType,
-    val categoryCode: String? = null,
-    val matchKey: String? = null,
-    val attributes: Map<String, String> = emptyMap(),
+    val targetSpec: TrackTargetSpec? = null,
     val title: String? = null,
 )
 

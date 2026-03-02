@@ -95,6 +95,7 @@ data class RefreshTrackedOfferInput(
     val priceValue: Double,
     val currency: String,
     val attributes: Map<String, String> = emptyMap(),
+    val dataSource: String? = null,
 )
 
 @Serializable

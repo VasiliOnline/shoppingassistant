@@ -20,6 +20,10 @@ object CatalogSeed {
     val facetDefinitions: List<FacetDefinition> by lazy { CatalogSeedLoader.facetDefinitions }
     val facetPresets: List<FacetPreset> by lazy { CatalogSeedLoader.facetPresets }
     val facetCollections: List<FacetCollection> by lazy { CatalogSeedLoader.facetCollections }
+    val stage40ImmutableSchema: Stage40ImmutableSchemaDocument by lazy { CatalogSeedLoader.stage40ImmutableSchema }
+    val stage40NormalizationContract: Stage40NormalizationContractDocument by lazy { CatalogSeedLoader.stage40NormalizationContract }
+    val stage40DedupKeys: Stage40DedupKeysDocument by lazy { CatalogSeedLoader.stage40DedupKeys }
+    val stage40TypedConstraints: Stage40TypedConstraintsDocument by lazy { CatalogSeedLoader.stage40TypedConstraints }
 
     internal val stage21TechGoldenQueries: List<GoldenQuery> by lazy { Stage21TechPackageLoader.goldenQueries }
     internal val stage21TechCoverageGate: Stage21CoverageGate by lazy { Stage21TechPackageLoader.coverageGate }

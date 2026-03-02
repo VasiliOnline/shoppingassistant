@@ -1,9 +1,11 @@
 package com.example.shoppingassistant.domain.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Нормализованный запрос. brandKey/modelKey — машинные ключи (индексы БД/сравнение).
  */
-@kotlinx.serialization.Serializable
+@Serializable
 data class NormalizedQuery(
     val brand: String,
     val model: String,

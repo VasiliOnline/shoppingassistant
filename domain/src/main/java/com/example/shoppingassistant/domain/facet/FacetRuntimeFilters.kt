@@ -1,5 +1,8 @@
 package com.example.shoppingassistant.domain.facet
 
+import com.example.shoppingassistant.domain.model.TypedAttributeValue
+import com.example.shoppingassistant.domain.model.toRawStringAttributes
+
 enum class FacetPurchaseFormat {
     PICKUP,
     DELIVERY,
@@ -9,13 +12,16 @@ data class FacetRuntimeFilters(
     val categoryCode: String? = null,
     val facetCollectionCode: String? = null,
     val facetPresetCode: String? = null,
-    val attributes: Map<String, String> = emptyMap(),
+    val attributes: Map<String, TypedAttributeValue> = emptyMap(),
     val brands: Set<String> = emptySet(),
     val priceMin: Int? = null,
     val priceMax: Int? = null,
     val conditions: Set<String> = emptySet(),
     val purchaseFormat: FacetPurchaseFormat? = null,
 )
+
+fun FacetRuntimeFilters.rawAttributes(): Map<String, String> =
+    attributes.toRawStringAttributes()
 
 object FacetRuntimeFiltersApplier {
 
@@ -76,9 +82,9 @@ object FacetRuntimeFiltersApplier {
                 else -> {
                     val includeValue = rule.includeValues.firstOrNull()?.trim()?.takeIf { it.isNotBlank() }
                     if (includeValue != null) {
-                        attributes[facetKey] = includeValue
+                        attributes[facetKey] = TypedAttributeValue.Text(includeValue)
                     } else if (rule.boolValue != null) {
-                        attributes[facetKey] = rule.boolValue.toString()
+                        attributes[facetKey] = TypedAttributeValue.Bool(rule.boolValue)
                     }
                 }
             }

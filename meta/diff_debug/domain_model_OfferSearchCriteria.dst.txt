@@ -21,7 +21,8 @@ data class OfferSearchCriteria(
     val deliverableOnly: Boolean = false,
     val condition: String? = null,
     val deliveryChannels: List<String> = emptyList(),
-    val attributes: Map<String, String> = emptyMap(),
+    val attributes: Map<String, TypedAttributeValue> = emptyMap(),
+    val attributeFilters: Map<String, TypedAttributeFilter> = emptyMap(),
     val userCountry: String? = null,
     val userLanguage: String? = null,
     val limit: Int = 20,
@@ -29,7 +30,38 @@ data class OfferSearchCriteria(
     val sellerCity: String? = null,
     val sellerCountryCode: String? = null,
     val updatedAfterMs: Long? = null,
+    val conditions: List<String> = emptyList(),
+    val querySessionId: String? = null,
+    val facetCollectionCode: String? = null,
+    val facetPresetCode: String? = null,
 )
+
+fun OfferSearchCriteria.rawAttributes(): Map<String, String> =
+    attributes.toRawStringAttributes()
+
+@Serializable
+data class TypedAttributeFilter(
+    val op: TypedAttributeOperator = TypedAttributeOperator.EQ,
+    val value: TypedAttributeValue? = null,
+    val values: List<TypedAttributeValue> = emptyList(),
+    val from: TypedAttributeValue? = null,
+    val to: TypedAttributeValue? = null,
+)
+
+@Serializable
+enum class TypedAttributeOperator {
+    EQ,
+    NEQ,
+    GT,
+    GTE,
+    LT,
+    LTE,
+    BETWEEN,
+    IN,
+    CONTAINS,
+    EXISTS,
+    NOT_EXISTS,
+}
 
 @Serializable
 enum class OfferSort {

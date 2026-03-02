@@ -22,8 +22,344 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "form_factor",
+        "title": "Форма выпуска",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "form_factor",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "flavor",
+        "title": "Вкус",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "flavor"
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_vegan",
+        "title": "Веган",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ingredient_list",
+        "title": "Состав (ингредиенты)",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "allergen_profile",
+        "title": "Аллергены",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "allergen_profile",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "calories_kcal_per_serving",
+        "title": "Калории на порцию (ккал)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "protein_per_serving_gram",
+        "title": "Белок на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "fat_per_serving_gram",
+        "title": "Жиры на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "carbs_per_serving_gram",
+        "title": "Углеводы на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "shelf_life_days",
+        "title": "Срок годности (дней)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "expiration_date",
+        "title": "Годен до",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_regime",
+        "title": "Режим хранения",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_regime",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "storage_temp_min_c",
+        "title": "Температура хранения от (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_temp_max_c",
+        "title": "Температура хранения до (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_gluten_free",
+        "title": "Без глютена",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "product_name",
+        "uiOrder": 10,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "brand",
+        "uiOrder": 20,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "form_factor",
+        "uiOrder": 30,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "flavor",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "volume_ml",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "is_vegan",
+        "uiOrder": 70,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "ingredient_list",
+        "uiOrder": 80,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "allergen_profile",
+        "uiOrder": 90,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "calories_kcal_per_serving",
+        "uiOrder": 100,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "protein_per_serving_gram",
+        "uiOrder": 110,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "fat_per_serving_gram",
+        "uiOrder": 120,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "carbs_per_serving_gram",
+        "uiOrder": 130,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "shelf_life_days",
+        "uiOrder": 140,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "expiration_date",
+        "uiOrder": 150,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "storage_regime",
+        "uiOrder": 160,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "storage_temp_min_c",
+        "uiOrder": 170,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "storage_temp_max_c",
+        "uiOrder": 180,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "is_gluten_free",
+        "uiOrder": 190,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -46,7 +382,8 @@
         "requiredForExpress": false,
         "facetEnabled": false,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
       },
       {
         "code": "portion_size_gram",
@@ -57,7 +394,8 @@
         "requiredForExpress": false,
         "facetEnabled": false,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
       },
       {
         "code": "servings_count",
@@ -68,7 +406,8 @@
         "requiredForExpress": false,
         "facetEnabled": false,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
       },
       {
         "code": "is_vegan",
@@ -99,7 +438,7 @@
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "spiciness_level"
       },
@@ -108,11 +447,12 @@
         "title": "Кухня",
         "dataType": "ENUM",
         "requiredForSearch": false,
-        "requiredForOffer": false,
+        "requiredForOffer": true,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "cuisine_type"
+        "valueDictCode": "cuisine_type",
+        "requiredBy": "2026-04-01"
       },
       {
         "code": "diameter_cm",
@@ -201,97 +541,309 @@
         "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "ingredient_list",
+        "title": "Состав (ингредиенты)",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "allergen_profile",
+        "title": "Аллергены",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "allergen_profile",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "calories_kcal_per_serving",
+        "title": "Калории на порцию (ккал)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "protein_per_serving_gram",
+        "title": "Белок на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "fat_per_serving_gram",
+        "title": "Жиры на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "carbs_per_serving_gram",
+        "title": "Углеводы на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "shelf_life_days",
+        "title": "Срок годности (дней)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "expiration_date",
+        "title": "Годен до",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_regime",
+        "title": "Режим хранения",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_regime",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "storage_temp_min_c",
+        "title": "Температура хранения от (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_temp_max_c",
+        "title": "Температура хранения до (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_gluten_free",
+        "title": "Без глютена",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "restaurant_name",
-        "uiOrder": 1,
+        "uiOrder": 10,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "portion_size_gram",
-        "uiOrder": 2,
+        "uiOrder": 20,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "servings_count",
-        "uiOrder": 3,
+        "uiOrder": 30,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "is_vegan",
-        "uiOrder": 4,
+        "uiOrder": 40,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "is_vegetarian",
-        "uiOrder": 5,
+        "uiOrder": 50,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "spiciness_level",
-        "uiOrder": 6,
+        "uiOrder": 60,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "cuisine_type",
-        "uiOrder": 7,
-        "isRequiredForCategory": false
+        "uiOrder": 70,
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "diameter_cm",
-        "uiOrder": 8,
+        "uiOrder": 80,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "thickness",
-        "uiOrder": 9,
+        "uiOrder": 90,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "base_type",
-        "uiOrder": 10,
+        "uiOrder": 100,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "topping_signature",
-        "uiOrder": 11,
+        "uiOrder": 110,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "set_type",
-        "uiOrder": 12,
+        "uiOrder": 120,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "pieces_count",
-        "uiOrder": 13,
+        "uiOrder": 130,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "fish_type_primary",
-        "uiOrder": 14,
+        "uiOrder": 140,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "has_cheese",
-        "uiOrder": 15,
+        "uiOrder": 150,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "ingredient_list",
+        "uiOrder": 160,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "allergen_profile",
+        "uiOrder": 170,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "calories_kcal_per_serving",
+        "uiOrder": 180,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "protein_per_serving_gram",
+        "uiOrder": 190,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "fat_per_serving_gram",
+        "uiOrder": 200,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "carbs_per_serving_gram",
+        "uiOrder": 210,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "shelf_life_days",
+        "uiOrder": 220,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "expiration_date",
+        "uiOrder": 230,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "storage_regime",
+        "uiOrder": 240,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "storage_temp_min_c",
+        "uiOrder": 250,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "storage_temp_max_c",
+        "uiOrder": 260,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "is_gluten_free",
+        "uiOrder": 270,
         "isRequiredForCategory": false
       }
     ],
@@ -307,8 +859,328 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "flavor",
+        "title": "Вкус",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "flavor",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "volume_ml",
+        "title": "Объём (мл)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_sugar_free",
+        "title": "Без сахара",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ingredient_list",
+        "title": "Состав (ингредиенты)",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "allergen_profile",
+        "title": "Аллергены",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "allergen_profile",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "calories_kcal_per_serving",
+        "title": "Калории на порцию (ккал)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "protein_per_serving_gram",
+        "title": "Белок на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "fat_per_serving_gram",
+        "title": "Жиры на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "carbs_per_serving_gram",
+        "title": "Углеводы на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "shelf_life_days",
+        "title": "Срок годности (дней)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "expiration_date",
+        "title": "Годен до",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_regime",
+        "title": "Режим хранения",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_regime",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "storage_temp_min_c",
+        "title": "Температура хранения от (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_temp_max_c",
+        "title": "Температура хранения до (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_gluten_free",
+        "title": "Без глютена",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "product_name",
+        "uiOrder": 10,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "brand",
+        "uiOrder": 20,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "flavor",
+        "uiOrder": 30,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "volume_ml",
+        "uiOrder": 40,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "is_sugar_free",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "ingredient_list",
+        "uiOrder": 70,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "allergen_profile",
+        "uiOrder": 80,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "calories_kcal_per_serving",
+        "uiOrder": 90,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "protein_per_serving_gram",
+        "uiOrder": 100,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "fat_per_serving_gram",
+        "uiOrder": 110,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "carbs_per_serving_gram",
+        "uiOrder": 120,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "shelf_life_days",
+        "uiOrder": 130,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "expiration_date",
+        "uiOrder": 140,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "storage_regime",
+        "uiOrder": 150,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "storage_temp_min_c",
+        "uiOrder": 160,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "storage_temp_max_c",
+        "uiOrder": 170,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "is_gluten_free",
+        "uiOrder": 180,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -321,9 +1193,333 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название продукта",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "flavor",
+        "title": "Вкус",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "flavor",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "portion_size_gram",
+        "title": "Порция (г)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_sugar_free",
+        "title": "Без сахара",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ingredient_list",
+        "title": "Состав (ингредиенты)",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "allergen_profile",
+        "title": "Аллергены",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "allergen_profile",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "calories_kcal_per_serving",
+        "title": "Калории на порцию (ккал)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "protein_per_serving_gram",
+        "title": "Белок на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "fat_per_serving_gram",
+        "title": "Жиры на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "carbs_per_serving_gram",
+        "title": "Углеводы на порцию (г)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "shelf_life_days",
+        "title": "Срок годности (дней)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "expiration_date",
+        "title": "Годен до",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_regime",
+        "title": "Режим хранения",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_regime",
+        "requiredBy": "2026-04-01"
+      },
+      {
+        "code": "storage_temp_min_c",
+        "title": "Температура хранения от (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_temp_max_c",
+        "title": "Температура хранения до (C)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_gluten_free",
+        "title": "Без глютена",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "product_name",
+        "uiOrder": 10,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "brand",
+        "uiOrder": 20,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "flavor",
+        "uiOrder": 30,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "portion_size_gram",
+        "uiOrder": 40,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "is_sugar_free",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "ingredient_list",
+        "uiOrder": 70,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "allergen_profile",
+        "uiOrder": 80,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "calories_kcal_per_serving",
+        "uiOrder": 90,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "protein_per_serving_gram",
+        "uiOrder": 100,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "fat_per_serving_gram",
+        "uiOrder": 110,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "carbs_per_serving_gram",
+        "uiOrder": 120,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "shelf_life_days",
+        "uiOrder": 130,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "expiration_date",
+        "uiOrder": 140,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "storage_regime",
+        "uiOrder": 150,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "storage_temp_min_c",
+        "uiOrder": 160,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "storage_temp_max_c",
+        "uiOrder": 170,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "is_gluten_free",
+        "uiOrder": 180,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   }
 ]
+
+
+
+

@@ -1,10 +1,10 @@
 package com.example.shoppingassistant.server.tracks.top10.refresh
 
 import com.example.shoppingassistant.domain.tracks.TrackFilters
-import com.example.shoppingassistant.domain.tracks.TrackTarget
 import com.example.shoppingassistant.domain.tracks.TrackType
 import com.example.shoppingassistant.server.config.TrackTop10RefreshConfig
 import com.example.shoppingassistant.server.db.DatabaseFactory
+import com.example.shoppingassistant.server.offers.UserProfilesTable
 import com.example.shoppingassistant.server.tracks.TracksTable
 import com.example.shoppingassistant.server.tracks.top10.TrackTop10SnapshotsTable
 import org.jetbrains.exposed.sql.ResultRow
@@ -21,9 +21,11 @@ data class TrackRefreshCandidate(
     val trackId: Long,
     val userId: Long,
     val type: TrackType,
-    val target: TrackTarget,
+    val matchKey: String?,
+    val categoryCode: String?,
+    val targetAttributes: Map<String, String>,
     val filters: TrackFilters,
-    val title: String,
+    val userCountry: String?,
     val failCount: Int,
 )
 
@@ -37,6 +39,7 @@ class TrackTop10RefreshPlanner(
 
         val query = TracksTable
             .leftJoin(TrackTop10SnapshotsTable, { TracksTable.id }, { TrackTop10SnapshotsTable.trackId })
+            .leftJoin(UserProfilesTable, { TracksTable.userId }, { UserProfilesTable.userId })
             .selectAll()
             .apply { andWhere { TracksTable.state eq "ACTIVE" } }
             .apply {
@@ -59,13 +62,27 @@ class TrackTop10RefreshPlanner(
 
     private fun mapCandidate(row: ResultRow): TrackRefreshCandidate {
         val failCount = row.getOrNull(TrackTop10SnapshotsTable.failCount) ?: 0
+        val storedTarget = row[TracksTable.target]
+        val storedTargetSpec = storedTarget.spec
         return TrackRefreshCandidate(
             trackId = row[TracksTable.id],
             userId = row[TracksTable.userId],
             type = TrackType.valueOf(row[TracksTable.type]),
-            target = row[TracksTable.target],
+            matchKey = row[TracksTable.matchKey]
+                ?: storedTargetSpec?.matchKey
+                ?: storedTarget.matchKey,
+            categoryCode = row[TracksTable.targetCategoryCode]
+                ?: row[TracksTable.categoryCode]
+                ?: storedTargetSpec?.categoryCode
+                ?: storedTarget.categoryCode,
+            targetAttributes = when {
+                row[TracksTable.targetAttributes]?.isNotEmpty() == true -> row[TracksTable.targetAttributes].orEmpty()
+                storedTargetSpec?.attributes?.isNotEmpty() == true -> storedTargetSpec.attributes
+                storedTarget.attributes.isNotEmpty() -> storedTarget.attributes
+                else -> row[TracksTable.filters].extra
+            },
             filters = row[TracksTable.filters],
-            title = row[TracksTable.title],
+            userCountry = row.getOrNull(UserProfilesTable.countryCode),
             failCount = failCount,
         )
     }

@@ -10,7 +10,7 @@ data class Offer(
     val ratingStars: Float,     // 0..5
     val deliveryDays: Int,      // целые дни
     val price: PriceBreakdown,  // см. A1
-    val attributes: Map<String, String>,
+    val attributes: Map<String, TypedAttributeValue>,
     val source: SourceMeta
 )
 data class SourceMeta(

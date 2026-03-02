@@ -44,3 +44,20 @@ data class CatalogConstraints(
     val attributeConstraints: List<AttributeValueConstraint> = emptyList(),
     val compatibilityRules: List<CompatibilityRule> = emptyList(),
 )
+
+@Serializable
+data class ConstraintCheckResult(
+    val allowedValuesByAttribute: Map<String, List<String>>,
+    val forbiddenValuesByAttribute: Map<String, List<String>>,
+    val violations: Map<String, String> = emptyMap(),
+)
+
+/**
+ * Resolves constraints into allowed/forbidden values and violations.
+ */
+interface CatalogConstraintsResolver {
+    fun evaluate(
+        constraints: List<CatalogConstraints>,
+        currentAttributes: Map<String, String>,
+    ): ConstraintCheckResult
+}

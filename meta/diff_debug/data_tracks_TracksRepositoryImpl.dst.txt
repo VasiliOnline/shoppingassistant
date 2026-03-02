@@ -29,6 +29,8 @@ import com.example.shoppingassistant.domain.tracks.TrackRepository
 import com.example.shoppingassistant.domain.tracks.TrackState
 import com.example.shoppingassistant.domain.tracks.TrackStats
 import com.example.shoppingassistant.domain.tracks.TrackTarget
+import com.example.shoppingassistant.domain.tracks.TrackAttributeRange
+import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackTargetUpdateInput
 import com.example.shoppingassistant.domain.tracks.TrackTargetUpdateResult
 import com.example.shoppingassistant.domain.tracks.TrackTop10
@@ -89,11 +91,26 @@ class TracksRepositoryImpl(
     }
 
     override suspend fun createTrack(input: TrackCreateInput): Track {
+        val normalizedTargetSpec = normalizeTargetSpec(
+            candidate = input.targetSpec,
+            fallbackAttributes = input.filters.extra,
+        )
         if (canUseRemote()) {
             val request = TrackCreateRequest(
                 type = input.type,
-                target = TrackTarget(matchKey = input.matchKey),
-                categoryCode = input.categoryCode,
+                target = TrackTarget(
+                    spec = normalizedTargetSpec,
+                    categoryCode = normalizedTargetSpec?.categoryCode,
+                    attributes = normalizedTargetSpec?.attributes.orEmpty(),
+                    attributesMulti = normalizedTargetSpec?.attributesMulti.orEmpty(),
+                    attributesRange = normalizedTargetSpec?.attributesRange.orEmpty(),
+                    matchKey = normalizedTargetSpec?.matchKey,
+                    queryText = normalizedTargetSpec?.queryText,
+                    schemaVersion = normalizedTargetSpec?.schemaVersion ?: 1,
+                    taxonomyVersion = normalizedTargetSpec?.taxonomyVersion,
+                    locale = normalizedTargetSpec?.locale,
+                    unboundTokens = normalizedTargetSpec?.unboundTokens.orEmpty(),
+                ),
                 filters = input.filters,
                 title = input.title,
             )
@@ -106,12 +123,22 @@ class TracksRepositoryImpl(
         val generatedId = "local-${now}_${input.type.name.lowercase()}"
         val localTrack = Track(
             id = generatedId,
-            title = input.title ?: input.matchKey ?: input.categoryCode ?: "Отслеживание",
-            categoryCode = input.categoryCode,
+            title = input.title ?: normalizedTargetSpec?.matchKey ?: normalizedTargetSpec?.categoryCode ?: "Отслеживание",
+            categoryCode = normalizedTargetSpec?.categoryCode,
             type = input.type,
             target = TrackTarget(
-                matchKey = input.matchKey,
-                query = input.categoryCode.takeIf { input.type == TrackType.CATEGORY },
+                spec = normalizedTargetSpec,
+                categoryCode = normalizedTargetSpec?.categoryCode,
+                attributes = normalizedTargetSpec?.attributes.orEmpty(),
+                attributesMulti = normalizedTargetSpec?.attributesMulti.orEmpty(),
+                attributesRange = normalizedTargetSpec?.attributesRange.orEmpty(),
+                matchKey = normalizedTargetSpec?.matchKey,
+                queryText = normalizedTargetSpec?.queryText,
+                schemaVersion = normalizedTargetSpec?.schemaVersion ?: 1,
+                taxonomyVersion = normalizedTargetSpec?.taxonomyVersion,
+                locale = normalizedTargetSpec?.locale,
+                unboundTokens = normalizedTargetSpec?.unboundTokens.orEmpty(),
+                query = normalizedTargetSpec?.categoryCode.takeIf { input.type == TrackType.CATEGORY },
             ),
             filters = input.filters,
             state = TrackState.ACTIVE,
@@ -125,15 +152,29 @@ class TracksRepositoryImpl(
         trackId: TrackId,
         input: TrackTargetUpdateInput,
     ): TrackTargetUpdateResult {
+        val normalizedTargetSpec = normalizeTargetSpec(
+            candidate = input.targetSpec,
+            fallbackAttributes = emptyMap(),
+        )
         if (canUseRemote()) {
             return when (
                 val remote = remoteDataSource!!.updateTrackTarget(
                     trackId = trackId,
                     request = TrackTargetUpdateRequest(
                         type = input.type,
-                        matchKey = input.matchKey,
-                        categoryCode = input.categoryCode,
-                        attributes = normalizeAttributes(input.attributes),
+                        target = TrackTarget(
+                            spec = normalizedTargetSpec,
+                            categoryCode = normalizedTargetSpec?.categoryCode,
+                            attributes = normalizedTargetSpec?.attributes.orEmpty(),
+                            attributesMulti = normalizedTargetSpec?.attributesMulti.orEmpty(),
+                            attributesRange = normalizedTargetSpec?.attributesRange.orEmpty(),
+                            matchKey = normalizedTargetSpec?.matchKey,
+                            queryText = normalizedTargetSpec?.queryText,
+                            schemaVersion = normalizedTargetSpec?.schemaVersion ?: 1,
+                            taxonomyVersion = normalizedTargetSpec?.taxonomyVersion,
+                            locale = normalizedTargetSpec?.locale,
+                            unboundTokens = normalizedTargetSpec?.unboundTokens.orEmpty(),
+                        ),
                         title = input.title,
                     ),
                 )
@@ -155,12 +196,25 @@ class TracksRepositoryImpl(
         val nextTrack = current.copy(
             title = nextTitle,
             type = input.type,
-            categoryCode = input.categoryCode,
+            categoryCode = normalizedTargetSpec?.categoryCode,
             target = TrackTarget(
-                matchKey = input.matchKey,
-                query = input.categoryCode.takeIf { input.type == TrackType.CATEGORY },
+                spec = normalizedTargetSpec,
+                categoryCode = normalizedTargetSpec?.categoryCode,
+                attributes = normalizedTargetSpec?.attributes.orEmpty(),
+                attributesMulti = normalizedTargetSpec?.attributesMulti.orEmpty(),
+                attributesRange = normalizedTargetSpec?.attributesRange.orEmpty(),
+                matchKey = normalizedTargetSpec?.matchKey,
+                queryText = normalizedTargetSpec?.queryText,
+                schemaVersion = normalizedTargetSpec?.schemaVersion ?: 1,
+                taxonomyVersion = normalizedTargetSpec?.taxonomyVersion,
+                locale = normalizedTargetSpec?.locale,
+                unboundTokens = normalizedTargetSpec?.unboundTokens.orEmpty(),
+                query = normalizedTargetSpec?.categoryCode
+                    .takeIf { input.type == TrackType.CATEGORY },
             ),
-            filters = current.filters.copy(extra = normalizeAttributes(input.attributes)),
+            filters = current.filters.copy(
+                extra = normalizedTargetSpec?.attributes.orEmpty(),
+            ),
         )
         val saved = upsertTrackLocal(nextTrack)
         return TrackTargetUpdateResult.Updated(saved)
@@ -206,8 +260,12 @@ class TracksRepositoryImpl(
 
         val createRequest = TrackCreateRequest(
             type = track.type,
-            target = track.target,
-            categoryCode = track.categoryCode,
+            target = normalizeTrackTarget(
+                candidate = track.target.spec,
+                fallbackCategoryCode = track.target.categoryCode ?: track.categoryCode,
+                fallbackMatchKey = track.target.matchKey,
+                fallbackAttributes = track.target.attributes,
+            ),
             filters = track.filters,
             title = track.title,
         )
@@ -497,6 +555,142 @@ class TracksRepositoryImpl(
         } else {
             filtersStore.set(trackId, filters)
         }
+    }
+
+    private fun normalizeAttributes(values: Map<String, String>): Map<String, String> {
+        if (values.isEmpty()) return emptyMap()
+        return values.entries
+            .mapNotNull { (key, value) ->
+                val normalizedKey = key.trim()
+                val normalizedValue = value.trim()
+                if (normalizedKey.isBlank() || normalizedValue.isBlank()) null
+                else normalizedKey to normalizedValue
+            }
+            .sortedBy { it.first.lowercase() }
+            .toMap(LinkedHashMap())
+    }
+
+    private fun normalizeAttributesMulti(values: Map<String, List<String>>): Map<String, List<String>> {
+        if (values.isEmpty()) return emptyMap()
+        return values.entries
+            .mapNotNull { (key, rawValues) ->
+                val normalizedKey = key.trim()
+                if (normalizedKey.isBlank()) return@mapNotNull null
+                val normalizedValues = rawValues
+                    .asSequence()
+                    .map { value -> value.trim() }
+                    .filter { value -> value.isNotBlank() }
+                    .distinct()
+                    .toList()
+                if (normalizedValues.isEmpty()) null else normalizedKey to normalizedValues
+            }
+            .sortedBy { it.first.lowercase() }
+            .toMap(LinkedHashMap())
+    }
+
+    private fun normalizeAttributesRange(values: Map<String, TrackAttributeRange>): Map<String, TrackAttributeRange> {
+        if (values.isEmpty()) return emptyMap()
+        return values.entries
+            .mapNotNull { (key, range) ->
+                val normalizedKey = key.trim()
+                if (normalizedKey.isBlank()) return@mapNotNull null
+                val normalizedRange = TrackAttributeRange(
+                    min = range.min?.trim()?.takeIf { it.isNotBlank() },
+                    max = range.max?.trim()?.takeIf { it.isNotBlank() },
+                    unit = range.unit?.trim()?.takeIf { it.isNotBlank() },
+                )
+                if (normalizedRange.min == null && normalizedRange.max == null && normalizedRange.unit == null) {
+                    null
+                } else {
+                    normalizedKey to normalizedRange
+                }
+            }
+            .sortedBy { it.first.lowercase() }
+            .toMap(LinkedHashMap())
+    }
+
+    private fun normalizeQueryText(raw: String?): String? =
+        raw?.replace("\\s+".toRegex(), " ")?.trim()?.takeIf { it.isNotBlank() }
+
+    private fun normalizeLocale(raw: String?): String? =
+        raw?.trim()?.takeIf { it.isNotBlank() }
+
+    private fun normalizeUnboundTokens(values: List<String>): List<String> =
+        values
+            .asSequence()
+            .map { token -> token.trim() }
+            .filter { token -> token.isNotBlank() }
+            .distinct()
+            .toList()
+
+    private fun normalizeTargetSpec(
+        candidate: TrackTargetSpec?,
+        fallbackAttributes: Map<String, String>,
+    ): TrackTargetSpec? {
+        val categoryCode = candidate?.categoryCode
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
+        val matchKey = candidate?.matchKey
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
+        val attributes = normalizeAttributes(
+            if (candidate != null) candidate.attributes else fallbackAttributes,
+        )
+        val attributesMulti = normalizeAttributesMulti(candidate?.attributesMulti.orEmpty())
+        val attributesRange = normalizeAttributesRange(candidate?.attributesRange.orEmpty())
+        val queryText = normalizeQueryText(candidate?.queryText)
+        val schemaVersion = (candidate?.schemaVersion ?: 1).coerceAtLeast(1)
+        val taxonomyVersion = candidate?.taxonomyVersion?.trim()?.takeIf { it.isNotBlank() }
+        val locale = normalizeLocale(candidate?.locale)
+        val unboundTokens = normalizeUnboundTokens(candidate?.unboundTokens.orEmpty())
+        if (categoryCode == null &&
+            matchKey == null &&
+            attributes.isEmpty() &&
+            attributesMulti.isEmpty() &&
+            attributesRange.isEmpty() &&
+            queryText == null
+        ) return null
+        return TrackTargetSpec(
+            categoryCode = categoryCode,
+            attributes = attributes,
+            matchKey = matchKey,
+            attributesMulti = attributesMulti,
+            attributesRange = attributesRange,
+            queryText = queryText,
+            schemaVersion = schemaVersion,
+            taxonomyVersion = taxonomyVersion,
+            locale = locale,
+            unboundTokens = unboundTokens,
+        )
+    }
+
+    private fun normalizeTrackTarget(
+        candidate: TrackTargetSpec?,
+        fallbackCategoryCode: String?,
+        fallbackMatchKey: String?,
+        fallbackAttributes: Map<String, String>,
+    ): TrackTarget {
+        val normalizedSpec = normalizeTargetSpec(
+            candidate = candidate ?: TrackTargetSpec(
+                categoryCode = fallbackCategoryCode,
+                matchKey = fallbackMatchKey,
+                attributes = fallbackAttributes,
+            ),
+            fallbackAttributes = fallbackAttributes,
+        )
+        return TrackTarget(
+            spec = normalizedSpec,
+            categoryCode = normalizedSpec?.categoryCode,
+            attributes = normalizedSpec?.attributes.orEmpty(),
+            attributesMulti = normalizedSpec?.attributesMulti.orEmpty(),
+            attributesRange = normalizedSpec?.attributesRange.orEmpty(),
+            matchKey = normalizedSpec?.matchKey,
+            queryText = normalizedSpec?.queryText,
+            schemaVersion = normalizedSpec?.schemaVersion ?: 1,
+            taxonomyVersion = normalizedSpec?.taxonomyVersion,
+            locale = normalizedSpec?.locale,
+            unboundTokens = normalizedSpec?.unboundTokens.orEmpty(),
+        )
     }
 
     private fun mapSubscriptionToTrack(

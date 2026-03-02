@@ -2,6 +2,8 @@ package com.example.shoppingassistant.server.catalog
 
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 internal object CatalogConstraintsSelection {
     fun select(
@@ -9,6 +11,7 @@ internal object CatalogConstraintsSelection {
         categoryCode: String,
         brand: String?,
         model: String?,
+        onDate: LocalDate = LocalDate.now(),
     ): List<CatalogConstraints> {
         val normalizedCategory = categoryCode.trim().uppercase()
         if (normalizedCategory.isBlank()) return emptyList()
@@ -19,6 +22,7 @@ internal object CatalogConstraintsSelection {
         return constraints
             .asSequence()
             .filter { constraint ->
+                constraint.isEffectiveOn(onDate) &&
                 isApplicable(
                     constraint = constraint,
                     categoryCode = normalizedCategory,
@@ -72,5 +76,22 @@ internal object CatalogConstraintsSelection {
         ConstraintScope.CATEGORY -> 1
         ConstraintScope.BRAND -> 2
         ConstraintScope.MODEL -> 3
+    }
+
+    private fun CatalogConstraints.isEffectiveOn(date: LocalDate): Boolean {
+        val effectiveFromDate = parseIsoDateOrNull(effectiveFrom)
+        val effectiveToDate = parseIsoDateOrNull(effectiveTo)
+        if (effectiveFromDate != null && date.isBefore(effectiveFromDate)) return false
+        if (effectiveToDate != null && date.isAfter(effectiveToDate)) return false
+        return true
+    }
+
+    private fun parseIsoDateOrNull(raw: String?): LocalDate? {
+        val value = raw?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        return try {
+            LocalDate.parse(value)
+        } catch (_: DateTimeParseException) {
+            null
+        }
     }
 }

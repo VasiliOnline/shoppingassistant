@@ -19,7 +19,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import java.io.IOException
+import java.util.concurrent.TimeoutException
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
@@ -54,8 +55,10 @@ class ShoppingAssistantApp : Application() {
         }
 
         val koin = runCatching { GlobalContext.get() }.getOrNull() ?: return
-        enforceTaxonomyGate(koin)
-        enforceFacetSchemaGate(koin)
+        appScope.launch {
+            enforceTaxonomyGate(koin)
+            enforceFacetSchemaGate(koin)
+        }
 
         appScope.launch {
             runCatching { koin.get<TemplateSubscriptionsToTracksMigration>().migrateIfNeeded() }
@@ -63,14 +66,14 @@ class ShoppingAssistantApp : Application() {
         runCatching { koin.get<TrackingPushScheduler>().ensureScheduled() }
     }
 
-    private fun enforceTaxonomyGate(koin: Koin) {
+    private suspend fun enforceTaxonomyGate(koin: Koin) {
         val strictReleaseGate = true
-        val result = runCatching {
-            runBlocking {
-                koin.get<TaxonomyGate>().validateOrThrow()
-            }
+        val failure = runCatching { koin.get<TaxonomyGate>().validateOrThrow() }.exceptionOrNull() ?: return
+
+        if (failure.isRecoverableCatalogBootstrapFailure()) {
+            Log.w(TAG, "Skipping taxonomy gate: catalog backend is unavailable", failure)
+            return
         }
-        val failure = result.exceptionOrNull() ?: return
 
         if (BuildConfig.DEBUG || strictReleaseGate) {
             throw IllegalStateException("Taxonomy gate failed", failure)
@@ -78,19 +81,35 @@ class ShoppingAssistantApp : Application() {
         Log.e(TAG, "Taxonomy gate failed in release: ${failure.message}", failure)
     }
 
-    private fun enforceFacetSchemaGate(koin: Koin) {
+    private suspend fun enforceFacetSchemaGate(koin: Koin) {
         val strictReleaseGate = true
-        val result = runCatching {
-            runBlocking {
-                koin.get<FacetSchemaGate>().validateOrThrow()
-            }
+        val failure = runCatching { koin.get<FacetSchemaGate>().validateOrThrow() }.exceptionOrNull() ?: return
+
+        if (failure.isRecoverableCatalogBootstrapFailure()) {
+            Log.w(TAG, "Skipping facet schema gate: catalog backend is unavailable", failure)
+            return
         }
-        val failure = result.exceptionOrNull() ?: return
 
         if (BuildConfig.DEBUG || strictReleaseGate) {
             throw IllegalStateException("Facet schema gate failed", failure)
         }
         Log.e(TAG, "Facet schema gate failed in release: ${failure.message}", failure)
+    }
+
+    private fun Throwable.isRecoverableCatalogBootstrapFailure(): Boolean =
+        causeChain().any { cause ->
+            cause is IOException ||
+                cause is TimeoutException ||
+                cause.message?.startsWith("Catalog API call failed:") == true ||
+                cause.message?.startsWith("Facet API call failed:") == true
+        }
+
+    private fun Throwable.causeChain(): Sequence<Throwable> = sequence {
+        var current: Throwable? = this@causeChain
+        while (current != null) {
+            yield(current)
+            current = current.cause
+        }
     }
 
     private companion object {

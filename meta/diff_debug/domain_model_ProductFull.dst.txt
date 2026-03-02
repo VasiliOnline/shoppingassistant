@@ -1,8 +1,11 @@
 package com.example.shoppingassistant.domain.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Нормализованный товар (шаблон), расширенный по сравнению с ProductDto.
  */
+@Serializable
 data class ProductFull(
     val id: String,
     val brand: String?,
@@ -21,6 +24,7 @@ data class ProductFull(
 /**
  * Локализованные поля товара.
  */
+@Serializable
 data class ProductI18n(
     val lang: String,      // "ru","en","es","fr"
     val title: String,

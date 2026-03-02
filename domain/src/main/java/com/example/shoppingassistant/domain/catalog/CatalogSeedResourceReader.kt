@@ -9,10 +9,15 @@ internal object CatalogSeedResourceReader {
     val json: Json = Json { ignoreUnknownKeys = true }
 
     fun resourceExists(resourcePath: String): Boolean =
-        CatalogSeedResourceReader::class.java.classLoader.getResource(resourcePath) != null
+        candidatePaths(resourcePath).any { candidate ->
+            CatalogSeedResourceReader::class.java.classLoader.getResource(candidate) != null
+        }
 
     fun readText(resourcePath: String): String {
-        val stream = CatalogSeedResourceReader::class.java.classLoader.getResourceAsStream(resourcePath)
+        val resolvedPath = candidatePaths(resourcePath).firstOrNull { candidate ->
+            CatalogSeedResourceReader::class.java.classLoader.getResource(candidate) != null
+        } ?: error("Seed resource not found: $resourcePath")
+        val stream = CatalogSeedResourceReader::class.java.classLoader.getResourceAsStream(resolvedPath)
             ?: error("Seed resource not found: $resourcePath")
         return stream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
     }
@@ -51,6 +56,18 @@ internal object CatalogSeedResourceReader {
             "Failed to parse seed resource '$resourcePath' ${lineHint.trimEnd()}: $message",
             error,
         )
+    }
+
+    private fun candidatePaths(resourcePath: String): List<String> {
+        val normalizedAliases = resourcePath
+            .replace("/_registry/", "/registry/")
+            .replace("/_global/", "/global/")
+        return buildList {
+            add(resourcePath)
+            if (normalizedAliases != resourcePath) {
+                add(normalizedAliases)
+            }
+        }
     }
 
     private fun toLineColumn(

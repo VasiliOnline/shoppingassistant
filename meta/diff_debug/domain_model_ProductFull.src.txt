@@ -12,7 +12,7 @@ data class ProductFull(
     val model: String?,
     val title: String,
     val imageUrls: List<String> = emptyList(),
-    val specs: Map<String, String> = emptyMap(),
+    val specs: Map<String, TypedAttributeValue> = emptyMap(),
     val description: String? = null,
     val gtin: String? = null,
     val mpn: String? = null,

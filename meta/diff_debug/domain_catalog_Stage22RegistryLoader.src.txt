@@ -3,7 +3,7 @@ package com.example.shoppingassistant.domain.catalog
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal enum class Stage22ValueType {
+enum class Stage22ValueType {
     STRING,
     NUMBER,
     ENUM,
@@ -11,7 +11,7 @@ internal enum class Stage22ValueType {
 }
 
 @Serializable
-internal enum class Stage22ValueSetType {
+enum class Stage22ValueSetType {
     CLOSED,
     SEMI_CLOSED,
     OPEN,

@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "APPL.MAJOR",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Крупная техника обычно продается новой или в хорошем состоянии."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [],
+        "forbiddenValues": [
+          "PINK"
+        ],
+        "reason": "Для крупной техники не используем нетипичный розовый цвет."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "APPL.CLIMATE",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Климатическая техника допускает восстановленные устройства."
+      },
+      {
+        "attributeCode": "used_for",
+        "allowedValues": [
+          "HOME",
+          "OFFICE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Климатическая техника в каталоге маркируется назначением."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "APPL.SMALL",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "coffee_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAPSULE"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "used_for",
+            "allowedValues": [
+              "HOME",
+              "OFFICE"
+            ],
+            "forbiddenValues": [],
+            "reason": "Капсульные кофемашины ориентированы на дом и офис."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "MODEL",
+    "categoryCode": "APPL.SMALL",
+    "brand": "DeLonghi",
+    "model": "Magnifica S",
+    "attributeConstraints": [
+      {
+        "attributeCode": "coffee_type",
+        "allowedValues": [
+          "ESPRESSO"
+        ],
+        "forbiddenValues": [],
+        "reason": "Magnifica S относится к эспрессо-линейке."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные цвета в линейке Magnifica S."
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  }
+]

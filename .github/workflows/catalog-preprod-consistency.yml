@@ -42,6 +42,7 @@ jobs:
             --tests "com.example.shoppingassistant.domain.catalog.CatalogModelQualityGateTest" \
             --tests "com.example.shoppingassistant.domain.catalog.CatalogGovernanceGateTest" \
             --tests "com.example.shoppingassistant.domain.catalog.Stage3TopPresetsGateTest" \
+            --tests "com.example.shoppingassistant.domain.catalog.Stage40ContractGateTest" \
             --tests "com.example.shoppingassistant.domain.facet.FacetSchemaValidatorTest"
 
   sql-consistency:
@@ -124,6 +125,10 @@ jobs:
             server/src/main/resources/db/migration/V12__catalog_temporal_policy.sql
             server/src/main/resources/db/migration/V13__catalog_preset_observability.sql
             server/src/main/resources/db/migration/V14__catalog_preset_observability_hardening.sql
+            server/src/main/resources/db/migration/V15__catalog_stage4_contract.sql
+            server/src/main/resources/db/migration/V16__catalog_stage4_runtime_execution.sql
+            server/src/main/resources/db/migration/V17__catalog_stage4_typed_constraints.sql
+            server/src/main/resources/db/migration/V18__offers_geo_coalesce_index.sql
           )
 
           for file in "${migrations[@]}"; do
@@ -144,7 +149,11 @@ jobs:
             (5, '11', 'catalog_category_status', TRUE),
             (6, '12', 'catalog_temporal_policy', TRUE),
             (7, '13', 'catalog_preset_observability', TRUE),
-            (8, '14', 'catalog_preset_observability_hardening', TRUE);
+            (8, '14', 'catalog_preset_observability_hardening', TRUE),
+            (9, '15', 'catalog_stage4_contract', TRUE),
+            (10, '16', 'catalog_stage4_runtime_execution', TRUE),
+            (11, '17', 'catalog_stage4_typed_constraints', TRUE),
+            (12, '18', 'offers_geo_coalesce_index', TRUE);
           SQL
 
       - name: Run Parity And Observability Checks
@@ -154,6 +163,7 @@ jobs:
           psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_migration_parity_postcheck.sql -o reports/catalog_migration_postcheck_ci.txt
           psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_preset_observability_checks.sql -o reports/catalog_preset_observability_checks_ci.txt
           psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_preset_monthly_report.sql -o reports/catalog_preset_monthly_report_ci.txt
+          psql -v ON_ERROR_STOP=1 -f server/src/main/resources/db/checks/catalog_stage4_contract_checks.sql -o reports/catalog_stage4_contract_checks_ci.txt
 
       - name: Assert Parity Criteria
         shell: bash
@@ -165,11 +175,11 @@ jobs:
                 SELECT version::text AS version, installed_rank
                 FROM flyway_schema_history
                 WHERE success = TRUE
-                  AND version IN ('4', '6', '9', '10', '11', '12', '13', '14')
+                  AND version IN ('4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18')
             )
             SELECT CASE
-                WHEN COUNT(*) = 8
-                 AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '6', '9', '10', '11', '12', '13', '14']
+                WHEN COUNT(*) = 12
+                 AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']
                 THEN 1 ELSE 0
             END
             FROM applied;
@@ -193,7 +203,13 @@ jobs:
                     ('catalog_preset_events', 'facet_preset_code'),
                     ('catalog_preset_events', 'occurred_at'),
                     ('catalog_preset_events', 'received_at'),
-                    ('catalog_preset_events', 'event_date')
+                    ('catalog_preset_events', 'event_date'),
+                    ('catalog_stage4_contract_meta', 'stage'),
+                    ('catalog_stage4_immutable_attributes', 'attribute_code'),
+                    ('catalog_stage4_normalization_rules', 'attribute_code'),
+                    ('catalog_stage4_dedup_templates', 'entity'),
+                    ('catalog_stage4_typed_constraints', 'attribute_code'),
+                    ('catalog_stage4_execution_metrics', 'metric_date')
             )
             SELECT COUNT(*)
             FROM expected e
@@ -213,7 +229,29 @@ jobs:
               + (SELECT COUNT(*) FROM facet_presets WHERE effective_from IS NOT NULL AND effective_to IS NOT NULL AND effective_from > effective_to)
               + (SELECT COUNT(*) FROM catalog_preset_events WHERE event_type NOT IN ('IMPRESSION', 'CLICK', 'CONVERSION'))
               + (SELECT COUNT(*) FROM catalog_preset_events WHERE BTRIM(idempotency_key) = '' OR BTRIM(query_session_id) = '' OR BTRIM(category_code) = '' OR BTRIM(COALESCE(facet_preset_code, '')) = '' OR occurred_at <= 0 OR event_date IS NULL)
-              + (SELECT COUNT(*) FROM catalog_preset_events WHERE position IS NOT NULL AND position <= 0);
+              + (SELECT COUNT(*) FROM catalog_preset_events WHERE position IS NOT NULL AND position <= 0)
+              + (SELECT COUNT(*) FROM catalog_stage4_typed_constraints WHERE min_value IS NOT NULL AND max_value IS NOT NULL AND min_value > max_value);
+          ")
+
+          stage4_missing_tables=$(psql -t -A -v ON_ERROR_STOP=1 -c "
+            SELECT
+                (CASE WHEN to_regclass('public.catalog_stage4_contract_meta') IS NULL THEN 1 ELSE 0 END)
+              + (CASE WHEN to_regclass('public.catalog_stage4_immutable_attributes') IS NULL THEN 1 ELSE 0 END)
+              + (CASE WHEN to_regclass('public.catalog_stage4_normalization_rules') IS NULL THEN 1 ELSE 0 END)
+              + (CASE WHEN to_regclass('public.catalog_stage4_dedup_templates') IS NULL THEN 1 ELSE 0 END)
+              + (CASE WHEN to_regclass('public.catalog_stage4_typed_constraints') IS NULL THEN 1 ELSE 0 END)
+              + (CASE WHEN to_regclass('public.catalog_stage4_execution_metrics') IS NULL THEN 1 ELSE 0 END);
+          ")
+
+          geo_index_ok=$(psql -t -A -v ON_ERROR_STOP=1 -c "
+            SELECT CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM pg_indexes
+                    WHERE schemaname = 'public'
+                      AND indexname = 'idx_offers_geo_coalesce_gix'
+                ) THEN 1 ELSE 0
+            END;
           ")
 
           if [[ "$migration_ok" != "1" ]]; then
@@ -226,6 +264,14 @@ jobs:
           fi
           if [[ "$invalid_total" != "0" ]]; then
             echo "Invalid counters total is non-zero: $invalid_total"
+            exit 1
+          fi
+          if [[ "$stage4_missing_tables" != "0" ]]; then
+            echo "Stage4 required tables are missing: $stage4_missing_tables"
+            exit 1
+          fi
+          if [[ "$geo_index_ok" != "1" ]]; then
+            echo "Missing geo coalesce index: idx_offers_geo_coalesce_gix"
             exit 1
           fi
 

@@ -1,12 +1,16 @@
 package com.example.shoppingassistant.feature.pages.common
 
+import com.example.shoppingassistant.domain.catalog.CatalogDataVersion
 import com.example.shoppingassistant.domain.model.NormalizedQuery
+import com.example.shoppingassistant.domain.model.toRawStringAttributes
+import com.example.shoppingassistant.domain.model.toTypedAttributesGuess
 import com.example.shoppingassistant.domain.template.TemplateAnchorType
 import com.example.shoppingassistant.domain.template.TemplateIdTask
 import com.example.shoppingassistant.domain.template.TemplateSnapshot
 import com.example.shoppingassistant.domain.template.TemplateSnapshotAttr
 import com.example.shoppingassistant.domain.template.TemplateSnapshotData
 import com.example.shoppingassistant.domain.template.TemplateSnapshotMode
+import java.util.Locale
 
 fun normalizedQueryFromSnapshot(data: TemplateSnapshotData): NormalizedQuery {
     val attrs = data.attrs.associate { it.key to it.value }
@@ -16,7 +20,7 @@ fun normalizedQueryFromSnapshot(data: TemplateSnapshotData): NormalizedQuery {
     return NormalizedQuery(
         brand = brand,
         model = model,
-        attributes = extraAttrs,
+        attributes = extraAttrs.toTypedAttributesGuess(),
     )
 }
 
@@ -43,7 +47,7 @@ fun buildSnapshotFromQuery(
     val attrs = buildList {
         query?.brand?.takeIf { it.isNotBlank() }?.let { add(TemplateSnapshotAttr("brand", it)) }
         query?.model?.takeIf { it.isNotBlank() }?.let { add(TemplateSnapshotAttr("model", it)) }
-        query?.attributes?.forEach { (key, value) ->
+        query?.attributes?.toRawStringAttributes()?.forEach { (key, value) ->
             if (key != "category" && value.isNotBlank()) {
                 add(TemplateSnapshotAttr(key, value))
             }
@@ -57,6 +61,9 @@ fun buildSnapshotFromQuery(
         attrs = attrs.sortedBy { it.key.lowercase() },
         freeText = safeText.takeIf { it.isNotBlank() && it != anchorId },
         mode = mode,
+        schemaVersion = 1,
+        taxonomyVersion = CatalogDataVersion.current,
+        locale = Locale.getDefault().toLanguageTag().takeIf { it.isNotBlank() },
     )
     val id = templateIdTask.computeId(data)
     return TemplateSnapshot(data = data, templateId = id)

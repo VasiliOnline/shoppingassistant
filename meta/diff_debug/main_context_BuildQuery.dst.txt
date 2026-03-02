@@ -22,7 +22,12 @@ fun buildQuery(
     if (template.errorKeys.isNotEmpty()) return null
 
     val selectedAttrs = template.asSelectedFilters()
-        .filterKeys { it != "brand" && it != "model" }
+        .filterKeys { key ->
+            key != "brand" &&
+                key != "model" &&
+                !key.startsWith("category_level_") &&
+                key != "category"
+        }
     val normAttrs = Normalization.normalizeAttrs(selectedAttrs)
 
     val (brand, model) = when (template.anchorType) {

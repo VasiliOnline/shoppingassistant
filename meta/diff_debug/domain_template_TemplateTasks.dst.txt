@@ -57,4 +57,5 @@ data class TemplateHistoryEntry(
 interface TemplateHistoryRepository {
     suspend fun upsert(entry: TemplateHistoryEntry)
     suspend fun listRecent(limit: Int = 20): List<TemplateHistoryEntry>
+    suspend fun deleteByIds(ids: List<String>)
 }
