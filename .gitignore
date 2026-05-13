@@ -1,8 +1,11 @@
 /.gradle/
 /.gradle-local/
+/.gradle-user/
+/.gradle-user-home/
 /.idea/
 /.vscode/
 /.kotlin/
+/.android/
 /.android-local/
 /local.properties
 
@@ -27,7 +30,18 @@
 /all_kt.txt
 /build.log
 /reports/
-/project_files/
+/tmp/
+/tmp_*.html
+/env.local
+/.env
+/.env.*
+!/.env.example
+/project_files/*
+!/project_files/admin-web/
+!/project_files/admin-web/**
+/project_files/admin-web/.admin-web-config.json
+/project_files/admin-web/__pycache__/
+/project_files/admin-web/_probe*.py
 /project_files.zip
 /project_files_ready.zip
 /openmaptiles/
