@@ -52,8 +52,13 @@ class FashApparelCommonSharedStandardGateTest {
         assertTrue(registry.dictionaries["apparel_type"]?.entries.orEmpty().any { it.valueCode == "BODYSUIT" })
         assertTrue(registry.dictionaries["apparel_type"]?.entries.orEmpty().any { it.valueCode == "SCHOOL_UNIFORM" })
         assertEquals(90, registry.dictionaries["size_label"]?.entries?.size)
-        assertEquals(20, registry.dictionaries["color_primary"]?.entries?.size)
-        assertEquals(29, registry.dictionaries["material_primary"]?.entries?.size)
+        val colorPrimary = registry.dictionaries["color_primary"]?.entries.orEmpty().map { it.valueCode }.toSet()
+        assertTrue(colorPrimary.size >= 20)
+        assertTrue(setOf("GOLD", "SILVER").all { it in colorPrimary })
+        val materialPrimary = registry.dictionaries["material_primary"]?.entries.orEmpty().map { it.valueCode }.toSet()
+        assertTrue(materialPrimary.size >= 29)
+        assertTrue(setOf("COTTON", "POLYESTER", "LEATHER", "WOOL", "SILK").all { it in materialPrimary })
+        assertTrue(setOf("METAL", "GOLD", "ACETATE").all { it in materialPrimary })
         assertEquals(3, registry.dictionaries["hood"]?.entries?.size)
     }
 

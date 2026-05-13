@@ -6,66 +6,782 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "gender",
+        "attributeCode": "accessory_group",
         "allowedValues": [
-          "UNISEX",
-          "MALE",
-          "FEMALE",
-          "KIDS"
+          "BELTS",
+          "HEADWEAR",
+          "NECKWEAR",
+          "HANDWEAR",
+          "EYEWEAR",
+          "JEWELRY",
+          "WATCHES",
+          "HAIR_ACCESSORIES",
+          "UMBRELLAS",
+          "OTHER_ACCESSORIES"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "accessory_type",
+        "allowedValues": [
+          "BELT",
+          "SUSPENDERS",
+          "HAT",
+          "CAP",
+          "BEANIE",
+          "BERET",
+          "BALACLAVA",
+          "PANAMA_HAT",
+          "VISOR",
+          "BANDANA",
+          "HEADBAND_FASHION",
+          "SCARF",
+          "SHAWL",
+          "SNOOD",
+          "STOLE",
+          "TIE",
+          "BOW_TIE",
+          "POCKET_SQUARE",
+          "GLOVES",
+          "MITTENS",
+          "FINGERLESS_GLOVES",
+          "SUNGLASSES",
+          "GLASSES_FRAME",
+          "EYEGLASS_CASE",
+          "RING",
+          "EARRINGS",
+          "NECKLACE",
+          "BRACELET",
+          "BROOCH",
+          "PENDANT",
+          "CHAIN",
+          "ANKLET",
+          "CUFFLINKS",
+          "CHARM",
+          "JEWELRY_SET",
+          "WATCHES_NON_SMART",
+          "WATCH_STRAP",
+          "HAIR_CLIP",
+          "HAIR_BAND",
+          "SCRUNCHIE",
+          "HAIR_PIN",
+          "HAIR_COMB",
+          "UMBRELLA",
+          "KEYCHAIN",
+          "OTHER_ACCESSORY"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "target_gender",
+        "allowedValues": [
+          "MEN",
+          "WOMEN",
+          "BOYS",
+          "GIRLS",
+          "KIDS",
+          "UNISEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "age_group",
+        "allowedValues": [
+          "ADULT",
+          "TEEN",
+          "KIDS",
+          "TODDLER",
+          "BABY"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
       },
       {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "NEW_WITH_TAGS",
+          "NEW_WITHOUT_TAGS",
           "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "GOOD",
+          "ACCEPTABLE",
+          "FOR_PARTS"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "color",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "SILVER",
+          "GOLD",
+          "BEIGE",
+          "BROWN",
+          "RED",
+          "ORANGE",
+          "YELLOW",
+          "GREEN",
+          "BLUE",
+          "NAVY",
+          "PURPLE",
+          "PINK",
+          "MULTICOLOR",
+          "TRANSPARENT"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "material_primary",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "COTTON",
+          "WOOL",
+          "CASHMERE",
+          "SILK",
+          "POLYESTER",
+          "NYLON",
+          "ACRYLIC",
+          "FLEECE",
+          "FUR_FAUX",
+          "FUR_NATURAL",
+          "RUBBER",
+          "SILICONE",
+          "PLASTIC",
+          "ACETATE",
+          "METAL",
+          "STEEL",
+          "SILVER",
+          "GOLD",
+          "ROSE_GOLD",
+          "TITANIUM",
+          "BRASS",
+          "WOOD",
+          "CERAMIC",
+          "GLASS",
+          "PEARL",
+          "STONE",
+          "STRAW",
+          "DENIM",
+          "VELVET",
+          "LACE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "material_secondary",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "COTTON",
+          "WOOL",
+          "CASHMERE",
+          "SILK",
+          "POLYESTER",
+          "NYLON",
+          "ACRYLIC",
+          "FLEECE",
+          "FUR_FAUX",
+          "FUR_NATURAL",
+          "RUBBER",
+          "SILICONE",
+          "PLASTIC",
+          "ACETATE",
+          "METAL",
+          "STEEL",
+          "SILVER",
+          "GOLD",
+          "ROSE_GOLD",
+          "TITANIUM",
+          "BRASS",
+          "WOOD",
+          "CERAMIC",
+          "GLASS",
+          "PEARL",
+          "STONE",
+          "STRAW",
+          "DENIM",
+          "VELVET",
+          "LACE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "pattern",
+        "allowedValues": [
+          "SOLID",
+          "LOGO",
+          "STRIPED",
+          "CHECKED",
+          "FLORAL",
+          "ANIMAL_PRINT",
+          "GEOMETRIC",
+          "ABSTRACT",
+          "POLKA_DOT",
+          "CAMOUFLAGE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "season",
+        "allowedValues": [
+          "ALL_SEASON",
+          "SUMMER",
+          "WINTER",
+          "DEMI_SEASON"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "buckle_material",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "COTTON",
+          "WOOL",
+          "CASHMERE",
+          "SILK",
+          "POLYESTER",
+          "NYLON",
+          "ACRYLIC",
+          "FLEECE",
+          "FUR_FAUX",
+          "FUR_NATURAL",
+          "RUBBER",
+          "SILICONE",
+          "PLASTIC",
+          "ACETATE",
+          "METAL",
+          "STEEL",
+          "SILVER",
+          "GOLD",
+          "ROSE_GOLD",
+          "TITANIUM",
+          "BRASS",
+          "WOOD",
+          "CERAMIC",
+          "GLASS",
+          "PEARL",
+          "STONE",
+          "STRAW",
+          "DENIM",
+          "VELVET",
+          "LACE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "buckle_type",
+        "allowedValues": [
+          "CLASSIC",
+          "AUTOMATIC",
+          "DOUBLE_RING",
+          "REVERSIBLE",
+          "DECORATIVE",
+          "NONE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "hat_size_label",
+        "allowedValues": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL",
+          "ONE_SIZE",
+          "ADJUSTABLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "brim_type",
+        "allowedValues": [
+          "NONE",
+          "SHORT_BRIM",
+          "CLASSIC_BRIM",
+          "WIDE_BRIM",
+          "CURVED_VISOR",
+          "FLAT_VISOR"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "closure_type",
+        "allowedValues": [
+          "NONE",
+          "BUCKLE",
+          "SNAPBACK",
+          "VELCRO",
+          "ZIPPER",
+          "BUTTON",
+          "CLASP",
+          "HOOK",
+          "ELASTIC",
+          "TIE",
+          "MAGNETIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "scarf_shape",
+        "allowedValues": [
+          "RECTANGULAR",
+          "SQUARE",
+          "TRIANGLE",
+          "LOOP",
+          "TUBE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "tie_width_type",
+        "allowedValues": [
+          "SKINNY",
+          "CLASSIC",
+          "WIDE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "glove_size",
+        "allowedValues": [
+          "XS",
+          "S",
+          "M",
+          "L",
+          "XL",
+          "XXL",
+          "NUM_6",
+          "NUM_6_5",
+          "NUM_7",
+          "NUM_7_5",
+          "NUM_8",
+          "NUM_8_5",
+          "NUM_9",
+          "NUM_9_5",
+          "NUM_10",
+          "ONE_SIZE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "lining_material",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "COTTON",
+          "WOOL",
+          "CASHMERE",
+          "SILK",
+          "POLYESTER",
+          "NYLON",
+          "ACRYLIC",
+          "FLEECE",
+          "FUR_FAUX",
+          "FUR_NATURAL",
+          "RUBBER",
+          "SILICONE",
+          "PLASTIC",
+          "ACETATE",
+          "METAL",
+          "STEEL",
+          "SILVER",
+          "GOLD",
+          "ROSE_GOLD",
+          "TITANIUM",
+          "BRASS",
+          "WOOD",
+          "CERAMIC",
+          "GLASS",
+          "PEARL",
+          "STONE",
+          "STRAW",
+          "DENIM",
+          "VELVET",
+          "LACE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "insulation",
+        "allowedValues": [
+          "NONE",
+          "LIGHT",
+          "WARM",
+          "THERMAL",
+          "FLEECE_LINED",
+          "FUR_LINED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "waterproof_level",
+        "allowedValues": [
+          "NONE",
+          "WATER_REPELLENT",
+          "WATERPROOF",
+          "MEMBRANE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "frame_shape",
+        "allowedValues": [
+          "AVIATOR",
+          "WAYFARER",
+          "ROUND",
+          "OVAL",
+          "RECTANGLE",
+          "SQUARE",
+          "CAT_EYE",
+          "SPORT",
+          "OVERSIZED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "frame_material",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "COTTON",
+          "WOOL",
+          "CASHMERE",
+          "SILK",
+          "POLYESTER",
+          "NYLON",
+          "ACRYLIC",
+          "FLEECE",
+          "FUR_FAUX",
+          "FUR_NATURAL",
+          "RUBBER",
+          "SILICONE",
+          "PLASTIC",
+          "ACETATE",
+          "METAL",
+          "STEEL",
+          "SILVER",
+          "GOLD",
+          "ROSE_GOLD",
+          "TITANIUM",
+          "BRASS",
+          "WOOD",
+          "CERAMIC",
+          "GLASS",
+          "PEARL",
+          "STONE",
+          "STRAW",
+          "DENIM",
+          "VELVET",
+          "LACE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "lens_color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "SILVER",
+          "GOLD",
+          "BEIGE",
+          "BROWN",
+          "RED",
+          "ORANGE",
+          "YELLOW",
+          "GREEN",
+          "BLUE",
+          "NAVY",
+          "PURPLE",
+          "PINK",
+          "MULTICOLOR",
+          "TRANSPARENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "lens_category",
+        "allowedValues": [
+          "CAT0",
+          "CAT1",
+          "CAT2",
+          "CAT3",
+          "CAT4",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "uv_protection",
+        "allowedValues": [
+          "NONE",
+          "UV400",
+          "UVA_UVB",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "metal_type",
+        "allowedValues": [
+          "GOLD",
+          "SILVER",
+          "STEEL",
+          "TITANIUM",
+          "BRASS",
+          "COPPER",
+          "PLATINUM",
+          "MIXED_METAL",
+          "NOT_METAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "stone_type",
+        "allowedValues": [
+          "DIAMOND",
+          "CUBIC_ZIRCONIA",
+          "PEARL",
+          "AMBER",
+          "CRYSTAL",
+          "GEMSTONE",
+          "EMERALD",
+          "RUBY",
+          "SAPPHIRE",
+          "TOPAZ",
+          "ONYX",
+          "TURQUOISE",
+          "NO_STONE",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "clasp_type",
+        "allowedValues": [
+          "LOBSTER",
+          "SPRING_RING",
+          "MAGNETIC",
+          "TOGGLE",
+          "HOOK",
+          "SCREW_BACK",
+          "PUSH_BACK",
+          "CLIP_ON",
+          "OTHER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "plating",
+        "allowedValues": [
+          "NONE",
+          "GOLD_PLATED",
+          "SILVER_PLATED",
+          "RHODIUM_PLATED",
+          "ROSE_GOLD_PLATED",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "movement_type",
+        "allowedValues": [
+          "QUARTZ",
+          "MECHANICAL",
+          "AUTOMATIC",
+          "SOLAR",
+          "KINETIC",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "analog_digital",
+        "allowedValues": [
+          "ANALOG",
+          "DIGITAL",
+          "ANALOG_DIGITAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "strap_material",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "COTTON",
+          "WOOL",
+          "CASHMERE",
+          "SILK",
+          "POLYESTER",
+          "NYLON",
+          "ACRYLIC",
+          "FLEECE",
+          "FUR_FAUX",
+          "FUR_NATURAL",
+          "RUBBER",
+          "SILICONE",
+          "PLASTIC",
+          "ACETATE",
+          "METAL",
+          "STEEL",
+          "SILVER",
+          "GOLD",
+          "ROSE_GOLD",
+          "TITANIUM",
+          "BRASS",
+          "WOOD",
+          "CERAMIC",
+          "GLASS",
+          "PEARL",
+          "STONE",
+          "STRAW",
+          "DENIM",
+          "VELVET",
+          "LACE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "water_resistance_atm",
+        "allowedValues": [
+          "NONE",
+          "ATM_3",
+          "ATM_5",
+          "ATM_10",
+          "ATM_20",
+          "DIVER_200M",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "battery_status",
+        "allowedValues": [
+          "WORKING",
+          "NEEDS_REPLACEMENT",
+          "UNKNOWN",
+          "NOT_APPLICABLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "watch_style",
+        "allowedValues": [
+          "DRESS",
+          "CASUAL",
+          "SPORT",
+          "CLASSIC",
+          "FASHION",
+          "LUXURY"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "decor_type",
+        "allowedValues": [
+          "NONE",
+          "RHINESTONES",
+          "PEARLS",
+          "EMBROIDERY",
+          "LOGO",
+          "BOW",
+          "CHAIN",
+          "CHARMS"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
+      },
+      {
+        "attributeCode": "umbrella_type",
+        "allowedValues": [
+          "FOLDING",
+          "CANE",
+          "GOLF",
+          "CHILDREN",
+          "AUTOMATIC",
+          "MANUAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.ACCESSORIES production pack v1.0 allowed value surface; route-outs handled before this residual branch."
       }
     ],
     "compatibilityRules": [
       {
         "whenAll": [
           {
-            "attributeCode": "gender",
+            "attributeCode": "accessory_group",
             "op": "EQUALS_ANY",
             "values": [
-              "UNISEX"
+              "WATCHES"
             ]
           }
         ],
         "apply": [
           {
-            "attributeCode": "gender",
+            "attributeCode": "accessory_type",
             "allowedValues": [
-              "UNISEX",
-              "MALE",
-              "FEMALE",
-              "KIDS"
+              "WATCHES_NON_SMART",
+              "WATCH_STRAP"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории FASH.ACCESSORIES по атрибуту gender."
+            "reason": "Watch accessories remain in FASH.ACCESSORIES only for non-smart watch surfaces."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-13",
     "effectiveTo": null
   },
   {
@@ -75,66 +791,463 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "gender",
+        "attributeCode": "bag_type",
         "allowedValues": [
-          "UNISEX",
-          "MALE",
-          "FEMALE",
-          "KIDS"
+          "BACKPACK",
+          "SCHOOL_BAG",
+          "HANDBAG",
+          "SHOULDER_BAG",
+          "CROSSBODY_BAG",
+          "TOTE",
+          "SHOPPER_BAG",
+          "CLUTCH",
+          "WAIST_BAG",
+          "LAPTOP_BAG",
+          "LAPTOP_SLEEVE",
+          "TRAVEL_BAG",
+          "DUFFEL_BAG",
+          "SUITCASE",
+          "BRIEFCASE",
+          "DOCUMENT_BAG",
+          "WALLET",
+          "CARDHOLDER",
+          "COSMETIC_BAG",
+          "DIAPER_BAG",
+          "BEACH_BAG",
+          "DRAWSTRING_BAG"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
+        "reason": "FASH.BAGS production pack v1.0: allowed bag_type valueCode set."
+      },
+      {
+        "attributeCode": "target_gender",
+        "allowedValues": [
+          "MEN",
+          "WOMEN",
+          "BOYS",
+          "GIRLS",
+          "KIDS",
+          "UNISEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed target_gender valueCode set."
+      },
+      {
+        "attributeCode": "age_group",
+        "allowedValues": [
+          "ADULT",
+          "TEEN",
+          "KIDS",
+          "TODDLER",
+          "BABY"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed age_group valueCode set."
       },
       {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "NEW_WITH_TAGS",
+          "NEW_WITHOUT_TAGS",
           "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "EXCELLENT",
+          "GOOD",
+          "FAIR",
+          "FOR_REPAIR"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "FASH.BAGS production pack v1.0: allowed condition valueCode set."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "authenticity_state",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "NOT_CLAIMED",
+          "ORIGINAL_CLAIMED",
+          "ORIGINAL_WITH_DOCS",
+          "AUTHENTICITY_UNCERTAIN"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "FASH.BAGS production pack v1.0: allowed authenticity_state valueCode set."
+      },
+      {
+        "attributeCode": "color_primary",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BEIGE",
+          "BROWN",
+          "RED",
+          "PINK",
+          "ORANGE",
+          "YELLOW",
+          "GREEN",
+          "BLUE",
+          "NAVY",
+          "PURPLE",
+          "GOLD",
+          "SILVER",
+          "BURGUNDY",
+          "MULTICOLOR",
+          "TRANSPARENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed color_primary valueCode set."
+      },
+      {
+        "attributeCode": "color_secondary",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BEIGE",
+          "BROWN",
+          "RED",
+          "PINK",
+          "ORANGE",
+          "YELLOW",
+          "GREEN",
+          "BLUE",
+          "NAVY",
+          "PURPLE",
+          "GOLD",
+          "SILVER",
+          "BURGUNDY",
+          "MULTICOLOR",
+          "TRANSPARENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed color_secondary valueCode set."
+      },
+      {
+        "attributeCode": "material_outer",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "NYLON",
+          "POLYESTER",
+          "CANVAS",
+          "DENIM",
+          "COTTON",
+          "VELVET",
+          "SATIN",
+          "MICROFIBER",
+          "PLASTIC",
+          "SILICONE",
+          "METAL",
+          "STRAW",
+          "RUBBER",
+          "MIXED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed material_outer valueCode set."
+      },
+      {
+        "attributeCode": "material_lining",
+        "allowedValues": [
+          "LEATHER",
+          "FAUX_LEATHER",
+          "SUEDE",
+          "TEXTILE",
+          "NYLON",
+          "POLYESTER",
+          "CANVAS",
+          "DENIM",
+          "COTTON",
+          "VELVET",
+          "SATIN",
+          "MICROFIBER",
+          "PLASTIC",
+          "SILICONE",
+          "METAL",
+          "STRAW",
+          "RUBBER",
+          "MIXED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed material_lining valueCode set."
+      },
+      {
+        "attributeCode": "pattern",
+        "allowedValues": [
+          "SOLID",
+          "LOGO",
+          "MONOGRAM",
+          "PRINT",
+          "FLORAL",
+          "ANIMAL_PRINT",
+          "CHECKED",
+          "STRIPED",
+          "GEOMETRIC",
+          "QUILTED",
+          "EMBOSSED",
+          "COLOR_BLOCK"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed pattern valueCode set."
+      },
+      {
+        "attributeCode": "style",
+        "allowedValues": [
+          "CASUAL",
+          "BUSINESS",
+          "CLASSIC",
+          "SPORT",
+          "EVENING",
+          "STREETWEAR",
+          "MINIMALIST",
+          "VINTAGE",
+          "LUXURY",
+          "TRAVEL",
+          "SCHOOL"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed style valueCode set."
+      },
+      {
+        "attributeCode": "usage_context",
+        "allowedValues": [
+          "DAILY",
+          "WORK",
+          "SCHOOL",
+          "UNIVERSITY",
+          "TRAVEL",
+          "SPORT",
+          "EVENING",
+          "BEACH",
+          "LAPTOP",
+          "BABY_CARE",
+          "CITY",
+          "OUTDOOR"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed usage_context valueCode set."
+      },
+      {
+        "attributeCode": "size_class",
+        "allowedValues": [
+          "MINI",
+          "SMALL",
+          "MEDIUM",
+          "LARGE",
+          "XL",
+          "CABIN",
+          "CHECKED_MEDIUM",
+          "CHECKED_LARGE",
+          "FLAT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed size_class valueCode set."
+      },
+      {
+        "attributeCode": "closure_type",
+        "allowedValues": [
+          "ZIPPER",
+          "MAGNET",
+          "BUTTON",
+          "SNAP",
+          "BUCKLE",
+          "DRAWSTRING",
+          "FLAP",
+          "CLASP",
+          "TWIST_LOCK",
+          "VELCRO",
+          "OPEN_TOP",
+          "COMBINATION_LOCK",
+          "TSA_LOCK",
+          "FRAME_LOCK",
+          "NONE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed closure_type valueCode set."
+      },
+      {
+        "attributeCode": "strap_type",
+        "allowedValues": [
+          "NONE",
+          "TOP_HANDLE",
+          "SHOULDER_STRAP",
+          "CROSSBODY_STRAP",
+          "BACKPACK_STRAPS",
+          "WAIST_BELT",
+          "CHAIN_STRAP",
+          "WRIST_STRAP",
+          "TROLLEY_HANDLE",
+          "MIXED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed strap_type valueCode set."
+      },
+      {
+        "attributeCode": "handle_type",
+        "allowedValues": [
+          "NONE",
+          "TOP_HANDLE",
+          "DOUBLE_HANDLES",
+          "SIDE_HANDLE",
+          "TELESCOPIC_HANDLE",
+          "WRIST_LOOP"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed handle_type valueCode set."
+      },
+      {
+        "attributeCode": "laptop_protection_level",
+        "allowedValues": [
+          "NONE",
+          "SOFT_PADDED",
+          "HARD_SHELL",
+          "SUSPENDED_COMPARTMENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed laptop_protection_level valueCode set."
+      },
+      {
+        "attributeCode": "waterproof_level",
+        "allowedValues": [
+          "NONE",
+          "WATER_RESISTANT",
+          "WATERPROOF",
+          "RAIN_COVER_INCLUDED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed waterproof_level valueCode set."
+      },
+      {
+        "attributeCode": "hardware_color",
+        "allowedValues": [
+          "GOLD",
+          "SILVER",
+          "GUNMETAL",
+          "BLACK",
+          "ROSE_GOLD",
+          "BRONZE",
+          "MIXED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed hardware_color valueCode set."
+      },
+      {
+        "attributeCode": "lock_type",
+        "allowedValues": [
+          "NONE",
+          "ZIP_LOCK",
+          "TSA_LOCK",
+          "COMBINATION_LOCK",
+          "KEY_LOCK",
+          "CLASP_LOCK"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed lock_type valueCode set."
+      },
+      {
+        "attributeCode": "wheel_type",
+        "allowedValues": [
+          "NONE",
+          "INLINE",
+          "SPINNER",
+          "DOUBLE_SPINNER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed wheel_type valueCode set."
+      },
+      {
+        "attributeCode": "cabin_size_status",
+        "allowedValues": [
+          "UNKNOWN",
+          "CABIN_APPROVED",
+          "CHECK_AIRLINE",
+          "NOT_CABIN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed cabin_size_status valueCode set."
+      },
+      {
+        "attributeCode": "luggage_shell_type",
+        "allowedValues": [
+          "SOFT",
+          "HARD",
+          "HYBRID"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed luggage_shell_type valueCode set."
+      },
+      {
+        "attributeCode": "document_size",
+        "allowedValues": [
+          "PHONE",
+          "PASSPORT",
+          "A5",
+          "A4",
+          "LAPTOP_13",
+          "LAPTOP_14",
+          "LAPTOP_15_16",
+          "LAPTOP_17"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed document_size valueCode set."
+      },
+      {
+        "attributeCode": "school_grade_group",
+        "allowedValues": [
+          "PRESCHOOL",
+          "PRIMARY",
+          "MIDDLE_SCHOOL",
+          "HIGH_SCHOOL",
+          "UNIVERSITY"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.BAGS production pack v1.0: allowed school_grade_group valueCode set."
       }
     ],
     "compatibilityRules": [
       {
         "whenAll": [
           {
-            "attributeCode": "gender",
+            "attributeCode": "bag_type",
             "op": "EQUALS_ANY",
             "values": [
-              "UNISEX"
+              "WALLET",
+              "CARDHOLDER"
             ]
           }
         ],
         "apply": [
           {
-            "attributeCode": "gender",
+            "attributeCode": "bag_type",
             "allowedValues": [
-              "UNISEX",
-              "MALE",
-              "FEMALE",
-              "KIDS"
+              "BACKPACK",
+              "SCHOOL_BAG",
+              "HANDBAG",
+              "SHOULDER_BAG",
+              "CROSSBODY_BAG",
+              "TOTE",
+              "SHOPPER_BAG",
+              "CLUTCH",
+              "WAIST_BAG",
+              "LAPTOP_BAG",
+              "LAPTOP_SLEEVE",
+              "TRAVEL_BAG",
+              "DUFFEL_BAG",
+              "SUITCASE",
+              "BRIEFCASE",
+              "DOCUMENT_BAG",
+              "WALLET",
+              "CARDHOLDER",
+              "COSMETIC_BAG",
+              "DIAPER_BAG",
+              "BEACH_BAG",
+              "DRAWSTRING_BAG"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории FASH.BAGS по атрибуту gender."
+            "reason": "Wallet and cardholder stay under FASH.BAGS by production routing policy."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-13",
     "effectiveTo": null
   },
   {
@@ -443,55 +1556,570 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "gender",
+        "attributeCode": "age_group",
         "allowedValues": [
-          "UNISEX",
-          "MALE",
-          "FEMALE",
-          "KIDS"
+          "ADULT",
+          "TEEN",
+          "KIDS",
+          "TODDLER",
+          "BABY"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for age_group."
+      },
+      {
+        "attributeCode": "authenticity_status",
+        "allowedValues": [
+          "UNKNOWN",
+          "ORIGINAL_CLAIM_UNVERIFIED",
+          "ORIGINAL_VERIFIED",
+          "NOT_APPLICABLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for authenticity_status."
+      },
+      {
+        "attributeCode": "closure_type",
+        "allowedValues": [
+          "LACES",
+          "VELCRO",
+          "ZIPPER",
+          "BUCKLE",
+          "SLIP_ON",
+          "ELASTIC",
+          "DRAWSTRING",
+          "BOA_DIAL",
+          "NONE",
+          "COMBINED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for closure_type."
+      },
+      {
+        "attributeCode": "color_primary",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BEIGE",
+          "BROWN",
+          "RED",
+          "PINK",
+          "ORANGE",
+          "YELLOW",
+          "GREEN",
+          "BLUE",
+          "NAVY",
+          "PURPLE",
+          "SILVER",
+          "GOLD",
+          "MULTICOLOR",
+          "TRANSPARENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for color_primary."
+      },
+      {
+        "attributeCode": "color_secondary",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BEIGE",
+          "BROWN",
+          "RED",
+          "PINK",
+          "ORANGE",
+          "YELLOW",
+          "GREEN",
+          "BLUE",
+          "NAVY",
+          "PURPLE",
+          "SILVER",
+          "GOLD",
+          "MULTICOLOR",
+          "TRANSPARENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for color_secondary."
       },
       {
         "attributeCode": "condition",
         "allowedValues": [
           "NEW",
           "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "GOOD",
+          "FAIR",
+          "HEAVILY_USED",
+          "DEFECTS_OR_REPAIR"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for condition."
+      },
+      {
+        "attributeCode": "heel_type",
+        "allowedValues": [
+          "NONE",
+          "BLOCK",
+          "STILETTO",
+          "WEDGE",
+          "KITTEN",
+          "CONE",
+          "PLATFORM",
+          "OTHER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for heel_type."
+      },
+      {
+        "attributeCode": "insulation",
+        "allowedValues": [
+          "NONE",
+          "LIGHT",
+          "FLEECE",
+          "WOOL",
+          "FUR",
+          "SYNTHETIC",
+          "FELT"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for insulation."
+      },
+      {
+        "attributeCode": "material_lining",
+        "allowedValues": [
+          "NONE",
+          "TEXTILE",
+          "LEATHER",
+          "FLEECE",
+          "WOOL",
+          "FUR",
+          "SYNTHETIC",
+          "OTHER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for material_lining."
+      },
+      {
+        "attributeCode": "material_sole",
+        "allowedValues": [
+          "RUBBER",
+          "EVA",
+          "PU",
+          "TPU",
+          "LEATHER",
+          "CORK",
+          "OTHER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for material_sole."
+      },
+      {
+        "attributeCode": "material_upper",
+        "allowedValues": [
+          "LEATHER",
+          "SUEDE",
+          "NUBUCK",
+          "ECO_LEATHER",
+          "TEXTILE",
+          "MESH",
+          "CANVAS",
+          "SYNTHETIC",
+          "RUBBER",
+          "EVA",
+          "WOOL",
+          "FELT",
+          "FUR",
+          "OTHER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for material_upper."
+      },
+      {
+        "attributeCode": "orthopedic_feature",
+        "allowedValues": [
+          "NONE",
+          "ARCH_SUPPORT",
+          "ORTHOPEDIC_INSOLE",
+          "HARD_HEEL_COUNTER",
+          "ANATOMIC_FOOTBED",
+          "SUPINATOR",
+          "EXTRA_FLEXIBLE_SOLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for orthopedic_feature."
+      },
+      {
+        "attributeCode": "pair_completeness",
+        "allowedValues": [
+          "PAIR",
+          "LEFT_ONLY",
+          "RIGHT_ONLY",
+          "MISMATCHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for pair_completeness."
+      },
+      {
+        "attributeCode": "season",
+        "allowedValues": [
+          "SUMMER",
+          "DEMI_SEASON",
+          "WINTER",
+          "ALL_SEASON",
+          "RAIN",
+          "INDOOR"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for season."
+      },
+      {
+        "attributeCode": "shaft_height",
+        "allowedValues": [
+          "LOW",
+          "ANKLE",
+          "MID_CALF",
+          "KNEE_HIGH",
+          "OVER_KNEE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for shaft_height."
+      },
+      {
+        "attributeCode": "shoe_type",
+        "allowedValues": [
+          "SNEAKERS",
+          "RUNNING_SHOES",
+          "SPORT_SHOES",
+          "FOOTBALL_BOOTS",
+          "BOOTS",
+          "ANKLE_BOOTS",
+          "WINTER_BOOTS",
+          "HIKING_SHOES",
+          "SHOES",
+          "LOAFERS",
+          "MOCCASINS",
+          "OXFORDS",
+          "DERBY",
+          "SANDALS",
+          "SLIDES",
+          "SLIPPERS",
+          "BALLET_FLATS",
+          "HEELS",
+          "PUMPS",
+          "WEDGES",
+          "RUBBER_BOOTS",
+          "KIDS_SHOES",
+          "BABY_SHOES",
+          "CLOGS",
+          "ESPADRILLES",
+          "OTHER_SHOES"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for shoe_type."
+      },
+      {
+        "attributeCode": "size_system",
+        "allowedValues": [
+          "EU",
+          "RU",
+          "US",
+          "UK",
+          "CM",
+          "BRAND"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for size_system."
+      },
+      {
+        "attributeCode": "sole_type",
+        "allowedValues": [
+          "FLAT",
+          "CUSHIONED",
+          "TRACTOR",
+          "PLATFORM",
+          "THIN",
+          "ANTI_SLIP",
+          "STUDDED",
+          "CLEATED",
+          "NON_MARKING",
+          "SOFT_SOLE",
+          "HARD_SOLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for sole_type."
+      },
+      {
+        "attributeCode": "sport_purpose",
+        "allowedValues": [
+          "RUNNING",
+          "TRAINING",
+          "FITNESS",
+          "FOOTBALL",
+          "BASKETBALL",
+          "TENNIS",
+          "HIKING",
+          "TREKKING",
+          "SKATEBOARDING",
+          "DANCE",
+          "GYM",
+          "CYCLING",
+          "WATER_SPORT",
+          "UNIVERSAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for sport_purpose."
+      },
+      {
+        "attributeCode": "target_gender",
+        "allowedValues": [
+          "MEN",
+          "WOMEN",
+          "BOYS",
+          "GIRLS",
+          "KIDS",
+          "UNISEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for target_gender."
+      },
+      {
+        "attributeCode": "toe_shape",
+        "allowedValues": [
+          "ROUND",
+          "POINTED",
+          "SQUARE",
+          "ALMOND",
+          "OPEN_TOE",
+          "CLOSED_TOE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for toe_shape."
+      },
+      {
+        "attributeCode": "waterproof_level",
+        "allowedValues": [
+          "NONE",
+          "WATER_REPELLENT",
+          "WATERPROOF",
+          "MEMBRANE",
+          "FULL_RUBBER"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for waterproof_level."
+      },
+      {
+        "attributeCode": "width_fit",
+        "allowedValues": [
+          "NARROW",
+          "STANDARD",
+          "WIDE",
+          "EXTRA_WIDE"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.SHOES production pack v1.0 allowed value surface for width_fit."
       }
     ],
     "compatibilityRules": [
       {
         "whenAll": [
           {
-            "attributeCode": "gender",
+            "attributeCode": "target_gender",
             "op": "EQUALS_ANY",
             "values": [
-              "UNISEX"
+              "MEN"
             ]
           }
         ],
         "apply": [
           {
-            "attributeCode": "gender",
+            "attributeCode": "target_gender",
             "allowedValues": [
-              "UNISEX",
-              "MALE",
-              "FEMALE",
-              "KIDS"
+              "MEN",
+              "UNISEX"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории FASH.SHOES по атрибуту gender."
+            "reason": "Men shoe segment compatibility surface."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "target_gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WOMEN"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "target_gender",
+            "allowedValues": [
+              "WOMEN",
+              "UNISEX"
+            ],
+            "forbiddenValues": [],
+            "reason": "Women shoe segment compatibility surface."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "target_gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "KIDS",
+              "BOYS",
+              "GIRLS"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "target_gender",
+            "allowedValues": [
+              "BOYS",
+              "GIRLS",
+              "KIDS",
+              "UNISEX"
+            ],
+            "forbiddenValues": [],
+            "reason": "Kids shoe segment compatibility surface."
+          },
+          {
+            "attributeCode": "age_group",
+            "allowedValues": [
+              "KIDS",
+              "TODDLER",
+              "BABY",
+              "TEEN"
+            ],
+            "forbiddenValues": [],
+            "reason": "Kids shoe segment age surface."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RUNNING_SHOES"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "sport_purpose",
+            "allowedValues": [
+              "RUNNING"
+            ],
+            "forbiddenValues": [],
+            "reason": "Running shoes require running sport purpose."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "FOOTBALL_BOOTS"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "sport_purpose",
+            "allowedValues": [
+              "FOOTBALL"
+            ],
+            "forbiddenValues": [],
+            "reason": "Football boots require football purpose."
+          },
+          {
+            "attributeCode": "sole_type",
+            "allowedValues": [
+              "CLEATED",
+              "STUDDED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Football boots use cleated or studded soles."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WINTER_BOOTS"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "season",
+            "allowedValues": [
+              "WINTER"
+            ],
+            "forbiddenValues": [],
+            "reason": "Winter boots require winter season context."
+          },
+          {
+            "attributeCode": "insulation",
+            "allowedValues": [
+              "LIGHT",
+              "FLEECE",
+              "WOOL",
+              "FUR",
+              "SYNTHETIC",
+              "FELT"
+            ],
+            "forbiddenValues": [],
+            "reason": "Winter boots require insulation context."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RUBBER_BOOTS"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "waterproof_level",
+            "allowedValues": [
+              "FULL_RUBBER",
+              "WATERPROOF"
+            ],
+            "forbiddenValues": [],
+            "reason": "Rubber boots require waterproof surface."
+          },
+          {
+            "attributeCode": "material_upper",
+            "allowedValues": [
+              "RUBBER",
+              "EVA"
+            ],
+            "forbiddenValues": [],
+            "reason": "Rubber boots upper material should be rubber or EVA."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-13",
     "effectiveTo": null
   },
   {

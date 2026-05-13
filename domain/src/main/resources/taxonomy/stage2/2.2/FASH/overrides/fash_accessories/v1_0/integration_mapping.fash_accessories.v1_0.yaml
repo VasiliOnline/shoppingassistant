@@ -1,0 +1,164 @@
+meta:
+  pack_id: FASH_ACCESSORIES_PRODUCTION_v1_0_RU
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  purpose: Integration contract between taxonomy/router/extraction/search/listing UI.
+taxonomy_node:
+  canonical_route: FASH.ACCESSORIES
+  parent_route: FASH
+  ru_path:
+  - Мода
+  - Аксессуары
+  en_path:
+  - Fashion
+  - Accessories
+  is_leaf: false
+  child_types_are_attribute_values: true
+route_outputs:
+  route_in:
+    categoryCode: FASH.ACCESSORIES
+    required_payload_fields:
+    - accessory_type
+    - condition
+    recommended_payload_fields:
+    - accessory_group
+    - target_gender
+    - age_group
+    - brand
+    - color
+    - material_primary
+  route_out_targets:
+  - FASH.SHOES
+  - FASH.BAGS
+  - FASH.APPAREL
+  - TECH.WEARABLES
+  - TECH.ACCESSORIES
+  - BEAUTY
+  - HEALTH
+  - SPORT
+  - TOOLS.SAFETY
+  - AUTO.PARTS
+field_mapping:
+- source: listing.title
+  target:
+  - accessory_type
+  - brand
+  - model_name_text
+  - target_gender
+  - age_group
+  - size_label
+  priority: 1
+- source: listing.description
+  target:
+  - all_text_extractable_attributes
+  priority: 2
+- source: seller.selected_category
+  target:
+  - route_hint
+  - accessory_group
+  - accessory_type
+  priority: 3
+- source: catalog.brand
+  target:
+  - brand
+  priority: 1
+- source: catalog.model
+  target:
+  - model_name_text
+  priority: 2
+- source: vision.primary_object
+  target:
+  - accessory_type
+  - color
+  - pattern
+  - material_primary_visual_hint
+  priority: 4
+- source: price.amount
+  target:
+  - price
+  priority: 1
+- source: condition_ui
+  target:
+  - condition
+  priority: 1
+normalization:
+  group_derivation: accessory_group is derived from accessory_type using schema_pack.canonical_groups.
+  brand_policy: Preserve seller brand casing; normalize with marketplace brand dictionary where available.
+  model_policy: Store model as free text; do not require curated model IDs.
+  material_policy: Seller/catalog material beats vision hint. Precious metal/stones require text/certificate/catalog.
+  size_policy: Accessory sizes are type-specific; do not share shoe/apparel size normalizer.
+external_category_hints:
+  marketplace_generic_accessories:
+    map_to: FASH.ACCESSORIES
+    requires: positive accessory term or seller category confidence >= threshold
+  marketplace_bags_wallets:
+    map_to: FASH.BAGS
+    notes: Wallet/cardholder/cosmetic bag intentionally not in FASH.ACCESSORIES.
+  marketplace_smart_watches:
+    map_to: TECH.WEARABLES
+    notes: Smart devices are outside fashion accessories.
+  marketplace_jewelry:
+    map_to: FASH.ACCESSORIES
+    notes: If a separate JEWELRY vertical exists, integration may fork JEWELRY group into that vertical.
+search_index_fields:
+  full_text:
+  - title_ru
+  - description_ru
+  - brand
+  - model_name_text
+  - aliases
+  facets:
+  - accessory_type
+  - accessory_group
+  - target_gender
+  - age_group
+  - brand
+  - condition
+  - color
+  - material_primary
+  numeric_ranges:
+  - price
+  - belt_size_cm
+  - belt_length_cm
+  - belt_width_cm
+  - head_size_cm
+  - accessory_length_cm
+  - accessory_width_cm
+  - ring_size_ru
+  - chain_length_cm
+  - case_diameter_mm
+  - watch_strap_lug_width_mm
+  - canopy_size_cm
+  booleans:
+  - adjustable
+  - touchscreen_compatible
+  - polarized
+  - prescription_compatible
+  - hypoallergenic
+  - foldable
+  - windproof
+event_logging:
+  route_decision_log_fields:
+  - query
+  - predicted_route
+  - route_confidence
+  - positive_terms
+  - negative_guards_fired
+  - final_route
+  manual_review_log_fields:
+  - query
+  - candidate_routes
+  - reason
+  - resolved_route
+  - resolver_id
+  quality_dashboard_segments:
+  - overall
+  - BELTS
+  - HEADWEAR
+  - NECKWEAR
+  - HANDWEAR
+  - EYEWEAR
+  - JEWELRY
+  - WATCHES
+  - HAIR_ACCESSORIES
+  - UMBRELLAS

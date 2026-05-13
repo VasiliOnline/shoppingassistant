@@ -1,0 +1,66 @@
+id: vision_rules.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+locale: ru-RU
+vision_scope: image_assist_for_classification_and_attribute_extraction; text remains source of truth for size/brand/model
+  when readable
+detectable_from_image:
+- attribute: shoe_type
+  confidence: medium_high
+  notes_ru: Кроссовки, сапоги, туфли, сандалии часто видны визуально.
+- attribute: color_primary
+  confidence: high
+  notes_ru: Цвет можно извлекать визуально при нормальном освещении.
+- attribute: closure_type
+  confidence: medium
+  notes_ru: Шнурки/липучки/молнии видны не всегда.
+- attribute: heel_height_cm
+  confidence: low_medium
+  notes_ru: Оценивать только приблизительно; лучше текст/размерная метка.
+- attribute: heel_type
+  confidence: medium
+  notes_ru: Шпилька/блочный/танкетка часто визуальны.
+- attribute: shaft_height
+  confidence: medium
+  notes_ru: Оценка по силуэту; точную высоту в см не выводить без текста.
+- attribute: condition
+  confidence: medium
+  notes_ru: Следы носки, загрязнения, износ подошвы; финальное состояние может требовать продавцовый текст.
+- attribute: pair_completeness
+  confidence: medium
+  notes_ru: Можно отметить single shoe/mismatched, если явно видно.
+not_safe_to_infer_from_image_only:
+- attribute: size_eu
+  reason_ru: Размер требует читаемой бирки/текста.
+- attribute: target_gender
+  reason_ru: Не выводить пол по цвету или стилю без текстовой подсказки.
+- attribute: age_group
+  reason_ru: Не выводить возраст только по масштабу изображения.
+- attribute: brand
+  reason_ru: Бренд только если логотип/текст читаем; иначе оставить пустым.
+- attribute: authenticity_status
+  reason_ru: Оригинальность нельзя подтверждать изображением в P0.
+- attribute: orthopedic_feature
+  reason_ru: Требуется текст/маркировка/производитель; визуально не утверждать.
+image_quality_requirements:
+  minimum_views_recommended:
+  - front_or_side
+  - sole
+  - inside_label_for_size_when_available
+  condition_checks:
+  - toe_scuffs
+  - heel_wear
+  - sole_wear
+  - stains
+  - cracks
+  - missing_laces
+  - zipper_damage
+  reject_or_low_confidence_if:
+  - blurred_image
+  - single_partial_crop
+  - no_visible_footwear
+  - product_is_bag_or_apparel
+vision_routing:
+- if_visual_shoe_and_text_absent: route_candidate_FASH.SHOES_with_medium_confidence
+- if_text_head_conflicts_with_visual: prefer_text_for_product_head_if_clear; otherwise flag_conflict_review
+- if_visual_bag_with_shoe_brand: do_not_route_to_shoes_without_shoe_head

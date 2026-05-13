@@ -1,0 +1,265 @@
+id: conditional_rules.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+locale: ru-RU
+principles:
+- shoe_type, condition и pair_completeness обязательны для публикации.
+- Размер должен быть задан как size_eu или raw_size_text; foot_length_cm/insole_length_cm повышают качество, но не заменяют
+  размер без явного size_system.
+- Пол/возраст не выводятся по цвету; только текст, размерный диапазон, маркировка или явная категория продавца.
+- brand-aware режим не требует curated model graph; model_name_text хранится как свободный текст.
+rules:
+- id: CORE_MINIMUM_FOR_PUBLISH
+  when:
+    always: true
+  required:
+  - shoe_type
+  - condition
+  - pair_completeness
+  require_any:
+  - - size_eu
+    - raw_size_text
+  recommended:
+  - target_gender
+  - age_group
+  - brand
+  - color_primary
+  - season
+  - material_upper
+  reject_if:
+  - pair_completeness:
+    - LEFT_ONLY
+    - RIGHT_ONLY
+    - MISMATCHED
+    without_explicit_listing_text: true
+  message_ru: Для публикации обуви нужен тип, состояние, комплектность пары и размер.
+- id: SNEAKERS_AND_RUNNING
+  when:
+    shoe_type_any:
+    - SNEAKERS
+    - RUNNING_SHOES
+  recommended:
+  - brand
+  - model_name_text
+  - sport_purpose
+  - sole_type
+  - material_upper
+  - closure_type
+  required_if:
+  - shoe_type: RUNNING_SHOES
+    required:
+    - sport_purpose
+    expected_values:
+      sport_purpose:
+      - RUNNING
+  facet_boost:
+  - brand
+  - model_name_text
+  - size_eu
+  - sport_purpose
+  - color_primary
+  message_ru: Для кроссовок важны бренд, модель текстом, размер, назначение и подошва.
+- id: SPORT_AND_FOOTBALL
+  when:
+    shoe_type_any:
+    - SPORT_SHOES
+    - FOOTBALL_BOOTS
+  required:
+  - sport_purpose
+  recommended:
+  - sole_type
+  - closure_type
+  - material_upper
+  required_if:
+  - shoe_type: FOOTBALL_BOOTS
+    required:
+    - sole_type
+    expected_values:
+      sport_purpose:
+      - FOOTBALL
+      sole_type:
+      - CLEATED
+      - STUDDED
+  message_ru: Спортивная обувь должна иметь назначение; бутсы — футбольный контекст и тип подошвы.
+- id: BOOTS_AND_SHAFT
+  when:
+    shoe_type_any:
+    - BOOTS
+    - ANKLE_BOOTS
+    - WINTER_BOOTS
+    - HIKING_SHOES
+    - RUBBER_BOOTS
+  recommended:
+  - shaft_height
+  - waterproof_level
+  - material_upper
+  - material_lining
+  - sole_type
+  type_specific_facets:
+  - season
+  - insulation
+  - waterproof_level
+  - shaft_height
+  message_ru: Для ботинок/сапог показывать сезон, утепление, влагозащиту и высоту голенища.
+- id: WINTER_BOOTS
+  when:
+    shoe_type: WINTER_BOOTS
+  required:
+  - season
+  - insulation
+  expected_values:
+    season:
+    - WINTER
+  recommended:
+  - waterproof_level
+  - material_lining
+  - shaft_height
+  message_ru: Зимняя обувь требует сезон WINTER и утепление.
+- id: RUBBER_BOOTS
+  when:
+    shoe_type: RUBBER_BOOTS
+  required:
+  - waterproof_level
+  - material_upper
+  expected_values:
+    waterproof_level:
+    - FULL_RUBBER
+    - WATERPROOF
+    material_upper:
+    - RUBBER
+  recommended:
+  - shaft_height
+  - season
+  message_ru: Резиновые сапоги должны быть влагозащитными; материал верха — резина/EVA.
+- id: HIKING_SHOES
+  when:
+    shoe_type: HIKING_SHOES
+  required:
+  - sport_purpose
+  expected_values:
+    sport_purpose:
+    - HIKING
+    - TREKKING
+  recommended:
+  - waterproof_level
+  - sole_type
+  - material_upper
+  - closure_type
+  message_ru: Для треккинговой обуви важны назначение, подошва и влагозащита.
+- id: CLASSIC_SHOES
+  when:
+    shoe_type_any:
+    - SHOES
+    - LOAFERS
+    - MOCCASINS
+    - OXFORDS
+    - DERBY
+  recommended:
+  - material_upper
+  - toe_shape
+  - closure_type
+  - color_primary
+  forbidden_soft:
+  - sport_purpose
+  - insulation
+  message_ru: Для классической обуви релевантны материал, форма носа, застёжка и цвет.
+- id: OPEN_SUMMER_SHOES
+  when:
+    shoe_type_any:
+    - SANDALS
+    - SLIDES
+    - CLOGS
+    - ESPADRILLES
+  recommended:
+  - season
+  - material_upper
+  - closure_type
+  - toe_shape
+  expected_values_soft:
+    season:
+    - SUMMER
+    - ALL_SEASON
+  message_ru: Для открытой обуви показывать сезон, материал и тип застёжки.
+- id: SLIPPERS
+  when:
+    shoe_type: SLIPPERS
+  recommended:
+  - season
+  - material_upper
+  - material_lining
+  expected_values_soft:
+    season:
+    - INDOOR
+  message_ru: Домашняя обувь обычно INDOOR, но не принуждать без явного контекста.
+- id: HEELS_PUMPS_WEDGES
+  when:
+    shoe_type_any:
+    - HEELS
+    - PUMPS
+    - WEDGES
+  required:
+  - heel_height_cm
+  - heel_type
+  recommended:
+  - toe_shape
+  - material_upper
+  - color_primary
+  expected_values_if:
+  - shoe_type: WEDGES
+    heel_type:
+    - WEDGE
+  forbidden_soft:
+  - sport_purpose
+  - shaft_height
+  message_ru: Для обуви на каблуке нужны высота и тип каблука.
+- id: KIDS_AND_BABY
+  when:
+    shoe_type_any:
+    - KIDS_SHOES
+    - BABY_SHOES
+    or_age_group_any:
+    - KIDS
+    - TODDLER
+    - BABY
+  required:
+  - age_group
+  require_any:
+  - - size_eu
+    - raw_size_text
+    - foot_length_cm
+    - insole_length_cm
+  recommended:
+  - closure_type
+  - season
+  - orthopedic_feature
+  message_ru: Детская обувь требует возрастную группу и размер/длину стопы/стельки.
+- id: BABY_SHOES_SOFT_SOLE
+  when:
+    shoe_type: BABY_SHOES
+  expected_values_soft:
+    age_group:
+    - BABY
+    - TODDLER
+    sole_type:
+    - SOFT_SOLE
+  recommended:
+  - age_label
+  - foot_length_cm
+  - closure_type
+  message_ru: Для пинеток и обуви малышей полезны возрастная метка и длина стопы.
+- id: DEFECTS_REQUIRE_NOTES
+  when:
+    condition: DEFECTS_OR_REPAIR
+  required:
+  - defect_notes
+  message_ru: При дефектах нужно описание дефекта.
+- id: AUTHENTICITY_COMPLIANCE
+  when_text_matches_any:
+  - реплика
+  - копия
+  - подделка
+  - fake
+  - replica
+  action: compliance_review_or_reject_for_counterfeit_policy
+  do_not_promote: true
+  message_ru: Тексты с признаками подделок не должны продвигаться как обычные брендовые товары.

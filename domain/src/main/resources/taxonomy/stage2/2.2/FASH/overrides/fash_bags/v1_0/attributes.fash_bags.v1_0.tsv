@@ -1,0 +1,56 @@
+attribute_code	label_ru	data_type	cardinality	requiredness	applies_to	facet_role	normalization	notes_ru
+bag_type	Тип сумки	enum	single	REQUIRED	ALL	primary	canonical_enum	Главный тип товара внутри FASH.BAGS.
+target_gender	Пол / целевая аудитория	enum	single	OPTIONAL	ALL	primary	canonical_enum	Не создавать отдельные ветки men/women/kids bags; держать атрибутом.
+age_group	Возрастная группа	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Особенно важно для SCHOOL_BAG, DIAPER_BAG, детских рюкзаков.
+brand	Бренд	string	single	RECOMMENDED	ALL	primary	brand_normalizer	Свободный brand-aware слой без curated model graph.
+model_name_text	Модель / линейка текстом	string	single	OPTIONAL	ALL	search_only	trim_preserve_case	Например Jet Set, Neverfull, Kånken; не обязательный graph.
+condition	Состояние	enum	single	REQUIRED	ALL	primary	canonical_enum	Состояние обязательно для resale/marketplace-листингов.
+authenticity_state	Статус оригинальности	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Для premium/luxury; копии и реплики уходят в moderation/policy review.
+color_primary	Основной цвет	enum	single	RECOMMENDED	ALL	primary	canonical_enum	Главный визуальный цвет.
+color_secondary	Дополнительные цвета	enum_multi	multi	OPTIONAL	ALL	secondary	canonical_enum_multi	Для multicolor/color-block/принтов.
+material_outer	Внешний материал	enum	single	RECOMMENDED	ALL	primary	canonical_enum	Материал наружной части.
+material_lining	Материал подкладки	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Подкладка, если указана.
+pattern	Рисунок / фактура	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Монограмма, стёганая фактура, принт и т.д.
+style	Стиль	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Business/evening/casual/sport.
+usage_context	Сценарий использования	enum_multi	multi	OPTIONAL	ALL	secondary	canonical_enum_multi	Работа, школа, путешествия, спорт, пляж.
+size_class	Класс размера	enum	single	RECOMMENDED	ALL	primary	derived_or_canonical_enum	Mini/small/medium/large/cabin/checked.
+length_cm	Длина, см	decimal	single	OPTIONAL	ALL	secondary	positive_decimal_cm	Горизонтальная длина; для чемоданов может быть ширина по продавцу.
+width_cm	Ширина, см	decimal	single	OPTIONAL	ALL	secondary	positive_decimal_cm	Использовать только если продавец явно задаёт width отдельно от length.
+height_cm	Высота, см	decimal	single	OPTIONAL	ALL	secondary	positive_decimal_cm	Вертикальная высота.
+depth_cm	Глубина, см	decimal	single	OPTIONAL	ALL	secondary	positive_decimal_cm	Толщина/глубина основания.
+volume_liter	Объём, л	decimal	single	CONDITIONAL	BACKPACK;TRAVEL_BAG;DUFFEL_BAG;SUITCASE	primary	positive_decimal_liter	Приоритетно для рюкзаков, дорожных сумок и чемоданов.
+weight_kg	Вес, кг	decimal	single	OPTIONAL	SUITCASE;TRAVEL_BAG;DUFFEL_BAG;BACKPACK;LAPTOP_BAG	secondary	positive_decimal_kg	Особенно полезно для багажа.
+closure_type	Тип застёжки	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Молния, магнит, клапан, фермуар и т.д.
+strap_type	Тип ремня / лямок	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Плечевой, crossbody, рюкзачные лямки, цепочка.
+strap_count	Количество ремней / лямок	integer	single	OPTIONAL	ALL	hidden	non_negative_integer	Полезно для vision и structured extraction.
+handle_type	Тип ручки	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Ручка сверху, двойные ручки, телескопическая.
+handle_drop_cm	Высота ручек, см	decimal	single	OPTIONAL	HANDBAG;TOTE;SHOPPER_BAG;SHOULDER_BAG	hidden	positive_decimal_cm	Расстояние от ручки до верхнего края.
+strap_length_cm	Длина ремня, см	decimal	single	OPTIONAL	CROSSBODY_BAG;SHOULDER_BAG;WAIST_BAG;CLUTCH	hidden	positive_decimal_cm	Для crossbody/waist fit.
+is_adjustable_strap	Регулируемый ремень	boolean	single	OPTIONAL	ALL	secondary	boolean	Да/нет, если указано.
+is_detachable_strap	Съёмный ремень	boolean	single	OPTIONAL	HANDBAG;CLUTCH;CROSSBODY_BAG;SHOULDER_BAG	secondary	boolean	Да/нет, если указано.
+compartment_count	Количество отделений	integer	single	OPTIONAL	ALL	secondary	non_negative_integer	Число основных отделений.
+pocket_count	Количество карманов	integer	single	OPTIONAL	ALL	secondary	non_negative_integer	Число карманов, если указано.
+laptop_compartment	Отделение для ноутбука	boolean	single	CONDITIONAL	BACKPACK;LAPTOP_BAG;BRIEFCASE;TOTE	primary	boolean	Явное отделение под ноутбук.
+fits_laptop_inch	Подходит для ноутбука, дюймы	decimal	single	CONDITIONAL	LAPTOP_BAG;LAPTOP_SLEEVE;BACKPACK;BRIEFCASE	primary	laptop_inches_decimal	Например 13, 14, 15.6, 16, 17.3.
+laptop_protection_level	Защита ноутбука	enum	single	OPTIONAL	LAPTOP_BAG;LAPTOP_SLEEVE;BACKPACK;BRIEFCASE	secondary	canonical_enum	Padded/hard shell/suspended.
+waterproof_level	Влагозащита	enum	single	OPTIONAL	ALL	secondary	canonical_enum	Водоотталкивающий/водонепроницаемый/с дождевиком.
+rain_cover_included	Дождевик в комплекте	boolean	single	OPTIONAL	BACKPACK;SCHOOL_BAG;TRAVEL_BAG	secondary	boolean	Можно также выразить waterproof_level=RAIN_COVER_INCLUDED.
+hardware_color	Цвет фурнитуры	enum	single	OPTIONAL	HANDBAG;SHOULDER_BAG;CROSSBODY_BAG;CLUTCH;WALLET;BRIEFCASE	secondary	canonical_enum	Цвет металла/фурнитуры.
+lock_type	Тип замка	enum	single	OPTIONAL	SUITCASE;BRIEFCASE;WALLET;CLUTCH	secondary	canonical_enum	TSA, кодовый, ключ, фермуар.
+wheels_count	Количество колёс	integer	single	CONDITIONAL	SUITCASE;TRAVEL_BAG	primary	non_negative_integer	0/2/4; для чемоданов важно.
+wheel_type	Тип колёс	enum	single	OPTIONAL	SUITCASE;TRAVEL_BAG	secondary	canonical_enum	Inline/spinner/double spinner.
+cabin_size_status	Статус ручной клади	enum	single	CONDITIONAL	SUITCASE;TRAVEL_BAG;BACKPACK	primary	canonical_enum	Не гарантировать правила авиакомпаний без явного заявления.
+expandable	Расширяемый объём	boolean	single	OPTIONAL	SUITCASE;TRAVEL_BAG;BACKPACK	secondary	boolean	Молния расширения/expandable.
+luggage_shell_type	Тип корпуса чемодана	enum	single	CONDITIONAL	SUITCASE	secondary	canonical_enum	Мягкий/жёсткий/гибрид.
+card_slots_count	Количество слотов для карт	integer	single	CONDITIONAL	WALLET;CARDHOLDER	primary	non_negative_integer	Основной атрибут для small leather goods.
+coin_pocket	Отделение для монет	boolean	single	OPTIONAL	WALLET	secondary	boolean	Да/нет.
+document_size	Формат документов / устройства	enum	single	OPTIONAL	LAPTOP_BAG;LAPTOP_SLEEVE;BRIEFCASE;DOCUMENT_BAG;TOTE	primary	canonical_enum	A4/passport/laptop 13-17.
+school_grade_group	Школьная группа	enum	single	CONDITIONAL	SCHOOL_BAG	primary	canonical_enum	Дошкольники/начальная/средняя/старшая школа.
+orthopedic_back	Ортопедическая спинка	boolean	single	OPTIONAL	SCHOOL_BAG;BACKPACK	primary	boolean	Частый фильтр для школьных ранцев.
+reflective_elements	Светоотражающие элементы	boolean	single	OPTIONAL	SCHOOL_BAG;BACKPACK	secondary	boolean	Для детских/школьных рюкзаков.
+stroller_attachment	Крепление к коляске	boolean	single	OPTIONAL	DIAPER_BAG	secondary	boolean	Специфично для сумок для мамы.
+dust_bag_included	Пыльник в комплекте	boolean	single	OPTIONAL	ALL	secondary	boolean	Полезно для luxury resale.
+receipt_included	Чек в комплекте	boolean	single	OPTIONAL	ALL	secondary	boolean	Документы/чек для resale.
+authenticity_documents_included	Документы подлинности	boolean	single	OPTIONAL	ALL	secondary	boolean	Сертификат, authenticity card.
+set_includes	Комплект	string	multi	OPTIONAL	ALL	hidden	free_text_list	Например пыльник, ремень, коробка.
+defect_notes	Описание дефектов	text	single	CONDITIONAL	ALL	hidden	free_text	Обязательно, если condition=FAIR/FOR_REPAIR или есть видимые дефекты.

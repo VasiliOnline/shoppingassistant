@@ -1,0 +1,84 @@
+meta:
+  pack_id: FASH_ACCESSORIES_PRODUCTION_v1_0_RU
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  purpose: Minimum quality gates for production acceptance.
+router_quality:
+  golden_query_route_accuracy_min: 0.94
+  route_out_precision_min: 0.96
+  route_in_precision_min: 0.92
+  gray_zone_review_rate_max: 0.12
+  must_pass_examples:
+  - apple watch -> TECH.WEARABLES
+  - рюкзак nike -> FASH.BAGS
+  - кроссовки nike -> FASH.SHOES
+  - женское платье -> FASH.APPAREL
+  - женский ремень -> FASH.ACCESSORIES
+  - часы casio -> FASH.ACCESSORIES
+extraction_quality:
+  accessory_type_accuracy_min: 0.92
+  accessory_group_accuracy_min: 0.98
+  condition_required_coverage_min: 0.9
+  brand_precision_min: 0.95
+  color_accuracy_min: 0.88
+  material_precision_min: 0.86
+  do_not_infer_precious_material_from_vision: hard_gate
+  do_not_infer_smartwatch_as_fashion_watch: hard_gate
+attribute_coverage_targets:
+  BELT:
+    belt_size_or_length_coverage_min: 0.55
+    material_coverage_min: 0.7
+  HEADWEAR:
+    season_coverage_min: 0.45
+    size_coverage_min: 0.35
+  NECKWEAR:
+    material_coverage_min: 0.65
+    pattern_coverage_min: 0.35
+  HANDWEAR:
+    glove_size_coverage_min: 0.4
+    season_coverage_min: 0.55
+  EYEWEAR:
+    frame_shape_coverage_min: 0.35
+    uv_protection_precision_min: 0.95
+  JEWELRY:
+    metal_type_precision_min: 0.95
+    stone_type_precision_min: 0.92
+    ring_size_precision_min: 0.95
+  WATCHES:
+    smartwatch_route_out_precision_min: 0.98
+    movement_type_precision_min: 0.9
+  HAIR_ACCESSORIES:
+    set_quantity_precision_min: 0.9
+  UMBRELLAS:
+    umbrella_type_accuracy_min: 0.85
+    foldable_accuracy_min: 0.9
+data_contract:
+  all_required_files_present: true
+  tsv_headers_must_match: true
+  jsonl_must_parse: true
+  yaml_must_parse: true
+  no_unknown_value_refs: true
+  checksums_required: true
+launch_blockers:
+- Any smart watch routed as WATCHES_NON_SMART in golden queries.
+- Any shoes/bags/apparel explicit guard routed into FASH.ACCESSORIES.
+- Jewelry precious material inferred from image only.
+- Wallet/cardholder routed into FASH.ACCESSORIES despite project convention.
+- Required core field accessory_type missing in normalized output.
+monitoring_after_launch:
+  top_confused_routes:
+  - FASH.BAGS
+  - FASH.SHOES
+  - TECH.WEARABLES
+  - FASH.APPAREL
+  review_sample_rate:
+    high_confidence: 0.02
+    gray_zone: 0.25
+    smartwatch_related: 0.5
+    jewelry_precious_claims: 0.5
+  weekly_metrics:
+  - route_accuracy
+  - route_out_precision
+  - accessory_type_accuracy
+  - field_coverage_by_group
+  - manual_override_rate

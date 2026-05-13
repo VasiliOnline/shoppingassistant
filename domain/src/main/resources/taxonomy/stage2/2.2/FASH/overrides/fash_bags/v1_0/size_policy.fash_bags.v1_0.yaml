@@ -1,0 +1,98 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: size_policy.fash_bags.v1_0.yaml
+units:
+  dimensions: cm
+  volume: liter
+  weight: kg
+  laptop_fit: inch
+dimension_semantics:
+  length_cm: Основная горизонтальная длина изделия.
+  height_cm: Вертикальная высота изделия.
+  depth_cm: Глубина / толщина изделия.
+  width_cm: Использовать только когда seller явно различает width и length; иначе не дублировать length.
+  raw_pattern_examples:
+  - 30x20x10
+  - 55×40×20
+  - 15.6 дюймов
+  - объем 25 л
+  - 35 литров
+normalization_rules:
+- pattern: (\d{2,3})\s*[xх×]\s*(\d{2,3})\s*[xх×]\s*(\d{1,3})
+  target:
+  - length_cm
+  - height_cm
+  - depth_cm
+  confidence: 0.75
+- pattern: (\d{1,3}(?:[\.,]\d)?)\s*(л|литр|литров|l)
+  target:
+  - volume_liter
+  confidence: 0.85
+- pattern: (\d{1,2}(?:[\.,]\d)?)\s*(?:дюйм|дюймов|inch|\")
+  target:
+  - fits_laptop_inch
+  confidence: 0.8
+- pattern: (\d(?:[\.,]\d)?)\s*(кг|kg)
+  target:
+  - weight_kg
+  confidence: 0.8
+size_class_derivation:
+  general_bags:
+  - if: volume_liter < 3 OR max_dimension_cm < 18
+    set: MINI
+  - if: 3 <= volume_liter < 10 OR 18 <= max_dimension_cm < 28
+    set: SMALL
+  - if: 10 <= volume_liter < 25 OR 28 <= max_dimension_cm < 40
+    set: MEDIUM
+  - if: 25 <= volume_liter < 45 OR 40 <= max_dimension_cm < 55
+    set: LARGE
+  - if: volume_liter >= 45 OR max_dimension_cm >= 55
+    set: XL
+  suitcase:
+  - if: seller_text contains ручная кладь/cabin
+    set: CABIN
+  - if: height_cm <= 56 AND depth_cm <= 25 AND seller_text contains ручная кладь
+    set: CABIN
+  - if: 56 < height_cm <= 70
+    set: CHECKED_MEDIUM
+  - if: height_cm > 70
+    set: CHECKED_LARGE
+  laptop_sleeve:
+  - if: bag_type=LAPTOP_SLEEVE
+    set: FLAT
+laptop_fit_policy:
+  allowed_inches:
+  - 10
+  - 11
+  - 12
+  - 13
+  - 13.3
+  - 14
+  - 15
+  - 15.6
+  - 16
+  - 17
+  - 17.3
+  - 18
+  rounding: Сохранять 15.6 и 17.3; не округлять до целых, если decimal указан явно.
+  document_size_mapping:
+    '13': LAPTOP_13
+    '14': LAPTOP_14
+    '15.6': LAPTOP_15_16
+    '16': LAPTOP_15_16
+    '17': LAPTOP_17
+cabin_baggage_policy:
+  do_not_guarantee_airline_acceptance: true
+  set_CABIN_APPROVED_only_if:
+  - seller_text contains ручная кладь/cabin
+  - marketplace provides cabin flag
+  set_CHECK_AIRLINE_if:
+  - only dimensions such as 55x40x20 are present without explicit cabin claim
+wallet_cardholder_size_policy:
+  priority_dimensions:
+  - length_cm
+  - height_cm
+  - depth_cm
+  key_functional_fields:
+  - card_slots_count
+  - coin_pocket
+  - document_size

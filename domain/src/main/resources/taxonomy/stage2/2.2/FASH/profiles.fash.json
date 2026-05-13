@@ -96,47 +96,137 @@
       "title": "Обувь",
       "parentCode": "FASH",
       "description": null,
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "titleRu": "Обувь",
+      "titleEn": "Shoes"
     },
     "attributes": [
+      {
+        "code": "shoe_type",
+        "title": "Тип обуви",
+        "dataType": "ENUM",
+        "requiredForSearch": true,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "shoe_type"
+      },
+      {
+        "code": "target_gender",
+        "title": "Пол / целевая аудитория",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "target_gender"
+      },
+      {
+        "code": "age_group",
+        "title": "Возрастная группа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "age_group"
+      },
       {
         "code": "brand",
         "title": "Бренд",
         "dataType": "STRING",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
       },
       {
-        "code": "model_line",
-        "title": "Линейка",
+        "code": "model_name_text",
+        "title": "Модель / линейка текстом",
         "dataType": "STRING",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "size_eu",
+        "title": "Размер EU",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
       },
       {
-        "code": "gender",
-        "title": "Пол",
-        "dataType": "ENUM",
+        "code": "size_ru",
+        "title": "Размер RU",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "gender"
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_size_text",
+        "title": "Размер как у продавца",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "size_system",
+        "title": "Система размеров",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "size_system"
+      },
+      {
+        "code": "foot_length_cm",
+        "title": "Длина стопы",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "insole_length_cm",
+        "title": "Длина стельки",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       },
       {
         "code": "condition",
         "title": "Состояние",
         "dataType": "ENUM",
-        "requiredForSearch": false,
+        "requiredForSearch": true,
         "requiredForOffer": true,
         "requiredForExpress": false,
         "facetEnabled": true,
@@ -144,86 +234,163 @@
         "valueDictCode": "condition"
       },
       {
-        "code": "size_eu",
-        "title": "Размер EU",
-        "dataType": "DECIMAL",
-        "requiredForSearch": false,
+        "code": "pair_completeness",
+        "title": "Комплектность пары",
+        "dataType": "ENUM",
+        "requiredForSearch": true,
         "requiredForOffer": true,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "pair_completeness"
       },
       {
-        "code": "size_uk",
-        "title": "Размер UK",
-        "dataType": "DECIMAL",
+        "code": "color_primary",
+        "title": "Основной цвет",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "color_primary"
       },
       {
-        "code": "size_us",
-        "title": "Размер US",
-        "dataType": "DECIMAL",
+        "code": "color_secondary",
+        "title": "Дополнительный цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "color_secondary"
+      },
+      {
+        "code": "season",
+        "title": "Сезон",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "colorway",
-        "title": "Окраска/колорвей",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "release_year",
-        "title": "Год релиза",
-        "dataType": "INT",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "limited_edition",
-        "title": "Лимитированное издание",
-        "dataType": "BOOL",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "season"
       },
       {
         "code": "material_upper",
         "title": "Материал верха",
-        "dataType": "STRING",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material_upper"
+      },
+      {
+        "code": "material_lining",
+        "title": "Материал подкладки",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
+        "multiValued": true,
+        "valueDictCode": "material_lining"
       },
       {
         "code": "material_sole",
         "title": "Материал подошвы",
-        "dataType": "STRING",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "material_sole"
+      },
+      {
+        "code": "closure_type",
+        "title": "Тип застёжки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "closure_type"
+      },
+      {
+        "code": "width_fit",
+        "title": "Полнота / колодка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "width_fit"
+      },
+      {
+        "code": "sport_purpose",
+        "title": "Спортивное назначение",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "sport_purpose"
+      },
+      {
+        "code": "sole_type",
+        "title": "Тип подошвы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "sole_type"
+      },
+      {
+        "code": "waterproof_level",
+        "title": "Влагозащита",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waterproof_level"
+      },
+      {
+        "code": "insulation",
+        "title": "Утепление",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "insulation"
+      },
+      {
+        "code": "shaft_height",
+        "title": "Высота голенища",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "shaft_height"
+      },
+      {
+        "code": "shaft_height_cm",
+        "title": "Высота голенища, см",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -232,9 +399,9 @@
         "valueDictCode": null
       },
       {
-        "code": "type_of_item",
-        "title": "Тип товара",
-        "dataType": "STRING",
+        "code": "heel_height_cm",
+        "title": "Высота каблука, см",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -243,8 +410,52 @@
         "valueDictCode": null
       },
       {
-        "code": "primary_color",
-        "title": "Основной цвет",
+        "code": "heel_type",
+        "title": "Тип каблука",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "heel_type"
+      },
+      {
+        "code": "toe_shape",
+        "title": "Форма носа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "toe_shape"
+      },
+      {
+        "code": "platform_height_cm",
+        "title": "Высота платформы, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "orthopedic_feature",
+        "title": "Ортопедические особенности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "orthopedic_feature"
+      },
+      {
+        "code": "age_label",
+        "title": "Возрастная метка продавца",
         "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
@@ -254,8 +465,19 @@
         "valueDictCode": null
       },
       {
-        "code": "secondary_color",
-        "title": "Дополнительный цвет",
+        "code": "child_height_cm",
+        "title": "Рост ребёнка, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "defect_notes",
+        "title": "Описание дефектов",
         "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
@@ -265,30 +487,8 @@
         "valueDictCode": null
       },
       {
-        "code": "pattern",
-        "title": "Узор",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "visible_label_text",
-        "title": "Текст этикетки/лейбла",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "visible_logo_present",
-        "title": "Виден логотип",
+        "code": "original_box",
+        "title": "Оригинальная коробка",
         "dataType": "BOOL",
         "requiredForSearch": false,
         "requiredForOffer": false,
@@ -296,120 +496,407 @@
         "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "authenticity_status",
+        "title": "Статус оригинальности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "authenticity_status"
       }
     ],
     "categoryAttributes": [
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "type_of_item",
-        "uiOrder": 0,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "FASH.SHOES",
-        "attributeCode": "brand",
+        "attributeCode": "shoe_type",
         "uiOrder": 1,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "model_line",
+        "attributeCode": "target_gender",
         "uiOrder": 2,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "gender",
+        "attributeCode": "age_group",
         "uiOrder": 3,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "condition",
+        "attributeCode": "brand",
         "uiOrder": 4,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "model_name_text",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
         "attributeCode": "size_eu",
-        "uiOrder": 5,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.SHOES",
-        "attributeCode": "size_uk",
         "uiOrder": 6,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "size_us",
+        "attributeCode": "size_ru",
         "uiOrder": 7,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "colorway",
+        "attributeCode": "raw_size_text",
         "uiOrder": 8,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "release_year",
+        "attributeCode": "size_system",
         "uiOrder": 9,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "limited_edition",
+        "attributeCode": "foot_length_cm",
         "uiOrder": 10,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "material_upper",
+        "attributeCode": "insole_length_cm",
         "uiOrder": 11,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "material_sole",
+        "attributeCode": "condition",
         "uiOrder": 12,
-        "isRequiredForCategory": false
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "primary_color",
+        "attributeCode": "pair_completeness",
         "uiOrder": 13,
-        "isRequiredForCategory": false
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "secondary_color",
+        "attributeCode": "color_primary",
         "uiOrder": 14,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "pattern",
+        "attributeCode": "color_secondary",
         "uiOrder": 15,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "visible_label_text",
+        "attributeCode": "season",
         "uiOrder": 16,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.SHOES",
-        "attributeCode": "visible_logo_present",
+        "attributeCode": "material_upper",
         "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "material_lining",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "material_sole",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "closure_type",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "width_fit",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "sport_purpose",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "sole_type",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "waterproof_level",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "insulation",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "shaft_height",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "shaft_height_cm",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "heel_height_cm",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "heel_type",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "toe_shape",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "platform_height_cm",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "orthopedic_feature",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "age_label",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "child_height_cm",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "defect_notes",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "original_box",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "authenticity_status",
+        "uiOrder": 37,
         "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "sport_purpose",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RUNNING_SHOES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "sport_purpose",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SPORT_SHOES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "sport_purpose",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "FOOTBALL_BOOTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "sole_type",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "FOOTBALL_BOOTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "season",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WINTER_BOOTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "insulation",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WINTER_BOOTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "waterproof_level",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RUBBER_BOOTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "material_upper",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RUBBER_BOOTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "sport_purpose",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HIKING_SHOES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "heel_height_cm",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HEELS",
+              "PUMPS",
+              "WEDGES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "heel_type",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HEELS",
+              "PUMPS",
+              "WEDGES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "age_group",
+        "whenAll": [
+          {
+            "attributeCode": "shoe_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "KIDS_SHOES",
+              "BABY_SHOES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "defect_notes",
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "DEFECTS_OR_REPAIR"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "category": {
@@ -417,69 +904,159 @@
       "segment": "FASH",
       "title": "Аксессуары",
       "parentCode": "FASH",
-      "description": null,
-      "status": "ACTIVE"
+      "description": "Модные аксессуары: ремни, головные уборы, украшения, не-smart часы, очки, галстуки, зонты и другие fashion residual accessories.",
+      "status": "ACTIVE",
+      "titleRu": "Модные аксессуары",
+      "titleEn": "Fashion accessories"
     },
     "attributes": [
+      {
+        "code": "accessory_group",
+        "title": "Группа аксессуара",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "accessory_group"
+      },
+      {
+        "code": "accessory_type",
+        "title": "Тип аксессуара",
+        "dataType": "ENUM",
+        "requiredForSearch": true,
+        "requiredForOffer": true,
+        "requiredForExpress": true,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "accessory_type"
+      },
+      {
+        "code": "target_gender",
+        "title": "Целевая аудитория по полу",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "target_gender"
+      },
+      {
+        "code": "age_group",
+        "title": "Возрастная группа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "age_group"
+      },
       {
         "code": "brand",
         "title": "Бренд",
         "dataType": "STRING",
         "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "model_line",
-        "title": "Линейка",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "gender",
-        "title": "Пол",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "gender"
+        "valueDictCode": null
+      },
+      {
+        "code": "model_name_text",
+        "title": "Модель / линейка текстом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       },
       {
         "code": "condition",
         "title": "Состояние",
         "dataType": "ENUM",
-        "requiredForSearch": false,
+        "requiredForSearch": true,
         "requiredForOffer": true,
-        "requiredForExpress": false,
+        "requiredForExpress": true,
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "condition"
       },
       {
-        "code": "material",
-        "title": "Материал",
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material_primary",
+        "title": "Основной материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material_primary"
+      },
+      {
+        "code": "material_secondary",
+        "title": "Дополнительный материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material_secondary"
+      },
+      {
+        "code": "pattern",
+        "title": "Принт / узор",
         "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "material"
+        "valueDictCode": "pattern"
       },
       {
-        "code": "colorway",
-        "title": "Окраска/колорвей",
-        "dataType": "STRING",
+        "code": "season",
+        "title": "Сезон",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "season"
+      },
+      {
+        "code": "size_label",
+        "title": "Размер текстом",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "size_label"
+      },
+      {
+        "code": "set_quantity",
+        "title": "Количество в комплекте",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -488,8 +1065,338 @@
         "valueDictCode": null
       },
       {
-        "code": "type_of_item",
-        "title": "Тип товара",
+        "code": "included_items",
+        "title": "Состав комплекта",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "included_items"
+      },
+      {
+        "code": "belt_size_cm",
+        "title": "Размер ремня",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "waist_size_cm",
+        "title": "Обхват талии",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "belt_length_cm",
+        "title": "Длина ремня",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "belt_width_cm",
+        "title": "Ширина ремня",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "buckle_material",
+        "title": "Материал пряжки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "buckle_material"
+      },
+      {
+        "code": "buckle_type",
+        "title": "Тип пряжки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "buckle_type"
+      },
+      {
+        "code": "adjustable",
+        "title": "Регулируемый размер",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "head_size_cm",
+        "title": "Обхват головы",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "hat_size_label",
+        "title": "Размер головного убора",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "hat_size_label"
+      },
+      {
+        "code": "brim_type",
+        "title": "Тип козырька / полей",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "brim_type"
+      },
+      {
+        "code": "closure_type",
+        "title": "Тип застежки / фиксации",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "closure_type"
+      },
+      {
+        "code": "accessory_length_cm",
+        "title": "Длина изделия",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "accessory_width_cm",
+        "title": "Ширина изделия",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "scarf_shape",
+        "title": "Форма шарфа/платка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "scarf_shape"
+      },
+      {
+        "code": "tie_width_type",
+        "title": "Ширина галстука",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "tie_width_type"
+      },
+      {
+        "code": "pre_tied",
+        "title": "Завязанный заранее",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "glove_size",
+        "title": "Размер перчаток",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "glove_size"
+      },
+      {
+        "code": "lining_material",
+        "title": "Материал подкладки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "lining_material"
+      },
+      {
+        "code": "insulation",
+        "title": "Утепление",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "insulation"
+      },
+      {
+        "code": "waterproof_level",
+        "title": "Влагозащита",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waterproof_level"
+      },
+      {
+        "code": "touchscreen_compatible",
+        "title": "Совместимость с тачскрином",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "frame_shape",
+        "title": "Форма оправы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "frame_shape"
+      },
+      {
+        "code": "frame_material",
+        "title": "Материал оправы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "frame_material"
+      },
+      {
+        "code": "lens_color",
+        "title": "Цвет линз",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "lens_color"
+      },
+      {
+        "code": "lens_category",
+        "title": "Категория затемнения линз",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "lens_category"
+      },
+      {
+        "code": "uv_protection",
+        "title": "UV-защита",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "uv_protection"
+      },
+      {
+        "code": "polarized",
+        "title": "Поляризация",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "prescription_compatible",
+        "title": "Под диоптрические линзы",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "metal_type",
+        "title": "Тип металла",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "metal_type"
+      },
+      {
+        "code": "metal_purity",
+        "title": "Проба / чистота металла",
         "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
@@ -499,64 +1406,240 @@
         "valueDictCode": null
       },
       {
-        "code": "primary_color",
-        "title": "Основной цвет",
-        "dataType": "STRING",
+        "code": "stone_type",
+        "title": "Камень / вставка",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "stone_type"
+      },
+      {
+        "code": "ring_size_ru",
+        "title": "Размер кольца RU",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
       },
       {
-        "code": "secondary_color",
-        "title": "Дополнительный цвет",
-        "dataType": "STRING",
+        "code": "chain_length_cm",
+        "title": "Длина цепочки / колье",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
       },
       {
-        "code": "pattern",
-        "title": "Узор",
-        "dataType": "STRING",
+        "code": "bracelet_length_cm",
+        "title": "Длина браслета",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
       },
       {
-        "code": "shape",
-        "title": "Форма",
-        "dataType": "STRING",
+        "code": "clasp_type",
+        "title": "Тип застежки",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "clasp_type"
       },
       {
-        "code": "visible_label_text",
-        "title": "Текст этикетки/лейбла",
-        "dataType": "STRING",
+        "code": "plating",
+        "title": "Покрытие",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "plating"
       },
       {
-        "code": "visible_logo_present",
-        "title": "Виден логотип",
+        "code": "hypoallergenic",
+        "title": "Гипоаллергенность",
         "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "movement_type",
+        "title": "Тип механизма",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "movement_type"
+      },
+      {
+        "code": "analog_digital",
+        "title": "Отображение времени",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "analog_digital"
+      },
+      {
+        "code": "case_diameter_mm",
+        "title": "Диаметр корпуса",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "strap_material",
+        "title": "Материал ремешка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "strap_material"
+      },
+      {
+        "code": "water_resistance_atm",
+        "title": "Водозащита часов",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "water_resistance_atm"
+      },
+      {
+        "code": "battery_status",
+        "title": "Состояние батарейки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "battery_status"
+      },
+      {
+        "code": "watch_style",
+        "title": "Стиль часов",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "watch_style"
+      },
+      {
+        "code": "watch_strap_lug_width_mm",
+        "title": "Ширина крепления ремешка",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "hair_accessory_size",
+        "title": "Размер аксессуара для волос",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "decor_type",
+        "title": "Декор",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "decor_type"
+      },
+      {
+        "code": "umbrella_type",
+        "title": "Тип зонта",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "umbrella_type"
+      },
+      {
+        "code": "foldable",
+        "title": "Складной",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "windproof",
+        "title": "Антиветер",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "windproof"
+      },
+      {
+        "code": "canopy_size_cm",
+        "title": "Диаметр купола",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "route_confidence",
+        "title": "Уверенность маршрута",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -568,85 +1651,491 @@
     "categoryAttributes": [
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "type_of_item",
-        "uiOrder": 0,
+        "attributeCode": "accessory_group",
+        "uiOrder": 1,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "brand",
-        "uiOrder": 1,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "model_line",
+        "attributeCode": "accessory_type",
         "uiOrder": 2,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "gender",
+        "attributeCode": "target_gender",
         "uiOrder": 3,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "condition",
+        "attributeCode": "age_group",
         "uiOrder": 4,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "material",
+        "attributeCode": "brand",
         "uiOrder": 5,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "colorway",
+        "attributeCode": "model_name_text",
         "uiOrder": 6,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "primary_color",
+        "attributeCode": "condition",
         "uiOrder": 7,
-        "isRequiredForCategory": false
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "secondary_color",
+        "attributeCode": "color",
         "uiOrder": 8,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "pattern",
+        "attributeCode": "material_primary",
         "uiOrder": 9,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "shape",
+        "attributeCode": "material_secondary",
         "uiOrder": 10,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "visible_label_text",
+        "attributeCode": "pattern",
         "uiOrder": 11,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.ACCESSORIES",
-        "attributeCode": "visible_logo_present",
+        "attributeCode": "season",
         "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "size_label",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "set_quantity",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "included_items",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "belt_size_cm",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "waist_size_cm",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "belt_length_cm",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "belt_width_cm",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "buckle_material",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "buckle_type",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "adjustable",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "head_size_cm",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "hat_size_label",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "brim_type",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "closure_type",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "accessory_length_cm",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "accessory_width_cm",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "scarf_shape",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "tie_width_type",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "pre_tied",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "glove_size",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "lining_material",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "insulation",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "waterproof_level",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "touchscreen_compatible",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "frame_shape",
+        "uiOrder": 37,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "frame_material",
+        "uiOrder": 38,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "lens_color",
+        "uiOrder": 39,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "lens_category",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "uv_protection",
+        "uiOrder": 41,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "polarized",
+        "uiOrder": 42,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "prescription_compatible",
+        "uiOrder": 43,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "metal_type",
+        "uiOrder": 44,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "metal_purity",
+        "uiOrder": 45,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "stone_type",
+        "uiOrder": 46,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "ring_size_ru",
+        "uiOrder": 47,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "chain_length_cm",
+        "uiOrder": 48,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "bracelet_length_cm",
+        "uiOrder": 49,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "clasp_type",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "plating",
+        "uiOrder": 51,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "hypoallergenic",
+        "uiOrder": 52,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "movement_type",
+        "uiOrder": 53,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "analog_digital",
+        "uiOrder": 54,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "case_diameter_mm",
+        "uiOrder": 55,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "strap_material",
+        "uiOrder": 56,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "water_resistance_atm",
+        "uiOrder": 57,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "battery_status",
+        "uiOrder": 58,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "watch_style",
+        "uiOrder": 59,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "watch_strap_lug_width_mm",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "hair_accessory_size",
+        "uiOrder": 61,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "decor_type",
+        "uiOrder": 62,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "umbrella_type",
+        "uiOrder": 63,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "foldable",
+        "uiOrder": 64,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "windproof",
+        "uiOrder": 65,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "canopy_size_cm",
+        "uiOrder": 66,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "route_confidence",
+        "uiOrder": 67,
         "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "belt_size_cm",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "BELT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "head_size_cm",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HAT",
+              "CAP",
+              "BEANIE",
+              "BERET",
+              "BALACLAVA",
+              "PANAMA_HAT",
+              "VISOR",
+              "HEADBAND_FASHION"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "glove_size",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "GLOVES",
+              "MITTENS",
+              "FINGERLESS_GLOVES"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "ring_size_ru",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RING"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "watch_strap_lug_width_mm",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WATCH_STRAP"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "umbrella_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "UMBRELLA"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "category": {
@@ -659,37 +2148,59 @@
     },
     "attributes": [
       {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
+        "code": "bag_type",
+        "title": "Тип сумки",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": true,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "bag_type"
       },
       {
-        "code": "model_line",
-        "title": "Линейка",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "gender",
-        "title": "Пол",
+        "code": "target_gender",
+        "title": "Пол / целевая аудитория",
         "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "gender"
+        "valueDictCode": "target_gender"
+      },
+      {
+        "code": "age_group",
+        "title": "Возрастная группа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "age_group"
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_name_text",
+        "title": "Модель / линейка текстом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       },
       {
         "code": "condition",
@@ -703,20 +2214,196 @@
         "valueDictCode": "condition"
       },
       {
-        "code": "material",
-        "title": "Материал",
+        "code": "authenticity_state",
+        "title": "Статус оригинальности",
         "dataType": "ENUM",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "material"
+        "valueDictCode": "authenticity_state"
       },
       {
-        "code": "colorway",
-        "title": "Окраска/колорвей",
-        "dataType": "STRING",
+        "code": "color_primary",
+        "title": "Основной цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color_primary"
+      },
+      {
+        "code": "color_secondary",
+        "title": "Дополнительные цвета",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "color_secondary"
+      },
+      {
+        "code": "material_outer",
+        "title": "Внешний материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "material_outer"
+      },
+      {
+        "code": "material_lining",
+        "title": "Материал подкладки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "material_lining"
+      },
+      {
+        "code": "pattern",
+        "title": "Рисунок / фактура",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "pattern"
+      },
+      {
+        "code": "style",
+        "title": "Стиль",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "style"
+      },
+      {
+        "code": "usage_context",
+        "title": "Сценарий использования",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "usage_context"
+      },
+      {
+        "code": "size_class",
+        "title": "Класс размера",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "size_class"
+      },
+      {
+        "code": "length_cm",
+        "title": "Длина, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "width_cm",
+        "title": "Ширина, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "height_cm",
+        "title": "Высота, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "depth_cm",
+        "title": "Глубина, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "volume_liter",
+        "title": "Объём, л",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "weight_kg",
+        "title": "Вес, кг",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "closure_type",
+        "title": "Тип застёжки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "closure_type"
+      },
+      {
+        "code": "strap_type",
+        "title": "Тип ремня / лямок",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "strap_type"
+      },
+      {
+        "code": "strap_count",
+        "title": "Количество ремней / лямок",
+        "dataType": "INT",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -725,9 +2412,339 @@
         "valueDictCode": null
       },
       {
-        "code": "weight_kg",
-        "title": "Вес (кг)",
+        "code": "handle_type",
+        "title": "Тип ручки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "handle_type"
+      },
+      {
+        "code": "handle_drop_cm",
+        "title": "Высота ручек, см",
         "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "strap_length_cm",
+        "title": "Длина ремня, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_adjustable_strap",
+        "title": "Регулируемый ремень",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "is_detachable_strap",
+        "title": "Съёмный ремень",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compartment_count",
+        "title": "Количество отделений",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pocket_count",
+        "title": "Количество карманов",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "laptop_compartment",
+        "title": "Отделение для ноутбука",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "fits_laptop_inch",
+        "title": "Подходит для ноутбука, дюймы",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "laptop_protection_level",
+        "title": "Защита ноутбука",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "laptop_protection_level"
+      },
+      {
+        "code": "waterproof_level",
+        "title": "Влагозащита",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waterproof_level"
+      },
+      {
+        "code": "rain_cover_included",
+        "title": "Дождевик в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "hardware_color",
+        "title": "Цвет фурнитуры",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "hardware_color"
+      },
+      {
+        "code": "lock_type",
+        "title": "Тип замка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "lock_type"
+      },
+      {
+        "code": "wheels_count",
+        "title": "Количество колёс",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wheel_type",
+        "title": "Тип колёс",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wheel_type"
+      },
+      {
+        "code": "cabin_size_status",
+        "title": "Статус ручной клади",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "cabin_size_status"
+      },
+      {
+        "code": "expandable",
+        "title": "Расширяемый объём",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "luggage_shell_type",
+        "title": "Тип корпуса чемодана",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "luggage_shell_type"
+      },
+      {
+        "code": "card_slots_count",
+        "title": "Количество слотов для карт",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "coin_pocket",
+        "title": "Отделение для монет",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "document_size",
+        "title": "Формат документов / устройства",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "document_size"
+      },
+      {
+        "code": "school_grade_group",
+        "title": "Школьная группа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "school_grade_group"
+      },
+      {
+        "code": "orthopedic_back",
+        "title": "Ортопедическая спинка",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "reflective_elements",
+        "title": "Светоотражающие элементы",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "stroller_attachment",
+        "title": "Крепление к коляске",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "dust_bag_included",
+        "title": "Пыльник в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "receipt_included",
+        "title": "Чек в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "authenticity_documents_included",
+        "title": "Документы подлинности",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "set_includes",
+        "title": "Комплект",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "defect_notes",
+        "title": "Описание дефектов",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -739,48 +2756,2742 @@
     "categoryAttributes": [
       {
         "categoryCode": "FASH.BAGS",
-        "attributeCode": "brand",
+        "attributeCode": "bag_type",
         "uiOrder": 1,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.BAGS",
-        "attributeCode": "model_line",
+        "attributeCode": "target_gender",
         "uiOrder": 2,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.BAGS",
-        "attributeCode": "gender",
+        "attributeCode": "age_group",
         "uiOrder": 3,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.BAGS",
-        "attributeCode": "condition",
+        "attributeCode": "brand",
         "uiOrder": 4,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.BAGS",
-        "attributeCode": "material",
+        "attributeCode": "model_name_text",
         "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "condition",
+        "uiOrder": 6,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "FASH.BAGS",
-        "attributeCode": "colorway",
-        "uiOrder": 6,
+        "attributeCode": "authenticity_state",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "color_primary",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "color_secondary",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "material_outer",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "material_lining",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "pattern",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "style",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "usage_context",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "size_class",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "length_cm",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "width_cm",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "height_cm",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "depth_cm",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "volume_liter",
+        "uiOrder": 20,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "FASH.BAGS",
         "attributeCode": "weight_kg",
-        "uiOrder": 7,
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "closure_type",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "strap_type",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "strap_count",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "handle_type",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "handle_drop_cm",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "strap_length_cm",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "is_adjustable_strap",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "is_detachable_strap",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "compartment_count",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "pocket_count",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "laptop_compartment",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "fits_laptop_inch",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "laptop_protection_level",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "waterproof_level",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "rain_cover_included",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "hardware_color",
+        "uiOrder": 37,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "lock_type",
+        "uiOrder": 38,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "wheels_count",
+        "uiOrder": 39,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "wheel_type",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "cabin_size_status",
+        "uiOrder": 41,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "expandable",
+        "uiOrder": 42,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "luggage_shell_type",
+        "uiOrder": 43,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "card_slots_count",
+        "uiOrder": 44,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "coin_pocket",
+        "uiOrder": 45,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "document_size",
+        "uiOrder": 46,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "school_grade_group",
+        "uiOrder": 47,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "orthopedic_back",
+        "uiOrder": 48,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "reflective_elements",
+        "uiOrder": 49,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "stroller_attachment",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "dust_bag_included",
+        "uiOrder": 51,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "receipt_included",
+        "uiOrder": 52,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "authenticity_documents_included",
+        "uiOrder": 53,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "set_includes",
+        "uiOrder": 54,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.BAGS",
+        "attributeCode": "defect_notes",
+        "uiOrder": 55,
         "isRequiredForCategory": false
       }
     ],
-    "valueDictionaries": [],
-    "requiredIfRules": []
+    "valueDictionaries": [
+      {
+        "attributeCode": "bag_type",
+        "code": "bag_type",
+        "entries": [
+          {
+            "canonicalCode": "BACKPACK",
+            "canonicalValue": "Рюкзак",
+            "synonyms": [
+              "рюкзак",
+              "рюкзачок",
+              "backpack",
+              "городской рюкзак"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "SCHOOL_BAG",
+            "canonicalValue": "Школьный рюкзак / ранец",
+            "synonyms": [
+              "школьный рюкзак",
+              "ранец",
+              "школьный ранец",
+              "портфель школьный"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "HANDBAG",
+            "canonicalValue": "Сумка в руку",
+            "synonyms": [
+              "женская сумка",
+              "сумочка",
+              "handbag",
+              "сумка с ручками"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "SHOULDER_BAG",
+            "canonicalValue": "Сумка на плечо",
+            "synonyms": [
+              "сумка на плечо",
+              "shoulder bag",
+              "плечевая сумка"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "CROSSBODY_BAG",
+            "canonicalValue": "Сумка кроссбоди",
+            "synonyms": [
+              "кроссбоди",
+              "crossbody",
+              "сумка через плечо",
+              "через плечо"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "TOTE",
+            "canonicalValue": "Тоут",
+            "synonyms": [
+              "тоут",
+              "tote",
+              "tote bag",
+              "сумка тоут"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "SHOPPER_BAG",
+            "canonicalValue": "Шоппер",
+            "synonyms": [
+              "шоппер",
+              "shopper",
+              "сумка-шоппер",
+              "shopping bag"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "CLUTCH",
+            "canonicalValue": "Клатч",
+            "synonyms": [
+              "клатч",
+              "вечерний клатч",
+              "clutch"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "WAIST_BAG",
+            "canonicalValue": "Поясная сумка",
+            "synonyms": [
+              "поясная сумка",
+              "бананка",
+              "сумка на пояс",
+              "waist bag",
+              "belt bag"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "LAPTOP_BAG",
+            "canonicalValue": "Сумка для ноутбука",
+            "synonyms": [
+              "сумка для ноутбука",
+              "ноутбучная сумка",
+              "laptop bag"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "LAPTOP_SLEEVE",
+            "canonicalValue": "Чехол / sleeve для ноутбука",
+            "synonyms": [
+              "чехол для ноутбука",
+              "laptop sleeve",
+              "слив для ноутбука",
+              "папка для ноутбука"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "TRAVEL_BAG",
+            "canonicalValue": "Дорожная сумка",
+            "synonyms": [
+              "дорожная сумка",
+              "сумка дорожная",
+              "travel bag"
+            ],
+            "rank": 988
+          },
+          {
+            "canonicalCode": "DUFFEL_BAG",
+            "canonicalValue": "Спортивная / duffel сумка",
+            "synonyms": [
+              "спортивная сумка",
+              "duffel",
+              "duffle",
+              "баул"
+            ],
+            "rank": 987
+          },
+          {
+            "canonicalCode": "SUITCASE",
+            "canonicalValue": "Чемодан",
+            "synonyms": [
+              "чемодан",
+              "ручная кладь",
+              "чемодан на колесах",
+              "luggage",
+              "suitcase"
+            ],
+            "rank": 986
+          },
+          {
+            "canonicalCode": "BRIEFCASE",
+            "canonicalValue": "Портфель / дипломат",
+            "synonyms": [
+              "портфель",
+              "дипломат",
+              "briefcase",
+              "деловой портфель"
+            ],
+            "rank": 985
+          },
+          {
+            "canonicalCode": "DOCUMENT_BAG",
+            "canonicalValue": "Папка / сумка для документов",
+            "synonyms": [
+              "папка для документов",
+              "сумка для документов",
+              "document bag",
+              "A4 папка"
+            ],
+            "rank": 984
+          },
+          {
+            "canonicalCode": "WALLET",
+            "canonicalValue": "Кошелёк / портмоне",
+            "synonyms": [
+              "кошелек",
+              "кошелёк",
+              "портмоне",
+              "бумажник",
+              "wallet"
+            ],
+            "rank": 983
+          },
+          {
+            "canonicalCode": "CARDHOLDER",
+            "canonicalValue": "Кардхолдер / визитница",
+            "synonyms": [
+              "кардхолдер",
+              "визитница",
+              "держатель карт",
+              "cardholder"
+            ],
+            "rank": 982
+          },
+          {
+            "canonicalCode": "COSMETIC_BAG",
+            "canonicalValue": "Косметичка / несессер",
+            "synonyms": [
+              "косметичка",
+              "несессер",
+              "beauty case",
+              "cosmetic bag"
+            ],
+            "rank": 981
+          },
+          {
+            "canonicalCode": "DIAPER_BAG",
+            "canonicalValue": "Сумка для мамы / подгузников",
+            "synonyms": [
+              "сумка для мамы",
+              "сумка для коляски",
+              "diaper bag",
+              "сумка для подгузников"
+            ],
+            "rank": 980
+          },
+          {
+            "canonicalCode": "BEACH_BAG",
+            "canonicalValue": "Пляжная сумка",
+            "synonyms": [
+              "пляжная сумка",
+              "beach bag",
+              "соломенная сумка"
+            ],
+            "rank": 979
+          },
+          {
+            "canonicalCode": "DRAWSTRING_BAG",
+            "canonicalValue": "Мешок / gym sack",
+            "synonyms": [
+              "мешок для обуви",
+              "мешок-рюкзак",
+              "gym sack",
+              "drawstring bag"
+            ],
+            "rank": 978
+          }
+        ]
+      },
+      {
+        "attributeCode": "target_gender",
+        "code": "target_gender",
+        "entries": [
+          {
+            "canonicalCode": "MEN",
+            "canonicalValue": "Мужчины",
+            "synonyms": [
+              "мужской",
+              "для мужчин",
+              "men",
+              "male"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "WOMEN",
+            "canonicalValue": "Женщины",
+            "synonyms": [
+              "женский",
+              "для женщин",
+              "women",
+              "female"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "BOYS",
+            "canonicalValue": "Мальчики",
+            "synonyms": [
+              "для мальчика",
+              "мальчику",
+              "boys"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "GIRLS",
+            "canonicalValue": "Девочки",
+            "synonyms": [
+              "для девочки",
+              "девочке",
+              "girls"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "KIDS",
+            "canonicalValue": "Дети",
+            "synonyms": [
+              "детский",
+              "для детей",
+              "kids"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "UNISEX",
+            "canonicalValue": "Унисекс",
+            "synonyms": [
+              "унисекс",
+              "unisex"
+            ],
+            "rank": 994
+          }
+        ]
+      },
+      {
+        "attributeCode": "age_group",
+        "code": "age_group",
+        "entries": [
+          {
+            "canonicalCode": "ADULT",
+            "canonicalValue": "Взрослые",
+            "synonyms": [
+              "взрослый",
+              "adult"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "TEEN",
+            "canonicalValue": "Подростки",
+            "synonyms": [
+              "подростковый",
+              "тинейджер",
+              "teen"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "KIDS",
+            "canonicalValue": "Дети",
+            "synonyms": [
+              "детский",
+              "школьный",
+              "kids"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "TODDLER",
+            "canonicalValue": "Малыши",
+            "synonyms": [
+              "для малыша",
+              "дошкольный",
+              "toddler"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "BABY",
+            "canonicalValue": "Младенцы",
+            "synonyms": [
+              "для новорожденного",
+              "baby"
+            ],
+            "rank": 995
+          }
+        ]
+      },
+      {
+        "attributeCode": "condition",
+        "code": "condition",
+        "entries": [
+          {
+            "canonicalCode": "NEW_WITH_TAGS",
+            "canonicalValue": "Новый с бирками",
+            "synonyms": [
+              "новый с бирками",
+              "с этикеткой",
+              "new with tags"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "NEW_WITHOUT_TAGS",
+            "canonicalValue": "Новый без бирок",
+            "synonyms": [
+              "новый без бирок",
+              "без этикетки",
+              "new without tags"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "LIKE_NEW",
+            "canonicalValue": "Как новый",
+            "synonyms": [
+              "как новый",
+              "идеальное состояние",
+              "like new"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "EXCELLENT",
+            "canonicalValue": "Отличное состояние",
+            "synonyms": [
+              "отличное",
+              "excellent"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "GOOD",
+            "canonicalValue": "Хорошее состояние",
+            "synonyms": [
+              "хорошее",
+              "good"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "FAIR",
+            "canonicalValue": "Удовлетворительное состояние",
+            "synonyms": [
+              "б/у",
+              "есть следы",
+              "fair"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "FOR_REPAIR",
+            "canonicalValue": "Требует ремонта",
+            "synonyms": [
+              "на ремонт",
+              "сломана молния",
+              "for repair"
+            ],
+            "rank": 993
+          }
+        ]
+      },
+      {
+        "attributeCode": "authenticity_state",
+        "code": "authenticity_state",
+        "entries": [
+          {
+            "canonicalCode": "NOT_CLAIMED",
+            "canonicalValue": "Оригинальность не заявлена",
+            "synonyms": [
+              "не указано",
+              "без заявления"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "ORIGINAL_CLAIMED",
+            "canonicalValue": "Заявлен оригинал",
+            "synonyms": [
+              "оригинал",
+              "original"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "ORIGINAL_WITH_DOCS",
+            "canonicalValue": "Оригинал с документами",
+            "synonyms": [
+              "чек",
+              "сертификат",
+              "карта подлинности"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "AUTHENTICITY_UNCERTAIN",
+            "canonicalValue": "Подлинность не подтверждена",
+            "synonyms": [
+              "подлинность не подтверждена",
+              "сомнительно"
+            ],
+            "rank": 996
+          }
+        ]
+      },
+      {
+        "attributeCode": "color_primary",
+        "code": "color_primary",
+        "entries": [
+          {
+            "canonicalCode": "BLACK",
+            "canonicalValue": "Чёрный",
+            "synonyms": [
+              "черный",
+              "чёрный",
+              "black"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "WHITE",
+            "canonicalValue": "Белый",
+            "synonyms": [
+              "белый",
+              "white"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "GRAY",
+            "canonicalValue": "Серый",
+            "synonyms": [
+              "серый",
+              "gray",
+              "grey"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "BEIGE",
+            "canonicalValue": "Бежевый",
+            "synonyms": [
+              "бежевый",
+              "нюд",
+              "beige"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "BROWN",
+            "canonicalValue": "Коричневый",
+            "synonyms": [
+              "коричневый",
+              "brown",
+              "camel"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "RED",
+            "canonicalValue": "Красный",
+            "synonyms": [
+              "красный",
+              "red"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "PINK",
+            "canonicalValue": "Розовый",
+            "synonyms": [
+              "розовый",
+              "pink"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "ORANGE",
+            "canonicalValue": "Оранжевый",
+            "synonyms": [
+              "оранжевый",
+              "orange"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "YELLOW",
+            "canonicalValue": "Жёлтый",
+            "synonyms": [
+              "желтый",
+              "жёлтый",
+              "yellow"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "GREEN",
+            "canonicalValue": "Зелёный",
+            "synonyms": [
+              "зеленый",
+              "зелёный",
+              "green"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "BLUE",
+            "canonicalValue": "Синий",
+            "synonyms": [
+              "синий",
+              "blue"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "NAVY",
+            "canonicalValue": "Тёмно-синий",
+            "synonyms": [
+              "темно-синий",
+              "тёмно-синий",
+              "navy"
+            ],
+            "rank": 988
+          },
+          {
+            "canonicalCode": "PURPLE",
+            "canonicalValue": "Фиолетовый",
+            "synonyms": [
+              "фиолетовый",
+              "purple"
+            ],
+            "rank": 987
+          },
+          {
+            "canonicalCode": "GOLD",
+            "canonicalValue": "Золотой",
+            "synonyms": [
+              "золотой",
+              "gold"
+            ],
+            "rank": 986
+          },
+          {
+            "canonicalCode": "SILVER",
+            "canonicalValue": "Серебристый",
+            "synonyms": [
+              "серебристый",
+              "silver"
+            ],
+            "rank": 985
+          },
+          {
+            "canonicalCode": "BURGUNDY",
+            "canonicalValue": "Бордовый",
+            "synonyms": [
+              "бордовый",
+              "burgundy"
+            ],
+            "rank": 984
+          },
+          {
+            "canonicalCode": "MULTICOLOR",
+            "canonicalValue": "Многоцветный",
+            "synonyms": [
+              "мультиколор",
+              "разноцветный",
+              "multicolor"
+            ],
+            "rank": 983
+          },
+          {
+            "canonicalCode": "TRANSPARENT",
+            "canonicalValue": "Прозрачный",
+            "synonyms": [
+              "прозрачный",
+              "transparent"
+            ],
+            "rank": 982
+          }
+        ]
+      },
+      {
+        "attributeCode": "color_secondary",
+        "code": "color_secondary",
+        "entries": [
+          {
+            "canonicalCode": "BLACK",
+            "canonicalValue": "Чёрный",
+            "synonyms": [
+              "черный",
+              "чёрный",
+              "black"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "WHITE",
+            "canonicalValue": "Белый",
+            "synonyms": [
+              "белый",
+              "white"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "GRAY",
+            "canonicalValue": "Серый",
+            "synonyms": [
+              "серый",
+              "gray",
+              "grey"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "BEIGE",
+            "canonicalValue": "Бежевый",
+            "synonyms": [
+              "бежевый",
+              "нюд",
+              "beige"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "BROWN",
+            "canonicalValue": "Коричневый",
+            "synonyms": [
+              "коричневый",
+              "brown",
+              "camel"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "RED",
+            "canonicalValue": "Красный",
+            "synonyms": [
+              "красный",
+              "red"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "PINK",
+            "canonicalValue": "Розовый",
+            "synonyms": [
+              "розовый",
+              "pink"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "ORANGE",
+            "canonicalValue": "Оранжевый",
+            "synonyms": [
+              "оранжевый",
+              "orange"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "YELLOW",
+            "canonicalValue": "Жёлтый",
+            "synonyms": [
+              "желтый",
+              "жёлтый",
+              "yellow"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "GREEN",
+            "canonicalValue": "Зелёный",
+            "synonyms": [
+              "зеленый",
+              "зелёный",
+              "green"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "BLUE",
+            "canonicalValue": "Синий",
+            "synonyms": [
+              "синий",
+              "blue"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "NAVY",
+            "canonicalValue": "Тёмно-синий",
+            "synonyms": [
+              "темно-синий",
+              "тёмно-синий",
+              "navy"
+            ],
+            "rank": 988
+          },
+          {
+            "canonicalCode": "PURPLE",
+            "canonicalValue": "Фиолетовый",
+            "synonyms": [
+              "фиолетовый",
+              "purple"
+            ],
+            "rank": 987
+          },
+          {
+            "canonicalCode": "GOLD",
+            "canonicalValue": "Золотой",
+            "synonyms": [
+              "золотой",
+              "gold"
+            ],
+            "rank": 986
+          },
+          {
+            "canonicalCode": "SILVER",
+            "canonicalValue": "Серебристый",
+            "synonyms": [
+              "серебристый",
+              "silver"
+            ],
+            "rank": 985
+          },
+          {
+            "canonicalCode": "BURGUNDY",
+            "canonicalValue": "Бордовый",
+            "synonyms": [
+              "бордовый",
+              "burgundy"
+            ],
+            "rank": 984
+          },
+          {
+            "canonicalCode": "MULTICOLOR",
+            "canonicalValue": "Многоцветный",
+            "synonyms": [
+              "мультиколор",
+              "разноцветный",
+              "multicolor"
+            ],
+            "rank": 983
+          },
+          {
+            "canonicalCode": "TRANSPARENT",
+            "canonicalValue": "Прозрачный",
+            "synonyms": [
+              "прозрачный",
+              "transparent"
+            ],
+            "rank": 982
+          }
+        ]
+      },
+      {
+        "attributeCode": "material_outer",
+        "code": "material_outer",
+        "entries": [
+          {
+            "canonicalCode": "LEATHER",
+            "canonicalValue": "Натуральная кожа",
+            "synonyms": [
+              "натуральная кожа",
+              "кожа",
+              "leather"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "FAUX_LEATHER",
+            "canonicalValue": "Искусственная кожа",
+            "synonyms": [
+              "экокожа",
+              "искусственная кожа",
+              "кожзам",
+              "faux leather"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "SUEDE",
+            "canonicalValue": "Замша",
+            "synonyms": [
+              "замша",
+              "suede"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "TEXTILE",
+            "canonicalValue": "Текстиль",
+            "synonyms": [
+              "текстиль",
+              "fabric",
+              "textile"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "NYLON",
+            "canonicalValue": "Нейлон",
+            "synonyms": [
+              "нейлон",
+              "nylon"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "POLYESTER",
+            "canonicalValue": "Полиэстер",
+            "synonyms": [
+              "полиэстер",
+              "polyester"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "CANVAS",
+            "canonicalValue": "Канвас / холст",
+            "synonyms": [
+              "канвас",
+              "холст",
+              "canvas"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "DENIM",
+            "canonicalValue": "Деним",
+            "synonyms": [
+              "джинса",
+              "деним",
+              "denim"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "COTTON",
+            "canonicalValue": "Хлопок",
+            "synonyms": [
+              "хлопок",
+              "cotton"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "VELVET",
+            "canonicalValue": "Бархат",
+            "synonyms": [
+              "бархат",
+              "velvet"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "SATIN",
+            "canonicalValue": "Сатин",
+            "synonyms": [
+              "сатин",
+              "satin"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "MICROFIBER",
+            "canonicalValue": "Микрофибра",
+            "synonyms": [
+              "микрофибра",
+              "microfiber"
+            ],
+            "rank": 988
+          },
+          {
+            "canonicalCode": "PLASTIC",
+            "canonicalValue": "Пластик",
+            "synonyms": [
+              "пластик",
+              "plastic"
+            ],
+            "rank": 987
+          },
+          {
+            "canonicalCode": "SILICONE",
+            "canonicalValue": "Силикон",
+            "synonyms": [
+              "силикон",
+              "silicone"
+            ],
+            "rank": 986
+          },
+          {
+            "canonicalCode": "METAL",
+            "canonicalValue": "Металл",
+            "synonyms": [
+              "металл",
+              "metal"
+            ],
+            "rank": 985
+          },
+          {
+            "canonicalCode": "STRAW",
+            "canonicalValue": "Солома / рафия",
+            "synonyms": [
+              "солома",
+              "рафия",
+              "straw",
+              "raffia"
+            ],
+            "rank": 984
+          },
+          {
+            "canonicalCode": "RUBBER",
+            "canonicalValue": "Резина",
+            "synonyms": [
+              "резина",
+              "rubber"
+            ],
+            "rank": 983
+          },
+          {
+            "canonicalCode": "MIXED",
+            "canonicalValue": "Комбинированный материал",
+            "synonyms": [
+              "комбинированный",
+              "mixed"
+            ],
+            "rank": 982
+          }
+        ]
+      },
+      {
+        "attributeCode": "material_lining",
+        "code": "material_lining",
+        "entries": [
+          {
+            "canonicalCode": "LEATHER",
+            "canonicalValue": "Натуральная кожа",
+            "synonyms": [
+              "натуральная кожа",
+              "кожа",
+              "leather"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "FAUX_LEATHER",
+            "canonicalValue": "Искусственная кожа",
+            "synonyms": [
+              "экокожа",
+              "искусственная кожа",
+              "кожзам",
+              "faux leather"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "SUEDE",
+            "canonicalValue": "Замша",
+            "synonyms": [
+              "замша",
+              "suede"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "TEXTILE",
+            "canonicalValue": "Текстиль",
+            "synonyms": [
+              "текстиль",
+              "fabric",
+              "textile"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "NYLON",
+            "canonicalValue": "Нейлон",
+            "synonyms": [
+              "нейлон",
+              "nylon"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "POLYESTER",
+            "canonicalValue": "Полиэстер",
+            "synonyms": [
+              "полиэстер",
+              "polyester"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "CANVAS",
+            "canonicalValue": "Канвас / холст",
+            "synonyms": [
+              "канвас",
+              "холст",
+              "canvas"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "DENIM",
+            "canonicalValue": "Деним",
+            "synonyms": [
+              "джинса",
+              "деним",
+              "denim"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "COTTON",
+            "canonicalValue": "Хлопок",
+            "synonyms": [
+              "хлопок",
+              "cotton"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "VELVET",
+            "canonicalValue": "Бархат",
+            "synonyms": [
+              "бархат",
+              "velvet"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "SATIN",
+            "canonicalValue": "Сатин",
+            "synonyms": [
+              "сатин",
+              "satin"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "MICROFIBER",
+            "canonicalValue": "Микрофибра",
+            "synonyms": [
+              "микрофибра",
+              "microfiber"
+            ],
+            "rank": 988
+          },
+          {
+            "canonicalCode": "PLASTIC",
+            "canonicalValue": "Пластик",
+            "synonyms": [
+              "пластик",
+              "plastic"
+            ],
+            "rank": 987
+          },
+          {
+            "canonicalCode": "SILICONE",
+            "canonicalValue": "Силикон",
+            "synonyms": [
+              "силикон",
+              "silicone"
+            ],
+            "rank": 986
+          },
+          {
+            "canonicalCode": "METAL",
+            "canonicalValue": "Металл",
+            "synonyms": [
+              "металл",
+              "metal"
+            ],
+            "rank": 985
+          },
+          {
+            "canonicalCode": "STRAW",
+            "canonicalValue": "Солома / рафия",
+            "synonyms": [
+              "солома",
+              "рафия",
+              "straw",
+              "raffia"
+            ],
+            "rank": 984
+          },
+          {
+            "canonicalCode": "RUBBER",
+            "canonicalValue": "Резина",
+            "synonyms": [
+              "резина",
+              "rubber"
+            ],
+            "rank": 983
+          },
+          {
+            "canonicalCode": "MIXED",
+            "canonicalValue": "Комбинированный материал",
+            "synonyms": [
+              "комбинированный",
+              "mixed"
+            ],
+            "rank": 982
+          }
+        ]
+      },
+      {
+        "attributeCode": "pattern",
+        "code": "pattern",
+        "entries": [
+          {
+            "canonicalCode": "SOLID",
+            "canonicalValue": "Однотонный",
+            "synonyms": [
+              "однотонный",
+              "solid"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "LOGO",
+            "canonicalValue": "Логотип",
+            "synonyms": [
+              "логотип",
+              "logo"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "MONOGRAM",
+            "canonicalValue": "Монограмма",
+            "synonyms": [
+              "монограмма",
+              "monogram"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "PRINT",
+            "canonicalValue": "Принт",
+            "synonyms": [
+              "принт",
+              "print"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "FLORAL",
+            "canonicalValue": "Цветочный",
+            "synonyms": [
+              "цветочный",
+              "floral"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "ANIMAL_PRINT",
+            "canonicalValue": "Анималистичный",
+            "synonyms": [
+              "леопард",
+              "зебра",
+              "animal print"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "CHECKED",
+            "canonicalValue": "Клетка",
+            "synonyms": [
+              "клетка",
+              "checked",
+              "plaid"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "STRIPED",
+            "canonicalValue": "Полоска",
+            "synonyms": [
+              "полоска",
+              "striped"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "GEOMETRIC",
+            "canonicalValue": "Геометрия",
+            "synonyms": [
+              "геометрический",
+              "geometric"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "QUILTED",
+            "canonicalValue": "Стёганый",
+            "synonyms": [
+              "стеганый",
+              "стёганый",
+              "quilted"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "EMBOSSED",
+            "canonicalValue": "Тиснение",
+            "synonyms": [
+              "тиснение",
+              "embossed"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "COLOR_BLOCK",
+            "canonicalValue": "Колор-блок",
+            "synonyms": [
+              "color block",
+              "колор-блок"
+            ],
+            "rank": 988
+          }
+        ]
+      },
+      {
+        "attributeCode": "style",
+        "code": "style",
+        "entries": [
+          {
+            "canonicalCode": "CASUAL",
+            "canonicalValue": "Повседневный",
+            "synonyms": [
+              "casual",
+              "повседневный"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "BUSINESS",
+            "canonicalValue": "Деловой",
+            "synonyms": [
+              "деловой",
+              "office",
+              "business"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "CLASSIC",
+            "canonicalValue": "Классический",
+            "synonyms": [
+              "классика",
+              "classic"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "SPORT",
+            "canonicalValue": "Спортивный",
+            "synonyms": [
+              "спорт",
+              "sport"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "EVENING",
+            "canonicalValue": "Вечерний",
+            "synonyms": [
+              "вечерний",
+              "evening"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "STREETWEAR",
+            "canonicalValue": "Streetwear",
+            "synonyms": [
+              "стритвир",
+              "streetwear"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "MINIMALIST",
+            "canonicalValue": "Минимализм",
+            "synonyms": [
+              "минимализм",
+              "minimal"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "VINTAGE",
+            "canonicalValue": "Винтаж",
+            "synonyms": [
+              "винтаж",
+              "vintage"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "LUXURY",
+            "canonicalValue": "Премиум / люкс",
+            "synonyms": [
+              "люкс",
+              "premium",
+              "luxury"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "TRAVEL",
+            "canonicalValue": "Для путешествий",
+            "synonyms": [
+              "travel",
+              "путешествия"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "SCHOOL",
+            "canonicalValue": "Школьный",
+            "synonyms": [
+              "школа",
+              "school"
+            ],
+            "rank": 989
+          }
+        ]
+      },
+      {
+        "attributeCode": "usage_context",
+        "code": "usage_context",
+        "entries": [
+          {
+            "canonicalCode": "DAILY",
+            "canonicalValue": "На каждый день",
+            "synonyms": [
+              "повседневно",
+              "каждый день",
+              "daily"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "WORK",
+            "canonicalValue": "Для работы",
+            "synonyms": [
+              "для работы",
+              "офис",
+              "work"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "SCHOOL",
+            "canonicalValue": "Для школы",
+            "synonyms": [
+              "для школы",
+              "school"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "UNIVERSITY",
+            "canonicalValue": "Для учёбы",
+            "synonyms": [
+              "университет",
+              "учеба",
+              "учёба",
+              "college"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "TRAVEL",
+            "canonicalValue": "Для поездок",
+            "synonyms": [
+              "поездка",
+              "путешествие",
+              "travel"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "SPORT",
+            "canonicalValue": "Для спорта",
+            "synonyms": [
+              "спортзал",
+              "спорт",
+              "gym"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "EVENING",
+            "canonicalValue": "Для выхода",
+            "synonyms": [
+              "вечер",
+              "выход",
+              "party"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "BEACH",
+            "canonicalValue": "Для пляжа",
+            "synonyms": [
+              "пляж",
+              "beach"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "LAPTOP",
+            "canonicalValue": "Для ноутбука",
+            "synonyms": [
+              "ноутбук",
+              "laptop"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "BABY_CARE",
+            "canonicalValue": "Для мамы и ребёнка",
+            "synonyms": [
+              "подгузники",
+              "коляска",
+              "baby"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "CITY",
+            "canonicalValue": "Город",
+            "synonyms": [
+              "городской",
+              "city"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "OUTDOOR",
+            "canonicalValue": "Outdoor",
+            "synonyms": [
+              "поход",
+              "outdoor",
+              "hiking"
+            ],
+            "rank": 988
+          }
+        ]
+      },
+      {
+        "attributeCode": "size_class",
+        "code": "size_class",
+        "entries": [
+          {
+            "canonicalCode": "MINI",
+            "canonicalValue": "Мини",
+            "synonyms": [
+              "мини",
+              "micro",
+              "mini"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "SMALL",
+            "canonicalValue": "Маленький",
+            "synonyms": [
+              "маленький",
+              "small"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "MEDIUM",
+            "canonicalValue": "Средний",
+            "synonyms": [
+              "средний",
+              "medium"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "LARGE",
+            "canonicalValue": "Большой",
+            "synonyms": [
+              "большой",
+              "large"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "XL",
+            "canonicalValue": "Очень большой",
+            "synonyms": [
+              "очень большой",
+              "xl"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "CABIN",
+            "canonicalValue": "Ручная кладь",
+            "synonyms": [
+              "ручная кладь",
+              "cabin"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "CHECKED_MEDIUM",
+            "canonicalValue": "Средний сдаваемый багаж",
+            "synonyms": [
+              "средний чемодан",
+              "checked medium"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "CHECKED_LARGE",
+            "canonicalValue": "Большой сдаваемый багаж",
+            "synonyms": [
+              "большой чемодан",
+              "checked large"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "FLAT",
+            "canonicalValue": "Плоский формат",
+            "synonyms": [
+              "плоский",
+              "flat",
+              "sleeve"
+            ],
+            "rank": 991
+          }
+        ]
+      },
+      {
+        "attributeCode": "closure_type",
+        "code": "closure_type",
+        "entries": [
+          {
+            "canonicalCode": "ZIPPER",
+            "canonicalValue": "Молния",
+            "synonyms": [
+              "молния",
+              "zipper",
+              "zip"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "MAGNET",
+            "canonicalValue": "Магнит",
+            "synonyms": [
+              "магнит",
+              "magnetic"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "BUTTON",
+            "canonicalValue": "Пуговица",
+            "synonyms": [
+              "пуговица",
+              "button"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "SNAP",
+            "canonicalValue": "Кнопка",
+            "synonyms": [
+              "кнопка",
+              "snap"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "BUCKLE",
+            "canonicalValue": "Пряжка",
+            "synonyms": [
+              "пряжка",
+              "buckle"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "DRAWSTRING",
+            "canonicalValue": "Шнурок / кулиска",
+            "synonyms": [
+              "шнурок",
+              "кулиска",
+              "drawstring"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "FLAP",
+            "canonicalValue": "Клапан",
+            "synonyms": [
+              "клапан",
+              "flap"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "CLASP",
+            "canonicalValue": "Фермуар / защёлка",
+            "synonyms": [
+              "фермуар",
+              "защелка",
+              "clasp"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "TWIST_LOCK",
+            "canonicalValue": "Поворотный замок",
+            "synonyms": [
+              "twist lock",
+              "поворотный замок"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "VELCRO",
+            "canonicalValue": "Липучка",
+            "synonyms": [
+              "липучка",
+              "velcro"
+            ],
+            "rank": 990
+          },
+          {
+            "canonicalCode": "OPEN_TOP",
+            "canonicalValue": "Без застёжки / открытый верх",
+            "synonyms": [
+              "без застежки",
+              "открытый верх",
+              "open top"
+            ],
+            "rank": 989
+          },
+          {
+            "canonicalCode": "COMBINATION_LOCK",
+            "canonicalValue": "Кодовый замок",
+            "synonyms": [
+              "кодовый замок",
+              "combination lock"
+            ],
+            "rank": 988
+          },
+          {
+            "canonicalCode": "TSA_LOCK",
+            "canonicalValue": "TSA-замок",
+            "synonyms": [
+              "tsa",
+              "tsa lock"
+            ],
+            "rank": 987
+          },
+          {
+            "canonicalCode": "FRAME_LOCK",
+            "canonicalValue": "Рамочный замок",
+            "synonyms": [
+              "рамочный замок",
+              "frame lock"
+            ],
+            "rank": 986
+          },
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Нет застёжки",
+            "synonyms": [
+              "нет застежки",
+              "none"
+            ],
+            "rank": 985
+          }
+        ]
+      },
+      {
+        "attributeCode": "strap_type",
+        "code": "strap_type",
+        "entries": [
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Без ремня",
+            "synonyms": [
+              "без ремня",
+              "нет ремня"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "TOP_HANDLE",
+            "canonicalValue": "Верхняя ручка",
+            "synonyms": [
+              "верхняя ручка",
+              "top handle"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "SHOULDER_STRAP",
+            "canonicalValue": "Плечевой ремень",
+            "synonyms": [
+              "плечевой ремень",
+              "shoulder strap"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "CROSSBODY_STRAP",
+            "canonicalValue": "Длинный ремень через плечо",
+            "synonyms": [
+              "через плечо",
+              "crossbody strap"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "BACKPACK_STRAPS",
+            "canonicalValue": "Две рюкзачные лямки",
+            "synonyms": [
+              "лямки",
+              "рюкзачные лямки"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "WAIST_BELT",
+            "canonicalValue": "Поясной ремень",
+            "synonyms": [
+              "поясной ремень",
+              "waist belt"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "CHAIN_STRAP",
+            "canonicalValue": "Цепочка",
+            "synonyms": [
+              "цепочка",
+              "chain strap"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "WRIST_STRAP",
+            "canonicalValue": "Петля на запястье",
+            "synonyms": [
+              "петля",
+              "wrist strap"
+            ],
+            "rank": 992
+          },
+          {
+            "canonicalCode": "TROLLEY_HANDLE",
+            "canonicalValue": "Телескопическая ручка",
+            "synonyms": [
+              "телескопическая ручка",
+              "trolley handle"
+            ],
+            "rank": 991
+          },
+          {
+            "canonicalCode": "MIXED",
+            "canonicalValue": "Комбинированные ремни",
+            "synonyms": [
+              "несколько ремней",
+              "mixed"
+            ],
+            "rank": 990
+          }
+        ]
+      },
+      {
+        "attributeCode": "handle_type",
+        "code": "handle_type",
+        "entries": [
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Без ручки",
+            "synonyms": [
+              "без ручки",
+              "none"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "TOP_HANDLE",
+            "canonicalValue": "Одна верхняя ручка",
+            "synonyms": [
+              "верхняя ручка",
+              "top handle"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "DOUBLE_HANDLES",
+            "canonicalValue": "Две ручки",
+            "synonyms": [
+              "две ручки",
+              "double handles"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "SIDE_HANDLE",
+            "canonicalValue": "Боковая ручка",
+            "synonyms": [
+              "боковая ручка",
+              "side handle"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "TELESCOPIC_HANDLE",
+            "canonicalValue": "Телескопическая ручка",
+            "synonyms": [
+              "телескопическая ручка",
+              "выдвижная ручка"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "WRIST_LOOP",
+            "canonicalValue": "Петля на запястье",
+            "synonyms": [
+              "петля на руку",
+              "wrist loop"
+            ],
+            "rank": 994
+          }
+        ]
+      },
+      {
+        "attributeCode": "laptop_protection_level",
+        "code": "laptop_protection_level",
+        "entries": [
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Без защиты",
+            "synonyms": [
+              "без защиты",
+              "none"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "SOFT_PADDED",
+            "canonicalValue": "Мягкая защита",
+            "synonyms": [
+              "мягкая защита",
+              "padded"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "HARD_SHELL",
+            "canonicalValue": "Жёсткий корпус",
+            "synonyms": [
+              "жесткий корпус",
+              "hard shell"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "SUSPENDED_COMPARTMENT",
+            "canonicalValue": "Подвесной отсек",
+            "synonyms": [
+              "подвесной отсек",
+              "suspended"
+            ],
+            "rank": 996
+          }
+        ]
+      },
+      {
+        "attributeCode": "waterproof_level",
+        "code": "waterproof_level",
+        "entries": [
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Не заявлено",
+            "synonyms": [
+              "не указано",
+              "none"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "WATER_RESISTANT",
+            "canonicalValue": "Водоотталкивающий",
+            "synonyms": [
+              "водоотталкивающий",
+              "water resistant"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "WATERPROOF",
+            "canonicalValue": "Водонепроницаемый",
+            "synonyms": [
+              "водонепроницаемый",
+              "waterproof"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "RAIN_COVER_INCLUDED",
+            "canonicalValue": "С дождевиком",
+            "synonyms": [
+              "дождевик",
+              "rain cover"
+            ],
+            "rank": 996
+          }
+        ]
+      },
+      {
+        "attributeCode": "hardware_color",
+        "code": "hardware_color",
+        "entries": [
+          {
+            "canonicalCode": "GOLD",
+            "canonicalValue": "Золотистая фурнитура",
+            "synonyms": [
+              "золото",
+              "gold hardware"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "SILVER",
+            "canonicalValue": "Серебристая фурнитура",
+            "synonyms": [
+              "серебро",
+              "silver hardware"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "GUNMETAL",
+            "canonicalValue": "Графитовая фурнитура",
+            "synonyms": [
+              "gunmetal",
+              "графит"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "BLACK",
+            "canonicalValue": "Чёрная фурнитура",
+            "synonyms": [
+              "черная фурнитура",
+              "black hardware"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "ROSE_GOLD",
+            "canonicalValue": "Розовое золото",
+            "synonyms": [
+              "розовое золото",
+              "rose gold"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "BRONZE",
+            "canonicalValue": "Бронзовая фурнитура",
+            "synonyms": [
+              "бронза",
+              "bronze"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "MIXED",
+            "canonicalValue": "Смешанная фурнитура",
+            "synonyms": [
+              "смешанная",
+              "mixed"
+            ],
+            "rank": 993
+          }
+        ]
+      },
+      {
+        "attributeCode": "lock_type",
+        "code": "lock_type",
+        "entries": [
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Без замка",
+            "synonyms": [
+              "без замка",
+              "none"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "ZIP_LOCK",
+            "canonicalValue": "Замок на молнии",
+            "synonyms": [
+              "замок на молнии",
+              "zip lock"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "TSA_LOCK",
+            "canonicalValue": "TSA-замок",
+            "synonyms": [
+              "tsa",
+              "tsa lock"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "COMBINATION_LOCK",
+            "canonicalValue": "Кодовый замок",
+            "synonyms": [
+              "кодовый",
+              "combination"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "KEY_LOCK",
+            "canonicalValue": "Замок с ключом",
+            "synonyms": [
+              "ключ",
+              "key lock"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "CLASP_LOCK",
+            "canonicalValue": "Защёлка / фермуар",
+            "synonyms": [
+              "защелка",
+              "фермуар",
+              "clasp"
+            ],
+            "rank": 994
+          }
+        ]
+      },
+      {
+        "attributeCode": "wheel_type",
+        "code": "wheel_type",
+        "entries": [
+          {
+            "canonicalCode": "NONE",
+            "canonicalValue": "Без колёс",
+            "synonyms": [
+              "без колес",
+              "без колёс",
+              "none"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "INLINE",
+            "canonicalValue": "Два встроенных колеса",
+            "synonyms": [
+              "2 колеса",
+              "inline"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "SPINNER",
+            "canonicalValue": "Четыре колеса spinner",
+            "synonyms": [
+              "4 колеса",
+              "spinner",
+              "360"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "DOUBLE_SPINNER",
+            "canonicalValue": "Сдвоенные колёса spinner",
+            "synonyms": [
+              "двойные колеса",
+              "double spinner"
+            ],
+            "rank": 996
+          }
+        ]
+      },
+      {
+        "attributeCode": "cabin_size_status",
+        "code": "cabin_size_status",
+        "entries": [
+          {
+            "canonicalCode": "UNKNOWN",
+            "canonicalValue": "Неизвестно",
+            "synonyms": [
+              "не указано",
+              "unknown"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "CABIN_APPROVED",
+            "canonicalValue": "Заявлена ручная кладь",
+            "synonyms": [
+              "ручная кладь",
+              "cabin approved"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "CHECK_AIRLINE",
+            "canonicalValue": "Проверить правила авиакомпании",
+            "synonyms": [
+              "проверить авиакомпанию",
+              "check airline"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "NOT_CABIN",
+            "canonicalValue": "Не ручная кладь",
+            "synonyms": [
+              "не ручная кладь",
+              "not cabin"
+            ],
+            "rank": 996
+          }
+        ]
+      },
+      {
+        "attributeCode": "luggage_shell_type",
+        "code": "luggage_shell_type",
+        "entries": [
+          {
+            "canonicalCode": "SOFT",
+            "canonicalValue": "Мягкий корпус",
+            "synonyms": [
+              "мягкий",
+              "soft"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "HARD",
+            "canonicalValue": "Жёсткий корпус",
+            "synonyms": [
+              "жесткий",
+              "жёсткий",
+              "hard"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "HYBRID",
+            "canonicalValue": "Комбинированный корпус",
+            "synonyms": [
+              "комбинированный",
+              "hybrid"
+            ],
+            "rank": 997
+          }
+        ]
+      },
+      {
+        "attributeCode": "document_size",
+        "code": "document_size",
+        "entries": [
+          {
+            "canonicalCode": "PHONE",
+            "canonicalValue": "Смартфон",
+            "synonyms": [
+              "телефон",
+              "phone"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "PASSPORT",
+            "canonicalValue": "Паспорт",
+            "synonyms": [
+              "паспорт",
+              "passport"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "A5",
+            "canonicalValue": "A5",
+            "synonyms": [
+              "a5"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "A4",
+            "canonicalValue": "A4",
+            "synonyms": [
+              "a4",
+              "документы а4"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "LAPTOP_13",
+            "canonicalValue": "Ноутбук до 13\"",
+            "synonyms": [
+              "13",
+              "13.3",
+              "13 дюймов"
+            ],
+            "rank": 995
+          },
+          {
+            "canonicalCode": "LAPTOP_14",
+            "canonicalValue": "Ноутбук до 14\"",
+            "synonyms": [
+              "14",
+              "14 дюймов"
+            ],
+            "rank": 994
+          },
+          {
+            "canonicalCode": "LAPTOP_15_16",
+            "canonicalValue": "Ноутбук 15–16\"",
+            "synonyms": [
+              "15",
+              "15.6",
+              "16",
+              "15 дюймов"
+            ],
+            "rank": 993
+          },
+          {
+            "canonicalCode": "LAPTOP_17",
+            "canonicalValue": "Ноутбук до 17\"",
+            "synonyms": [
+              "17",
+              "17.3"
+            ],
+            "rank": 992
+          }
+        ]
+      },
+      {
+        "attributeCode": "school_grade_group",
+        "code": "school_grade_group",
+        "entries": [
+          {
+            "canonicalCode": "PRESCHOOL",
+            "canonicalValue": "Дошкольники",
+            "synonyms": [
+              "дошкольник",
+              "садик"
+            ],
+            "rank": 999
+          },
+          {
+            "canonicalCode": "PRIMARY",
+            "canonicalValue": "Начальная школа",
+            "synonyms": [
+              "1 класс",
+              "начальная школа"
+            ],
+            "rank": 998
+          },
+          {
+            "canonicalCode": "MIDDLE_SCHOOL",
+            "canonicalValue": "Средняя школа",
+            "synonyms": [
+              "5 класс",
+              "средняя школа"
+            ],
+            "rank": 997
+          },
+          {
+            "canonicalCode": "HIGH_SCHOOL",
+            "canonicalValue": "Старшая школа",
+            "synonyms": [
+              "старшая школа",
+              "подросток"
+            ],
+            "rank": 996
+          },
+          {
+            "canonicalCode": "UNIVERSITY",
+            "canonicalValue": "Университет",
+            "synonyms": [
+              "университет",
+              "студент"
+            ],
+            "rank": 995
+          }
+        ]
+      }
+    ],
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "defect_notes",
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "FAIR",
+              "FOR_REPAIR"
+            ]
+          }
+        ]
+      }
+    ],
+    "extendsProfiles": []
   }
 ]

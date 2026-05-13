@@ -1,0 +1,289 @@
+{
+  "pack_id": "FASH_ACCESSORIES_PRODUCTION_v1_0_RU",
+  "categoryCode": "FASH.ACCESSORIES",
+  "version": "1.0.0",
+  "validated_at": "2026-05-13",
+  "status": "PASS",
+  "summary": {
+    "required_files_present": true,
+    "missing_files_excluding_checksums_generated_later": [],
+    "unexpected_files": [],
+    "parse_errors": [],
+    "unknown_value_refs": [],
+    "sample_offer_value_errors": [],
+    "alias_action_errors_count": 0,
+    "golden_query_errors_count": 0
+  },
+  "counts": {
+    "attributes": 67,
+    "value_rows": 298,
+    "value_sets": 32,
+    "aliases": 157,
+    "golden_queries": 54,
+    "golden_positive": 32,
+    "golden_route_out": 22,
+    "sample_offers": 15,
+    "yaml_files": 8
+  },
+  "tsv_header_checks": {
+    "attributes.fash_accessories.v1_0.tsv": {
+      "expected": [
+        "attribute_code",
+        "ru_name",
+        "data_type",
+        "cardinality",
+        "requirement_level",
+        "applies_to",
+        "values_ref",
+        "unit",
+        "indexed",
+        "searchable",
+        "facetable",
+        "source_priority",
+        "notes"
+      ],
+      "actual": [
+        "attribute_code",
+        "ru_name",
+        "data_type",
+        "cardinality",
+        "requirement_level",
+        "applies_to",
+        "values_ref",
+        "unit",
+        "indexed",
+        "searchable",
+        "facetable",
+        "source_priority",
+        "notes"
+      ],
+      "pass": true,
+      "row_count": 67
+    },
+    "values.fash_accessories.v1_0.tsv": {
+      "expected": [
+        "value_set",
+        "value_code",
+        "ru_label",
+        "ru_aliases",
+        "sort_order",
+        "description_ru"
+      ],
+      "actual": [
+        "value_set",
+        "value_code",
+        "ru_label",
+        "ru_aliases",
+        "sort_order",
+        "description_ru"
+      ],
+      "pass": true,
+      "row_count": 298
+    },
+    "aliases.fash_accessories.ru.v1_0.tsv": {
+      "expected": [
+        "alias_ru",
+        "normalized_attribute",
+        "normalized_value",
+        "route_action",
+        "target_route",
+        "confidence",
+        "priority",
+        "notes"
+      ],
+      "actual": [
+        "alias_ru",
+        "normalized_attribute",
+        "normalized_value",
+        "route_action",
+        "target_route",
+        "confidence",
+        "priority",
+        "notes"
+      ],
+      "pass": true,
+      "row_count": 157
+    },
+    "golden_queries.fash_accessories.v1_0.tsv": {
+      "expected": [
+        "query",
+        "expected_route",
+        "expected_accessory_type",
+        "expected_group",
+        "expected_gender",
+        "expected_age_group",
+        "expected_guard",
+        "notes"
+      ],
+      "actual": [
+        "query",
+        "expected_route",
+        "expected_accessory_type",
+        "expected_group",
+        "expected_gender",
+        "expected_age_group",
+        "expected_guard",
+        "notes"
+      ],
+      "pass": true,
+      "row_count": 54
+    }
+  },
+  "schema_checks": {
+    "accessory_type_values": 45,
+    "accessory_group_values": 10,
+    "mapped_accessory_types": 45,
+    "unmapped_accessory_types": [],
+    "unknown_mapped_types": [],
+    "unknown_groups_in_schema": [],
+    "value_sets_defined": [
+      "ACCESSORY_GROUP",
+      "ACCESSORY_TYPE",
+      "AGE_GROUP",
+      "ANALOG_DIGITAL",
+      "BATTERY_STATUS",
+      "BRIM_TYPE",
+      "BUCKLE_TYPE",
+      "CLASP_TYPE",
+      "CLOSURE_TYPE",
+      "COLOR",
+      "CONDITION",
+      "DECOR_TYPE",
+      "FRAME_SHAPE",
+      "GLOVE_SIZE",
+      "HAT_SIZE_LABEL",
+      "INSULATION",
+      "LENS_CATEGORY",
+      "MATERIAL",
+      "METAL_TYPE",
+      "MOVEMENT_TYPE",
+      "PATTERN",
+      "PLATING",
+      "SCARF_SHAPE",
+      "SEASON",
+      "STONE_TYPE",
+      "TARGET_GENDER",
+      "TIE_WIDTH_TYPE",
+      "UMBRELLA_TYPE",
+      "UV_PROTECTION",
+      "WATCH_STYLE",
+      "WATERPROOF_LEVEL",
+      "WATER_RESISTANCE_ATM"
+    ],
+    "value_refs_used": [
+      "ACCESSORY_GROUP",
+      "ACCESSORY_TYPE",
+      "AGE_GROUP",
+      "ANALOG_DIGITAL",
+      "BATTERY_STATUS",
+      "BRIM_TYPE",
+      "BUCKLE_TYPE",
+      "CLASP_TYPE",
+      "CLOSURE_TYPE",
+      "COLOR",
+      "CONDITION",
+      "DECOR_TYPE",
+      "FRAME_SHAPE",
+      "GLOVE_SIZE",
+      "HAT_SIZE_LABEL",
+      "INSULATION",
+      "LENS_CATEGORY",
+      "MATERIAL",
+      "METAL_TYPE",
+      "MOVEMENT_TYPE",
+      "PATTERN",
+      "PLATING",
+      "SCARF_SHAPE",
+      "SEASON",
+      "STONE_TYPE",
+      "TARGET_GENDER",
+      "TIE_WIDTH_TYPE",
+      "UMBRELLA_TYPE",
+      "UV_PROTECTION",
+      "WATCH_STYLE",
+      "WATERPROOF_LEVEL",
+      "WATER_RESISTANCE_ATM"
+    ],
+    "all_value_refs_resolved": true
+  },
+  "routing_test_matrix": {
+    "golden_queries_total": 54,
+    "positive_accessory_cases": 32,
+    "route_out_cases": 22,
+    "route_out_targets": [
+      "AUTO.PARTS",
+      "FASH.APPAREL",
+      "FASH.BAGS",
+      "FASH.SHOES",
+      "HEALTH",
+      "SPORT",
+      "SPORT.FITNESS",
+      "TECH.ACCESSORIES",
+      "TECH.WEARABLES",
+      "TOOLS.SAFETY"
+    ],
+    "must_pass_cases": [
+      {
+        "query": "apple watch series 9",
+        "expected_route": "TECH.WEARABLES"
+      },
+      {
+        "query": "ремешок для apple watch 44 мм",
+        "expected_route": "TECH.ACCESSORIES"
+      },
+      {
+        "query": "рюкзак nike черный",
+        "expected_route": "FASH.BAGS"
+      },
+      {
+        "query": "кроссовки nike air force 1",
+        "expected_route": "FASH.SHOES"
+      },
+      {
+        "query": "женское платье zara",
+        "expected_route": "FASH.APPAREL"
+      },
+      {
+        "query": "женский кожаный ремень gucci 90 см",
+        "expected_route": "FASH.ACCESSORIES"
+      }
+    ]
+  },
+  "sample_offer_checks": {
+    "jsonl_parse_pass": true,
+    "sample_offers_total": 15,
+    "all_samples_have_accessory_type": true,
+    "all_samples_have_condition": true,
+    "enum_value_errors": []
+  },
+  "file_sizes_bytes": {
+    "schema_pack.fash_accessories.v1_0.json": 5144,
+    "attributes.fash_accessories.v1_0.tsv": 12156,
+    "values.fash_accessories.v1_0.tsv": 19921,
+    "aliases.fash_accessories.ru.v1_0.tsv": 14726,
+    "conditional_rules.fash_accessories.v1_0.yaml": 8846,
+    "routing_guardrails.fash_accessories.v1_0.yaml": 5617,
+    "route_conflict_layer.fash_common.v1_0.yaml": 3067,
+    "vision_rules.fash_accessories.v1_0.yaml": 4291,
+    "user_surface.fash_accessories.v1_0.yaml": 3871,
+    "facet_schema.fash_accessories.v1_0.yaml": 5072,
+    "golden_queries.fash_accessories.v1_0.tsv": 6179,
+    "sample_offers.fash_accessories.v1_0.jsonl": 6601,
+    "integration_mapping.fash_accessories.v1_0.yaml": 3724,
+    "quality_gates.fash_accessories.v1_0.yaml": 2596,
+    "README_FASH_ACCESSORIES_PRODUCTION_v1_0_RU.md": 6936,
+    "manifest.fash_accessories.v1_0.json": 1846,
+    "validation_report.fash_accessories.v1_0.json": 7449
+  },
+  "checksum_policy": {
+    "algorithm": "sha256",
+    "file": "checksums.sha256.json",
+    "scope": "all files except checksums.sha256.json",
+    "generated_after_validation_report": true
+  },
+  "warnings": [
+    "Generic 'часы' remains a gray-zone signal unless non-smart or smart context is present.",
+    "Jewelry is kept in FASH.ACCESSORIES by default; a platform with a dedicated jewelry vertical may fork JEWELRY via integration_mapping.",
+    "Vision material hints for precious jewelry must not be treated as authenticated material claims."
+  ]
+}

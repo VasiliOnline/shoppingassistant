@@ -1,0 +1,78 @@
+{
+  "id": "validation_report.fash_shoes.v1_0",
+  "categoryCode": "FASH.SHOES",
+  "version": "1.0.0",
+  "generated_at": "2026-05-13T00:00:00+02:00",
+  "status": "PASS",
+  "summary": {
+    "attribute_count": 37,
+    "value_row_count": 186,
+    "value_sets_count": 22,
+    "alias_count": 520,
+    "golden_query_count": 82,
+    "sample_offer_count": 24,
+    "yaml_policy_files": 8,
+    "total_release_files_without_checksums": 17
+  },
+  "route_counts": {
+    "golden_queries_total": 82,
+    "golden_positive_shoes": 60,
+    "golden_negative_or_ambiguous": 22
+  },
+  "checks": [
+    {
+      "check_id": "ATTRIBUTES_UNIQUE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "ENUM_REFS_EXIST",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CONDITIONAL_FIELDS_EXIST",
+      "status": "PASS"
+    },
+    {
+      "check_id": "FACETS_VALID",
+      "status": "PASS"
+    },
+    {
+      "check_id": "GOLDEN_TYPES_VALID",
+      "status": "PASS"
+    },
+    {
+      "check_id": "SAMPLE_OFFERS_VALID",
+      "status": "PASS"
+    },
+    {
+      "check_id": "NEGATIVE_GUARDS_INCLUDED",
+      "status": "PASS",
+      "evidence": [
+        "apparel",
+        "bags",
+        "accessories",
+        "wearable_tech"
+      ]
+    },
+    {
+      "check_id": "SIZE_POLICY_INCLUDED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "VISION_SAFETY_INCLUDED",
+      "status": "PASS"
+    },
+    {
+      "check_id": "MODEL_GRAPH_DISABLED_BY_DESIGN",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "production_ready": true,
+  "notes_ru": [
+    "Пакет рассчитан на P0 production routing и attribute extraction для обуви.",
+    "Brand-aware режим включён; curated model graph намеренно отключён.",
+    "Общий route conflict layer включён отдельным YAML-файлом и продублирован в guardrails."
+  ]
+}

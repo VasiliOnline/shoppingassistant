@@ -1,0 +1,213 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: conditional_rules.fash_bags.v1_0.yaml
+rule_format_version: '1.0'
+principles:
+- bag_type является основным типом; target_gender и age_group не создают дочерних веток.
+- brand-aware extraction включена, но curated model/family graph отсутствует.
+- condition обязателен для resale-листингов; дефекты должны быть явно описаны.
+rules:
+- id: BAGS_CORE_REQUIRED
+  when:
+    categoryCode: FASH.BAGS
+  require:
+  - bag_type
+  - condition
+  recommend:
+  - brand
+  - color_primary
+  - material_outer
+  - size_class
+  severity: ERROR_FOR_STRUCTURED_INGEST
+- id: LOW_CONFIDENCE_TYPE_NEEDS_HEAD_NOUN
+  when:
+    bag_type: null
+    positive_bag_signal: true
+  then:
+    classification_state: FASH.BAGS_CANDIDATE_NEEDS_TYPE
+    ask_or_infer_from_image: true
+  severity: WARN
+- id: BACKPACK_RECOMMENDED_FIELDS
+  when:
+    bag_type_in:
+    - BACKPACK
+    - SCHOOL_BAG
+    - DRAWSTRING_BAG
+  recommend:
+  - volume_liter
+  - strap_type
+  - compartment_count
+  - waterproof_level
+  derive_defaults:
+    strap_type: BACKPACK_STRAPS
+  severity: INFO
+- id: SCHOOL_BAG_CHILD_FIELDS
+  when:
+    bag_type: SCHOOL_BAG
+  recommend:
+  - age_group
+  - school_grade_group
+  - orthopedic_back
+  - reflective_elements
+  - volume_liter
+  derive:
+  - if_text_contains:
+    - ранец
+    - школьный
+    set:
+      age_group: KIDS
+  severity: INFO
+- id: HANDBAG_FAMILY_FIELDS
+  when:
+    bag_type_in:
+    - HANDBAG
+    - SHOULDER_BAG
+    - CROSSBODY_BAG
+    - TOTE
+    - SHOPPER_BAG
+    - CLUTCH
+  recommend:
+  - strap_type
+  - handle_type
+  - hardware_color
+  - style
+  - material_outer
+  severity: INFO
+- id: CROSSBODY_STRAP_RULE
+  when:
+    bag_type: CROSSBODY_BAG
+  set_if_missing:
+    strap_type: CROSSBODY_STRAP
+  recommend:
+  - strap_length_cm
+  - is_adjustable_strap
+  severity: INFO
+- id: WAIST_BAG_RULE
+  when:
+    bag_type: WAIST_BAG
+  set_if_missing:
+    strap_type: WAIST_BELT
+  recommend:
+  - strap_length_cm
+  - is_adjustable_strap
+  severity: INFO
+- id: LAPTOP_BAG_RULE
+  when:
+    bag_type_in:
+    - LAPTOP_BAG
+    - LAPTOP_SLEEVE
+  require_one_of:
+  - fits_laptop_inch
+  - document_size
+  recommend:
+  - laptop_protection_level
+  - material_outer
+  - closure_type
+  valid_ranges:
+    fits_laptop_inch:
+      min: 10
+      max: 18.5
+  severity: WARN_IF_MISSING
+- id: TRAVEL_AND_DUFFEL_RULE
+  when:
+    bag_type_in:
+    - TRAVEL_BAG
+    - DUFFEL_BAG
+  recommend:
+  - volume_liter
+  - length_cm
+  - height_cm
+  - depth_cm
+  - weight_kg
+  - strap_type
+  derive:
+  - if_text_contains:
+    - спортзал
+    - тренировка
+    - gym
+    add:
+      usage_context: SPORT
+  severity: INFO
+- id: SUITCASE_RULE
+  when:
+    bag_type: SUITCASE
+  require_one_of:
+  - size_class
+  - height_cm
+  - volume_liter
+  recommend:
+  - wheels_count
+  - wheel_type
+  - lock_type
+  - luggage_shell_type
+  - cabin_size_status
+  - weight_kg
+  derive:
+  - if_text_contains:
+    - ручная кладь
+    - cabin
+    set:
+      cabin_size_status: CABIN_APPROVED
+      size_class: CABIN
+  - if_text_contains:
+    - tsa
+    set:
+      lock_type: TSA_LOCK
+  severity: WARN_IF_MISSING
+- id: WALLET_CARDHOLDER_RULE
+  when:
+    bag_type_in:
+    - WALLET
+    - CARDHOLDER
+  recommend:
+  - material_outer
+  - card_slots_count
+  - coin_pocket
+  - document_size
+  force_category: FASH.BAGS
+  notes: Кошельки и кардхолдеры не уходят в FASH.ACCESSORIES в этой версии.
+  severity: INFO
+- id: COSMETIC_BAG_RULE
+  when:
+    bag_type: COSMETIC_BAG
+  recommend:
+  - material_outer
+  - waterproof_level
+  - closure_type
+  - size_class
+  derive:
+  - if_text_contains:
+    - прозрачная
+    set:
+      color_primary: TRANSPARENT
+  severity: INFO
+- id: DIAPER_BAG_RULE
+  when:
+    bag_type: DIAPER_BAG
+  recommend:
+  - stroller_attachment
+  - compartment_count
+  - waterproof_level
+  - usage_context
+  derive_defaults:
+    usage_context:
+    - BABY_CARE
+  severity: INFO
+- id: POOR_CONDITION_DEFECTS
+  when:
+    condition_in:
+    - FAIR
+    - FOR_REPAIR
+  require:
+  - defect_notes
+  severity: WARN_IF_MISSING
+- id: AUTHENTICITY_REPLICA_POLICY_REVIEW
+  when_text_contains_any:
+  - копия
+  - реплика
+  - AAA
+  - люкс копия
+  - не оригинал
+  then:
+    route: POLICY_REVIEW
+    suppress_normal_listing: true
+  severity: BLOCK_OR_REVIEW

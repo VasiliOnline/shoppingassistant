@@ -1,0 +1,95 @@
+id: size_policy.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+locale: ru-RU
+canonical_size_fields:
+  primary: size_eu
+  secondary: raw_size_text
+  local: size_ru
+  measurement_helpers:
+  - foot_length_cm
+  - insole_length_cm
+normalization:
+  decimal_separator: dot
+  allow_half_sizes: true
+  range_adult_eu:
+    min: 34
+    max: 50
+  range_teen_eu:
+    min: 32
+    max: 43
+  range_kids_eu:
+    min: 20
+    max: 40
+  range_toddler_eu:
+    min: 18
+    max: 28
+  range_baby_eu:
+    min: 16
+    max: 24
+  range_foot_length_cm:
+    min: 8.0
+    max: 34.0
+  range_insole_length_cm:
+    min: 8.0
+    max: 35.0
+conversion_policy:
+  eu_ru: do_not_force_convert; store both when seller provides both; size_ru can equal local label but size_eu remains canonical
+    when known
+  us_uk: preserve in raw_size_text unless explicit size_system and reliable size chart are present
+  brand_specific: preserve raw_size_text; do not infer EU from model/brand alone
+  cm_to_eu: do_not_convert_for_publish; foot_length_cm/insole_length_cm are helper measurements, not size_eu replacement unless
+    business rules define chart later
+extraction_examples:
+- text: размер 38
+  size_eu: 38
+  raw_size_text: '38'
+  size_system: EU_or_RU_unknown
+- text: EU 42.5
+  size_eu: 42.5
+  raw_size_text: EU 42.5
+  size_system: EU
+- text: 24 см по стельке
+  insole_length_cm: 24.0
+  raw_size_text: 24 см по стельке
+  size_system: CM
+- text: US 8 / EU 39
+  size_eu: 39
+  raw_size_text: US 8 / EU 39
+  size_system: EU
+- text: 25-26
+  raw_size_text: 25-26
+  note: диапазон сохранять; size_eu не заполнять без выбранного размера
+validation_rules:
+- id: SIZE_REQUIRED
+  require_any:
+  - size_eu
+  - raw_size_text
+  severity: error
+- id: ADULT_RANGE
+  when:
+    age_group: ADULT
+  field: size_eu
+  min: 34
+  max: 50
+  severity: warning_if_outside
+- id: KIDS_RANGE
+  when:
+    age_group_any:
+    - KIDS
+    - TODDLER
+    - BABY
+  field: size_eu
+  min: 16
+  max: 40
+  severity: warning_if_outside
+- id: NO_COLOR_TO_GENDER
+  action: never_infer_target_gender_from_color_only
+  severity: error
+- id: NO_VISUAL_SIZE_INFERENCE
+  action: never_infer_size_from_image_without_readable_label_or_text
+  severity: error
+ui_notes_ru:
+- Показывать размер как единый фасет size, но хранить size_eu/raw_size_text раздельно.
+- Для детской обуви поднимать foot_length_cm и insole_length_cm в расширенные фильтры.
+- Для диапазонов размеров оставлять raw_size_text и не выбирать один размер автоматически.

@@ -1,0 +1,148 @@
+{
+  "pack_id": "FASH_ACCESSORIES_PRODUCTION_v1_0_RU",
+  "categoryCode": "FASH.ACCESSORIES",
+  "categoryName": {
+    "ru": "Модные аксессуары",
+    "en": "Fashion accessories"
+  },
+  "pack_type": "category_schema_pack",
+  "version": "1.0.0",
+  "language": [
+    "ru"
+  ],
+  "status": "production",
+  "created_at": "2026-05-13",
+  "extends": null,
+  "domain_scope": {
+    "positive_definition_ru": "Носимые и стилевые аксессуары: ремни, головные уборы, шарфы, перчатки, галстуки, солнцезащитные очки, украшения, не-smart часы, аксессуары для волос, зонты и близкие small fashion items.",
+    "residual_policy_ru": "Категория является управляемой остаточной веткой FASH: принимает аксессуары только после исключения обуви, сумок, одежды, TECH wearable/accessories, beauty/health/protective gear и non-fashion омонимов.",
+    "explicit_exclusions": [
+      "FASH.SHOES: кроссовки, сапоги, ботинки, туфли, сандалии, тапочки и другая обувь",
+      "FASH.BAGS: сумки, рюкзаки, чемоданы, кошельки, кардхолдеры, косметички, чехлы для ноутбука как сумки",
+      "FASH.APPAREL: платья, футболки, куртки, брюки, белье и другая одежда",
+      "TECH.WEARABLES: smart watch, Apple Watch, Samsung Galaxy Watch, фитнес-браслеты, трекеры",
+      "TECH.ACCESSORIES: ремешки/зарядки/чехлы для smartwatch и телефонов",
+      "BEAUTY/HEALTH/SPORT/TOOLS: косметика, медицинские маски, защитные очки, спортивный инвентарь, ремни ГРМ"
+    ]
+  },
+  "maturity": {
+    "brand_layer": "brand_aware",
+    "model_layer": "optional_text_only",
+    "curated_model_graph": false,
+    "size_logic": "type_specific_lightweight",
+    "vision_support": "visual_type_and_material_hints_only",
+    "route_guard_strength": "high"
+  },
+  "canonical_groups": {
+    "BELTS": [
+      "BELT",
+      "SUSPENDERS"
+    ],
+    "HEADWEAR": [
+      "HAT",
+      "CAP",
+      "BEANIE",
+      "BERET",
+      "BALACLAVA",
+      "PANAMA_HAT",
+      "VISOR",
+      "BANDANA",
+      "HEADBAND_FASHION"
+    ],
+    "NECKWEAR": [
+      "SCARF",
+      "SHAWL",
+      "SNOOD",
+      "STOLE",
+      "TIE",
+      "BOW_TIE",
+      "POCKET_SQUARE"
+    ],
+    "HANDWEAR": [
+      "GLOVES",
+      "MITTENS",
+      "FINGERLESS_GLOVES"
+    ],
+    "EYEWEAR": [
+      "SUNGLASSES",
+      "GLASSES_FRAME",
+      "EYEGLASS_CASE"
+    ],
+    "JEWELRY": [
+      "RING",
+      "EARRINGS",
+      "NECKLACE",
+      "BRACELET",
+      "BROOCH",
+      "PENDANT",
+      "CHAIN",
+      "ANKLET",
+      "CUFFLINKS",
+      "CHARM",
+      "JEWELRY_SET"
+    ],
+    "WATCHES": [
+      "WATCHES_NON_SMART",
+      "WATCH_STRAP"
+    ],
+    "HAIR_ACCESSORIES": [
+      "HAIR_CLIP",
+      "HAIR_BAND",
+      "SCRUNCHIE",
+      "HAIR_PIN",
+      "HAIR_COMB"
+    ],
+    "UMBRELLAS": [
+      "UMBRELLA"
+    ],
+    "OTHER_ACCESSORIES": [
+      "KEYCHAIN",
+      "OTHER_ACCESSORY"
+    ]
+  },
+  "core_attributes": {
+    "required": [
+      "accessory_type",
+      "condition"
+    ],
+    "recommended": [
+      "accessory_group",
+      "target_gender",
+      "age_group",
+      "brand",
+      "color",
+      "material_primary"
+    ],
+    "optional_model_text": [
+      "model_name_text"
+    ]
+  },
+  "routing_order_recommendation": [
+    "TECH explicit device/accessory guards",
+    "FASH.SHOES explicit footwear guards",
+    "FASH.BAGS explicit bag/wallet/luggage guards",
+    "FASH.APPAREL explicit garment guards",
+    "FASH.ACCESSORIES positive accessory match",
+    "fallback to parent FASH or OTHER"
+  ],
+  "files": {
+    "schema_pack": "schema_pack.fash_accessories.v1_0.json",
+    "attributes": "attributes.fash_accessories.v1_0.tsv",
+    "values": "values.fash_accessories.v1_0.tsv",
+    "aliases": "aliases.fash_accessories.ru.v1_0.tsv",
+    "conditional_rules": "conditional_rules.fash_accessories.v1_0.yaml",
+    "routing_guardrails": "routing_guardrails.fash_accessories.v1_0.yaml",
+    "route_conflict_layer": "route_conflict_layer.fash_common.v1_0.yaml",
+    "vision_rules": "vision_rules.fash_accessories.v1_0.yaml",
+    "user_surface": "user_surface.fash_accessories.v1_0.yaml",
+    "facet_schema": "facet_schema.fash_accessories.v1_0.yaml",
+    "golden_queries": "golden_queries.fash_accessories.v1_0.tsv",
+    "sample_offers": "sample_offers.fash_accessories.v1_0.jsonl",
+    "integration_mapping": "integration_mapping.fash_accessories.v1_0.yaml",
+    "quality_gates": "quality_gates.fash_accessories.v1_0.yaml",
+    "validation_report": "validation_report.fash_accessories.v1_0.json",
+    "README_FASH_ACCESSORIES_PRODUCTION_v1_0_RU": "README_FASH_ACCESSORIES_PRODUCTION_v1_0_RU.md",
+    "checksums": "checksums.sha256.json",
+    "manifest": "manifest.fash_accessories.v1_0.json"
+  }
+}

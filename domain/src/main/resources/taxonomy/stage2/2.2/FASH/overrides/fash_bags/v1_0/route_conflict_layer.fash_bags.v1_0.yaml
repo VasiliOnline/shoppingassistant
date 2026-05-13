@@ -1,0 +1,76 @@
+layer_id: FASH_ROUTE_CONFLICT_LAYER_BAGS_v1_0
+pack_id: FASH.BAGS@1.0.0-ru
+file: route_conflict_layer.fash_bags.v1_0.yaml
+purpose: Локальный conflict layer для FASH.BAGS, чтобы bags не спорили с apparel, shoes, accessories и TECH.
+canonical_routes:
+  FASH.BAGS:
+  - сумка
+  - рюкзак
+  - чемодан
+  - кошелек
+  - кардхолдер
+  - косметичка
+  - клатч
+  FASH.SHOES:
+  - кроссовки
+  - сапоги
+  - ботинки
+  - туфли
+  - сандалии
+  FASH.APPAREL:
+  - футболка
+  - платье
+  - куртка
+  - брюки
+  - джинсы
+  FASH.ACCESSORIES:
+  - ремень
+  - шарф
+  - шапка
+  - перчатки
+  - очки
+  - украшения
+  - non-smart часы
+  TECH:
+  - apple watch
+  - смарт-часы
+  - фитнес-браслет
+  - чехол для телефона
+priority_matrix:
+- input_pattern: bag_head_noun + shoe_brand
+  example: рюкзак Nike
+  winner: FASH.BAGS
+  loser: FASH.SHOES
+- input_pattern: shoe_head_noun + bag_brand_or_style
+  example: кроссовки Michael Kors
+  winner: FASH.SHOES
+  loser: FASH.BAGS
+- input_pattern: wallet/cardholder
+  example: кожаный кардхолдер
+  winner: FASH.BAGS
+  loser: FASH.ACCESSORIES
+- input_pattern: phone_case
+  example: чехол для iPhone
+  winner: TECH.ACCESSORIES
+  loser: FASH.BAGS
+- input_pattern: laptop_bag_or_sleeve
+  example: сумка для ноутбука 15.6
+  winner: FASH.BAGS
+  loser: TECH.ACCESSORIES
+- input_pattern: smartwatch
+  example: Apple Watch
+  winner: TECH.WEARABLES
+  loser: FASH.ACCESSORIES
+- input_pattern: pet_carrier
+  example: сумка переноска для кошки
+  winner: PET.ACCESSORIES
+  loser: FASH.BAGS
+- input_pattern: cooler_tool_medical_bag
+  example: сумка холодильник
+  winner: NON_FASHION_DOMAIN
+  loser: FASH.BAGS
+fallback_logic:
+  ambiguous_token_sumka: Если есть только слово “сумка” без уточнения, route=FASH.BAGS with bag_type=null/unknown and request/infer
+    type.
+  ambiguous_portfel: портфель без контекста → BRIEFCASE; портфель школьный/ранец → SCHOOL_BAG.
+  ambiguous_case: 'case/чехол маршрутизировать по объекту: ноутбук → FASH.BAGS/LAPTOP_SLEEVE, телефон → TECH.ACCESSORIES.'

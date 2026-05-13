@@ -37,6 +37,8 @@ Category policy:
 - Output cutlery/tableware/dishware/kitchen only when the primary_object is an actual utensil, plate, cup, cookware, or kitchen appliance.
 - For children's apparel, use FASH.KIDS only for clothing. Kids sneakers/footwear route to FASH.SHOES, kids backpacks/bags route to FASH.BAGS, strollers/carseats route to KIDS.STROLLERS_CARSEATS, diapers/baby care route to KIDS.BABY_GEAR, and toys route to KIDS.TOYS_GAMES.
 - For FASH.KIDS, do not infer BOYS, GIRLS, KIDS, or UNISEX from color, print, cartoon character, or style alone. Use text, a readable size tag, listing context, packaging, or an explicit children size grid; otherwise leave target_gender unknown or use the safe category/type only.
+- For FASH.BAGS, route bags, backpacks, luggage, wallets, cardholders, cosmetic bags, laptop bags, and laptop sleeves to FASH.BAGS. Wallet and cardholder do not route to FASH.ACCESSORIES. Phone cases route to TECH.PHONE_ACCESSORIES; pet carriers to PETS.ACCESSORIES; tool, cooler, medical, and camera bags should not be forced into FASH.BAGS unless fashion-bag intent is explicit.
+- Counterfeit or replica bag listings should use policy-review handling rather than a normal listing route.
 
 Identity mode policy:
 - Decide identity mode from the primary_object and visible evidence, not from the broad category name alone.

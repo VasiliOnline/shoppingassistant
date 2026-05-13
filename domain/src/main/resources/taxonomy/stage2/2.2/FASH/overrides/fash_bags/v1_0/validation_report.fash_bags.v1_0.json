@@ -1,0 +1,64 @@
+{
+  "pack_id": "FASH.BAGS@1.0.0-ru",
+  "categoryCode": "FASH.BAGS",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-13T00:00:00Z",
+  "status": "PASS",
+  "summary": {
+    "files_without_checksums_file_at_validation_time": 16,
+    "attributes_count": 55,
+    "value_rows_count": 236,
+    "bag_type_count": 22,
+    "alias_rows_count": 149,
+    "golden_queries_count": 46,
+    "sample_offers_count": 20
+  },
+  "checks": [
+    {
+      "name": "schema_pack_json_parse",
+      "status": "PASS"
+    },
+    {
+      "name": "yaml_files_parse",
+      "status": "PASS"
+    },
+    {
+      "name": "tsv_headers_present",
+      "status": "PASS"
+    },
+    {
+      "name": "bag_type_required",
+      "status": "PASS"
+    },
+    {
+      "name": "condition_required",
+      "status": "PASS"
+    },
+    {
+      "name": "wallet_cardholder_policy_present",
+      "status": "PASS"
+    },
+    {
+      "name": "negative_guards_shoes_apparel_accessories_tech_present",
+      "status": "PASS"
+    },
+    {
+      "name": "golden_queries_min_40",
+      "status": "PASS"
+    },
+    {
+      "name": "sample_offers_jsonl_valid",
+      "status": "PASS"
+    }
+  ],
+  "warnings": [
+    "WALLET/CARDHOLDER intentionally live in FASH.BAGS. If global taxonomy later moves them, update routing_guardrails and route_conflict_layer together.",
+    "Laptop sleeve is treated as FASH.BAGS in this pack. If TECH owns all cases/sleeves globally, set LAPTOP_SLEEVE to secondary candidate.",
+    "Camera/tool/cooler/medical/pet bags are excluded by default despite the word “сумка”."
+  ],
+  "recommended_next_steps": [
+    "Run golden_queries against the production router and compare expected_category/expected_bag_type.",
+    "Add marketplace-specific brand normalizer if the platform already has one.",
+    "After FASH.SHOES and FASH.ACCESSORIES are produced, merge this local conflict layer into a global FASH route conflict layer."
+  ]
+}

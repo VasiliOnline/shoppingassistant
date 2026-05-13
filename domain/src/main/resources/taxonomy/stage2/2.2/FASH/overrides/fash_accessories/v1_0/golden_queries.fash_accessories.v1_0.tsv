@@ -1,0 +1,55 @@
+query	expected_route	expected_accessory_type	expected_group	expected_gender	expected_age_group	expected_guard	notes
+женский кожаный ремень gucci 90 см	FASH.ACCESSORIES	BELT	BELTS	WOMEN	ADULT	POSITIVE_ACCESSORY	belt size and brand extraction
+мужской ремень для брюк черный	FASH.ACCESSORIES	BELT	BELTS	MEN	ADULT	POSITIVE_ACCESSORY	fashion belt not auto/sport
+детские подтяжки красные	FASH.ACCESSORIES	SUSPENDERS	BELTS	KIDS	KIDS	POSITIVE_ACCESSORY	child modifier stays attribute
+мужская кепка nike черная	FASH.ACCESSORIES	CAP	HEADWEAR	MEN	ADULT	POSITIVE_ACCESSORY	brand + cap
+женская шляпа федора бежевая	FASH.ACCESSORIES	HAT	HEADWEAR	WOMEN	ADULT	POSITIVE_ACCESSORY	hat
+детская зимняя шапка reima	FASH.ACCESSORIES	BEANIE	HEADWEAR	KIDS	KIDS	POSITIVE_ACCESSORY	kids headwear not apparel
+панама bucket hat унисекс	FASH.ACCESSORIES	PANAMA_HAT	HEADWEAR	UNISEX		POSITIVE_ACCESSORY	panama alias
+балаклава fashion черная	FASH.ACCESSORIES	BALACLAVA	HEADWEAR			POSITIVE_ACCESSORY	fashion balaclava
+кашемировый шарф бежевый	FASH.ACCESSORIES	SCARF	NECKWEAR		ADULT	POSITIVE_ACCESSORY	material cashmere
+шелковый шейный платок	FASH.ACCESSORIES	SHAWL	NECKWEAR		ADULT	POSITIVE_ACCESSORY	shawl/scarf distinction
+снуд зимний детский	FASH.ACCESSORIES	SNOOD	NECKWEAR	KIDS	KIDS	POSITIVE_ACCESSORY	snood
+галстук мужской шелковый	FASH.ACCESSORIES	TIE	NECKWEAR	MEN	ADULT	POSITIVE_ACCESSORY	tie
+галстук бабочка черный	FASH.ACCESSORIES	BOW_TIE	NECKWEAR		ADULT	POSITIVE_ACCESSORY	bow tie
+кожаные перчатки женские размер 7	FASH.ACCESSORIES	GLOVES	HANDWEAR	WOMEN	ADULT	POSITIVE_ACCESSORY	glove size
+варежки детские зимние	FASH.ACCESSORIES	MITTENS	HANDWEAR	KIDS	KIDS	POSITIVE_ACCESSORY	mittens
+сенсорные перчатки мужские	FASH.ACCESSORIES	GLOVES	HANDWEAR	MEN	ADULT	POSITIVE_ACCESSORY	touchscreen-compatible
+солнцезащитные очки ray ban aviator	FASH.ACCESSORIES	SUNGLASSES	EYEWEAR		ADULT	POSITIVE_ACCESSORY	sunglasses and model text
+оправа очков gucci женская	FASH.ACCESSORIES	GLASSES_FRAME	EYEWEAR	WOMEN	ADULT	POSITIVE_ACCESSORY	fashion frame
+футляр для очков кожаный	FASH.ACCESSORIES	EYEGLASS_CASE	EYEWEAR		ADULT	POSITIVE_ACCESSORY	case for glasses
+серебряное кольцо 17 размер	FASH.ACCESSORIES	RING	JEWELRY		ADULT	POSITIVE_ACCESSORY	ring size
+серьги гвоздики золото 585	FASH.ACCESSORIES	EARRINGS	JEWELRY		ADULT	POSITIVE_ACCESSORY	metal purity from text
+цепочка серебро 925 45 см	FASH.ACCESSORIES	CHAIN	JEWELRY		ADULT	POSITIVE_ACCESSORY	chain length
+браслет pandora шарм	FASH.ACCESSORIES	BRACELET	JEWELRY		ADULT	POSITIVE_ACCESSORY	jewelry brand
+запонки мужские серебристые	FASH.ACCESSORIES	CUFFLINKS	JEWELRY	MEN	ADULT	POSITIVE_ACCESSORY	cufflinks
+часы casio g shock мужские	FASH.ACCESSORIES	WATCHES_NON_SMART	WATCHES	MEN	ADULT	POSITIVE_ACCESSORY	non-smart by default
+механические часы orient	FASH.ACCESSORIES	WATCHES_NON_SMART	WATCHES		ADULT	POSITIVE_ACCESSORY	mechanical watch
+ремешок для часов кожаный 20 мм	FASH.ACCESSORIES	WATCH_STRAP	WATCHES		ADULT	POSITIVE_ACCESSORY	generic watch strap
+заколка крабик для волос	FASH.ACCESSORIES	HAIR_CLIP	HAIR_ACCESSORIES	WOMEN		POSITIVE_ACCESSORY	hair clip
+резинки для волос набор 10 шт	FASH.ACCESSORIES	HAIR_BAND	HAIR_ACCESSORIES			POSITIVE_ACCESSORY	set quantity
+скранчи бархатные	FASH.ACCESSORIES	SCRUNCHIE	HAIR_ACCESSORIES			POSITIVE_ACCESSORY	scrunchie
+зонт складной автомат черный	FASH.ACCESSORIES	UMBRELLA	UMBRELLAS		ADULT	POSITIVE_ACCESSORY	umbrella type
+брелок michael kors	FASH.ACCESSORIES	KEYCHAIN	OTHER_ACCESSORIES		ADULT	POSITIVE_ACCESSORY	fashion keychain
+рюкзак nike черный	FASH.BAGS					ROUTE_OUT_BAG	backpack belongs to bags
+женская сумка zara	FASH.BAGS			WOMEN	ADULT	ROUTE_OUT_BAG	bag guard
+кошелек женский кожаный	FASH.BAGS			WOMEN	ADULT	ROUTE_OUT_BAG	wallet convention belongs to bags
+кардхолдер michael kors	FASH.BAGS				ADULT	ROUTE_OUT_BAG	cardholder convention belongs to bags
+косметичка victoria secret	FASH.BAGS			WOMEN	ADULT	ROUTE_OUT_BAG	cosmetic bag guard
+кроссовки nike air force 1	FASH.SHOES				ADULT	ROUTE_OUT_SHOES	sneakers guard
+женские сапоги зимние	FASH.SHOES			WOMEN	ADULT	ROUTE_OUT_SHOES	boots guard
+детские ботинки reima	FASH.SHOES			KIDS	KIDS	ROUTE_OUT_SHOES	kids shoes guard
+женское платье zara	FASH.APPAREL			WOMEN	ADULT	ROUTE_OUT_APPAREL	dress guard
+мужская футболка nike	FASH.APPAREL			MEN	ADULT	ROUTE_OUT_APPAREL	t-shirt guard
+детская куртка зимняя	FASH.APPAREL			KIDS	KIDS	ROUTE_OUT_APPAREL	jacket guard
+apple watch series 9	TECH.WEARABLES				ADULT	ROUTE_OUT_TECH	smartwatch guard
+смарт часы samsung galaxy watch	TECH.WEARABLES				ADULT	ROUTE_OUT_TECH	smartwatch guard
+фитнес браслет xiaomi mi band	TECH.WEARABLES				ADULT	ROUTE_OUT_TECH	fitness tracker guard
+ремешок для apple watch 44 мм	TECH.ACCESSORIES				ADULT	ROUTE_OUT_TECH_ACCESSORY	smartwatch strap guard
+чехол для телефона с ремешком	TECH.ACCESSORIES					ROUTE_OUT_TECH_ACCESSORY	phone accessory guard
+защитные очки строительные	TOOLS.SAFETY					ROUTE_OUT_TOOLS	protective eyewear
+очки для плавания speedo	SPORT					ROUTE_OUT_SPORT	sport goggles
+медицинская маска одноразовая	HEALTH					ROUTE_OUT_HEALTH	medical mask
+ремень грм ваз	AUTO.PARTS					ROUTE_OUT_AUTO	belt homonym
+ремень безопасности детский	AUTO.PARTS			KIDS		ROUTE_OUT_AUTO	seat belt homonym
+ремень для йоги	SPORT.FITNESS					ROUTE_OUT_SPORT	yoga strap

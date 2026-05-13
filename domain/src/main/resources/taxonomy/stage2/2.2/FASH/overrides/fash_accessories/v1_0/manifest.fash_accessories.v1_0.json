@@ -1,0 +1,53 @@
+{
+  "pack_id": "FASH_ACCESSORIES_PRODUCTION_v1_0_RU",
+  "categoryCode": "FASH.ACCESSORIES",
+  "pack_type": "category_schema_pack",
+  "version": "1.0.0",
+  "language": "ru",
+  "created_at": "2026-05-13",
+  "status": "production",
+  "description_ru": "Production schema pack for FASH.ACCESSORIES with route guardrails against Shoes/Bags/Apparel/Tech and a shared FASH route conflict layer.",
+  "file_count_expected": 18,
+  "files": [
+    "schema_pack.fash_accessories.v1_0.json",
+    "attributes.fash_accessories.v1_0.tsv",
+    "values.fash_accessories.v1_0.tsv",
+    "aliases.fash_accessories.ru.v1_0.tsv",
+    "conditional_rules.fash_accessories.v1_0.yaml",
+    "routing_guardrails.fash_accessories.v1_0.yaml",
+    "route_conflict_layer.fash_common.v1_0.yaml",
+    "vision_rules.fash_accessories.v1_0.yaml",
+    "user_surface.fash_accessories.v1_0.yaml",
+    "facet_schema.fash_accessories.v1_0.yaml",
+    "golden_queries.fash_accessories.v1_0.tsv",
+    "sample_offers.fash_accessories.v1_0.jsonl",
+    "integration_mapping.fash_accessories.v1_0.yaml",
+    "quality_gates.fash_accessories.v1_0.yaml",
+    "validation_report.fash_accessories.v1_0.json",
+    "README_FASH_ACCESSORIES_PRODUCTION_v1_0_RU.md",
+    "checksums.sha256.json",
+    "manifest.fash_accessories.v1_0.json"
+  ],
+  "counts": {
+    "attributes": 67,
+    "value_rows": 298,
+    "value_sets": 32,
+    "aliases": 157,
+    "golden_queries": 54,
+    "golden_positive": 32,
+    "golden_route_out": 22,
+    "sample_offers": 15,
+    "yaml_files": 8
+  },
+  "maturity": {
+    "brand_layer": "brand_aware",
+    "model_layer": "optional_text_only",
+    "curated_model_graph": false,
+    "route_guard_strength": "high"
+  },
+  "integrity": {
+    "checksum_algorithm": "sha256",
+    "checksum_file": "checksums.sha256.json",
+    "checksum_scope": "all files except checksums.sha256.json"
+  }
+}

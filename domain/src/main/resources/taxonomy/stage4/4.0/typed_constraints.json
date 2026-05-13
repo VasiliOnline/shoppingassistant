@@ -3,6 +3,26 @@
   "schemaVersion": "1.0.0",
   "constraints": [
     {
+      "attributeCode": "accessory_group",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "accessory_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "accessory_subtype",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -17,6 +37,16 @@
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "accessory_width_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -43,6 +73,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "adjustable",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "age_from_months",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -56,6 +96,30 @@
       "attributeCode": "age_group",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "KIDS_SHOES",
+                "BABY_SHOES"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "age_label",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -84,6 +148,16 @@
     },
     {
       "attributeCode": "allergen_profile",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "analog_digital",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -153,7 +227,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "authenticity_documents_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "authenticity_state",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "authenticity_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "bag_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -213,6 +317,59 @@
       "regex": null,
       "minValue": 500.0,
       "maxValue": 12000.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "belt_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "belt_size_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.ACCESSORIES",
+          "whenAll": [
+            {
+              "attributeCode": "accessory_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "BELT"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "belt_width_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
       "requiredIf": []
     },
     {
@@ -283,6 +440,16 @@
       ]
     },
     {
+      "attributeCode": "bracelet_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "brand",
       "valueType": "STRING",
       "enumOnly": false,
@@ -323,9 +490,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "brim_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "buckle_material",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "buckle_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "built_in_cable",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cabin_size_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -357,6 +564,16 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "kcal",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "canopy_size_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -449,6 +666,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "case_diameter_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "case_features",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -522,6 +749,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "chain_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "charge_indicator_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -562,9 +799,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "child_height_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "chipset_family",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "clasp_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -615,6 +872,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "coin_pocket",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "collar_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -657,6 +924,16 @@
     {
       "attributeCode": "colorway",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compartment_count",
+      "valueType": "NUMBER",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -1534,6 +1811,52 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "decor_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "defect_notes",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.BAGS",
+          "whenAll": [
+            {
+              "attributeCode": "condition",
+              "op": "EQUALS_ANY",
+              "values": [
+                "FAIR",
+                "FOR_REPAIR"
+              ]
+            }
+          ]
+        },
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "condition",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DEFECTS_OR_REPAIR"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "defect_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -1581,9 +1904,29 @@
       ]
     },
     {
+      "attributeCode": "depth_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "diameter_cm",
       "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "document_size",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1641,6 +1984,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "dust_bag_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "e_marker_chip",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -1664,6 +2017,16 @@
       "attributeCode": "evidence_policy",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "expandable",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1711,9 +2074,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "fits_laptop_inch",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "inch",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "flavor",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "foldable",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1731,7 +2114,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "foot_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "frame_material",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "frame_shape",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1769,6 +2182,31 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "glove_size",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.ACCESSORIES",
+          "whenAll": [
+            {
+              "attributeCode": "accessory_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GLOVES",
+                "MITTENS",
+                "FINGERLESS_GLOVES"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "gpu_type",
@@ -1814,7 +2252,47 @@
       ]
     },
     {
+      "attributeCode": "hair_accessory_size",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "handle_drop_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "handle_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "hardness_rating",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "hardware_color",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1844,6 +2322,106 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "hat_size_label",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "head_size_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.ACCESSORIES",
+          "whenAll": [
+            {
+              "attributeCode": "accessory_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "HAT",
+                "CAP",
+                "BEANIE",
+                "BERET",
+                "BALACLAVA",
+                "PANAMA_HAT",
+                "VISOR",
+                "HEADBAND_FASHION"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "heel_height_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "HEELS",
+                "PUMPS",
+                "WEDGES"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "heel_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "HEELS",
+                "PUMPS",
+                "WEDGES"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "height_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "hips_cm",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -1867,6 +2445,16 @@
       "attributeCode": "hood",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "hypoallergenic",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1934,6 +2522,39 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "insole_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "insulation",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WINTER_BOOTS"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "insulation_material",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -1949,6 +2570,26 @@
       "enumOnly": false,
       "unit": null,
       "regex": "^IP[0-9]{2}[A-Z]?$",
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_adjustable_strap",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "is_detachable_strap",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
@@ -2024,6 +2665,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "laptop_compartment",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "laptop_protection_level",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "leg_fit",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2034,7 +2695,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "length_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "lens_category",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "lens_color",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -2084,6 +2775,36 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "lining_material",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "lock_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "luggage_shell_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "magnetic_alignment",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -2114,7 +2835,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "material_lining",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "material_outer",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "material_primary",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "material_secondary",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -2141,7 +2892,20 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "RUBBER_BOOTS"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "max_current_amp",
@@ -2227,6 +2991,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "metal_purity",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "metal_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "model",
       "valueType": "STRING",
       "enumOnly": false,
@@ -2238,6 +3022,16 @@
     },
     {
       "attributeCode": "model_line",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "model_name_text",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -2302,6 +3096,16 @@
       ]
     },
     {
+      "attributeCode": "movement_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "neckline",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2345,6 +3149,36 @@
       "attributeCode": "oleophobic_coating",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "original_box",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "orthopedic_back",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "orthopedic_feature",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -2518,6 +3352,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "pair_completeness",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "part_quality_grade",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2588,9 +3432,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "platform_height_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "plating",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pocket_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "pockets",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "polarized",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -2630,6 +3514,26 @@
     {
       "attributeCode": "power_watt",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pre_tied",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "prescription_compatible",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -2773,6 +3677,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "rain_cover_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "raised_camera_lip_mm",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -2795,6 +3709,36 @@
     {
       "attributeCode": "ram_gb",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "raw_size_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "receipt_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "reflective_elements",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -2942,6 +3886,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "ring_size_ru",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "RU",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.ACCESSORIES",
+          "whenAll": [
+            {
+              "attributeCode": "accessory_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "RING"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "rotation_support",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2952,7 +3919,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "route_confidence",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "0..1",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "safety_protections",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "scarf_shape",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "school_grade_group",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -2989,7 +3986,20 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WINTER_BOOTS"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "secondary_color",
@@ -3012,10 +4022,50 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "set_includes",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "set_quantity",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "pcs",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "set_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "shaft_height",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "shaft_height_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3039,6 +4089,16 @@
       "regex": null,
       "minValue": 0.0,
       "maxValue": 3650.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "shoe_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
       "requiredIf": []
     },
     {
@@ -3085,10 +4145,20 @@
       ]
     },
     {
+      "attributeCode": "size_class",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "size_eu",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": null,
+      "unit": "EU",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3099,6 +4169,16 @@
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "size_ru",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "RU",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3185,6 +4265,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "sole_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "FOOTBALL_BOOTS"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "source_text_evidence",
       "valueType": "STRING",
       "enumOnly": false,
@@ -3206,6 +4309,75 @@
     },
     {
       "attributeCode": "spiciness_level",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "sport_purpose",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "FOOTBALL_BOOTS"
+              ]
+            }
+          ]
+        },
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "HIKING_SHOES"
+              ]
+            }
+          ]
+        },
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "RUNNING_SHOES"
+              ]
+            }
+          ]
+        },
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "SPORT_SHOES"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "stone_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3300,9 +4472,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "strap_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "strap_included",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "strap_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "strap_material",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "strap_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -3320,7 +4532,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "stroller_attachment",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "stroller_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "style",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3423,7 +4655,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "tie_width_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "tip_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "toe_shape",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3453,6 +4705,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "touchscreen_compatible",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "tripod_mount_thread",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -3473,7 +4735,50 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "umbrella_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.ACCESSORIES",
+          "whenAll": [
+            {
+              "attributeCode": "accessory_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "UMBRELLA"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "usage_context",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "used_for",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "uv_protection",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3523,6 +4828,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "volume_liter",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "liter",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "volume_ml",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -3547,6 +4862,16 @@
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "waist_size_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3583,7 +4908,50 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "watch_strap_lug_width_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.ACCESSORIES",
+          "whenAll": [
+            {
+              "attributeCode": "accessory_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WATCH_STRAP"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "watch_style",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "water_resistance",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "water_resistance_atm",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3601,6 +4969,29 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "waterproof_level",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "FASH.SHOES",
+          "whenAll": [
+            {
+              "attributeCode": "shoe_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "RUBBER_BOOTS"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "waterproof_pouch_size",
@@ -3659,6 +5050,46 @@
       "attributeCode": "weight_limit_kg",
       "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "wheel_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "wheels_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "width_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "width_fit",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,

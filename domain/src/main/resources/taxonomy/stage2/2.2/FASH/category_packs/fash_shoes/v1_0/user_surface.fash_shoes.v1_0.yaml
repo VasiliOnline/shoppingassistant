@@ -1,0 +1,153 @@
+id: user_surface.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+locale: ru-RU
+ui_groups:
+- group_id: sneakers_sport
+  label_ru: Кроссовки и спорт
+  shoe_types:
+  - SNEAKERS
+  - RUNNING_SHOES
+  - SPORT_SHOES
+  - FOOTBALL_BOOTS
+  priority: 10
+- group_id: boots
+  label_ru: Ботинки и сапоги
+  shoe_types:
+  - BOOTS
+  - ANKLE_BOOTS
+  - WINTER_BOOTS
+  - HIKING_SHOES
+  - RUBBER_BOOTS
+  priority: 20
+- group_id: classic
+  label_ru: Классическая обувь
+  shoe_types:
+  - SHOES
+  - LOAFERS
+  - MOCCASINS
+  - OXFORDS
+  - DERBY
+  priority: 30
+- group_id: open_shoes
+  label_ru: Сандалии и открытая обувь
+  shoe_types:
+  - SANDALS
+  - SLIDES
+  - CLOGS
+  - ESPADRILLES
+  priority: 40
+- group_id: home
+  label_ru: Домашняя обувь
+  shoe_types:
+  - SLIPPERS
+  priority: 50
+- group_id: heels
+  label_ru: Женская обувь на каблуке
+  shoe_types:
+  - HEELS
+  - PUMPS
+  - WEDGES
+  priority: 60
+- group_id: kids
+  label_ru: Детская обувь
+  shoe_types:
+  - KIDS_SHOES
+  - BABY_SHOES
+  priority: 70
+create_offer_minimal_form:
+- attribute: shoe_type
+  label_ru: Тип обуви
+  required: true
+- attribute: target_gender
+  label_ru: Для кого
+  required: false
+- attribute: age_group
+  label_ru: Возраст
+  required: false
+- attribute: brand
+  label_ru: Бренд
+  required: false
+- attribute: model_name_text
+  label_ru: Модель
+  required: false
+- attribute: size_eu
+  label_ru: Размер EU
+  required: false
+- attribute: raw_size_text
+  label_ru: Размер как на бирке
+  required: false
+- attribute: condition
+  label_ru: Состояние
+  required: true
+- attribute: color_primary
+  label_ru: Цвет
+  required: false
+- attribute: season
+  label_ru: Сезон
+  required: false
+- attribute: material_upper
+  label_ru: Материал
+  required: false
+type_specific_forms:
+  WINTER_BOOTS:
+  - insulation
+  - material_lining
+  - waterproof_level
+  - shaft_height
+  RUBBER_BOOTS:
+  - waterproof_level
+  - shaft_height
+  - material_upper
+  HIKING_SHOES:
+  - sport_purpose
+  - sole_type
+  - waterproof_level
+  SNEAKERS:
+  - sport_purpose
+  - sole_type
+  - closure_type
+  - model_name_text
+  RUNNING_SHOES:
+  - sport_purpose
+  - sole_type
+  - model_name_text
+  HEELS:
+  - heel_height_cm
+  - heel_type
+  - toe_shape
+  PUMPS:
+  - heel_height_cm
+  - heel_type
+  - toe_shape
+  WEDGES:
+  - heel_height_cm
+  - heel_type
+  - platform_height_cm
+  KIDS_SHOES:
+  - age_group
+  - foot_length_cm
+  - insole_length_cm
+  - closure_type
+  - orthopedic_feature
+  - waterproof_level
+  BABY_SHOES:
+  - age_group
+  - age_label
+  - foot_length_cm
+  - closure_type
+  - sole_type
+search_result_chips:
+- shoe_type
+- brand
+- size_eu/raw_size_text
+- condition
+- color_primary
+- season
+hidden_or_compliance_fields:
+- authenticity_status
+- child_height_cm
+copy_rules_ru:
+- В UI писать “Размер” единым блоком, но в данных хранить size_eu/raw_size_text.
+- Для детской обуви показывать длину стопы/стельки как подсказку, не заменяющую размер.
+- Не показывать пользователю target_gender, если он был предположен с низкой уверенностью.

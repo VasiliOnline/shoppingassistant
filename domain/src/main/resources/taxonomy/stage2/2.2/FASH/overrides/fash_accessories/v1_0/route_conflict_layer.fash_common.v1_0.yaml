@@ -1,0 +1,103 @@
+meta:
+  layer_id: FASH_ROUTE_CONFLICT_LAYER_v1_0
+  version: 1.0.0
+  created_at: '2026-05-13'
+  purpose: Shared route conflict layer so FASH apparel, shoes, bags and accessories do not compete on overlapping terms.
+canonical_priority:
+- rank: 1
+  route: TECH.WEARABLES / TECH.ACCESSORIES
+  when: Explicit device/smartwatch/fitness-tracker/phone accessory terms.
+- rank: 2
+  route: FASH.SHOES
+  when: Explicit footwear type term.
+- rank: 3
+  route: FASH.BAGS
+  when: Explicit bag, wallet, cardholder, luggage, cosmetic bag, bag strap term.
+- rank: 4
+  route: FASH.APPAREL
+  when: Explicit garment term.
+- rank: 5
+  route: FASH.ACCESSORIES
+  when: Explicit fashion accessory term and no stronger route-out guard.
+- rank: 6
+  route: FASH parent / OTHER
+  when: Fashion context but no safe child route.
+shared_negative_guard_terms:
+  FASH.SHOES:
+  - кроссовки
+  - ботинки
+  - сапоги
+  - туфли
+  - сандалии
+  - лоферы
+  - мокасины
+  - тапочки
+  - шлепанцы
+  - балетки
+  FASH.BAGS:
+  - сумка
+  - рюкзак
+  - клатч
+  - кроссбоди
+  - шоппер
+  - кошелек
+  - кардхолдер
+  - визитница
+  - чемодан
+  - косметичка
+  FASH.APPAREL:
+  - платье
+  - футболка
+  - куртка
+  - пальто
+  - брюки
+  - джинсы
+  - рубашка
+  - юбка
+  - свитер
+  - худи
+  - белье
+  FASH.ACCESSORIES:
+  - ремень
+  - шапка
+  - кепка
+  - шарф
+  - перчатки
+  - галстук
+  - очки солнцезащитные
+  - кольцо
+  - серьги
+  - часы
+  - зонт
+  - заколка
+  TECH:
+  - apple watch
+  - smart watch
+  - смарт-часы
+  - фитнес браслет
+  - galaxy watch
+  - mi band
+  - чехол для телефона
+tie_breakers:
+- pattern: brand + product term
+  rule: 'Product term wins over brand. Example: ''nike рюкзак'' -> FASH.BAGS, ''nike кепка'' -> FASH.ACCESSORIES, ''nike кроссовки''
+    -> FASH.SHOES.'
+- pattern: gender + product term
+  rule: 'Gender modifies target_gender only after route is decided. Example: ''женские сапоги'' -> FASH.SHOES, not FASH.WOMEN
+    apparel.'
+- pattern: child item + parent-like adjective
+  rule: 'Explicit child noun wins. Example: ''детская шапка'' -> FASH.ACCESSORIES with age_group=KIDS, not FASH.KIDS apparel.'
+- pattern: part/accessory of a different category
+  rule: 'Route to owning category when compatibility dominates. Example: ''ремень для сумки'' -> FASH.BAGS; ''ремешок для
+    Apple Watch'' -> TECH.ACCESSORIES.'
+acceptance_tests:
+- query: мужские кроссовки nike
+  expected_route: FASH.SHOES
+- query: женская сумка zara
+  expected_route: FASH.BAGS
+- query: детская куртка reima
+  expected_route: FASH.APPAREL
+- query: женский кожаный ремень
+  expected_route: FASH.ACCESSORIES
+- query: apple watch ремешок
+  expected_route: TECH.ACCESSORIES

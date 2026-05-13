@@ -1,0 +1,107 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: vision_rules.fash_bags.v1_0.yaml
+vision_scope: Image-first and multimodal extraction for FASH.BAGS.
+routing_cues:
+  positive_visual_cues:
+  - корпус сумки/рюкзака с ручками, ремнями, лямками или колёсами
+  - 'кошелёк/cardholder: малый плоский кожаный объект с отделениями для карт/монет'
+  - 'чемодан: прямоугольный корпус, телескопическая ручка, колёса'
+  - 'клатч: небольшой плоский handheld/evening объект без крупных лямок'
+  negative_visual_cues:
+  - пара обуви/подошвы/ботинки → FASH.SHOES
+  - манекен или предмет одежды как основной объект → FASH.APPAREL
+  - watch face/smartwatch screen → TECH или FASH.ACCESSORIES по smart/non-smart
+  - животное внутри переноски → PET.ACCESSORIES, не FASH.BAGS
+type_identification:
+- bag_type: BACKPACK
+  visual_evidence:
+  - две плечевые лямки
+  - спинка
+  - верхняя ручка
+  min_confidence: 0.78
+- bag_type: SCHOOL_BAG
+  visual_evidence:
+  - ранец/жёсткая спинка
+  - детский принт
+  - светоотражающие элементы
+  min_confidence: 0.76
+- bag_type: HANDBAG
+  visual_evidence:
+  - ручки сверху
+  - носится в руке
+  - fashion silhouette
+  min_confidence: 0.72
+- bag_type: SHOULDER_BAG
+  visual_evidence:
+  - один плечевой ремень средней длины
+  min_confidence: 0.7
+- bag_type: CROSSBODY_BAG
+  visual_evidence:
+  - длинный регулируемый ремень
+  - диагональное ношение на модели
+  min_confidence: 0.72
+- bag_type: TOTE
+  visual_evidence:
+  - открытый верх/простая прямоугольная форма
+  - две длинные ручки
+  min_confidence: 0.7
+- bag_type: CLUTCH
+  visual_evidence:
+  - маленький плоский формат
+  - без ручек или цепочка
+  - вечерний декор
+  min_confidence: 0.72
+- bag_type: WAIST_BAG
+  visual_evidence:
+  - короткий широкий поясной ремень
+  - banana shape
+  min_confidence: 0.76
+- bag_type: SUITCASE
+  visual_evidence:
+  - колёса
+  - телескопическая ручка
+  - жёсткий корпус
+  min_confidence: 0.82
+- bag_type: WALLET
+  visual_evidence:
+  - складной кошелёк
+  - монетница
+  - купюрное отделение
+  min_confidence: 0.74
+- bag_type: CARDHOLDER
+  visual_evidence:
+  - плоский держатель карт
+  - нет купюрного отделения
+  min_confidence: 0.74
+- bag_type: COSMETIC_BAG
+  visual_evidence:
+  - малый pouch/несессер
+  - молния
+  - косметика рядом
+  min_confidence: 0.7
+attribute_extraction:
+  always_extract_if_visible:
+  - color_primary
+  - material_outer
+  - pattern
+  - closure_type
+  - strap_type
+  - handle_type
+  - wheels_count
+  extract_condition_cues:
+  - потёртости
+  - царапины
+  - заломы
+  - пятна
+  - сломанная молния
+  - износ углов
+  do_not_infer:
+  - brand unless logo/text is readable or seller text provides it
+  - authenticity_state from logo alone
+  - fits_laptop_inch from image only unless dimensions/device shown
+  - leather vs faux leather unless text/material tag supports it
+image_quality_thresholds:
+  min_primary_object_visibility: 0.6
+  multi_object_policy: Если на фото несколько сумок, извлекать только primary object; для набора ставить set_includes/free
+    text.
+  logo_readability_required_for_brand: true

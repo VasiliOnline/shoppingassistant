@@ -1,0 +1,264 @@
+{
+  "schema_id": "schema_pack.fash_bags.v1_0",
+  "pack_id": "FASH.BAGS@1.0.0-ru",
+  "categoryCode": "FASH.BAGS",
+  "pack_type": "category_schema_pack",
+  "version": "1.0.0",
+  "locale": "ru-RU",
+  "status": "production",
+  "generated_at_utc": "2026-05-13T00:00:00Z",
+  "extends": null,
+  "maturity_mode": "brand-aware + optional model_name_text; no curated brand/family/model graph",
+  "scope": {
+    "include": [
+      "сумки повседневные, деловые, вечерние и дорожные",
+      "рюкзаки, школьные ранцы, сумки для ноутбука и чемоданы",
+      "кошельки, портмоне, кардхолдеры и визитницы",
+      "косметички, несессеры, пляжные и поясные сумки"
+    ],
+    "exclude": [
+      "обувь: кроссовки, сапоги, ботинки, сандалии",
+      "одежда: футболки, куртки, платья, брюки",
+      "обычные аксессуары: ремни, шапки, шарфы, очки, украшения",
+      "smartwatch/fitness band и электронные wearable-устройства",
+      "чехлы для телефонов, tool bags, pet carriers, medical bags, cooler bags, camera bags без fashion-интента"
+    ],
+    "wallet_cardholder_policy": "WALLET и CARDHOLDER намеренно закреплены за FASH.BAGS, а не за FASH.ACCESSORIES, чтобы пользовательский поиск кошельков жил рядом с сумками."
+  },
+  "taxonomy": {
+    "primary_attribute": "bag_type",
+    "type_count": 22,
+    "bag_types": [
+      {
+        "code": "BACKPACK",
+        "label_ru": "Рюкзак",
+        "alias_hint_ru": "рюкзак|рюкзачок|backpack|городской рюкзак"
+      },
+      {
+        "code": "SCHOOL_BAG",
+        "label_ru": "Школьный рюкзак / ранец",
+        "alias_hint_ru": "школьный рюкзак|ранец|школьный ранец|портфель школьный"
+      },
+      {
+        "code": "HANDBAG",
+        "label_ru": "Сумка в руку",
+        "alias_hint_ru": "женская сумка|сумочка|handbag|сумка с ручками"
+      },
+      {
+        "code": "SHOULDER_BAG",
+        "label_ru": "Сумка на плечо",
+        "alias_hint_ru": "сумка на плечо|shoulder bag|плечевая сумка"
+      },
+      {
+        "code": "CROSSBODY_BAG",
+        "label_ru": "Сумка кроссбоди",
+        "alias_hint_ru": "кроссбоди|crossbody|сумка через плечо|через плечо"
+      },
+      {
+        "code": "TOTE",
+        "label_ru": "Тоут",
+        "alias_hint_ru": "тоут|tote|tote bag|сумка тоут"
+      },
+      {
+        "code": "SHOPPER_BAG",
+        "label_ru": "Шоппер",
+        "alias_hint_ru": "шоппер|shopper|сумка-шоппер|shopping bag"
+      },
+      {
+        "code": "CLUTCH",
+        "label_ru": "Клатч",
+        "alias_hint_ru": "клатч|вечерний клатч|clutch"
+      },
+      {
+        "code": "WAIST_BAG",
+        "label_ru": "Поясная сумка",
+        "alias_hint_ru": "поясная сумка|бананка|сумка на пояс|waist bag|belt bag"
+      },
+      {
+        "code": "LAPTOP_BAG",
+        "label_ru": "Сумка для ноутбука",
+        "alias_hint_ru": "сумка для ноутбука|ноутбучная сумка|laptop bag"
+      },
+      {
+        "code": "LAPTOP_SLEEVE",
+        "label_ru": "Чехол / sleeve для ноутбука",
+        "alias_hint_ru": "чехол для ноутбука|laptop sleeve|слив для ноутбука|папка для ноутбука"
+      },
+      {
+        "code": "TRAVEL_BAG",
+        "label_ru": "Дорожная сумка",
+        "alias_hint_ru": "дорожная сумка|сумка дорожная|travel bag"
+      },
+      {
+        "code": "DUFFEL_BAG",
+        "label_ru": "Спортивная / duffel сумка",
+        "alias_hint_ru": "спортивная сумка|duffel|duffle|баул"
+      },
+      {
+        "code": "SUITCASE",
+        "label_ru": "Чемодан",
+        "alias_hint_ru": "чемодан|ручная кладь|чемодан на колесах|luggage|suitcase"
+      },
+      {
+        "code": "BRIEFCASE",
+        "label_ru": "Портфель / дипломат",
+        "alias_hint_ru": "портфель|дипломат|briefcase|деловой портфель"
+      },
+      {
+        "code": "DOCUMENT_BAG",
+        "label_ru": "Папка / сумка для документов",
+        "alias_hint_ru": "папка для документов|сумка для документов|document bag|A4 папка"
+      },
+      {
+        "code": "WALLET",
+        "label_ru": "Кошелёк / портмоне",
+        "alias_hint_ru": "кошелек|кошелёк|портмоне|бумажник|wallet"
+      },
+      {
+        "code": "CARDHOLDER",
+        "label_ru": "Кардхолдер / визитница",
+        "alias_hint_ru": "кардхолдер|визитница|держатель карт|cardholder"
+      },
+      {
+        "code": "COSMETIC_BAG",
+        "label_ru": "Косметичка / несессер",
+        "alias_hint_ru": "косметичка|несессер|beauty case|cosmetic bag"
+      },
+      {
+        "code": "DIAPER_BAG",
+        "label_ru": "Сумка для мамы / подгузников",
+        "alias_hint_ru": "сумка для мамы|сумка для коляски|diaper bag|сумка для подгузников"
+      },
+      {
+        "code": "BEACH_BAG",
+        "label_ru": "Пляжная сумка",
+        "alias_hint_ru": "пляжная сумка|beach bag|соломенная сумка"
+      },
+      {
+        "code": "DRAWSTRING_BAG",
+        "label_ru": "Мешок / gym sack",
+        "alias_hint_ru": "мешок для обуви|мешок-рюкзак|gym sack|drawstring bag"
+      }
+    ],
+    "ui_groups": [
+      {
+        "group_code": "BACKPACKS",
+        "label_ru": "Рюкзаки",
+        "types": [
+          "BACKPACK",
+          "SCHOOL_BAG",
+          "DRAWSTRING_BAG"
+        ]
+      },
+      {
+        "group_code": "EVERYDAY_BAGS",
+        "label_ru": "Сумки на каждый день",
+        "types": [
+          "HANDBAG",
+          "SHOULDER_BAG",
+          "CROSSBODY_BAG",
+          "TOTE",
+          "SHOPPER_BAG"
+        ]
+      },
+      {
+        "group_code": "EVENING_MINI",
+        "label_ru": "Клатчи и мини-сумки",
+        "types": [
+          "CLUTCH",
+          "WAIST_BAG"
+        ]
+      },
+      {
+        "group_code": "WORK_LAPTOP",
+        "label_ru": "Деловые и для ноутбука",
+        "types": [
+          "LAPTOP_BAG",
+          "LAPTOP_SLEEVE",
+          "BRIEFCASE",
+          "DOCUMENT_BAG"
+        ]
+      },
+      {
+        "group_code": "TRAVEL_LUGGAGE",
+        "label_ru": "Дорожные сумки и чемоданы",
+        "types": [
+          "TRAVEL_BAG",
+          "DUFFEL_BAG",
+          "SUITCASE"
+        ]
+      },
+      {
+        "group_code": "SMALL_LEATHER_GOODS",
+        "label_ru": "Кошельки и кардхолдеры",
+        "types": [
+          "WALLET",
+          "CARDHOLDER"
+        ]
+      },
+      {
+        "group_code": "SPECIAL_USE",
+        "label_ru": "Специальные сумки",
+        "types": [
+          "COSMETIC_BAG",
+          "DIAPER_BAG",
+          "BEACH_BAG"
+        ]
+      }
+    ]
+  },
+  "core_attributes": {
+    "required": [
+      "bag_type",
+      "condition"
+    ],
+    "recommended": [
+      "brand",
+      "color_primary",
+      "material_outer",
+      "target_gender",
+      "size_class"
+    ],
+    "optional_model_layer": [
+      "model_name_text"
+    ],
+    "commerce_facets_external": [
+      "price",
+      "seller_location",
+      "delivery_method"
+    ]
+  },
+  "routing_conflict_summary": [
+    {
+      "conflict": "Nike/Adidas brand + bag noun",
+      "decision": "FASH.BAGS; brand must not pull query into FASH.SHOES."
+    },
+    {
+      "conflict": "кошелек/кардхолдер vs accessories",
+      "decision": "FASH.BAGS by local FASH policy."
+    },
+    {
+      "conflict": "сумка для ноутбука vs TECH",
+      "decision": "FASH.BAGS when carrying-container noun is explicit."
+    },
+    {
+      "conflict": "чехол для телефона",
+      "decision": "TECH.ACCESSORIES, not FASH.BAGS."
+    },
+    {
+      "conflict": "сумка-переноска для животных",
+      "decision": "PET.ACCESSORIES, not FASH.BAGS."
+    }
+  ],
+  "normalization": {
+    "measure_units": {
+      "dimensions": "cm",
+      "volume": "liter",
+      "weight": "kg",
+      "laptop_fit": "inch"
+    },
+    "dimension_order_ru": "В русских объявлениях 55x40x20 нормализуется как length_cm x height_cm x depth_cm, если продавец не задал семантику явно.",
+    "brand_policy": "brand хранится как нормализованная строка; обязательного curated model graph нет.",
+    "model_policy": "model_name_text — свободный текст: Neverfull, Jet Set, Kånken, Le Pliage, raw seller text."
+  }
+}

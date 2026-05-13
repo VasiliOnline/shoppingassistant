@@ -1,0 +1,195 @@
+meta:
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  purpose: Facet configuration for browse/search in FASH.ACCESSORIES.
+global_facets:
+- field: accessory_type
+  label_ru: Тип
+  control: multi_select
+  priority: 10
+  expanded_by_default: true
+- field: target_gender
+  label_ru: Для кого
+  control: multi_select
+  priority: 20
+  expanded_by_default: true
+- field: age_group
+  label_ru: Возраст
+  control: multi_select
+  priority: 25
+  expanded_by_default: false
+- field: brand
+  label_ru: Бренд
+  control: brand_search
+  priority: 30
+  expanded_by_default: true
+- field: condition
+  label_ru: Состояние
+  control: multi_select
+  priority: 40
+  expanded_by_default: true
+- field: price
+  label_ru: Цена
+  control: range
+  priority: 50
+  expanded_by_default: true
+- field: color
+  label_ru: Цвет
+  control: color_multi_select
+  priority: 60
+  expanded_by_default: false
+- field: material_primary
+  label_ru: Материал
+  control: multi_select
+  priority: 70
+  expanded_by_default: false
+type_facets:
+  BELT:
+  - field: belt_size_cm
+    label_ru: Размер ремня
+    control: range
+  - field: belt_width_cm
+    label_ru: Ширина
+    control: range
+  - field: buckle_type
+    label_ru: Пряжка
+    control: multi_select
+  HEADWEAR:
+  - field: season
+    label_ru: Сезон
+    control: multi_select
+  - field: head_size_cm
+    label_ru: Обхват головы
+    control: range
+  - field: hat_size_label
+    label_ru: Размер
+    control: multi_select
+  - field: brim_type
+    label_ru: Козырек/поля
+    control: multi_select
+  NECKWEAR:
+  - field: season
+    label_ru: Сезон
+    control: multi_select
+  - field: pattern
+    label_ru: Узор
+    control: multi_select
+  - field: accessory_length_cm
+    label_ru: Длина
+    control: range
+  - field: accessory_width_cm
+    label_ru: Ширина
+    control: range
+  HANDWEAR:
+  - field: glove_size
+    label_ru: Размер
+    control: multi_select
+  - field: season
+    label_ru: Сезон
+    control: multi_select
+  - field: insulation
+    label_ru: Утепление
+    control: multi_select
+  - field: touchscreen_compatible
+    label_ru: Для сенсорного экрана
+    control: boolean
+  EYEWEAR:
+  - field: frame_shape
+    label_ru: Форма оправы
+    control: multi_select
+  - field: frame_material
+    label_ru: Материал оправы
+    control: multi_select
+  - field: lens_color
+    label_ru: Цвет линз
+    control: color_multi_select
+  - field: uv_protection
+    label_ru: UV-защита
+    control: multi_select
+  - field: polarized
+    label_ru: Поляризация
+    control: boolean
+  JEWELRY:
+  - field: metal_type
+    label_ru: Металл
+    control: multi_select
+  - field: metal_purity
+    label_ru: Проба
+    control: token_select
+  - field: stone_type
+    label_ru: Камень
+    control: multi_select
+  - field: ring_size_ru
+    label_ru: Размер кольца
+    control: range
+  WATCHES_NON_SMART:
+  - field: movement_type
+    label_ru: Механизм
+    control: multi_select
+  - field: analog_digital
+    label_ru: Тип индикации
+    control: multi_select
+  - field: case_diameter_mm
+    label_ru: Диаметр корпуса
+    control: range
+  - field: strap_material
+    label_ru: Материал ремешка
+    control: multi_select
+  - field: water_resistance_atm
+    label_ru: Водозащита
+    control: multi_select
+  WATCH_STRAP:
+  - field: watch_strap_lug_width_mm
+    label_ru: Ширина крепления
+    control: range
+  - field: strap_material
+    label_ru: Материал
+    control: multi_select
+  - field: closure_type
+    label_ru: Застежка
+    control: multi_select
+  HAIR_ACCESSORIES:
+  - field: decor_type
+    label_ru: Декор
+    control: multi_select
+  - field: set_quantity
+    label_ru: Количество
+    control: range
+  - field: hair_accessory_size
+    label_ru: Размер
+    control: token_select
+  UMBRELLA:
+  - field: umbrella_type
+    label_ru: Тип зонта
+    control: multi_select
+  - field: foldable
+    label_ru: Складной
+    control: boolean
+  - field: windproof
+    label_ru: Антиветер
+    control: boolean
+  - field: canopy_size_cm
+    label_ru: Диаметр купола
+    control: range
+facet_suppression_rules:
+- field: ring_size_ru
+  show_only_when: accessory_type=RING
+- field: glove_size
+  show_only_when: accessory_type in [GLOVES,MITTENS,FINGERLESS_GLOVES]
+- field: case_diameter_mm
+  show_only_when: accessory_type=WATCHES_NON_SMART
+- field: belt_size_cm
+  show_only_when: accessory_type=BELT
+- field: head_size_cm
+  show_only_when: accessory_group=HEADWEAR
+sort_options:
+- code: relevance
+  label_ru: По релевантности
+- code: price_asc
+  label_ru: Сначала дешевле
+- code: price_desc
+  label_ru: Сначала дороже
+- code: newest
+  label_ru: Сначала новые объявления
+- code: condition_desc
+  label_ru: Лучшее состояние

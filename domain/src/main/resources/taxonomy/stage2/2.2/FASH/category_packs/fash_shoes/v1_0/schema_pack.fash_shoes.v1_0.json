@@ -1,0 +1,156 @@
+{
+  "schema_id": "schema_pack.fash_shoes.v1_0",
+  "categoryCode": "FASH.SHOES",
+  "pack_type": "category_schema_pack",
+  "version": "1.0.0",
+  "locale": "ru-RU",
+  "status": "production",
+  "generated_at": "2026-05-13T00:00:00+02:00",
+  "extends": null,
+  "shared_layer_candidate": "FASH.FOOTWEAR_COMMON",
+  "shared_layer_candidate_status": "not_required_for_v1_0",
+  "maturity_mode": "brand-aware + optional model_name_text",
+  "model_graph": {
+    "enabled": false,
+    "reason": "P0 обуви требует сильной схемы, размеров, фасетов, алиасов и route guards; curated model graph переносится в будущий sneaker-head слой.",
+    "accepted_model_field": "model_name_text"
+  },
+  "routing": {
+    "primary_category": "FASH.SHOES",
+    "route_conflict_layer_ref": "route_conflict_layer.fash.v1_0.yaml",
+    "positive_head_terms": [
+      "кроссовки",
+      "кеды",
+      "ботинки",
+      "сапоги",
+      "туфли",
+      "лоферы",
+      "мокасины",
+      "сандалии",
+      "тапочки",
+      "пинетки"
+    ],
+    "negative_guard_categories": [
+      "FASH.APPAREL_COMMON",
+      "FASH.MEN",
+      "FASH.WOMEN",
+      "FASH.KIDS",
+      "FASH.BAGS",
+      "FASH.ACCESSORIES",
+      "TECH.WEARABLES"
+    ]
+  },
+  "canonical_attributes": [
+    "shoe_type",
+    "target_gender",
+    "age_group",
+    "brand",
+    "model_name_text",
+    "size_eu",
+    "size_ru",
+    "raw_size_text",
+    "size_system",
+    "foot_length_cm",
+    "insole_length_cm",
+    "condition",
+    "pair_completeness",
+    "color_primary",
+    "color_secondary",
+    "season",
+    "material_upper",
+    "material_lining",
+    "material_sole",
+    "closure_type",
+    "width_fit",
+    "sport_purpose",
+    "sole_type",
+    "waterproof_level",
+    "insulation",
+    "shaft_height",
+    "shaft_height_cm",
+    "heel_height_cm",
+    "heel_type",
+    "toe_shape",
+    "platform_height_cm",
+    "orthopedic_feature",
+    "age_label",
+    "child_height_cm",
+    "defect_notes",
+    "original_box",
+    "authenticity_status"
+  ],
+  "required_publish_minimum": [
+    "shoe_type",
+    "condition",
+    "pair_completeness",
+    "size_eu OR raw_size_text"
+  ],
+  "always_visible_facets": [
+    "shoe_type",
+    "target_gender",
+    "size_eu/raw_size_text",
+    "brand",
+    "condition",
+    "price"
+  ],
+  "type_groups": {
+    "Кроссовки и спорт": [
+      "SNEAKERS",
+      "RUNNING_SHOES",
+      "SPORT_SHOES",
+      "FOOTBALL_BOOTS"
+    ],
+    "Ботинки и сапоги": [
+      "BOOTS",
+      "ANKLE_BOOTS",
+      "WINTER_BOOTS",
+      "HIKING_SHOES",
+      "RUBBER_BOOTS"
+    ],
+    "Классическая обувь": [
+      "SHOES",
+      "LOAFERS",
+      "MOCCASINS",
+      "OXFORDS",
+      "DERBY"
+    ],
+    "Сандалии и открытая обувь": [
+      "SANDALS",
+      "SLIDES",
+      "CLOGS",
+      "ESPADRILLES"
+    ],
+    "Домашняя обувь": [
+      "SLIPPERS"
+    ],
+    "Женская обувь на каблуке": [
+      "HEELS",
+      "PUMPS",
+      "WEDGES"
+    ],
+    "Детская обувь": [
+      "KIDS_SHOES",
+      "BABY_SHOES"
+    ]
+  },
+  "files": [
+    "schema_pack.fash_shoes.v1_0.json",
+    "attributes.fash_shoes.v1_0.tsv",
+    "values.fash_shoes.v1_0.tsv",
+    "aliases.fash_shoes.ru.v1_0.tsv",
+    "conditional_rules.fash_shoes.v1_0.yaml",
+    "size_policy.fash_shoes.v1_0.yaml",
+    "route_conflict_layer.fash.v1_0.yaml",
+    "routing_guardrails.fash_shoes.v1_0.yaml",
+    "vision_rules.fash_shoes.v1_0.yaml",
+    "user_surface.fash_shoes.v1_0.yaml",
+    "facet_schema.fash_shoes.v1_0.yaml",
+    "golden_queries.fash_shoes.v1_0.tsv",
+    "sample_offers.fash_shoes.v1_0.jsonl",
+    "integration_mapping.fash_shoes.v1_0.yaml",
+    "quality_gates.fash_shoes.v1_0.yaml",
+    "validation_report.fash_shoes.v1_0.json",
+    "checksums.sha256.json",
+    "README_FASH_SHOES_PRODUCTION_v1_0_RU.md"
+  ]
+}

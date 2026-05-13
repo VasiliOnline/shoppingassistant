@@ -1,0 +1,38 @@
+attribute_code	attribute_name_ru	data_type	cardinality	required_level	scope	allowed_values_ref	unit	ui_visibility	normalization	description_ru
+shoe_type	Тип обуви	enum	single	REQUIRED	CORE	shoe_type		always_visible	alias_to_enum	Основной тип обуви для маршрутизации, фасетов и conditional rules.
+target_gender	Пол / целевая аудитория	enum	single	RECOMMENDED	CORE	target_gender		always_visible	textual_only_no_color_inference	MEN/WOMEN/BOYS/GIRLS/KIDS/UNISEX; не выводить только по цвету.
+age_group	Возрастная группа	enum	single	RECOMMENDED	CORE	age_group		always_visible	textual_or_size_hint	ADULT/TEEN/KIDS/TODDLER/BABY; для детской обуви обязательно.
+brand	Бренд	string	single	RECOMMENDED	CORE			always_visible	brand_dictionary_plus_raw_text	Бренд нормализуется, но curated model graph не требуется.
+model_name_text	Модель / линейка текстом	string	single	OPTIONAL	CORE			advanced	raw_seller_text_trim	Свободный текст: Air Force 1, Samba, Ultraboost и т.п.; без обязательного model graph.
+size_eu	Размер EU	decimal	single	CONDITIONAL_REQUIRED	SIZE		EU	always_visible	decimal_dot; half_sizes_allowed	Канонический размер EU, если известен. Для публикации требуется size_eu или raw_size_text.
+size_ru	Размер RU	decimal	single	OPTIONAL	SIZE		RU	advanced	decimal_dot; no_forced_conversion	Локальная размерная метка RU; не конвертировать автоматически без size_system.
+raw_size_text	Размер как у продавца	string	single	CONDITIONAL_REQUIRED	SIZE			advanced	preserve_original	Сырой размер: 38, 39.5, 24 см, US 8, UK 6, 25/26 и т.п.
+size_system	Система размеров	enum	single	OPTIONAL	SIZE	size_system		advanced	alias_to_enum	EU/RU/US/UK/CM/BRAND.
+foot_length_cm	Длина стопы	decimal	single	OPTIONAL	SIZE		cm	advanced	decimal_dot	Особенно полезно для детской обуви.
+insole_length_cm	Длина стельки	decimal	single	OPTIONAL	SIZE		cm	advanced	decimal_dot	Длина стельки по тексту продавца или измерению.
+condition	Состояние	enum	single	REQUIRED	CORE	condition		always_visible	alias_to_enum	Состояние пары.
+pair_completeness	Комплектность пары	enum	single	REQUIRED	CORE	pair_completeness		advanced	default_PAIR_when_listing_says_pair_or_standard_offer	По умолчанию PAIR для обычных товарных предложений; одиночная обувь требует явного указания.
+color_primary	Основной цвет	enum	single	RECOMMENDED	CORE	color		always_visible	alias_to_color_enum	Основной цвет.
+color_secondary	Дополнительный цвет	enum	multi	OPTIONAL	CORE	color		advanced	alias_to_color_enum	Дополнительные цвета.
+season	Сезон	enum	single	RECOMMENDED	CORE	season		always_visible	alias_to_enum	Сезонность: summer/demi/winter/rain/indoor/all-season.
+material_upper	Материал верха	enum	multi	RECOMMENDED	CORE	material_upper		always_visible	alias_to_enum_set	Материал верха обуви.
+material_lining	Материал подкладки	enum	multi	OPTIONAL	TYPE_SPECIFIC	material_lining		advanced	alias_to_enum_set	Подкладка, включая мех/шерсть/флис.
+material_sole	Материал подошвы	enum	single	OPTIONAL	TYPE_SPECIFIC	material_sole		advanced	alias_to_enum	Материал подошвы.
+closure_type	Тип застёжки	enum	multi	OPTIONAL	TYPE_SPECIFIC	closure_type		type_visible	alias_to_enum_set	Шнурки, липучка, молния, slip-on и т.п.
+width_fit	Полнота / колодка	enum	single	OPTIONAL	SIZE	width_fit		advanced	alias_to_enum	Узкая/стандартная/широкая колодка.
+sport_purpose	Спортивное назначение	enum	single	CONDITIONAL_REQUIRED	TYPE_SPECIFIC	sport_purpose		type_visible	alias_to_enum	Для running/sport/football/hiking и другой спортивной обуви.
+sole_type	Тип подошвы	enum	multi	OPTIONAL	TYPE_SPECIFIC	sole_type		type_visible	alias_to_enum_set	Амортизирующая, тракторная, non-marking, с шипами и т.п.
+waterproof_level	Влагозащита	enum	single	CONDITIONAL_REQUIRED	TYPE_SPECIFIC	waterproof_level		type_visible	alias_to_enum	Обязательно/рекомендовано для winter/hiking/rubber/rain.
+insulation	Утепление	enum	single	CONDITIONAL_REQUIRED	TYPE_SPECIFIC	insulation		type_visible	alias_to_enum	Для зимней обуви.
+shaft_height	Высота голенища	enum	single	CONDITIONAL_REQUIRED	TYPE_SPECIFIC	shaft_height		type_visible	alias_to_enum	Для сапог/ботинок/ботфортов.
+shaft_height_cm	Высота голенища, см	decimal	single	OPTIONAL	TYPE_SPECIFIC		cm	advanced	decimal_dot	Числовая высота голенища.
+heel_height_cm	Высота каблука, см	decimal	single	CONDITIONAL_REQUIRED	TYPE_SPECIFIC		cm	type_visible	decimal_dot	Для heels/pumps/wedges.
+heel_type	Тип каблука	enum	single	CONDITIONAL_REQUIRED	TYPE_SPECIFIC	heel_type		type_visible	alias_to_enum	Шпилька, устойчивый, танкетка и т.п.
+toe_shape	Форма носа	enum	single	OPTIONAL	TYPE_SPECIFIC	toe_shape		type_visible	alias_to_enum	Круглый, острый, квадратный, открытый.
+platform_height_cm	Высота платформы, см	decimal	single	OPTIONAL	TYPE_SPECIFIC		cm	advanced	decimal_dot	Для платформы/танкетки.
+orthopedic_feature	Ортопедические особенности	enum	multi	OPTIONAL	TYPE_SPECIFIC	orthopedic_feature		type_visible	alias_to_enum_set	Особенно для детской обуви; требует осторожного извлечения только из текста/маркировки.
+age_label	Возрастная метка продавца	string	single	OPTIONAL	TYPE_SPECIFIC			advanced	preserve_original	Например: 0-6 мес, 1 год, toddler. В размерную логику не конвертировать автоматически.
+child_height_cm	Рост ребёнка, см	decimal	single	OPTIONAL	TYPE_SPECIFIC		cm	hidden	decimal_dot	Дополнительная продавцовая подсказка; не использовать как shoe-fit параметр.
+defect_notes	Описание дефектов	string	single	CONDITIONAL_REQUIRED	CONDITION			type_visible	raw_seller_text_trim	Обязательно при DEFECTS_OR_REPAIR или визуально заметных дефектах.
+original_box	Оригинальная коробка	boolean	single	OPTIONAL	CORE			advanced	bool	Наличие оригинальной коробки.
+authenticity_status	Статус оригинальности	enum	single	OPTIONAL	CORE	authenticity_status		hidden	compliance_sensitive	Не использовать для продвижения подделок; сомнительные случаи отправлять на compliance review.

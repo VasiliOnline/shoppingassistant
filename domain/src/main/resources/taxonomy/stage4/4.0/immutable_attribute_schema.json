@@ -2,12 +2,34 @@
   "stage": "4.0",
   "schemaVersion": "1.0.0",
   "generatedFrom": {
-    "stage22DataVersion": "2.2.13",
+    "stage22DataVersion": "2.2.15",
     "stage22SchemaVersion": "1.0.0",
-    "stage22GeneratedAt": "2026-05-12T00:00:00Z",
+    "stage22GeneratedAt": "2026-05-13T00:00:00Z",
     "stage3Version": "3.0"
   },
   "attributes": [
+    {
+      "attributeCode": "accessory_group",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:d163db36e619464018b7168721c508ec0f04dceac571751a1f8085af13553b62"
+    },
+    {
+      "attributeCode": "accessory_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:e3dd08ad568c502446fac169d6b5aaf6100aa5debb543b1c0d4f7c9473407841"
+    },
     {
       "attributeCode": "accessory_subtype",
       "valueType": "ENUM",
@@ -29,6 +51,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:7f4b6227072c2f5b78dca52dd4bcc81949457fa2ae7fb5dfdb47a5e87f744a3b"
+    },
+    {
+      "attributeCode": "accessory_width_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:4710f1b4d5b105b0a2c43ecd4ccb3fd58284b2fcd6a2398d67b5bbccaec4d210"
     },
     {
       "attributeCode": "activity",
@@ -53,6 +86,17 @@
       "immutableFingerprint": "sha256:85a5eb1a5e37ff6142b1ac3e836f01854e50f581c429dc1a4a4548a78f430a81"
     },
     {
+      "attributeCode": "adjustable",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d783dd9078ffc7a6c94cfaeb35cee03c60a64bf6e013651a153d7eb00793d732"
+    },
+    {
       "attributeCode": "age_from_months",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -73,6 +117,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:e2226f1ef29262f2464ba2625b67bad0bcb80ef367c910466eb06c86978bf1c3"
+    },
+    {
+      "attributeCode": "age_label",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:3e3d72c5af0d3bad06186ee2ec737661fe9e9ca736618308d57431bfbfb2e8c1"
     },
     {
       "attributeCode": "age_to_months",
@@ -106,6 +161,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:1ea65f627fa955c3935e33370ce3f11991cc775b6e39a75737b91959912368ba"
+    },
+    {
+      "attributeCode": "analog_digital",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:fec893d9c1ec560da7364a2c1ba706b3a5227ea86ad0aebd945f776fd61c8675"
     },
     {
       "attributeCode": "anti_glare",
@@ -174,6 +240,28 @@
       "immutableFingerprint": "sha256:60bb1067e5e8dd5b8c6a0ed170d7bc06a19c72e606f399f20244fad65625939c"
     },
     {
+      "attributeCode": "authenticity_documents_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:fb36961cfd4e2f91659ded4c6e50fe30bd85a9751306887f70c6d1758c7a4cfb"
+    },
+    {
+      "attributeCode": "authenticity_state",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:a89336cafb4b6eef7e1bc2d49fc5728fe6923563b804d4b9567f7c10b7b26b90"
+    },
+    {
       "attributeCode": "authenticity_status",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -183,6 +271,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:13f9ad32fc85acd6c4405fee18aa6f390fe56a510a06bdb0b3d8a1828f696b20"
+    },
+    {
+      "attributeCode": "bag_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:2127ff7fa665d1845994ab25c1b381250855d288820d8cd0cd0030ee14593fca"
     },
     {
       "attributeCode": "base_type",
@@ -229,6 +328,50 @@
       "immutableFingerprint": "sha256:febc9f1e7b9155e022b63bc068343e40ecba25f903a36d7c26254d422e69190c"
     },
     {
+      "attributeCode": "battery_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:4226fe23828be9274d44625045919a1e646a43b326c1ae3fa084a4114108aafe"
+    },
+    {
+      "attributeCode": "belt_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:53f01b26847f8be7ae198179b315fda2cb73654bbd2dcee5fa8dea7ec70e9712"
+    },
+    {
+      "attributeCode": "belt_size_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:70fbead58cbd4ae2c2994831366e9de436010a65f739f1e52ef495793d048d36"
+    },
+    {
+      "attributeCode": "belt_width_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:bb8bc9f4793e8b4b6d2427d124819285ea5e53494b6b13f4b0af6d1fc28e5f74"
+    },
+    {
       "attributeCode": "blue_light_filter",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -260,6 +403,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:a86026517a4b05183c69496b32a55141826861bd1202adee3cfbd5de91f6fe18"
+    },
+    {
+      "attributeCode": "bracelet_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:a71f069734b453d442162e094c02b1b5aa34b4872d3c619f2e541c2304c64e22"
     },
     {
       "attributeCode": "brand",
@@ -306,6 +460,39 @@
       "immutableFingerprint": "sha256:d47f1c48cdb3438cf8294bd5bd30928bc0a0821cb0a095252ba6ba26b453abde"
     },
     {
+      "attributeCode": "brim_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:8757d01acc7a70cbf7addce6a8b1c8345ee55dd613c2629a5165454830fcbc33"
+    },
+    {
+      "attributeCode": "buckle_material",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:b5220ac6646c95fc25006930921b39c7942e1928efb96eee683cb0fd7e26c2f9"
+    },
+    {
+      "attributeCode": "buckle_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:57e3ca95fe9bfe96907e7f2f4d7bebf5db2ab333e3e0943cb5527a5861e02cdb"
+    },
+    {
       "attributeCode": "built_in_cable",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -315,6 +502,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:9adc0c153b62cda3fe7f71983c47c1d61714e81748890ba551dc9d6337377539"
+    },
+    {
+      "attributeCode": "cabin_size_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:a82a3c7b21d35d71361a8501eae92970b5ea8f82533c60afdcd39284878d50ce"
     },
     {
       "attributeCode": "cable_length_m",
@@ -348,6 +546,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:a97f0fa74c3e8d36b4e9a1334d79438e513356637de42b8080d672cb2c4364d3"
+    },
+    {
+      "attributeCode": "canopy_size_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:7312bbad17a58754ff6fb55e8d70233a7a6746a8fe2c8f82c00dc396ab6ab165"
     },
     {
       "attributeCode": "capacity_mah",
@@ -416,6 +625,17 @@
       "immutableFingerprint": "sha256:fc0e6ae0301bb36d02bc4203df20bb6eb5c52e7024810fae6a9c1de60c7f4d0f"
     },
     {
+      "attributeCode": "case_diameter_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:42a43054aff2e1cdab095161d044c54f261a5653eb93a0fb809a45a5a216f5b6"
+    },
+    {
       "attributeCode": "case_features",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -482,6 +702,17 @@
       "immutableFingerprint": "sha256:710a7e849ef129c4fd0d37630442237bd850daef2ed535aa467415cbfb98891c"
     },
     {
+      "attributeCode": "chain_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:edab8dead5265cd550918cef95349549d96c8f99f1bf1761d4b411a5553fa8b7"
+    },
+    {
       "attributeCode": "charge_indicator_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -526,6 +757,17 @@
       "immutableFingerprint": "sha256:5b0d7fc4f70ea2923697a92c4ac9515ff4bbe4d416e09e6e81bea60b9553cc2d"
     },
     {
+      "attributeCode": "child_height_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:4ba7dff390218a54e9261a5401275645fd226da610d928758b4bdfd4479cef73"
+    },
+    {
       "attributeCode": "chipset_family",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -535,6 +777,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:9b3406c35539767d975c72c69a9f6cea8d574f78d916ce867df6c3fa705eae80"
+    },
+    {
+      "attributeCode": "clasp_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:358c478cbe34dba2fb7f49f3b00941b8beb5e283862a8e78da40cf9168019591"
     },
     {
       "attributeCode": "cleaning_kit_type",
@@ -568,6 +821,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:71dfb617a4577d3465418b7aede1d2f02c5900c6d9aa8bdc679607b34e28b0db"
+    },
+    {
+      "attributeCode": "coin_pocket",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:4fdbec3844f74eba832ca25154cf5e2cd61901b19178826bcc5614e78055b70a"
     },
     {
       "attributeCode": "collar_type",
@@ -623,6 +887,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:88c111b9ac69f2c421bae2a395429068e0ae20a73aafe37f57491ea09ef769cd"
+    },
+    {
+      "attributeCode": "compartment_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "non_negative_integer",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d953a9a15b13875a8d6909ed7745e400c81aa20c89d3bc37dd4a91f9bbf46726"
     },
     {
       "attributeCode": "compatibility_confidence",
@@ -889,6 +1164,28 @@
       "immutableFingerprint": "sha256:617aecc3e7b62a3b9b2d77eb8162268e729c05eb929448268c6bdea05ce18401"
     },
     {
+      "attributeCode": "decor_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:5ef41d8eee518d26307cb68eb3a81b1a623d5335a0d3bf232bb529498b350e99"
+    },
+    {
+      "attributeCode": "defect_notes",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:932665f1882c099e1ec78117b7dbed923c829e8cbdb317b3f57b51e0c9f9e355"
+    },
+    {
       "attributeCode": "defect_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -900,6 +1197,17 @@
       "immutableFingerprint": "sha256:118e68aa7ca3d199564195c9f6066fde7e9d1a5404c6978a771135806ab88581"
     },
     {
+      "attributeCode": "depth_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "positive_decimal_cm",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:dda6d78b215f233ea3a9fa15c3bc9a6d0baf7758f585775b21f44c2f04a7d84c"
+    },
+    {
       "attributeCode": "diameter_cm",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -909,6 +1217,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:66a62a6887ec781a51d2193591ff6d518117b846c48ef037506e6fc9826f071e"
+    },
+    {
+      "attributeCode": "document_size",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:3939c7a5c110861dc16e9d14396a32f9d8203315c947833fc4e42f239543e23d"
     },
     {
       "attributeCode": "dosage_per_serving",
@@ -966,6 +1285,17 @@
       "immutableFingerprint": "sha256:22741a35d42069065bd2c4f54c6d719bcb5ea615770f6de7bd882c4dc0b54ca7"
     },
     {
+      "attributeCode": "dust_bag_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:f67bdc462f9ddb8236e76ccb300f15a3337d494476c3dbdecfa46e93d848d8a0"
+    },
+    {
       "attributeCode": "e_marker_chip",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -997,6 +1327,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:34d1100880a25897f6ed394eb5079cd27d4e61a4d62cadab972df7590d0aed51"
+    },
+    {
+      "attributeCode": "expandable",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:e450a85824cfdb2c4997ceb2497fb7a0783e8930887d11697c002f26bf2dec9f"
     },
     {
       "attributeCode": "expiration_date",
@@ -1043,6 +1384,17 @@
       "immutableFingerprint": "sha256:679f5b15e333345aacf56f71bbd98fc076091d35ca5d29a41ed8e1e2d8f57b42"
     },
     {
+      "attributeCode": "fits_laptop_inch",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "inch",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "laptop_inches_decimal",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:000e98d1686246075902e488d061d17ebcfac00bd0df3591fc8a9425f295be08"
+    },
+    {
       "attributeCode": "flavor",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1052,6 +1404,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:7dd151353db8c41db15643429f8c81eca86c7e2c26f021ca0e7f12c4980b872f"
+    },
+    {
+      "attributeCode": "foldable",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:0558de3772504431a53d66dd85bf20b37772258ad087f6c3be7eb49e209d82b5"
     },
     {
       "attributeCode": "folding_type",
@@ -1065,6 +1428,17 @@
       "immutableFingerprint": "sha256:07613c264c63db0939b4eb77e85229e65998153606bf23592cd359e9c3bf494e"
     },
     {
+      "attributeCode": "foot_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:cb59a3e86aff113b12cb8b8e450cea4a14d8167ab353e1e0f60f07f9265792ad"
+    },
+    {
       "attributeCode": "form_factor",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1074,6 +1448,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:3387e8ae68d77d65000fd51ea4599ded465256696a64e5c3ac5bae9c474f9ce3"
+    },
+    {
+      "attributeCode": "frame_material",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:fe469e3e5fc49fc0354207781474356b8210da785aa0d49ed3dbadff5f351f74"
+    },
+    {
+      "attributeCode": "frame_shape",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:95fd68da3905cabc77b79efe65b6dc3f37b86311f277ac17ccc0bfee2fa714ab"
     },
     {
       "attributeCode": "game_controller_layout",
@@ -1109,6 +1505,17 @@
       "immutableFingerprint": "sha256:65b666431a02010863fbdd5e28721148bebac66e3c09afc21b164c226f0bfd76"
     },
     {
+      "attributeCode": "glove_size",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:78cfabcc22033a9fcdf8d16ee7bc007a81408f244d14a22c5e0d06d24bc9e57c"
+    },
+    {
       "attributeCode": "gpu_type",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -1142,6 +1549,39 @@
       "immutableFingerprint": "sha256:024721e1cbd26bdfe768d3b8f95cabc1ed595eb5a099e807a54d9e77dc750509"
     },
     {
+      "attributeCode": "hair_accessory_size",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:48cfd1c8622e6673031965ffa4bef67d36c1d12011324e80fd0dacdb9765dd61"
+    },
+    {
+      "attributeCode": "handle_drop_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "positive_decimal_cm",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:612c81a3fcc2d79da478a4a4c1c663e3c6eff393e9e444cbeb96d6492079f5f3"
+    },
+    {
+      "attributeCode": "handle_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:045ecb61c36adbac34d8613cf32e7758056269ac45625bf14304f903cd4b6572"
+    },
+    {
       "attributeCode": "hardness_rating",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1151,6 +1591,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:fe973c0979d5fe5c9115065a1d209c20efeb1de66f04a7bb77380484253ef106"
+    },
+    {
+      "attributeCode": "hardware_color",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:2acc5aea68d115e1797754c0390f3c20252ebec7bd2b5f8e2ae7b9b23ff133e9"
     },
     {
       "attributeCode": "has_cheese",
@@ -1173,6 +1624,61 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:d81d7bdd95419cff1c38df9c8262c17a136d00e02ac2777714d7634574b3cb6b"
+    },
+    {
+      "attributeCode": "hat_size_label",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:4789705432cd7398853c5e496b55754bca5bf1ed2fd92ea69849e730df7ccb28"
+    },
+    {
+      "attributeCode": "head_size_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:5557122c1afa20314bb6319bcf6ac1dca0d3989df1d4a37134037f96c80d48a8"
+    },
+    {
+      "attributeCode": "heel_height_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:a0a70cd7da4d3286def0c9aa7b82708c2e1f6be62101c74c90d7f8a61f88accf"
+    },
+    {
+      "attributeCode": "heel_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:00eaba76a816faf8064d23073916d321bc6e82f0d6d88e3b09c35297ccf791e5"
+    },
+    {
+      "attributeCode": "height_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "positive_decimal_cm",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:bac400f34426725649a62bacaef6e7b8c3075abb6d2a36ba5479ca3305c55484"
     },
     {
       "attributeCode": "hips_cm",
@@ -1206,6 +1712,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:18d40bdc4eb1d285995d86b00d911124d3096a6cc448d75e86a910de2daed1c3"
+    },
+    {
+      "attributeCode": "hypoallergenic",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:b5795f61f10a0f31c08e4ee710c27eb1829110eae685d6915fa023686a71cdde"
     },
     {
       "attributeCode": "included_accessories",
@@ -1274,6 +1791,28 @@
       "immutableFingerprint": "sha256:ed016f5150b9fc0ee62d27b52fd5c6f61ee7b310be774412634814c46ac49832"
     },
     {
+      "attributeCode": "insole_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:65dd003c49e189eb74b1e6220d1e29ab44bbd059098ef70f443d3e085fecbe6c"
+    },
+    {
+      "attributeCode": "insulation",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:8a34d44eb41975102529430663bb7e8fa9b742fcc03427acfa167fc16e70556d"
+    },
+    {
       "attributeCode": "insulation_material",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1294,6 +1833,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:0b5a3ad2cdda39c3f197ba8ec0739664f17a5b0f7d94cad17030c57b844ccb9e"
+    },
+    {
+      "attributeCode": "is_adjustable_strap",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:0b7eb59c489c96b6df37397d117017726e9a6b1e59f3409006e37b6b854383dc"
+    },
+    {
+      "attributeCode": "is_detachable_strap",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:e9a5c172669d08149b08d41b045408dba342dd9e76e59fe8dbdaa2fe551f5aa2"
     },
     {
       "attributeCode": "is_gluten_free",
@@ -1373,6 +1934,28 @@
       "immutableFingerprint": "sha256:47dca8129d80645c3ad535424f68f87b6f0665a62873c55fcf526a1b6a976521"
     },
     {
+      "attributeCode": "laptop_compartment",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:457e9a2e6fb140d9b39429857e158de20c109441efe3315295bcceb1e2c32981"
+    },
+    {
+      "attributeCode": "laptop_protection_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:8263bcd7f57da05fd54778498d3a16aceb7ec39fbeb05992930df39cec6eb64c"
+    },
+    {
       "attributeCode": "leg_fit",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1384,6 +1967,17 @@
       "immutableFingerprint": "sha256:41ca9bb9ef8b5350717c7a2331a0d6dd84a795fea40907a16d01c36f007701eb"
     },
     {
+      "attributeCode": "length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "positive_decimal_cm",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:e2ca686683a1510eeaf385157477c416a5bacecda102c2551900d0bba5b44c24"
+    },
+    {
       "attributeCode": "length_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1393,6 +1987,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:a6e230139d1284e724ce2729fb6af0413a8a8e86be5d0049ab46379d4a1e4145"
+    },
+    {
+      "attributeCode": "lens_category",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:75e83e888c07210fe240717383c9c1ee5e6efe06a8e424529395404adbc4e71d"
+    },
+    {
+      "attributeCode": "lens_color",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:bbd46a2e5b3b9bca9259bf5d9bd371bff52271d1aa3d8b9f1e4542d0d5265a0e"
     },
     {
       "attributeCode": "light_color_temperature_k",
@@ -1439,6 +2055,39 @@
       "immutableFingerprint": "sha256:ef1263a7ae3e745e81c44db1019ed31c2671659e7a062e03d0b54ecef339f63f"
     },
     {
+      "attributeCode": "lining_material",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:3b2832cd772e46d421c002b5242479caf6564adadc00e0d5a72a26f16b3cc374"
+    },
+    {
+      "attributeCode": "lock_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:a4c33ff31f03d33bac154729cffc1c58d7f58bcb6f9d07b22f4017517b5a17ae"
+    },
+    {
+      "attributeCode": "luggage_shell_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:baa474f18c371668d7be9efb9d122d3722191eeb7d0e69447d48b510814fbf7d"
+    },
+    {
       "attributeCode": "magnetic_alignment",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -1472,6 +2121,28 @@
       "immutableFingerprint": "sha256:3823c79306a308de19faca6b01a576a1329f8a06bbd0b2fb902555820d5dacc5"
     },
     {
+      "attributeCode": "material_lining",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:eeba403abfeb99c54f162dc262284bb322bbf471f8d7afc200127f795e8a2840"
+    },
+    {
+      "attributeCode": "material_outer",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:1ee50fa7b0977b23d82ffbe822b5af2269185dbfc69a0a719b641e3962faca3e"
+    },
+    {
       "attributeCode": "material_primary",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1481,6 +2152,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:c9e8cb49122a08acfe287912baa4bd7f29c339673b9cbef393c58c99652c1b42"
+    },
+    {
+      "attributeCode": "material_secondary",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:827303eb28eed20f26152623f3331f94e814d7bd62f504de24a3e1ec37015d28"
     },
     {
       "attributeCode": "material_sole",
@@ -1499,10 +2181,10 @@
       "valueSetType": "OPEN",
       "unit": null,
       "isIdentity": false,
-      "isFacet": false,
+      "isFacet": true,
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
-      "immutableFingerprint": "sha256:e7f303adf6afd376de88002cdbfde254b98eb84b6556545c2875d5902ff13ce3"
+      "immutableFingerprint": "sha256:e9f355d4dd2bb445f35a93f7c8912d230b5564703208659bd696016d16a3ec6a"
     },
     {
       "attributeCode": "max_current_amp",
@@ -1582,6 +2264,28 @@
       "immutableFingerprint": "sha256:5c863f107c8520c12ec3a287a6ed3d042e048de8f1c540bea5917206ac8bac4f"
     },
     {
+      "attributeCode": "metal_purity",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:51975b52ef15555bb4143b9248d20eb9c4dcfdc3fe7f0ed47909e0af9dfab57f"
+    },
+    {
+      "attributeCode": "metal_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:1053a028113773c5b003a1975aeaf05b2930182c9863702f486ae84276d7bdd5"
+    },
+    {
       "attributeCode": "model",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -1602,6 +2306,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:b63567b152ce9c0c36753c7ddfa66319ce213c4479e4d5675b893e1e34e7bb7e"
+    },
+    {
+      "attributeCode": "model_name_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:3a34794440cf4e21a452047f2eedace8ff310c263bc151de9028c0bc90491d43"
     },
     {
       "attributeCode": "model_or_line_text",
@@ -1635,6 +2350,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:2cc98e217f686267bfe6072bf0c61cfb0859ed3fab69e15f3fe169af61c038c9"
+    },
+    {
+      "attributeCode": "movement_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:4f12dbaf3083319e3368c8559bd4f5d6ef3fbf82d468847e3fc5861458bf833b"
     },
     {
       "attributeCode": "neckline",
@@ -1690,6 +2416,39 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:e70938f169bdeea1df7ab27ecfbece696b005c00604ac1de183be3d21db47b92"
+    },
+    {
+      "attributeCode": "original_box",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:f824d799b5074a7154ba2298a091eba4978840b5193006e834ca30b9a6cdb87a"
+    },
+    {
+      "attributeCode": "orthopedic_back",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:50413dd6f12521e0ee4269a7b125484b6d565e5e9f2fbe22aab4cd778cfa5270"
+    },
+    {
+      "attributeCode": "orthopedic_feature",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:b387758e2b51b9d32306377a0fc9747813d169845973ef720e4ae949768ac8fd"
     },
     {
       "attributeCode": "os_family",
@@ -1780,6 +2539,17 @@
       "immutableFingerprint": "sha256:4baa64d6355a335a09462a1d75c2da9b4fe959e6b9015e4fd12e7752bfbaa08e"
     },
     {
+      "attributeCode": "pair_completeness",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:92e3b6881e36ffcfa5f5075c0648d2f3ecb383675a8ffdded3fb24c5c5967777"
+    },
+    {
       "attributeCode": "part_quality_grade",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1857,6 +2627,39 @@
       "immutableFingerprint": "sha256:0cede43e4435e1478696d12982c9083611fe2aab5c7cd4b955746756d64fb8e6"
     },
     {
+      "attributeCode": "platform_height_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:16ea6576cb88fe9c2ac4023e1c0069d93cf050dbf666b6567d5711d15fa557dd"
+    },
+    {
+      "attributeCode": "plating",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:40fc7cad222bb2ab416ca64c152fbd4faf39b82714197da055028ba88254d72e"
+    },
+    {
+      "attributeCode": "pocket_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "non_negative_integer",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:7c4ccaf9bfedc73e51db89ce270a606066bc75abf862c105317a53cf736c287d"
+    },
+    {
       "attributeCode": "pockets",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1866,6 +2669,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:a1083d212d777fb6fd99490037a4495e9fad37bbfa2c13656ef98cfb33dcb82b"
+    },
+    {
+      "attributeCode": "polarized",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:1c8bdfe80a44d6a7c5e94f8a6cde0126bbf0a4b3250bdb06182fbcbfcc70e3c2"
     },
     {
       "attributeCode": "portion_size_gram",
@@ -1910,6 +2724,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:12e812737ddd7d31e6ca4a88a56a0b02232b1b8af48c554a1f44a019d4cc6d04"
+    },
+    {
+      "attributeCode": "pre_tied",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:3047faeed565f77366a05fae183d37dd5d596ee991f06a38337fda92a07542d1"
+    },
+    {
+      "attributeCode": "prescription_compatible",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:cb4e9945bac951fe861f21509babb1f5e35adbd90cb9c29d83a23f7b0de245d1"
     },
     {
       "attributeCode": "primary_color",
@@ -2033,6 +2869,17 @@
       "immutableFingerprint": "sha256:2db336eb1053cf25a16d7ff0f1874335943c86d37cbd09fe3750e90d324930c0"
     },
     {
+      "attributeCode": "rain_cover_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:8c56701576a54d26d8bfe34ee41d28bf35c7f205177a7debcd287e579a285072"
+    },
+    {
       "attributeCode": "raised_camera_lip_mm",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -2064,6 +2911,39 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:b6c6ce0ebabe74455e8bf490c165cdc07fcd52c4635445edd466f41676ecdb12"
+    },
+    {
+      "attributeCode": "raw_size_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:a8374b032bf12942f5491fa43b7b689545821c3852c0e83ac07c357b82a339cc"
+    },
+    {
+      "attributeCode": "receipt_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d10518ba87ab82ff9081453c5f95811e16adb532560381ff1f71ab75904316fb"
+    },
+    {
+      "attributeCode": "reflective_elements",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:5568e3e16f12d02705c3e8597a016da1cff0e8d74c7f972ae707a5120958cc61"
     },
     {
       "attributeCode": "refresh_rate_hz",
@@ -2176,6 +3056,17 @@
       "immutableFingerprint": "sha256:017780051363733cbaa224262529740e44f4232d10f3c240542e20a271f47e42"
     },
     {
+      "attributeCode": "ring_size_ru",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "RU",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:193b7a452f25a64983ecb78ed847c417b7f04737b7c609ad9110b20ce6763f32"
+    },
+    {
       "attributeCode": "rotation_support",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2187,6 +3078,17 @@
       "immutableFingerprint": "sha256:2f63ac102cb2f00972d1efbfc64042b86860040bed9fae6bb4e6ab79b92952a1"
     },
     {
+      "attributeCode": "route_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "0..1",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:4f0bfb1a12a4e112965236b714328da583ff48199736622c69c0565859a27f62"
+    },
+    {
       "attributeCode": "safety_protections",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2196,6 +3098,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:dd167d156949a20eef544d45843e71691688151163e7f0e731678ccd61f05b1b"
+    },
+    {
+      "attributeCode": "scarf_shape",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:076016fac882bd9b4e535b06a38e101f260260fb252c51d644b39463c94ca080"
+    },
+    {
+      "attributeCode": "school_grade_group",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:cf788f42f4469851fa2af2f86571932f8ef97b5a8c0ced06760e014c0344ad30"
     },
     {
       "attributeCode": "scratch_resistant",
@@ -2253,6 +3177,28 @@
       "immutableFingerprint": "sha256:7b7188b2796a3f795f755bf45f389c6c81c01cd65237972118816c75b098838c"
     },
     {
+      "attributeCode": "set_includes",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "free_text_list",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:9361aabf025e04f7f4aa45dbd00bc6a3ecb0fe75ecab13184b52e52e80a2161f"
+    },
+    {
+      "attributeCode": "set_quantity",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "pcs",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:98b3471af9fd7e34e0733038bc6a57e1f3ecbab5e44a61fa634c14c5412b5dbc"
+    },
+    {
       "attributeCode": "set_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2262,6 +3208,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:b72910da441be7bb6ae448f9b9bf92ecc233acf9a638b9e7e43d666a456dc45a"
+    },
+    {
+      "attributeCode": "shaft_height",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:2970ff8921b31c27d2340b70eb2ec87ed9c265cd5065125d60400b38ad96ef2d"
+    },
+    {
+      "attributeCode": "shaft_height_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:b2ada939226aedc4c7d14bf34087dd8dbd206f6aba9b933a068b256185644a92"
     },
     {
       "attributeCode": "shape",
@@ -2284,6 +3252,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:1164e55ea1fc5a26d9a6aec93d0248c84bab797097d4d765dff90637a01e91cc"
+    },
+    {
+      "attributeCode": "shoe_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:660d5ccbe5368bc0aa12fc9447451b242a27a7168ce5277b38fd403744f1ffc0"
     },
     {
       "attributeCode": "shoulder_cm",
@@ -2319,15 +3298,26 @@
       "immutableFingerprint": "sha256:c223d10a2498f5001802c95d4ecab410905c7a7980242736ca9202d769c022c1"
     },
     {
-      "attributeCode": "size_eu",
-      "valueType": "NUMBER",
-      "valueSetType": "OPEN",
+      "attributeCode": "size_class",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
       "unit": null,
       "isIdentity": false,
       "isFacet": true,
+      "normalization": "derived_or_canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:3ece257076bb6eff433495d9fc79b55c9f2d8dd6d401da98f961e41ef4c5b211"
+    },
+    {
+      "attributeCode": "size_eu",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "EU",
+      "isIdentity": true,
+      "isFacet": true,
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
-      "immutableFingerprint": "sha256:219a6c31f55818cd6553e5e464c53f7f193fefcc4356cd5e94536c221b4a4b5e"
+      "immutableFingerprint": "sha256:294489ecbc157b4987143c8813d045f3e495076afc76f5a6a30c1a0894ac0f45"
     },
     {
       "attributeCode": "size_label",
@@ -2339,6 +3329,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:d804aba7a31677887f810d0e32de83206824fddadec54c63f7acb59c82ced768"
+    },
+    {
+      "attributeCode": "size_ru",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "RU",
+      "isIdentity": true,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:5de965eb3e1c49dba311a94a1cd8deb1b0caa7ae37994d56603a105c6475a6a5"
     },
     {
       "attributeCode": "size_system",
@@ -2429,6 +3430,17 @@
       "immutableFingerprint": "sha256:ff7c9f5ca42944b1ddc1c14ad2b7cdf9b58955b2e1ed844098e19429f7f33255"
     },
     {
+      "attributeCode": "sole_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:485d67f726b71629fa8f7cf34514835cf461ff8b697c763596fd941dbdb2a730"
+    },
+    {
       "attributeCode": "source_text_evidence",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -2460,6 +3472,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:4e113794151ead18420ec2e22bad295d91fd9a48df3c18e25179d46e2d8dbb3e"
+    },
+    {
+      "attributeCode": "sport_purpose",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:2938608b9640fe6f894e5a3fe4f249491a383df7aff4ea823cc4ddcbcc3ad33e"
+    },
+    {
+      "attributeCode": "stone_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:b7a432e30b918d7dc3dec6c62e47310b63fac03fb0b7527e22b396e1d65a9f6a"
     },
     {
       "attributeCode": "storage_capacity_gb",
@@ -2528,6 +3562,17 @@
       "immutableFingerprint": "sha256:e795afcd277495d5e6b58ad4fa016f820b74ce6f0a1e02ca43b21ea33b4036a4"
     },
     {
+      "attributeCode": "strap_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "non_negative_integer",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:5aaf8cd40caed99594bb8b111be19d82b44aa51696a1bdba45323317ee18d85a"
+    },
+    {
       "attributeCode": "strap_included",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -2537,6 +3582,39 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:10876a3646050e7b8433f42bd26e432598dc7fbe1ecef8e1682a2b2ffee15295"
+    },
+    {
+      "attributeCode": "strap_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "positive_decimal_cm",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:f2581b1bd177c27c5e2c84002e94bde9fcfbbbbd8cf5e327a25daf2ae91c7829"
+    },
+    {
+      "attributeCode": "strap_material",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:1b9962818ac4914f8c56f7693ec4f2516f0515167d0956dd3276e878e5bbe6d8"
+    },
+    {
+      "attributeCode": "strap_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:116af8b45d8a827093164a1e1ef10f83453bc46d20113910d1135b5504ddeac1"
     },
     {
       "attributeCode": "stretch",
@@ -2550,6 +3628,17 @@
       "immutableFingerprint": "sha256:f494498113079f0cf9efdb56514a4c05d5a53c2d69d747f65ad8a22fce46c6fe"
     },
     {
+      "attributeCode": "stroller_attachment",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "boolean",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:ae601da1020163f6a9eafccfbd22166099d7f7d6deba6744a10ecb184c9f1fa4"
+    },
+    {
       "attributeCode": "stroller_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2559,6 +3648,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:1311dbbc645358196f3bc25f397fb2407e5cadc2f5595a8bbf38955c8ab04e98"
+    },
+    {
+      "attributeCode": "style",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:877217ff83241a99a1290b1cfdae9f1b1e94d5f31f4a5f12735bdeff67960962"
     },
     {
       "attributeCode": "style_aesthetic",
@@ -2649,6 +3749,17 @@
       "immutableFingerprint": "sha256:0c3e6b9232284d1efe98e122323d53c3cba5e3487a57e58ba4d8bc2cf6ab1433"
     },
     {
+      "attributeCode": "tie_width_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:67fc3b3586a3c45a5ffbf6c163088639e2366de31c2a5e3c74f2b29426b892a3"
+    },
+    {
       "attributeCode": "tip_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2658,6 +3769,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:619a089758b8e9dac8212687e0fa98decc245111cd5226e9df568c7579cef880"
+    },
+    {
+      "attributeCode": "toe_shape",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:01b5a60f06f7e9538957609a0d89192c2248a4f9f0bf51136405c25d4dec3e8a"
     },
     {
       "attributeCode": "topping_signature",
@@ -2682,6 +3804,17 @@
       "immutableFingerprint": "sha256:1ae4471ede90d945eb405c57f470f5b7384ff22ff4163c4e1f7005ff98cf2b86"
     },
     {
+      "attributeCode": "touchscreen_compatible",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:e7c8d8abfeb29e8175b90167c8c4fd0a1a8b1aff2cd0967e27aa94f17938177d"
+    },
+    {
       "attributeCode": "tripod_mount_thread",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2704,6 +3837,28 @@
       "immutableFingerprint": "sha256:932fa24de14568e14eb259f3c0fe1d3820fc35fba142647a82c0a2a02f2c3aa9"
     },
     {
+      "attributeCode": "umbrella_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:ae2511e80cf75b01f38b168bdde51809801e668fc63b950269c802ff3770a1fb"
+    },
+    {
+      "attributeCode": "usage_context",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum_multi",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:57e79111f3a398f561ccd8833440875f6c689af872be2037fe2fbf4db7e01a3b"
+    },
+    {
       "attributeCode": "used_for",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2713,6 +3868,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:320448955c1f42235330668601be116fefcd073908c34ebe64472a15ca4ab4b8"
+    },
+    {
+      "attributeCode": "uv_protection",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:e028366f0cae0a0fad7c6df17dd7b45de4ec386d3bcabdcc9b2ac1e7e95333c2"
     },
     {
       "attributeCode": "video_output_support",
@@ -2759,6 +3925,17 @@
       "immutableFingerprint": "sha256:fb9f3acb1e8ee6d9c377b5c31c89b618e71e28094ab5c6e588987459d09ff0bd"
     },
     {
+      "attributeCode": "volume_liter",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "liter",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "positive_decimal_liter",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:1566b92e9fb538a88599e49ce43a27d62c232033e025a2026395867d9b872748"
+    },
+    {
       "attributeCode": "volume_ml",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -2790,6 +3967,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:4e371405be55b52cc3a3952cb9b8901ae423877c2c90a76e12aee18db7bf6708"
+    },
+    {
+      "attributeCode": "waist_size_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d2930b58aea2064c2fbfcc1fe4ad72e46432c80c0b4d174df983123d502c45a3"
     },
     {
       "attributeCode": "waist_type",
@@ -2825,6 +4013,28 @@
       "immutableFingerprint": "sha256:ae9accdaf4d1ad7924e2ae159f1fd4612c18004efafe71bf482fba308ec1a948"
     },
     {
+      "attributeCode": "watch_strap_lug_width_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:31299b4d60edc33eb4e6340eb4e0a965bdaf0c500d4e009918d6f4d10996e163"
+    },
+    {
+      "attributeCode": "watch_style",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:e833e3c4083f4ad1003964a672cdc76d36e7811aaa56074b91ca43bfbd809f6e"
+    },
+    {
       "attributeCode": "water_resistance",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -2836,6 +4046,17 @@
       "immutableFingerprint": "sha256:24ce3a8afdd423e5a16834e5e0922274d206ea3659bdd9e433903c43c7b23dec"
     },
     {
+      "attributeCode": "water_resistance_atm",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:e9bded6bc57027d84a0ae56e4f8cfac958fc2f998e75cec7fc1b8da474de7085"
+    },
+    {
       "attributeCode": "water_tank_litre",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -2845,6 +4066,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:a38ed4b55e8859c77dbc4c727a5fcd8fb4caecf1e407c4c88d069638dda5ef44"
+    },
+    {
+      "attributeCode": "waterproof_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:cd40085ba818c5e252970772178943cbee987db66bb9eefcda2b0831fbf4be9f"
     },
     {
       "attributeCode": "waterproof_pouch_size",
@@ -2900,6 +4132,50 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:6ad73be74e140c00ecd562101bc54d94756684e3e310e42e24fa95f76212d833"
+    },
+    {
+      "attributeCode": "wheel_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "canonical_enum",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:8c8bc44926a2e94b932547066e3ecdefa202ae0a896d5d141df7fb0241f58243"
+    },
+    {
+      "attributeCode": "wheels_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "non_negative_integer",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d6671f9f77fdaeaba9ec11a5d8a132d7bc49017cae837cf92ed582454c8482f5"
+    },
+    {
+      "attributeCode": "width_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "positive_decimal_cm",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:36ed05eaafec8b0ad8567af31cb1d95de7775997ef04251c5fba86d1afbc610e"
+    },
+    {
+      "attributeCode": "width_fit",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:275ae91d56bc9a1fe21ecd7da43ec88317a869121a828a863bf83be578e8c86f"
     },
     {
       "attributeCode": "windproof",

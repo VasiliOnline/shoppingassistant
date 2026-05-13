@@ -1,0 +1,187 @@
+attribute_code	value_code	value_ru	aliases_ru	sort_order	status	notes_ru
+shoe_type	SNEAKERS	Кроссовки / кеды	кроссовки,кроссы,кросы,кеды,сникеры,sneakers	1	ACTIVE	Базовый тип для lifestyle и casual sneaker. Для спорта уточнять sport_purpose.
+shoe_type	RUNNING_SHOES	Беговые кроссовки	беговые кроссовки,кроссовки для бега,раннинги,running shoes	2	ACTIVE	Если явно указан бег или running.
+shoe_type	SPORT_SHOES	Спортивная обувь	спортивная обувь,обувь для спорта,тренировочная обувь	3	ACTIVE	Универсальная спортивная обувь без более точного вида.
+shoe_type	FOOTBALL_BOOTS	Футбольные бутсы	бутсы,футбольные бутсы,сороконожки,шиповки футбольные	4	ACTIVE	Спортивная обувь для футбола.
+shoe_type	BOOTS	Ботинки / сапоги	ботинки,сапоги,boots,боты	5	ACTIVE	Общий тип для закрытой обуви выше туфель; при зимнем контексте использовать WINTER_BOOTS.
+shoe_type	ANKLE_BOOTS	Ботильоны / полусапоги	ботильоны,полусапоги,челси,chelsea boots	6	ACTIVE	Обувь до щиколотки или немного выше.
+shoe_type	WINTER_BOOTS	Зимние ботинки / сапоги	зимние ботинки,зимние сапоги,дутики,угги,валенки,снегоходы	7	ACTIVE	Зимняя утеплённая обувь.
+shoe_type	HIKING_SHOES	Треккинговая / походная обувь	треккинговые ботинки,походные ботинки,hiking shoes,trekking shoes,туристическая обувь	8	ACTIVE	Для походов, треккинга, outdoor.
+shoe_type	SHOES	Туфли / полуботинки	туфли,полуботинки,классические туфли,shoes	9	ACTIVE	Классическая закрытая обувь без каблука как основного признака.
+shoe_type	LOAFERS	Лоферы	лоферы,loafers	10	ACTIVE	Классическая обувь без шнурков.
+shoe_type	MOCCASINS	Мокасины	мокасины,moccasins	11	ACTIVE	Мягкая повседневная обувь.
+shoe_type	OXFORDS	Оксфорды	оксфорды,oxfords	12	ACTIVE	Классическая обувь с закрытой шнуровкой.
+shoe_type	DERBY	Дерби	дерби,derby	13	ACTIVE	Классическая обувь с открытой шнуровкой.
+shoe_type	SANDALS	Сандалии / босоножки	сандалии,босоножки,sandals,сандалики	14	ACTIVE	Открытая летняя обувь с ремешками.
+shoe_type	SLIDES	Шлёпанцы / сланцы	шлепанцы,шлёпанцы,сланцы,slides,flip flops,вьетнамки	15	ACTIVE	Открытая обувь без задника.
+shoe_type	SLIPPERS	Домашние тапочки	тапочки,тапки,домашняя обувь,slippers	16	ACTIVE	Домашняя обувь.
+shoe_type	BALLET_FLATS	Балетки	балетки,ballet flats	17	ACTIVE	Женская обувь на плоской подошве.
+shoe_type	HEELS	Обувь на каблуке	каблуки,туфли на каблуке,heels	18	ACTIVE	Общий тип для обуви с выраженным каблуком.
+shoe_type	PUMPS	Туфли-лодочки	лодочки,туфли лодочки,pumps	19	ACTIVE	Закрытые туфли на каблуке, часто без застёжки.
+shoe_type	WEDGES	Обувь на танкетке	танкетка,обувь на танкетке,wedges	20	ACTIVE	Каблук-танкетка.
+shoe_type	RUBBER_BOOTS	Резиновые сапоги	резиновые сапоги,сапоги резиновые,дождевые сапоги,обувь для дождя	21	ACTIVE	Влагозащитная резиновая обувь.
+shoe_type	KIDS_SHOES	Детская обувь	детская обувь,детские кроссовки,детские ботинки,обувь для ребёнка	22	ACTIVE	Детский fallback, если точный тип обуви не выделен.
+shoe_type	BABY_SHOES	Обувь для малышей / пинетки	пинетки,обувь для малыша,обувь для младенца,первые ботиночки	23	ACTIVE	Для baby/toddler, включая мягкую обувь.
+shoe_type	CLOGS	Сабо / кроксы	сабо,кроксы,clogs,crocs	24	ACTIVE	Сабо и формованный тип обуви.
+shoe_type	ESPADRILLES	Эспадрильи	эспадрильи,espadrilles	25	ACTIVE	Лёгкая летняя обувь.
+shoe_type	OTHER_SHOES	Другая обувь	другая обувь,прочая обувь	26	ACTIVE	Fallback только при невозможности точной классификации.
+target_gender	MEN	Мужской	мужские,мужская,для мужчин,men	1	ACTIVE	Взрослый мужской сегмент.
+target_gender	WOMEN	Женский	женские,женская,для женщин,women	2	ACTIVE	Взрослый женский сегмент.
+target_gender	BOYS	Для мальчиков	для мальчика,мальчику,boys	3	ACTIVE	Детский сегмент для мальчиков.
+target_gender	GIRLS	Для девочек	для девочки,девочке,girls	4	ACTIVE	Детский сегмент для девочек.
+target_gender	KIDS	Детский унисекс	детские,для детей,kids	5	ACTIVE	Детский сегмент без уточнения пола.
+target_gender	UNISEX	Унисекс	унисекс,unisex	6	ACTIVE	Подходит для разных полов.
+age_group	ADULT	Взрослые	взрослые,adult	1	ACTIVE	Основной взрослый сегмент.
+age_group	TEEN	Подростки	подростковые,для подростка,teen	2	ACTIVE	Подростковые размеры/модели.
+age_group	KIDS	Дети	дети,детская,kids	3	ACTIVE	Детская обувь.
+age_group	TODDLER	Малыши	малыши,toddler,ясельная	4	ACTIVE	Малыши, ходунки.
+age_group	BABY	Младенцы	младенцы,baby,пинетки	5	ACTIVE	Для младенцев и предходьбы.
+condition	NEW	Новые	новые,новая,новое,без носки	1	ACTIVE	Новые, без признаков носки.
+condition	LIKE_NEW	Как новые	как новые,идеальное состояние,носили пару раз	2	ACTIVE	Минимальные следы использования.
+condition	GOOD	Хорошее состояние	хорошее состояние,б/у хорошее,бу хорошее	3	ACTIVE	Нормальные следы носки без критичных дефектов.
+condition	FAIR	Удовлетворительное состояние	удовлетворительное,состояние среднее	4	ACTIVE	Заметная носка, но функционально пригодны.
+condition	HEAVILY_USED	Сильно б/у	сильно бу,сильно б/у,изношенные	5	ACTIVE	Сильные следы носки.
+condition	DEFECTS_OR_REPAIR	С дефектами / под ремонт	с дефектом,под ремонт,требует ремонта	6	ACTIVE	Требуется defect_notes.
+color	BLACK	Чёрный	черные,чёрные,черный,чёрный,black	1	ACTIVE	
+color	WHITE	Белый	белые,белый,white	2	ACTIVE	
+color	GRAY	Серый	серые,серый,gray,grey	3	ACTIVE	
+color	BEIGE	Бежевый	бежевые,бежевый,beige	4	ACTIVE	
+color	BROWN	Коричневый	коричневые,коричневый,brown	5	ACTIVE	
+color	RED	Красный	красные,красный,red	6	ACTIVE	
+color	PINK	Розовый	розовые,розовый,pink	7	ACTIVE	
+color	ORANGE	Оранжевый	оранжевые,оранжевый,orange	8	ACTIVE	
+color	YELLOW	Жёлтый	желтые,жёлтые,желтый,жёлтый,yellow	9	ACTIVE	
+color	GREEN	Зелёный	зеленые,зелёные,green	10	ACTIVE	
+color	BLUE	Синий / голубой	синие,голубые,синий,голубой,blue	11	ACTIVE	
+color	NAVY	Тёмно-синий	темно-синие,тёмно-синие,navy	12	ACTIVE	
+color	PURPLE	Фиолетовый	фиолетовые,purple	13	ACTIVE	
+color	SILVER	Серебристый	серебристые,silver	14	ACTIVE	
+color	GOLD	Золотистый	золотистые,gold	15	ACTIVE	
+color	MULTICOLOR	Мультиколор	разноцветные,мультиколор,multicolor	16	ACTIVE	
+color	TRANSPARENT	Прозрачный	прозрачные,transparent	17	ACTIVE	
+season	SUMMER	Лето	летние,лето,summer	1	ACTIVE	
+season	DEMI_SEASON	Демисезон	демисезонные,осень весна,весна осень	2	ACTIVE	
+season	WINTER	Зима	зимние,зима,winter	3	ACTIVE	
+season	ALL_SEASON	Всесезонные	всесезонные,all season	4	ACTIVE	
+season	RAIN	Дождь / слякоть	для дождя,дождевые,слякоть	5	ACTIVE	
+season	INDOOR	Дом / помещение	домашние,для дома,indoor	6	ACTIVE	
+material_upper	LEATHER	Натуральная кожа	натуральная кожа,кожа,leather	1	ACTIVE	
+material_upper	SUEDE	Замша	замша,suede	2	ACTIVE	
+material_upper	NUBUCK	Нубук	нубук,nubuck	3	ACTIVE	
+material_upper	ECO_LEATHER	Искусственная кожа / экокожа	экокожа,искусственная кожа,кожзам	4	ACTIVE	
+material_upper	TEXTILE	Текстиль	текстиль,textile,ткань	5	ACTIVE	
+material_upper	MESH	Сетка / mesh	сетка,mesh	6	ACTIVE	
+material_upper	CANVAS	Канвас / парусина	канвас,парусина,canvas	7	ACTIVE	
+material_upper	SYNTHETIC	Синтетика	синтетика,synthetic	8	ACTIVE	
+material_upper	RUBBER	Резина	резина,rubber	9	ACTIVE	
+material_upper	EVA	EVA / вспененный материал	эва,eva	10	ACTIVE	
+material_upper	WOOL	Шерсть	шерсть,wool	11	ACTIVE	
+material_upper	FELT	Войлок	войлок,felt	12	ACTIVE	
+material_upper	FUR	Мех	мех,fur	13	ACTIVE	
+material_upper	OTHER	Другое	другое,other	14	ACTIVE	
+material_lining	NONE	Без подкладки	без подкладки	1	ACTIVE	
+material_lining	TEXTILE	Текстиль	текстиль,textile	2	ACTIVE	
+material_lining	LEATHER	Кожа	кожаная подкладка,leather	3	ACTIVE	
+material_lining	FLEECE	Флис	флис,fleece	4	ACTIVE	
+material_lining	WOOL	Шерсть	шерсть,wool	5	ACTIVE	
+material_lining	FUR	Мех	мех,fur	6	ACTIVE	
+material_lining	SYNTHETIC	Синтетика	синтетика,synthetic	7	ACTIVE	
+material_lining	OTHER	Другое	другое,other	8	ACTIVE	
+material_sole	RUBBER	Резина	резиновая подошва,rubber	1	ACTIVE	
+material_sole	EVA	EVA	эва,eva	2	ACTIVE	
+material_sole	PU	Полиуретан	полиуретан,pu	3	ACTIVE	
+material_sole	TPU	TPU	тпу,tpu	4	ACTIVE	
+material_sole	LEATHER	Кожа	кожаная подошва,leather sole	5	ACTIVE	
+material_sole	CORK	Пробка	пробка,cork	6	ACTIVE	
+material_sole	OTHER	Другое	другое,other	7	ACTIVE	
+closure_type	LACES	Шнурки	шнурки,на шнурках,laces	1	ACTIVE	
+closure_type	VELCRO	Липучка	липучка,на липучке,velcro	2	ACTIVE	
+closure_type	ZIPPER	Молния	молния,на молнии,zipper	3	ACTIVE	
+closure_type	BUCKLE	Пряжка	пряжка,ремешок,buckle	4	ACTIVE	
+closure_type	SLIP_ON	Без застёжки / slip-on	без застежки,без застёжки,слипоны,slip on	5	ACTIVE	
+closure_type	ELASTIC	Резинка	резинка,эластичная вставка,elastic	6	ACTIVE	
+closure_type	DRAWSTRING	Утяжка	утяжка,кулиска,drawstring	7	ACTIVE	
+closure_type	BOA_DIAL	BOA / дисковая шнуровка	boa,дисковая шнуровка	8	ACTIVE	
+closure_type	NONE	Нет	нет застежки,нет застёжки	9	ACTIVE	
+closure_type	COMBINED	Комбинированная	комбинированная застежка,комбо	10	ACTIVE	
+sport_purpose	RUNNING	Бег	бег,для бега,running	1	ACTIVE	
+sport_purpose	TRAINING	Тренировки	тренировки,training	2	ACTIVE	
+sport_purpose	FITNESS	Фитнес	фитнес,fitness	3	ACTIVE	
+sport_purpose	FOOTBALL	Футбол	футбол,football,soccer	4	ACTIVE	
+sport_purpose	BASKETBALL	Баскетбол	баскетбол,basketball	5	ACTIVE	
+sport_purpose	TENNIS	Теннис	теннис,tennis	6	ACTIVE	
+sport_purpose	HIKING	Хайкинг	хайкинг,hiking	7	ACTIVE	
+sport_purpose	TREKKING	Треккинг	треккинг,trekking	8	ACTIVE	
+sport_purpose	SKATEBOARDING	Скейтбординг	скейт,скейтбординг,skate	9	ACTIVE	
+sport_purpose	DANCE	Танцы	танцы,dance	10	ACTIVE	
+sport_purpose	GYM	Зал	зал,gym	11	ACTIVE	
+sport_purpose	CYCLING	Велоспорт	велоспорт,cycling	12	ACTIVE	
+sport_purpose	WATER_SPORT	Водные виды спорта	аквашузы,водная обувь,water shoes	13	ACTIVE	
+sport_purpose	UNIVERSAL	Универсально	универсальные,universal	14	ACTIVE	
+sole_type	FLAT	Плоская	плоская подошва,flat	1	ACTIVE	
+sole_type	CUSHIONED	Амортизирующая	амортизация,cushioned	2	ACTIVE	
+sole_type	TRACTOR	Тракторная	тракторная подошва,tractor sole	3	ACTIVE	
+sole_type	PLATFORM	Платформа	платформа,platform	4	ACTIVE	
+sole_type	THIN	Тонкая	тонкая подошва,thin sole	5	ACTIVE	
+sole_type	ANTI_SLIP	Противоскользящая	антискользящая,противоскользящая,anti slip	6	ACTIVE	
+sole_type	STUDDED	С шипами	шипы,шипованная,studded	7	ACTIVE	
+sole_type	CLEATED	С бутсовыми шипами	бутсовая,cleats	8	ACTIVE	
+sole_type	NON_MARKING	Non-marking	non marking,не оставляет следов	9	ACTIVE	
+sole_type	SOFT_SOLE	Мягкая подошва	мягкая подошва,soft sole	10	ACTIVE	
+sole_type	HARD_SOLE	Жёсткая подошва	жесткая подошва,жёсткая подошва,hard sole	11	ACTIVE	
+waterproof_level	NONE	Нет влагозащиты	без мембраны,без влагозащиты	1	ACTIVE	
+waterproof_level	WATER_REPELLENT	Водоотталкивающая обработка	водоотталкивающие,water repellent	2	ACTIVE	
+waterproof_level	WATERPROOF	Водонепроницаемые	водонепроницаемые,waterproof	3	ACTIVE	
+waterproof_level	MEMBRANE	Мембрана	мембрана,membrane,gore tex,gore-tex	4	ACTIVE	
+waterproof_level	FULL_RUBBER	Полностью резиновые	полностью резиновые,резиновые	5	ACTIVE	
+insulation	NONE	Без утепления	без утепления	1	ACTIVE	
+insulation	LIGHT	Лёгкое утепление	легкое утепление,лёгкое утепление	2	ACTIVE	
+insulation	FLEECE	Флис	флис,fleece	3	ACTIVE	
+insulation	WOOL	Шерсть	шерсть,wool	4	ACTIVE	
+insulation	FUR	Мех	мех,fur	5	ACTIVE	
+insulation	SYNTHETIC	Синтетический утеплитель	синтетический утеплитель,тинсулейт,thinsulate	6	ACTIVE	
+insulation	FELT	Войлок	войлок,felt	7	ACTIVE	
+shaft_height	LOW	Низкие	низкие,low	1	ACTIVE	
+shaft_height	ANKLE	До щиколотки	до щиколотки,ankle	2	ACTIVE	
+shaft_height	MID_CALF	До середины голени	до середины голени,mid calf	3	ACTIVE	
+shaft_height	KNEE_HIGH	До колена	до колена,knee high	4	ACTIVE	
+shaft_height	OVER_KNEE	Выше колена	выше колена,ботфорты,over knee	5	ACTIVE	
+heel_type	NONE	Без каблука	без каблука	1	ACTIVE	
+heel_type	BLOCK	Устойчивый / блочный	блочный каблук,устойчивый каблук,block heel	2	ACTIVE	
+heel_type	STILETTO	Шпилька	шпилька,stiletto	3	ACTIVE	
+heel_type	WEDGE	Танкетка	танкетка,wedge	4	ACTIVE	
+heel_type	KITTEN	Низкий kitten heel	kitten heel,маленький каблук	5	ACTIVE	
+heel_type	CONE	Конусный	конусный каблук,cone heel	6	ACTIVE	
+heel_type	PLATFORM	Платформа	каблук платформа,platform heel	7	ACTIVE	
+heel_type	OTHER	Другое	другое,other	8	ACTIVE	
+toe_shape	ROUND	Круглый нос	круглый нос,round toe	1	ACTIVE	
+toe_shape	POINTED	Острый нос	острый нос,pointed toe	2	ACTIVE	
+toe_shape	SQUARE	Квадратный нос	квадратный нос,square toe	3	ACTIVE	
+toe_shape	ALMOND	Миндалевидный нос	миндалевидный нос,almond toe	4	ACTIVE	
+toe_shape	OPEN_TOE	Открытый нос	открытый нос,open toe	5	ACTIVE	
+toe_shape	CLOSED_TOE	Закрытый нос	закрытый нос,closed toe	6	ACTIVE	
+orthopedic_feature	NONE	Нет	нет,без ортопедии	1	ACTIVE	
+orthopedic_feature	ARCH_SUPPORT	Поддержка свода	поддержка свода,arch support	2	ACTIVE	
+orthopedic_feature	ORTHOPEDIC_INSOLE	Ортопедическая стелька	ортопедическая стелька,orthopedic insole	3	ACTIVE	
+orthopedic_feature	HARD_HEEL_COUNTER	Жёсткий задник	жесткий задник,жёсткий задник	4	ACTIVE	
+orthopedic_feature	ANATOMIC_FOOTBED	Анатомическая стелька	анатомическая стелька,anatomic footbed	5	ACTIVE	
+orthopedic_feature	SUPINATOR	Супинатор	супинатор	6	ACTIVE	
+orthopedic_feature	EXTRA_FLEXIBLE_SOLE	Гибкая подошва	гибкая подошва,flexible sole	7	ACTIVE	
+width_fit	NARROW	Узкая колодка	узкая колодка,narrow	1	ACTIVE	
+width_fit	STANDARD	Стандартная колодка	стандартная колодка,regular	2	ACTIVE	
+width_fit	WIDE	Широкая колодка	широкая колодка,wide	3	ACTIVE	
+width_fit	EXTRA_WIDE	Очень широкая колодка	очень широкая колодка,extra wide	4	ACTIVE	
+size_system	EU	EU	eu,eur,евро,европейский	1	ACTIVE	
+size_system	RU	RU	ru,русский,российский	2	ACTIVE	
+size_system	US	US	us,американский	3	ACTIVE	
+size_system	UK	UK	uk,британский	4	ACTIVE	
+size_system	CM	Сантиметры	см,cm,mondo	5	ACTIVE	
+size_system	BRAND	Брендовая сетка	брендовая сетка,brand size	6	ACTIVE	
+pair_completeness	PAIR	Пара	пара,оба ботинка,комплект	1	ACTIVE	
+pair_completeness	LEFT_ONLY	Только левый	только левый,левый ботинок	2	ACTIVE	
+pair_completeness	RIGHT_ONLY	Только правый	только правый,правый ботинок	3	ACTIVE	
+pair_completeness	MISMATCHED	Непарные / разный размер	непарные,разный размер,mismatched	4	ACTIVE	
+authenticity_status	UNKNOWN	Не указано	не указано,unknown	1	ACTIVE	
+authenticity_status	ORIGINAL_CLAIM_UNVERIFIED	Заявлен оригинал, не проверено	оригинал,original,не проверено	2	ACTIVE	
+authenticity_status	ORIGINAL_VERIFIED	Оригинал подтверждён	проверенный оригинал,verified original	3	ACTIVE	
+authenticity_status	NOT_APPLICABLE	Не применимо	не применимо,n/a	4	ACTIVE	

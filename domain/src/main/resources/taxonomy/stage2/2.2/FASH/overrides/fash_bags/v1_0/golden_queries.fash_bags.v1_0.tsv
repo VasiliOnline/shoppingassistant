@@ -1,0 +1,47 @@
+query_ru	expected_category	expected_bag_type	expected_attributes_json	negative_route_expected	notes_ru
+черный кожаный рюкзак мужской	FASH.BAGS	BACKPACK	"{""color_primary"":""BLACK"",""material_outer"":""LEATHER"",""target_gender"":""MEN""}"		Brand optional; тип по head noun.
+рюкзак nike городской	FASH.BAGS	BACKPACK	"{""brand"":""Nike"",""usage_context"":[""CITY""]}"		Nike не должен уводить в обувь.
+женская сумка michael kors через плечо	FASH.BAGS	CROSSBODY_BAG	"{""brand"":""Michael Kors"",""target_gender"":""WOMEN"",""strap_type"":""CROSSBODY_STRAP""}"		
+бежевая сумка на плечо zara	FASH.BAGS	SHOULDER_BAG	"{""brand"":""Zara"",""color_primary"":""BEIGE""}"		
+кожаный шоппер большой	FASH.BAGS	SHOPPER_BAG	"{""material_outer"":""LEATHER"",""size_class"":""LARGE""}"		
+сумка тоут a4 для работы	FASH.BAGS	TOTE	"{""document_size"":""A4"",""usage_context"":[""WORK""]}"		
+золотой вечерний клатч	FASH.BAGS	CLUTCH	"{""color_primary"":""GOLD"",""style"":""EVENING""}"		
+бананка adidas черная	FASH.BAGS	WAIST_BAG	"{""brand"":""Adidas"",""color_primary"":""BLACK""}"		Adidas не уводит в shoes.
+сумка для ноутбука 15.6 кожаная	FASH.BAGS	LAPTOP_BAG	"{""fits_laptop_inch"":15.6,""material_outer"":""LEATHER""}"		
+чехол для ноутбука 13 дюймов	FASH.BAGS	LAPTOP_SLEEVE	"{""fits_laptop_inch"":13}"		Laptop sleeve закреплён в BAGS.
+деловой портфель мужской кожа	FASH.BAGS	BRIEFCASE	"{""target_gender"":""MEN"",""material_outer"":""LEATHER"",""style"":""BUSINESS""}"		
+дипломат с кодовым замком	FASH.BAGS	BRIEFCASE	"{""lock_type"":""COMBINATION_LOCK""}"		
+папка для документов a4	FASH.BAGS	DOCUMENT_BAG	"{""document_size"":""A4""}"		
+дорожная сумка 45 литров	FASH.BAGS	TRAVEL_BAG	"{""volume_liter"":45}"		
+спортивная сумка для тренировки puma	FASH.BAGS	DUFFEL_BAG	"{""brand"":""Puma"",""usage_context"":[""SPORT""]}"		
+чемодан ручная кладь 55x40x20	FASH.BAGS	SUITCASE	"{""cabin_size_status"":""CABIN_APPROVED"",""size_class"":""CABIN""}"		
+чемодан на 4 колесах tsa замок	FASH.BAGS	SUITCASE	"{""wheels_count"":4,""lock_type"":""TSA_LOCK""}"		
+кошелек женский красный кожаный	FASH.BAGS	WALLET	"{""target_gender"":""WOMEN"",""color_primary"":""RED"",""material_outer"":""LEATHER""}"		Wallet остаётся BAGS.
+кардхолдер мужской черный	FASH.BAGS	CARDHOLDER	"{""target_gender"":""MEN"",""color_primary"":""BLACK""}"		Cardholder остаётся BAGS.
+визитница на 12 карт	FASH.BAGS	CARDHOLDER	"{""card_slots_count"":12}"		
+косметичка прозрачная на молнии	FASH.BAGS	COSMETIC_BAG	"{""color_primary"":""TRANSPARENT"",""closure_type"":""ZIPPER""}"		
+несессер кожаный мужской	FASH.BAGS	COSMETIC_BAG	"{""material_outer"":""LEATHER"",""target_gender"":""MEN""}"		
+сумка для мамы на коляску	FASH.BAGS	DIAPER_BAG	"{""usage_context"":[""BABY_CARE""],""stroller_attachment"":true}"		
+пляжная соломенная сумка	FASH.BAGS	BEACH_BAG	"{""material_outer"":""STRAW"",""usage_context"":[""BEACH""]}"		
+мешок для обуви школьный	FASH.BAGS	DRAWSTRING_BAG	"{""usage_context"":[""SCHOOL""]}"		Слово обувь не должно уводить в SHOES, head noun мешок.
+женский рюкзак fjallraven kanken	FASH.BAGS	BACKPACK	"{""brand"":""Fjallraven"",""model_name_text"":""Kanken""}"		model_name_text свободный.
+сумка longchamp le pliage	FASH.BAGS	HANDBAG	"{""brand"":""Longchamp"",""model_name_text"":""Le Pliage""}"		
+сумка без бренда новая с бирками	FASH.BAGS		"{""condition"":""NEW_WITH_TAGS""}"		bag_type может быть candidate/unknown при общем слове сумка.
+кроссовки nike	FASH.SHOES		{}	FASH.SHOES	Footwear head noun.
+женские сапоги кожаные	FASH.SHOES		"{""material_outer"":""LEATHER""}"	FASH.SHOES	Shoes guard.
+детские ботинки зимние	FASH.SHOES		{}	FASH.SHOES	Shoes guard.
+мужская футболка nike	FASH.MEN		"{""brand"":""Nike""}"	FASH.MEN	Apparel guard.
+женское платье zara	FASH.WOMEN		"{""brand"":""Zara""}"	FASH.WOMEN	Apparel guard.
+детская куртка	FASH.KIDS		{}	FASH.KIDS	Apparel guard.
+ремень кожаный мужской	FASH.ACCESSORIES		"{""material_outer"":""LEATHER""}"	FASH.ACCESSORIES	Accessories guard.
+шарф кашемировый	FASH.ACCESSORIES		{}	FASH.ACCESSORIES	Accessories guard.
+очки солнцезащитные ray ban	FASH.ACCESSORIES		"{""brand"":""Ray Ban""}"	FASH.ACCESSORIES	Accessories guard.
+apple watch series 9	TECH.WEARABLES		{}	TECH.WEARABLES	Smartwatch guard.
+смарт часы samsung	TECH.WEARABLES		{}	TECH.WEARABLES	TECH guard.
+чехол для телефона iphone 15	TECH.ACCESSORIES		{}	TECH.ACCESSORIES	Phone case guard.
+сумка переноска для кошки	PET.ACCESSORIES		{}	PET.ACCESSORIES	Pet carrier guard.
+термосумка для пикника	SPORT.OUTDOOR_OR_HOME		{}	SPORT.OUTDOOR_OR_HOME	Cooler bag guard.
+сумка для инструментов bosch	DIY.TOOLS		"{""brand"":""Bosch""}"	DIY.TOOLS	Tool bag guard.
+медицинская сумка первой помощи	HEALTH.MEDICAL		{}	HEALTH.MEDICAL	Medical guard.
+фоторюкзак canon	TECH.PHOTO_ACCESSORIES		"{""brand"":""Canon""}"	TECH.PHOTO_ACCESSORIES	Camera bag guard.
+реплика gucci сумка	POLICY_REVIEW		"{""brand"":""Gucci""}"	POLICY_REVIEW	Counterfeit terms.

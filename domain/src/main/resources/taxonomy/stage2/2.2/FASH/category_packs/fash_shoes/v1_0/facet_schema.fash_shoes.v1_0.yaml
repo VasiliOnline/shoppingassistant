@@ -1,0 +1,159 @@
+id: facet_schema.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+locale: ru-RU
+global_facets:
+- facet: shoe_type
+  label_ru: Тип
+  position: 10
+  control: multi_select
+  source: values.shoe_type
+- facet: target_gender
+  label_ru: Для кого
+  position: 20
+  control: multi_select
+  source: values.target_gender
+- facet: size
+  label_ru: Размер
+  position: 30
+  control: size_picker
+  source:
+  - size_eu
+  - raw_size_text
+- facet: brand
+  label_ru: Бренд
+  position: 40
+  control: brand_search
+  source: brand
+- facet: condition
+  label_ru: Состояние
+  position: 50
+  control: multi_select
+  source: values.condition
+- facet: price
+  label_ru: Цена
+  position: 60
+  control: range
+  source: offer.price
+common_secondary_facets:
+- facet: color_primary
+  label_ru: Цвет
+  control: color_picker
+- facet: season
+  label_ru: Сезон
+  control: multi_select
+- facet: material_upper
+  label_ru: Материал
+  control: multi_select
+- facet: closure_type
+  label_ru: Застёжка
+  control: multi_select
+type_specific_facets:
+  SNEAKERS:
+  - sport_purpose
+  - color_primary
+  - material_upper
+  - closure_type
+  RUNNING_SHOES:
+  - sport_purpose
+  - sole_type
+  - brand
+  - model_name_text
+  SPORT_SHOES:
+  - sport_purpose
+  - sole_type
+  - closure_type
+  FOOTBALL_BOOTS:
+  - sport_purpose
+  - sole_type
+  - size_eu
+  BOOTS:
+  - season
+  - shaft_height
+  - waterproof_level
+  - material_upper
+  ANKLE_BOOTS:
+  - shaft_height
+  - heel_height_cm
+  - material_upper
+  WINTER_BOOTS:
+  - season
+  - insulation
+  - waterproof_level
+  - shaft_height
+  HIKING_SHOES:
+  - sport_purpose
+  - waterproof_level
+  - sole_type
+  RUBBER_BOOTS:
+  - waterproof_level
+  - shaft_height
+  - size_eu
+  SHOES:
+  - material_upper
+  - toe_shape
+  - closure_type
+  LOAFERS:
+  - material_upper
+  - color_primary
+  - size_eu
+  MOCCASINS:
+  - material_upper
+  - color_primary
+  - size_eu
+  OXFORDS:
+  - material_upper
+  - toe_shape
+  - closure_type
+  DERBY:
+  - material_upper
+  - toe_shape
+  - closure_type
+  SANDALS:
+  - season
+  - closure_type
+  - material_upper
+  SLIDES:
+  - season
+  - material_upper
+  - color_primary
+  SLIPPERS:
+  - season
+  - material_upper
+  - material_lining
+  BALLET_FLATS:
+  - material_upper
+  - toe_shape
+  - color_primary
+  HEELS:
+  - heel_height_cm
+  - heel_type
+  - toe_shape
+  PUMPS:
+  - heel_height_cm
+  - heel_type
+  - toe_shape
+  WEDGES:
+  - heel_height_cm
+  - heel_type
+  - platform_height_cm
+  KIDS_SHOES:
+  - age_group
+  - size_eu
+  - closure_type
+  - season
+  - waterproof_level
+  BABY_SHOES:
+  - age_group
+  - age_label
+  - foot_length_cm
+  - closure_type
+facet_quality_rules:
+- id: DO_NOT_SHOW_EMPTY_TYPE_FACET
+  rule: hide type-specific facet if no indexed offers have value in current result set
+- id: SIZE_FIRST_FOR_SHOES
+  rule: size facet must remain in top 3 positions for FASH.SHOES
+- id: PRICE_GLOBAL
+  rule: price is generic offer field, not category attribute; still visible globally
+- id: MODEL_TEXT_SEARCH_ONLY
+  rule: model_name_text may be searchable and shown as chip, but not a controlled facet in v1.0

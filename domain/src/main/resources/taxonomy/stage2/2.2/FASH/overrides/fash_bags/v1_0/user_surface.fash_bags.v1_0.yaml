@@ -1,0 +1,127 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: user_surface.fash_bags.v1_0.yaml
+locale: ru-RU
+category_title: Сумки и рюкзаки
+category_description: Сумки, рюкзаки, чемоданы, кошельки, кардхолдеры и косметички.
+navigation_groups:
+- label: Рюкзаки
+  types:
+  - BACKPACK
+  - SCHOOL_BAG
+  - DRAWSTRING_BAG
+- label: Женские и повседневные сумки
+  types:
+  - HANDBAG
+  - SHOULDER_BAG
+  - CROSSBODY_BAG
+  - TOTE
+  - SHOPPER_BAG
+- label: Клатчи и поясные сумки
+  types:
+  - CLUTCH
+  - WAIST_BAG
+- label: Для работы и ноутбука
+  types:
+  - LAPTOP_BAG
+  - LAPTOP_SLEEVE
+  - BRIEFCASE
+  - DOCUMENT_BAG
+- label: Дорожные и чемоданы
+  types:
+  - TRAVEL_BAG
+  - DUFFEL_BAG
+  - SUITCASE
+- label: Кошельки и кардхолдеры
+  types:
+  - WALLET
+  - CARDHOLDER
+- label: Косметички и специальные сумки
+  types:
+  - COSMETIC_BAG
+  - DIAPER_BAG
+  - BEACH_BAG
+always_visible_filters:
+- attribute: bag_type
+  label: Тип
+- attribute: brand
+  label: Бренд
+- attribute: condition
+  label: Состояние
+- attribute: price
+  label: Цена
+  external_commerce_field: true
+- attribute: color_primary
+  label: Цвет
+- attribute: material_outer
+  label: Материал
+quick_chips:
+- label: Кожаные
+  filter:
+    material_outer: LEATHER
+- label: Для ноутбука
+  filter:
+    usage_context: LAPTOP
+- label: Ручная кладь
+  filter:
+    cabin_size_status: CABIN_APPROVED
+- label: Новые
+  filter:
+    condition:
+    - NEW_WITH_TAGS
+    - NEW_WITHOUT_TAGS
+- label: Школьные
+  filter:
+    bag_type: SCHOOL_BAG
+- label: Кошельки
+  filter:
+    bag_type: WALLET
+field_labels:
+  bag_type: Тип
+  target_gender: Для кого
+  age_group: Возраст
+  brand: Бренд
+  model_name_text: Модель
+  condition: Состояние
+  color_primary: Цвет
+  material_outer: Материал
+  size_class: Размер
+  volume_liter: Объём
+  fits_laptop_inch: Ноутбук до
+  wheels_count: Колёса
+  lock_type: Замок
+  card_slots_count: Слоты для карт
+seller_form_sections:
+- label: Основное
+  fields:
+  - bag_type
+  - brand
+  - model_name_text
+  - condition
+  - price
+- label: Внешний вид
+  fields:
+  - color_primary
+  - material_outer
+  - pattern
+  - style
+- label: Размеры
+  fields:
+  - size_class
+  - length_cm
+  - height_cm
+  - depth_cm
+  - volume_liter
+- label: Конструкция
+  fields:
+  - closure_type
+  - strap_type
+  - handle_type
+  - compartment_count
+  - pocket_count
+- label: Типовые детали
+  fields:
+  - fits_laptop_inch
+  - wheels_count
+  - lock_type
+  - card_slots_count
+  - orthopedic_back

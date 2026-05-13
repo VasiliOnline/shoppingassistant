@@ -24,6 +24,209 @@ blocked_noise_tokens:
 - ремонт
 - переделка
 disambiguation_ordered_rules:
+- id: R.FASH_ACCESSORIES_BAG_ROUTE_OUT
+  if_any_tokens:
+  - кошелек
+  - кошелёк
+  - кардхолдер
+  - визитница
+  - косметичк
+  then_route_canonical: FASH.BAGS
+  confidence: 0.94
+  notes: FASH.ACCESSORIES v1.0 route-out; wallets, cardholders and cosmetic bags belong to FASH.BAGS.
+- id: R.FASH_ACCESSORIES_SMART_WEARABLE_ROUTE_OUT
+  if_any_tokens:
+  - apple watch
+  - galaxy watch
+  - smartwatch
+  - smart watch
+  - mi band
+  - фитнес браслет
+  - смарт часы
+  and_any_tokens:
+  - ремешок
+  - браслет
+  - strap
+  - часы
+  - watch
+  then_route_canonical: TECH.SMART_HOME
+  confidence: 0.93
+  notes: FASH.ACCESSORIES v1.0 route-out; smart watches and smart straps belong to current TECH.SMART_HOME wearable route.
+- id: R.FASH_ACCESSORIES_PHONE_ACCESSORY_ROUTE_OUT
+  if_any_tokens:
+  - чехол
+  - ремешок
+  - strap
+  and_any_tokens:
+  - телефон
+  - смартфон
+  - iphone
+  - samsung
+  - android
+  then_route_canonical: TECH.PHONE_ACCESSORIES
+  confidence: 0.9
+  notes: FASH.ACCESSORIES v1.0 route-out; phone cases/straps are TECH.PHONE_ACCESSORIES.
+- id: R.FASH_ACCESSORIES_SAFETY_EYEWEAR_ROUTE_OUT
+  if_any_tokens:
+  - очки
+  and_any_tokens:
+  - защитн
+  - строительн
+  - сварочн
+  then_route_canonical: HOME.REPAIR_TOOLS
+  confidence: 0.82
+  notes: FASH.ACCESSORIES v1.0 route-out; protective eyewear is not fashion accessories in the current taxonomy.
+- id: R.FASH_KIDS_APPAREL_HEAD_NOUN
+  if_any_tokens:
+  - одежд
+  - плать
+  - джинс
+  - колготк
+  - футболк
+  - куртк
+  - брюки
+  - худи
+  - рубашк
+  and_any_tokens:
+  - детск
+  - для мальчик
+  - для мальчика
+  - для девочк
+  - для девочки
+  - мальчик
+  - девочк
+  - для ребенка
+  - для ребёнка
+  then_route_canonical: FASH.KIDS
+  confidence: 0.94
+  notes: Kids apparel head nouns must beat generic women/men and bag attribute aliases.
+- id: R.FASH_BAGS_REPLICA_POLICY_REVIEW
+  if_any_tokens:
+  - копия
+  - реплика
+  - не оригинал
+  - counterfeit
+  - люкс копия
+  and_any_tokens:
+  - сумк
+  - рюкзак
+  - кошелек
+  - кошелёк
+  - gucci
+  - louis vuitton
+  then_route_canonical: POLICY_REVIEW
+  confidence: 0.95
+  notes: FASH.BAGS production guard; counterfeit and replica signals require policy review.
+- id: R.FASH_BAGS_TECH_WEARABLES
+  if_any_tokens:
+  - apple watch
+  - galaxy watch
+  - smartwatch
+  - смарт часы
+  - фитнес браслет
+  - mi band
+  then_route_canonical: TECH.SMART_HOME
+  confidence: 0.93
+  notes: Smart wearables are TECH in the current catalog, not FASH bags/accessories.
+- id: R.FASH_BAGS_PHONE_CASE
+  if_any_tokens:
+  - чехол
+  - case
+  and_any_tokens:
+  - телефон
+  - iphone
+  - айфон
+  - samsung
+  - galaxy
+  then_route_canonical: TECH.PHONE_ACCESSORIES
+  confidence: 0.93
+  notes: Phone cases are TECH.PHONE_ACCESSORIES, not FASH.BAGS.
+- id: R.FASH_BAGS_LAPTOP_CONTAINER
+  if_any_tokens:
+  - сумк
+  - рюкзак
+  - чехол
+  - sleeve
+  - папка
+  and_any_tokens:
+  - ноутбук
+  - laptop
+  - macbook
+  then_route_canonical: FASH.BAGS
+  confidence: 0.93
+  notes: Laptop bags and laptop sleeves stay in FASH.BAGS when carrying-container intent is explicit.
+- id: R.FASH_BAGS_SHOE_DRAWSTRING
+  if_any_tokens:
+  - мешок для обуви
+  - мешок
+  - gym sack
+  - drawstring
+  and_any_tokens:
+  - обув
+  - школьн
+  then_route_canonical: FASH.BAGS
+  confidence: 0.91
+  notes: Shoe drawstring bags are bags despite the shoe token.
+- id: R.FASH_BAGS_DIAPER_STROLLER_BAG
+  if_any_tokens:
+  - сумка для мамы
+  - сумка для коляски
+  - сумка для подгузников
+  - diaper bag
+  then_route_canonical: FASH.BAGS
+  confidence: 0.92
+  notes: Diaper/stroller bags are FASH.BAGS even when stroller tokens are present.
+- id: R.FASH_BAGS_PET_CARRIER
+  if_any_tokens:
+  - сумка переноска
+  - переноска
+  - pet carrier
+  and_any_tokens:
+  - кошк
+  - собак
+  - животн
+  then_route_canonical: PETS.ACCESSORIES
+  confidence: 0.93
+  notes: Pet carriers are PETS.ACCESSORIES, not fashion bags.
+- id: R.FASH_BAGS_COOLER_BAG
+  if_any_tokens:
+  - сумка холодильник
+  - термосумка
+  - cooler bag
+  then_route_canonical: SPORT.OUTDOOR
+  confidence: 0.9
+  notes: Cooler bags route outside FASH.BAGS.
+- id: R.FASH_BAGS_TOOL_BAG
+  if_any_tokens:
+  - сумка для инструментов
+  - инструментальная сумка
+  - tool bag
+  then_route_canonical: HOME.REPAIR_TOOLS
+  confidence: 0.92
+  notes: Tool bags route to repair tools.
+- id: R.FASH_BAGS_MEDICAL_BAG
+  if_any_tokens:
+  - медицинская сумка
+  - аптечка
+  - первой помощи
+  then_route_canonical: BEAUTY.HEALTH
+  confidence: 0.88
+  notes: Medical first-aid bags are not fashion bags in the current catalog.
+- id: R.FASH_BAGS_CAMERA_BAG
+  if_any_tokens:
+  - сумка для камеры
+  - фоторюкзак
+  - camera bag
+  then_route_canonical: TECH.CAMERAS
+  confidence: 0.9
+  notes: Camera bags route to TECH.CAMERAS unless fashion bag intent dominates.
+- id: R.FASH_BAGS_HOUSEHOLD_BAGS
+  if_any_tokens:
+  - мешки для мусора
+  - пакеты фасовочные
+  then_route_canonical: HOME.CLEANING
+  confidence: 0.88
+  notes: Disposable household bags are not FASH.BAGS.
 - id: R.FASH_KIDS_SHOES
   if_any_tokens:
   - обув
@@ -36,7 +239,11 @@ disambiguation_ordered_rules:
   and_any_tokens:
   - детск
   - для мальчик
+  - для мальчика
   - для девочк
+  - для девочки
+  - мальчик
+  - девочк
   - для ребенка
   - для ребёнка
   then_route_canonical: FASH.SHOES
@@ -51,7 +258,11 @@ disambiguation_ordered_rules:
   - детск
   - школьн
   - для мальчик
+  - для мальчика
   - для девочк
+  - для девочки
+  - мальчик
+  - девочк
   - для ребенка
   - для ребёнка
   then_route_canonical: FASH.BAGS
@@ -68,6 +279,8 @@ disambiguation_ordered_rules:
   - детск
   - для мальчик
   - для девочк
+  - мальчик
+  - девочк
   - для ребенка
   - для ребёнка
   then_route_canonical: FASH.ACCESSORIES

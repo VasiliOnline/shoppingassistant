@@ -1,0 +1,175 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: routing_guardrails.fash_bags.v1_0.yaml
+categoryCode: FASH.BAGS
+routing_goal: Высокая precision для сумок/рюкзаков/кошельков при жёстком отсечении обуви, одежды, accessories и TECH.
+positive_guards:
+  strong_head_nouns_ru:
+  - сумка
+  - сумочка
+  - рюкзак
+  - ранец
+  - чемодан
+  - кошелек
+  - кошелёк
+  - портмоне
+  - кардхолдер
+  - визитница
+  - клатч
+  - шоппер
+  - косметичка
+  - несессер
+  - портфель
+  - дипломат
+  strong_english_tokens:
+  - bag
+  - backpack
+  - wallet
+  - cardholder
+  - clutch
+  - tote
+  - shopper
+  - suitcase
+  - luggage
+  - duffel
+  - briefcase
+  contextual_positive_phrases:
+  - для ноутбука
+  - ручная кладь
+  - на колесах
+  - через плечо
+  - на плечо
+  - на пояс
+  - с ручками
+  - для документов
+route_decision_order:
+- step: 1
+  rule: policy_review_terms
+  examples:
+  - копия сумки LV
+  - реплика Gucci
+  route: POLICY_REVIEW
+- step: 2
+  rule: non_fashion_domain_head_noun
+  examples:
+  - сумка для инструментов
+  - медицинская сумка
+  - переноска для кошки
+  route: NON_FASH_DOMAIN
+- step: 3
+  rule: explicit_fashion_bag_head_noun
+  examples:
+  - рюкзак Nike
+  - сумка через плечо
+  - кошелек кожаный
+  route: FASH.BAGS
+- step: 4
+  rule: footwear_head_noun
+  examples:
+  - кроссовки Nike
+  - сапоги женские
+  route: FASH.SHOES
+- step: 5
+  rule: apparel_head_noun
+  examples:
+  - футболка мужская
+  - платье женское
+  route: FASH.MEN/WOMEN/KIDS
+- step: 6
+  rule: residual_fashion_accessory_head_noun
+  examples:
+  - ремень
+  - шарф
+  - шапка
+  - очки
+  route: FASH.ACCESSORIES
+- step: 7
+  rule: tech_wearable_or_phone_case
+  examples:
+  - apple watch
+  - чехол iphone
+  route: TECH
+negative_guards:
+- guard_id: SHOES_NOT_BAGS
+  tokens:
+  - кроссовки
+  - кеды
+  - сапоги
+  - ботинки
+  - туфли
+  - лоферы
+  - сандалии
+  - сланцы
+  route: FASH.SHOES
+  exception: мешок для обуви / сумка для обуви = FASH.BAGS/DRAWSTRING_BAG because head noun is bag/мешок.
+- guard_id: APPAREL_NOT_BAGS
+  tokens:
+  - футболка
+  - платье
+  - куртка
+  - брюки
+  - джинсы
+  - рубашка
+  - юбка
+  - пальто
+  route: FASH.MEN_OR_WOMEN_OR_KIDS
+- guard_id: ACCESSORIES_NOT_BAGS_EXCEPT_WALLETS
+  tokens:
+  - ремень
+  - шарф
+  - шапка
+  - перчатки
+  - галстук
+  - очки
+  - украшение
+  - браслет
+  - кольцо
+  route: FASH.ACCESSORIES
+  exceptions:
+  - кошелек
+  - кошелёк
+  - портмоне
+  - кардхолдер
+  - визитница
+- guard_id: TECH_WEARABLES_AND_CASES
+  tokens:
+  - apple watch
+  - smart watch
+  - смарт-часы
+  - фитнес браслет
+  - чехол для телефона
+  - чехол iphone
+  route: TECH.WEARABLES_OR_ACCESSORIES
+  exception: сумка/чехол для ноутбука = FASH.BAGS when carrying-container intent is explicit.
+- guard_id: PET_CARRIER
+  tokens:
+  - переноска для кошки
+  - переноска для собаки
+  - сумка переноска для животных
+  route: PET.ACCESSORIES
+- guard_id: UTILITY_BAGS
+  tokens:
+  - сумка для инструментов
+  - медицинская сумка
+  - термосумка
+  - сумка холодильник
+  - мешки для мусора
+  - пакеты фасовочные
+  route: DIY_OR_HEALTH_OR_HOME_OR_OUTDOOR
+- guard_id: CAMERA_BAG
+  tokens:
+  - сумка для камеры
+  - фоторюкзак
+  - camera bag
+  route: TECH.PHOTO_ACCESSORIES
+  exception: fashion handbag with camera-shaped description remains FASH.BAGS if visual/head noun confirms fashion bag.
+brand_conflict_policy:
+  nike_adidas_puma: 'Brand tokens that are common in shoes do not override a bag head noun: рюкзак Nike = FASH.BAGS.'
+  luxury_brands: Luxury brand tokens do not imply accessories/apparel; use head noun.
+  counterfeit_terms: Terms копия/реплика/AAA should trigger policy review before normal route.
+confidence_thresholds:
+  auto_route_fash_bags: 0.82
+  route_candidate_needs_review:
+  - 0.55
+  - 0.82
+  do_not_route_below: 0.55
+  negative_guard_override_min: 0.9

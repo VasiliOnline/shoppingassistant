@@ -1,0 +1,113 @@
+meta:
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  purpose: Computer-vision extraction hints for FASH.ACCESSORIES listings.
+principles:
+- Vision may support route and coarse attributes, but seller text has priority for brand, authenticity, precious materials,
+  stones, size and model.
+- Do not infer exact brand/logo unless clearly readable and allowed by OCR/text layer.
+- Do not infer gold, silver, diamond, pearl authenticity from appearance alone.
+- Do not infer target_gender from color alone.
+- If the image shows a bag, shoe or garment as the primary object, route to that category even if an accessory is visible
+  as styling.
+visual_type_cues:
+  BELT:
+  - long narrow strap
+  - buckle
+  - holes
+  - waist belt layout
+  SUSPENDERS:
+  - two elastic straps
+  - clips
+  - Y/X back
+  CAP:
+  - baseball crown
+  - curved or flat visor
+  - snapback closure
+  BEANIE:
+  - knitted cap
+  - no brim
+  - folded cuff
+  HAT:
+  - structured crown
+  - brim
+  - fedora/wide-brim silhouette
+  PANAMA_HAT:
+  - bucket/panama silhouette
+  - soft brim
+  SCARF_SHAWL_STOLE:
+  - long textile rectangle
+  - fringe
+  - neck styling
+  SNOOD:
+  - closed loop scarf
+  - tube/gaiter shape
+  TIE:
+  - long tapered formal neckwear
+  BOW_TIE:
+  - bow-shaped formal neckwear
+  GLOVES:
+  - finger-separated hand covering
+  MITTENS:
+  - thumb plus shared finger compartment
+  SUNGLASSES:
+  - tinted lenses
+  - eyewear frame
+  GLASSES_FRAME:
+  - clear/no lenses or frame-only presentation
+  JEWELRY:
+  - ring, earrings, chain, pendant, bracelet, brooch, cufflinks
+  WATCHES_NON_SMART:
+  - round/rectangular watch face
+  - analog hands or non-smart digital display
+  - strap/bracelet
+  HAIR_ACCESSORIES:
+  - hair clip, scrunchie, elastic band, hair pin, decorative comb
+  UMBRELLA:
+  - canopy ribs
+  - folded umbrella
+  - handle
+  KEYCHAIN:
+  - small key ring or charm attached to ring
+attribute_inference_allowed:
+  color: Allowed if visually clear.
+  pattern: Allowed for obvious stripes, check, floral, logo pattern; do not read tiny logos unless text layer confirms.
+  material_primary: 'Allowed only as coarse class: textile, leather-like, metal, plastic, straw, wool-like. Mark as visual_hint
+    if not seller-confirmed.'
+  accessory_type: Allowed if primary object is visually clear.
+  set_quantity: Allowed if all items are visible and countable.
+  adjustable: Allowed for obvious snapback/buckle/slider closure.
+attribute_inference_blocked:
+  brand: Only from seller text/catalog or clearly readable logo with OCR confidence.
+  model_name_text: Only from seller text/catalog.
+  metal_type: Only seller text, hallmark, certificate, catalog.
+  metal_purity: Only seller text, hallmark, certificate, catalog.
+  stone_type: Only seller text/certificate, except generic CRYSTAL/RHINESTONES when visually obvious and low-risk.
+  uv_protection: Only seller text/catalog markings.
+  polarized: Only seller text/catalog markings.
+  water_resistance_atm: Only seller text/watch case marking/catalog.
+  movement_type: Only seller text/catalog unless watch dial visibly says quartz/automatic and OCR confirms.
+  case_diameter_mm: Do not infer exact value from image without scale.
+primary_object_rules:
+- case: accessory on a model wearing apparel
+  rule: Route to FASH.ACCESSORIES only if listing title/text names the accessory or image crop centers the accessory; otherwise
+    apparel may dominate.
+- case: accessory attached to bag/shoe
+  rule: If title indicates bag/shoe part or compatibility, route to owning category, not FASH.ACCESSORIES.
+- case: smartwatch vs classic watch
+  rule: Rectangular screen alone is insufficient; if UI/app icons/digital smartwatch display or smartwatch brand is visible,
+    route to TECH.WEARABLES.
+- case: protective eyewear
+  rule: Wraparound safety goggles, swimming goggles, lab/ski goggles should route out unless title says fashion sunglasses.
+confidence_defaults:
+  clear_single_accessory_image: 0.86
+  accessory_among_multiple_items: 0.65
+  material_visual_hint: 0.6
+  brand_from_image_without_ocr: 0.0
+  precious_material_from_image: 0.0
+review_triggers:
+- primary object unclear
+- query contains both accessory and bag/shoe/apparel terms
+- watch could be smart
+- eyewear could be medical/protective
+- jewelry claims precious metal or gemstones without text evidence

@@ -1,0 +1,138 @@
+id: routing_guardrails.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+route_conflict_layer_ref: route_conflict_layer.fash.v1_0.yaml
+positive_guards:
+  strong_head_terms:
+  - кроссовки
+  - кеды
+  - сникеры
+  - ботинки
+  - сапоги
+  - ботильоны
+  - туфли
+  - лоферы
+  - мокасины
+  - оксфорды
+  - дерби
+  - босоножки
+  - сандалии
+  - шлёпанцы
+  - сланцы
+  - тапочки
+  - пинетки
+  - бутсы
+  - резиновые сапоги
+  gender_plus_shoe_examples:
+  - мужские кроссовки
+  - женские сапоги
+  - детские ботинки
+  - кроссовки для мальчика
+  - туфли лодочки женские
+  brand_plus_shoe_examples:
+  - nike air force 1 кроссовки
+  - adidas samba кеды
+  - ecco ботинки
+  - reima сапоги
+negative_guards:
+  apparel:
+    terms:
+    - футболка
+    - платье
+    - куртка
+    - брюки
+    - джинсы
+    - рубашка
+    - юбка
+    - пальто
+    - худи
+    route_to: FASH.APPAREL_COMMON
+  bags:
+    terms:
+    - рюкзак
+    - сумка
+    - кошелёк
+    - кошелек
+    - кардхолдер
+    - чемодан
+    - клатч
+    - шоппер
+    route_to: FASH.BAGS
+  accessories:
+    terms:
+    - ремень
+    - шарф
+    - шапка
+    - перчатки
+    - галстук
+    - очки
+    - украшение
+    - зонт
+    route_to: FASH.ACCESSORIES
+  wearable_tech:
+    terms:
+    - apple watch
+    - смарт-часы
+    - смарт часы
+    - умные часы
+    - фитнес браслет
+    - фитнес-браслет
+    route_to: TECH.WEARABLES
+  sport_equipment_not_shoes:
+    terms:
+    - лыжи
+    - коньки
+    - ролики
+    - сноуборд
+    - мяч
+    - ракетка
+    route_to: SPORT.EQUIPMENT_OR_OTHER
+brand_only_policy:
+  examples:
+  - nike
+  - adidas
+  - ecco
+  - zara
+  action: ambiguous_no_route_until_product_head
+  reason_ru: 'Бренд не является доказательством обуви: Nike может быть рюкзаком, футболкой или обувью.'
+conflict_examples:
+- query: мужские кроссовки
+  expected_category: FASH.SHOES
+  reason: shoe head term кроссовки
+- query: женские сапоги
+  expected_category: FASH.SHOES
+  reason: shoe head term сапоги
+- query: детские ботинки
+  expected_category: FASH.SHOES
+  reason: shoe head term ботинки
+- query: мужская футболка
+  expected_category: FASH.APPAREL_COMMON
+  reason: apparel head term футболка
+- query: женское платье
+  expected_category: FASH.APPAREL_COMMON
+  reason: apparel head term платье
+- query: детская куртка
+  expected_category: FASH.APPAREL_COMMON
+  reason: apparel head term куртка
+- query: рюкзак nike
+  expected_category: FASH.BAGS
+  reason: bag head term рюкзак
+- query: ремень кожаный
+  expected_category: FASH.ACCESSORIES
+  reason: accessory head term ремень
+- query: apple watch
+  expected_category: TECH.WEARABLES
+  reason: smart wearable guard
+- query: сумка для обуви
+  expected_category: FASH.BAGS
+  reason: primary product is bag/container
+- query: обувь nike
+  expected_category: FASH.SHOES
+  reason: explicit footwear head обувь
+rejection_policy:
+  route_to_shoes_requires: strong shoe/product head OR existing category context FASH.SHOES
+  do_not_route_if_only:
+  - brand
+  - color
+  - gender
+  - size_number_without_product_head

@@ -1,0 +1,125 @@
+id: integration_mapping.fash_shoes.v1_0
+categoryCode: FASH.SHOES
+version: 1.0.0
+locale: ru-RU
+upstream_inputs:
+  seller_title:
+    maps_to:
+    - shoe_type
+    - target_gender
+    - age_group
+    - brand
+    - model_name_text
+    - size_eu
+    - raw_size_text
+    - condition
+    - color_primary
+    - season
+    priority: high
+  seller_description:
+    maps_to:
+    - material_upper
+    - material_lining
+    - closure_type
+    - defect_notes
+    - foot_length_cm
+    - insole_length_cm
+    priority: medium
+  seller_category:
+    maps_to:
+    - categoryCode
+    - shoe_type
+    - target_gender
+    - age_group
+    priority: medium
+  image_classifier:
+    maps_to:
+    - shoe_type
+    - color_primary
+    - closure_type
+    - heel_type
+    - shaft_height
+    - condition
+    priority: supporting
+  ocr_label:
+    maps_to:
+    - brand
+    - model_name_text
+    - raw_size_text
+    - size_eu
+    - size_system
+    priority: high_when_readable
+downstream_indexes:
+  search_document:
+  - categoryCode
+  - shoe_type
+  - brand
+  - model_name_text
+  - target_gender
+  - age_group
+  - size_eu
+  - raw_size_text
+  - condition
+  - color_primary
+  - season
+  - material_upper
+  facets:
+  - shoe_type
+  - target_gender
+  - size_eu/raw_size_text
+  - brand
+  - condition
+  - price
+  - color_primary
+  - season
+  - material_upper
+  ranking_features:
+  - brand_present
+  - size_present
+  - condition_present
+  - shoe_type_confidence
+  - route_confidence
+  - model_name_text_present
+  compliance_review:
+  - authenticity_status
+  - defect_notes
+  - counterfeit_keywords
+  - single_shoe_listing
+legacy_taxonomy_mapping_examples:
+- legacy_path_ru: Одежда, обувь и аксессуары > Обувь > Кроссовки
+  categoryCode: FASH.SHOES
+  shoe_type: SNEAKERS
+- legacy_path_ru: Детские товары > Обувь > Ботинки
+  categoryCode: FASH.SHOES
+  shoe_type: KIDS_SHOES
+  age_group: KIDS
+- legacy_path_ru: Спорт > Обувь > Бег
+  categoryCode: FASH.SHOES
+  shoe_type: RUNNING_SHOES
+  sport_purpose: RUNNING
+- legacy_path_ru: Аксессуары > Сумки > Рюкзаки
+  categoryCode: FASH.BAGS
+  note: negative guard for shoes
+api_field_mapping:
+  category_code: categoryCode
+  product_type: shoe_type
+  gender: target_gender
+  age_segment: age_group
+  brand_name: brand
+  model_name: model_name_text
+  size_eu: size_eu
+  size_raw: raw_size_text
+  condition_code: condition
+  primary_color: color_primary
+  season_code: season
+  upper_material: material_upper
+release_dependencies:
+  requires: []
+  compatible_with:
+  - FASH.APPAREL_COMMON v1.1+
+  - FASH.MEN v1.0+
+  - FASH.WOMEN v1.0+
+  - FASH.KIDS v1.0+
+  future_neighbors:
+  - FASH.BAGS
+  - FASH.ACCESSORIES

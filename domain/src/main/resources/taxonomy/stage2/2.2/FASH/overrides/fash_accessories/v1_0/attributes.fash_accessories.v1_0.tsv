@@ -1,0 +1,68 @@
+attribute_code	ru_name	data_type	cardinality	requirement_level	applies_to	values_ref	unit	indexed	searchable	facetable	source_priority	notes
+accessory_group	Группа аксессуара	enum	single	RECOMMENDED	ALL	ACCESSORY_GROUP		yes	yes	yes	derived_from_type	Высокоуровневая группа для UI и маршрутизации.
+accessory_type	Тип аксессуара	enum	single	REQUIRED	ALL	ACCESSORY_TYPE		yes	yes	yes	seller_text>vision>alias	Главный тип; должен быть выбран до type-specific правил.
+target_gender	Целевая аудитория по полу	enum	single	RECOMMENDED	ALL	TARGET_GENDER		yes	yes	yes	seller_text>catalog>vision	MEN/WOMEN/UNISEX/KIDS; не выводить только по цвету.
+age_group	Возрастная группа	enum	single	RECOMMENDED	ALL	AGE_GROUP		yes	yes	yes	seller_text>size>vision	ADULT/KIDS/TODDLER/BABY и т.д.
+brand	Бренд	text	single	RECOMMENDED	ALL			yes	yes	yes	seller_text>catalog	Brand-aware, но без обязательного model graph.
+model_name_text	Модель / линейка текстом	text	single	OPTIONAL	WATCHES_NON_SMART,SUNGLASSES,JEWELRY,BELT,CAP			yes	yes	no	seller_text	Свободный текст: Ray-Ban Aviator, Casio G-Shock, Pandora Moments и т.п.
+condition	Состояние	enum	single	REQUIRED	ALL	CONDITION		yes	yes	yes	seller_text	Единая шкала fashion resale.
+color	Цвет	enum	multi	RECOMMENDED	ALL	COLOR		yes	yes	yes	seller_text>vision	Для multi-color допускается MULTICOLOR + основной цвет.
+material_primary	Основной материал	enum	multi	RECOMMENDED	ALL	MATERIAL		yes	yes	yes	seller_text>catalog>vision	Не утверждать драгоценный металл/камень только по фото.
+material_secondary	Дополнительный материал	enum	multi	OPTIONAL	ALL	MATERIAL		yes	yes	yes	seller_text>catalog	Подкладка/вставки/фурнитура и т.д.
+pattern	Принт / узор	enum	single	OPTIONAL	HEADWEAR,NECKWEAR,HANDWEAR,TIE,BOW_TIE,SCARF,SHAWL	PATTERN		yes	yes	yes	seller_text>vision	Для платков, шарфов, галстуков, кепок.
+season	Сезон	enum	multi	OPTIONAL	HEADWEAR,NECKWEAR,HANDWEAR,UMBRELLA	SEASON		yes	yes	yes	seller_text>material>vision	Зимний/летний/демисезон/всесезон.
+size_label	Размер текстом	text	single	OPTIONAL	ALL			yes	yes	yes	seller_text	ONE SIZE, S/M, 17, 58 и т.п.; нормализация зависит от типа.
+set_quantity	Количество в комплекте	integer	single	OPTIONAL	ALL		pcs	yes	yes	no	seller_text>vision	Для наборов украшений, заколок, резинок, перчаток и т.д.
+included_items	Состав комплекта	text	multi	OPTIONAL	ALL			yes	yes	no	seller_text	Например: серьги + колье; ремень + пряжка.
+belt_size_cm	Размер ремня	integer	single	CONDITIONAL	BELT		cm	yes	yes	yes	seller_text	Обычно длина от пряжки до среднего отверстия или размер производителя.
+waist_size_cm	Обхват талии	integer	single	OPTIONAL	BELT,SUSPENDERS		cm	yes	yes	yes	seller_text	Если продавец указал посадочный диапазон.
+belt_length_cm	Длина ремня	integer	single	OPTIONAL	BELT		cm	yes	yes	yes	seller_text>vision_approx	Полная длина; не заменяет belt_size_cm.
+belt_width_cm	Ширина ремня	decimal	single	OPTIONAL	BELT		cm	yes	yes	yes	seller_text>vision_approx	Важный фильтр для джинсов/брюк/платьев.
+buckle_material	Материал пряжки	enum	single	OPTIONAL	BELT	MATERIAL		yes	yes	yes	seller_text>vision	Если видна или указана.
+buckle_type	Тип пряжки	enum	single	OPTIONAL	BELT	BUCKLE_TYPE		yes	yes	yes	seller_text>vision	Классическая, автоматическая, двойное кольцо и т.д.
+adjustable	Регулируемый размер	boolean	single	OPTIONAL	BELT,SUSPENDERS,CAP,VISOR,HEADBAND_FASHION			yes	yes	yes	seller_text>vision	Да/нет.
+head_size_cm	Обхват головы	decimal	single	CONDITIONAL	HAT,CAP,BEANIE,BERET,BALACLAVA,PANAMA_HAT,VISOR,HEADBAND_FASHION		cm	yes	yes	yes	seller_text	Ключевой размер для головных уборов.
+hat_size_label	Размер головного убора	enum	single	OPTIONAL	HAT,CAP,BEANIE,BERET,BALACLAVA,PANAMA_HAT,VISOR,HEADBAND_FASHION	HAT_SIZE_LABEL		yes	yes	yes	seller_text	XS/S/M/L/one size/adjustable.
+brim_type	Тип козырька / полей	enum	single	OPTIONAL	HAT,CAP,PANAMA_HAT,VISOR	BRIM_TYPE		yes	yes	yes	seller_text>vision	Для кепок, шляп, панам.
+closure_type	Тип застежки / фиксации	enum	single	OPTIONAL	CAP,VISOR,BELT,JEWELRY,WATCH_STRAP,HAIR_ACCESSORIES	CLOSURE_TYPE		yes	yes	yes	seller_text>vision	Snapback, buckle, clasp, elastic и т.д.
+accessory_length_cm	Длина изделия	decimal	single	OPTIONAL	SCARF,SHAWL,SNOOD,STOLE,TIE,BOW_TIE,BELT,NECKLACE,CHAIN,BRACELET,WATCH_STRAP		cm	yes	yes	yes	seller_text>vision_approx	Общая длина; для разных типов интерпретируется отдельно.
+accessory_width_cm	Ширина изделия	decimal	single	OPTIONAL	SCARF,SHAWL,STOLE,TIE,BOW_TIE,BELT,HEADBAND_FASHION		cm	yes	yes	yes	seller_text>vision_approx	Ширина платка/галстука/ремня.
+scarf_shape	Форма шарфа/платка	enum	single	OPTIONAL	SCARF,SHAWL,SNOOD,STOLE	SCARF_SHAPE		yes	yes	yes	seller_text>vision	Прямоугольный, квадратный, труба и т.д.
+tie_width_type	Ширина галстука	enum	single	OPTIONAL	TIE	TIE_WIDTH_TYPE		yes	yes	yes	seller_text>vision	Skinny/classic/wide.
+pre_tied	Завязанный заранее	boolean	single	OPTIONAL	BOW_TIE,TIE			yes	yes	yes	seller_text>vision	Для бабочки/детского галстука.
+glove_size	Размер перчаток	enum	single	CONDITIONAL	GLOVES,MITTENS,FINGERLESS_GLOVES	GLOVE_SIZE		yes	yes	yes	seller_text	Буквенный или цифровой.
+lining_material	Материал подкладки	enum	single	OPTIONAL	GLOVES,MITTENS,BEANIE,HAT,CAP	MATERIAL		yes	yes	yes	seller_text	Флис, шерсть, мех и т.д.
+insulation	Утепление	enum	single	OPTIONAL	GLOVES,MITTENS,BEANIE,BALACLAVA,SCARF,SHAWL	INSULATION		yes	yes	yes	seller_text>material	Степень утепления.
+waterproof_level	Влагозащита	enum	single	OPTIONAL	GLOVES,MITTENS,UMBRELLA,HAT,CAP	WATERPROOF_LEVEL		yes	yes	yes	seller_text	Waterproof/water repellent.
+touchscreen_compatible	Совместимость с тачскрином	boolean	single	OPTIONAL	GLOVES,FINGERLESS_GLOVES			yes	yes	yes	seller_text>vision	Для сенсорных перчаток.
+frame_shape	Форма оправы	enum	single	OPTIONAL	SUNGLASSES,GLASSES_FRAME	FRAME_SHAPE		yes	yes	yes	seller_text>vision	Aviator, wayfarer, cat-eye и т.д.
+frame_material	Материал оправы	enum	single	OPTIONAL	SUNGLASSES,GLASSES_FRAME	MATERIAL		yes	yes	yes	seller_text>vision	Пластик/металл/ацетат и т.п.
+lens_color	Цвет линз	enum	single	OPTIONAL	SUNGLASSES	COLOR		yes	yes	yes	seller_text>vision	Не путать с цветом оправы.
+lens_category	Категория затемнения линз	enum	single	OPTIONAL	SUNGLASSES	LENS_CATEGORY		yes	yes	yes	seller_text	CAT0-CAT4.
+uv_protection	UV-защита	enum	single	OPTIONAL	SUNGLASSES	UV_PROTECTION		yes	yes	yes	seller_text	UV400/UVA+UVB/unknown.
+polarized	Поляризация	boolean	single	OPTIONAL	SUNGLASSES			yes	yes	yes	seller_text	Только если явно указано.
+prescription_compatible	Под диоптрические линзы	boolean	single	OPTIONAL	GLASSES_FRAME,SUNGLASSES			yes	yes	no	seller_text	Если оправа подходит под установку линз.
+metal_type	Тип металла	enum	single	OPTIONAL	JEWELRY	METAL_TYPE		yes	yes	yes	seller_text>catalog	Не выводить золото/серебро только по цвету.
+metal_purity	Проба / чистота металла	text	single	OPTIONAL	JEWELRY			yes	yes	yes	seller_text>hallmark	585, 925, 14K, 18K и т.д.
+stone_type	Камень / вставка	enum	multi	OPTIONAL	JEWELRY	STONE_TYPE		yes	yes	yes	seller_text	Не утверждать бриллиант без текста/сертификата.
+ring_size_ru	Размер кольца RU	decimal	single	CONDITIONAL	RING		RU	yes	yes	yes	seller_text	Например 16.5, 17, 18.
+chain_length_cm	Длина цепочки / колье	decimal	single	OPTIONAL	CHAIN,NECKLACE,PENDANT		cm	yes	yes	yes	seller_text	Ключевой фильтр для цепочек и колье.
+bracelet_length_cm	Длина браслета	decimal	single	OPTIONAL	BRACELET,ANKLET		cm	yes	yes	yes	seller_text	Ключевой фильтр для браслетов/анклетов.
+clasp_type	Тип застежки	enum	single	OPTIONAL	JEWELRY,WATCH_STRAP	CLASP_TYPE		yes	yes	yes	seller_text>vision	Лобстер, магнитная, винтовая и т.п.
+plating	Покрытие	enum	single	OPTIONAL	JEWELRY	PLATING		yes	yes	yes	seller_text	Позолота, родирование и т.д.
+hypoallergenic	Гипоаллергенность	boolean	single	OPTIONAL	JEWELRY,EARRINGS,GLASSES_FRAME			yes	yes	yes	seller_text	Только при явном указании.
+movement_type	Тип механизма	enum	single	OPTIONAL	WATCHES_NON_SMART	MOVEMENT_TYPE		yes	yes	yes	seller_text>catalog	Кварц/механика/автомат/solar.
+analog_digital	Отображение времени	enum	single	OPTIONAL	WATCHES_NON_SMART	ANALOG_DIGITAL		yes	yes	yes	seller_text>vision	Analog/digital/combined.
+case_diameter_mm	Диаметр корпуса	decimal	single	OPTIONAL	WATCHES_NON_SMART		mm	yes	yes	yes	seller_text	Один из главных watch-фасетов.
+strap_material	Материал ремешка	enum	single	OPTIONAL	WATCHES_NON_SMART,WATCH_STRAP	MATERIAL		yes	yes	yes	seller_text>vision	Кожа, сталь, силикон и т.д.
+water_resistance_atm	Водозащита часов	enum	single	OPTIONAL	WATCHES_NON_SMART	WATER_RESISTANCE_ATM		yes	yes	yes	seller_text	3/5/10/20 ATM и т.п.
+battery_status	Состояние батарейки	enum	single	OPTIONAL	WATCHES_NON_SMART	BATTERY_STATUS		yes	yes	no	seller_text	Особенно для resale.
+watch_style	Стиль часов	enum	single	OPTIONAL	WATCHES_NON_SMART	WATCH_STYLE		yes	yes	yes	seller_text>vision	Classic/casual/sport/fashion.
+watch_strap_lug_width_mm	Ширина крепления ремешка	decimal	single	CONDITIONAL	WATCH_STRAP		mm	yes	yes	yes	seller_text	20mm, 22mm и т.п.; для Apple Watch route out.
+hair_accessory_size	Размер аксессуара для волос	text	single	OPTIONAL	HAIR_CLIP,HAIR_BAND,SCRUNCHIE,HAIR_PIN,HAIR_COMB			yes	yes	yes	seller_text>vision	Small/medium/large или см.
+decor_type	Декор	enum	multi	OPTIONAL	HAIR_ACCESSORIES,JEWELRY,HEADWEAR,BELT	DECOR_TYPE		yes	yes	yes	seller_text>vision	Стразы, жемчуг, вышивка и т.д.
+umbrella_type	Тип зонта	enum	single	CONDITIONAL	UMBRELLA	UMBRELLA_TYPE		yes	yes	yes	seller_text>vision	Складной/трость/гольф/детский.
+foldable	Складной	boolean	single	OPTIONAL	UMBRELLA			yes	yes	yes	seller_text>vision	Да/нет.
+windproof	Антиветер	boolean	single	OPTIONAL	UMBRELLA			yes	yes	yes	seller_text	Только если указано.
+canopy_size_cm	Диаметр купола	decimal	single	OPTIONAL	UMBRELLA		cm	yes	yes	yes	seller_text	При наличии.
+route_confidence	Уверенность маршрута	decimal	single	SYSTEM	ALL		0..1	yes	no	no	router	Системное поле; используется для gray-zone review.

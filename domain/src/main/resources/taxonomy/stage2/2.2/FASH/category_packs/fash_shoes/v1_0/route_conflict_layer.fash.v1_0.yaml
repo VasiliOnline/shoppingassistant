@@ -1,0 +1,108 @@
+id: route_conflict_layer.fash.v1_0
+version: 1.0.0
+locale: ru-RU
+purpose_ru: Общий слой разрешения конфликтов маршрутизации между одеждой, обувью, сумками, аксессуарами и wearable-tech.
+category_heads:
+  FASH.SHOES:
+  - кроссовки
+  - кеды
+  - ботинки
+  - сапоги
+  - туфли
+  - лоферы
+  - мокасины
+  - сандалии
+  - шлёпанцы
+  - тапочки
+  - пинетки
+  - бутсы
+  FASH.APPAREL_COMMON:
+  - футболка
+  - майка
+  - рубашка
+  - платье
+  - юбка
+  - брюки
+  - джинсы
+  - куртка
+  - пальто
+  - свитер
+  - худи
+  FASH.BAGS:
+  - рюкзак
+  - сумка
+  - кошелёк
+  - кошелек
+  - кардхолдер
+  - чемодан
+  - клатч
+  - тоут
+  FASH.ACCESSORIES:
+  - ремень
+  - шарф
+  - шапка
+  - перчатки
+  - галстук
+  - очки
+  - украшение
+  - зонт
+  TECH.WEARABLES:
+  - apple watch
+  - смарт-часы
+  - смарт часы
+  - умные часы
+  - фитнес-браслет
+  - фитнес браслет
+precedence_rules:
+- id: SMARTWATCH_OVER_ACCESSORY
+  if_head_in: TECH.WEARABLES
+  route_to: TECH.WEARABLES
+  beats:
+  - FASH.ACCESSORIES
+  examples:
+  - apple watch
+  - смарт-часы samsung
+- id: FOOTWEAR_HEAD_TO_SHOES
+  if_head_in: FASH.SHOES
+  route_to: FASH.SHOES
+  beats:
+  - gender_only
+  - brand_only
+  - generic_fashion
+  examples:
+  - мужские кроссовки
+  - женские сапоги
+  - детские ботинки
+- id: BAG_HEAD_TO_BAGS
+  if_head_in: FASH.BAGS
+  route_to: FASH.BAGS
+  beats:
+  - brand_only
+  - fashion_accessory_generic
+  examples:
+  - рюкзак nike
+  - кожаный кошелек
+- id: APPAREL_HEAD_TO_APPAREL
+  if_head_in: FASH.APPAREL_COMMON
+  route_to: FASH.APPAREL_COMMON
+  examples:
+  - мужская футболка
+  - женское платье
+  - детская куртка
+- id: ACCESSORY_RESIDUAL_AFTER_SHOES_BAGS_APPAREL
+  if_head_in: FASH.ACCESSORIES
+  route_to: FASH.ACCESSORIES
+  unless_any_head_in:
+  - FASH.SHOES
+  - FASH.BAGS
+  - FASH.APPAREL_COMMON
+  - TECH.WEARABLES
+  examples:
+  - ремень кожаный
+  - шарф женский
+ambiguity_policy:
+  brand_only: do_not_route_to_FASH_SHOES_without_footwear_head
+  gender_only: do_not_route_without_product_head
+  multi_item_bundle: route_by_primary_head_or_request_split_if_equal_weight
+  container_phrase: фраза вроде "кроссовки в сумке" маршрутизируется по продаваемому предмету; если продаётся сумка для обуви
+    — FASH.BAGS

@@ -1,0 +1,193 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: facet_schema.fash_bags.v1_0.yaml
+facet_version: '1.0'
+global_facets:
+- attribute: bag_type
+  display: Тип
+  control: multi_select
+  priority: 1
+- attribute: brand
+  display: Бренд
+  control: searchable_multi_select
+  priority: 2
+- attribute: condition
+  display: Состояние
+  control: multi_select
+  priority: 3
+- attribute: price
+  display: Цена
+  control: range
+  priority: 4
+  external_commerce_field: true
+- attribute: color_primary
+  display: Цвет
+  control: color_multi_select
+  priority: 5
+- attribute: material_outer
+  display: Материал
+  control: multi_select
+  priority: 6
+- attribute: size_class
+  display: Размер
+  control: multi_select
+  priority: 7
+type_specific_facets:
+  BACKPACK:
+  - usage_context
+  - volume_liter
+  - laptop_compartment
+  - fits_laptop_inch
+  - waterproof_level
+  - orthopedic_back
+  SCHOOL_BAG:
+  - age_group
+  - school_grade_group
+  - orthopedic_back
+  - reflective_elements
+  - volume_liter
+  HANDBAG:
+  - target_gender
+  - style
+  - strap_type
+  - hardware_color
+  - closure_type
+  SHOULDER_BAG:
+  - target_gender
+  - style
+  - strap_type
+  - hardware_color
+  - closure_type
+  CROSSBODY_BAG:
+  - target_gender
+  - style
+  - strap_type
+  - is_adjustable_strap
+  - is_detachable_strap
+  TOTE:
+  - usage_context
+  - document_size
+  - laptop_compartment
+  - handle_type
+  - closure_type
+  SHOPPER_BAG:
+  - usage_context
+  - handle_type
+  - closure_type
+  - material_outer
+  CLUTCH:
+  - style
+  - hardware_color
+  - closure_type
+  - strap_type
+  - size_class
+  WAIST_BAG:
+  - strap_type
+  - is_adjustable_strap
+  - waterproof_level
+  - usage_context
+  LAPTOP_BAG:
+  - fits_laptop_inch
+  - laptop_protection_level
+  - document_size
+  - waterproof_level
+  LAPTOP_SLEEVE:
+  - fits_laptop_inch
+  - laptop_protection_level
+  - document_size
+  - closure_type
+  TRAVEL_BAG:
+  - volume_liter
+  - weight_kg
+  - wheels_count
+  - waterproof_level
+  - expandable
+  DUFFEL_BAG:
+  - volume_liter
+  - usage_context
+  - strap_type
+  - waterproof_level
+  SUITCASE:
+  - cabin_size_status
+  - volume_liter
+  - wheels_count
+  - wheel_type
+  - lock_type
+  - luggage_shell_type
+  - expandable
+  BRIEFCASE:
+  - document_size
+  - lock_type
+  - laptop_compartment
+  - fits_laptop_inch
+  - hardware_color
+  DOCUMENT_BAG:
+  - document_size
+  - closure_type
+  - material_outer
+  WALLET:
+  - card_slots_count
+  - coin_pocket
+  - document_size
+  - hardware_color
+  - authenticity_state
+  CARDHOLDER:
+  - card_slots_count
+  - document_size
+  - material_outer
+  - authenticity_state
+  COSMETIC_BAG:
+  - waterproof_level
+  - closure_type
+  - size_class
+  - material_outer
+  DIAPER_BAG:
+  - stroller_attachment
+  - compartment_count
+  - waterproof_level
+  - usage_context
+  BEACH_BAG:
+  - material_outer
+  - waterproof_level
+  - size_class
+  - style
+  DRAWSTRING_BAG:
+  - usage_context
+  - material_outer
+  - closure_type
+  - waterproof_level
+facet_buckets:
+  volume_liter:
+  - label: до 10 л
+    max: 10
+  - label: 10–25 л
+    min: 10
+    max: 25
+  - label: 25–45 л
+    min: 25
+    max: 45
+  - label: 45+ л
+    min: 45
+  fits_laptop_inch:
+  - label: до 13"
+    max: 13.3
+  - label: 14"
+    min: 13.4
+    max: 14.4
+  - label: 15–16"
+    min: 14.5
+    max: 16.4
+  - label: 17"+
+    min: 16.5
+  card_slots_count:
+  - label: до 4 карт
+    max: 4
+  - label: 5–8 карт
+    min: 5
+    max: 8
+  - label: 9+ карт
+    min: 9
+hidden_or_non_facet_fields:
+- defect_notes
+- set_includes
+- seller_title_raw
+- seller_description_raw

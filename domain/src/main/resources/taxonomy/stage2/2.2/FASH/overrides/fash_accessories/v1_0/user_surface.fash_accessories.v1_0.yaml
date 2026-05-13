@@ -1,0 +1,201 @@
+meta:
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  purpose: Search, browse and listing UI surface for FASH.ACCESSORIES.
+navigation_groups:
+- group_code: BELTS
+  ru_label: Ремни и подтяжки
+  types:
+  - BELT
+  - SUSPENDERS
+  default_facets:
+  - target_gender
+  - brand
+  - condition
+  - color
+  - material_primary
+  - belt_size_cm
+  - belt_width_cm
+- group_code: HEADWEAR
+  ru_label: Головные уборы
+  types:
+  - HAT
+  - CAP
+  - BEANIE
+  - BERET
+  - BALACLAVA
+  - PANAMA_HAT
+  - VISOR
+  - BANDANA
+  - HEADBAND_FASHION
+  default_facets:
+  - target_gender
+  - age_group
+  - brand
+  - condition
+  - color
+  - season
+  - head_size_cm
+  - material_primary
+- group_code: NECKWEAR
+  ru_label: Шарфы, платки и галстуки
+  types:
+  - SCARF
+  - SHAWL
+  - SNOOD
+  - STOLE
+  - TIE
+  - BOW_TIE
+  - POCKET_SQUARE
+  default_facets:
+  - target_gender
+  - brand
+  - condition
+  - color
+  - material_primary
+  - pattern
+  - season
+- group_code: HANDWEAR
+  ru_label: Перчатки и варежки
+  types:
+  - GLOVES
+  - MITTENS
+  - FINGERLESS_GLOVES
+  default_facets:
+  - target_gender
+  - age_group
+  - brand
+  - condition
+  - color
+  - glove_size
+  - season
+  - material_primary
+  - touchscreen_compatible
+- group_code: EYEWEAR
+  ru_label: Очки и оправы
+  types:
+  - SUNGLASSES
+  - GLASSES_FRAME
+  - EYEGLASS_CASE
+  default_facets:
+  - target_gender
+  - brand
+  - condition
+  - frame_shape
+  - frame_material
+  - lens_color
+  - uv_protection
+  - polarized
+- group_code: JEWELRY
+  ru_label: Украшения
+  types:
+  - RING
+  - EARRINGS
+  - NECKLACE
+  - BRACELET
+  - BROOCH
+  - PENDANT
+  - CHAIN
+  - ANKLET
+  - CUFFLINKS
+  - CHARM
+  - JEWELRY_SET
+  default_facets:
+  - target_gender
+  - brand
+  - condition
+  - material_primary
+  - metal_type
+  - metal_purity
+  - stone_type
+  - ring_size_ru
+- group_code: WATCHES
+  ru_label: Обычные часы
+  types:
+  - WATCHES_NON_SMART
+  - WATCH_STRAP
+  default_facets:
+  - target_gender
+  - brand
+  - condition
+  - movement_type
+  - case_diameter_mm
+  - strap_material
+  - water_resistance_atm
+- group_code: HAIR_ACCESSORIES
+  ru_label: Аксессуары для волос
+  types:
+  - HAIR_CLIP
+  - HAIR_BAND
+  - SCRUNCHIE
+  - HAIR_PIN
+  - HAIR_COMB
+  default_facets:
+  - target_gender
+  - age_group
+  - brand
+  - condition
+  - color
+  - material_primary
+  - decor_type
+  - set_quantity
+- group_code: UMBRELLAS
+  ru_label: Зонты
+  types:
+  - UMBRELLA
+  default_facets:
+  - target_gender
+  - age_group
+  - brand
+  - condition
+  - color
+  - umbrella_type
+  - foldable
+  - windproof
+always_visible_facets:
+- accessory_type
+- target_gender
+- age_group
+- brand
+- condition
+- price
+- color
+- material_primary
+search_suggestions_ru:
+- кожаный ремень
+- мужская кепка
+- женский шарф
+- детская шапка
+- солнцезащитные очки
+- серебряное кольцо
+- часы casio
+- заколка для волос
+- зонт автомат
+listing_form:
+  step_1_required:
+  - accessory_type
+  - condition
+  step_2_recommended:
+  - brand
+  - target_gender
+  - age_group
+  - color
+  - material_primary
+  step_3_dynamic: Show type-specific fields after accessory_type is selected.
+  copy_ru:
+    accessory_type: Что это за аксессуар?
+    condition: В каком состоянии?
+    brand: Бренд
+    target_gender: Для кого
+    age_group: Возраст
+    material_primary: Материал
+    color: Цвет
+suppressed_from_accessories_ui:
+- wallet/cardholder/cosmetic bag filters
+- shoe size filters
+- garment size filters
+- smartwatch OS/connectivity filters
+seo_templates_ru:
+  title: '{brand} {accessory_type_ru} {color_ru} {material_ru}'
+  fallback_title: '{accessory_type_ru} {color_ru}'
+  breadcrumb: Мода > Аксессуары > {group_ru} > {accessory_type_ru}

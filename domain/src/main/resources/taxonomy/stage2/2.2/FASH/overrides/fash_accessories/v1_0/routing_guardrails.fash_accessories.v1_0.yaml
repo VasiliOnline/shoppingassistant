@@ -1,0 +1,187 @@
+meta:
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  purpose: Routing guardrails for FASH.ACCESSORIES against apparel, shoes, bags, tech, health, sport, beauty, auto and tools.
+routing_principle:
+  ru: FASH.ACCESSORIES — не общий мусорный бак для всего маленького. Это fashion-ветка, которая срабатывает после explicit
+    guards более специфичных категорий.
+  priority_order:
+  - Non-fashion homonym guards
+  - TECH device/accessory guards
+  - FASH.SHOES guards
+  - FASH.BAGS guards
+  - FASH.APPAREL guards
+  - BEAUTY/HEALTH/SPORT/TOOLS guards
+  - Positive accessory intent
+  - Parent FASH fallback
+positive_signals:
+  strong:
+  - ремень для брюк
+  - шапка / кепка / шляпа / панама / берет
+  - шарф / платок / снуд / палантин
+  - перчатки / варежки / митенки
+  - галстук / бабочка / паше
+  - солнцезащитные очки / оправа как fashion item
+  - кольцо / серьги / браслет / цепочка / брошь / кулон / запонки
+  - наручные часы analog/quartz/mechanical without smart terms
+  - заколка / резинка / скранчи / шпильки
+  - зонт / брелок fashion
+  weak:
+  - часы без уточнений
+  - оправа без контекста
+  - ремешок без объекта совместимости
+  - пояс без одежды/fashion context
+negative_guards:
+  FASH.SHOES:
+    terms:
+    - кроссовки
+    - ботинки
+    - сапоги
+    - туфли
+    - лоферы
+    - мокасины
+    - сандалии
+    - сланцы
+    - тапочки
+    - балетки
+    - каблуки
+    examples:
+      мужские кроссовки nike: FASH.SHOES
+      женские сапоги зимние: FASH.SHOES
+      детские ботинки reima: FASH.SHOES
+  FASH.BAGS:
+    terms:
+    - рюкзак
+    - сумка
+    - клатч
+    - кроссбоди
+    - шоппер
+    - чемодан
+    - кошелек
+    - кошелёк
+    - кардхолдер
+    - визитница
+    - косметичка
+    - портфель
+    - саквояж
+    examples:
+      рюкзак nike: FASH.BAGS
+      женский кошелек кожаный: FASH.BAGS
+      ремень для сумки: FASH.BAGS
+  FASH.APPAREL:
+    terms:
+    - футболка
+    - платье
+    - куртка
+    - пальто
+    - брюки
+    - джинсы
+    - рубашка
+    - блузка
+    - юбка
+    - свитер
+    - толстовка
+    - белье
+    examples:
+      мужская футболка: FASH.APPAREL
+      женское платье zara: FASH.APPAREL
+      детская куртка: FASH.APPAREL
+  TECH.WEARABLES:
+    terms:
+    - apple watch
+    - эппл вотч
+    - смарт часы
+    - смарт-часы
+    - smartwatch
+    - smart watch
+    - galaxy watch
+    - fitbit
+    - mi band
+    - фитнес браслет
+    - фитнес-трекер
+    examples:
+      apple watch series 9: TECH.WEARABLES
+      фитнес браслет xiaomi: TECH.WEARABLES
+      ремешок для apple watch: TECH.ACCESSORIES
+  BEAUTY_HEALTH_SPORT_TOOLS:
+    terms:
+    - духи
+    - крем
+    - помада
+    - маска медицинская
+    - респиратор
+    - очки защитные
+    - очки для плавания
+    - ремень для йоги
+    - ремень грм
+    examples:
+      медицинская маска: HEALTH
+      защитные очки строительные: TOOLS.SAFETY
+      ремень грм: AUTO.PARTS
+gray_zone_resolution:
+- case: часы
+  route_in_when:
+  - analog
+  - кварцевые
+  - механические
+  - наручные fashion
+  - G-Shock without Bluetooth/smart terms
+  route_out_when:
+  - smart
+  - apple watch
+  - galaxy watch
+  - fitbit
+  - mi band
+  - фитнес браслет
+- case: ремешок
+  route_in_when:
+  - для обычных часов
+  - 20 мм
+  - 22 мм
+  - кожаный ремешок для часов
+  route_out_when:
+  - для apple watch
+  - для galaxy watch
+  - для mi band
+  - для телефона
+- case: очки
+  route_in_when:
+  - солнцезащитные
+  - UV400
+  - модная оправа
+  - футляр для очков
+  route_out_when:
+  - защитные
+  - строительные
+  - плавательные
+  - диоптрические линзы as medical
+- case: пояс/ремень
+  route_in_when:
+  - fashion belt
+  - для брюк
+  - для платья
+  - кожаный ремень
+  route_out_when:
+  - ГРМ
+  - безопасности
+  - йога
+  - стропа
+  - сумочный ремень
+minimum_positive_condition: At least one strong positive accessory signal OR a weak signal plus FASH context and no high-priority
+  negative guard.
+audit_examples:
+- query: ремень кожаный мужской
+  route: FASH.ACCESSORIES
+  reason: BELT positive, no homonym guard
+- query: ремень грм купить
+  route: AUTO.PARTS
+  reason: Non-fashion homonym guard
+- query: часы casio g shock
+  route: FASH.ACCESSORIES
+  reason: Non-smart watch by default
+- query: casio g shock bluetooth smartwatch
+  route: TECH.WEARABLES
+  reason: Smart functionality guard
+- query: кошелек michael kors
+  route: FASH.BAGS
+  reason: Wallet convention belongs to bags

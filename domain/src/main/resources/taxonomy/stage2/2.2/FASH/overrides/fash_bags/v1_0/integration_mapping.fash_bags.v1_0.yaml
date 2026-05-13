@@ -1,0 +1,107 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: integration_mapping.fash_bags.v1_0.yaml
+canonical_output:
+  categoryCode: FASH.BAGS
+  primary_type_field: bag_type
+  required_fields:
+  - categoryCode
+  - bag_type
+  - condition
+  external_commerce_fields:
+  - price
+  - currency
+  - seller_id
+  - location
+  - delivery_options
+ingestion_pipeline:
+- step: normalize_text
+  actions:
+  - lowercase_ru_en
+  - ё/e tolerant matching
+  - x/х/× dimension normalization
+- step: route_conflict_layer
+  file: route_conflict_layer.fash_bags.v1_0.yaml
+- step: category_classifier
+  positive_sources:
+  - aliases
+  - head_nouns
+  - vision_rules
+- step: attribute_extraction
+  sources:
+  - attributes
+  - values
+  - aliases
+  - size_policy
+- step: conditional_validation
+  file: conditional_rules.fash_bags.v1_0.yaml
+- step: facet_projection
+  file: facet_schema.fash_bags.v1_0.yaml
+field_mapping:
+  marketplace_category_id: categoryCode
+  product_type: bag_type
+  gender: target_gender
+  audience_age: age_group
+  brand_name: brand
+  model: model_name_text
+  item_condition: condition
+  primary_color: color_primary
+  secondary_colors: color_secondary
+  outer_material: material_outer
+  lining_material: material_lining
+  closure: closure_type
+  strap: strap_type
+  dimensions.length_cm: length_cm
+  dimensions.height_cm: height_cm
+  dimensions.depth_cm: depth_cm
+  capacity_l: volume_liter
+  laptop_fit_in: fits_laptop_inch
+  cabin_baggage: cabin_size_status
+search_index:
+  must_index:
+  - title
+  - description
+  - bag_type
+  - brand
+  - model_name_text
+  - aliases
+  - color_primary
+  - material_outer
+  boosts:
+    bag_type: 4.0
+    brand: 2.5
+    model_name_text: 2.0
+    positive_head_noun: 5.0
+    negative_guard: -10.0
+  synonym_sources:
+  - aliases.fash_bags.ru.v1_0.tsv
+  - values.fash_bags.v1_0.tsv
+  typo_tolerance:
+    ru_keyboard: true
+    ё_e: true
+    latin_cyrillic_brand_mix: true
+downstream_contracts:
+  listing_card_min_fields:
+  - title
+  - price
+  - bag_type
+  - brand
+  - condition
+  - color_primary
+  seller_form_prefill:
+  - bag_type
+  - brand
+  - condition
+  - color_primary
+  - material_outer
+  - size_class
+  analytics_dimensions:
+  - bag_type
+  - brand
+  - condition
+  - target_gender
+  - age_group
+  - material_outer
+known_integration_decisions:
+- WALLET/CARDHOLDER are kept in FASH.BAGS for UX consistency.
+- Laptop bags/sleeves route to FASH.BAGS when carrying-container intent is explicit.
+- Camera/tool/pet/cooler/medical bags are negative guards, not fashion bags by default.

@@ -1,0 +1,60 @@
+pack_id: FASH.BAGS@1.0.0-ru
+file: quality_gates.fash_bags.v1_0.yaml
+gate_version: '1.0'
+hard_gates:
+- id: JSON_YAML_PARSE
+  requirement: All JSON/YAML files parse without error.
+  threshold: 100%
+  status_in_report: PASS
+- id: CHECKSUMS_PRESENT
+  requirement: checksums.sha256.json includes every generated file except itself.
+  threshold: 100%
+  status_in_report: PASS
+- id: CORE_ATTRIBUTES_PRESENT
+  requirement: bag_type and condition exist and are required in attributes TSV.
+  threshold: 100%
+  status_in_report: PASS
+- id: TYPE_VALUES_PRESENT
+  requirement: At least 14 production bag types including WALLET and CARDHOLDER.
+  threshold: '>=14'
+  status_in_report: PASS
+- id: ROUTE_GUARDS_PRESENT
+  requirement: Negative guards for shoes, apparel, accessories, TECH, pet and utility bags.
+  threshold: ALL_PRESENT
+  status_in_report: PASS
+- id: NO_MODEL_GRAPH_REQUIRED
+  requirement: No curated brand/family/model graph required for production.
+  threshold: 'TRUE'
+  status_in_report: PASS
+route_quality_targets:
+  positive_bags_precision: '>= 0.96 on golden set'
+  negative_guard_precision: '>= 0.98 on golden set'
+  wallet_cardholder_to_bags_recall: '>= 0.98'
+  shoe_conflict_precision: '>= 0.98'
+  tech_case_conflict_precision: '>= 0.96'
+attribute_quality_targets:
+  core_field_fill_rate:
+    bag_type: '>=0.92'
+    condition: '>=0.85'
+    brand_when_present: '>=0.90'
+  dimension_parse_precision: '>=0.90 on synthetic size cases'
+  laptop_fit_parse_precision: '>=0.92'
+golden_set_requirements:
+  min_queries: 40
+  must_include:
+  - positive bag routes
+  - wallet/cardholder
+  - laptop bag/sleeve
+  - suitcase/cabin
+  - shoes negative
+  - apparel negative
+  - accessories negative
+  - tech negative
+  - pet/utility negative
+  - counterfeit review
+manual_review_triggers:
+- replica/copy/counterfeit terms
+- authenticity claim on luxury brands without evidence
+- ambiguous “case/чехол” without target object
+- ambiguous “сумка” with no image and no type clues
+- non-fashion domain bag signals mixed with fashion brand signals

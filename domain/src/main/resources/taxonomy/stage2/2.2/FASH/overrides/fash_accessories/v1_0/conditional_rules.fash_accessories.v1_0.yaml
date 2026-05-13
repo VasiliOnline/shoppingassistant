@@ -1,0 +1,339 @@
+meta:
+  pack_id: FASH_ACCESSORIES_PRODUCTION_v1_0_RU
+  categoryCode: FASH.ACCESSORIES
+  version: 1.0.0
+  created_at: '2026-05-13'
+  purpose: Type-specific extraction and normalization rules for FASH.ACCESSORIES.
+core_requirements:
+  always_required:
+  - accessory_type
+  - condition
+  recommended_for_listing_quality:
+  - accessory_group
+  - target_gender
+  - age_group
+  - brand
+  - color
+  - material_primary
+  never_required:
+  - model_name_text
+  null_policy: If a field is not explicit and cannot be safely inferred, leave it null; do not invent material, brand, precious
+    metal, stone, or model.
+accessory_type_to_group:
+  BELTS:
+  - BELT
+  - SUSPENDERS
+  HEADWEAR:
+  - HAT
+  - CAP
+  - BEANIE
+  - BERET
+  - BALACLAVA
+  - PANAMA_HAT
+  - VISOR
+  - BANDANA
+  - HEADBAND_FASHION
+  NECKWEAR:
+  - SCARF
+  - SHAWL
+  - SNOOD
+  - STOLE
+  - TIE
+  - BOW_TIE
+  - POCKET_SQUARE
+  HANDWEAR:
+  - GLOVES
+  - MITTENS
+  - FINGERLESS_GLOVES
+  EYEWEAR:
+  - SUNGLASSES
+  - GLASSES_FRAME
+  - EYEGLASS_CASE
+  JEWELRY:
+  - RING
+  - EARRINGS
+  - NECKLACE
+  - BRACELET
+  - BROOCH
+  - PENDANT
+  - CHAIN
+  - ANKLET
+  - CUFFLINKS
+  - CHARM
+  - JEWELRY_SET
+  WATCHES:
+  - WATCHES_NON_SMART
+  - WATCH_STRAP
+  HAIR_ACCESSORIES:
+  - HAIR_CLIP
+  - HAIR_BAND
+  - SCRUNCHIE
+  - HAIR_PIN
+  - HAIR_COMB
+  UMBRELLAS:
+  - UMBRELLA
+  OTHER_ACCESSORIES:
+  - KEYCHAIN
+  - OTHER_ACCESSORY
+type_specific_rules:
+  BELT:
+    recommended:
+    - belt_size_cm
+    - belt_length_cm
+    - belt_width_cm
+    - buckle_type
+    - buckle_material
+    - waist_size_cm
+    size_logic:
+    - If text says 'размер 95' or '95 см' near belt/ремень, map to belt_size_cm unless full length is explicitly stated.
+    - If text says 'длина 110 см', map to belt_length_cm.
+    - If text says 'ширина 3.5 см', map to belt_width_cm.
+    hard_exclusions:
+    - ремень грм
+    - ремень безопасности
+    - ремень для йоги
+    - ремень для сумки
+  HEADWEAR:
+    applies_to:
+    - HAT
+    - CAP
+    - BEANIE
+    - BERET
+    - BALACLAVA
+    - PANAMA_HAT
+    - VISOR
+    - BANDANA
+    - HEADBAND_FASHION
+    recommended:
+    - head_size_cm
+    - hat_size_label
+    - season
+    - material_primary
+    - brim_type
+    - closure_type
+    - adjustable
+    season_logic:
+    - Words 'зимняя', 'шерсть', 'флис', 'утепленная' imply season=WINTER only if item is headwear.
+    - Words 'панама', 'соломенная', 'летняя' imply season=SUMMER if item is headwear.
+    gender_logic: Do not infer WOMEN from pink or MEN from black; use seller text or canonical product line only.
+  NECKWEAR:
+    applies_to:
+    - SCARF
+    - SHAWL
+    - SNOOD
+    - STOLE
+    - TIE
+    - BOW_TIE
+    - POCKET_SQUARE
+    recommended:
+    - accessory_length_cm
+    - accessory_width_cm
+    - material_primary
+    - pattern
+    - season
+    tie_rules:
+    - If 'галстук-бабочка' or 'бабочка' -> BOW_TIE, not TIE.
+    - If 'паше' or 'нагрудный платок' -> POCKET_SQUARE.
+    scarf_rules:
+    - If 'снуд', 'бафф', 'труба' -> SNOOD.
+    - If 'палантин' -> STOLE.
+    - If 'шейный платок' -> SHAWL.
+  HANDWEAR:
+    applies_to:
+    - GLOVES
+    - MITTENS
+    - FINGERLESS_GLOVES
+    recommended:
+    - glove_size
+    - season
+    - lining_material
+    - insulation
+    - waterproof_level
+    - touchscreen_compatible
+    rules:
+    - If 'варежки'/'рукавицы' -> MITTENS.
+    - If 'митенки'/'без пальцев' -> FINGERLESS_GLOVES.
+    - If 'сенсорные' -> touchscreen_compatible=true.
+  EYEWEAR:
+    applies_to:
+    - SUNGLASSES
+    - GLASSES_FRAME
+    - EYEGLASS_CASE
+    recommended:
+    - frame_shape
+    - frame_material
+    - lens_color
+    - lens_category
+    - uv_protection
+    - polarized
+    - prescription_compatible
+    rules:
+    - If text contains 'солнцезащитные', 'очки от солнца', 'UV400' -> SUNGLASSES.
+    - If text contains 'оправа' without sun/UV terms -> GLASSES_FRAME.
+    - If text contains 'футляр/чехол для очков' -> EYEGLASS_CASE.
+    - If text contains 'защитные очки', 'строительные очки', 'очки для плавания' -> route out.
+    medical_boundary: Prescription/diopter glasses can be platform-specific; default route out to HEALTH/OPTICS unless seller
+      clearly offers frame as fashion item.
+  JEWELRY:
+    applies_to:
+    - RING
+    - EARRINGS
+    - NECKLACE
+    - BRACELET
+    - BROOCH
+    - PENDANT
+    - CHAIN
+    - ANKLET
+    - CUFFLINKS
+    - CHARM
+    - JEWELRY_SET
+    recommended:
+    - metal_type
+    - metal_purity
+    - stone_type
+    - ring_size_ru
+    - chain_length_cm
+    - bracelet_length_cm
+    - clasp_type
+    - plating
+    - hypoallergenic
+    - set_quantity
+    safety_rules:
+    - Do not infer gold/silver/diamond/pearl authenticity from image only.
+    - Use metal_purity only from seller text, hallmark, certificate, or catalog.
+    - If item is high-value jewelry and platform has a dedicated JEWELRY vertical, integration_mapping may route to that vertical;
+      this pack keeps jewelry within FASH.ACCESSORIES by default.
+    ring_size_logic: If numeric 16-24 appears with 'кольцо', map to ring_size_ru; do not map to age/diameter unless explicit.
+  WATCHES_NON_SMART:
+    recommended:
+    - movement_type
+    - analog_digital
+    - case_diameter_mm
+    - strap_material
+    - water_resistance_atm
+    - battery_status
+    - watch_style
+    - model_name_text
+    hard_exclusions:
+    - apple watch
+    - эппл вотч
+    - смарт-часы
+    - smart watch
+    - galaxy watch
+    - fitbit
+    - mi band
+    - фитнес браслет
+    rules:
+    - Generic 'часы' route in only if context indicates analog/quartz/mechanical/fashion watch and no smart terms.
+    - Casio, Swatch, Seiko, Tissot, Orient, Fossil etc. are not automatically smart; keep as WATCHES_NON_SMART unless explicit
+      smart functionality.
+    - G-Shock without Bluetooth/smart terms remains WATCHES_NON_SMART.
+  WATCH_STRAP:
+    recommended:
+    - watch_strap_lug_width_mm
+    - strap_material
+    - color
+    - closure_type
+    rules:
+    - Generic 'ремешок для часов 20 мм' -> WATCH_STRAP.
+    - Any explicit smartwatch compatibility, e.g. 'для Apple Watch 42/44/45', 'для Galaxy Watch', 'для Mi Band' -> route out
+      to TECH.ACCESSORIES.
+  HAIR_ACCESSORIES:
+    applies_to:
+    - HAIR_CLIP
+    - HAIR_BAND
+    - SCRUNCHIE
+    - HAIR_PIN
+    - HAIR_COMB
+    recommended:
+    - set_quantity
+    - decor_type
+    - material_primary
+    - hair_accessory_size
+    - color
+    rules:
+    - If 'крабик', 'зажим' -> HAIR_CLIP.
+    - If 'резинка' -> HAIR_BAND unless 'скранч/скранчи' -> SCRUNCHIE.
+    - If 'невидимки', 'шпильки' -> HAIR_PIN.
+  UMBRELLA:
+    recommended:
+    - umbrella_type
+    - foldable
+    - windproof
+    - canopy_size_cm
+    - color
+    - pattern
+    rules:
+    - If 'зонт-трость' -> umbrella_type=CANE.
+    - If 'складной' -> foldable=true and umbrella_type=FOLDING unless more specific type exists.
+    - If 'автомат' -> umbrella_type=AUTOMATIC.
+cross_field_constraints:
+- id: smart_watch_override
+  when_all:
+  - field: accessory_type
+    in:
+    - WATCHES_NON_SMART
+    - WATCH_STRAP
+  when_text_matches_any:
+  - apple watch
+  - эппл вотч
+  - smart watch
+  - смарт-часы
+  - galaxy watch
+  - mi band
+  - фитнес браслет
+  action: ROUTE_OUT
+  target_route: TECH.WEARABLES_OR_TECH.ACCESSORIES
+- id: bag_small_leather_goods_override
+  when_text_matches_any:
+  - кошелек
+  - кошелёк
+  - кардхолдер
+  - визитница
+  - косметичка
+  - рюкзак
+  - сумка
+  - чемодан
+  action: ROUTE_OUT
+  target_route: FASH.BAGS
+- id: shoe_override
+  when_text_matches_any:
+  - кроссовки
+  - ботинки
+  - сапоги
+  - туфли
+  - сандалии
+  - тапочки
+  - мокасины
+  - лоферы
+  action: ROUTE_OUT
+  target_route: FASH.SHOES
+- id: apparel_override
+  when_text_matches_any:
+  - футболка
+  - платье
+  - куртка
+  - пальто
+  - брюки
+  - джинсы
+  - рубашка
+  - юбка
+  - свитер
+  action: ROUTE_OUT
+  target_route: FASH.APPAREL
+- id: homonym_belt_override
+  when_text_matches_any:
+  - ремень грм
+  - ремень безопасности
+  - ремень генератора
+  - ремень для йоги
+  action: ROUTE_OUT
+  target_route: AUTO_OR_SPORT
+confidence_policy:
+  auto_accept_min: 0.82
+  gray_zone:
+  - 0.6
+  - 0.82
+  manual_review_below: 0.6
+  route_out_guard_min: 0.9
+  notes: A high-priority explicit route_out guard beats a weak positive accessory alias.
