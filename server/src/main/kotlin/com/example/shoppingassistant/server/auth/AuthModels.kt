@@ -44,6 +44,8 @@ data class AuthUserResponse(
     val email: String,
     val displayName: String,
     val phone: String? = null,
+    val pendingPhone: String? = null,
+    val pendingPhoneRequestedAt: Long? = null,
     val avatarUrl: String? = null,
     val city: String? = null,
     val token: String? = null,
@@ -132,11 +134,28 @@ data class ChangePasswordRequest(
 @Serializable
 data class ChangeEmailStartRequest(
     val newEmail: String,
+    val currentPassword: String,
 )
 
 @Serializable
 data class ChangeEmailConfirmRequest(
     val token: String,
+)
+
+@Serializable
+data class ChangePhoneStartRequest(
+    val newPhone: String,
+    val currentPassword: String,
+)
+
+@Serializable
+data class ChangePhoneConfirmRequest(
+    val token: String,
+)
+
+@Serializable
+data class DeleteAccountRequest(
+    val currentPassword: String,
 )
 
 @Serializable
@@ -160,6 +179,8 @@ fun AuthUser.toResponse(token: String? = null): AuthUserResponse {
         email = email,
         displayName = displayName ?: email,
         phone = phone,
+        pendingPhone = pendingPhone,
+        pendingPhoneRequestedAt = pendingPhoneRequestedAt,
         avatarUrl = avatarUrl,
         city = city,
         token = token,

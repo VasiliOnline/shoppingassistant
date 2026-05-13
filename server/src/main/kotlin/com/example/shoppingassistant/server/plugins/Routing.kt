@@ -6,12 +6,14 @@ import com.example.shoppingassistant.server.auth.authRoutes
 import com.example.shoppingassistant.server.catalog.catalogRoutes
 import com.example.shoppingassistant.server.catalog.facetSchemaRoutes
 import com.example.shoppingassistant.server.config.RedisConfig
+import com.example.shoppingassistant.server.localoffer.localOfferRoutes
 import com.example.shoppingassistant.server.offers.offerRoutes
 import com.example.shoppingassistant.server.offers.offerAlertsRoutes
 import com.example.shoppingassistant.server.offers.offerAnalyticsRoutes
 import com.example.shoppingassistant.server.offers.offerTrackingRoutes
 import com.example.shoppingassistant.server.profile.profileRoutes
 import com.example.shoppingassistant.server.push.pushRoutes
+import com.example.shoppingassistant.server.shortlisting.shortListingRoutes
 import com.example.shoppingassistant.server.storage.storageRoutes
 import com.example.shoppingassistant.server.subscriptions.subscriptionsRoutes
 import com.example.shoppingassistant.server.tracks.tracksRoutes
@@ -19,6 +21,7 @@ import com.example.shoppingassistant.server.ugc.ugcRoutes
 import com.example.shoppingassistant.server.useroffers.userOffersRoutes
 import com.example.shoppingassistant.server.useroffers.actions.userOffersActionsRoutes
 import com.example.shoppingassistant.server.useroffers.price.userOffersPriceRoutes
+import com.example.shoppingassistant.server.visualsearch.visualSearchRoutes
 import com.example.shoppingassistant.server.vision.visionRoutes
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -95,6 +98,10 @@ fun Application.configureRouting() {
             call.respond(response)
         }
 
+        searchFeatureFlagsRoutes()
+        aiNormalizationMetaRoutes()
+        aiNormalizationAdminRoutes()
+
         // Модуль авторизации (/api/auth)
         authRoutes()
 
@@ -107,7 +114,7 @@ fun Application.configureRouting() {
         offerAnalyticsRoutes()
         offerTrackingRoutes()
 
-        // Stage 2/4: catalog runtime API (categories/profiles/constraints)
+        // Stage 2/4: catalog runtime API (effective-spec is the runtime contract)
         catalogRoutes()
 
         // Stage 3: facet schema runtime API
@@ -132,6 +139,15 @@ fun Application.configureRouting() {
 
         // Vision-нормализация (камера)
         visionRoutes()
+
+        // Visual search transport contract
+        visualSearchRoutes()
+
+        // Новый canonical short-listing flow
+        shortListingRoutes()
+
+        // Canonical local offer contract/runtime
+        localOfferRoutes()
 
         // UGC-зеркало по ссылке
         ugcRoutes()

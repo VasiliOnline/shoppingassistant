@@ -1,0 +1,65 @@
+{
+  "pack_code": "FASH.KIDS.child_override.production.v1",
+  "pack_type": "child_override_pack",
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "public_category": true,
+  "version": "1.0.0",
+  "locale": "ru-RU",
+  "description": "Production child override pack for children's apparel inheriting FASH.APPAREL_COMMON.",
+  "inheritance_contract": {
+    "inherits": [
+      "attributes",
+      "values",
+      "common_aliases",
+      "base_facets",
+      "size_policy_base",
+      "routing_guardrails_base"
+    ],
+    "must_not_duplicate_common_attributes": true,
+    "child_adds_only": [
+      "defaults",
+      "allowed_values",
+      "type_priorities",
+      "size_priorities",
+      "kid_specific_aliases",
+      "routing_guardrails",
+      "vision_rules",
+      "user_surface",
+      "facet_overrides",
+      "fixtures"
+    ]
+  },
+  "runtime_mode": "effective_spec_child_override",
+  "readiness": {
+    "intended_stage": "production_candidate",
+    "requires_parent_pack": "FASH.APPAREL_COMMON>=1.1",
+    "requires_runtime_validators": [
+      "Stage22SeedValidator",
+      "FacetSchemaValidator",
+      "FashKidsChildOverrideGate",
+      "FashRouteConflictGate",
+      "EffectiveSpecSnapshotGate"
+    ]
+  },
+  "artifact_files": [
+    "README_FASH_KIDS_CHILD_OVERRIDE_PRODUCTION_v1_0_RU.md",
+    "aliases.fash_kids.ru.v1_0.tsv",
+    "child_defaults.fash_kids.v1_0.yaml",
+    "common_dependency_patch.fash_apparel_common.v1_1_for_fash_kids.yaml",
+    "effective_spec_snapshot.expected.fash_kids.v1_0.json",
+    "facet_overrides.fash_kids.v1_0.yaml",
+    "golden_queries.fash_kids.v1_0.tsv",
+    "integration_mapping.fash_kids.v1_0.yaml",
+    "quality_gates.fash_kids.v1_0.yaml",
+    "routing_guardrails.fash_kids.v1_0.yaml",
+    "sample_offers.fash_kids.v1_0.jsonl",
+    "schema_pack.fash_kids.v1_0.json",
+    "size_overrides.fash_kids.v1_0.yaml",
+    "type_priorities.fash_kids.v1_0.yaml",
+    "user_surface.fash_kids.v1_0.yaml",
+    "validation_report.fash_kids.v1_0.json",
+    "value_overrides.fash_kids.v1_0.tsv",
+    "vision_rules.fash_kids.v1_0.yaml"
+  ]
+}

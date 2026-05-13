@@ -25,12 +25,12 @@ val catalogBackendTasks = listOf(
     CatalogBackendTask(
         id = CatalogBackendTaskId.SEED,
         path = "server/src/main/kotlin/com/example/shoppingassistant/server/catalog/CatalogSeeder.kt",
-        description = "Сид минимальных профилей категорий из domain CatalogSeed.",
+        description = "Сид каталога и write-side sync из domain CatalogSeed в Postgres.",
     ),
     CatalogBackendTask(
         id = CatalogBackendTaskId.REPOSITORY,
         path = "server/src/main/kotlin/com/example/shoppingassistant/server/catalog/CatalogRepositoryImpl.kt",
-        description = "Exposed-репозиторий CatalogRepository (list/lookup/upsert профилей).",
+        description = "Exposed-репозиторий CatalogReadRepository + admin write-spec persistence.",
     ),
     CatalogBackendTask(
         id = CatalogBackendTaskId.FACET_SCHEMA,
@@ -38,3 +38,4 @@ val catalogBackendTasks = listOf(
         description = "Stage 3.0: контракт facet definitions/presets/collections + DB seeding.",
     ),
 )
+

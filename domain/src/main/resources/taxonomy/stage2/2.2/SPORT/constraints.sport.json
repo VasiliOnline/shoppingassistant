@@ -41,7 +41,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории SPORT.BIKES_SCOOTERS по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -83,7 +108,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории SPORT.EQUIPMENT по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -125,7 +175,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории SPORT.FITNESS по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -167,7 +242,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории SPORT.HOBBY по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -200,7 +300,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории SPORT.OUTDOOR по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

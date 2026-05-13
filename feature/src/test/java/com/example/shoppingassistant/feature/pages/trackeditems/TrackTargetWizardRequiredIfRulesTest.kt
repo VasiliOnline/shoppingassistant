@@ -3,9 +3,12 @@ package com.example.shoppingassistant.feature.pages.trackeditems
 import com.example.shoppingassistant.domain.catalog.AttributeCondition
 import com.example.shoppingassistant.domain.catalog.AttributeConditionOp
 import com.example.shoppingassistant.domain.catalog.AttributeDataType
-import com.example.shoppingassistant.domain.catalog.AttributeDef
+import com.example.shoppingassistant.domain.catalog.CatalogAttributeSpec
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryReadiness
 import com.example.shoppingassistant.domain.catalog.Category
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.Stage22ValueSetType
+import com.example.shoppingassistant.domain.catalog.Stage22ValueType
 import com.example.shoppingassistant.domain.catalog.CategorySegment
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
 import com.example.shoppingassistant.domain.tracks.TrackType
@@ -25,7 +28,7 @@ class TrackTargetWizardRequiredIfRulesTest {
             categoryCode = null,
         )
 
-        assertFalse(draft.isValid(profile = null))
+        assertFalse(draft.isValid(spec = null))
     }
 
     @Test
@@ -35,9 +38,9 @@ class TrackTargetWizardRequiredIfRulesTest {
             categoryCode = "TECH.PHONES",
             attributes = mapOf("condition" to "new"),
         )
-        val profile = profileWithRules()
+        val spec = specWithRules()
 
-        assertTrue(draft.isValid(profile))
+        assertTrue(draft.isValid(spec))
     }
 
     @Test
@@ -49,7 +52,7 @@ class TrackTargetWizardRequiredIfRulesTest {
                 "condition" to "used",
             ),
         )
-        val profile = profileWithRules(
+        val spec = specWithRules(
             RequiredIfRule(
                 requiredAttributeCode = "battery_health_percent",
                 whenAll = listOf(
@@ -62,9 +65,9 @@ class TrackTargetWizardRequiredIfRulesTest {
             ),
         )
 
-        val missing = draft.missingRequiredAttributeCodes(profile)
+        val missing = draft.missingRequiredAttributeCodes(spec)
         assertEquals(setOf("battery_health_percent"), missing)
-        assertFalse(draft.isValid(profile))
+        assertFalse(draft.isValid(spec))
     }
 
     @Test
@@ -76,7 +79,7 @@ class TrackTargetWizardRequiredIfRulesTest {
                 "condition" to "new",
             ),
         )
-        val profile = profileWithRules(
+        val spec = specWithRules(
             RequiredIfRule(
                 requiredAttributeCode = "battery_health_percent",
                 whenAll = listOf(
@@ -89,9 +92,9 @@ class TrackTargetWizardRequiredIfRulesTest {
             ),
         )
 
-        val missing = draft.missingRequiredAttributeCodes(profile)
+        val missing = draft.missingRequiredAttributeCodes(spec)
         assertTrue(missing.isEmpty())
-        assertTrue(draft.isValid(profile))
+        assertTrue(draft.isValid(spec))
     }
 
     @Test
@@ -104,7 +107,7 @@ class TrackTargetWizardRequiredIfRulesTest {
                 "battery_health_percent" to "   ",
             ),
         )
-        val profile = profileWithRules(
+        val spec = specWithRules(
             RequiredIfRule(
                 requiredAttributeCode = "battery_health_percent",
                 whenAll = listOf(
@@ -117,7 +120,7 @@ class TrackTargetWizardRequiredIfRulesTest {
             ),
         )
 
-        val missing = draft.missingRequiredAttributeCodes(profile)
+        val missing = draft.missingRequiredAttributeCodes(spec)
         assertEquals(setOf("battery_health_percent"), missing)
     }
 
@@ -130,7 +133,7 @@ class TrackTargetWizardRequiredIfRulesTest {
                 "seller_tag" to "basic",
             ),
         )
-        val profile = profileWithRules(
+        val spec = specWithRules(
             RequiredIfRule(
                 requiredAttributeCode = "seller_proof",
                 whenAll = listOf(
@@ -143,39 +146,47 @@ class TrackTargetWizardRequiredIfRulesTest {
             ),
         )
 
-        val missing = draft.missingRequiredAttributeCodes(profile)
+        val missing = draft.missingRequiredAttributeCodes(spec)
         assertTrue(missing.isEmpty())
     }
 
-    private fun profileWithRules(vararg rules: RequiredIfRule): CategoryProfile =
-        CategoryProfile(
+    private fun specWithRules(vararg rules: RequiredIfRule): CatalogCategoryEffectiveSpec =
+        CatalogCategoryEffectiveSpec(
             category = Category(
                 code = "TECH.PHONES",
                 segment = CategorySegment.TECH,
             ),
+            readiness = CatalogCategoryReadiness.READY,
             attributes = listOf(
-                AttributeDef(
+                CatalogAttributeSpec(
                     code = "condition",
                     title = "Condition",
                     dataType = AttributeDataType.STRING,
+                    valueType = Stage22ValueType.STRING,
+                    valueSetType = Stage22ValueSetType.OPEN,
                 ),
-                AttributeDef(
+                CatalogAttributeSpec(
                     code = "battery_health_percent",
                     title = "Battery Health",
                     dataType = AttributeDataType.STRING,
+                    valueType = Stage22ValueType.STRING,
+                    valueSetType = Stage22ValueSetType.OPEN,
                 ),
-                AttributeDef(
+                CatalogAttributeSpec(
                     code = "seller_tag",
                     title = "Seller Tag",
                     dataType = AttributeDataType.STRING,
+                    valueType = Stage22ValueType.STRING,
+                    valueSetType = Stage22ValueSetType.OPEN,
                 ),
-                AttributeDef(
+                CatalogAttributeSpec(
                     code = "seller_proof",
                     title = "Seller Proof",
                     dataType = AttributeDataType.STRING,
+                    valueType = Stage22ValueType.STRING,
+                    valueSetType = Stage22ValueSetType.OPEN,
                 ),
             ),
-            categoryAttributes = emptyList(),
             requiredIfRules = rules.toList(),
         )
 }

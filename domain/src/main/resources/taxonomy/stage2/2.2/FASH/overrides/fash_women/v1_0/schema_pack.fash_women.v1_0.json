@@ -1,0 +1,72 @@
+{
+  "pack_code": "FASH.WOMEN",
+  "pack_name": "Goody Goods FASH.WOMEN Child Override Production Pack",
+  "version": "1.0",
+  "created_at": "2026-05-12",
+  "artifact_type": "child_override_pack",
+  "categoryCode": "FASH.WOMEN",
+  "extends": "FASH.APPAREL_COMMON",
+  "public_category": true,
+  "inheritance_model": {
+    "inherits_attributes_from": "FASH.APPAREL_COMMON",
+    "inherits_values_from": "FASH.APPAREL_COMMON",
+    "inherits_common_aliases_from": "FASH.APPAREL_COMMON",
+    "inherits_common_facet_schema_from": "FASH.APPAREL_COMMON",
+    "inherits_size_policy_from": "FASH.APPAREL_COMMON",
+    "no_duplicate_common_attribute_codes": true,
+    "child_pack_contains_only_overrides": true
+  },
+  "business_goal": "Production-ready women apparel branch built on shared apparel standard with women-specific type priorities, size policy, routing guardrails, vision rules and compact user surface.",
+  "counts": {
+    "aliases": 251,
+    "golden_queries": 96,
+    "sample_offers": 52,
+    "allowed_apparel_types": 46,
+    "blocked_apparel_types": 3,
+    "type_groups": 13,
+    "value_override_rows": 97
+  },
+  "definition_of_done": [
+    "FASH.WOMEN effective spec builds as FASH.APPAREL_COMMON + child overrides",
+    "No duplicated common attributes in child pack",
+    "target_gender default WOMEN; allowed WOMEN and UNISEX only",
+    "age_group default ADULT; allowed ADULT and TEEN only",
+    "DRESS/SKIRT/BRA/BLOUSE/TOP/TIGHTS are allowed and prioritized where appropriate",
+    "Shoes/bags/accessories/beauty/kids/men negative route queries do not finalize as FASH.WOMEN",
+    "Primary user surface per type group stays <= 8 initial fields and <= 7 primary filters",
+    "Vision does not infer WOMEN from color/style alone",
+    "Golden queries and sample offers validate route, type, defaults, sizes and inherited fields"
+  ],
+  "runtime_readiness": {
+    "intended_status_after_merge": "READY_CANDIDATE",
+    "requires_common_standard": "FASH.APPAREL_COMMON >= 1.1 or adapter patch in common_dependency_patch file",
+    "requires_validators": [
+      "Stage22SeedValidator",
+      "FacetSchemaValidator",
+      "FashWomenChildOverrideGate",
+      "FashRouteConflictGate",
+      "FashApparelInheritanceGate"
+    ]
+  },
+  "files": [
+    "README_FASH_WOMEN_CHILD_OVERRIDE_PRODUCTION_v1_0_RU.md",
+    "aliases.fash_women.ru.v1_0.tsv",
+    "child_defaults.fash_women.v1_0.yaml",
+    "common_dependency_patch.fash_apparel_common.v1_1_for_fash_women.yaml",
+    "effective_spec_snapshot.expected.fash_women.v1_0.json",
+    "facet_overrides.fash_women.v1_0.yaml",
+    "golden_queries.fash_women.v1_0.tsv",
+    "integration_mapping.fash_women.v1_0.yaml",
+    "quality_gates.fash_women.v1_0.yaml",
+    "routing_guardrails.fash_women.v1_0.yaml",
+    "sample_offers.fash_women.v1_0.jsonl",
+    "schema_pack.fash_women.v1_0.json",
+    "size_overrides.fash_women.v1_0.yaml",
+    "type_priorities.fash_women.v1_0.yaml",
+    "user_surface.fash_women.v1_0.yaml",
+    "value_overrides.fash_women.v1_0.tsv",
+    "vision_rules.fash_women.v1_0.yaml",
+    "validation_report.fash_women.v1_0.json",
+    "checksums.sha256.json"
+  ]
+}

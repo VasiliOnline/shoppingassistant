@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "needs_retake": { "type": "boolean" },
+    "retake_reason": { "type": ["string", "null"] },
+    "confidence": { "type": ["number", "null"] },
+    "title": { "type": ["string", "null"] },
+    "category_code": { "type": ["string", "null"] },
+    "category_hint": { "type": ["string", "null"] },
+    "category_confidence": { "type": ["number", "null"] },
+    "brand": { "type": ["string", "null"] },
+    "model": { "type": ["string", "null"] },
+    "next_action": { "type": ["string", "null"] },
+    "reason_codes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string" },
+          "kind": { "type": ["string", "null"] },
+          "text": { "type": ["string", "null"] },
+          "number": { "type": ["number", "null"] },
+          "bool": { "type": ["boolean", "null"] },
+          "confidence": { "type": ["number", "null"] }
+        },
+        "required": ["code"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["needs_retake"],
+  "additionalProperties": false
+}

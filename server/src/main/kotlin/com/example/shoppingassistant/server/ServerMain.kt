@@ -1,23 +1,40 @@
 // Last synced: 2025-12-10 15:35:15
 package com.example.shoppingassistant.server
 
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
+import com.example.shoppingassistant.domain.catalog.TaxonomyValidator
+import com.example.shoppingassistant.domain.facet.FacetSchemaValidator
 import com.example.shoppingassistant.server.config.ServerConfig
+import com.example.shoppingassistant.server.catalog.CatalogStage20BackfillService
+import com.example.shoppingassistant.server.catalog.CatalogStage20BackfillStartupConfig
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceCuratedSeedSyncService
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceRefreshSurfaceService
+import com.example.shoppingassistant.server.catalog.CatalogSeedSyncMode
+import com.example.shoppingassistant.server.catalog.GovernanceCatalogCanonicalModelRegistryProvider
+import com.example.shoppingassistant.server.catalog.GovernanceCatalogCanonicalProductFamilyRegistryProvider
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import com.example.shoppingassistant.server.di.backendAuthModule
+import com.example.shoppingassistant.server.di.backendAiModule
 import com.example.shoppingassistant.server.di.backendCatalogModule
+import com.example.shoppingassistant.server.di.backendLocalOfferModule
 import com.example.shoppingassistant.server.di.backendOffersModule
 import com.example.shoppingassistant.server.di.backendPriceModule
+import com.example.shoppingassistant.server.di.backendProfileModule
 import com.example.shoppingassistant.server.di.backendRankModule
+import com.example.shoppingassistant.server.di.backendShortListingModule
 import com.example.shoppingassistant.server.di.backendSourcesModule
 import com.example.shoppingassistant.server.di.backendStorageModule
 import com.example.shoppingassistant.server.di.backendSubscriptionsModule
 import com.example.shoppingassistant.server.di.backendTracksModule
 import com.example.shoppingassistant.server.di.backendUgcModule
+import com.example.shoppingassistant.server.di.backendVisualSearchModule
 import com.example.shoppingassistant.server.di.backendVisionModule
 import com.example.shoppingassistant.server.offers.Stage4RuntimeBackfillService
 import com.example.shoppingassistant.server.tracks.TrackDedupBackfillService
 import com.example.shoppingassistant.server.tracks.TrackTargetPostMigrationGuardService
 import com.example.shoppingassistant.server.plugins.configureMonitoring
+import com.example.shoppingassistant.server.plugins.configureCatalogReadinessSnapshotEngine
+import com.example.shoppingassistant.server.plugins.configureCatalogGovernanceRefreshEngine
 import com.example.shoppingassistant.server.plugins.configurePriceFetcherEngine
 import com.example.shoppingassistant.server.plugins.configureSubscriptionsEngine
 import com.example.shoppingassistant.server.plugins.configureRouting
@@ -30,6 +47,7 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import kotlinx.coroutines.runBlocking
 import org.koin.core.context.startKoin
+import org.slf4j.LoggerFactory
 
 /**
  * Точка входа backend-приложения.
@@ -38,11 +56,13 @@ import org.koin.core.context.startKoin
  * APP_PORT=8080 ./gradlew :server:run
  */
 fun main() {
+    val logger = LoggerFactory.getLogger("ServerMain")
     val config = ServerConfig.fromEnv()
 
     // Инициализируем подключение к Postgres через Exposed.
     // Используем параметры, которые ты уже задал в ServerConfig/DatabaseConfig.
     DatabaseFactory.init(config.db)
+    enforceCatalogContractsOnStartup()
 
     // Backend-уровень Koin: поднимаем доменный слой для профиля/авторизации
     // и вспомогательные сервисы (офферы, ранжирование, storage, vision, UGC).
@@ -52,17 +72,60 @@ fun main() {
     val koinApp = startKoin {
         modules(
             backendAuthModule,
+            backendAiModule,
             backendCatalogModule,
+            backendLocalOfferModule,
             backendOffersModule,
+            backendProfileModule,
             backendPriceModule,
             backendRankModule,
+            backendShortListingModule,
             backendSourcesModule,
             backendStorageModule,
             backendVisionModule,
+            backendVisualSearchModule,
             backendUgcModule,
             backendSubscriptionsModule,
             backendTracksModule,
         )
+    }
+    if (envFlagDefaultTrue("CATALOG_GOVERNANCE_CURATED_SYNC_ENABLED")) {
+        runCatching {
+            runBlocking {
+                koinApp.koin.get<CatalogGovernanceCuratedSeedSyncService>()
+                    .syncTopCategoryCoverage(syncMode = CatalogSeedSyncMode.UPSERT_ONLY)
+            }
+        }.onFailure { throwable ->
+            logger.warn("Catalog governance curated seed sync skipped on startup", throwable)
+        }
+    }
+    runCatching {
+        runBlocking {
+            koinApp.koin.get<CatalogGovernanceRefreshSurfaceService>()
+                .ensurePhonesSourceRegistry()
+        }
+    }.onFailure { throwable ->
+        logger.warn("Catalog governance phones refresh registry bootstrap skipped on startup", throwable)
+    }
+    koinApp.koin.get<GovernanceCatalogCanonicalProductFamilyRegistryProvider>().installIntoRuntime()
+    koinApp.koin.get<GovernanceCatalogCanonicalModelRegistryProvider>().installIntoRuntime()
+
+    val stage20BackfillConfig = CatalogStage20BackfillStartupConfig.fromEnv()
+    val stage20BackfillService = koinApp.koin.get<CatalogStage20BackfillService>()
+    if (stage20BackfillConfig.enabled) {
+        runBlocking {
+            stage20BackfillService.runBackfill(
+                syncMode = stage20BackfillConfig.syncMode,
+                ensureReferencedCategories = stage20BackfillConfig.ensureReferencedCategories,
+            )
+        }
+        if (stage20BackfillConfig.exitAfterRun) {
+            return
+        }
+    } else if (stage20BackfillConfig.autoRepairEnabled) {
+        runBlocking {
+            stage20BackfillService.runAutoRepairIfNeeded()
+        }
     }
 
     val runStage4Backfill = envFlag("STAGE4_RUNTIME_BACKFILL_ON_STARTUP")
@@ -128,7 +191,35 @@ fun Application.shoppingAssistantModule(config: ServerConfig) {
     configureSubscriptionsEngine()
     configurePriceFetcherEngine()
     configureTrackTop10RefreshEngine()
+    configureCatalogReadinessSnapshotEngine()
+    configureCatalogGovernanceRefreshEngine()
 }
 
 private fun envFlag(name: String): Boolean =
     (System.getenv(name) ?: "false").equals("true", ignoreCase = true)
+
+private fun envFlagDefaultTrue(name: String): Boolean =
+    !(System.getenv(name) ?: "true").equals("false", ignoreCase = true)
+
+private fun enforceCatalogContractsOnStartup() {
+    val taxonomyReport = TaxonomyValidator().validate(
+        categories = CatalogSeed.categories,
+        aliases = CatalogSeed.categoryAliases,
+        mappings = CatalogSeed.googleMappings,
+        browseNodes = CatalogSeed.browseNodes,
+        aliasEntries = CatalogSeed.aliasEntries,
+    )
+    check(taxonomyReport.isValid) {
+        "Catalog taxonomy contract validation failed on server startup.\n${taxonomyReport.summary()}"
+    }
+
+    val facetSchemaReport = FacetSchemaValidator().validate(
+        categories = CatalogSeed.categories,
+        definitions = CatalogSeed.facetDefinitions,
+        presets = CatalogSeed.facetPresets,
+        collections = CatalogSeed.facetCollections,
+    )
+    check(facetSchemaReport.isValid) {
+        "Catalog facet schema contract validation failed on server startup.\n${facetSchemaReport.summary()}"
+    }
+}

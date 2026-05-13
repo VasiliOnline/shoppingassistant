@@ -2,8 +2,9 @@ package com.example.shoppingassistant.core.data.template.status
 
 import com.example.shoppingassistant.domain.catalog.AttributeCondition
 import com.example.shoppingassistant.domain.catalog.AttributeConditionOp
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
 import com.example.shoppingassistant.domain.template.TemplateSnapshotMode
 import com.example.shoppingassistant.domain.template.status.TemplateReadyAction
@@ -26,11 +27,12 @@ class TemplateStatusResolverImpl(
             .toMap()
 
         val requiredIfRules = context.requiredIfRules
-            .ifEmpty { context.profile?.requiredIfRules.orEmpty() }
+            .ifEmpty { context.effectiveSpec?.requiredIfRules.orEmpty() }
+        val constraints = context.constraints.ifEmpty { context.effectiveSpec?.constraints.orEmpty() }
 
         val requiredOrdered = buildRequiredKeys(
             mode = template.mode,
-            profile = context.profile,
+            effectiveSpec = context.effectiveSpec,
             requiredIfRules = requiredIfRules,
             currentAttrs = attrs,
         )
@@ -42,7 +44,7 @@ class TemplateStatusResolverImpl(
             }
         }
 
-        val constraintsResult = constraintsResolver.evaluate(context.constraints, attrs)
+        val constraintsResult = constraintsResolver.evaluate(constraints, attrs)
         constraintsResult.violations.forEach { (key, reason) ->
             if (!errors.containsKey(key)) {
                 errors[key] = reason
@@ -85,7 +87,7 @@ class TemplateStatusResolverImpl(
                 TemplateReadyAction.SEARCH, TemplateReadyAction.SUBSCRIPTION -> TemplateSnapshotMode.SEARCH
                 TemplateReadyAction.EXPRESS -> TemplateSnapshotMode.EXPRESS
             }
-            val required = buildRequiredKeys(mode, context.profile, requiredIfRules, attrs)
+            val required = buildRequiredKeys(mode, context.effectiveSpec, requiredIfRules, attrs)
             val missing = required.any { key -> attrs[key].isNullOrBlank() }
             if (missing) return false
             if (action == TemplateReadyAction.EXPRESS && !context.hasPhotos) return false
@@ -100,25 +102,26 @@ class TemplateStatusResolverImpl(
 
     private fun buildRequiredKeys(
         mode: TemplateSnapshotMode,
-        profile: CategoryProfile?,
+        effectiveSpec: CatalogCategoryEffectiveSpec?,
         requiredIfRules: List<RequiredIfRule>,
         currentAttrs: Map<String, String>,
     ): List<String> {
         val ordered = mutableListOf<String>()
         val required = linkedSetOf<String>()
 
-        val defsByCode = profile?.attributes.orEmpty().associateBy { it.code }
-        profile?.categoryAttributes.orEmpty()
+        effectiveSpec?.allAttributes()
+            .orEmpty()
             .sortedBy { it.uiOrder }
-            .forEach { catAttr ->
-                val def = defsByCode[catAttr.attributeCode] ?: return@forEach
+            .forEach { attribute ->
+                val code = attribute.code.trim()
+                if (code.isBlank()) return@forEach
                 val requiredByMode = when (mode) {
-                    TemplateSnapshotMode.SEARCH -> def.requiredForSearch
-                    TemplateSnapshotMode.OFFER -> def.requiredForOffer
-                    TemplateSnapshotMode.EXPRESS -> def.requiredForExpress || def.requiredForOffer
+                    TemplateSnapshotMode.SEARCH -> attribute.requiredForSearch
+                    TemplateSnapshotMode.OFFER -> attribute.requiredForOffer
+                    TemplateSnapshotMode.EXPRESS -> attribute.requiredForExpress || attribute.requiredForOffer
                 }
-                if (requiredByMode || catAttr.isRequiredForCategory) {
-                    if (required.add(def.code)) ordered.add(def.code)
+                if (requiredByMode || attribute.requiredForCategory) {
+                    if (required.add(code)) ordered.add(code)
                 }
             }
 

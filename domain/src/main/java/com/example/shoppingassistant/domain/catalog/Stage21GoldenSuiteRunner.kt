@@ -121,7 +121,7 @@ internal class Stage21GoldenSuiteRunner(
             val sportRouter = Stage21SportQueryRouter()
             val autoRouter = Stage21AutoQueryRouter()
 
-            return listOf(
+            val packageCases = listOf(
                 Stage21GoldenPackageCase(
                     packageCode = "TECH",
                     goldenQueries = Stage21TechPackageLoader.goldenQueries,
@@ -217,6 +217,16 @@ internal class Stage21GoldenSuiteRunner(
                     },
                 ),
             )
+            val actualPackageCodes = packageCases.map { it.packageCode }
+            val requiredPackageCodes = CatalogL0Registry.requiredPackageCodes
+            check(actualPackageCodes.distinct().size == actualPackageCodes.size) {
+                "Stage 2.1 golden suite contains duplicate package codes: ${actualPackageCodes.joinToString(", ")}"
+            }
+            check(actualPackageCodes.toSet() == requiredPackageCodes.toSet()) {
+                "Stage 2.1 golden suite packages drifted from CatalogL0Registry. " +
+                    "Expected=${requiredPackageCodes.joinToString(", ")}, actual=${actualPackageCodes.joinToString(", ")}"
+            }
+            return packageCases
         }
     }
 }

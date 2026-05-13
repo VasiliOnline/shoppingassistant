@@ -8,8 +8,6 @@ import com.example.shoppingassistant.feature.pages.model.AttributeDef
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.feature.pages.model.ValueDef
 
-private val defaultOfferRequired = setOf("price", "currency", "brand")
-
 /**
  * Собирает CategoryDictionary из списка AttributeDef (каталог атрибутов категории).
  */
@@ -23,17 +21,18 @@ fun buildCategoryDictionary(
     val filtered = defs.filterNot { def ->
         def.key == "category" || def.key.startsWith("category_level_")
     }
-    val enriched = if (effectiveCategory == null) filtered else ensureDefaults(filtered)
-    val attrDicts = enriched.associate { def ->
+    val attrDicts = filtered.associate { def ->
         val canonicalValues = canonicalValues(def)
+        val displayByCanonical = displayByCanonical(def)
         val tokenMap = buildTokenMap(def, canonicalValues)
         def.key to AttributeDict(
             code = def.key,
-            isRequiredForOffer = def.requiredForOffer || def.key in defaultOfferRequired,
+            isRequiredForOffer = def.requiredForOffer,
             isRequiredForSearch = def.requiredForSearch,
             isRequiredForExpress = def.requiredForExpress,
             tokenToCanonical = tokenMap,
             canonicalValues = canonicalValues.toSet(),
+            displayByCanonical = displayByCanonical,
         )
     }
 
@@ -56,11 +55,18 @@ fun buildCategoryDictionary(
 
 private fun canonicalValues(def: AttributeDef): List<String> {
     return if (def.allowedValues.isNotEmpty()) {
-        def.allowedValues.map(ValueDef::canonical)
+        def.allowedValues.map(ValueDef::code)
     } else {
         def.options
     }.map { it.trim() }.filter { it.isNotBlank() }
 }
+
+private fun displayByCanonical(def: AttributeDef): Map<String, String> =
+    if (def.allowedValues.isNotEmpty()) {
+        def.allowedValues.associate { value -> value.code to value.label }
+    } else {
+        def.options.associateWith { it }
+    }
 
 private fun buildTokenMap(def: AttributeDef, canonicalValues: List<String>): Map<String, String> {
     val tokenMap = linkedMapOf<String, String>()
@@ -73,8 +79,9 @@ private fun buildTokenMap(def: AttributeDef, canonicalValues: List<String>): Map
     }
 
     def.allowedValues.forEach { v ->
-        addTokens(v.canonical, v.canonical)
-        v.synonyms.forEach { syn -> addTokens(syn, v.canonical) }
+        addTokens(v.code, v.code)
+        addTokens(v.label, v.code)
+        v.synonyms.forEach { syn -> addTokens(syn, v.code) }
     }
     if (def.allowedValues.isEmpty()) {
         canonicalValues.forEach { canon ->
@@ -82,15 +89,6 @@ private fun buildTokenMap(def: AttributeDef, canonicalValues: List<String>): Map
         }
     }
     return tokenMap
-}
-
-private fun ensureDefaults(defs: List<AttributeDef>): List<AttributeDef> {
-    val keys = defs.map { it.key }.toSet()
-    val extras = mutableListOf<AttributeDef>()
-    if ("price" !in keys) extras.add(AttributeDef("price", "Цена", requiredForOffer = true, requiredForExpress = true))
-    if ("currency" !in keys) extras.add(AttributeDef("currency", "Валюта", requiredForOffer = true, requiredForExpress = true))
-    if ("condition" !in keys) extras.add(AttributeDef("condition", "Состояние"))
-    return defs + extras
 }
 
 private fun normalizeToken(token: String): String =

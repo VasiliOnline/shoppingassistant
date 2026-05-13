@@ -1,0 +1,94 @@
+version: '1.0'
+categoryCode: FASH.MEN
+extends: FASH.APPAREL_COMMON
+size_policy_override:
+  preferred_system_order:
+  - INT
+  - RU
+  - EU
+  - JEANS_WL
+  - ONE_SIZE
+  international_primary:
+  - S
+  - M
+  - L
+  - XL
+  - XXL
+  - 3XL
+  international_secondary:
+  - XS
+  - 4XL
+  - 5XL
+  - 6XL
+  - ONE_SIZE
+  ru_primary:
+  - RU_46
+  - RU_48
+  - RU_50
+  - RU_52
+  - RU_54
+  - RU_56
+  - RU_58
+  ru_secondary:
+  - RU_44
+  - RU_60
+  - RU_62
+  - RU_64
+  - RU_66
+  - RU_68
+  - RU_70
+  eu_primary:
+  - EU_46
+  - EU_48
+  - EU_50
+  - EU_52
+  - EU_54
+  - EU_56
+  - EU_58
+  eu_secondary:
+  - EU_44
+  - EU_60
+  - EU_62
+  - EU_64
+  jeans_waist_primary:
+  - W30
+  - W31
+  - W32
+  - W33
+  - W34
+  - W36
+  - W38
+  jeans_waist_secondary:
+  - W28
+  - W29
+  - W35
+  - W37
+  - W39
+  - W40
+  - W42
+  - W44
+  jeans_length_supported:
+  - L30
+  - L32
+  - L34
+  - L36
+  not_allowed_as_men_default:
+  - BRA_EU
+  - KIDS_HEIGHT_CM
+normalization_rules:
+- Keep raw size_text_raw for audit and matching
+- Do not infer RU size from visual photo only
+- For jeans, parse W/L separately if title contains Wxx Lxx
+- If size is absent, keep size_label UNKNOWN_OR_NOT_PROVIDED in draft and ask user before publish
+- For second-hand items, measurements are recommended but not required
+measurement_widget:
+  ui_group_code: measurements
+  is_attribute: false
+  expands_to_if_supported:
+  - chest_cm
+  - waist_cm
+  - shoulder_cm
+  - sleeve_cm
+  - inseam_cm
+  - total_length_cm
+  fallback_behavior: show_as_optional_measurement_group_only_if_child_effective_spec_has_measurement_attributes

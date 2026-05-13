@@ -1,0 +1,29 @@
+{
+  "pack": "FASH.KIDS.child_override.production.v1",
+  "generated_at": "2026-05-12T13:26:52.578937+00:00",
+  "checks": {
+    "yaml_json_parse": "PASS",
+    "golden_queries_unique": "PASS",
+    "initial_fields_max_8": "PASS",
+    "primary_facets_max_7": "PASS",
+    "allowed_blocked_types_disjoint": "PASS",
+    "negative_guards_present": "PASS",
+    "child_does_not_duplicate_common_attributes": "PASS_BY_CONTRACT",
+    "repo_validators_required": [
+      "Stage22SeedValidator",
+      "FacetSchemaValidator",
+      "FashKidsChildOverrideGate",
+      "FashRouteConflictGate",
+      "EffectiveSpecSnapshotGate"
+    ]
+  },
+  "counts": {
+    "aliases": 84,
+    "golden_queries": 63,
+    "sample_offers": 48,
+    "allowed_apparel_types": 37,
+    "blocked_cross_route_types": 15,
+    "type_groups": 7,
+    "value_override_rows": 71
+  }
+}

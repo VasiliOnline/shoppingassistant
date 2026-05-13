@@ -1,0 +1,29 @@
+{
+  "manifestName": "listing_vision_eval_baseline",
+  "locale": "ru",
+  "samples": [
+    {
+      "sampleId": "phone_001",
+      "categoryHint": "TECH.PHONES",
+      "expectedCategoryCode": "TECH.PHONES",
+      "expectedFieldCodes": ["brand", "model", "storage"],
+      "expectedFields": {
+        "brand": "Apple",
+        "model": "iPhone 15"
+      },
+      "hints": {
+        "capture_mode": "listing"
+      },
+      "photos": [
+        {
+          "path": "C:\\\\datasets\\\\listing_vision\\\\phone_001_front.jpg",
+          "role": "front"
+        },
+        {
+          "path": "C:\\\\datasets\\\\listing_vision\\\\phone_001_tech.jpg",
+          "role": "tech_1"
+        }
+      ]
+    }
+  ]
+}

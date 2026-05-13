@@ -7,6 +7,7 @@ import com.example.shoppingassistant.domain.auth.AuthRepository
 import com.example.shoppingassistant.domain.model.AuthError
 import com.example.shoppingassistant.domain.model.AuthResult
 import com.example.shoppingassistant.domain.model.AuthUser
+import com.example.shoppingassistant.domain.profile.DeleteAccountReceipt
 import com.example.shoppingassistant.domain.profile.ProfileUpdatePayload
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -221,6 +222,8 @@ class RemoteAuthRepository(
                     city = payload.city?.trim()?.takeIf { it.isNotEmpty() },
                     phone = payload.phone?.trim()?.takeIf { it.isNotEmpty() },
                     avatarUrl = payload.avatarUrl?.trim()?.takeIf { it.isNotEmpty() },
+                    bio = payload.bio?.trim()?.takeIf { it.isNotEmpty() },
+                    website = payload.website?.trim()?.takeIf { it.isNotEmpty() },
                 ),
             )
         }
@@ -232,7 +235,7 @@ class RemoteAuthRepository(
             }
 
             HttpStatusCode.BadRequest -> {
-                throw IllegalStateException("Некорректные данные профиля")
+                throw IllegalStateException(parseProfileErrorMessage(response, "Некорректные данные профиля"))
             }
 
             HttpStatusCode.Unauthorized -> {
@@ -288,16 +291,19 @@ class RemoteAuthRepository(
 
     override suspend fun logout() {
         ensureTokenLoaded()
-        val token = authToken ?: return
-        val client = backendClient.client
-
-        client.post("$baseUrl/api/auth/logout") {
-            header("Authorization", "Bearer $token")
+        val token = authToken
+        try {
+            if (!token.isNullOrBlank()) {
+                val client = backendClient.client
+                client.post("$baseUrl/api/auth/logout") {
+                    header("Authorization", "Bearer $token")
+                }
+            }
+        } finally {
+            authToken = null
+            tokenLoaded = true
+            tokenStorage.clear()
         }
-
-        authToken = null
-        tokenLoaded = true
-        tokenStorage.clear()
     }
 
     /**
@@ -419,6 +425,146 @@ class RemoteAuthRepository(
 
     }
 
+    suspend fun startEmailVerification(): VerificationDeliveryStatus {
+        ensureTokenLoaded()
+        val token = authToken ?: throw IllegalStateException("Требуется авторизация")
+        val client = backendClient.client
+
+        val response: HttpResponse = client.post("$baseUrl/api/auth/verify-email/start") {
+            header("Authorization", "Bearer $token")
+        }
+
+        return when (response.status) {
+            HttpStatusCode.OK -> {
+                val dto: SimpleStatusDto = response.body()
+                if (dto.status == "ALREADY_VERIFIED") {
+                    VerificationDeliveryStatus.ALREADY_VERIFIED
+                } else {
+                    VerificationDeliveryStatus.SENT
+                }
+            }
+
+            HttpStatusCode.Unauthorized -> {
+                authToken = null
+                tokenLoaded = true
+                tokenStorage.clear()
+                throw IllegalStateException("Требуется авторизация")
+            }
+
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось отправить письмо с подтверждением email"),
+            )
+        }
+    }
+
+    suspend fun confirmEmailVerification(token: String) {
+        val client = backendClient.client
+        val response: HttpResponse = client.post("$baseUrl/api/auth/verify-email/confirm") {
+            contentType(ContentType.Application.Json)
+            setBody(ChangeEmailConfirmRequestDto(token = token))
+        }
+
+        when (response.status) {
+            HttpStatusCode.OK -> Unit
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось подтвердить email"),
+            )
+        }
+    }
+
+    suspend fun startPhoneVerification(): VerificationDeliveryStatus {
+        ensureTokenLoaded()
+        val token = authToken ?: throw IllegalStateException("Требуется авторизация")
+        val client = backendClient.client
+
+        val response: HttpResponse = client.post("$baseUrl/api/auth/verify-phone/start") {
+            header("Authorization", "Bearer $token")
+        }
+
+        return when (response.status) {
+            HttpStatusCode.OK -> {
+                val dto: SimpleStatusDto = response.body()
+                if (dto.status == "ALREADY_VERIFIED") {
+                    VerificationDeliveryStatus.ALREADY_VERIFIED
+                } else {
+                    VerificationDeliveryStatus.SENT
+                }
+            }
+
+            HttpStatusCode.Unauthorized -> {
+                authToken = null
+                tokenLoaded = true
+                tokenStorage.clear()
+                throw IllegalStateException("Требуется авторизация")
+            }
+
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось отправить код подтверждения"),
+            )
+        }
+    }
+
+    suspend fun confirmPhoneVerification(token: String) {
+        val client = backendClient.client
+        val response: HttpResponse = client.post("$baseUrl/api/auth/verify-phone/confirm") {
+            contentType(ContentType.Application.Json)
+            setBody(ChangeEmailConfirmRequestDto(token = token))
+        }
+
+        when (response.status) {
+            HttpStatusCode.OK -> Unit
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось подтвердить телефон"),
+            )
+        }
+    }
+
+    suspend fun startPhoneChange(newPhone: String, currentPassword: String) {
+        ensureTokenLoaded()
+        val token = authToken ?: throw IllegalStateException("Требуется авторизация")
+        val client = backendClient.client
+
+        val response: HttpResponse = client.post("$baseUrl/api/auth/change-phone/start") {
+            header("Authorization", "Bearer $token")
+            contentType(ContentType.Application.Json)
+            setBody(
+                ChangePhoneStartRequestDto(
+                    newPhone = newPhone,
+                    currentPassword = currentPassword,
+                ),
+            )
+        }
+
+        when (response.status) {
+            HttpStatusCode.OK -> Unit
+            HttpStatusCode.Unauthorized -> {
+                authToken = null
+                tokenLoaded = true
+                tokenStorage.clear()
+                throw IllegalStateException("Требуется авторизация")
+            }
+
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось начать смену телефона"),
+            )
+        }
+    }
+
+    suspend fun confirmPhoneChange(token: String) {
+        val client = backendClient.client
+        val response: HttpResponse = client.post("$baseUrl/api/auth/change-phone/confirm") {
+            contentType(ContentType.Application.Json)
+            setBody(ChangePhoneConfirmRequestDto(token = token))
+        }
+
+        when (response.status) {
+            HttpStatusCode.OK -> Unit
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось подтвердить новый телефон"),
+            )
+        }
+    }
+
     // === DTO / маппинги ===
 
     @Serializable
@@ -440,10 +586,14 @@ class RemoteAuthRepository(
         val email: String,
         val displayName: String,
         val phone: String? = null,
+        val pendingPhone: String? = null,
+        val pendingPhoneRequestedAt: Long? = null,
         val avatarUrl: String? = null,
         val city: String? = null,
         val token: String? = null,
         val emailVerified: Boolean = false,
+        val emailVerifiedAt: Long? = null,
+        val phoneVerifiedAt: Long? = null,
         val createdAt: Long? = null,
         val photos: List<String> = emptyList(),
     )
@@ -454,9 +604,13 @@ class RemoteAuthRepository(
         val email: String,
         val displayName: String,
         val phone: String? = null,
+        val pendingPhone: String? = null,
+        val pendingPhoneRequestedAt: Long? = null,
         val avatarUrl: String? = null,
         val city: String? = null,
         val emailVerified: Boolean = false,
+        val emailVerifiedAt: Long? = null,
+        val phoneVerifiedAt: Long? = null,
         val createdAt: Long? = null,
         val photos: List<String> = emptyList(),
     )
@@ -467,6 +621,8 @@ class RemoteAuthRepository(
         val city: String? = null,
         val phone: String? = null,
         val avatarUrl: String? = null,
+        val bio: String? = null,
+        val website: String? = null,
     )
 
     @Serializable
@@ -511,6 +667,7 @@ class RemoteAuthRepository(
     @Serializable
     private data class ChangeEmailStartRequestDto(
         val newEmail: String,
+        val currentPassword: String,
     )
 
     @Serializable
@@ -519,8 +676,37 @@ class RemoteAuthRepository(
     )
 
     @Serializable
+    private data class ChangePhoneStartRequestDto(
+        val newPhone: String,
+        val currentPassword: String,
+    )
+
+    @Serializable
+    private data class ChangePhoneConfirmRequestDto(
+        val token: String,
+    )
+
+    @Serializable
     private data class SimpleStatusDto(
         val status: String,
+    )
+
+    @Serializable
+    private data class DeleteAccountResponseDto(
+        val status: String,
+        val deleteAfter: Long? = null,
+        val restoreToken: String? = null,
+    )
+
+    @Serializable
+    private data class DeleteAccountRequestDto(
+        val currentPassword: String,
+    )
+
+    @Serializable
+    private data class ProfileErrorDto(
+        val code: String,
+        val message: String,
     )
 
     private fun AuthUserResponseDto.toDomain(): AuthUser =
@@ -528,13 +714,17 @@ class RemoteAuthRepository(
             id = id,
             email = email,
             displayName = displayName,
-        phone = phone,
-        avatarUrl = avatarUrl,
-        city = city,
-        emailVerified = emailVerified,
-        createdAt = createdAt,
-        photos = photos,
-    )
+            phone = phone,
+            pendingPhone = pendingPhone,
+            pendingPhoneRequestedAt = pendingPhoneRequestedAt,
+            avatarUrl = avatarUrl,
+            city = city,
+            emailVerified = emailVerified,
+            emailVerifiedAt = emailVerifiedAt,
+            phoneVerifiedAt = phoneVerifiedAt,
+            createdAt = createdAt,
+            photos = photos,
+        )
 
     private fun ProfileSummaryResponseDto.toDomain(): AuthUser =
         AuthUser(
@@ -542,17 +732,33 @@ class RemoteAuthRepository(
             email = email,
             displayName = displayName,
             phone = phone,
+            pendingPhone = pendingPhone,
+            pendingPhoneRequestedAt = pendingPhoneRequestedAt,
             avatarUrl = avatarUrl,
             city = city,
             emailVerified = emailVerified,
+            emailVerifiedAt = emailVerifiedAt,
+            phoneVerifiedAt = phoneVerifiedAt,
             createdAt = createdAt,
             photos = photos,
         )
 
+    private suspend fun parseProfileErrorMessage(response: HttpResponse, fallback: String): String =
+        runCatching { response.body<ProfileErrorDto>().message }
+            .getOrNull()
+            ?.takeIf { it.isNotBlank() }
+            ?: fallback
+
+    private suspend fun parseAuthErrorMessage(response: HttpResponse, fallback: String): String =
+        runCatching { response.body<ResetPasswordErrorResponseDto>().message }
+            .getOrNull()
+            ?.takeIf { it.isNotBlank() }
+            ?: fallback
+
     /**
      * Инициировать смену email. Требует авторизации.
      */
-    suspend fun startEmailChange(newEmail: String) {
+    suspend fun startEmailChange(newEmail: String, currentPassword: String) {
         ensureTokenLoaded()
         val token = authToken ?: throw IllegalStateException("Требуется авторизация")
         val client = backendClient.client
@@ -560,19 +766,24 @@ class RemoteAuthRepository(
         val response: HttpResponse = client.post("$baseUrl/api/auth/change-email/start") {
             header("Authorization", "Bearer $token")
             contentType(ContentType.Application.Json)
-            setBody(ChangeEmailStartRequestDto(newEmail = newEmail))
+            setBody(
+                ChangeEmailStartRequestDto(
+                    newEmail = newEmail,
+                    currentPassword = currentPassword,
+                ),
+            )
         }
 
         when (response.status) {
             HttpStatusCode.OK -> Unit
-            HttpStatusCode.Conflict -> throw IllegalStateException("Email уже используется")
+            HttpStatusCode.Conflict -> throw IllegalStateException(parseAuthErrorMessage(response, "Email уже используется"))
             HttpStatusCode.Unauthorized -> {
                 authToken = null
                 tokenLoaded = true
                 tokenStorage.clear()
                 throw IllegalStateException("Требуется авторизация")
             }
-            else -> throw IllegalStateException("Не удалось инициировать смену email (${response.status.value})")
+            else -> throw IllegalStateException(parseAuthErrorMessage(response, "Не удалось инициировать смену email"))
         }
     }
 
@@ -603,29 +814,62 @@ class RemoteAuthRepository(
     /**
      * Soft-delete аккаунта. Требует авторизации.
      */
-    suspend fun deleteAccount(): Boolean {
+    suspend fun deleteAccount(currentPassword: String): DeleteAccountReceipt? {
         ensureTokenLoaded()
-        val token = authToken ?: return false
+        val token = authToken ?: return null
         val client = backendClient.client
 
         val response: HttpResponse = client.post("$baseUrl/api/auth/delete-account") {
             header("Authorization", "Bearer $token")
+            contentType(ContentType.Application.Json)
+            setBody(DeleteAccountRequestDto(currentPassword = currentPassword))
         }
 
         return when (response.status) {
             HttpStatusCode.OK -> {
+                val dto: DeleteAccountResponseDto = response.body()
                 authToken = null
                 tokenLoaded = true
                 tokenStorage.clear()
-                true
+                DeleteAccountReceipt(
+                    deleteAfter = dto.deleteAfter,
+                    restoreToken = dto.restoreToken,
+                )
             }
             HttpStatusCode.Unauthorized -> {
                 authToken = null
                 tokenLoaded = true
                 tokenStorage.clear()
-                false
+                null
             }
-            else -> false
+            else -> throw IllegalStateException(parseAuthErrorMessage(response, "Не удалось запланировать удаление аккаунта"))
         }
     }
+
+    suspend fun restoreDeletedAccount(token: String): AuthUser {
+        val client = backendClient.client
+        val response: HttpResponse = client.post("$baseUrl/api/auth/delete-account/restore") {
+            contentType(ContentType.Application.Json)
+            setBody(ChangeEmailConfirmRequestDto(token = token))
+        }
+
+        return when (response.status) {
+            HttpStatusCode.OK -> {
+                val dto: AuthUserResponseDto = response.body()
+                authToken = dto.token
+                tokenLoaded = true
+                dto.token?.let { tokenStorage.save(it) }
+                dto.toDomain()
+            }
+
+            else -> throw IllegalStateException(
+                parseAuthErrorMessage(response, "Не удалось восстановить аккаунт по токену"),
+            )
+        }
+    }
+}
+
+enum class VerificationDeliveryStatus {
+    SENT,
+    ALREADY_VERIFIED,
 }

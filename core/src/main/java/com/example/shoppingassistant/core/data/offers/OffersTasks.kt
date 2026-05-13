@@ -1,6 +1,7 @@
 package com.example.shoppingassistant.core.data.offers
 
 import com.example.shoppingassistant.domain.model.OfferFull
+import com.example.shoppingassistant.domain.model.OfferDetailsPage
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsResponse
@@ -14,6 +15,8 @@ import kotlinx.serialization.Serializable
  */
 interface OfferRemoteDataSource {
     suspend fun search(criteria: OfferSearchCriteria, bearerToken: String? = null): List<OfferFull>
+
+    suspend fun getOfferDetails(offerId: String, bearerToken: String? = null): OfferDetailsPage? = null
 
     suspend fun searchWithFacets(
         req: OfferSearchWithFacetsRequest,

@@ -1,0 +1,23 @@
+version: 1.1-for-fash-women
+applies_to: FASH.APPAREL_COMMON
+reason: Hardening needed before child override runtime merge.
+patches:
+- id: COMMON_MEASUREMENTS_GROUP
+  action: declare_ui_group
+  group_code: measurements
+  expands_to:
+  - chest_cm
+  - waist_cm
+  - hips_cm
+  - shoulder_cm
+  - sleeve_cm
+  - inseam_cm
+  - total_length_cm
+- id: COMMON_ALIAS_TARGET_FORMAT
+  action: declare_alias_format
+  target_type: dictionary_value
+  format: '{dictionary_code}:{value_code}'
+- id: COMMON_INHERITANCE_CONTRACT
+  action: declare_shared_standard_not_public_category
+  standard_code: FASH.APPAREL_COMMON
+required_before_merge: true

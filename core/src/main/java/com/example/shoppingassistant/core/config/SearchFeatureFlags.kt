@@ -1,9 +1,20 @@
 package com.example.shoppingassistant.core.config
 
+import com.example.shoppingassistant.core.network.BackendClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.http.isSuccess
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.Serializable
+import java.util.Locale
 
 enum class SearchFeatureFlagKey(val code: String, val defaultValue: Boolean) {
+    VISUAL_SEARCH_ENTRY_ENABLED(code = "VISUAL_SEARCH_ENTRY_ENABLED", defaultValue = false),
+    VISUAL_SEARCH_SERVER_AI_ENABLED(code = "VISUAL_SEARCH_SERVER_AI_ENABLED", defaultValue = false),
+    VISUAL_SEARCH_BARCODE_LANE_ENABLED(code = "VISUAL_SEARCH_BARCODE_LANE_ENABLED", defaultValue = true),
+    VISUAL_SEARCH_RESULTS_RAIL_ENABLED(code = "VISUAL_SEARCH_RESULTS_RAIL_ENABLED", defaultValue = false),
     SEARCH_MAP_ENABLED(code = "SEARCH_MAP_ENABLED", defaultValue = false),
     SEARCH_SORT_SHEET_EXPLICIT_APPLY(code = "SEARCH_SORT_SHEET_EXPLICIT_APPLY", defaultValue = false),
     SEARCH_VIEW_TOGGLE_SEGMENTED_TABLET(code = "SEARCH_VIEW_TOGGLE_SEGMENTED_TABLET", defaultValue = false),
@@ -63,11 +74,14 @@ interface SearchFeatureGate {
 }
 
 /**
- * v1: typed allowlist + deterministic defaults.
- * Remote provider can be connected behind this class without changing UI contracts.
+ * Получает feature flags для search/results с backend API.
+ * При сетевых сбоях остаётся на последнем snapshot (CACHE/DEFAULT fallback).
  */
-class SearchRemoteConfigServiceImpl : SearchRemoteConfigService {
+class SearchRemoteConfigServiceImpl(
+    private val backendClient: BackendClient,
+) : SearchRemoteConfigService {
     private val mutex = Mutex()
+    private val baseUrl get() = BackendConfig.BASE_URL
     @Volatile
     private var snapshot = SearchFeatureConfigSnapshot(
         fetchedAtMs = System.currentTimeMillis(),
@@ -78,22 +92,53 @@ class SearchRemoteConfigServiceImpl : SearchRemoteConfigService {
     override fun currentSnapshot(): SearchFeatureConfigSnapshot = snapshot
 
     override suspend fun refreshAsync(reason: String): SearchFeatureConfigSnapshot {
-        // v1 fallback: stale-while-revalidate over deterministic defaults.
         return mutex.withLock {
             val current = snapshot
-            val refreshed = current.copy(
+            val fetched = runCatching {
+                backendClient.client.get("$baseUrl/api/config/search-feature-flags") {
+                    parameter("reason", reason)
+                }
+            }.getOrNull()
+            if (fetched != null && fetched.status.isSuccess()) {
+                val payload = runCatching { fetched.body<SearchFeatureConfigRemoteResponse>() }.getOrNull()
+                if (payload != null) {
+                    val valuesByCode = payload.values
+                        .entries
+                        .associate { (rawCode, value) -> rawCode.trim().uppercase(Locale.ROOT) to value }
+                    val mergedValues = SearchFeatureFlagKey.entries.associateWith { key ->
+                        valuesByCode[key.code] ?: key.defaultValue
+                    }
+                    val remoteSnapshot = SearchFeatureConfigSnapshot(
+                        fetchedAtMs = payload.fetchedAtMs ?: System.currentTimeMillis(),
+                        source = SearchFeatureConfigSource.REMOTE,
+                        values = mergedValues,
+                    )
+                    snapshot = remoteSnapshot
+                    return@withLock remoteSnapshot
+                }
+            }
+            val fallbackSnapshot = current.copy(
                 fetchedAtMs = System.currentTimeMillis(),
-                source = if (current.source == SearchFeatureConfigSource.DEFAULT) {
-                    SearchFeatureConfigSource.DEFAULT
-                } else {
+                source = if (current.source == SearchFeatureConfigSource.REMOTE ||
+                    current.source == SearchFeatureConfigSource.CACHE
+                ) {
                     SearchFeatureConfigSource.CACHE
+                } else {
+                    SearchFeatureConfigSource.DEFAULT
                 },
             )
-            snapshot = refreshed
-            refreshed
+            snapshot = fallbackSnapshot
+            fallbackSnapshot
         }
     }
 }
+
+@Serializable
+private data class SearchFeatureConfigRemoteResponse(
+    val fetchedAtMs: Long? = null,
+    val source: String? = null,
+    val values: Map<String, Boolean> = emptyMap(),
+)
 
 class SearchFeatureGateImpl(
     private val remoteConfigService: SearchRemoteConfigService,

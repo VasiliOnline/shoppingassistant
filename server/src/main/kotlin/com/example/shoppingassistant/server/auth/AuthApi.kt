@@ -30,7 +30,10 @@ import com.example.shoppingassistant.server.auth.AuthAuditService
 import com.example.shoppingassistant.server.auth.ChangeEmailConfirmRequest
 import com.example.shoppingassistant.server.auth.ChangeEmailService
 import com.example.shoppingassistant.server.auth.ChangeEmailStartRequest
+import com.example.shoppingassistant.server.auth.ChangePhoneConfirmRequest
+import com.example.shoppingassistant.server.auth.ChangePhoneStartRequest
 import com.example.shoppingassistant.server.auth.DeleteAccountResponse
+import com.example.shoppingassistant.server.auth.DeleteAccountRequest
 import com.example.shoppingassistant.server.auth.PhoneVerificationService
 import com.example.shoppingassistant.server.auth.PhoneVerificationStartResult
 import com.example.shoppingassistant.server.auth.PhoneVerificationConfirmRequest
@@ -92,6 +95,30 @@ fun Route.authRoutes() {
                     message = AuthErrorResponse(
                         error = "BAD_REQUEST",
                         message = "Некорректное тело запроса регистрации",
+                    ),
+                )
+                return@post
+            }
+
+            val normalizedEmail = request.email.trim().lowercase()
+            if (!isAuthEmailValid(normalizedEmail)) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "INVALID_EMAIL",
+                        message = "Введите корректный email",
+                        field = "email",
+                    ),
+                )
+                return@post
+            }
+            if (!isAuthPasswordValid(request.password)) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "INVALID_PASSWORD",
+                        message = "Пароль должен содержать минимум 8 символов",
+                        field = "password",
                     ),
                 )
                 return@post
@@ -218,6 +245,40 @@ fun Route.authRoutes() {
         }
 
         val normalizedEmail = request.newEmail.trim().lowercase()
+        if (request.currentPassword.isBlank()) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "BAD_REQUEST",
+                    message = "Введите текущий пароль",
+                    field = "currentPassword",
+                ),
+            )
+            return@post
+        }
+        val passwordHasher: PasswordHasher = KoinJavaComponent.get(PasswordHasher::class.java)
+        if (!verifyCurrentPassword(userId = userId, currentPassword = request.currentPassword, passwordHasher = passwordHasher)) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "INVALID_CREDENTIALS",
+                    message = "Текущий пароль неверен",
+                    field = "currentPassword",
+                ),
+            )
+            return@post
+        }
+        if (!isAuthEmailValid(normalizedEmail)) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "INVALID_EMAIL",
+                    message = "Введите корректный email",
+                    field = "email",
+                ),
+            )
+            return@post
+        }
         val emailExists = transaction {
             AuthUsersTable
                 .selectAll()
@@ -263,6 +324,211 @@ fun Route.authRoutes() {
         call.respond(mapOf("status" to "OK"))
     }
 
+    // --- CHANGE PHONE (start) ---
+
+    post("/change-phone/start") {
+        val limiter: RateLimiter = KoinJavaComponent.get(RateLimiter::class.java)
+        if (!limiter.allow(rateKey(call.request.host(), "/change-phone/start"))) {
+            call.respond(
+                status = HttpStatusCode.TooManyRequests,
+                message = AuthErrorResponse(
+                    error = "RATE_LIMITED",
+                    message = "Слишком много попыток смены телефона. Попробуйте позже.",
+                ),
+            )
+            return@post
+        }
+
+        val token = extractBearerToken(call.request.headers["Authorization"])
+        if (token == null) {
+            call.respond(HttpStatusCode.Unauthorized)
+            return@post
+        }
+
+        val sessionManager: SessionManager = KoinJavaComponent.get(SessionManager::class.java)
+        val userId = sessionManager.getUserId(token)
+        if (userId == null) {
+            call.respond(HttpStatusCode.Unauthorized)
+            return@post
+        }
+
+        val request = runCatching { call.receive<ChangePhoneStartRequest>() }
+            .getOrElse {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Некорректное тело запроса смены телефона",
+                    ),
+                )
+                return@post
+            }
+
+        if (request.currentPassword.isBlank()) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "BAD_REQUEST",
+                    message = "Введите текущий пароль",
+                    field = "currentPassword",
+                ),
+            )
+            return@post
+        }
+
+        val normalizedPhone = normalizePhone(request.newPhone)
+        if (!isPhoneValid(normalizedPhone)) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "INVALID_PHONE",
+                    message = "Введите корректный номер телефона",
+                    field = "newPhone",
+                ),
+            )
+            return@post
+        }
+
+        val passwordHasher: PasswordHasher = KoinJavaComponent.get(PasswordHasher::class.java)
+        if (!verifyCurrentPassword(userId = userId, currentPassword = request.currentPassword, passwordHasher = passwordHasher)) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "INVALID_CREDENTIALS",
+                    message = "Текущий пароль неверен",
+                    field = "currentPassword",
+                ),
+            )
+            return@post
+        }
+
+        val row = transaction {
+            AuthUsersTable
+                .selectAll()
+                .where { (AuthUsersTable.id eq userId) and (AuthUsersTable.isDeleted eq false) }
+                .singleOrNull()
+        }
+        if (row == null) {
+            call.respond(HttpStatusCode.Unauthorized)
+            return@post
+        }
+
+        val currentPhone = row[AuthUsersTable.phone]
+        if (currentPhone != null && normalizePhone(currentPhone) == normalizedPhone) {
+            call.respond(
+                status = HttpStatusCode.Conflict,
+                message = AuthErrorResponse(
+                    error = "PHONE_ALREADY_CURRENT",
+                    message = if (row[AuthUsersTable.phoneVerifiedAt] != null) {
+                        "Этот номер уже используется как основной."
+                    } else {
+                        "Этот номер уже указан в аккаунте. Подтвердите его как текущий телефон."
+                    },
+                    field = "newPhone",
+                ),
+            )
+            return@post
+        }
+
+        transaction {
+            AuthUsersTable.update({ AuthUsersTable.id eq userId }) {
+                it[pendingPhone] = normalizedPhone
+                it[pendingPhoneRequestedAt] = System.currentTimeMillis()
+            }
+        }
+
+        val service: PhoneVerificationService = KoinJavaComponent.get(PhoneVerificationService::class.java)
+        when (service.startPendingChange(userId)) {
+            PhoneVerificationStartResult.Sent -> {
+                auditService.log(
+                    event = "change_phone_start",
+                    userId = userId,
+                    email = null,
+                    ip = call.request.headers["X-Forwarded-For"] ?: call.request.host(),
+                    userAgent = call.request.headers["User-Agent"],
+                )
+                call.respond(
+                    status = HttpStatusCode.OK,
+                    message = EmailVerificationStartResponse(status = "OK"),
+                )
+            }
+
+            PhoneVerificationStartResult.RateLimited -> {
+                call.respond(
+                    status = HttpStatusCode.TooManyRequests,
+                    message = AuthErrorResponse(
+                        error = "RATE_LIMITED",
+                        message = "Слишком много запросов. Попробуйте позже.",
+                    ),
+                )
+            }
+
+            PhoneVerificationStartResult.MissingPhone,
+            PhoneVerificationStartResult.AlreadyVerified -> {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "PHONE_CHANGE_NOT_AVAILABLE",
+                        message = "Не удалось подготовить смену телефона. Попробуйте снова.",
+                    ),
+                )
+            }
+        }
+    }
+
+    // --- CHANGE PHONE (confirm) ---
+
+    post("/change-phone/confirm") {
+        val request = runCatching { call.receive<ChangePhoneConfirmRequest>() }
+            .getOrElse {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Некорректное тело запроса подтверждения телефона",
+                    ),
+                )
+                return@post
+            }
+        if (request.token.isBlank()) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "BAD_REQUEST",
+                    message = "Введите код подтверждения",
+                    field = "token",
+                ),
+            )
+            return@post
+        }
+
+        val service: PhoneVerificationService = KoinJavaComponent.get(PhoneVerificationService::class.java)
+        val payload = runCatching { service.confirm(request.token) }.getOrNull()
+        if (payload == null) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "INVALID_VERIFY_TOKEN",
+                    message = "Код подтверждения недействителен или уже истёк",
+                ),
+            )
+            return@post
+        }
+
+        auditService.log(
+            event = "change_phone_confirm",
+            userId = payload.userId,
+            email = null,
+            ip = call.request.headers["X-Forwarded-For"] ?: call.request.host(),
+            userAgent = call.request.headers["User-Agent"],
+        )
+
+        call.respond(
+            status = HttpStatusCode.OK,
+            message = mapOf("status" to "OK"),
+        )
+    }
+
     // --- CHANGE EMAIL (confirm) ---
 
     post("/change-email/confirm") {
@@ -274,6 +540,17 @@ fun Route.authRoutes() {
                 message = AuthErrorResponse(
                     error = "BAD_REQUEST",
                     message = "Некорректное тело запроса подтверждения email",
+                ),
+            )
+            return@post
+        }
+        if (request.token.isBlank()) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "BAD_REQUEST",
+                    message = "Введите код или токен подтверждения",
+                    field = "token",
                 ),
             )
             return@post
@@ -366,6 +643,43 @@ fun Route.authRoutes() {
         val userId = sessionManager.getUserId(token)
         if (userId == null) {
             call.respond(HttpStatusCode.Unauthorized)
+            return@post
+        }
+
+        val request = runCatching { call.receive<DeleteAccountRequest>() }
+            .getOrElse {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Некорректное тело запроса удаления аккаунта",
+                    ),
+                )
+                return@post
+            }
+
+        if (request.currentPassword.isBlank()) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "BAD_REQUEST",
+                    message = "Введите текущий пароль",
+                    field = "currentPassword",
+                ),
+            )
+            return@post
+        }
+
+        val passwordHasher: PasswordHasher = KoinJavaComponent.get(PasswordHasher::class.java)
+        if (!verifyCurrentPassword(userId = userId, currentPassword = request.currentPassword, passwordHasher = passwordHasher)) {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = AuthErrorResponse(
+                    error = "INVALID_CREDENTIALS",
+                    message = "Текущий пароль неверен",
+                    field = "currentPassword",
+                ),
+            )
             return@post
         }
 
@@ -635,6 +949,17 @@ fun Route.authRoutes() {
                 )
                 return@post
             }
+            if (!isAuthEmailValid(request.email)) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "INVALID_EMAIL",
+                        message = "Введите корректный email",
+                        field = "email",
+                    ),
+                )
+                return@post
+            }
 
             val service: PasswordResetService =
                 KoinJavaComponent.get(PasswordResetService::class.java)
@@ -722,7 +1047,6 @@ fun Route.authRoutes() {
                 )
                 return@post
             }
-
             val service: PasswordResetService =
                 KoinJavaComponent.get(PasswordResetService::class.java)
 
@@ -783,7 +1107,28 @@ fun Route.authRoutes() {
                 )
                 return@post
             }
-
+            if (request.token.isBlank()) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Введите код или токен восстановления",
+                        field = "token",
+                    ),
+                )
+                return@post
+            }
+            if (!isAuthPasswordValid(request.newPassword)) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "INVALID_PASSWORD",
+                        message = "Пароль должен содержать минимум 8 символов",
+                        field = "newPassword",
+                    ),
+                )
+                return@post
+            }
             val service: PasswordResetService =
                 KoinJavaComponent.get(PasswordResetService::class.java)
 
@@ -874,6 +1219,39 @@ fun Route.authRoutes() {
                 )
                 return@post
             }
+            if (request.oldPassword.isBlank()) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Введите текущий пароль",
+                        field = "oldPassword",
+                    ),
+                )
+                return@post
+            }
+            if (!isAuthPasswordValid(request.newPassword)) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "INVALID_PASSWORD",
+                        message = "Пароль должен содержать минимум 8 символов",
+                        field = "newPassword",
+                    ),
+                )
+                return@post
+            }
+            if (request.oldPassword == request.newPassword) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "PASSWORD_REUSE",
+                        message = "Новый пароль должен отличаться от текущего",
+                        field = "newPassword",
+                    ),
+                )
+                return@post
+            }
 
             val passwordHasher: PasswordHasher =
                 KoinJavaComponent.get(PasswordHasher::class.java)
@@ -912,7 +1290,7 @@ fun Route.authRoutes() {
             }
 
             // Инвалидируем старый токен и выдаём новый
-            sessionManager.invalidate(token)
+            sessionManager.invalidateAllForUser(userId)
             val newToken = sessionManager.createSession(userId)
 
             val authRepository: AuthRepository =
@@ -1014,6 +1392,17 @@ fun Route.authRoutes() {
                     message = AuthErrorResponse(
                         error = "BAD_REQUEST",
                         message = "Некорректное тело запроса подтверждения email",
+                    ),
+                )
+                return@post
+            }
+            if (request.token.isBlank()) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Введите код или токен подтверждения",
+                        field = "token",
                     ),
                 )
                 return@post
@@ -1150,13 +1539,24 @@ fun Route.authRoutes() {
                 )
                 return@post
             }
+            if (request.token.isBlank()) {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthErrorResponse(
+                        error = "BAD_REQUEST",
+                        message = "Введите код подтверждения",
+                        field = "token",
+                    ),
+                )
+                return@post
+            }
 
             val service: PhoneVerificationService =
                 KoinJavaComponent.get(PhoneVerificationService::class.java)
-            val success = runCatching { service.confirm(request.token) }
-                .getOrElse { false }
+            val payload = runCatching { service.confirm(request.token) }
+                .getOrNull()
 
-            if (!success) {
+            if (payload == null) {
                 auditLogger.info("verify_phone_confirm invalid token=${maskToken(request.token)}")
                 auditService.log(
                     event = "verify_phone_confirm_invalid",
@@ -1175,6 +1575,7 @@ fun Route.authRoutes() {
                 auditLogger.info("verify_phone_confirm success")
                 auditService.log(
                     event = "verify_phone_confirm_success",
+                    userId = payload.userId,
                     email = null,
                     ip = call.request.headers["X-Forwarded-For"] ?: call.request.host(),
                     userAgent = call.request.headers["User-Agent"],
@@ -1188,6 +1589,20 @@ fun Route.authRoutes() {
     }
 }
 
+private fun verifyCurrentPassword(
+    userId: Long,
+    currentPassword: String,
+    passwordHasher: PasswordHasher,
+): Boolean = transaction {
+    val row = AuthUsersTable
+        .selectAll()
+        .where { (AuthUsersTable.id eq userId) and (AuthUsersTable.isDeleted eq false) }
+        .singleOrNull()
+        ?: return@transaction false
+
+    passwordHasher.verify(currentPassword, row[AuthUsersTable.password])
+}
+
 private fun extractBearerToken(header: String?): String? {
     if (header == null) return null
     if (!header.startsWith("Bearer ")) return null
@@ -1197,3 +1612,12 @@ private fun extractBearerToken(header: String?): String? {
 
 private fun rateKey(host: String?, path: String): String =
     "${host ?: "unknown"}:$path"
+
+private fun isAuthEmailValid(email: String): Boolean =
+    AUTH_EMAIL_REGEX.matches(email.trim())
+
+private fun isAuthPasswordValid(password: String): Boolean =
+    password.length >= MIN_AUTH_PASSWORD_LENGTH
+
+private const val MIN_AUTH_PASSWORD_LENGTH = 8
+private val AUTH_EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()

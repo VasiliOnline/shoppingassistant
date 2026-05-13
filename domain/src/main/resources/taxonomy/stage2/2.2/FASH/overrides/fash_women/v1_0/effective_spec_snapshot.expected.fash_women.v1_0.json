@@ -1,0 +1,136 @@
+{
+  "categoryCode": "FASH.WOMEN",
+  "extends": "FASH.APPAREL_COMMON",
+  "expected_effective_spec": {
+    "inherited_from_common": true,
+    "public_category": true,
+    "defaults": {
+      "target_gender": "WOMEN",
+      "age_group": "ADULT"
+    },
+    "allowed": {
+      "target_gender": [
+        "WOMEN",
+        "UNISEX"
+      ],
+      "age_group": [
+        "ADULT",
+        "TEEN"
+      ],
+      "apparel_type": [
+        "DRESS",
+        "BLOUSE",
+        "TOP",
+        "TSHIRT",
+        "SHIRT",
+        "SKIRT",
+        "JEANS",
+        "TROUSERS",
+        "LEGGINGS",
+        "JACKET",
+        "COAT",
+        "DOWN_JACKET",
+        "CARDIGAN",
+        "SWEATER",
+        "HOODIE",
+        "JUMPSUIT",
+        "LONGSLEEVE",
+        "TANK_TOP",
+        "POLO",
+        "SWEATSHIRT",
+        "SHORTS",
+        "SUIT",
+        "BLAZER",
+        "TRACKSUIT",
+        "UNDERWEAR",
+        "BRA",
+        "TIGHTS",
+        "SOCKS",
+        "VEST",
+        "CHINOS",
+        "CARGO_PANTS",
+        "BOMBER",
+        "DENIM_JACKET",
+        "LEATHER_JACKET",
+        "WINDBREAKER",
+        "PARKA",
+        "THERMAL_UNDERWEAR",
+        "ACTIVE_TOP",
+        "ACTIVE_BOTTOM",
+        "ROMPER",
+        "TURTLENECK",
+        "RAINCOAT",
+        "ROBE",
+        "PAJAMAS",
+        "SWIMWEAR",
+        "UNIFORM"
+      ]
+    },
+    "blocked_or_guarded": {
+      "target_gender": [
+        "MEN",
+        "BOYS",
+        "GIRLS"
+      ],
+      "age_group": [
+        "KIDS",
+        "TODDLER",
+        "BABY"
+      ],
+      "route_guards": [
+        "FASH.SHOES",
+        "FASH.BAGS",
+        "FASH.ACCESSORIES",
+        "BEAUTY",
+        "FASH.KIDS",
+        "FASH.MEN"
+      ]
+    },
+    "core_attributes": [
+      "apparel_type",
+      "condition",
+      "size_label",
+      "color_primary",
+      "brand",
+      "material_primary",
+      "target_gender",
+      "age_group"
+    ],
+    "type_specific_key_attributes": {
+      "DRESS": [
+        "length_type",
+        "sleeve_length",
+        "neckline",
+        "silhouette",
+        "occasion"
+      ],
+      "SKIRT": [
+        "skirt_length",
+        "waist_rise",
+        "waist_type",
+        "length_type"
+      ],
+      "BRA": [
+        "bra_cup",
+        "size_label",
+        "pack_type"
+      ],
+      "JEANS": [
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "length_type"
+      ],
+      "OUTERWEAR": [
+        "season",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "insulation_material"
+      ]
+    }
+  },
+  "must_not_contain": [
+    "duplicated_common_attribute_definitions"
+  ]
+}

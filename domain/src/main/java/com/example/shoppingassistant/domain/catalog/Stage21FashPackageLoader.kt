@@ -3,7 +3,7 @@ package com.example.shoppingassistant.domain.catalog
 internal object Stage21FashPackageLoader {
     private val descriptor = Stage21PackageDescriptor(
         l0Code = "FASH",
-        basePath = "taxonomy/stage2/2.1/FASH",
+        basePath = "${CatalogContractPaths.stage21Base}/FASH",
         browseNodesFile = "browse_nodes.fash.tsv",
         aliasesFile = "aliases.fash.tsv",
         goldenQueriesFile = "queries_golden.fash.tsv",

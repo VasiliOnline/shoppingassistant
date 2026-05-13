@@ -1,0 +1,24 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "pack_type": "child_override_pack",
+  "extends": "FASH.APPAREL_COMMON",
+  "target_runtime": {
+    "category_profile": "Stage22 child category profile",
+    "effective_spec": "Stage22Engine merged parent + child overrides",
+    "facet_schema": "FacetSchema child overrides",
+    "alias_entries": "Stage21/Stage22 routing aliases",
+    "value_overrides": "Allowed/blocked dictionary values and priority metadata"
+  },
+  "merge_policy": {
+    "do_not_duplicate_common_attribute_codes": true,
+    "child_override_precedence": [
+      "defaults",
+      "allowed_values",
+      "type_priorities",
+      "facet_order",
+      "user_surface"
+    ],
+    "blocked_values_are_route_guards_not_dictionary_deletions": true
+  },
+  "parent_dependency_patch": "common_dependency_patch.fash_apparel_common.v1_1_for_fash_kids.yaml"
+}

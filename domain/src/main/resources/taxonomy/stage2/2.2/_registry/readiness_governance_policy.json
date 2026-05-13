@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0.0",
+  "runCadence": {
+    "dailyOperationalTimeUtc": "09:00",
+    "weeklySummaryDay": "MONDAY",
+    "weeklySummaryTimeUtc": "09:30"
+  },
+  "sqlChecks": [
+    "server/src/main/resources/db/checks/catalog_model_backlog.sql",
+    "server/src/main/resources/db/checks/catalog_stage4_contract_checks.sql",
+    "server/src/main/resources/db/checks/catalog_required_fill_rate_daily.sql"
+  ],
+  "automationScripts": [
+    "run_preset_observability_release.ps1",
+    "catalog_backlog_upsert.ps1"
+  ],
+  "runbooks": [
+    "docs/catalog/PROD_BACKLOG_LOOP.md",
+    "docs/catalog/PRESET_OBSERVABILITY_RUNBOOK.md"
+  ],
+  "monthlyReleaseArtifacts": [
+    "taxonomy/stage2/2.2/_registry/registry_meta.json",
+    "taxonomy/stage2/2.2/_registry/data_version_changelog.json",
+    "taxonomy/stage2/2.2/_registry/data_release_policy.json",
+    "taxonomy/stage4/4.0/immutable_attribute_schema.json",
+    "taxonomy/stage4/4.0/normalization_contract.json",
+    "taxonomy/stage4/4.0/dedup_keys.json",
+    "taxonomy/stage4/4.0/typed_constraints.json"
+  ],
+  "slaDaysByIssueType": {
+    "ZERO_RESULTS": 3,
+    "UNKNOWN_ATTRIBUTE": 7,
+    "NORMALIZATION_CONFLICT": 7,
+    "STAGE4_UNKNOWN_CLOSED_SET_VALUE": 3,
+    "STAGE4_INCOMPATIBLE_VALUE": 3,
+    "OUT_OF_RANGE": 3,
+    "UNIT_MISMATCH": 3,
+    "PATTERN_MISMATCH": 3,
+    "STAGE4_CONTRACT_DRIFT": 1
+  },
+  "governanceHooks": [
+    {
+      "code": "daily_snapshot_archive",
+      "trigger": "DAILY_SNAPSHOT_CAPTURED",
+      "transport": "JSONL_FILE",
+      "targetEnvVar": "CATALOG_GOVERNANCE_DAILY_ARCHIVE_PATH",
+      "description": "Persist daily readiness captures as JSONL for governance audit."
+    },
+    {
+      "code": "weekly_summary_archive",
+      "trigger": "WEEKLY_SUMMARY_CAPTURED",
+      "transport": "JSONL_FILE",
+      "targetEnvVar": "CATALOG_GOVERNANCE_WEEKLY_ARCHIVE_PATH",
+      "description": "Persist weekly governance summaries as JSONL for release review."
+    },
+    {
+      "code": "weekly_summary_webhook",
+      "trigger": "WEEKLY_SUMMARY_CAPTURED",
+      "transport": "HTTP_JSON",
+      "targetEnvVar": "CATALOG_GOVERNANCE_WEEKLY_WEBHOOK_URL",
+      "description": "Push weekly governance summaries to external webhook targets such as Slack or Jira automation."
+    }
+  ]
+}

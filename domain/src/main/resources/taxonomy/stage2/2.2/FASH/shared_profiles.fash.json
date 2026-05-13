@@ -1,0 +1,1097 @@
+[
+  {
+    "profileCode": "FASH.APPAREL_COMMON",
+    "attributes": [
+      {
+        "code": "apparel_type",
+        "title": "Тип одежды",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "apparel_type"
+      },
+      {
+        "code": "apparel_type_group",
+        "title": "Группа типа одежды",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "apparel_type_group"
+      },
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "target_gender",
+        "title": "Пол/сегмент",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "target_gender"
+      },
+      {
+        "code": "age_group",
+        "title": "Возрастная группа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "age_group"
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "size_system",
+        "title": "Система размеров",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "size_system"
+      },
+      {
+        "code": "size_label",
+        "title": "Размер",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "size_label"
+      },
+      {
+        "code": "size_text_raw",
+        "title": "Размер как указан продавцом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color_primary",
+        "title": "Основной цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color_primary"
+      },
+      {
+        "code": "color_secondary",
+        "title": "Дополнительный цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color_secondary"
+      },
+      {
+        "code": "material_primary",
+        "title": "Основной материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "material_primary"
+      },
+      {
+        "code": "material_composition_text",
+        "title": "Состав ткани текстом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pattern",
+        "title": "Рисунок/принт",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "pattern"
+      },
+      {
+        "code": "style_aesthetic",
+        "title": "Стиль",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "style_aesthetic"
+      },
+      {
+        "code": "season",
+        "title": "Сезон",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "season"
+      },
+      {
+        "code": "occasion",
+        "title": "Назначение",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "occasion"
+      },
+      {
+        "code": "fit",
+        "title": "Посадка / fit",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "fit"
+      },
+      {
+        "code": "silhouette",
+        "title": "Силуэт",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "silhouette"
+      },
+      {
+        "code": "closure_type",
+        "title": "Застёжка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "closure_type"
+      },
+      {
+        "code": "pack_type",
+        "title": "Формат продажи",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "pack_type"
+      },
+      {
+        "code": "authenticity_status",
+        "title": "Оригинальность",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "authenticity_status"
+      },
+      {
+        "code": "defect_type",
+        "title": "Тип дефекта",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "defect_type"
+      },
+      {
+        "code": "sleeve_length",
+        "title": "Длина рукава",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "sleeve_length"
+      },
+      {
+        "code": "neckline",
+        "title": "Вырез",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "neckline"
+      },
+      {
+        "code": "collar_type",
+        "title": "Тип воротника",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "collar_type"
+      },
+      {
+        "code": "hood",
+        "title": "Капюшон",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "hood"
+      },
+      {
+        "code": "lining",
+        "title": "Подкладка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "lining"
+      },
+      {
+        "code": "pockets",
+        "title": "Карманы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "pockets"
+      },
+      {
+        "code": "length_type",
+        "title": "Длина изделия",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "length_type"
+      },
+      {
+        "code": "waist_rise",
+        "title": "Посадка талии",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waist_rise"
+      },
+      {
+        "code": "leg_fit",
+        "title": "Крой штанины",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "leg_fit"
+      },
+      {
+        "code": "waist_type",
+        "title": "Пояс/талия",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waist_type"
+      },
+      {
+        "code": "dress_length",
+        "title": "Длина платья",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "dress_length"
+      },
+      {
+        "code": "skirt_length",
+        "title": "Длина юбки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "skirt_length"
+      },
+      {
+        "code": "outerwear_weight",
+        "title": "Теплота верхней одежды",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "outerwear_weight"
+      },
+      {
+        "code": "water_resistance",
+        "title": "Защита от воды",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "water_resistance"
+      },
+      {
+        "code": "windproof",
+        "title": "Защита от ветра",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "windproof"
+      },
+      {
+        "code": "breathable",
+        "title": "Дышащая ткань",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "breathable"
+      },
+      {
+        "code": "stretch",
+        "title": "Эластичность",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "stretch"
+      },
+      {
+        "code": "insulation_material",
+        "title": "Утеплитель",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "insulation_material"
+      },
+      {
+        "code": "chest_cm",
+        "title": "Обхват груди, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "waist_cm",
+        "title": "Талия, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "hips_cm",
+        "title": "Бёдра, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shoulder_cm",
+        "title": "Плечи, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "sleeve_cm",
+        "title": "Рукав, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "inseam_cm",
+        "title": "Внутренний шов, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "total_length_cm",
+        "title": "Длина изделия, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "bra_cup",
+        "title": "Чашка бюстгальтера",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "bra_cup"
+      },
+      {
+        "code": "activity",
+        "title": "Вид активности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "activity"
+      },
+      {
+        "code": "compression_level",
+        "title": "Компрессия",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compression_level"
+      },
+      {
+        "code": "care_instruction",
+        "title": "Уход",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "care_instruction"
+      },
+      {
+        "code": "gender_cut",
+        "title": "Крой",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "gender_cut"
+      },
+      {
+        "code": "visual_evidence_flags",
+        "title": "Визуальные признаки",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "normalization_confidence",
+        "title": "Уверенность нормализации",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "source_text_evidence",
+        "title": "Текстовые признаки",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand_text_raw",
+        "title": "Бренд как указан продавцом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_or_line_text",
+        "title": "Линейка/модель текстом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "country_of_origin",
+        "title": "Страна производства",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "release_collection",
+        "title": "Коллекция/сезон бренда",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "sustainability_claim",
+        "title": "Эко/устойчивость",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "apparel_type",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "apparel_type_group",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "brand",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "target_gender",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "age_group",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "condition",
+        "uiOrder": 6,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "size_system",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "size_label",
+        "uiOrder": 8,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "size_text_raw",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "color_primary",
+        "uiOrder": 10,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "color_secondary",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "material_primary",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "material_composition_text",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "pattern",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "style_aesthetic",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "season",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "occasion",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "fit",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "silhouette",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "closure_type",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "pack_type",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "authenticity_status",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "defect_type",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "sleeve_length",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "neckline",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "collar_type",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "hood",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "lining",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "pockets",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "length_type",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "waist_rise",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "leg_fit",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "waist_type",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "dress_length",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "skirt_length",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "outerwear_weight",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "water_resistance",
+        "uiOrder": 37,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "windproof",
+        "uiOrder": 38,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "breathable",
+        "uiOrder": 39,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "stretch",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "insulation_material",
+        "uiOrder": 41,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "chest_cm",
+        "uiOrder": 42,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "waist_cm",
+        "uiOrder": 43,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "hips_cm",
+        "uiOrder": 44,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "shoulder_cm",
+        "uiOrder": 45,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "sleeve_cm",
+        "uiOrder": 46,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "inseam_cm",
+        "uiOrder": 47,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "total_length_cm",
+        "uiOrder": 48,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "bra_cup",
+        "uiOrder": 49,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "activity",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "compression_level",
+        "uiOrder": 51,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "care_instruction",
+        "uiOrder": 52,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "gender_cut",
+        "uiOrder": 53,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "visual_evidence_flags",
+        "uiOrder": 54,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "normalization_confidence",
+        "uiOrder": 55,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "source_text_evidence",
+        "uiOrder": 56,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "brand_text_raw",
+        "uiOrder": 57,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "model_or_line_text",
+        "uiOrder": 58,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "country_of_origin",
+        "uiOrder": 59,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "release_collection",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.APPAREL_COMMON",
+        "attributeCode": "sustainability_claim",
+        "uiOrder": 61,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "pack_type",
+        "whenAll": [
+          {
+            "attributeCode": "apparel_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SUIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "pack_type",
+        "whenAll": [
+          {
+            "attributeCode": "apparel_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "TRACKSUIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "defect_type",
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "DEFECTS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "bra_cup",
+        "whenAll": [
+          {
+            "attributeCode": "apparel_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "BRA"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

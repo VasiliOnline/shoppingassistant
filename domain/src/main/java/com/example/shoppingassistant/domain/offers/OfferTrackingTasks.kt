@@ -1,6 +1,7 @@
 package com.example.shoppingassistant.domain.offers
 
 import com.example.shoppingassistant.domain.ingest.SourceType
+import java.util.Locale
 import kotlinx.serialization.Serializable
 
 /**
@@ -36,7 +37,9 @@ data class TrackedOfferSource(
 data class TrackedOfferInput(
     val userId: String,
     val title: String,
-    val category: OfferCategory,
+    val categoryCode: String? = null,
+    val categoryConfidence: Double? = null,
+    val parserVersion: String? = null,
     val brand: String? = null,
     val model: String? = null,
     val primaryAttribute: String? = null,
@@ -119,3 +122,17 @@ class RefreshTrackedOfferTask(
     suspend operator fun invoke(request: RefreshTrackedOfferInput): RefreshTrackedOfferResult =
         repository.refreshTrackedOffer(request)
 }
+
+fun OfferCategory.toFallbackCategoryCode(): String? = when (this) {
+    OfferCategory.FAST_FOOD -> "FOOD.READY_MEALS"
+    OfferCategory.TECH -> "TECH.PHONES"
+    OfferCategory.SUPPLEMENTS -> "BEAUTY.HEALTH"
+    OfferCategory.ENTERTAINMENT_TOYS -> "KIDS.TOYS_GAMES"
+    OfferCategory.OTHER -> null
+}
+
+fun TrackedOfferInput.resolveCategoryCode(): String? =
+    categoryCode
+        ?.trim()
+        ?.uppercase(Locale.ROOT)
+        ?.takeIf { it.isNotEmpty() }

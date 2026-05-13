@@ -1,0 +1,151 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4bfd4fe54ebc24ac6c7f3d6f294587d1",
+    "entities": [
+      {
+        "tableName": "template_subscriptions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`templateId` TEXT NOT NULL, `snapshotJson` TEXT NOT NULL, `minAlertIntervalMinutes` INTEGER NOT NULL, `isActive` INTEGER NOT NULL, `createdAtMillis` INTEGER NOT NULL, `updatedAtMillis` INTEGER NOT NULL, PRIMARY KEY(`templateId`))",
+        "fields": [
+          {
+            "fieldPath": "templateId",
+            "columnName": "templateId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "snapshotJson",
+            "columnName": "snapshotJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minAlertIntervalMinutes",
+            "columnName": "minAlertIntervalMinutes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtMillis",
+            "columnName": "createdAtMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtMillis",
+            "columnName": "updatedAtMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "templateId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_template_subscriptions_updatedAtMillis",
+            "unique": false,
+            "columnNames": [
+              "updatedAtMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_template_subscriptions_updatedAtMillis` ON `${TABLE_NAME}` (`updatedAtMillis`)"
+          }
+        ]
+      },
+      {
+        "tableName": "template_subscription_triggers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `templateId` TEXT NOT NULL, `type` TEXT NOT NULL, `numberValue` REAL, `moneyMinor` INTEGER, `currency` TEXT, FOREIGN KEY(`templateId`) REFERENCES `template_subscriptions`(`templateId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "templateId",
+            "columnName": "templateId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numberValue",
+            "columnName": "numberValue",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "moneyMinor",
+            "columnName": "moneyMinor",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "currency",
+            "columnName": "currency",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_template_subscription_triggers_templateId",
+            "unique": false,
+            "columnNames": [
+              "templateId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_template_subscription_triggers_templateId` ON `${TABLE_NAME}` (`templateId`)"
+          },
+          {
+            "name": "index_template_subscription_triggers_templateId_type",
+            "unique": false,
+            "columnNames": [
+              "templateId",
+              "type"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_template_subscription_triggers_templateId_type` ON `${TABLE_NAME}` (`templateId`, `type`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "template_subscriptions",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "templateId"
+            ],
+            "referencedColumns": [
+              "templateId"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4bfd4fe54ebc24ac6c7f3d6f294587d1')"
+    ]
+  }
+}

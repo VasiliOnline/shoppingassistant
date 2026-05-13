@@ -8,4 +8,6 @@ interface OfferRepository {
     suspend fun searchOffers(criteria: OfferSearchCriteria): List<OfferFull>
 
     suspend fun searchOffersWithFacets(req: OfferSearchWithFacetsRequest): OfferSearchWithFacetsResponse
+
+    suspend fun getOfferDetails(offerId: String): OfferDetailsPage? = null
 }

@@ -15,7 +15,8 @@ object CatalogSeed {
     val browseNodes: List<BrowseNode> by lazy { CatalogSeedLoader.browseNodes }
     val aliasEntries: List<AliasEntry> by lazy { CatalogSeedLoader.aliasEntries }
     val googleMappings: List<GoogleTaxonomyMapping> by lazy { CatalogSeedLoader.googleMappings }
-    val profiles: List<CategoryProfile> by lazy { CatalogSeedLoader.profiles }
+    val categoryWriteSpecs: List<CatalogCategoryWriteSpec> by lazy { CatalogSeedLoader.categoryWriteSpecs }
+    val valueDictionaries: List<AttributeValueDict> by lazy { CatalogSeedLoader.valueDictionaries }
     val constraints: List<CatalogConstraints> by lazy { CatalogSeedLoader.constraints }
     val facetDefinitions: List<FacetDefinition> by lazy { CatalogSeedLoader.facetDefinitions }
     val facetPresets: List<FacetPreset> by lazy { CatalogSeedLoader.facetPresets }

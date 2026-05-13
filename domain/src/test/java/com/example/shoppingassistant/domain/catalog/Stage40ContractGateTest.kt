@@ -77,9 +77,9 @@ class Stage40ContractGateTest {
             keys = dictionaryKeys,
         )
 
-        val profileKeys = CatalogSeed.profiles.flatMap { profile ->
-            val categoryCode = profile.category.code.trim()
-            profile.attributes.map { attribute ->
+        val profileKeys = CatalogSeed.categoryWriteSpecs.flatMap { spec ->
+            val categoryCode = spec.category.code.trim()
+            spec.attributes.map { attribute ->
                 "$categoryCode|${attribute.code.trim()}"
             }
         }
@@ -280,10 +280,10 @@ class Stage40ContractGateTest {
 
     private fun expectedTypedConstraintsDocument(): Stage40TypedConstraintsDocument {
         val requiredIfByAttribute = LinkedHashMap<String, MutableList<Stage40RequiredIfRule>>()
-        CatalogSeed.profiles.forEach { profile ->
-            val categoryCode = profile.category.code.trim().uppercase()
+        CatalogSeed.categoryWriteSpecs.forEach { spec ->
+            val categoryCode = spec.category.code.trim().uppercase()
             if (categoryCode.isBlank()) return@forEach
-            profile.requiredIfRules.forEach { rule ->
+            spec.requiredIfRules.forEach { rule ->
                 val requiredAttributeCode = rule.requiredAttributeCode.trim()
                 if (requiredAttributeCode.isBlank()) return@forEach
                 val whenAll = rule.whenAll
@@ -403,10 +403,14 @@ class Stage40ContractGateTest {
             "age_from_months" to (0.0 to 480.0),
             "age_to_months" to (0.0 to 480.0),
             "battery_health_percent" to (0.0 to 100.0),
+            "battery_mah" to (500.0 to 12000.0),
             "release_year" to (1900.0 to 2100.0),
             "shelf_life_days" to (0.0 to 3650.0),
+            "wired_charging_w" to (1.0 to 300.0),
         )
         private val PATTERN_CONSTRAINTS = mapOf(
+            "ip_rating" to "^IP[0-9]{2}[A-Z]?$",
+            "release_date" to "^\\d{4}-\\d{2}-\\d{2}$",
             "region_code" to "^[a-z]{2}(?:-[a-z0-9]{1,8})?$",
         )
     }

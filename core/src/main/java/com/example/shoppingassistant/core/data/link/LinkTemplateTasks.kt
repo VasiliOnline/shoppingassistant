@@ -2,7 +2,6 @@ package com.example.shoppingassistant.core.data.link
 
 import com.example.shoppingassistant.domain.ingest.IngestStatus
 import com.example.shoppingassistant.domain.ingest.SourceType
-import com.example.shoppingassistant.domain.offers.OfferCategory
 import com.example.shoppingassistant.domain.offers.TrackedOfferInput
 
 /**
@@ -25,7 +24,9 @@ data class LinkTemplateRaw(
     val title: String? = null,
     val brand: String? = null,
     val model: String? = null,
-    val category: OfferCategory = OfferCategory.OTHER,
+    val categoryCode: String,
+    val categoryConfidence: Double,
+    val parserVersion: String,
     val price: Double? = null,
     val currency: String? = null,
     val imageUrls: List<String> = emptyList(),

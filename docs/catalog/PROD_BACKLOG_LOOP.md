@@ -12,11 +12,13 @@ Data sources:
 5. Stage 4 contract drift (`attribute_defs`/`facet_*` vs `catalog_stage4_*`)
 6. Stage 4 typed violations (`OUT_OF_RANGE`, `UNIT_MISMATCH`, `PATTERN_MISMATCH`)
 7. Stage 4 runtime execution metrics (`catalog_stage4_execution_metrics`)
+8. Required attribute fill-rate by category (`category_attributes.is_required`)
 
 SQL source:
 
 1. `server/src/main/resources/db/checks/catalog_model_backlog.sql`
 2. `server/src/main/resources/db/checks/catalog_stage4_contract_checks.sql`
+3. `server/src/main/resources/db/checks/catalog_required_fill_rate_daily.sql`
 
 ## Run Cadence
 
@@ -49,6 +51,12 @@ psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PAS
   -o "catalog_stage4_contract_checks_${ENV}_$(date +%F).txt"
 ```
 
+```bash
+psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PASSWORD sslmode=require" \
+  -f server/src/main/resources/db/checks/catalog_required_fill_rate_daily.sql \
+  -o "catalog_required_fill_rate_${ENV}_$(date +%F).txt"
+```
+
 Stage 4 expected gate:
 
 1. All `stage4_*_mismatch_count` metrics must be `0`.
@@ -67,16 +75,32 @@ Daily gate is enforced by `Проверки/run_preset_observability_release.ps1
 2. Hard-fail on `stage4_ingest_unknown_attribute_count_24h > 0`.
 3. Enforce `stage4_ingest_dropped_count_24h <= Stage4DroppedCount24hMax` (default `0`).
 4. Hard-fail on typed violations in last 24h (`OUT_OF_RANGE`, `UNIT_MISMATCH`, `PATTERN_MISMATCH`) unless override is enabled.
-5. Persist daily gate snapshot report: `catalog_stage4_daily_gate_<env>_<date>.txt`.
+5. Hard-fail on required fill-rate below `RequiredFillRateMinPct` for rows with `offer_count >= RequiredFillRateMinOffers` (unless override enabled).
+6. Persist daily gate snapshot report: `catalog_stage4_daily_gate_<env>_<date>.txt`.
+
+Backlog SLA gate for catalog-model issues is enforced by `Проверки/catalog_backlog_upsert.ps1` (enabled by default):
+
+1. Hard-fail when `UNKNOWN_ATTRIBUTE` or `STAGE4_UNKNOWN_CLOSED_SET_VALUE` backlog is non-zero.
+2. Gate can run in dry mode (without `-Apply`) to validate readiness before task upsert.
+3. Emergency-only override: `-NoSlaGate`.
 
 Override for emergency rollout only:
 
 ```powershell
 .\Проверки\run_preset_observability_release.ps1 `
   -RunStagingOnly `
+  -RequiredFillRateMinPct 90 `
+  -RequiredFillRateMinOffers 20 `
   -Stage4DroppedCount24hMax 5 `
   -AllowNonZeroDroppedCount24h `
+  -AllowLowRequiredFillRate `
   -AllowTypedViolations24h
+```
+
+```powershell
+.\Проверки\catalog_backlog_upsert.ps1 `
+  -Provider jira `
+  -NoSlaGate
 ```
 
 ## Runtime Backfill

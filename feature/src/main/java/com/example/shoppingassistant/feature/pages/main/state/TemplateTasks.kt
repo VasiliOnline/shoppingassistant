@@ -18,6 +18,7 @@ enum class ValueSource { ParsedFromText, UserSelected, FromSuggestion }
 data class TemplateAttribute(
     val code: String,
     val canonicalValue: String?,
+    val displayValue: String? = null,
     val source: ValueSource,
 )
 
@@ -80,6 +81,13 @@ data class UiTemplate(
         attributes.mapNotNull { (key, attr) ->
             attr.canonicalValue?.takeIf { it.isNotBlank() }?.let { key to it }
         }.toMap()
+
+    fun asDisplayFilters(): Map<String, String> =
+        attributes.mapNotNull { (key, attr) ->
+            val value = attr.displayValue?.takeIf { it.isNotBlank() }
+                ?: attr.canonicalValue?.takeIf { it.isNotBlank() }
+            value?.let { key to it }
+        }.toMap()
 }
 
 data class ValidationResult(
@@ -106,6 +114,7 @@ data class AttributeDict(
     val isRequiredForExpress: Boolean,
     val tokenToCanonical: Map<String, String>,
     val canonicalValues: Set<String>,
+    val displayByCanonical: Map<String, String> = emptyMap(),
 )
 
 data class TokenIndexEntry(

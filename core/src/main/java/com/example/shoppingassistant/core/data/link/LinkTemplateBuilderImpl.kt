@@ -8,9 +8,9 @@ import com.example.shoppingassistant.domain.ingest.SourceResolver
 import com.example.shoppingassistant.domain.ingest.SourceRegistry
 import com.example.shoppingassistant.domain.ingest.SourceType
 import com.example.shoppingassistant.domain.ingest.UrlNormalizer
-import com.example.shoppingassistant.domain.offers.OfferCategory
 import com.example.shoppingassistant.domain.ugc.MirrorByUrlUseCase
 import java.net.URI
+import java.util.Locale
 
 /**
  * Собирает LinkTemplateRaw из ingest (RawOffer) + UGC mirror.
@@ -43,11 +43,17 @@ class LinkTemplateBuilderImpl(
         val images = (mirror?.imageUrls.orEmpty() + (raw?.images ?: emptyList()))
             .filter { it.isNotBlank() }
             .distinct()
-
-        val category = when {
-            raw?.categorySlug?.contains("electron", ignoreCase = true) == true -> OfferCategory.TECH
-            else -> OfferCategory.OTHER
-        }
+        val categoryCode = raw?.categoryCode
+            ?.trim()
+            ?.uppercase(Locale.ROOT)
+            ?.takeIf { it.isNotEmpty() }
+            ?: DEFAULT_CATEGORY_CODE
+        val categoryConfidence = raw?.categoryConfidence?.coerceIn(0.0, 1.0) ?: DEFAULT_CATEGORY_CONFIDENCE
+        val parserVersion = raw?.parserVersion
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?: ingest?.parserVersion?.trim()?.takeIf { it.isNotEmpty() }
+            ?: DEFAULT_PARSER_VERSION
 
         val entry = sourceRegistry.findBySourceType(source)
         val canonicalUrl = raw?.canonicalUrl?.let { urlNormalizer.normalize(it).normalized }
@@ -68,7 +74,9 @@ class LinkTemplateBuilderImpl(
             title = title,
             brand = brand,
             model = model,
-            category = category,
+            categoryCode = categoryCode,
+            categoryConfidence = categoryConfidence,
+            parserVersion = parserVersion,
             price = price,
             currency = currency,
             imageUrls = images,
@@ -149,7 +157,9 @@ class LinkTemplateBuilderImpl(
             title = null,
             brand = null,
             model = null,
-            category = OfferCategory.OTHER,
+            categoryCode = DEFAULT_CATEGORY_CODE,
+            categoryConfidence = DEFAULT_CATEGORY_CONFIDENCE,
+            parserVersion = DEFAULT_PARSER_VERSION,
             price = null,
             currency = null,
             imageUrls = emptyList(),
@@ -158,5 +168,11 @@ class LinkTemplateBuilderImpl(
             ingestMessage = message,
             sourceMeta = meta,
         )
+    }
+
+    private companion object {
+        private const val DEFAULT_CATEGORY_CODE = ""
+        private const val DEFAULT_CATEGORY_CONFIDENCE = 0.0
+        private const val DEFAULT_PARSER_VERSION = "unknown"
     }
 }

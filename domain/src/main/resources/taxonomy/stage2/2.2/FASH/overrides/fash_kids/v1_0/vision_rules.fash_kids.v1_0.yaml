@@ -1,0 +1,62 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "target_gender_policy": {
+    "can_set_BOYS_if": [
+      "label/text says boys/мальчик",
+      "listing context says for boys",
+      "school uniform explicitly boys"
+    ],
+    "can_set_GIRLS_if": [
+      "label/text says girls/девочка",
+      "listing context says for girls",
+      "dress/skirt with explicit kids context"
+    ],
+    "can_set_KIDS_if": [
+      "visible size/label indicates child size",
+      "query/listing says children/kids",
+      "packaging indicates kids age/height"
+    ],
+    "must_not_infer_gender_from_only": [
+      "color",
+      "print",
+      "cartoon character",
+      "style",
+      "small size without context"
+    ],
+    "fallback": [
+      "KIDS",
+      "UNISEX",
+      "UNKNOWN"
+    ]
+  },
+  "age_size_policy": {
+    "can_set_age_group_if": [
+      "label/size tag readable",
+      "seller text says age",
+      "height_cm visible"
+    ],
+    "must_not_infer_exact_age_from_photo": true,
+    "prefer_height_cm_over_age_label": true
+  },
+  "photo_evidence_rules": {
+    "high_value_photos": [
+      "size tag",
+      "brand label",
+      "full garment front",
+      "full garment back",
+      "care label/material tag"
+    ],
+    "request_more_photo_if": [
+      "size unknown and required by form",
+      "brand uncertain",
+      "material invisible but needed for search"
+    ]
+  },
+  "must_not_guess": [
+    "exact size",
+    "exact material composition",
+    "target gender",
+    "season warmth rating"
+  ]
+}

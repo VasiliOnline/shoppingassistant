@@ -1,0 +1,46 @@
+version: '1.0'
+categoryCode: FASH.MEN
+gates:
+- id: FASH_MEN_EXTENDS_COMMON
+  severity: FAIL
+  rule: FASH.MEN pack must declare extends=FASH.APPAREL_COMMON
+- id: NO_DUPLICATE_COMMON_ATTRIBUTES
+  severity: FAIL
+  rule: Child pack must not redefine common attribute codes with different semantics
+- id: TARGET_GENDER_DEFAULT_MEN
+  severity: FAIL
+  rule: target_gender default is MEN; allowed values are MEN and UNISEX
+- id: AGE_GROUP_ADULT_TEEN_ONLY
+  severity: FAIL
+  rule: age_group allowed values are ADULT and TEEN
+- id: BLOCKED_TYPES_NOT_PRIMARY
+  severity: FAIL
+  rule: DRESS/SKIRT/BRA/BLOUSE/ROMPER/TIGHTS/TOP are not primary selectable values for FASH.MEN
+- id: PRIMARY_FILTER_LIMIT
+  severity: FAIL
+  rule: primary facets per group <= 7
+- id: INITIAL_FIELDS_LIMIT
+  severity: FAIL
+  rule: initial form fields per group <= 8
+- id: NO_SYSTEM_FIELDS_IN_USER_SURFACE
+  severity: FAIL
+  rule: T3/system hidden fields do not appear in initial user UI
+- id: NEGATIVE_ROUTE_GUARDS_GREEN
+  severity: FAIL
+  rule: Shoes/bags/accessories/beauty negative queries do not route to FASH.MEN
+- id: VISION_NO_GENDER_GUESS_BY_COLOR
+  severity: FAIL
+  rule: Vision rules forbid inferring MEN only from color/style
+- id: EFFECTIVE_SPEC_SNAPSHOT_MATCHES
+  severity: FAIL
+  rule: Merged effective spec contains inherited common fields + men defaults/overrides
+- id: GOLDEN_QUERIES_UNIQUE
+  severity: FAIL
+  rule: No duplicate golden query rows
+recommended_runtime_metrics:
+- route_top1_accuracy_fash_men
+- route_conflict_rate_against_fash_shoes_bags_accessories
+- apparel_type_accuracy
+- invalid_enum_value_rate
+- men_gender_false_positive_rate
+- form_abandonment_rate_by_type_group

@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.server.offers
 
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferResult
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferStatus
 import com.example.shoppingassistant.domain.offers.TrackedOfferInput
@@ -7,9 +8,13 @@ import com.example.shoppingassistant.domain.offers.TrackedOfferRepository
 import com.example.shoppingassistant.domain.offers.RefreshTrackedOfferInput
 import com.example.shoppingassistant.domain.offers.RefreshTrackedOfferResult
 import com.example.shoppingassistant.domain.offers.RefreshTrackedOfferStatus
+import com.example.shoppingassistant.domain.offers.resolveCategoryCode
 import com.example.shoppingassistant.domain.ingest.SourceRegistry
 import com.example.shoppingassistant.domain.ingest.UrlNormalizer
 import com.example.shoppingassistant.domain.model.Money
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelEnrichmentService
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelRuntimeSignal
+import com.example.shoppingassistant.server.catalog.NoopCatalogPhoneModelEnrichmentService
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionMetricSample
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepository
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepositoryImpl
@@ -24,6 +29,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.andWhere
 import org.slf4j.LoggerFactory
+import java.util.Locale
 
 /**
  * Репозиторий создания отслеживаемых офферов в Postgres (Exposed).
@@ -35,23 +41,41 @@ class TrackedOfferRepositoryImpl(
     private val stage4ExecutionLayer: Stage4ExecutionLayer,
     private val stage4ExecutionObservabilityRepository: Stage4ExecutionObservabilityRepository =
         Stage4ExecutionObservabilityRepositoryImpl(),
+    private val phoneModelEnrichmentService: CatalogPhoneModelEnrichmentService =
+        NoopCatalogPhoneModelEnrichmentService,
+    private val requiredForCategoryHardFail: Boolean = resolveRequiredForCategoryHardFail(),
+    private val categoryConfidenceHardFail: Boolean = resolveCategoryConfidenceHardFail(),
+    private val minCategoryConfidence: Double = resolveMinCategoryConfidence(),
 ) : TrackedOfferRepository {
 
-    override suspend fun createTrackedOffer(request: TrackedOfferInput): CreateTrackedOfferResult =
-        DatabaseFactory.dbQuery {
-            validate(request)?.let { issue ->
-                return@dbQuery CreateTrackedOfferResult(
-                    status = CreateTrackedOfferStatus.INVALID_INPUT,
-                    message = issue.message,
-                    reasonCodes = listOf(issue.code),
+    override suspend fun createTrackedOffer(request: TrackedOfferInput): CreateTrackedOfferResult {
+        val outcome = DatabaseFactory.dbQuery {
+            val categoryCode = stage4ExecutionLayer.normalizeCatalogCode(request.resolveCategoryCode())
+            validate(request, categoryCode)?.let { issue ->
+                return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = issue.message,
+                        reasonCodes = listOf(issue.code),
+                    ),
                 )
             }
+            val normalizedCategoryCode = categoryCode
+                ?: return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "categoryCode is required",
+                        reasonCodes = listOf("CATEGORY_CODE_REQUIRED"),
+                    ),
+                )
 
             val userId = request.userId.toLongOrNull()
-                ?: return@dbQuery CreateTrackedOfferResult(
-                    status = CreateTrackedOfferStatus.INVALID_INPUT,
-                    message = "userId must be numeric",
-                    reasonCodes = listOf("USER_ID_NOT_NUMERIC"),
+                ?: return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "userId must be numeric",
+                        reasonCodes = listOf("USER_ID_NOT_NUMERIC"),
+                    ),
                 )
 
             val normalizedSource = urlNormalizer.normalize(request.source.url)
@@ -83,21 +107,25 @@ class TrackedOfferRepositoryImpl(
             }
             if (existingByCanonical != null) {
                 val existingOfferId = existingByCanonical[OfferSourcesTable.offerId].toString()
-                return@dbQuery CreateTrackedOfferResult(
-                    status = CreateTrackedOfferStatus.ALREADY_EXISTS,
-                    existingOfferId = existingOfferId,
-                    offerId = existingOfferId,
-                    message = "Offer already exists for this user and URL",
-                    reasonCodes = listOf("ALREADY_EXISTS"),
+                return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.ALREADY_EXISTS,
+                        existingOfferId = existingOfferId,
+                        offerId = existingOfferId,
+                        message = "Offer already exists for this user and URL",
+                        reasonCodes = listOf("ALREADY_EXISTS"),
+                    ),
                 )
             }
 
             val now = System.currentTimeMillis()
             val currency = Money.normalizeCurrencyCode(request.currency)
-                ?: return@dbQuery CreateTrackedOfferResult(
-                    status = CreateTrackedOfferStatus.INVALID_INPUT,
-                    message = "Currency must be ISO-4217 code",
-                    reasonCodes = listOf("CURRENCY_INVALID"),
+                ?: return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "Currency must be ISO-4217 code",
+                        reasonCodes = listOf("CURRENCY_INVALID"),
+                    ),
                 )
             val priceCents = toMinorUnits(request.priceValue)
 
@@ -107,15 +135,48 @@ class TrackedOfferRepositoryImpl(
                 request.primaryAttribute?.let { put("primary_attribute", it) }
             }
             val normalizationOutcome = stage4ExecutionLayer.normalizeAttributesForIngestStrict(
-                categoryCode = request.category.name,
+                categoryCode = normalizedCategoryCode,
                 attributes = rawAttrs,
             )
             val attrs = normalizationOutcome.normalizedAttributes
+            val requiredForCategoryReasons = evaluateRequiredForCategory(
+                categoryCode = normalizedCategoryCode,
+                normalizedAttributes = attrs,
+                title = request.title,
+                brand = request.brand,
+                model = request.model,
+            )
+            val categoryConfidenceReasons = evaluateCategoryConfidence(request)
+            val reasonCodes = (
+                normalizationOutcome.reasonCodes +
+                    requiredForCategoryReasons +
+                    categoryConfidenceReasons
+                ).distinct()
+            if (requiredForCategoryHardFail && requiredForCategoryReasons.isNotEmpty()) {
+                return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "Missing required attributes for category",
+                        reasonCodes = reasonCodes,
+                    ),
+                )
+            }
+            if (categoryConfidenceHardFail && categoryConfidenceReasons.isNotEmpty()) {
+                return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "Low category confidence from parser",
+                        reasonCodes = reasonCodes,
+                    ),
+                )
+            }
             val typedAttrs = stage4ExecutionLayer.toTypedAttributes(attrs)
             val condition = normalizeCondition(attrs["condition"])
             val deliveryChannel = normalizeDeliveryChannel(
                 attrs["delivery_channel"] ?: attrs["delivery"]
             )
+            val categoryConfidence = request.categoryConfidence?.coerceIn(0.0, 1.0)
+            val parserVersion = request.parserVersion?.trim()?.ifBlank { null }
 
             stage4ExecutionObservabilityRepository.recordInTransaction(
                 Stage4ExecutionMetricSample(
@@ -124,20 +185,26 @@ class TrackedOfferRepositoryImpl(
                     droppedCount = normalizationOutcome.droppedCount,
                     logicalDedupCount = normalizationOutcome.logicalDedupCount,
                     unknownAttributeCount = normalizationOutcome.unknownAttributeCount,
-                    reasonCodes = normalizationOutcome.reasonCodes,
+                    reasonCodes = reasonCodes,
                     metadata = mapOf(
                         "operation" to "create",
-                        "categoryCode" to request.category.name,
+                        "categoryCode" to normalizedCategoryCode,
+                        "categoryConfidence" to (categoryConfidence?.toString() ?: "null"),
+                        "parserVersion" to (parserVersion ?: "null"),
+                        "categoryConfidenceLowCount" to categoryConfidenceReasons.size.toString(),
+                        "categoryConfidenceHardFail" to categoryConfidenceHardFail.toString(),
+                        "requiredForCategoryMissingCount" to requiredForCategoryReasons.size.toString(),
+                        "requiredForCategoryHardFail" to requiredForCategoryHardFail.toString(),
                     ),
                     createdAtMs = now,
                 ),
             )
-            if (normalizationOutcome.reasonCodes.isNotEmpty()) {
+            if (reasonCodes.isNotEmpty()) {
                 logger.info(
                     "stage4.ingest.validation operation=create userId={} category={} reasons={}",
                     userId,
-                    request.category.name,
-                    normalizationOutcome.reasonCodes.joinToString(","),
+                    normalizedCategoryCode,
+                    reasonCodes.joinToString(","),
                 )
             }
 
@@ -146,7 +213,7 @@ class TrackedOfferRepositoryImpl(
             val images = request.imageUrls.filter { it.isNotBlank() }
 
             val productId = ProductsTable.insert { stmt ->
-                stmt[ProductsTable.category] = request.category.name
+                stmt[ProductsTable.category] = normalizedCategoryCode
                 stmt[ProductsTable.brand] = brand
                 stmt[ProductsTable.model] = model
                 stmt[ProductsTable.titleNorm] = request.title
@@ -155,10 +222,12 @@ class TrackedOfferRepositoryImpl(
                 stmt[ProductsTable.description] = request.description
                 stmt[ProductsTable.updatedAt] = now
             }.resultedValues?.single()?.get(ProductsTable.id)
-                ?: return@dbQuery CreateTrackedOfferResult(
-                    status = CreateTrackedOfferStatus.INVALID_INPUT,
-                    message = "Failed to insert product",
-                    reasonCodes = listOf("PRODUCT_INSERT_FAILED"),
+                ?: return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "Failed to insert product",
+                        reasonCodes = listOf("PRODUCT_INSERT_FAILED"),
+                    ),
                 )
 
             val offerId = OffersTable.insert { stmt ->
@@ -174,10 +243,12 @@ class TrackedOfferRepositoryImpl(
                 stmt[OffersTable.status] = "ACTIVE"
                 stmt[OffersTable.updatedAt] = now
             }.resultedValues?.single()?.get(OffersTable.id)
-                ?: return@dbQuery CreateTrackedOfferResult(
-                    status = CreateTrackedOfferStatus.INVALID_INPUT,
-                    message = "Failed to insert offer",
-                    reasonCodes = listOf("OFFER_INSERT_FAILED"),
+                ?: return@dbQuery TrackedOfferPersistenceOutcome(
+                    result = CreateTrackedOfferResult(
+                        status = CreateTrackedOfferStatus.INVALID_INPUT,
+                        message = "Failed to insert offer",
+                        reasonCodes = listOf("OFFER_INSERT_FAILED"),
+                    ),
                 )
 
             val registryEntry = sourceRegistry.findBySourceType(request.source.sourceType)
@@ -206,30 +277,54 @@ class TrackedOfferRepositoryImpl(
                 stmt[OfferPriceHistoryTable.dataSource] = sourceId ?: request.source.sourceType.name
             }
 
-            CreateTrackedOfferResult(
-                status = CreateTrackedOfferStatus.CREATED,
-                offerId = offerId.toString(),
-                message = "Created",
-                reasonCodes = normalizationOutcome.reasonCodes,
+            TrackedOfferPersistenceOutcome(
+                result = CreateTrackedOfferResult(
+                    status = CreateTrackedOfferStatus.CREATED,
+                    offerId = offerId.toString(),
+                    message = "Created",
+                    reasonCodes = reasonCodes,
+                ),
+                enrichmentSignal = buildPhoneModelEnrichmentSignal(
+                    categoryCode = normalizedCategoryCode,
+                    brand = brand ?: attrs["brand"],
+                    model = model ?: attrs["model"],
+                    family = request.attributes["model_line"]?.trim()?.ifBlank { null } ?: attrs["model_line"],
+                    offerId = offerId.toString(),
+                    userId = userId.toString(),
+                    categoryConfidence = categoryConfidence,
+                    title = request.title,
+                    sourceType = sourceType,
+                    sourceUrl = normalizedUrl,
+                    observedAt = now,
+                ),
             )
         }
+        if (outcome.enrichmentSignal != null) {
+            ingestPhoneModelSignalSafely(outcome.enrichmentSignal)
+        }
+        return outcome.result
+    }
 
-    override suspend fun refreshTrackedOffer(request: RefreshTrackedOfferInput): RefreshTrackedOfferResult =
-        DatabaseFactory.dbQuery {
+    override suspend fun refreshTrackedOffer(request: RefreshTrackedOfferInput): RefreshTrackedOfferResult {
+        val outcome = DatabaseFactory.dbQuery {
             val offerId = request.offerId.toLongOrNull()
-                ?: return@dbQuery RefreshTrackedOfferResult(
-                    status = RefreshTrackedOfferStatus.INVALID_INPUT,
-                    message = "offerId must be numeric",
-                    reasonCodes = listOf("OFFER_ID_NOT_NUMERIC"),
+                ?: return@dbQuery TrackedOfferRefreshOutcome(
+                    result = RefreshTrackedOfferResult(
+                        status = RefreshTrackedOfferStatus.INVALID_INPUT,
+                        message = "offerId must be numeric",
+                        reasonCodes = listOf("OFFER_ID_NOT_NUMERIC"),
+                    ),
                 )
 
             val price = request.priceValue
             val currency = Money.normalizeCurrencyCode(request.currency)
             if (price.isNaN() || price <= 0 || currency == null) {
-                return@dbQuery RefreshTrackedOfferResult(
-                    status = RefreshTrackedOfferStatus.INVALID_INPUT,
-                    message = "Invalid price or currency",
-                    reasonCodes = listOf("PRICE_OR_CURRENCY_INVALID"),
+                return@dbQuery TrackedOfferRefreshOutcome(
+                    result = RefreshTrackedOfferResult(
+                        status = RefreshTrackedOfferStatus.INVALID_INPUT,
+                        message = "Invalid price or currency",
+                        reasonCodes = listOf("PRICE_OR_CURRENCY_INVALID"),
+                    ),
                 )
             }
             val existing = run {
@@ -239,10 +334,12 @@ class TrackedOfferRepositoryImpl(
                 q.andWhere { OffersTable.id eq offerId }
                 q.limit(1).singleOrNull()
             }
-                ?: return@dbQuery RefreshTrackedOfferResult(
-                    status = RefreshTrackedOfferStatus.NOT_FOUND,
-                    message = "Offer not found",
-                    reasonCodes = listOf("OFFER_NOT_FOUND"),
+                ?: return@dbQuery TrackedOfferRefreshOutcome(
+                    result = RefreshTrackedOfferResult(
+                        status = RefreshTrackedOfferStatus.NOT_FOUND,
+                        message = "Offer not found",
+                        reasonCodes = listOf("OFFER_NOT_FOUND"),
+                    ),
                 )
 
             val currentAttrs = stage4ExecutionLayer.toRawStringAttributes(
@@ -258,6 +355,23 @@ class TrackedOfferRepositoryImpl(
                 attributes = mergedRaw,
             )
             val merged = normalizationOutcome.normalizedAttributes
+            val requiredForCategoryReasons = evaluateRequiredForCategory(
+                categoryCode = existing[ProductsTable.category],
+                normalizedAttributes = merged,
+                title = existing[ProductsTable.titleNorm],
+                brand = existing[ProductsTable.brand],
+                model = existing[ProductsTable.model],
+            )
+            val reasonCodes = (normalizationOutcome.reasonCodes + requiredForCategoryReasons).distinct()
+            if (requiredForCategoryHardFail && requiredForCategoryReasons.isNotEmpty()) {
+                return@dbQuery TrackedOfferRefreshOutcome(
+                    result = RefreshTrackedOfferResult(
+                        status = RefreshTrackedOfferStatus.INVALID_INPUT,
+                        message = "Missing required attributes for category",
+                        reasonCodes = reasonCodes,
+                    ),
+                )
+            }
             val mergedTyped = stage4ExecutionLayer.toTypedAttributes(merged)
             val condition = normalizeCondition(merged["condition"])
                 ?: existing[OffersTable.condition]
@@ -272,20 +386,22 @@ class TrackedOfferRepositoryImpl(
                     droppedCount = normalizationOutcome.droppedCount,
                     logicalDedupCount = normalizationOutcome.logicalDedupCount,
                     unknownAttributeCount = normalizationOutcome.unknownAttributeCount,
-                    reasonCodes = normalizationOutcome.reasonCodes,
+                    reasonCodes = reasonCodes,
                     metadata = mapOf(
                         "operation" to "refresh",
                         "offerId" to offerId.toString(),
                         "categoryCode" to existing[ProductsTable.category],
+                        "requiredForCategoryMissingCount" to requiredForCategoryReasons.size.toString(),
+                        "requiredForCategoryHardFail" to requiredForCategoryHardFail.toString(),
                     ),
                 ),
             )
-            if (normalizationOutcome.reasonCodes.isNotEmpty()) {
+            if (reasonCodes.isNotEmpty()) {
                 logger.info(
                     "stage4.ingest.validation operation=refresh offerId={} category={} reasons={}",
                     offerId,
                     existing[ProductsTable.category],
-                    normalizationOutcome.reasonCodes.joinToString(","),
+                    reasonCodes.joinToString(","),
                 )
             }
 
@@ -313,20 +429,43 @@ class TrackedOfferRepositoryImpl(
                     request.dataSource?.trim()?.ifBlank { null } ?: "REFRESH_MANUAL"
             }
 
-            RefreshTrackedOfferResult(
-                status = RefreshTrackedOfferStatus.UPDATED,
-                message = "Updated",
-                reasonCodes = normalizationOutcome.reasonCodes,
+            TrackedOfferRefreshOutcome(
+                result = RefreshTrackedOfferResult(
+                    status = RefreshTrackedOfferStatus.UPDATED,
+                    message = "Updated",
+                    reasonCodes = reasonCodes,
+                ),
+                enrichmentSignal = buildPhoneModelEnrichmentSignal(
+                    categoryCode = existing[ProductsTable.category],
+                    brand = existing[ProductsTable.brand] ?: merged["brand"],
+                    model = existing[ProductsTable.model] ?: merged["model"],
+                    family = request.attributes["model_line"]?.trim()?.ifBlank { null } ?: merged["model_line"],
+                    offerId = offerId.toString(),
+                    userId = existing[OffersTable.userId].toString(),
+                    categoryConfidence = null,
+                    title = existing[ProductsTable.titleNorm],
+                    sourceType = null,
+                    sourceUrl = null,
+                    observedAt = updatedAtMs,
+                ),
             )
         }
+        if (outcome.enrichmentSignal != null) {
+            ingestPhoneModelSignalSafely(outcome.enrichmentSignal)
+        }
+        return outcome.result
+    }
 
-    private fun validate(request: TrackedOfferInput): ValidationIssue? {
+    private fun validate(request: TrackedOfferInput, categoryCode: String?): ValidationIssue? {
         val title = request.title.trim()
         if (title.length !in 3..160) {
             return ValidationIssue("TITLE_LENGTH_INVALID", "Title length must be 3..160")
         }
-        if (request.category.name.isBlank()) {
-            return ValidationIssue("CATEGORY_REQUIRED", "Category is required")
+        if (categoryCode.isNullOrBlank()) {
+            return ValidationIssue("CATEGORY_CODE_REQUIRED", "categoryCode is required")
+        }
+        if (categoryCode !in knownCategoryCodes) {
+            return ValidationIssue("CATEGORY_CODE_UNKNOWN", "Unknown categoryCode '$categoryCode'")
         }
         val brand = request.brand?.trim()
         if (brand != null && brand.length > 120) {
@@ -342,6 +481,14 @@ class TrackedOfferRepositoryImpl(
         }
         if (Money.normalizeCurrencyCode(request.currency) == null) {
             return ValidationIssue("CURRENCY_INVALID", "Currency must be ISO-4217 code")
+        }
+        val categoryConfidence = request.categoryConfidence
+        if (categoryConfidence != null && (!categoryConfidence.isFinite() || categoryConfidence !in 0.0..1.0)) {
+            return ValidationIssue("CATEGORY_CONFIDENCE_INVALID", "categoryConfidence must be in range 0..1")
+        }
+        val parserVersion = request.parserVersion
+        if (parserVersion != null && parserVersion.length > 64) {
+            return ValidationIssue("PARSER_VERSION_TOO_LONG", "parserVersion is too long")
         }
         if (request.imageUrls.none { it.isNotBlank() }) {
             return ValidationIssue("IMAGE_URL_REQUIRED", "At least one imageUrl is required")
@@ -368,12 +515,134 @@ class TrackedOfferRepositoryImpl(
         }
     }
 
+    private fun evaluateRequiredForCategory(
+        categoryCode: String,
+        normalizedAttributes: Map<String, String>,
+        title: String?,
+        brand: String?,
+        model: String?,
+    ): List<String> {
+        val code = categoryCode.trim().uppercase(Locale.ROOT)
+        if (code.isEmpty()) return emptyList()
+        val required = requiredAttributesByCategory[code].orEmpty()
+        if (required.isEmpty()) return emptyList()
+        return required
+            .filter { attributeCode ->
+                when (attributeCode) {
+                    "brand" -> brand.isNullOrBlank() && normalizedAttributes["brand"].isNullOrBlank()
+                    "model" -> model.isNullOrBlank() && normalizedAttributes["model"].isNullOrBlank()
+                    "product_name" -> title.isNullOrBlank() && normalizedAttributes["product_name"].isNullOrBlank()
+                    else -> normalizedAttributes[attributeCode].isNullOrBlank()
+                }
+            }
+            .map { attributeCode -> "REQUIRED_FOR_CATEGORY_MISSING:$attributeCode" }
+    }
+
+    private fun evaluateCategoryConfidence(request: TrackedOfferInput): List<String> {
+        val confidence = request.categoryConfidence ?: return emptyList()
+        if (!confidence.isFinite() || confidence !in 0.0..1.0) {
+            return listOf("CATEGORY_CONFIDENCE_INVALID")
+        }
+        if (confidence < minCategoryConfidence) {
+            return listOf("CATEGORY_CONFIDENCE_LOW")
+        }
+        return emptyList()
+    }
+
     private data class ValidationIssue(
         val code: String,
         val message: String,
     )
 
+    private data class TrackedOfferPersistenceOutcome(
+        val result: CreateTrackedOfferResult,
+        val enrichmentSignal: CatalogPhoneModelRuntimeSignal? = null,
+    )
+
+    private data class TrackedOfferRefreshOutcome(
+        val result: RefreshTrackedOfferResult,
+        val enrichmentSignal: CatalogPhoneModelRuntimeSignal? = null,
+    )
+
+    private suspend fun ingestPhoneModelSignalSafely(signal: CatalogPhoneModelRuntimeSignal) {
+        runCatching {
+            phoneModelEnrichmentService.ingest(signal)
+        }.onFailure { error ->
+            logger.warn(
+                "catalog.phone_model_enrichment.enqueue_failed category={} brand={} model={} reason={}",
+                signal.categoryCode,
+                signal.brandRaw,
+                signal.modelRaw,
+                error.message,
+            )
+        }
+    }
+
+    private fun buildPhoneModelEnrichmentSignal(
+        categoryCode: String,
+        brand: String?,
+        model: String?,
+        family: String?,
+        offerId: String,
+        userId: String,
+        categoryConfidence: Double?,
+        title: String?,
+        sourceType: String?,
+        sourceUrl: String?,
+        observedAt: Long,
+    ): CatalogPhoneModelRuntimeSignal? {
+        val normalizedCategory = categoryCode.trim().uppercase(Locale.ROOT)
+        if (normalizedCategory != CATALOG_GOVERNANCE_PHONES_CATEGORY_CODE) return null
+        val normalizedBrand = brand?.trim()?.ifBlank { null } ?: return null
+        val normalizedModel = model?.trim()?.ifBlank { null } ?: return null
+        return CatalogPhoneModelRuntimeSignal(
+            categoryCode = normalizedCategory,
+            brandRaw = normalizedBrand,
+            modelRaw = normalizedModel,
+            familyRaw = family?.trim()?.ifBlank { null },
+            offerRef = offerId,
+            sellerRef = userId,
+            confidence = categoryConfidence?.coerceIn(0.0, 1.0) ?: 1.0,
+            title = title?.trim()?.ifBlank { null },
+            sourceType = sourceType?.trim()?.ifBlank { null },
+            sourceUrl = sourceUrl?.trim()?.ifBlank { null },
+            observedAt = observedAt,
+        )
+    }
+
     private companion object {
         private val logger = LoggerFactory.getLogger(TrackedOfferRepositoryImpl::class.java)
+        private const val CATALOG_GOVERNANCE_PHONES_CATEGORY_CODE = "TECH.PHONES"
+        private val knownCategoryCodes: Set<String> = CatalogSeed.categories
+            .map { category -> category.code.trim().uppercase(Locale.ROOT) }
+            .filter { code -> code.isNotEmpty() }
+            .toSet()
+        private val requiredAttributesByCategory: Map<String, Set<String>> = CatalogSeed.categoryWriteSpecs
+            .associate { spec ->
+                val categoryCode = spec.category.code.trim().uppercase(Locale.ROOT)
+                val requiredCodes = spec.categoryAttributes
+                    .asSequence()
+                    .filter { categoryAttribute -> categoryAttribute.isRequiredForCategory }
+                    .map { categoryAttribute -> categoryAttribute.attributeCode.trim().lowercase(Locale.ROOT) }
+                    .filter { attributeCode -> attributeCode.isNotEmpty() }
+                    .toSet()
+                categoryCode to requiredCodes
+            }
+        private fun resolveRequiredForCategoryHardFail(): Boolean =
+            (System.getenv("OFFERS_REQUIRED_FOR_CATEGORY_HARD_FAIL")
+                ?: System.getenv("STAGE4_REQUIRED_FOR_CATEGORY_HARD_FAIL")
+                ?: "false")
+                .trim()
+                .equals("true", ignoreCase = true)
+        private fun resolveCategoryConfidenceHardFail(): Boolean =
+            (System.getenv("OFFERS_CATEGORY_CONFIDENCE_HARD_FAIL")
+                ?: "false")
+                .trim()
+                .equals("true", ignoreCase = true)
+        private fun resolveMinCategoryConfidence(): Double =
+            System.getenv("OFFERS_MIN_CATEGORY_CONFIDENCE")
+                ?.toDoubleOrNull()
+                ?.coerceIn(0.0, 1.0)
+                ?: 0.35
     }
 }

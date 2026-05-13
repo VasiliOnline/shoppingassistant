@@ -1,0 +1,125 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "type_priority": {
+    "high": [
+      "TSHIRT",
+      "LONGSLEEVE",
+      "HOODIE",
+      "SWEATSHIRT",
+      "SWEATER",
+      "JEANS",
+      "TROUSERS",
+      "JACKET",
+      "DOWN_JACKET",
+      "COAT",
+      "DRESS",
+      "SKIRT",
+      "SHORTS"
+    ],
+    "medium": [
+      "SHIRT",
+      "POLO",
+      "LEGGINGS",
+      "TRACKSUIT",
+      "SPORTSWEAR",
+      "UNDERWEAR",
+      "SOCKS",
+      "PAJAMAS",
+      "HOMEWEAR",
+      "THERMAL_UNDERWEAR",
+      "VEST",
+      "RAINCOAT",
+      "SWIMWEAR"
+    ],
+    "low": [
+      "BLOUSE",
+      "CARDIGAN",
+      "ROMPER",
+      "JUMPSUIT",
+      "OVERALLS",
+      "BODYSUIT",
+      "HAT_SCARF_SET",
+      "SCHOOL_UNIFORM",
+      "COSTUME",
+      "FORMALWEAR",
+      "BABY_SET"
+    ],
+    "blocked_or_cross_route": [
+      "SHOES",
+      "SNEAKERS",
+      "BOOTS",
+      "SANDALS",
+      "BAG",
+      "BACKPACK",
+      "TOY",
+      "STROLLER",
+      "CAR_SEAT",
+      "DIAPER",
+      "FEEDING_BOTTLE",
+      "WATCH",
+      "JEWELRY",
+      "BELT",
+      "WALLET"
+    ]
+  },
+  "type_groups": {
+    "tops": [
+      "TSHIRT",
+      "LONGSLEEVE",
+      "SHIRT",
+      "POLO",
+      "HOODIE",
+      "SWEATSHIRT",
+      "SWEATER",
+      "BLOUSE",
+      "CARDIGAN"
+    ],
+    "bottoms": [
+      "JEANS",
+      "TROUSERS",
+      "SHORTS",
+      "LEGGINGS",
+      "SKIRT"
+    ],
+    "outerwear": [
+      "JACKET",
+      "DOWN_JACKET",
+      "COAT",
+      "RAINCOAT",
+      "VEST"
+    ],
+    "sets_suits": [
+      "TRACKSUIT",
+      "SPORTSWEAR",
+      "SCHOOL_UNIFORM",
+      "FORMALWEAR",
+      "BABY_SET"
+    ],
+    "dresses_one_piece": [
+      "DRESS",
+      "ROMPER",
+      "JUMPSUIT",
+      "OVERALLS",
+      "BODYSUIT"
+    ],
+    "underwear_sleep": [
+      "UNDERWEAR",
+      "SOCKS",
+      "PAJAMAS",
+      "HOMEWEAR",
+      "THERMAL_UNDERWEAR"
+    ],
+    "seasonal_special": [
+      "SWIMWEAR",
+      "COSTUME",
+      "HAT_SCARF_SET"
+    ]
+  },
+  "policy": {
+    "high": "Show in quick type chips and prioritize in routing.",
+    "medium": "Allowed and searchable, not always shown in first chip row.",
+    "low": "Allowed but not prioritized unless explicit query/evidence.",
+    "blocked_or_cross_route": "Do not resolve into FASH.KIDS as apparel; route to sibling category or KIDS domain branch."
+  }
+}

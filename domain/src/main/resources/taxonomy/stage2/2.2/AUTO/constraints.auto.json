@@ -41,7 +41,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории AUTO.ACCESSORIES по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -96,7 +121,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории AUTO.PARTS по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -131,7 +181,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории AUTO.TIRES_WHEELS по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -173,7 +248,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории AUTO.TOOLS_GARAGE по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

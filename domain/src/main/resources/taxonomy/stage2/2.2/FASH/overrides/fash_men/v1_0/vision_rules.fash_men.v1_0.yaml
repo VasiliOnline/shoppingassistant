@@ -1,0 +1,48 @@
+version: '1.0'
+categoryCode: FASH.MEN
+extends: FASH.APPAREL_COMMON
+vision_normalization_policy:
+  ai_may_set_category_FASH_MEN_if:
+  - visible or OCR text explicitly says men/menswear/мужской/мужская/мужские/для мужчин
+  - listing context or user selected branch is FASH.MEN
+  - packaging/label indicates men
+  - cut is strongly male-specific and confidence is high, but still prefer UNISEX if uncertain
+  ai_must_not_set_MEN_if_only:
+  - dark color
+  - oversized style
+  - neutral basic item
+  - model/mannequin looks male but no product label
+  - no label/no text/no branch context
+  fallback_when_uncertain:
+  - UNISEX
+  - UNKNOWN
+  - NEED_MORE_CONTEXT
+  blocked_visual_inferences:
+  - do not infer exact size from photo
+  - do not infer material composition unless visible label/text or highly evident
+  - do not infer brand from style only
+photo_evidence_hints:
+  useful:
+  - neck tag
+  - size tag
+  - composition label
+  - brand logo
+  - front full view
+  - back full view
+  - packaging label
+  - care tag
+  weak:
+  - single front photo of generic basic clothing
+  - folded item without tag
+  - dark/blurry photo
+structured_output_requirements:
+  must_return:
+  - categoryCode
+  - apparel_type
+  - target_gender
+  - age_group
+  - confidence
+  - evidence
+  - unknown_fields
+  must_use_catalog_codes_only: true
+  must_return_NEED_MORE_CONTEXT_for_weak_gender_evidence: true

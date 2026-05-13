@@ -5,7 +5,10 @@ param(
     [string]$DockerPsqlContainer = $env:DOCKER_PSQL_CONTAINER,
     [string]$OutDir = "Проверки/out",
     [int]$Stage4DroppedCount24hMax = 0,
+    [double]$RequiredFillRateMinPct = 90.0,
+    [int]$RequiredFillRateMinOffers = 20,
     [switch]$AllowNonZeroDroppedCount24h,
+    [switch]$AllowLowRequiredFillRate,
     [switch]$AllowTypedViolations24h,
     [switch]$RunStagingOnly,
     [switch]$RunProdOnly
@@ -15,6 +18,12 @@ $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($DockerPsqlContainer) -and -not (Test-Path $PsqlPath)) {
     throw "psql not found at '$PsqlPath'"
+}
+if ($RequiredFillRateMinPct -lt 0 -or $RequiredFillRateMinPct -gt 100) {
+    throw "RequiredFillRateMinPct must be within 0..100."
+}
+if ($RequiredFillRateMinOffers -lt 1) {
+    throw "RequiredFillRateMinOffers must be greater than zero."
 }
 
 if (-not [string]::IsNullOrWhiteSpace($DockerPsqlContainer)) {
@@ -33,6 +42,7 @@ $migrationV17Sql = Join-Path $repoRoot "server/src/main/resources/db/migration/V
 $parityPostcheckSql = Join-Path $repoRoot "server/src/main/resources/db/checks/catalog_migration_parity_postcheck.sql"
 $observabilityChecksSql = Join-Path $repoRoot "server/src/main/resources/db/checks/catalog_preset_observability_checks.sql"
 $monthlyReportSql = Join-Path $repoRoot "server/src/main/resources/db/checks/catalog_preset_monthly_report.sql"
+$requiredFillRateSql = Join-Path $repoRoot "server/src/main/resources/db/checks/catalog_required_fill_rate_daily.sql"
 $stage4ContractChecksSql = Join-Path $repoRoot "server/src/main/resources/db/checks/catalog_stage4_contract_checks.sql"
 $stage4ImmutableSchemaJsonPath = Join-Path $repoRoot "domain/src/main/resources/taxonomy/stage4/4.0/immutable_attribute_schema.json"
 $stage4NormalizationContractJsonPath = Join-Path $repoRoot "domain/src/main/resources/taxonomy/stage4/4.0/normalization_contract.json"
@@ -48,6 +58,7 @@ foreach ($requiredPath in @(
     $parityPostcheckSql,
     $observabilityChecksSql,
     $monthlyReportSql,
+    $requiredFillRateSql,
     $stage4ContractChecksSql,
     $stage4ImmutableSchemaJsonPath,
     $stage4NormalizationContractJsonPath,
@@ -617,6 +628,161 @@ WHERE m.metric_date >= CURRENT_DATE - 1
     Write-Host "[$EnvName] Stage4 daily gate passed (unknown=$unknownCount, dropped=$droppedCount, droppedThreshold=$Stage4DroppedCount24hMax, outOfRange=$outOfRangeCount, unitMismatch=$unitMismatchCount, patternMismatch=$patternMismatchCount)."
 }
 
+function Assert-RequiredFillRateGate {
+    param(
+        [string]$EnvName,
+        [string]$Conn
+    )
+
+    $violationsText = Invoke-DbScalar -Conn $Conn -Sql @"
+WITH required_attributes AS (
+    SELECT category_code, attribute_code
+    FROM category_attributes
+    WHERE is_required = TRUE
+),
+recent_offers AS (
+    SELECT
+        o.id AS offer_id,
+        p.category AS category_code,
+        p.brand,
+        p.model,
+        p.title_norm,
+        COALESCE(o.attributes, p.specs, '{}'::jsonb) AS attrs
+    FROM offers o
+    JOIN products p ON p.id = o.product_id
+    WHERE TO_TIMESTAMP(o.updated_at / 1000.0) >= (NOW() - INTERVAL '1 day')
+),
+offer_required_rows AS (
+    SELECT
+        ro.offer_id,
+        ro.category_code,
+        ra.attribute_code,
+        CASE
+            WHEN ra.attribute_code = 'brand' THEN NULLIF(BTRIM(ro.brand), '') IS NOT NULL
+            WHEN ra.attribute_code = 'model' THEN NULLIF(BTRIM(ro.model), '') IS NOT NULL
+            WHEN ra.attribute_code = 'product_name' THEN NULLIF(BTRIM(ro.title_norm), '') IS NOT NULL
+            ELSE (
+                ro.attrs ? ra.attribute_code
+                AND NULLIF(
+                    BTRIM(
+                        CASE
+                            WHEN JSONB_TYPEOF(ro.attrs -> ra.attribute_code) = 'string'
+                                THEN ro.attrs ->> ra.attribute_code
+                            ELSE ro.attrs -> ra.attribute_code #>> '{}'
+                        END
+                    ),
+                    ''
+                ) IS NOT NULL
+            )
+        END AS is_filled
+    FROM recent_offers ro
+    JOIN required_attributes ra ON ra.category_code = ro.category_code
+),
+daily AS (
+    SELECT
+        category_code,
+        attribute_code,
+        COUNT(*)::int AS offer_count,
+        ROUND(
+            100.0 * SUM(CASE WHEN is_filled THEN 1 ELSE 0 END)::numeric / NULLIF(COUNT(*), 0),
+            2
+        ) AS fill_rate_pct
+    FROM offer_required_rows
+    GROUP BY category_code, attribute_code
+)
+SELECT COUNT(*)::text
+FROM daily
+WHERE offer_count >= $RequiredFillRateMinOffers
+  AND fill_rate_pct < $RequiredFillRateMinPct;
+"@
+
+    [int]$violations = 0
+    if (-not [int]::TryParse($violationsText, [ref]$violations)) {
+        throw "Failed to parse required fill-rate violations for env=$EnvName. Raw value: '$violationsText'"
+    }
+
+    if ($violations -gt 0) {
+        $sample = Invoke-DbScalar -Conn $Conn -Sql @"
+WITH required_attributes AS (
+    SELECT category_code, attribute_code
+    FROM category_attributes
+    WHERE is_required = TRUE
+),
+recent_offers AS (
+    SELECT
+        o.id AS offer_id,
+        p.category AS category_code,
+        p.brand,
+        p.model,
+        p.title_norm,
+        COALESCE(o.attributes, p.specs, '{}'::jsonb) AS attrs
+    FROM offers o
+    JOIN products p ON p.id = o.product_id
+    WHERE TO_TIMESTAMP(o.updated_at / 1000.0) >= (NOW() - INTERVAL '1 day')
+),
+offer_required_rows AS (
+    SELECT
+        ro.offer_id,
+        ro.category_code,
+        ra.attribute_code,
+        CASE
+            WHEN ra.attribute_code = 'brand' THEN NULLIF(BTRIM(ro.brand), '') IS NOT NULL
+            WHEN ra.attribute_code = 'model' THEN NULLIF(BTRIM(ro.model), '') IS NOT NULL
+            WHEN ra.attribute_code = 'product_name' THEN NULLIF(BTRIM(ro.title_norm), '') IS NOT NULL
+            ELSE (
+                ro.attrs ? ra.attribute_code
+                AND NULLIF(
+                    BTRIM(
+                        CASE
+                            WHEN JSONB_TYPEOF(ro.attrs -> ra.attribute_code) = 'string'
+                                THEN ro.attrs ->> ra.attribute_code
+                            ELSE ro.attrs -> ra.attribute_code #>> '{}'
+                        END
+                    ),
+                    ''
+                ) IS NOT NULL
+            )
+        END AS is_filled
+    FROM recent_offers ro
+    JOIN required_attributes ra ON ra.category_code = ro.category_code
+),
+daily AS (
+    SELECT
+        category_code,
+        attribute_code,
+        COUNT(*)::int AS offer_count,
+        ROUND(
+            100.0 * SUM(CASE WHEN is_filled THEN 1 ELSE 0 END)::numeric / NULLIF(COUNT(*), 0),
+            2
+        ) AS fill_rate_pct
+    FROM offer_required_rows
+    GROUP BY category_code, attribute_code
+),
+bad AS (
+    SELECT *
+    FROM daily
+    WHERE offer_count >= $RequiredFillRateMinOffers
+      AND fill_rate_pct < $RequiredFillRateMinPct
+    ORDER BY fill_rate_pct ASC, offer_count DESC, category_code, attribute_code
+    LIMIT 10
+)
+SELECT COALESCE(
+    STRING_AGG(category_code || ':' || attribute_code || '=' || fill_rate_pct || '%(offers=' || offer_count || ')', '; '),
+    ''
+)::text
+FROM bad;
+"@
+
+        if ($AllowLowRequiredFillRate) {
+            Write-Warning "[$EnvName] required fill-rate gate violations=$violations (threshold=${RequiredFillRateMinPct}% minOffers=$RequiredFillRateMinOffers). Sample: $sample"
+        } else {
+            throw "Required fill-rate gate failed for env=${EnvName}: violations=$violations (threshold=${RequiredFillRateMinPct}% minOffers=$RequiredFillRateMinOffers). Sample: $sample"
+        }
+    } else {
+        Write-Host "[$EnvName] required fill-rate gate passed (threshold=${RequiredFillRateMinPct}% minOffers=$RequiredFillRateMinOffers)."
+    }
+}
+
 function Run-ForEnv {
     param(
         [string]$EnvName,
@@ -669,6 +835,11 @@ function Run-ForEnv {
     Invoke-DbScript -EnvName $EnvName -Conn $Conn `
         -SqlPath $monthlyReportSql `
         -OutName "catalog_preset_monthly_report"
+
+    Invoke-DbScript -EnvName $EnvName -Conn $Conn `
+        -SqlPath $requiredFillRateSql `
+        -OutName "catalog_required_fill_rate"
+    Assert-RequiredFillRateGate -EnvName $EnvName -Conn $Conn
 
     Invoke-DbScript -EnvName $EnvName -Conn $Conn `
         -SqlPath $stage4ContractChecksSql `

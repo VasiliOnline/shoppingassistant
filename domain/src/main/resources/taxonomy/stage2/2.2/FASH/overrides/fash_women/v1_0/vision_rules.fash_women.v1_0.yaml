@@ -1,0 +1,64 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+extends: FASH.APPAREL_COMMON
+principles:
+- AI may classify apparel_type from visual shape, but target_gender WOMEN requires text/context or strongly gendered garment
+  type evidence.
+- Do not infer WOMEN from color, floral print, slim fit, mannequin shape or aesthetic alone.
+- For visually unisex items such as T-shirts, hoodies, jeans and jackets return UNISEX/UNKNOWN unless listing text or user
+  context indicates women.
+- For DRESS/SKIRT/BRA/TIGHTS/SWIMWEAR, FASH.WOMEN can be a strong candidate if adult context is present and no kids/male signals
+  conflict.
+target_gender:
+  can_set_WOMEN_if:
+  - visible_text_contains_women_female_zhensk
+  - packaging_or_label_indicates_women
+  - listing_context_indicates_women
+  - garment_type_is_strong_female_default_and_adult_context
+  must_not_set_WOMEN_if_only:
+  - pink_color
+  - floral_print
+  - slim_silhouette
+  - small_size
+  - female_model_or_mannequin_without_listing_context
+  - soft_style
+  fallback:
+  - UNISEX
+  - UNKNOWN
+  - NEED_MORE_CONTEXT
+photo_guidance:
+  best_for_type:
+  - full_front_photo
+  - label_or_tag_photo
+  - size_tag_photo
+  - material_label_photo
+  optional:
+  - back_photo
+  - defect_closeup
+  - brand_logo_closeup
+  need_more_context_if:
+  - ambiguous_gender
+  - no_size_visible
+  - no_clear_garment_type
+  - multiple_items_mixed
+attribute_extraction:
+  safe_from_photo:
+  - apparel_type
+  - color_primary
+  - pattern
+  - sleeve_length
+  - length_type
+  - closure_type
+  - hood
+  needs_text_or_label:
+  - brand
+  - size_label
+  - material_primary
+  - condition_if_not_visibly_defective
+  - bra_cup
+  never_guess:
+  - exact_size
+  - brand
+  - material_composition_text
+  - authenticity_status
+  - target_gender_for_unisex_basics

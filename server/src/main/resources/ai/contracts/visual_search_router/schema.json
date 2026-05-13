@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "route_status": {
+      "type": "string",
+      "enum": ["ROUTED", "CATEGORY_ONLY", "TYPE_OTHER", "UNRESOLVED"]
+    },
+    "identity_mode": {
+      "type": "string",
+      "enum": ["TYPE_ONLY", "RICH_IDENTITY", "UNKNOWN"]
+    },
+    "confidence": { "type": ["number", "null"] },
+    "primary_object": { "type": ["string", "null"] },
+    "primary_object_confidence": { "type": ["number", "null"] },
+    "category_code": { "type": ["string", "null"] },
+    "category_confidence": { "type": ["number", "null"] },
+    "item_type": { "type": ["string", "null"] },
+    "item_type_label": { "type": ["string", "null"] },
+    "item_type_confidence": { "type": ["number", "null"] },
+    "free_text_type": { "type": ["string", "null"] },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 3,
+      "items": { "type": "string" }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "route_status",
+    "identity_mode",
+    "confidence",
+    "primary_object",
+    "primary_object_confidence",
+    "category_code",
+    "category_confidence",
+    "item_type",
+    "item_type_label",
+    "item_type_confidence",
+    "free_text_type",
+    "reason_codes",
+    "missing_evidence"
+  ],
+  "additionalProperties": false
+}

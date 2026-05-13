@@ -170,8 +170,32 @@ class FacetSchemaValidator {
                 byKey[facetKey] = definition
             }
 
-            if (definition.titleRu.isBlank()) {
-                fail(issues, "FACET_TITLE_BLANK", "Facet '$facetKey' must have non-blank titleRu.")
+            if (definition.title.isBlank()) {
+                fail(
+                    issues,
+                    "FACET_TITLE_BLANK",
+                    "Facet '$facetKey' must have at least one non-blank display title.",
+                )
+            }
+            val attributeCode = definition.attributeCode?.trim()
+            if (definition.attributeCode != null && attributeCode.isNullOrEmpty()) {
+                fail(issues, "FACET_ATTRIBUTE_CODE_BLANK", "Facet '$facetKey' defines blank attributeCode.")
+            } else if (!attributeCode.isNullOrEmpty() && !facetKeyRegex.matches(attributeCode)) {
+                fail(
+                    issues,
+                    "FACET_ATTRIBUTE_CODE_FORMAT",
+                    "Facet '$facetKey' attributeCode '$attributeCode' has invalid format. Expected lower_snake_case.",
+                )
+            }
+            val dictionaryCode = definition.dictionaryCode?.trim()
+            if (definition.dictionaryCode != null && dictionaryCode.isNullOrEmpty()) {
+                fail(issues, "FACET_DICTIONARY_CODE_BLANK", "Facet '$facetKey' defines blank dictionaryCode.")
+            } else if (!dictionaryCode.isNullOrEmpty() && !facetKeyRegex.matches(dictionaryCode)) {
+                fail(
+                    issues,
+                    "FACET_DICTIONARY_CODE_FORMAT",
+                    "Facet '$facetKey' dictionaryCode '$dictionaryCode' has invalid format. Expected lower_snake_case.",
+                )
             }
             val effectiveFrom = parseIsoDate(definition.effectiveFrom)
             val effectiveTo = parseIsoDate(definition.effectiveTo)
@@ -255,8 +279,12 @@ class FacetSchemaValidator {
                 byCode[presetCode] = preset
             }
 
-            if (preset.titleRu.isBlank()) {
-                fail(issues, "PRESET_TITLE_BLANK", "Preset '$presetCode' must have non-blank titleRu.")
+            if (preset.title.isBlank()) {
+                fail(
+                    issues,
+                    "PRESET_TITLE_BLANK",
+                    "Preset '$presetCode' must have at least one non-blank display title.",
+                )
             }
             val effectiveFrom = parseIsoDate(preset.effectiveFrom)
             val effectiveTo = parseIsoDate(preset.effectiveTo)
@@ -449,8 +477,12 @@ class FacetSchemaValidator {
                 fail(issues, "COLLECTION_CODE_DUPLICATE", "Collection code '$code' is duplicated.")
             }
 
-            if (collection.titleRu.isBlank()) {
-                fail(issues, "COLLECTION_TITLE_BLANK", "Collection '$code' must have non-blank titleRu.")
+            if (collection.title.isBlank()) {
+                fail(
+                    issues,
+                    "COLLECTION_TITLE_BLANK",
+                    "Collection '$code' must have at least one non-blank display title.",
+                )
             }
 
             val categoryCode = collection.categoryCode.trim()

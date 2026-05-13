@@ -22,46 +22,47 @@ class SeedResourcesExporterTest {
 
         val resourcesRoot = Paths.get("src/main/resources")
         val testResourcesRoot = Paths.get("src/test/resources")
-        exportStage1(resourcesRoot)
+        exportStage20(resourcesRoot)
         exportStage22(resourcesRoot)
         exportBaseline(testResourcesRoot)
     }
 
-    private fun exportStage1(resourcesRoot: Path) {
-        val stage11 = resourcesRoot.resolve("taxonomy/stage1/1.1")
-        val stage12 = resourcesRoot.resolve("taxonomy/stage1/1.2")
+    private fun exportStage20(resourcesRoot: Path) {
+        val stage20 = resourcesRoot.resolve("taxonomy/stage2/2.0")
 
         writeJson(
-            stage11.resolve("categories.json"),
+            stage20.resolve("categories.json"),
             json.encodeToString(ListSerializer(Category.serializer()), CatalogSeed.categories),
         )
         writeJson(
-            stage11.resolve("category_aliases.json"),
+            stage20.resolve("category_aliases.json"),
             json.encodeToString(ListSerializer(CategoryAlias.serializer()), CatalogSeed.categoryAliases),
         )
         writeJson(
-            stage11.resolve("browse_nodes.json"),
+            stage20.resolve("browse_nodes.json"),
             json.encodeToString(ListSerializer(BrowseNode.serializer()), CatalogSeed.browseNodes),
         )
         writeJson(
-            stage11.resolve("alias_entries.json"),
+            stage20.resolve("alias_entries.json"),
             json.encodeToString(ListSerializer(AliasEntry.serializer()), CatalogSeed.aliasEntries),
         )
         writeJson(
-            stage12.resolve("google_taxonomy_mappings.json"),
+            stage20.resolve("google_taxonomy_mappings.json"),
             json.encodeToString(ListSerializer(GoogleTaxonomyMapping.serializer()), CatalogSeed.googleMappings),
         )
     }
 
     private fun exportStage22(resourcesRoot: Path) {
         val stage22Root = resourcesRoot.resolve("taxonomy/stage2/2.2")
-        val profilesByL0 = CatalogSeed.profiles.groupBy { it.category.code.substringBefore('.') }
+        val profilesByL0 = CatalogSeed.categoryWriteSpecs
+            .map { spec -> spec.toStage22ResourceProfile() }
+            .groupBy { it.category.code.substringBefore('.') }
         val constraintsByL0 = CatalogSeed.constraints.groupBy { constraint ->
             constraint.categoryCode?.substringBefore('.') ?: GLOBAL_PACKAGE_CODE
         }
-        val globalDicts = CatalogSeed.profiles
+        val globalDicts = CatalogSeed.categoryWriteSpecs
             .asSequence()
-            .flatMap { it.valueDictionaries.asSequence() }
+            .flatMap { spec -> spec.valueDictionaries.asSequence() }
             .distinctBy { it.attributeCode }
             .toList()
 
@@ -72,7 +73,7 @@ class SeedResourcesExporterTest {
                 val l0Lower = l0Code.lowercase()
                 writeJson(
                     packageDir.resolve("profiles.$l0Lower.json"),
-                    json.encodeToString(ListSerializer(CategoryProfile.serializer()), profiles),
+                    json.encodeToString(ListSerializer(Stage22ResourceProfile.serializer()), profiles),
                 )
                 writeJson(
                     packageDir.resolve("constraints.$l0Lower.json"),

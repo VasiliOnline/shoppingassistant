@@ -1,0 +1,63 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+gates:
+  inheritance:
+  - id: WOMEN_INH_001
+    severity: FAIL
+    rule: FASH.WOMEN must extend FASH.APPAREL_COMMON
+  - id: WOMEN_INH_002
+    severity: FAIL
+    rule: Child pack must not duplicate common attribute definitions
+  - id: WOMEN_INH_003
+    severity: FAIL
+    rule: Effective spec contains common attributes plus child overrides
+  values:
+  - id: WOMEN_VAL_001
+    severity: FAIL
+    rule: target_gender allowed exactly WOMEN, UNISEX
+  - id: WOMEN_VAL_002
+    severity: FAIL
+    rule: age_group allowed exactly ADULT, TEEN
+  - id: WOMEN_VAL_003
+    severity: FAIL
+    rule: All allowed apparel types exist in inherited apparel_type dictionary
+  - id: WOMEN_VAL_004
+    severity: FAIL
+    rule: BRA/TIGHTS/DRESS/SKIRT are allowed for FASH.WOMEN
+  ux:
+  - id: WOMEN_UX_001
+    severity: FAIL
+    rule: initial fields per type group <= 8
+  - id: WOMEN_UX_002
+    severity: FAIL
+    rule: primary facets per type group <= 7
+  - id: WOMEN_UX_003
+    severity: FAIL
+    rule: target_gender and age_group hidden by default
+  - id: WOMEN_UX_004
+    severity: WARN
+    rule: measurements appear as advanced group only
+  routing:
+  - id: WOMEN_ROUTE_001
+    severity: FAIL
+    rule: shoes/bags/accessories/beauty negative guards do not route into FASH.WOMEN
+  - id: WOMEN_ROUTE_002
+    severity: FAIL
+    rule: kids/girls queries route to FASH.KIDS or ambiguous, not final FASH.WOMEN
+  - id: WOMEN_ROUTE_003
+    severity: WARN
+    rule: generic unisex basics should not be final FASH.WOMEN without context
+  vision:
+  - id: WOMEN_VIS_001
+    severity: FAIL
+    rule: Vision must not infer WOMEN from color/style alone
+  - id: WOMEN_VIS_002
+    severity: FAIL
+    rule: Exact size/brand/material must not be guessed without label/text evidence
+runtime_metrics_to_track:
+- route_top1_accuracy
+- route_conflict_rate
+- target_gender_false_positive_rate
+- size_normalization_rate
+- hidden_field_leak_rate
+- form_abandonment_rate

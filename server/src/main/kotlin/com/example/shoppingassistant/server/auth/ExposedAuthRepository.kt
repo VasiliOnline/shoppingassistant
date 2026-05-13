@@ -7,6 +7,7 @@ import com.example.shoppingassistant.domain.model.AuthResult
 import com.example.shoppingassistant.domain.model.AuthUser
 import com.example.shoppingassistant.server.db.AuthUsersTable
 import com.example.shoppingassistant.server.db.DatabaseFactory
+import com.example.shoppingassistant.server.offers.UserProfilesTable
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
@@ -53,12 +54,24 @@ class ExposedAuthRepository(
             row[AuthUsersTable.password] = passwordHash
             row[AuthUsersTable.displayName] = safeDisplayName
             row[AuthUsersTable.phone] = null
+            row[AuthUsersTable.pendingPhone] = null
+            row[AuthUsersTable.pendingPhoneRequestedAt] = null
             row[AuthUsersTable.avatarUrl] = null
             row[AuthUsersTable.city] = null
             row[AuthUsersTable.photoUrls] = emptyList()
         }
 
         val id = insertStatement[AuthUsersTable.id]
+        UserProfilesTable.insert { row ->
+            row[userId] = id
+            row[UserProfilesTable.displayName] = safeDisplayName
+            row[avatarUrl] = null
+            row[city] = null
+            row[bio] = null
+            row[website] = null
+            row[publicProfileEnabled] = true
+            row[cityVisible] = true
+        }
         val user = AuthUser(
             id = id,
             email = normalizedEmail,
@@ -136,6 +149,8 @@ class ExposedAuthRepository(
             email = this[AuthUsersTable.email],
             displayName = this[AuthUsersTable.displayName] ?: this[AuthUsersTable.email],
             phone = this[AuthUsersTable.phone],
+            pendingPhone = this[AuthUsersTable.pendingPhone],
+            pendingPhoneRequestedAt = this[AuthUsersTable.pendingPhoneRequestedAt],
             avatarUrl = this[AuthUsersTable.avatarUrl],
             city = this[AuthUsersTable.city],
             emailVerified = this[AuthUsersTable.emailVerified] || this[AuthUsersTable.emailVerifiedAt] != null,

@@ -19,6 +19,7 @@ import com.example.shoppingassistant.core.network.createIngestHttpClient
 import com.example.shoppingassistant.domain.ingest.DefaultSourceCatalog
 import com.example.shoppingassistant.domain.ingest.DefaultSourceResolver
 import com.example.shoppingassistant.domain.ingest.OfferIngestRepository
+import com.example.shoppingassistant.domain.catalog.QueryRouter
 import com.example.shoppingassistant.domain.ingest.SourceRegistry
 import com.example.shoppingassistant.domain.ingest.SourceResolver
 import com.example.shoppingassistant.domain.ingest.UrlNormalizer
@@ -56,7 +57,7 @@ val ingestModule: Module = module {
 
     single<IngestClient> { createIngestHttpClient() }
 
-    single { AvitoSourceParser(get<IngestClient>().client, get()) }
+    single { AvitoSourceParser(get<IngestClient>().client, get(), get<QueryRouter>()) }
     single<SourceParser> { get<AvitoSourceParser>() }
 
     single {

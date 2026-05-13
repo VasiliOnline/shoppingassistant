@@ -21,4 +21,17 @@ class Stage22RegistryLoaderTest {
         assertEquals("profiles.tech.json", tech?.profilesFile)
         assertEquals("constraints.tech.json", tech?.constraintsFile)
     }
+
+    @Test
+    fun package_descriptors_match_catalog_l0_registry() {
+        val descriptorCodes = Stage22RegistryLoader.loadPackageDescriptors()
+            .map { it.l0Code }
+            .toSet()
+
+        assertEquals(
+            "Stage 2.2 package descriptors drifted from CatalogL0Registry",
+            CatalogL0Registry.requiredPackageCodes.toSet(),
+            descriptorCodes,
+        )
+    }
 }

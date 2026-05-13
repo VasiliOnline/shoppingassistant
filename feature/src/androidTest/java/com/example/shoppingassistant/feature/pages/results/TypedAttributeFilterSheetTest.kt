@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -29,6 +30,7 @@ class TypedAttributeFilterSheetTest {
         composeRule.setContent {
             MaterialTheme {
                 TypedAttributeFilterSheet(
+                    runtimeKey = "price_range",
                     title = "Диапазон",
                     valueType = FacetDataType.RANGE,
                     runtimeValues = emptyList(),
@@ -52,6 +54,7 @@ class TypedAttributeFilterSheetTest {
         composeRule.setContent {
             MaterialTheme {
                 TypedAttributeFilterSheet(
+                    runtimeKey = "price_range",
                     title = "Диапазон",
                     valueType = FacetDataType.RANGE,
                     runtimeValues = emptyList(),
@@ -83,6 +86,7 @@ class TypedAttributeFilterSheetTest {
         composeRule.setContent {
             MaterialTheme {
                 TypedAttributeFilterSheet(
+                    runtimeKey = "condition",
                     title = "Состояние",
                     valueType = FacetDataType.ENUM,
                     runtimeValues = emptyList(),
@@ -113,6 +117,7 @@ class TypedAttributeFilterSheetTest {
         composeRule.setContent {
             MaterialTheme {
                 TypedAttributeFilterSheet(
+                    runtimeKey = "description",
                     title = "Описание",
                     valueType = FacetDataType.TEXT,
                     runtimeValues = emptyList(),
@@ -141,6 +146,7 @@ class TypedAttributeFilterSheetTest {
         composeRule.setContent {
             MaterialTheme {
                 TypedAttributeFilterSheet(
+                    runtimeKey = "description",
                     title = "Описание",
                     valueType = FacetDataType.TEXT,
                     runtimeValues = emptyList(),
@@ -166,6 +172,7 @@ class TypedAttributeFilterSheetTest {
         composeRule.setContent {
             MaterialTheme {
                 TypedAttributeFilterSheet(
+                    runtimeKey = "description",
                     title = "Описание",
                     valueType = FacetDataType.TEXT,
                     runtimeValues = emptyList(),
@@ -180,6 +187,39 @@ class TypedAttributeFilterSheetTest {
 
         composeRule.runOnIdle {
             assertEquals(null, appliedDraft)
+        }
+    }
+
+    @Test
+    fun selected_tokens_are_visible_and_can_be_removed_before_apply() {
+        var appliedDraft: TypedAttributeFilterDraft? = null
+
+        composeRule.setContent {
+            MaterialTheme {
+                TypedAttributeFilterSheet(
+                    runtimeKey = "memory_gb",
+                    title = "Память",
+                    valueType = FacetDataType.ENUM,
+                    runtimeValues = emptyList(),
+                    draft = TypedAttributeFilterDraft(
+                        op = TypedAttributeOperator.IN,
+                        valuesCsv = "256, 512",
+                    ),
+                    onApply = { appliedDraft = it },
+                    onBack = {},
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("256").assertIsDisplayed()
+        composeRule.onNodeWithText("512").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Удалить фильтр 256").performClick()
+        composeRule.onNodeWithTag("results_typed_apply").performClick()
+
+        composeRule.runOnIdle {
+            assertNotNull(appliedDraft)
+            assertEquals(TypedAttributeOperator.IN, appliedDraft?.op)
+            assertEquals("512", appliedDraft?.valuesCsv)
         }
     }
 }

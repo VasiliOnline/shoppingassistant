@@ -1,0 +1,44 @@
+Normalize this product photo for visual search.
+
+Use the image first. Use the grounding packet only as catalog context and weak hints.
+
+Required workflow:
+1. Identify primary_object from the selected crop or the central/foreground/framed sale item.
+2. Ignore scene/background objects unless they are the primary_object.
+3. Pick category_code for the primary_object. Use candidateCategories when plausible; otherwise infer a safe broad marketplace branch that can contain the visible product.
+4. Fill item_type and item_type_label for the visible product class.
+5. Treat item_type as an observed product-type anchor. Use it as an attribute/filter only when the category grounding exposes a compatible product-type/type-of-item facet.
+6. Decide whether this primary_object, in this photo, should be treated as TYPE_ONLY or RICH_IDENTITY.
+7. Fill brand, family, and model_candidates as search anchors when supported by visible text, logo, barcode, catalog shortlist, or distinctive visual design and useful for the identity mode.
+8. For iconic electronics, watches, shoes, speakers, consoles, and vehicles, do not stop at the generic object label when the visible design supports a brand/family anchor.
+9. Fill model only when exact identity is strongly supported.
+10. Return null for unknown scalar fields and [] for empty arrays.
+
+Evidence rules:
+- TEXT_EXACT, LOGO_EXACT, BARCODE_EXACT, USER_HINT, and CATALOG_SHORTLIST can support exact identity.
+- VISUAL_DISTINCTIVE and VISUAL_PATTERN can support brand/family and plausible model_candidates.
+- Moderate-confidence visual brand/family anchors are useful; exact model still needs stronger evidence.
+- A catalog or facet profile may expose brand, family, and model for a leaf. This means the UI can refine by those fields; it does not mean the model must fill them for every photo.
+- TYPE_ONLY objects use item_type/item_type_label as the main identity anchor. Generic apparel, groceries, food, plain mugs/cups, simple home goods, commodity accessories, decor, and generic tools do not need brand/family/model unless there is visible proof.
+- RICH_IDENTITY objects need item_type plus supported brand/family/model_candidates. Use this for phones, laptops, tablets, game consoles, cameras, audio devices, smart watches, recognizable watches, branded sneakers, vehicles, appliances, and distinctive branded products.
+- One catalog leaf can contain both modes. Decide from the primary object and evidence, not from the category title alone.
+- In TYPE_ONLY mode, leaving brand/family/model/model_candidates empty is correct when no real evidence exists.
+- In RICH_IDENTITY mode, item_type must not replace brand/family/model_candidates. Return all supported anchors.
+- For RICH_IDENTITY products, a moderate-confidence brand/family or model_candidate is useful even when model remains null.
+- VISUAL_WEAK is allowed only for low-confidence candidates, not final exact model.
+- Do not use generic object words as brand/family/model.
+- Do not let background tableware, bottles, cups, glasses, furniture, food, hands, or secondary packaging decide the category.
+- Treat item_type as the observed product-type anchor. If item_type and category_code conflict, prefer a safe branch that can contain the visible item_type over a scene/background branch.
+- Add type-of-item as an attribute only when the grounding packet explicitly exposes a compatible category attribute/value for it.
+- Return auxiliary attributes only when the attribute code and value are supported by the grounding packet for the selected category. If unsure, leave attributes empty.
+
+Bindability target:
+- Return category_code whenever the primary product class is visible.
+- Return item_type whenever the primary product class is visible, especially for broad category leaves.
+- If category_code follows clearly from item_type, give category_confidence enough weight for binding; unknown brand/model should not lower category confidence.
+- For TYPE_ONLY objects, a useful result is category_code plus item_type/item_type_label.
+- For RICH_IDENTITY objects, a useful result is category_code plus item_type and any reliable brand/family/model candidate.
+- Do not leave category_code and identity both empty unless needs_retake=true.
+
+Grounding packet:
+{{grounding_packet}}

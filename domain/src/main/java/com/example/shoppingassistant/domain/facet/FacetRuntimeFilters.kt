@@ -1,7 +1,10 @@
 package com.example.shoppingassistant.domain.facet
 
+import com.example.shoppingassistant.domain.model.TypedAttributeFilter
+import com.example.shoppingassistant.domain.model.TypedAttributeOperator
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
 import com.example.shoppingassistant.domain.model.toRawStringAttributes
+import java.util.Locale
 
 enum class FacetPurchaseFormat {
     PICKUP,
@@ -13,6 +16,7 @@ data class FacetRuntimeFilters(
     val facetCollectionCode: String? = null,
     val facetPresetCode: String? = null,
     val attributes: Map<String, TypedAttributeValue> = emptyMap(),
+    val attributeFilters: Map<String, TypedAttributeFilter> = emptyMap(),
     val brands: Set<String> = emptySet(),
     val priceMin: Int? = null,
     val priceMax: Int? = null,
@@ -29,10 +33,15 @@ object FacetRuntimeFiltersApplier {
         base: FacetRuntimeFilters,
         collection: FacetCollection?,
         preset: FacetPreset?,
+        definitions: Collection<FacetDefinition> = emptyList(),
     ): FacetRuntimeFilters {
         if (collection == null && preset == null) return base
 
+        val definitionsByKey = definitions.associateBy { definition ->
+            definition.facetKey.trim().lowercase(Locale.ROOT)
+        }
         val attributes = LinkedHashMap(base.attributes)
+        val attributeFilters = LinkedHashMap(base.attributeFilters)
         val brands = base.brands.toMutableSet()
         val conditions = base.conditions.toMutableSet()
         var priceMin = base.priceMin
@@ -42,6 +51,8 @@ object FacetRuntimeFiltersApplier {
         preset?.rules?.forEach { rule ->
             val facetKey = rule.facetKey.trim().lowercase()
             if (facetKey.isBlank()) return@forEach
+            val definition = definitionsByKey[facetKey]
+            val runtimeKey = definition?.runtimeFilterKey() ?: facetKey
 
             when (facetKey) {
                 "brand" -> {
@@ -80,11 +91,17 @@ object FacetRuntimeFiltersApplier {
                 }
 
                 else -> {
-                    val includeValue = rule.includeValues.firstOrNull()?.trim()?.takeIf { it.isNotBlank() }
-                    if (includeValue != null) {
-                        attributes[facetKey] = TypedAttributeValue.Text(includeValue)
-                    } else if (rule.boolValue != null) {
-                        attributes[facetKey] = TypedAttributeValue.Bool(rule.boolValue)
+                    val typedFilter = buildGenericAttributeFilter(
+                        rule = rule,
+                        valueType = definition?.valueType,
+                    )
+                    if (typedFilter != null) {
+                        attributeFilters[runtimeKey] = typedFilter
+                        if (definition == null && typedFilter.op == TypedAttributeOperator.EQ) {
+                            typedFilter.value?.let { value ->
+                                attributes[runtimeKey] = value
+                            }
+                        }
                     }
                 }
             }
@@ -99,12 +116,119 @@ object FacetRuntimeFiltersApplier {
             facetCollectionCode = collection?.collectionCode ?: base.facetCollectionCode,
             facetPresetCode = preset?.presetCode ?: base.facetPresetCode,
             attributes = attributes,
+            attributeFilters = attributeFilters,
             brands = brands,
             priceMin = priceMin,
             priceMax = priceMax,
             conditions = conditions,
             purchaseFormat = purchaseFormat,
         )
+    }
+
+    private fun buildGenericAttributeFilter(
+        rule: FacetPresetRule,
+        valueType: FacetDataType?,
+    ): TypedAttributeFilter? {
+        rule.boolValue?.let { boolValue ->
+            return TypedAttributeFilter(
+                op = TypedAttributeOperator.EQ,
+                value = TypedAttributeValue.Bool(boolValue),
+            )
+        }
+
+        val minValue = rule.minValue
+        val maxValue = rule.maxValue
+        if (minValue != null || maxValue != null) {
+            return when {
+                minValue != null && maxValue != null -> TypedAttributeFilter(
+                    op = TypedAttributeOperator.BETWEEN,
+                    from = TypedAttributeValue.Number(minValue),
+                    to = TypedAttributeValue.Number(maxValue),
+                )
+
+                minValue != null -> TypedAttributeFilter(
+                    op = TypedAttributeOperator.GTE,
+                    value = TypedAttributeValue.Number(minValue),
+                )
+
+                else -> TypedAttributeFilter(
+                    op = TypedAttributeOperator.LTE,
+                    value = TypedAttributeValue.Number(maxValue ?: return null),
+                )
+            }
+        }
+
+        val includeValues = rule.includeValues
+            .mapNotNull { rawValue -> parseFilterValue(rawValue, valueType) }
+            .distinct()
+        if (includeValues.isNotEmpty()) {
+            return if (includeValues.size == 1) {
+                TypedAttributeFilter(
+                    op = TypedAttributeOperator.EQ,
+                    value = includeValues.first(),
+                )
+            } else {
+                TypedAttributeFilter(
+                    op = TypedAttributeOperator.IN,
+                    values = includeValues,
+                )
+            }
+        }
+
+        val excludeValues = rule.excludeValues
+            .mapNotNull { rawValue -> parseFilterValue(rawValue, valueType) }
+            .distinct()
+        if (excludeValues.size == 1) {
+            return TypedAttributeFilter(
+                op = TypedAttributeOperator.NEQ,
+                value = excludeValues.first(),
+            )
+        }
+
+        return null
+    }
+
+    private fun parseFilterValue(
+        rawValue: String,
+        valueType: FacetDataType?,
+    ): TypedAttributeValue? {
+        val trimmed = rawValue.trim()
+        if (trimmed.isEmpty()) return null
+        return when (valueType) {
+            FacetDataType.BOOL -> parseBooleanValue(trimmed)
+            FacetDataType.RANGE -> parseNumericValue(trimmed)
+            FacetDataType.ENUM,
+            FacetDataType.TEXT,
+            null,
+            -> TypedAttributeValue.Text(trimmed)
+        }
+    }
+
+    private fun parseNumericValue(rawValue: String): TypedAttributeValue.Number? {
+        val normalized = rawValue.replace(',', '.')
+        val number = normalized.toDoubleOrNull() ?: return null
+        return TypedAttributeValue.Number(number)
+    }
+
+    private fun parseBooleanValue(rawValue: String): TypedAttributeValue.Bool? {
+        val normalized = rawValue.trim().lowercase(Locale.ROOT)
+        return when (normalized) {
+            "true",
+            "1",
+            "yes",
+            "y",
+            "да",
+            -> TypedAttributeValue.Bool(true)
+
+            "false",
+            "0",
+            "no",
+            "n",
+            "нет",
+            -> TypedAttributeValue.Bool(false)
+
+            else -> null
+        }
     }
 
     private fun normalizeCondition(raw: String): String? {

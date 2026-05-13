@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
  * Props описывает обязательные зависимости и коллбеки, сама реализация в ProfileForgotPasswordTask.kt.
  */
 data class ProfileForgotPasswordProps(
-    val onSubmit: suspend (email: String) -> String?,
+    val onSubmitEmail: suspend (email: String) -> String?,
+    val onSubmitPhone: suspend (phone: String) -> String?,
     val onClose: () -> Unit,
-    val onResetTokenReceived: (String?) -> Unit,
+    val onContinueToReset: (String?) -> Unit,
+    val onBackToLogin: () -> Unit,
 )
 
 /**

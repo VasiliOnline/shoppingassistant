@@ -10,7 +10,9 @@
     <string name="profile_email_label">Email</string>
     <string name="profile_email_placeholder">user@example.com</string>
     <string name="profile_password_label">Пароль</string>
-    <string name="profile_password_placeholder">Пароль от 6 символов</string>
+    <string name="profile_password_placeholder">Пароль от 8 символов</string>
+    <string name="profile_phone_label">Телефон</string>
+    <string name="profile_phone_placeholder">+7 999 123-45-67</string>
     <string name="profile_login_button">Войти</string>
     <string name="profile_register_button">Создать аккаунт</string>
     <string name="profile_forgot_password">Забыли пароль?</string>
@@ -28,22 +30,26 @@
 
     <string name="profile_forgot_title">Восстановление пароля</string>
     <string name="profile_forgot_send_link">Отправить ссылку</string>
+    <string name="profile_forgot_send_code">Отправить код</string>
     <string name="profile_forgot_success">Если email существует, мы отправили ссылку для восстановления.</string>
+    <string name="profile_forgot_phone_success">Если номер привязан к аккаунту и уже подтверждён, мы отправили код для восстановления.</string>
     <string name="profile_forgot_failed">Не удалось отправить ссылку. Попробуйте ещё раз.</string>
+    <string name="profile_forgot_continue_to_reset">У меня есть код</string>
+    <string name="profile_forgot_continue_hint">Когда получите письмо или SMS, откройте экран сброса и введите код или токен из сообщения.</string>
     <string name="profile_forgot_back">Вернуться</string>
 
     <string name="profile_reset_title">Смена пароля</string>
     <string name="profile_reset_success_title">Пароль обновлён</string>
     <string name="profile_reset_success_subtitle">Можно войти с новым паролем.</string>
     <string name="profile_reset_go_to_login">Перейти к входу</string>
-    <string name="profile_reset_token_label">Reset-токен</string>
-    <string name="profile_reset_token_placeholder">Вставьте reset-токен</string>
+    <string name="profile_reset_token_label">Код или токен</string>
+    <string name="profile_reset_token_placeholder">Вставьте код из письма или SMS</string>
     <string name="profile_reset_new_password_label">Новый пароль</string>
     <string name="profile_reset_confirm_password_label">Подтверждение пароля</string>
     <string name="profile_reset_confirm_placeholder">Повторите новый пароль</string>
     <string name="profile_reset_action">Сменить пароль</string>
     <string name="profile_reset_cancel">Отмена</string>
-    <string name="profile_reset_token_required">Введите reset-токен</string>
+    <string name="profile_reset_token_required">Введите код или токен</string>
     <string name="profile_reset_password_mismatch">Пароли не совпадают</string>
     <string name="profile_reset_failed">Не удалось сменить пароль.\nПопробуйте ещё раз.</string>
 
@@ -254,7 +260,9 @@
     <string name="profile_auth_show_password">Показать пароль</string>
     <string name="profile_auth_email_required">Введите email</string>
     <string name="profile_auth_email_invalid">Введите корректный email, например user@example.com</string>
-    <string name="profile_auth_password_short">Пароль должен быть не короче 6 символов</string>
+    <string name="profile_auth_password_short">Пароль должен быть не короче 8 символов</string>
+    <string name="profile_auth_phone_required">Введите телефон</string>
+    <string name="profile_auth_phone_invalid">Введите корректный номер телефона</string>
 
     <string name="state_error_title">Не получилось загрузить</string>
     <string name="state_error_retry">Повторить</string>

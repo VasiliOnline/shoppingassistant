@@ -14,7 +14,13 @@ import java.util.concurrent.TimeUnit
 data class PhoneVerificationPayload(
     val userId: Long,
     val phone: String,
+    val purpose: PhoneVerificationPurpose = PhoneVerificationPurpose.PRIMARY_PHONE_VERIFICATION,
 )
+
+enum class PhoneVerificationPurpose {
+    PRIMARY_PHONE_VERIFICATION,
+    PENDING_PHONE_CHANGE,
+}
 
 sealed class PhoneVerificationStartResult {
     data object Sent : PhoneVerificationStartResult()
@@ -56,7 +62,7 @@ class LettucePhoneVerificationTokenStore(
     private val keyPrefix: String = "phone_verify:",
 ) : PhoneVerificationTokenStore {
     override fun save(token: String, payload: PhoneVerificationPayload) {
-        val raw = "${payload.userId}:${payload.phone}"
+        val raw = "${payload.userId}:${payload.purpose.name}:${payload.phone}"
         commands.setex(keyPrefix + token, ttlSeconds, raw)
     }
 
@@ -64,10 +70,12 @@ class LettucePhoneVerificationTokenStore(
         val raw = commands.get(keyPrefix + token) ?: return null
         commands.del(keyPrefix + token)
         val parts = raw.split(":")
-        if (parts.size < 2) return null
+        if (parts.size < 3) return null
         val userId = parts.first().toLongOrNull() ?: return null
-        val phone = parts.drop(1).joinToString(":")
-        return PhoneVerificationPayload(userId = userId, phone = phone)
+        val purpose = runCatching { PhoneVerificationPurpose.valueOf(parts[1]) }
+            .getOrDefault(PhoneVerificationPurpose.PRIMARY_PHONE_VERIFICATION)
+        val phone = parts.drop(2).joinToString(":")
+        return PhoneVerificationPayload(userId = userId, phone = phone, purpose = purpose)
     }
 }
 
@@ -115,26 +123,74 @@ class PhoneVerificationService(
         val payload = PhoneVerificationPayload(
             userId = userId,
             phone = normalizePhone(phone),
+            purpose = PhoneVerificationPurpose.PRIMARY_PHONE_VERIFICATION,
         )
         tokenStore.save(token, payload)
         notificationSender.sendVerificationCode(payload.phone, token)
         return PhoneVerificationStartResult.Sent
     }
 
-    suspend fun confirm(token: String): Boolean {
-        val payload = tokenStore.consume(token) ?: return false
+    suspend fun startPendingChange(userId: Long): PhoneVerificationStartResult {
+        val row = DatabaseFactory.dbQuery {
+            AuthUsersTable
+                .selectAll()
+                .where { AuthUsersTable.id eq userId }
+                .singleOrNull()
+        } ?: return PhoneVerificationStartResult.MissingPhone
+
+        if (row[AuthUsersTable.isDeleted]) return PhoneVerificationStartResult.MissingPhone
+
+        val pendingPhone = row[AuthUsersTable.pendingPhone] ?: return PhoneVerificationStartResult.MissingPhone
+        if (!isPhoneValid(pendingPhone)) return PhoneVerificationStartResult.MissingPhone
+        if (!cooldownTracker.tryAcquire("verify-phone-change:${normalizePhone(pendingPhone)}:$userId")) {
+            return PhoneVerificationStartResult.RateLimited
+        }
+
+        val token = generateCode()
+        val payload = PhoneVerificationPayload(
+            userId = userId,
+            phone = normalizePhone(pendingPhone),
+            purpose = PhoneVerificationPurpose.PENDING_PHONE_CHANGE,
+        )
+        tokenStore.save(token, payload)
+        notificationSender.sendVerificationCode(payload.phone, token)
+        return PhoneVerificationStartResult.Sent
+    }
+
+    suspend fun confirm(token: String): PhoneVerificationPayload? {
+        val payload = tokenStore.consume(token) ?: return null
         val now = System.currentTimeMillis()
-        return DatabaseFactory.dbQuery {
+        val confirmed = DatabaseFactory.dbQuery {
             val updated = AuthUsersTable.update(
                 where = {
-                    (AuthUsersTable.id eq payload.userId) and
-                        (AuthUsersTable.phone eq payload.phone) and
-                        (AuthUsersTable.isDeleted eq false)
+                    when (payload.purpose) {
+                        PhoneVerificationPurpose.PRIMARY_PHONE_VERIFICATION ->
+                            (AuthUsersTable.id eq payload.userId) and
+                                (AuthUsersTable.phone eq payload.phone) and
+                                (AuthUsersTable.isDeleted eq false)
+
+                        PhoneVerificationPurpose.PENDING_PHONE_CHANGE ->
+                            (AuthUsersTable.id eq payload.userId) and
+                                (AuthUsersTable.pendingPhone eq payload.phone) and
+                                (AuthUsersTable.isDeleted eq false)
+                    }
                 },
             ) {
-                it[phoneVerifiedAt] = now
+                when (payload.purpose) {
+                    PhoneVerificationPurpose.PRIMARY_PHONE_VERIFICATION -> {
+                        it[phoneVerifiedAt] = now
+                    }
+
+                    PhoneVerificationPurpose.PENDING_PHONE_CHANGE -> {
+                        it[phone] = payload.phone
+                        it[pendingPhone] = null
+                        it[pendingPhoneRequestedAt] = null
+                        it[phoneVerifiedAt] = now
+                    }
+                }
             }
             updated > 0
         }
+        return if (confirmed) payload else null
     }
 }

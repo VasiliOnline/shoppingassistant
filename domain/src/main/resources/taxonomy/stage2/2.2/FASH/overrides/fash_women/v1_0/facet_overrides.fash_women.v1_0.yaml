@@ -1,0 +1,417 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+extends: FASH.APPAREL_COMMON
+facet_mode: child_override
+common_primary_facets:
+- apparel_type
+- size_label
+- color_primary
+- brand
+- condition
+- material_primary
+- season
+common_secondary_facets:
+- fit
+- pattern
+- style_aesthetic
+- occasion
+- pack_type
+- target_gender
+- length_type
+global_limits:
+  max_primary_facets: 7
+  max_secondary_facets: 10
+type_group_overrides:
+  TOP:
+    applies_to_types:
+    - TSHIRT
+    - LONGSLEEVE
+    - SHIRT
+    - BLOUSE
+    - TOP
+    - TANK_TOP
+    - POLO
+    - TURTLENECK
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  KNITWEAR:
+    applies_to_types:
+    - SWEATER
+    - SWEATSHIRT
+    - HOODIE
+    - CARDIGAN
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  OUTERWEAR:
+    applies_to_types:
+    - VEST
+    - BLAZER
+    - JACKET
+    - BOMBER
+    - DENIM_JACKET
+    - LEATHER_JACKET
+    - WINDBREAKER
+    - RAINCOAT
+    - COAT
+    - PARKA
+    - DOWN_JACKET
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - season
+    - outerwear_weight
+    - water_resistance
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  BOTTOM:
+    applies_to_types:
+    - JEANS
+    - TROUSERS
+    - CHINOS
+    - CARGO_PANTS
+    - LEGGINGS
+    - SHORTS
+    - SKIRT
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - waist_rise
+    - fit
+    - length_type
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  ONE_PIECE:
+    applies_to_types:
+    - DRESS
+    - JUMPSUIT
+    - ROMPER
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - length_type
+    - occasion
+    - sleeve_length
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  SET:
+    applies_to_types:
+    - SUIT
+    - TRACKSUIT
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  SLEEPWEAR:
+    applies_to_types:
+    - PAJAMAS
+    - ROBE
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  UNDERWEAR:
+    applies_to_types:
+    - UNDERWEAR
+    - BRA
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - bra_cup
+    - pack_type
+    - condition
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  SOCKS_HOSIERY:
+    applies_to_types:
+    - SOCKS
+    - TIGHTS
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - pack_type
+    - material_primary
+    - condition
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  BASE_LAYER:
+    applies_to_types:
+    - THERMAL_UNDERWEAR
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  SWIMWEAR:
+    applies_to_types:
+    - SWIMWEAR
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  SPORT:
+    applies_to_types:
+    - ACTIVE_TOP
+    - ACTIVE_BOTTOM
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - activity
+    - fit
+    - material_primary
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+  SPECIAL:
+    applies_to_types:
+    - UNIFORM
+    primary_facets:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    secondary_facets:
+    - condition
+    - pattern
+    - style_aesthetic
+    - occasion
+    - closure_type
+    - length_type
+    - water_resistance
+    - pack_type
+    - target_gender
+    - material_primary
+    max_primary_facets: 7
+    max_secondary_facets: 10
+browse_presets:
+- code: FASH.WOMEN.DRESSES
+  title_ru: Платья
+  filters:
+    apparel_type:
+    - DRESS
+- code: FASH.WOMEN.SKIRTS
+  title_ru: Юбки
+  filters:
+    apparel_type:
+    - SKIRT
+- code: FASH.WOMEN.TOP_BLOUSE
+  title_ru: Топы и блузки
+  filters:
+    apparel_type:
+    - TOP
+    - BLOUSE
+    - TSHIRT
+    - SHIRT
+    - TANK_TOP
+    - LONGSLEEVE
+- code: FASH.WOMEN.JEANS_TROUSERS
+  title_ru: Джинсы и брюки
+  filters:
+    apparel_type:
+    - JEANS
+    - TROUSERS
+    - LEGGINGS
+    - CHINOS
+    - CARGO_PANTS
+- code: FASH.WOMEN.OUTERWEAR
+  title_ru: Верхняя одежда
+  filters:
+    apparel_type:
+    - JACKET
+    - COAT
+    - DOWN_JACKET
+    - PARKA
+    - RAINCOAT
+    - WINDBREAKER
+- code: FASH.WOMEN.UNDERWEAR
+  title_ru: Бельё
+  filters:
+    apparel_type:
+    - UNDERWEAR
+    - BRA
+    - TIGHTS
+    - SOCKS

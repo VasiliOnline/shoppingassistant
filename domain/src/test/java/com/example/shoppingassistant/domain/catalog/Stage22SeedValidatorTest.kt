@@ -3,6 +3,7 @@ package com.example.shoppingassistant.domain.catalog
 import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueConstraint
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -143,19 +144,18 @@ class Stage22SeedValidatorTest {
     }
 
     @Test
-    fun leaf_profile_without_attributes_requires_explicit_allowlist() {
-        val strictValidator = Stage22SeedValidator(leafCategoryEmptyProfileAllowlist = emptySet())
+    fun profile_without_attributes_is_rejected() {
         val categories = listOf(
             Category(
                 code = "TECH",
                 segment = CategorySegment.TECH,
-                title = "TECH",
+                title = localizedTextOf("ru" to "TECH"),
                 parentCode = null,
             ),
             Category(
                 code = "TECH.PHONES",
                 segment = CategorySegment.TECH,
-                title = "TECH.PHONES",
+                title = localizedTextOf("ru" to "TECH.PHONES"),
                 parentCode = "TECH",
             ),
         )
@@ -165,8 +165,13 @@ class Stage22SeedValidatorTest {
                 basePath = "taxonomy/stage2/2.2/TECH",
             ),
             profiles = listOf(
-                CategoryProfile(
-                    category = categories[1],
+                Stage22ResourceProfile(
+                    category = Stage22SeedCategoryRef(
+                        code = categories[1].code,
+                        segment = categories[1].segment,
+                        title = categories[1].title.resolve(locale = "ru", fallback = categories[1].code),
+                        parentCode = categories[1].parentCode,
+                    ),
                     attributes = emptyList(),
                     categoryAttributes = emptyList(),
                     valueDictionaries = emptyList(),
@@ -177,14 +182,50 @@ class Stage22SeedValidatorTest {
             valueDicts = emptyList(),
         )
 
-        val report = strictValidator.validate(
+        val report = validator.validate(
             categories = categories,
             registry = Stage22RegistryLoader.loadSnapshot(),
             packages = listOf(packageData),
             globalConstraints = emptyList(),
         )
 
-        assertTrue(report.issues.any { it.code == "PROFILE_LEAF_ATTRIBUTES_EMPTY_NOT_ALLOWED" })
+        assertTrue(report.issues.any { it.code == "PROFILE_ATTRIBUTES_EMPTY_NOT_ALLOWED" })
+    }
+
+    @Test
+    fun missing_profile_is_reported() {
+        val categories = listOf(
+            Category(
+                code = "TECH",
+                segment = CategorySegment.TECH,
+                title = localizedTextOf("ru" to "TECH"),
+                parentCode = null,
+            ),
+            Category(
+                code = "TECH.PHONES",
+                segment = CategorySegment.TECH,
+                title = localizedTextOf("ru" to "TECH.PHONES"),
+                parentCode = "TECH",
+            ),
+        )
+        val packageData = Stage22PackageData(
+            descriptor = Stage22PackageDescriptor(
+                l0Code = "TECH",
+                basePath = "taxonomy/stage2/2.2/TECH",
+            ),
+            profiles = emptyList(),
+            constraints = emptyList(),
+            valueDicts = emptyList(),
+        )
+
+        val report = validator.validate(
+            categories = categories,
+            registry = Stage22RegistryLoader.loadSnapshot(),
+            packages = listOf(packageData),
+            globalConstraints = emptyList(),
+        )
+
+        assertTrue(report.issues.any { it.code == "PROFILE_CATEGORY_MISSING" })
     }
 
     @Test

@@ -63,6 +63,8 @@ import com.example.shoppingassistant.feature.ui.cards.CardDensity
 import com.example.shoppingassistant.feature.ui.cards.formatPriceText
 import com.example.shoppingassistant.feature.ui.cards.formatUpdatedAtText
 import com.example.shoppingassistant.feature.ui.components.GoodyChip
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeCard
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeTone
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -491,60 +493,36 @@ private fun ErrorTop10Block(message: String, onRetry: () -> Unit) {
 
 @Composable
 private fun StaleWarning(onRefresh: () -> Unit) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+    SystemNoticeCard(
+        body = "Данные могли устареть",
+        tone = SystemNoticeTone.Warning,
+        compact = true,
         modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(text = "Данные могли устареть", style = MaterialTheme.typography.bodySmall)
-            TextButton(onClick = onRefresh) { Text("Обновить") }
-        }
-    }
+        actionLabel = "Обновить",
+        onAction = onRefresh,
+    )
 }
 
 @Composable
 private fun OfflineWarning() {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+    SystemNoticeCard(
+        body = "Офлайн: показан последний кеш",
+        tone = SystemNoticeTone.Info,
+        compact = true,
         modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(text = "Офлайн: показан последний кеш", style = MaterialTheme.typography.bodySmall)
-        }
-    }
+    )
 }
 
 @Composable
 private fun ExpiredWarning(onRefresh: () -> Unit) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.errorContainer,
+    SystemNoticeCard(
+        body = "Данные устарели",
+        tone = SystemNoticeTone.Error,
+        compact = true,
         modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Данные устарели",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-            )
-            TextButton(onClick = onRefresh) {
-                Text("Обновить", color = MaterialTheme.colorScheme.onErrorContainer)
-            }
-        }
-    }
+        actionLabel = "Обновить",
+        onAction = onRefresh,
+    )
 }
 
 @Composable

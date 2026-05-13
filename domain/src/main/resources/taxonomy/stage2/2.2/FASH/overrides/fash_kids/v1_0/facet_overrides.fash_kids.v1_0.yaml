@@ -1,0 +1,131 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "base_facets_override": {
+    "always_visible": [
+      "apparel_type",
+      "target_gender",
+      "age_group",
+      "size",
+      "condition",
+      "brand",
+      "price"
+    ],
+    "secondary": [
+      "color",
+      "material_primary",
+      "season",
+      "fit",
+      "school_use",
+      "safety_feature"
+    ]
+  },
+  "type_group_facets": {
+    "tops": {
+      "primary": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "brand",
+        "condition"
+      ],
+      "secondary": [
+        "color",
+        "material_primary",
+        "season",
+        "fit",
+        "fastening"
+      ]
+    },
+    "bottoms": {
+      "primary": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "fit",
+        "condition"
+      ],
+      "secondary": [
+        "color",
+        "material_primary",
+        "season",
+        "fit",
+        "fastening"
+      ]
+    },
+    "outerwear": {
+      "primary": [
+        "apparel_type",
+        "age_group",
+        "size",
+        "season",
+        "condition",
+        "brand"
+      ],
+      "secondary": [
+        "color",
+        "material_primary",
+        "season",
+        "fit",
+        "fastening"
+      ]
+    },
+    "dresses_one_piece": {
+      "primary": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand"
+      ],
+      "secondary": [
+        "color",
+        "material_primary",
+        "season",
+        "fit",
+        "fastening"
+      ]
+    },
+    "underwear_sleep": {
+      "primary": [
+        "apparel_type",
+        "age_group",
+        "size",
+        "condition",
+        "material_primary"
+      ],
+      "secondary": [
+        "color",
+        "material_primary",
+        "season",
+        "fit",
+        "fastening"
+      ]
+    },
+    "sets_suits": {
+      "primary": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "season"
+      ],
+      "secondary": [
+        "color",
+        "material_primary",
+        "season",
+        "fit",
+        "fastening"
+      ]
+    }
+  },
+  "facet_limits": {
+    "primary_per_type_max": 7,
+    "secondary_initial_collapsed": true,
+    "hide_if_low_cardinality": true
+  }
+}

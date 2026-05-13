@@ -5,6 +5,8 @@ internal object Stage21QueryTextNormalizer {
         .trim()
         .lowercase()
         .replace('ё', 'е')
+        // Preserve phone/chipset semantics like "S24+" and "7+ Gen 3".
+        .replace(Regex("""(?<=\p{L}|\p{N})\+(?=\p{L}|\p{N}|\s|$)"""), " plus ")
         .replace("[-‐‑‒–—]+".toRegex(), " ")
         .replace("[^\\p{L}\\p{N}\\s]".toRegex(), " ")
         .replace("\\s+".toRegex(), " ")

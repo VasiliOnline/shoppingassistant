@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0.0",
+  "branch": "FASH.APPAREL_COMMON",
+  "appliesTo": [
+    "FASH.MEN",
+    "FASH.WOMEN",
+    "FASH.KIDS"
+  ],
+  "resolutionPolicy": {
+    "publicCategory": false,
+    "routeToChildBranch": true,
+    "neverRouteToCommonCode": true,
+    "abstainWhenClothingEvidenceWeak": true
+  },
+  "visualRoute": {
+    "requiredOutput": [
+      "routeCandidates",
+      "visibleObjectType",
+      "apparelTypeHints",
+      "colorHints",
+      "needsMorePhotos"
+    ],
+    "discriminators": [
+      "garment silhouette",
+      "visible apparel type",
+      "size/label text",
+      "fabric/material cues",
+      "color",
+      "gender/age wording only when text or context is visible"
+    ],
+    "negativeRoutes": [
+      "FASH.SHOES",
+      "FASH.BAGS",
+      "FASH.ACCESSORIES"
+    ]
+  },
+  "extraction": {
+    "requiredVisibleFields": [
+      "apparel_type",
+      "condition",
+      "size_label",
+      "color_primary"
+    ],
+    "optionalVisibleFields": [
+      "brand",
+      "material_primary",
+      "pattern",
+      "season",
+      "fit"
+    ],
+    "doNotInfer": [
+      "size_label without text, tag, or explicit title evidence",
+      "brand without visible logo/text or seller title evidence",
+      "target_gender from style alone when ambiguous",
+      "material_primary when fabric cannot be visually distinguished"
+    ]
+  },
+  "candidatePack": {
+    "includeAttributes": [
+      "apparel_type",
+      "size_label",
+      "color_primary",
+      "brand",
+      "material_primary",
+      "season",
+      "fit",
+      "condition",
+      "target_gender",
+      "age_group",
+      "size_system",
+      "color_secondary",
+      "pattern",
+      "style_aesthetic",
+      "occasion",
+      "sleeve_length",
+      "neckline",
+      "closure_type",
+      "pack_type",
+      "length_type",
+      "waist_rise",
+      "leg_fit",
+      "waist_type",
+      "dress_length",
+      "skirt_length",
+      "outerwear_weight",
+      "water_resistance",
+      "hood",
+      "lining",
+      "pockets",
+      "activity",
+      "bra_cup"
+    ],
+    "includeDictionaries": [
+      "apparel_type",
+      "size_label",
+      "color_primary",
+      "material_primary",
+      "condition"
+    ],
+    "maxPrimaryFacets": 7,
+    "maxInitialFields": 8
+  }
+}

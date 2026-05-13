@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "localizedText": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "categorySegment": {
+      "type": "string",
+      "enum": ["TECH", "APPL", "HOME", "FASH", "BEAUTY", "KIDS", "FOOD", "PETS", "SPORT", "AUTO", "OTHER"]
+    },
+    "categoryStatus": {
+      "type": "string",
+      "enum": ["ACTIVE", "DEPRECATED", "HIDDEN"]
+    },
+    "category": {
+      "type": "object",
+      "required": ["code", "segment", "title", "parentCode", "description", "status", "replacementCode"],
+      "properties": {
+        "code": { "type": "string" },
+        "segment": { "$ref": "#/$defs/categorySegment" },
+        "title": { "$ref": "#/$defs/localizedText" },
+        "parentCode": { "type": ["string", "null"] },
+        "description": { "type": ["string", "null"] },
+        "status": { "$ref": "#/$defs/categoryStatus" },
+        "replacementCode": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "catalogReadiness": {
+      "type": "string",
+      "enum": ["READY", "BETA", "INTERNAL"]
+    },
+    "inventoryItem": {
+      "type": "object",
+      "required": [
+        "category",
+        "readiness",
+        "editorialReadiness",
+        "operationalReadiness",
+        "completenessGatePassed",
+        "blockingIssues",
+        "editorialBlockingIssues",
+        "operationalBlockingIssues",
+        "operationalSampleCount",
+        "operationalDroppedRate",
+        "operationalUnknownAttributeRate",
+        "operationalRequiredMissingRate",
+        "operationalLowConfidenceRate"
+      ],
+      "properties": {
+        "category": { "$ref": "#/$defs/category" },
+        "readiness": { "$ref": "#/$defs/catalogReadiness" },
+        "editorialReadiness": { "$ref": "#/$defs/catalogReadiness" },
+        "operationalReadiness": { "$ref": "#/$defs/catalogReadiness" },
+        "completenessGatePassed": { "type": "boolean" },
+        "blockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "editorialBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationalBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationalSampleCount": { "type": "integer" },
+        "operationalDroppedRate": { "type": "number" },
+        "operationalUnknownAttributeRate": { "type": "number" },
+        "operationalRequiredMissingRate": { "type": "number" },
+        "operationalLowConfidenceRate": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "inventoryResponse": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/inventoryItem" }
+    },
+    "historyPoint": {
+      "type": "object",
+      "required": [
+        "windowEndDate",
+        "readiness",
+        "editorialReadiness",
+        "operationalReadiness",
+        "blockingIssues",
+        "editorialBlockingIssues",
+        "operationalBlockingIssues",
+        "operationalSampleCount",
+        "operationalDroppedRate",
+        "operationalUnknownAttributeRate",
+        "operationalRequiredMissingRate",
+        "operationalLowConfidenceRate"
+      ],
+      "properties": {
+        "windowEndDate": { "type": "string" },
+        "readiness": { "$ref": "#/$defs/catalogReadiness" },
+        "editorialReadiness": { "$ref": "#/$defs/catalogReadiness" },
+        "operationalReadiness": { "$ref": "#/$defs/catalogReadiness" },
+        "blockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "editorialBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationalBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationalSampleCount": { "type": "integer" },
+        "operationalDroppedRate": { "type": "number" },
+        "operationalUnknownAttributeRate": { "type": "number" },
+        "operationalRequiredMissingRate": { "type": "number" },
+        "operationalLowConfidenceRate": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "historyResponse": {
+      "type": "object",
+      "required": ["category", "requestedDays", "operationalWindowDays", "points"],
+      "properties": {
+        "category": { "$ref": "#/$defs/category" },
+        "requestedDays": { "type": "integer" },
+        "operationalWindowDays": { "type": "integer" },
+        "points": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/historyPoint" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifactStatus": {
+      "type": "object",
+      "required": ["declaredPath", "resourcePath", "exists"],
+      "properties": {
+        "declaredPath": { "type": "string" },
+        "resourcePath": { "type": "string" },
+        "exists": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "dataReleaseEntry": {
+      "type": "object",
+      "required": ["version", "releaseDate", "changes"],
+      "properties": {
+        "version": { "type": "string" },
+        "releaseDate": { "type": "string" },
+        "changes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "releasePolicy": {
+      "type": "object",
+      "required": [
+        "releaseCadence",
+        "owner",
+        "announceBeforeDays",
+        "removeAfterDays",
+        "requiredArtifactStatuses"
+      ],
+      "properties": {
+        "releaseCadence": { "type": "string" },
+        "owner": { "type": "string" },
+        "announceBeforeDays": { "type": "integer" },
+        "removeAfterDays": { "type": "integer" },
+        "requiredArtifactStatuses": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/artifactStatus" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "readinessRunCadence": {
+      "type": "object",
+      "required": ["dailyOperationalTimeUtc", "weeklySummaryDay", "weeklySummaryTimeUtc"],
+      "properties": {
+        "dailyOperationalTimeUtc": { "type": "string" },
+        "weeklySummaryDay": { "type": "string" },
+        "weeklySummaryTimeUtc": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "governanceHook": {
+      "type": "object",
+      "required": ["code", "trigger", "transport", "targetEnvVar", "description"],
+      "properties": {
+        "code": { "type": "string" },
+        "trigger": { "type": "string" },
+        "transport": { "type": "string" },
+        "targetEnvVar": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "readinessPolicy": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "runCadence",
+        "sqlChecks",
+        "automationScripts",
+        "runbooks",
+        "monthlyReleaseArtifacts",
+        "slaDaysByIssueType",
+        "governanceHooks"
+      ],
+      "properties": {
+        "schemaVersion": { "type": "string" },
+        "runCadence": { "$ref": "#/$defs/readinessRunCadence" },
+        "sqlChecks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "automationScripts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "runbooks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "monthlyReleaseArtifacts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "slaDaysByIssueType": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "governanceHooks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/governanceHook" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "compatibilityPolicy": {
+      "type": "object",
+      "required": [
+        "schemaVersioningMode",
+        "minSupportedClientStrategy",
+        "dataVersionMode",
+        "embeddedParityRequiredWhen",
+        "negotiatedDataVersionMustStayStable",
+        "requiredVersionHeaders",
+        "versionEndpoint"
+      ],
+      "properties": {
+        "schemaVersioningMode": { "type": "string" },
+        "minSupportedClientStrategy": { "type": "string" },
+        "dataVersionMode": { "type": "string" },
+        "embeddedParityRequiredWhen": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "negotiatedDataVersionMustStayStable": { "type": "boolean" },
+        "requiredVersionHeaders": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "versionEndpoint": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "governanceResponse": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "dataVersion",
+        "generatedAt",
+        "releasePolicy",
+        "readinessPolicy",
+        "compatibilityPolicy",
+        "releaseHistory"
+      ],
+      "properties": {
+        "schemaVersion": { "type": "string" },
+        "dataVersion": { "type": "string" },
+        "generatedAt": { "type": "string" },
+        "releasePolicy": { "$ref": "#/$defs/releasePolicy" },
+        "readinessPolicy": { "$ref": "#/$defs/readinessPolicy" },
+        "compatibilityPolicy": { "$ref": "#/$defs/compatibilityPolicy" },
+        "releaseHistory": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/dataReleaseEntry" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "governanceReport": {
+      "type": "object",
+      "required": [
+        "reportType",
+        "reportDate",
+        "generatedAt",
+        "windowStartDate",
+        "windowEndDate",
+        "totalCategories",
+        "readyCategories",
+        "betaCategories",
+        "internalCategories",
+        "categoriesWithBlockingIssues",
+        "dataVersion",
+        "schemaVersion"
+      ],
+      "properties": {
+        "reportType": { "type": "string" },
+        "reportDate": { "type": "string" },
+        "generatedAt": { "type": "string" },
+        "windowStartDate": { "type": "string" },
+        "windowEndDate": { "type": "string" },
+        "totalCategories": { "type": "integer" },
+        "readyCategories": { "type": "integer" },
+        "betaCategories": { "type": "integer" },
+        "internalCategories": { "type": "integer" },
+        "categoriesWithBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "dataVersion": { "type": "string" },
+        "schemaVersion": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "governanceReportsResponse": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/governanceReport" }
+    },
+    "liveValuesSnapshot": {
+      "type": "object",
+      "required": ["valuesByAttributeCode", "knownValuesByAttributeCode", "knownValueAliasesByAttributeCode", "brandOptions", "modelOptions"],
+      "properties": {
+        "valuesByAttributeCode": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "knownValuesByAttributeCode": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "knownValueAliasesByAttributeCode": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "brandOptions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "modelOptions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "versionResponse": {
+      "type": "object",
+      "required": ["schemaVersion", "dataVersion", "minSupportedClientSchemaVersion"],
+      "properties": {
+        "schemaVersion": { "type": "string" },
+        "dataVersion": { "type": "string" },
+        "minSupportedClientSchemaVersion": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "runtimeCompatibilityResponse": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "currentSchemaVersion",
+        "minSupportedClientSchemaVersion",
+        "currentDataVersion",
+        "policy"
+      ],
+      "properties": {
+        "schemaVersion": { "type": "string" },
+        "currentSchemaVersion": { "type": "string" },
+        "minSupportedClientSchemaVersion": { "type": "string" },
+        "currentDataVersion": { "type": "string" },
+        "policy": { "$ref": "#/$defs/compatibilityPolicy" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

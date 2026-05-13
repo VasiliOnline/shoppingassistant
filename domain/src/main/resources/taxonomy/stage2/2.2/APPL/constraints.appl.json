@@ -24,7 +24,31 @@
         "reason": "Для крупной техники не используем нетипичный розовый цвет."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории APPL.MAJOR по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -54,7 +78,31 @@
         "reason": "Климатическая техника в каталоге маркируется назначением."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории APPL.CLIMATE по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },

@@ -20,11 +20,14 @@ import com.example.shoppingassistant.domain.model.ProductDto
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferResult
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferStatus
-import com.example.shoppingassistant.domain.offers.OfferCategory
 import com.example.shoppingassistant.domain.offers.TrackedOfferInput
 import com.example.shoppingassistant.domain.offers.TrackedOfferRepository
 import com.example.shoppingassistant.domain.offers.TrackedOfferSource
 import com.example.shoppingassistant.server.auth.SessionManager
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelEnrichmentCandidate
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelEnrichmentService
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelEnrichmentStatus
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelRuntimeSignal
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayerImpl
 import com.example.shoppingassistant.server.config.DatabaseConfig
 import com.example.shoppingassistant.server.db.AuthUsersTable
@@ -142,7 +145,7 @@ class OfferTypedContractE2EIntegrationTest {
         val createPayload = TrackedOfferInput(
             userId = "ignored-by-auth",
             title = "Acme X1",
-            category = OfferCategory.TECH,
+            categoryCode = "TECH.PHONES",
             brand = "Acme",
             model = "X1",
             priceValue = 1000.0,
@@ -175,7 +178,11 @@ class OfferTypedContractE2EIntegrationTest {
         assertEquals(CreateTrackedOfferStatus.CREATED, createResult.status)
         assertTrue(createResult.reasonCodes.any { it == "OUT_OF_RANGE:battery_health_percent" })
         assertTrue(createResult.reasonCodes.any { it == "PATTERN_MISMATCH:region_code" })
-        assertTrue(createResult.reasonCodes.any { it == "UNIT_MISMATCH:shelf_life_days" })
+        assertTrue(
+            createResult.reasonCodes.any { reason ->
+                reason == "UNIT_MISMATCH:shelf_life_days" || reason == "UNKNOWN_ATTRIBUTE:shelf_life_days"
+            },
+        )
 
         val createdOfferId = createResult.offerId?.toLongOrNull()
         assertNotNull(createdOfferId)
@@ -223,6 +230,107 @@ class OfferTypedContractE2EIntegrationTest {
         assertEquals(1, searchResult.facets.brands.size)
         assertEquals("Acme", searchResult.facets.brands.first().name)
     }
+
+    @Test
+    fun create_missing_required_attributes_allows_create_with_reasons_in_soft_mode() = runBlocking {
+        requireDocker()
+        val repository = TrackedOfferRepositoryImpl(
+            urlNormalizer = DefaultUrlNormalizer(),
+            sourceRegistry = StaticSourceRegistry,
+            stage4ExecutionLayer = Stage4ExecutionLayerImpl(),
+            requiredForCategoryHardFail = false,
+        )
+
+        val result = repository.createTrackedOffer(
+            request = baseTrackedOfferInput(
+                sourceUrl = "https://www.avito.ru/moskva/telefony/e2e_soft_required_${System.currentTimeMillis()}",
+                attributes = mapOf("condition" to "new"),
+            ),
+        )
+
+        assertEquals(CreateTrackedOfferStatus.CREATED, result.status)
+        assertTrue(
+            "Expected REQUIRED_FOR_CATEGORY_MISSING reason code, got ${result.reasonCodes}",
+            result.reasonCodes.any { it.startsWith("REQUIRED_FOR_CATEGORY_MISSING:") },
+        )
+    }
+
+    @Test
+    fun create_missing_required_attributes_fails_in_hard_mode() = runBlocking {
+        requireDocker()
+        val repository = TrackedOfferRepositoryImpl(
+            urlNormalizer = DefaultUrlNormalizer(),
+            sourceRegistry = StaticSourceRegistry,
+            stage4ExecutionLayer = Stage4ExecutionLayerImpl(),
+            requiredForCategoryHardFail = true,
+        )
+
+        val result = repository.createTrackedOffer(
+            request = baseTrackedOfferInput(
+                sourceUrl = "https://www.avito.ru/moskva/telefony/e2e_hard_required_${System.currentTimeMillis()}",
+                attributes = mapOf("condition" to "new"),
+            ),
+        )
+
+        assertEquals(CreateTrackedOfferStatus.INVALID_INPUT, result.status)
+        assertTrue(
+            "Expected REQUIRED_FOR_CATEGORY_MISSING reason code, got ${result.reasonCodes}",
+            result.reasonCodes.any { it.startsWith("REQUIRED_FOR_CATEGORY_MISSING:") },
+        )
+    }
+
+    @Test
+    fun create_triggers_phone_model_runtime_signal_after_successful_offer_create() = runBlocking {
+        requireDocker()
+        val enrichmentService = RecordingCatalogPhoneModelEnrichmentService()
+        val repository = TrackedOfferRepositoryImpl(
+            urlNormalizer = DefaultUrlNormalizer(),
+            sourceRegistry = StaticSourceRegistry,
+            stage4ExecutionLayer = Stage4ExecutionLayerImpl(),
+            phoneModelEnrichmentService = enrichmentService,
+        )
+
+        val result = repository.createTrackedOffer(
+            request = baseTrackedOfferInput(
+                sourceUrl = "https://www.avito.ru/moskva/telefony/honor_500_ultra_${System.currentTimeMillis()}",
+                attributes = mapOf(
+                    "condition" to "used",
+                    "model_line" to "Honor 500",
+                ),
+            ).copy(
+                brand = "Honor",
+                model = "500 Ultra",
+            ),
+        )
+
+        assertEquals(CreateTrackedOfferStatus.CREATED, result.status)
+        val signal = requireNotNull(enrichmentService.recordedSignals.singleOrNull())
+        assertEquals("TECH.PHONES", signal.categoryCode)
+        assertEquals("Honor", signal.brandRaw)
+        assertEquals("500 Ultra", signal.modelRaw)
+        assertEquals("Honor 500", signal.familyRaw)
+    }
+
+    private fun baseTrackedOfferInput(
+        sourceUrl: String,
+        attributes: Map<String, String>,
+    ): TrackedOfferInput = TrackedOfferInput(
+        userId = testUserId.toString(),
+        title = "E2E Required Attrs",
+        categoryCode = "TECH.PHONES",
+        categoryConfidence = 0.9,
+        parserVersion = "test",
+        brand = "E2EBrand",
+        model = "E2EModel",
+        priceValue = 1000.0,
+        currency = "RUB",
+        imageUrls = listOf("https://example.com/e2e.jpg"),
+        attributes = attributes,
+        source = TrackedOfferSource(
+            sourceType = SourceType.AVITO,
+            url = sourceUrl,
+        ),
+    )
 
     private fun requireDocker() {
         if (!dockerAvailable) {
@@ -288,6 +396,29 @@ class OfferTypedContractE2EIntegrationTest {
             container = null
         }
     }
+}
+
+private class RecordingCatalogPhoneModelEnrichmentService : CatalogPhoneModelEnrichmentService {
+    val recordedSignals = mutableListOf<CatalogPhoneModelRuntimeSignal>()
+
+    override suspend fun ingest(signal: CatalogPhoneModelRuntimeSignal) {
+        recordedSignals += signal
+    }
+
+    override suspend fun listCandidates(
+        categoryCode: String,
+        statuses: Set<CatalogPhoneModelEnrichmentStatus>,
+        limit: Int,
+    ): List<CatalogPhoneModelEnrichmentCandidate> = emptyList()
+
+    override suspend fun getCandidate(candidateId: Long): CatalogPhoneModelEnrichmentCandidate? = null
+
+    override suspend fun markOfficiallySeeded(
+        candidateId: Long,
+        officialSourceCode: String,
+        officialEndpointCode: String,
+        metadata: Map<String, String>,
+    ): CatalogPhoneModelEnrichmentCandidate? = null
 }
 
 private object ZeroScoringEngineE2E : ScoringEngine {

@@ -1,0 +1,102 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+extends: FASH.APPAREL_COMMON
+positive_route_signals:
+  strong:
+  - женский
+  - женская
+  - женские
+  - для женщин
+  - на женщину
+  - для девушки
+  - девушке
+  - women
+  - womenswear
+  - lady
+  - ladies
+  strong_default_type_terms:
+  - платье
+  - юбка
+  - бюстгальтер
+  - лифчик
+  - бра
+  - женский топ
+  - блузка
+  - колготки
+  - купальник
+  type_terms:
+  - DRESS
+  - BLOUSE
+  - TOP
+  - TSHIRT
+  - SHIRT
+  - SKIRT
+  - JEANS
+  - TROUSERS
+  - LEGGINGS
+  - JACKET
+  - COAT
+  - DOWN_JACKET
+  - CARDIGAN
+  - SWEATER
+  - HOODIE
+  - JUMPSUIT
+  - LONGSLEEVE
+  - TANK_TOP
+  - POLO
+  - SWEATSHIRT
+  - SHORTS
+  - SUIT
+  - BLAZER
+  - TRACKSUIT
+  - UNDERWEAR
+  - BRA
+  - TIGHTS
+  - SOCKS
+  - VEST
+  - CHINOS
+  - CARGO_PANTS
+  - BOMBER
+  - DENIM_JACKET
+  - LEATHER_JACKET
+  - WINDBREAKER
+  - PARKA
+  - THERMAL_UNDERWEAR
+  - ACTIVE_TOP
+  - ACTIVE_BOTTOM
+  - ROMPER
+  - TURTLENECK
+  - RAINCOAT
+  - ROBE
+  - PAJAMAS
+  - SWIMWEAR
+  - UNIFORM
+  category_terms:
+  - одежда
+  - вещи
+  - гардероб
+negative_route_guards:
+- pattern: женские кроссовки|женская обувь|женские ботинки|туфли женские|сапоги женские|балетки женские|лоферы женские
+  target: FASH.SHOES
+  severity: FORCE_OTHER_ROUTE
+- pattern: женская сумка|женский рюкзак|клатч женский|шоппер женский
+  target: FASH.BAGS
+  severity: FORCE_OTHER_ROUTE
+- pattern: женский ремень|женские часы|женский кошелек|украшения женские|сережки|колье|браслет|шапка женская|кепка женская|шарф
+    женский
+  target: FASH.ACCESSORIES
+  severity: FORCE_OTHER_ROUTE
+- pattern: женский парфюм|женская косметика|помада|тушь|шампунь женский|крем для лица
+  target: BEAUTY
+  severity: FORCE_OTHER_ROUTE
+- pattern: детская|для девочки|девочке|подростковая для девочки|на девочку
+  target: FASH.KIDS
+  severity: ROUTE_OTHER_OR_AMBIGUOUS
+- pattern: мужская|мужские|для мужчин|мужской
+  target: FASH.MEN
+  severity: ROUTE_OTHER_OR_AMBIGUOUS
+ambiguity_policy:
+  generic_type_without_gender: return_route_candidates_FASH.WOMEN_FASH.MEN_FASH.KIDS_or_common_context_not_final
+  unisex_keyword: allow_FASH.WOMEN_if_listing_context_or_user_filter_is_women_else_UNISEX_candidate
+  strong_female_default_type_without_gender: route_to_FASH.WOMEN_candidate_if_adult_context_and_no_kids_or_male_terms
+  accessory_terms: always_guard_to_FASH.ACCESSORIES_unless apparel_type is BRA/TIGHTS/SOCKS/UNDERWEAR

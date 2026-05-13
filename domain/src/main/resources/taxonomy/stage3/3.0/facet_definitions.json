@@ -2,6 +2,7 @@
   {
     "facetKey": "brand",
     "titleRu": "Бренд",
+    "titleEn": "Brand",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "APPL.CLIMATE",
@@ -52,8 +53,8 @@
       "TECH.GAMING",
       "TECH.LAPTOPS",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.SMART_HOME",
       "TECH.TABLETS_EBOOKS",
       "TECH.TV_VIDEO"
@@ -71,6 +72,7 @@
   {
     "facetKey": "price",
     "titleRu": "Цена",
+    "titleEn": "Price",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "APPL.CLIMATE",
@@ -143,6 +145,7 @@
   {
     "facetKey": "condition",
     "titleRu": "Состояние",
+    "titleEn": "Condition",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "APPL.CLIMATE",
@@ -181,8 +184,8 @@
       "TECH.GAMING",
       "TECH.LAPTOPS",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.SMART_HOME",
       "TECH.TABLETS_EBOOKS",
       "TECH.TV_VIDEO"
@@ -198,8 +201,34 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "apparel_type",
+    "titleRu": "Тип одежды",
+    "titleEn": "Apparel Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "apparel_type",
+    "dictionaryCode": "apparel_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 40,
+      "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "storage_gb",
     "titleRu": "Память",
+    "titleEn": "Storage",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "TECH.GAMING",
@@ -220,6 +249,7 @@
   {
     "facetKey": "cuisine",
     "titleRu": "Кухня",
+    "titleEn": "Cuisine",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "FOOD.READY_MEALS"
@@ -235,8 +265,59 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "size_label",
+    "titleRu": "Размер",
+    "titleEn": "Size",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "size_label",
+    "dictionaryCode": "size_label",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 50,
+      "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "color_primary",
+    "titleRu": "Основной цвет",
+    "titleEn": "Primary Color",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "color_primary",
+    "dictionaryCode": "color_primary",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 60,
+      "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "cuisine_type",
     "titleRu": "Кухня (атрибут)",
+    "titleEn": "Cuisine (Attribute)",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "FOOD.READY_MEALS"
@@ -254,6 +335,7 @@
   {
     "facetKey": "color",
     "titleRu": "Цвет",
+    "titleEn": "Color",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "APPL.CLIMATE",
@@ -279,8 +361,8 @@
       "TECH.AUDIO",
       "TECH.CAMERAS",
       "TECH.GAMING",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.SMART_HOME",
       "TECH.TABLETS_EBOOKS",
       "TECH.TV_VIDEO"
@@ -296,8 +378,34 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "material_primary",
+    "titleRu": "Основной материал",
+    "titleEn": "Primary Material",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "material_primary",
+    "dictionaryCode": "material_primary",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 70,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "flavor",
     "titleRu": "Вкус",
+    "titleEn": "Flavor",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "BEAUTY.HEALTH",
@@ -318,8 +426,59 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "season",
+    "titleRu": "Сезон",
+    "titleEn": "Season",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "season",
+    "dictionaryCode": "season",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 80,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "fit",
+    "titleRu": "Посадка",
+    "titleEn": "Fit",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "fit",
+    "dictionaryCode": "fit",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 85,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "gender",
     "titleRu": "Пол",
+    "titleEn": "Gender",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "BEAUTY.FRAGRANCE",
@@ -343,6 +502,7 @@
   {
     "facetKey": "material",
     "titleRu": "Материал",
+    "titleEn": "Material",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "AUTO.ACCESSORIES",
@@ -387,6 +547,7 @@
   {
     "facetKey": "memory_gb",
     "titleRu": "Память (встроенная)",
+    "titleEn": "Built-in Storage",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "TECH.PHONES"
@@ -402,8 +563,34 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "pattern",
+    "titleRu": "Рисунок/принт",
+    "titleEn": "Pattern",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "pattern",
+    "dictionaryCode": "pattern",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 110,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "model",
     "titleRu": "Модель",
+    "titleEn": "Model",
     "valueType": "TEXT",
     "appliesToCategoryCodes": [
       "APPL.CLIMATE",
@@ -436,8 +623,8 @@
       "TECH.GAMING",
       "TECH.LAPTOPS",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.SMART_HOME",
       "TECH.TABLETS_EBOOKS",
       "TECH.TV_VIDEO"
@@ -453,8 +640,34 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "occasion",
+    "titleRu": "Назначение",
+    "titleEn": "Occasion",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "occasion",
+    "dictionaryCode": "occasion",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 120,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "model_line",
     "titleRu": "Линейка",
+    "titleEn": "Model Line",
     "valueType": "TEXT",
     "appliesToCategoryCodes": [
       "FASH.ACCESSORIES",
@@ -462,7 +675,8 @@
       "FASH.KIDS",
       "FASH.MEN",
       "FASH.SHOES",
-      "FASH.WOMEN"
+      "FASH.WOMEN",
+      "TECH.PHONES"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -477,6 +691,7 @@
   {
     "facetKey": "network_type",
     "titleRu": "Сеть",
+    "titleEn": "Network",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "TECH.PHONES",
@@ -494,8 +709,59 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "sleeve_length",
+    "titleRu": "Длина рукава",
+    "titleEn": "Sleeve Length",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "sleeve_length",
+    "dictionaryCode": "sleeve_length",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 140,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "length_type",
+    "titleRu": "Длина изделия",
+    "titleEn": "Garment Length",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "length_type",
+    "dictionaryCode": "length_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 150,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "os_family",
     "titleRu": "ОС",
+    "titleEn": "OS",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "TECH.GAMING",
@@ -518,6 +784,7 @@
   {
     "facetKey": "ram_gb",
     "titleRu": "ОЗУ",
+    "titleEn": "RAM",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "TECH.LAPTOPS",
@@ -535,11 +802,117 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "waist_rise",
+    "titleRu": "Посадка талии",
+    "titleEn": "Waist Rise",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "waist_rise",
+    "dictionaryCode": "waist_rise",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 160,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "refresh_rate_hz",
+    "titleRu": "Частота обновления",
+    "titleEn": "Refresh Rate",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 165,
+      "pinned": false,
+      "hidden": false,
+      "format": "HZ"
+    },
+    "effectiveFrom": "2026-03-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "chipset_family",
+    "titleRu": "Чипсет",
+    "titleEn": "Chipset",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 166,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-03-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "release_year",
+    "titleRu": "Год релиза",
+    "titleEn": "Release Year",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 167,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "leg_fit",
+    "titleRu": "Крой штанины",
+    "titleEn": "Leg Fit",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "leg_fit",
+    "dictionaryCode": "leg_fit",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 170,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "screen_size_inch",
     "titleRu": "Диагональ экрана",
+    "titleEn": "Screen Size",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "TECH.LAPTOPS",
+      "TECH.PHONES",
       "TECH.TABLETS_EBOOKS",
       "TECH.TV_VIDEO"
     ],
@@ -554,8 +927,99 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "wireless_charging",
+    "titleRu": "Беспроводная зарядка",
+    "titleEn": "Wireless Charging",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 171,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "esim_support",
+    "titleRu": "eSIM",
+    "titleEn": "eSIM",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 172,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "battery_mah",
+    "titleRu": "Батарея (мА·ч)",
+    "titleEn": "Battery Capacity",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 173,
+      "pinned": false,
+      "hidden": true,
+      "format": null
+    },
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wired_charging_w",
+    "titleRu": "Проводная зарядка",
+    "titleEn": "Wired Charging",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 174,
+      "pinned": false,
+      "hidden": true,
+      "format": "W"
+    },
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ip_rating",
+    "titleRu": "Защита IP",
+    "titleEn": "IP Rating",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.PHONES"
+    ],
+    "source": "PRODUCT",
+    "ui": {
+      "order": 175,
+      "pinned": false,
+      "hidden": true,
+      "format": null
+    },
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "size_eu",
     "titleRu": "Размер EU",
+    "titleEn": "EU Size",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FASH.KIDS",
@@ -576,6 +1040,7 @@
   {
     "facetKey": "size_uk",
     "titleRu": "Размер UK",
+    "titleEn": "UK Size",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FASH.SHOES"
@@ -593,6 +1058,7 @@
   {
     "facetKey": "size_us",
     "titleRu": "Размер US",
+    "titleEn": "US Size",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FASH.SHOES"
@@ -610,6 +1076,7 @@
   {
     "facetKey": "volume_ml",
     "titleRu": "Объём",
+    "titleEn": "Volume",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "BEAUTY.BODYCARE",
@@ -636,6 +1103,7 @@
   {
     "facetKey": "allergen_profile",
     "titleRu": "Аллергены",
+    "titleEn": "Allergens",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -656,6 +1124,7 @@
   {
     "facetKey": "storage_regime",
     "titleRu": "Режим хранения",
+    "titleEn": "Storage Regime",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -676,6 +1145,7 @@
   {
     "facetKey": "spiciness_level",
     "titleRu": "Острота",
+    "titleEn": "Spiciness",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "FOOD.READY_MEALS"
@@ -693,6 +1163,7 @@
   {
     "facetKey": "is_gluten_free",
     "titleRu": "Без глютена",
+    "titleEn": "Gluten-Free",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -713,6 +1184,7 @@
   {
     "facetKey": "shelf_life_days",
     "titleRu": "Срок годности (дней)",
+    "titleEn": "Shelf Life (days)",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -733,6 +1205,7 @@
   {
     "facetKey": "calories_kcal_per_serving",
     "titleRu": "Калории на порцию",
+    "titleEn": "Calories per Serving",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -753,6 +1226,7 @@
   {
     "facetKey": "protein_per_serving_gram",
     "titleRu": "Белок на порцию (г)",
+    "titleEn": "Protein per Serving (g)",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -773,6 +1247,7 @@
   {
     "facetKey": "fat_per_serving_gram",
     "titleRu": "Жиры на порцию (г)",
+    "titleEn": "Fat per Serving (g)",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -793,6 +1268,7 @@
   {
     "facetKey": "carbs_per_serving_gram",
     "titleRu": "Углеводы на порцию (г)",
+    "titleEn": "Carbs per Serving (g)",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "FOOD.DRINKS",
@@ -808,6 +1284,3173 @@
       "format": "G"
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "type_of_item",
+    "titleRu": "Тип товара",
+    "titleEn": "Type Of Item",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "AUTO.ACCESSORIES",
+      "AUTO.PARTS",
+      "BEAUTY.HEALTH",
+      "FASH.ACCESSORIES",
+      "FASH.SHOES",
+      "FOOD.DRINKS",
+      "FOOD.GROCERIES",
+      "FOOD.READY_MEALS",
+      "FOOD.SNACKS",
+      "TECH.AUDIO",
+      "TECH.GAMING",
+      "TECH.PHONES",
+      "TECH.SMART_HOME"
+    ],
+    "attributeCode": "type_of_item",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 310,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "target_gender",
+    "titleRu": "Пол/сегмент",
+    "titleEn": "Target Gender",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "target_gender",
+    "dictionaryCode": "target_gender",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 320,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "age_group",
+    "titleRu": "Возрастная группа",
+    "titleEn": "Age Group",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "age_group",
+    "dictionaryCode": "age_group",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 330,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "color_secondary",
+    "titleRu": "Дополнительный цвет",
+    "titleEn": "Color Secondary",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "color_secondary",
+    "dictionaryCode": "color_secondary",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 340,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "style_aesthetic",
+    "titleRu": "Стиль",
+    "titleEn": "Style Aesthetic",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "style_aesthetic",
+    "dictionaryCode": "style_aesthetic",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 350,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "silhouette",
+    "titleRu": "Силуэт",
+    "titleEn": "Silhouette",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "silhouette",
+    "dictionaryCode": "silhouette",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 360,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "closure_type",
+    "titleRu": "Застёжка",
+    "titleEn": "Closure Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "closure_type",
+    "dictionaryCode": "closure_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 370,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pack_type",
+    "titleRu": "Формат продажи",
+    "titleEn": "Pack Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "pack_type",
+    "dictionaryCode": "pack_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 380,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "authenticity_status",
+    "titleRu": "Оригинальность",
+    "titleEn": "Authenticity Status",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "authenticity_status",
+    "dictionaryCode": "authenticity_status",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 390,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "neckline",
+    "titleRu": "Вырез",
+    "titleEn": "Neckline",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "neckline",
+    "dictionaryCode": "neckline",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 400,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "collar_type",
+    "titleRu": "Тип воротника",
+    "titleEn": "Collar Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "collar_type",
+    "dictionaryCode": "collar_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 410,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "hood",
+    "titleRu": "Капюшон",
+    "titleEn": "Hood",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "hood",
+    "dictionaryCode": "hood",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 420,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "lining",
+    "titleRu": "Подкладка",
+    "titleEn": "Lining",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "lining",
+    "dictionaryCode": "lining",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 430,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pockets",
+    "titleRu": "Карманы",
+    "titleEn": "Pockets",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "pockets",
+    "dictionaryCode": "pockets",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 440,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "waist_type",
+    "titleRu": "Пояс/талия",
+    "titleEn": "Waist Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "waist_type",
+    "dictionaryCode": "waist_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 450,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "dress_length",
+    "titleRu": "Длина платья",
+    "titleEn": "Dress Length",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "dress_length",
+    "dictionaryCode": "dress_length",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 460,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "skirt_length",
+    "titleRu": "Длина юбки",
+    "titleEn": "Skirt Length",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "skirt_length",
+    "dictionaryCode": "skirt_length",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 470,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "outerwear_weight",
+    "titleRu": "Теплота верхней одежды",
+    "titleEn": "Outerwear Weight",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "outerwear_weight",
+    "dictionaryCode": "outerwear_weight",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 480,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "water_resistance",
+    "titleRu": "Защита от воды",
+    "titleEn": "Water Resistance",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "water_resistance",
+    "dictionaryCode": "water_resistance",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 490,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "windproof",
+    "titleRu": "Защита от ветра",
+    "titleEn": "Windproof",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "windproof",
+    "dictionaryCode": "windproof",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 500,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "breathable",
+    "titleRu": "Дышащая ткань",
+    "titleEn": "Breathable",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "breathable",
+    "dictionaryCode": "breathable",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 510,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "stretch",
+    "titleRu": "Эластичность",
+    "titleEn": "Stretch",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "stretch",
+    "dictionaryCode": "stretch",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 520,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "insulation_material",
+    "titleRu": "Утеплитель",
+    "titleEn": "Insulation Material",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "insulation_material",
+    "dictionaryCode": "insulation_material",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 530,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "bra_cup",
+    "titleRu": "Чашка бюстгальтера",
+    "titleEn": "Bra Cup",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "bra_cup",
+    "dictionaryCode": "bra_cup",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 540,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "activity",
+    "titleRu": "Вид активности",
+    "titleEn": "Activity",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "activity",
+    "dictionaryCode": "activity",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 550,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compression_level",
+    "titleRu": "Компрессия",
+    "titleEn": "Compression Level",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "FASH.KIDS",
+      "FASH.MEN",
+      "FASH.WOMEN"
+    ],
+    "attributeCode": "compression_level",
+    "dictionaryCode": "compression_level",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 560,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "accessory_type",
+    "titleRu": "Тип аксессуара",
+    "titleEn": "Accessory Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "accessory_type",
+    "dictionaryCode": "accessory_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 570,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "accessory_subtype",
+    "titleRu": "Подтип аксессуара",
+    "titleEn": "Accessory Subtype",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "accessory_subtype",
+    "dictionaryCode": "accessory_subtype",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 580,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_phone_brand",
+    "titleRu": "Совместимый бренд телефона",
+    "titleEn": "Compatible Phone Brand",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "compatible_phone_brand",
+    "dictionaryCode": "compatible_phone_brand",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 590,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_phone_family",
+    "titleRu": "Совместимая линейка телефона",
+    "titleEn": "Compatible Phone Family",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "compatible_phone_family",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 600,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_phone_model",
+    "titleRu": "Совместимая модель телефона",
+    "titleEn": "Compatible Phone Model",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "compatible_phone_model",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 610,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pack_quantity",
+    "titleRu": "Количество в комплекте",
+    "titleEn": "Pack Quantity",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "pack_quantity",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 620,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "included_items",
+    "titleRu": "Что в комплекте",
+    "titleEn": "Included Items",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "included_items",
+    "dictionaryCode": "included_items",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 630,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "certification",
+    "titleRu": "Сертификация/маркировка",
+    "titleEn": "Certification",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "certification",
+    "dictionaryCode": "certification",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 640,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "warranty_months",
+    "titleRu": "Гарантия, месяцев",
+    "titleEn": "Warranty Months",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "warranty_months",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 650,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "case_form_factor",
+    "titleRu": "Форм-фактор чехла",
+    "titleEn": "Case Form Factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "case_form_factor",
+    "dictionaryCode": "case_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 660,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "protection_level",
+    "titleRu": "Уровень защиты",
+    "titleEn": "Protection Level",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "protection_level",
+    "dictionaryCode": "protection_level",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 670,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "case_features",
+    "titleRu": "Особенности чехла",
+    "titleEn": "Case Features",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "case_features",
+    "dictionaryCode": "case_features",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 680,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "magnetic_alignment",
+    "titleRu": "Магнитное позиционирование",
+    "titleEn": "Magnetic Alignment",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "magnetic_alignment",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 690,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wireless_charging_compatible",
+    "titleRu": "Совместим с беспроводной зарядкой",
+    "titleEn": "Wireless Charging Compatible",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "wireless_charging_compatible",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 700,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "drop_protection_m",
+    "titleRu": "Защита от падения, м",
+    "titleEn": "Drop Protection M",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "drop_protection_m",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 710,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "protector_type",
+    "titleRu": "Тип защитного покрытия",
+    "titleEn": "Protector Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "protector_type",
+    "dictionaryCode": "protector_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 720,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "protector_coverage",
+    "titleRu": "Покрытие защитного стекла/плёнки",
+    "titleEn": "Protector Coverage",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "protector_coverage",
+    "dictionaryCode": "protector_coverage",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 730,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "hardness_rating",
+    "titleRu": "Твёрдость",
+    "titleEn": "Hardness Rating",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "hardness_rating",
+    "dictionaryCode": "hardness_rating",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 740,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "thickness_mm",
+    "titleRu": "Толщина, мм",
+    "titleEn": "Thickness Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "thickness_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 750,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "oleophobic_coating",
+    "titleRu": "Олеофобное покрытие",
+    "titleEn": "Oleophobic Coating",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "oleophobic_coating",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 760,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "privacy_filter",
+    "titleRu": "Антишпион/приватность",
+    "titleEn": "Privacy Filter",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "privacy_filter",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 770,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "case_friendly",
+    "titleRu": "Совместимо с чехлом",
+    "titleEn": "Case Friendly",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "case_friendly",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 780,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connector_input",
+    "titleRu": "Входной разъём",
+    "titleEn": "Connector Input",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "connector_input",
+    "dictionaryCode": "connector_input",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 790,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connector_output",
+    "titleRu": "Выходной разъём",
+    "titleEn": "Connector Output",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "connector_output",
+    "dictionaryCode": "connector_output",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 800,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connector_a",
+    "titleRu": "Разъём A",
+    "titleEn": "Connector A",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "connector_a",
+    "dictionaryCode": "connector_a",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 810,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connector_b",
+    "titleRu": "Разъём B",
+    "titleEn": "Connector B",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "connector_b",
+    "dictionaryCode": "connector_b",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 820,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cable_length_m",
+    "titleRu": "Длина кабеля, м",
+    "titleEn": "Cable Length M",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "cable_length_m",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 830,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_power_watt",
+    "titleRu": "Макс. мощность, Вт",
+    "titleEn": "Max Power Watt",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "max_power_watt",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 840,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "charging_protocol",
+    "titleRu": "Протокол быстрой зарядки",
+    "titleEn": "Charging Protocol",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "charging_protocol",
+    "dictionaryCode": "charging_protocol",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 850,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "data_transfer",
+    "titleRu": "Передача данных",
+    "titleEn": "Data Transfer",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "data_transfer",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 860,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "data_standard",
+    "titleRu": "Стандарт передачи данных",
+    "titleEn": "Data Standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "data_standard",
+    "dictionaryCode": "data_standard",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 870,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ports_count",
+    "titleRu": "Количество портов",
+    "titleEn": "Ports Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "ports_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 880,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "output_ports",
+    "titleRu": "Выходные порты",
+    "titleEn": "Output Ports",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "output_ports",
+    "dictionaryCode": "output_ports",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 890,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wall_charger_plug",
+    "titleRu": "Тип вилки",
+    "titleEn": "Wall Charger Plug",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "wall_charger_plug",
+    "dictionaryCode": "wall_charger_plug",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 900,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "car_charger_socket",
+    "titleRu": "Автомобильный разъём",
+    "titleEn": "Car Charger Socket",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "car_charger_socket",
+    "dictionaryCode": "car_charger_socket",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 910,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wireless_standard",
+    "titleRu": "Стандарт беспроводной зарядки",
+    "titleEn": "Wireless Standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "wireless_standard",
+    "dictionaryCode": "wireless_standard",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 920,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wireless_form_factor",
+    "titleRu": "Форм-фактор беспроводной зарядки",
+    "titleEn": "Wireless Form Factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "wireless_form_factor",
+    "dictionaryCode": "wireless_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 930,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "capacity_mah",
+    "titleRu": "Ёмкость, мА·ч",
+    "titleEn": "Capacity Mah",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "capacity_mah",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 940,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "capacity_wh",
+    "titleRu": "Ёмкость, Вт·ч",
+    "titleEn": "Capacity Wh",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "capacity_wh",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 950,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pass_through_charging",
+    "titleRu": "Сквозная зарядка",
+    "titleEn": "Pass Through Charging",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "pass_through_charging",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 960,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "built_in_cable",
+    "titleRu": "Встроенный кабель",
+    "titleEn": "Built In Cable",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "built_in_cable",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 970,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "mount_location",
+    "titleRu": "Место установки",
+    "titleEn": "Mount Location",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "mount_location",
+    "dictionaryCode": "mount_location",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 980,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "mount_attachment",
+    "titleRu": "Тип крепления",
+    "titleEn": "Mount Attachment",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "mount_attachment",
+    "dictionaryCode": "mount_attachment",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 990,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "rotation_support",
+    "titleRu": "Поворот/регулировка",
+    "titleEn": "Rotation Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "rotation_support",
+    "dictionaryCode": "rotation_support",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1000,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "grip_stand_type",
+    "titleRu": "Тип держателя/подставки",
+    "titleEn": "Grip Stand Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "grip_stand_type",
+    "dictionaryCode": "grip_stand_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1010,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "memory_card_type",
+    "titleRu": "Тип карты памяти",
+    "titleEn": "Memory Card Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "memory_card_type",
+    "dictionaryCode": "memory_card_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1020,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "storage_capacity_gb",
+    "titleRu": "Объём памяти, ГБ",
+    "titleEn": "Storage Capacity Gb",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "storage_capacity_gb",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1030,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "speed_class",
+    "titleRu": "Класс скорости",
+    "titleEn": "Speed Class",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "speed_class",
+    "dictionaryCode": "speed_class",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1040,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "app_performance_class",
+    "titleRu": "Класс приложений",
+    "titleEn": "App Performance Class",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "app_performance_class",
+    "dictionaryCode": "app_performance_class",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1050,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "sim_tool_type",
+    "titleRu": "Тип SIM-аксессуара",
+    "titleEn": "Sim Tool Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "sim_tool_type",
+    "dictionaryCode": "sim_tool_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1060,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "stylus_type",
+    "titleRu": "Тип стилуса",
+    "titleEn": "Stylus Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "stylus_type",
+    "dictionaryCode": "stylus_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1070,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "tip_type",
+    "titleRu": "Тип наконечника",
+    "titleEn": "Tip Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "tip_type",
+    "dictionaryCode": "tip_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1080,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "repair_part_type",
+    "titleRu": "Тип запчасти",
+    "titleEn": "Repair Part Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "repair_part_type",
+    "dictionaryCode": "repair_part_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1090,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "waterproof_rating",
+    "titleRu": "Водозащита",
+    "titleEn": "Waterproof Rating",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "waterproof_rating",
+    "dictionaryCode": "waterproof_rating",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1100,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cleaning_kit_type",
+    "titleRu": "Тип набора для чистки",
+    "titleEn": "Cleaning Kit Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "cleaning_kit_type",
+    "dictionaryCode": "cleaning_kit_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1110,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "target_ecosystem",
+    "titleRu": "Экосистема/платформа",
+    "titleEn": "Target Ecosystem",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "target_ecosystem",
+    "dictionaryCode": "target_ecosystem",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1120,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_screen_size_min_in",
+    "titleRu": "Мин. диагональ совместимого телефона, дюймы",
+    "titleEn": "Compatible Screen Size Min In",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "compatible_screen_size_min_in",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1130,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_screen_size_max_in",
+    "titleRu": "Макс. диагональ совместимого телефона, дюймы",
+    "titleEn": "Compatible Screen Size Max In",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "compatible_screen_size_max_in",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1140,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "phone_width_min_mm",
+    "titleRu": "Мин. ширина телефона, мм",
+    "titleEn": "Phone Width Min Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "phone_width_min_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1150,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "phone_width_max_mm",
+    "titleRu": "Макс. ширина телефона, мм",
+    "titleEn": "Phone Width Max Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "phone_width_max_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1160,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "case_has_magsafe_ring",
+    "titleRu": "Кольцо MagSafe в чехле",
+    "titleEn": "Case Has Magsafe Ring",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "case_has_magsafe_ring",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1170,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "raised_screen_lip_mm",
+    "titleRu": "Бортик экрана, мм",
+    "titleEn": "Raised Screen Lip Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "raised_screen_lip_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1180,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "raised_camera_lip_mm",
+    "titleRu": "Бортик камеры, мм",
+    "titleEn": "Raised Camera Lip Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "raised_camera_lip_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1190,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "anti_yellowing",
+    "titleRu": "Антижелтизна",
+    "titleEn": "Anti Yellowing",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "anti_yellowing",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1200,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "card_slots_count",
+    "titleRu": "Количество карманов для карт",
+    "titleEn": "Card Slots Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "card_slots_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1210,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "strap_included",
+    "titleRu": "Ремешок в комплекте",
+    "titleEn": "Strap Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "strap_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1220,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "protector_installation_frame",
+    "titleRu": "Рамка для установки",
+    "titleEn": "Protector Installation Frame",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "protector_installation_frame",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1230,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "blue_light_filter",
+    "titleRu": "Фильтр синего света",
+    "titleEn": "Blue Light Filter",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "blue_light_filter",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1240,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "anti_glare",
+    "titleRu": "Антиблик",
+    "titleEn": "Anti Glare",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "anti_glare",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1250,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "scratch_resistant",
+    "titleRu": "Защита от царапин",
+    "titleEn": "Scratch Resistant",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "scratch_resistant",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1260,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "charger_technology",
+    "titleRu": "Технология зарядного устройства",
+    "titleEn": "Charger Technology",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "charger_technology",
+    "dictionaryCode": "charger_technology",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1270,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "power_class",
+    "titleRu": "Класс мощности",
+    "titleEn": "Power Class",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "power_class",
+    "dictionaryCode": "power_class",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1280,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "safety_protections",
+    "titleRu": "Защиты питания",
+    "titleEn": "Safety Protections",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "safety_protections",
+    "dictionaryCode": "safety_protections",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1290,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "input_voltage_range",
+    "titleRu": "Входное напряжение",
+    "titleEn": "Input Voltage Range",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "input_voltage_range",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1300,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_current_amp",
+    "titleRu": "Макс. ток, А",
+    "titleEn": "Max Current Amp",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "max_current_amp",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1310,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cable_shape",
+    "titleRu": "Форма кабеля",
+    "titleEn": "Cable Shape",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "cable_shape",
+    "dictionaryCode": "cable_shape",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1320,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connector_a_form_factor",
+    "titleRu": "Форм-фактор разъёма A",
+    "titleEn": "Connector A Form Factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "connector_a_form_factor",
+    "dictionaryCode": "connector_a_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1330,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connector_b_form_factor",
+    "titleRu": "Форм-фактор разъёма B",
+    "titleEn": "Connector B Form Factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "connector_b_form_factor",
+    "dictionaryCode": "connector_b_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1340,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "e_marker_chip",
+    "titleRu": "E-marker чип",
+    "titleEn": "E Marker Chip",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "e_marker_chip",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1350,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "video_output_support",
+    "titleRu": "Поддержка видео",
+    "titleEn": "Video Output Support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "video_output_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1360,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "otg_support",
+    "titleRu": "OTG",
+    "titleEn": "Otg Support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "otg_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1370,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pass_through_power_watt",
+    "titleRu": "Сквозная зарядка, Вт",
+    "titleEn": "Pass Through Power Watt",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "pass_through_power_watt",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1380,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "battery_cell_type",
+    "titleRu": "Тип аккумуляторных ячеек",
+    "titleEn": "Battery Cell Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "battery_cell_type",
+    "dictionaryCode": "battery_cell_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1390,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "charge_indicator_type",
+    "titleRu": "Индикатор заряда",
+    "titleEn": "Charge Indicator Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "charge_indicator_type",
+    "dictionaryCode": "charge_indicator_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1400,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "airline_safe",
+    "titleRu": "Допустимо в самолёт",
+    "titleEn": "Airline Safe",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "airline_safe",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1410,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wireless_device_targets",
+    "titleRu": "Для каких устройств беспроводная зарядка",
+    "titleEn": "Wireless Device Targets",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "wireless_device_targets",
+    "dictionaryCode": "wireless_device_targets",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1420,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_wireless_devices",
+    "titleRu": "Макс. устройств беспроводной зарядки",
+    "titleEn": "Max Wireless Devices",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "max_wireless_devices",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1430,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "case_thickness_max_mm",
+    "titleRu": "Макс. толщина чехла для зарядки, мм",
+    "titleEn": "Case Thickness Max Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "case_thickness_max_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1440,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cooling_type",
+    "titleRu": "Тип охлаждения",
+    "titleEn": "Cooling Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "cooling_type",
+    "dictionaryCode": "cooling_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1450,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "holder_mechanism",
+    "titleRu": "Механизм держателя",
+    "titleEn": "Holder Mechanism",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "holder_mechanism",
+    "dictionaryCode": "holder_mechanism",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1460,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "arm_length_cm",
+    "titleRu": "Длина штанги/руки, см",
+    "titleEn": "Arm Length Cm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "arm_length_cm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1470,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "tripod_mount_thread",
+    "titleRu": "Резьба штатива",
+    "titleEn": "Tripod Mount Thread",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "tripod_mount_thread",
+    "dictionaryCode": "tripod_mount_thread",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1480,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "remote_shutter_included",
+    "titleRu": "Пульт в комплекте",
+    "titleEn": "Remote Shutter Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "remote_shutter_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1490,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "bluetooth_version",
+    "titleRu": "Bluetooth версия",
+    "titleEn": "Bluetooth Version",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "bluetooth_version",
+    "dictionaryCode": "bluetooth_version",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1500,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "light_diameter_cm",
+    "titleRu": "Диаметр кольцевой лампы, см",
+    "titleEn": "Light Diameter Cm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "light_diameter_cm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1510,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "light_color_temperature_k",
+    "titleRu": "Цветовая температура, K",
+    "titleEn": "Light Color Temperature K",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "light_color_temperature_k",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1520,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "brightness_levels",
+    "titleRu": "Уровни яркости",
+    "titleEn": "Brightness Levels",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "brightness_levels",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1530,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "game_controller_layout",
+    "titleRu": "Раскладка контроллера",
+    "titleEn": "Game Controller Layout",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "game_controller_layout",
+    "dictionaryCode": "game_controller_layout",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1540,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cooler_power_watt",
+    "titleRu": "Мощность кулера, Вт",
+    "titleEn": "Cooler Power Watt",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "cooler_power_watt",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1550,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "memory_read_speed_mbps",
+    "titleRu": "Скорость чтения, МБ/с",
+    "titleEn": "Memory Read Speed Mbps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "memory_read_speed_mbps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1560,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "memory_write_speed_mbps",
+    "titleRu": "Скорость записи, МБ/с",
+    "titleEn": "Memory Write Speed Mbps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "memory_write_speed_mbps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1570,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "part_quality_grade",
+    "titleRu": "Класс/качество запчасти",
+    "titleEn": "Part Quality Grade",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "part_quality_grade",
+    "dictionaryCode": "part_quality_grade",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1580,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "repair_consumable_type",
+    "titleRu": "Тип расходника для ремонта",
+    "titleEn": "Repair Consumable Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "repair_consumable_type",
+    "dictionaryCode": "repair_consumable_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1590,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "repair_tool_type",
+    "titleRu": "Тип инструмента для ремонта",
+    "titleEn": "Repair Tool Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "repair_tool_type",
+    "dictionaryCode": "repair_tool_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1600,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "includes_adhesive",
+    "titleRu": "Клей/проклейка в комплекте",
+    "titleEn": "Includes Adhesive",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "includes_adhesive",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1610,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "waterproof_seal_included",
+    "titleRu": "Влагозащитная проклейка в комплекте",
+    "titleEn": "Waterproof Seal Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "waterproof_seal_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1620,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "skin_finish",
+    "titleRu": "Финиш скина/наклейки",
+    "titleEn": "Skin Finish",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "skin_finish",
+    "dictionaryCode": "skin_finish",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1630,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "adhesive_type",
+    "titleRu": "Тип клейкой основы",
+    "titleEn": "Adhesive Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "adhesive_type",
+    "dictionaryCode": "adhesive_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1640,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "waterproof_pouch_size",
+    "titleRu": "Размер водонепроницаемого пакета",
+    "titleEn": "Waterproof Pouch Size",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "attributeCode": "waterproof_pouch_size",
+    "dictionaryCode": "waterproof_pouch_size",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 1650,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-11",
     "effectiveTo": null
   }
 ]

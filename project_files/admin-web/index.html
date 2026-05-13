@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catalog Governance Admin</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <div class="sidebar__badge">CG</div>
+        <div>
+          <div class="sidebar__eyebrow">Internal Backoffice</div>
+          <h1>Catalog Governance</h1>
+        </div>
+      </div>
+
+      <div class="sidebar__group">
+        <label class="field">
+          <span class="field__label">Backend control plane</span>
+          <div class="field__inline">
+            <input id="backend-url-input" class="field__input" type="url" placeholder="http://127.0.0.1:8080">
+            <button class="button button--ghost" data-action="save-backend-url">Сохранить</button>
+          </div>
+          <div id="backend-status" class="backend-status"></div>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Активная ветка</span>
+          <select id="category-select" class="field__input"></select>
+          <div id="category-status" class="field__help"></div>
+        </label>
+      </div>
+
+      <nav id="nav" class="nav"></nav>
+
+      <div class="sidebar__footer">
+        <button class="button button--primary button--block" data-action="reload-all">Обновить данные</button>
+        <p class="sidebar__hint">Админка показывает продуктовые сигналы, а сырые детали прячет в инспектор.</p>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar__lead">
+          <div class="topbar__eyebrow">Decision-centric control plane</div>
+          <div class="topbar__headline">
+            <h2 id="section-title" class="topbar__title">Overview</h2>
+            <div class="context-help-anchor">
+              <button
+                id="section-help-button"
+                class="icon-button"
+                type="button"
+                data-action="toggle-help"
+                data-help-key="overview"
+                aria-label="Подсказка по текущему разделу"
+                aria-expanded="false"
+              >?</button>
+              <div id="section-help" class="context-help context-help--hidden"></div>
+            </div>
+          </div>
+          <div id="section-context" class="chips topbar__context"></div>
+        </div>
+        <div class="topbar__actions">
+          <button class="button button--ghost" data-action="trigger-refresh-all">Refresh matched sources</button>
+          <button class="button button--ghost" data-action="trigger-rebuild">Rebuild branch</button>
+        </div>
+      </header>
+
+      <section id="banner" class="banner banner--hidden"></section>
+
+      <main id="content" class="content"></main>
+    </div>
+
+    <aside id="detail-drawer" class="drawer drawer--empty">
+      <div class="drawer__header">
+        <div>
+          <div class="drawer__eyebrow">Inspector</div>
+          <h3 id="drawer-title">Ничего не выбрано</h3>
+        </div>
+        <button class="button button--ghost" data-action="clear-detail">Очистить</button>
+      </div>
+      <div id="drawer-body" class="drawer__body">
+        <p class="drawer__placeholder">Кликните на ветку, source, run или событие, чтобы увидеть структурированные детали без копания в логах.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div id="toast" class="toast toast--hidden"></div>
+
+  <template id="empty-state-template">
+    <div class="empty-state">
+      <h3 class="empty-state__title"></h3>
+      <p class="empty-state__text"></p>
+    </div>
+  </template>
+
+  <script type="module" src="./app.js?v=20260405-1245"></script>
+</body>
+</html>

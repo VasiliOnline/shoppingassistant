@@ -332,8 +332,23 @@ fun validateAuthPassword(
     password: String,
     shortError: String,
 ): String? {
-    if (password.length < 6) {
+    if (password.length < 8) {
         return shortError
+    }
+    return null
+}
+
+fun validateAuthPhone(
+    phone: String,
+    emptyError: String,
+    invalidError: String,
+): String? {
+    val digits = phone.filter { it.isDigit() }
+    if (digits.isEmpty()) {
+        return emptyError
+    }
+    if (digits.length !in 10..15) {
+        return invalidError
     }
     return null
 }

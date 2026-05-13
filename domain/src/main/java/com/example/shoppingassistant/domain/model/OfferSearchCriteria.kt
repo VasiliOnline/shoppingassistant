@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.model
 
+import com.example.shoppingassistant.domain.profile.DeliveryAddressLocation
 import kotlinx.serialization.Serializable
 
 /**
@@ -23,10 +24,12 @@ data class OfferSearchCriteria(
     val deliveryChannels: List<String> = emptyList(),
     val attributes: Map<String, TypedAttributeValue> = emptyMap(),
     val attributeFilters: Map<String, TypedAttributeFilter> = emptyMap(),
+    val deliveryAddress: DeliveryAddressLocation? = null,
     val userCountry: String? = null,
     val userLanguage: String? = null,
     val limit: Int = 20,
     val sort: OfferSort = OfferSort.RANK,
+    val sellerId: Long? = null,
     val sellerQuery: String? = null,
     val sellerCity: String? = null,
     val sellerCountryCode: String? = null,
@@ -72,6 +75,7 @@ enum class OfferSort {
     RATING_DESC,
     DELIVERY_ASC,
     NEWEST,
+    MODEL_FRESHNESS_DESC,
     DISTANCE_ASC,
 }
 

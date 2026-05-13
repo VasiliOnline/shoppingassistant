@@ -1,0 +1,31 @@
+version: '1.0'
+categoryCode: FASH.MEN
+artifact_type: child_override_pack
+extends: FASH.APPAREL_COMMON
+canonical_category_must_exist: true
+file_mapping:
+  schema_pack.fash_men.v1_0.json: pack manifest / import metadata
+  child_defaults.fash_men.v1_0.yaml: Stage22 child profile defaults and inheritance config
+  type_priorities.fash_men.v1_0.yaml: allowed/blocked apparel_type overlays
+  value_overrides.fash_men.v1_0.tsv: dictionary visibility and branch override layer
+  aliases.fash_men.ru.v1_0.tsv: branch-specific alias entries and negative guards
+  routing_guardrails.fash_men.v1_0.yaml: route conflict prevention rules
+  vision_rules.fash_men.v1_0.yaml: AI/photo extraction policy for branch
+  user_surface.fash_men.v1_0.yaml: UI form surface overrides
+  facet_overrides.fash_men.v1_0.yaml: facet schema branch overrides
+  size_overrides.fash_men.v1_0.yaml: men size priority overlay
+  golden_queries.fash_men.v1_0.tsv: route/normalization smoke tests
+  sample_offers.fash_men.v1_0.jsonl: synthetic ingest fixtures
+  effective_spec_snapshot.expected.fash_men.v1_0.json: expected merged effective spec shape
+required_adapter_behavior:
+- Build effective spec as FASH.APPAREL_COMMON base + FASH.MEN overrides
+- Do not create duplicate attributes already present in FASH.APPAREL_COMMON
+- Treat measurements as ui_group unless actual measurement attributes exist in base effective spec
+- Apply blocked_or_cross_route apparel types to UI and router, not by deleting common dictionary values
+- Run route guards before positive men alias fallback
+post_import_checks:
+- categoryCode FASH.MEN resolves
+- effective spec includes inherited common attributes
+- target_gender default MEN is applied
+- blocked apparel types are hidden from primary type selector
+- negative golden queries route away from FASH.MEN

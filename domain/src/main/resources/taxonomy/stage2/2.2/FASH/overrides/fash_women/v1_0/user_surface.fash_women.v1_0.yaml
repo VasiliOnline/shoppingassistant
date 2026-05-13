@@ -1,0 +1,274 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+extends: FASH.APPAREL_COMMON
+purpose: Product user surface for women apparel branch. Keep UI compact; inherit advanced data but show women-relevant fields
+  by group.
+initial_form_limit: 8
+common_hidden_defaults:
+- target_gender
+- age_group
+- apparel_type_group
+- size_text_raw
+- brand_text_raw
+- normalization_confidence
+- visual_evidence_flags
+common_initial_fields:
+- apparel_type
+- condition
+- size_label
+- color_primary
+- brand
+- material_primary
+- fit
+- season
+group_overrides:
+  TOP:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - sleeve_length
+    advanced:
+    - pattern
+    - neckline
+    - style_aesthetic
+    - occasion
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - sleeve_length
+    - fit
+  KNITWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    advanced:
+    - hood
+    - closure_type
+    - pattern
+    - neckline
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+  OUTERWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - season
+    - outerwear_weight
+    - material_primary
+    advanced:
+    - hood
+    - lining
+    - closure_type
+    - water_resistance
+    - insulation_material
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - season
+    - outerwear_weight
+    - water_resistance
+  BOTTOM:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - waist_rise
+    - fit
+    - length_type
+    advanced:
+    - material_primary
+    - leg_fit
+    - waist_type
+    - pattern
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - waist_rise
+    - fit
+    - length_type
+  ONE_PIECE:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - length_type
+    - sleeve_length
+    - neckline
+    advanced:
+    - material_primary
+    - silhouette
+    - occasion
+    - pattern
+    - lining
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - length_type
+    - occasion
+    - sleeve_length
+  SET:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - pack_type
+    - style_aesthetic
+    - season
+    advanced:
+    - material_primary
+    - fit
+    - occasion
+    - pattern
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - pack_type
+    - style_aesthetic
+    - season
+  UNDERWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - bra_cup
+    - pack_type
+    advanced:
+    - pattern
+    - style_aesthetic
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - bra_cup
+    - pack_type
+    - condition
+  SOCKS_HOSIERY:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - pack_type
+    - pattern
+    advanced:
+    - defect_type
+    - compression_level
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - pack_type
+    - material_primary
+    - condition
+  SPORT:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - activity
+    - material_primary
+    - fit
+    advanced:
+    - compression_level
+    - breathable
+    - stretch
+    - pattern
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - activity
+    - fit
+    - material_primary
+  SWIMWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - pack_type
+    - style_aesthetic
+    - pattern
+    advanced:
+    - material_primary
+    - bra_cup
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - pack_type
+    - style_aesthetic
+    - condition
+advanced_field_groups:
+  measurements:
+  - chest_cm
+  - waist_cm
+  - hips_cm
+  - shoulder_cm
+  - sleeve_cm
+  - inseam_cm
+  - total_length_cm

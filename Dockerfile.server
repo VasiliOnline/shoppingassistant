@@ -1,43 +1,74 @@
-# Dockerfile.server — Ktor backend (dev-вариант)
+# syntax=docker/dockerfile:1.7
 
-# 1. Build-слой: качаем Gradle и прогоняем простой билд, чтобы заполнить /root/.gradle
-FROM eclipse-temurin:21-jdk AS build
+# Dockerfile.server — production-like запуск без Gradle в runtime.
 
-WORKDIR /app
-
-ENV GRADLE_USER_HOME=/gradle
-ENV GRADLE_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
-ENV JAVA_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
-
-# Копируем весь проект внутрь build-образа
-COPY . .
-
-# Делаем gradlew исполняемым
-RUN chmod +x ./gradlew
-
-# Прогоняем лёгкую команду, чтобы Gradle скачал дистрибутив и настроился
-RUN ./gradlew --no-daemon --version
-
-# 2. Runtime-слой: собственно контейнер, который будет запускать сервер
-FROM eclipse-temurin:21-jdk
+# 1) Build stage: собираем только backend-модули, без Android-части workspace.
+FROM gradle:8.13-jdk21 AS build
 
 WORKDIR /app
 
-ENV GRADLE_USER_HOME=/gradle
-ENV GRADLE_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
-ENV JAVA_OPTS="-Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
+ARG KOTLIN_VERSION=2.2.20
 
-# Копируем исходники проекта
-COPY . .
+ENV GRADLE_OPTS="-Djava.net.preferIPv4Stack=true -Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
+ENV JAVA_OPTS="-Djava.net.preferIPv4Stack=true -Dorg.gradle.internal.http.socketTimeout=1200000 -Dorg.gradle.internal.http.connectionTimeout=1200000"
 
-# Копируем Gradle-кеш из build-слоя, чтобы не качать его в рантайме
-COPY --from=build /gradle /gradle
+COPY gradle.properties ./
+COPY server/ ./server/
+COPY domain/ ./domain/
+COPY rank/ ./rank/
 
-RUN chmod +x ./gradlew
+# Версии плагинов задаём прямо тут, чтобы сборка backend не ходила в google()/plugin portal.
+RUN cat <<EOF > settings.gradle.kts
+rootProject.name = "shoppingassistant-server"
 
-# Значения по умолчанию (могут быть переопределены в docker-compose.yml)
+include(":server")
+include(":domain")
+include(":rank")
+
+pluginManagement {
+    plugins {
+        id("org.jetbrains.kotlin.jvm") version "${KOTLIN_VERSION}"
+        id("org.jetbrains.kotlin.plugin.serialization") version "${KOTLIN_VERSION}"
+    }
+    repositories {
+        mavenCentral()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            when (requested.id.id) {
+                "org.jetbrains.kotlin.jvm" ->
+                    useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_VERSION}")
+                "org.jetbrains.kotlin.plugin.serialization" ->
+                    useModule("org.jetbrains.kotlin:kotlin-serialization:${KOTLIN_VERSION}")
+            }
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+    }
+}
+EOF
+
+RUN printf '\n' > build.gradle.kts
+
+RUN --mount=type=cache,target=/home/gradle/.gradle \
+    gradle --no-daemon :server:installDist
+
+# 2) Runtime stage: запускаем только собранный server/bin/server.
+FROM eclipse-temurin:21-jre
+
+WORKDIR /opt/server
+
+# Значения по умолчанию (могут быть переопределены в docker-compose.yml).
 ENV APP_HOST=0.0.0.0
 ENV APP_PORT=8081
 
-# Запускаем Ktor так же, как ты делаешь локально
-CMD ["./gradlew", ":server:run", "--no-daemon"]
+COPY --from=build /app/build/server/install/server/ /opt/server/
+
+EXPOSE 8081
+
+CMD ["/opt/server/bin/server"]

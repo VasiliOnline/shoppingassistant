@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import com.example.shoppingassistant.domain.i18n.displayTitle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,21 +34,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.shoppingassistant.domain.catalog.AttributeDataType
-import com.example.shoppingassistant.domain.catalog.AttributeDef
 import com.example.shoppingassistant.domain.catalog.AttributeCondition
 import com.example.shoppingassistant.domain.catalog.AttributeConditionOp
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.catalog.Category
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.CatalogAttributeWidgetHint
 import com.example.shoppingassistant.domain.tracks.TrackAttributeRange
 import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackType
+import com.example.shoppingassistant.domain.i18n.displayLabel
 import com.example.shoppingassistant.feature.metrics.FlowMetrics
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeCard
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeTone
+import java.util.Locale
 
 enum class TargetWizardMode { CREATE, EDIT }
 
@@ -95,9 +102,14 @@ private data class AttributeFieldSchema(
     val code: String,
     val title: String,
     val required: Boolean,
-    val values: List<String>,
+    val values: List<AttributeValueChoice>,
     val control: AttributeControl,
     val order: Int,
+)
+
+private data class AttributeValueChoice(
+    val code: String,
+    val label: String,
 )
 
 private data class ValidationResult(
@@ -120,52 +132,47 @@ private fun TrackTargetDraft.withType(type: TrackType): TrackTargetDraft = when 
 }
 
 @Composable
-fun rememberLeafCategories(catalogRepository: CatalogRepository): List<Category> {
+fun rememberLeafCategories(catalogTaxonomyRepository: CatalogTaxonomyRepository): List<Category> {
     var categories by remember { mutableStateOf<List<Category>>(emptyList()) }
-    LaunchedEffect(catalogRepository) {
-        categories = runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+    LaunchedEffect(catalogTaxonomyRepository) {
+        categories = runCatching { catalogTaxonomyRepository.listCategories() }.getOrElse { emptyList() }
     }
     return remember(categories) {
         val parents = categories.mapNotNull { it.parentCode }.toSet()
         categories
             .filter { !it.code.isNullOrBlank() && !parents.contains(it.code) }
-            .sortedBy { (it.title ?: it.code).lowercase() }
+            .sortedBy { it.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()).lowercase() }
     }
 }
 
-fun TrackTargetDraft.isValid(profile: CategoryProfile?): Boolean {
+fun TrackTargetDraft.isValid(spec: CatalogCategoryEffectiveSpec?): Boolean {
     val baseValid = when (type) {
         TrackType.PRODUCT, TrackType.CATEGORY -> !categoryCode.isNullOrBlank()
         else -> false
     }
     if (!baseValid) return false
-    return missingRequiredAttributeCodes(profile).isEmpty()
+    return missingRequiredAttributeCodes(spec).isEmpty()
 }
 
-fun TrackTargetDraft.requiredAttributeCodes(profile: CategoryProfile?): Set<String> {
-    profile ?: return emptySet()
-    if (profile.attributes.isEmpty()) return emptySet()
+fun TrackTargetDraft.requiredAttributeCodes(spec: CatalogCategoryEffectiveSpec?): Set<String> {
+    spec ?: return emptySet()
+    val attributes = spec.allAttributes()
+    if (attributes.isEmpty()) return emptySet()
 
     val required = LinkedHashSet<String>()
-    val requiredByCategory = profile.categoryAttributes
-        .asSequence()
-        .filter { attr -> attr.isRequiredForCategory }
-        .map { attr -> normalizeDraftAttributeCode(attr.attributeCode) }
-        .filter { code -> code.isNotEmpty() }
-        .toSet()
 
-    profile.attributes
+    attributes
         .asSequence()
-        .forEach { def ->
-            val normalizedCode = normalizeDraftAttributeCode(def.code)
+        .forEach { attribute ->
+            val normalizedCode = normalizeDraftAttributeCode(attribute.code)
             if (normalizedCode.isEmpty()) return@forEach
-            if (def.requiredForSearch || normalizedCode in requiredByCategory) {
-                required += def.code.trim()
+            if (attribute.requiredForSearch || attribute.requiredForCategory) {
+                required += attribute.code.trim()
             }
         }
 
     val normalizedValues = normalizedDraftAttributesForValidation()
-    profile.requiredIfRules.forEach { rule ->
+    spec.requiredIfRules.forEach { rule ->
         val requiredCode = rule.requiredAttributeCode.trim()
         if (requiredCode.isBlank()) return@forEach
         val shouldRequire = rule.whenAll.isNotEmpty() &&
@@ -181,8 +188,8 @@ fun TrackTargetDraft.requiredAttributeCodes(profile: CategoryProfile?): Set<Stri
     return required
 }
 
-fun TrackTargetDraft.missingRequiredAttributeCodes(profile: CategoryProfile?): Set<String> {
-    val requiredCodes = requiredAttributeCodes(profile)
+fun TrackTargetDraft.missingRequiredAttributeCodes(spec: CatalogCategoryEffectiveSpec?): Set<String> {
+    val requiredCodes = requiredAttributeCodes(spec)
     if (requiredCodes.isEmpty()) return emptySet()
 
     val normalizedValues = normalizedDraftAttributesForValidation()
@@ -234,7 +241,11 @@ fun TrackTargetDraft.previewTitle(categories: List<Category>): String {
     val resolvedCategoryTitle = categoryCode
         ?.trim()
         ?.takeIf { it.isNotBlank() }
-        ?.let { code -> categories.firstOrNull { it.code == code }?.title ?: code }
+        ?.let { code ->
+            categories.firstOrNull { it.code == code }
+                ?.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag())
+                ?: code
+        }
     return when (type) {
         TrackType.PRODUCT -> {
             val brandModel = listOf(brand, model)
@@ -282,7 +293,7 @@ fun TrackTargetAttributesWizardSheet(
     entrypoint: String,
     initial: TrackTargetDraft,
     categories: List<Category>,
-    catalogRepository: CatalogRepository,
+    catalogRepository: CatalogReadRepository,
     countryCode: String,
     onDismiss: () -> Unit,
     onSave: (TrackTargetWizardResult) -> Unit,
@@ -301,7 +312,7 @@ fun TrackTargetAttributesWizardSheet(
     var showCategoryPicker by remember { mutableStateOf(false) }
     var schemaStatus by remember { mutableStateOf(SchemaStatus.EMPTY) }
     var schemaFields by remember { mutableStateOf(minimalFallbackSchema()) }
-    var categoryProfile by remember { mutableStateOf<CategoryProfile?>(null) }
+    var categorySpec by remember { mutableStateOf<CatalogCategoryEffectiveSpec?>(null) }
     var schemaErrorMessage by remember { mutableStateOf<String?>(null) }
     var showOptionalAttributes by remember { mutableStateOf(false) }
     var showUnknownMap by remember { mutableStateOf(false) }
@@ -319,7 +330,9 @@ fun TrackTargetAttributesWizardSheet(
     }
 
     val selectedCategoryTitle = remember(draft.categoryCode, categories) {
-        categories.firstOrNull { it.code == draft.categoryCode }?.title ?: draft.categoryCode.orEmpty()
+        categories.firstOrNull { it.code == draft.categoryCode }
+            ?.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag())
+            ?: draft.categoryCode.orEmpty()
     }
 
     LaunchedEffect(mode, entrypoint) {
@@ -331,34 +344,34 @@ fun TrackTargetAttributesWizardSheet(
         if (code.isBlank()) {
             schemaStatus = SchemaStatus.EMPTY
             schemaFields = minimalFallbackSchema()
-            categoryProfile = null
+            categorySpec = null
             schemaErrorMessage = null
             return@LaunchedEffect
         }
 
         schemaStatus = SchemaStatus.LOADING
         schemaErrorMessage = null
-        val profile = runCatching { catalogRepository.getCategoryProfile(code) }
+        val spec = runCatching { catalogRepository.getCategoryEffectiveSpec(code) }
             .onFailure {
                 schemaStatus = SchemaStatus.FAILED
                 schemaFields = minimalFallbackSchema()
-                categoryProfile = null
+                categorySpec = null
                 schemaErrorMessage = "Не удалось загрузить параметры категории"
                 TargetWizardAnalytics.schemaLoadFailed(code, it::class.simpleName ?: "unknown")
             }
             .getOrNull()
 
-        if (profile == null) {
+        if (spec == null) {
             if (schemaStatus != SchemaStatus.FAILED) {
                 schemaStatus = SchemaStatus.EMPTY
                 schemaFields = minimalFallbackSchema()
-                categoryProfile = null
+                categorySpec = null
             }
             return@LaunchedEffect
         }
 
-        categoryProfile = profile
-        val fromSchema = buildSchemaFields(profile)
+        categorySpec = spec
+        val fromSchema = buildSchemaFields(spec)
         if (fromSchema.isEmpty()) {
             schemaStatus = SchemaStatus.EMPTY
             schemaFields = minimalFallbackSchema()
@@ -368,8 +381,8 @@ fun TrackTargetAttributesWizardSheet(
         }
     }
 
-    val validation = remember(draft, schemaFields, categoryProfile) {
-        validateDraft(draft, schemaFields, categoryProfile)
+    val validation = remember(draft, schemaFields, categorySpec) {
+        validateDraft(draft, schemaFields, categorySpec)
     }
 
     val knownSchemaCodes = remember(schemaFields) { schemaFields.map { it.code }.toSet() }
@@ -379,8 +392,8 @@ fun TrackTargetAttributesWizardSheet(
             .sortedBy { it.key.lowercase() }
     }
 
-    val requiredFieldCodes = remember(draft, categoryProfile, schemaFields) {
-        val dynamicRequired = draft.requiredAttributeCodes(categoryProfile)
+    val requiredFieldCodes = remember(draft, categorySpec, schemaFields) {
+        val dynamicRequired = draft.requiredAttributeCodes(categorySpec)
             .map(::normalizeDraftAttributeCode)
             .toSet()
         if (dynamicRequired.isNotEmpty()) {
@@ -806,38 +819,16 @@ private fun sanitizeUnboundTokens(values: List<String>): List<String> =
         .distinct()
         .toList()
 
-private fun buildSchemaFields(profile: CategoryProfile): List<AttributeFieldSchema> {
-    val attrsByCode = profile.attributes.associateBy { it.code }
-    val categoryAttrByCode = profile.categoryAttributes.associateBy { it.attributeCode }
-    val dictionaryByCode = profile.valueDictionaries.associateBy { it.attributeCode }
-
-    val orderedCodes = buildList {
-        profile.categoryAttributes
-            .sortedBy { it.uiOrder }
-            .forEach { add(it.attributeCode) }
-        profile.attributes.forEach { def ->
-            if (!contains(def.code)) add(def.code)
-        }
-    }
-
-    return orderedCodes
-        .mapNotNull { code ->
-            val def = attrsByCode[code] ?: return@mapNotNull null
-            val catAttr = categoryAttrByCode[code]
-            val values = resolveValues(def, dictionaryByCode[code]?.entries?.map { it.canonicalCode }.orEmpty())
-            val control = when {
-                def.dataType == AttributeDataType.BOOL -> AttributeControl.CHIPS
-                values.isNotEmpty() && values.size <= 6 -> AttributeControl.CHIPS
-                values.isNotEmpty() -> AttributeControl.DROPDOWN
-                else -> AttributeControl.INPUT
-            }
+private fun buildSchemaFields(spec: CatalogCategoryEffectiveSpec): List<AttributeFieldSchema> {
+    return spec.allAttributes()
+        .map { attribute ->
             AttributeFieldSchema(
-                code = code,
-                title = def.title,
-                required = def.requiredForSearch || (catAttr?.isRequiredForCategory == true),
-                values = values,
-                control = control,
-                order = catAttr?.uiOrder ?: Int.MAX_VALUE,
+                code = attribute.code,
+                title = attribute.title,
+                required = attribute.requiredForSearch || attribute.requiredForCategory,
+                values = resolveValues(attribute),
+                control = resolveControl(attribute),
+                order = attribute.uiOrder,
             )
         }
         .sortedWith(
@@ -847,21 +838,15 @@ private fun buildSchemaFields(profile: CategoryProfile): List<AttributeFieldSche
         )
 }
 
-private fun resolveValues(def: AttributeDef, dictionaryValues: List<String>): List<String> {
-    if (def.dataType == AttributeDataType.BOOL) return listOf("true", "false")
-    if (dictionaryValues.isEmpty()) return emptyList()
-    return dictionaryValues
-        .map { it.trim() }
-        .filter { it.isNotBlank() }
-        .distinct()
-}
-
 private fun minimalFallbackSchema(): List<AttributeFieldSchema> = listOf(
     AttributeFieldSchema(
         code = "condition",
         title = "Состояние",
         required = false,
-        values = listOf("new", "used"),
+        values = listOf(
+            AttributeValueChoice(code = "new", label = "Новый"),
+            AttributeValueChoice(code = "used", label = "Б/у"),
+        ),
         control = AttributeControl.CHIPS,
         order = 0,
     ),
@@ -869,7 +854,10 @@ private fun minimalFallbackSchema(): List<AttributeFieldSchema> = listOf(
         code = "delivery",
         title = "Доставка",
         required = false,
-        values = listOf("delivery", "pickup"),
+        values = listOf(
+            AttributeValueChoice(code = "delivery", label = "Доставка"),
+            AttributeValueChoice(code = "pickup", label = "Самовывоз"),
+        ),
         control = AttributeControl.CHIPS,
         order = 1,
     ),
@@ -886,7 +874,7 @@ private fun minimalFallbackSchema(): List<AttributeFieldSchema> = listOf(
 private fun validateDraft(
     draft: TrackTargetDraft,
     fields: List<AttributeFieldSchema>,
-    profile: CategoryProfile?,
+    spec: CatalogCategoryEffectiveSpec?,
 ): ValidationResult {
     val categoryError = if (
         (draft.type == TrackType.CATEGORY || draft.type == TrackType.PRODUCT) &&
@@ -899,7 +887,7 @@ private fun validateDraft(
 
     val valuesByCode = draft.normalizedDraftAttributesForValidation()
     val fieldByCode = fields.associateBy { normalizeDraftAttributeCode(it.code) }
-    val requiredErrors = draft.requiredAttributeCodes(profile)
+    val requiredErrors = draft.requiredAttributeCodes(spec)
         .mapNotNull { code ->
             val normalizedCode = normalizeDraftAttributeCode(code)
             val value = valuesByCode[normalizedCode]?.trim().orEmpty()
@@ -921,6 +909,38 @@ private fun validateDraft(
         attributeErrors = requiredErrors,
     )
 }
+
+private fun resolveValues(attribute: com.example.shoppingassistant.domain.catalog.CatalogAttributeSpec): List<AttributeValueChoice> {
+    val locale = Locale.getDefault().toLanguageTag()
+    if (attribute.dataType == AttributeDataType.BOOL) {
+        return listOf(
+            AttributeValueChoice(code = "true", label = "Да"),
+            AttributeValueChoice(code = "false", label = "Нет"),
+        )
+    }
+    return attribute.options
+        .map { option ->
+            val code = option.valueCode.trim()
+            val label = option.displayLabel(locale = locale).trim().ifBlank { code }
+            AttributeValueChoice(code = code, label = label)
+        }
+        .filter { option -> option.code.isNotBlank() }
+        .distinctBy { option -> option.code.lowercase(Locale.ROOT) }
+}
+
+private fun resolveControl(attribute: com.example.shoppingassistant.domain.catalog.CatalogAttributeSpec): AttributeControl =
+    when (attribute.widgetHint) {
+        CatalogAttributeWidgetHint.TOGGLE,
+        CatalogAttributeWidgetHint.CHIPS,
+            -> AttributeControl.CHIPS
+
+        CatalogAttributeWidgetHint.DROPDOWN ->
+            AttributeControl.DROPDOWN
+
+        CatalogAttributeWidgetHint.INPUT,
+        CatalogAttributeWidgetHint.RANGE_INPUT,
+            -> if (attribute.options.isEmpty()) AttributeControl.INPUT else AttributeControl.DROPDOWN
+    }
 
 private fun TrackTargetDraft.withAttribute(
     code: String,
@@ -1083,9 +1103,9 @@ private fun AttributeFieldEditor(
                 ) {
                     field.values.forEach { option ->
                         TargetTypeChip(
-                            label = option,
-                            selected = value == option,
-                            onClick = { onValueChange(option) },
+                            label = option.label,
+                            selected = value == option.code,
+                            onClick = { onValueChange(option.code) },
                         )
                     }
                 }
@@ -1123,7 +1143,7 @@ private fun AttributeFieldEditor(
 private fun DropdownAttributeField(
     title: String,
     code: String,
-    values: List<String>,
+    values: List<AttributeValueChoice>,
     value: String,
     isAutofilled: Boolean,
     isError: Boolean,
@@ -1131,6 +1151,7 @@ private fun DropdownAttributeField(
     onClear: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val selectedLabel = values.firstOrNull { option -> option.code == value }?.label ?: value
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Surface(
             shape = MaterialTheme.shapes.medium,
@@ -1145,7 +1166,7 @@ private fun DropdownAttributeField(
             ) {
                 Text(text = title, style = MaterialTheme.typography.bodyMedium)
                 Text(
-                    text = value.ifBlank { "Выбрать" },
+                    text = selectedLabel.ifBlank { "Выбрать" },
                     style = MaterialTheme.typography.bodySmall,
                     color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1154,10 +1175,10 @@ private fun DropdownAttributeField(
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             values.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option.label) },
                     onClick = {
                         expanded = false
-                        onValueSelected(option)
+                        onValueSelected(option.code)
                     },
                 )
             }
@@ -1188,37 +1209,14 @@ private fun SchemaErrorBanner(
     message: String,
     onRetry: () -> Unit,
 ) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.errorContainer,
+    SystemNoticeCard(
+        body = message,
+        tone = SystemNoticeTone.Error,
+        compact = true,
         modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.ErrorOutline,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onErrorContainer,
-                )
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                )
-            }
-            TextButton(onClick = onRetry) {
-                Text("Retry", color = MaterialTheme.colorScheme.onErrorContainer)
-            }
-        }
-    }
+        actionLabel = "Повторить",
+        onAction = onRetry,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1235,7 +1233,11 @@ private fun CategoryLeafPickerSheet(
         val q = query.trim().lowercase()
         if (q.isBlank()) categories
         else categories.filter {
-            listOfNotNull(it.title, it.code).joinToString(" ").lowercase().contains(q)
+            buildList {
+                add(it.code)
+                addAll(it.title.values)
+                add(it.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()))
+            }.joinToString(" ").lowercase().contains(q)
         }
     }
 
@@ -1279,7 +1281,7 @@ private fun CategoryLeafPickerSheet(
                             verticalArrangement = Arrangement.spacedBy(2.dp),
                         ) {
                             Text(
-                                text = category.title ?: category.code,
+                                text = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()),
                                 style = MaterialTheme.typography.bodyMedium,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -1370,3 +1372,5 @@ private object TargetWizardAnalytics {
         )
     }
 }
+
+

@@ -1,0 +1,15 @@
+{
+  "schemaVersioningMode": "SEMVER_SAME_MAJOR_SERVER_GTE_CLIENT",
+  "minSupportedClientStrategy": "SERVER_DECLARED_MAJOR_FLOOR",
+  "dataVersionMode": "SERVER_AUTHORITATIVE_NEGOTIATED_STABILITY",
+  "embeddedParityRequiredWhen": [
+    "SEED_FALLBACK_ENABLED"
+  ],
+  "negotiatedDataVersionMustStayStable": true,
+  "requiredVersionHeaders": [
+    "X-Catalog-Schema-Version",
+    "X-Catalog-Data-Version",
+    "X-Catalog-Min-Supported-Client-Schema-Version"
+  ],
+  "versionEndpoint": "/api/catalog/version"
+}

@@ -1,12 +1,8 @@
 package com.example.shoppingassistant.feature.pages.useroffers.tasks
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,8 +10,6 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,13 +31,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ViewList
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.KeyboardVoice
 import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material.icons.outlined.Search
 
 import androidx.compose.material.icons.outlined.ViewWeek
@@ -67,9 +57,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -78,7 +66,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferAction
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCardUi
-import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCreationMethod
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferQuickFilter
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferStatus
 import com.example.shoppingassistant.feature.pages.useroffers.UserOffersLayout
@@ -354,9 +341,6 @@ fun UserOffersListBlock(
         return
     }
 
-    val enter = if (reduceMotion) fadeIn(animationSpec = tween(120)) else animations.itemEnter()
-    val exit = if (reduceMotion) fadeOut(animationSpec = tween(120)) else animations.itemExit()
-
     if (layout == UserOffersLayout.HORIZONTAL) {
         LazyRow(
             state = listState,
@@ -370,30 +354,24 @@ fun UserOffersListBlock(
                     val placement = animatedPlacement()
                     stagger.then(placement)
                 }
-                AnimatedVisibility(
-                    visible = true,
-                    enter = enter,
-                    exit = exit,
-                ) {
-                    Box(modifier = Modifier.width(horizontalCardWidth).then(animatedModifier)) {
-                        SwipeableOfferCard(
+                Box(modifier = Modifier.width(horizontalCardWidth).then(animatedModifier)) {
+                    SwipeableOfferCard(
+                        offer = offer,
+                        enabled = false,
+                        onSwipeAction = { onSwipeAction(it, offer) },
+                    ) { swipeModifier ->
+                        UserOfferCard(
                             offer = offer,
-                            enabled = false,
-                            onSwipeAction = { onSwipeAction(it, offer) },
-                        ) { swipeModifier ->
-                            UserOfferCard(
-                                offer = offer,
-                                layout = layout,
-                                actions = actionsForOffer(offer),
-                                onAction = { onAction(it, offer) },
-                                onOpen = { onOpen(offer) },
-                                selectionMode = selectionMode,
-                                selected = offer.id in selectedIds,
-                                onToggleSelect = { onToggleSelect(offer) },
-                                onLongPress = { onLongPress(offer) },
-                                modifier = swipeModifier,
-                            )
-                        }
+                            layout = layout,
+                            actions = actionsForOffer(offer),
+                            onAction = { onAction(it, offer) },
+                            onOpen = { onOpen(offer) },
+                            selectionMode = selectionMode,
+                            selected = offer.id in selectedIds,
+                            onToggleSelect = { onToggleSelect(offer) },
+                            onLongPress = { onLongPress(offer) },
+                            modifier = swipeModifier,
+                        )
                     }
                 }
             }
@@ -417,29 +395,23 @@ fun UserOffersListBlock(
                     val placement = animatedPlacement()
                     stagger.then(placement)
                 }
-                AnimatedVisibility(
-                    visible = true,
-                    enter = enter,
-                    exit = exit,
-                ) {
-                    SwipeableOfferCard(
+                SwipeableOfferCard(
+                    offer = offer,
+                    enabled = !selectionMode,
+                    onSwipeAction = { onSwipeAction(it, offer) },
+                ) { swipeModifier ->
+                    UserOfferCard(
                         offer = offer,
-                        enabled = !selectionMode,
-                        onSwipeAction = { onSwipeAction(it, offer) },
-                    ) { swipeModifier ->
-                        UserOfferCard(
-                            offer = offer,
-                            layout = layout,
-                            actions = actionsForOffer(offer),
-                            onAction = { onAction(it, offer) },
-                            onOpen = { onOpen(offer) },
-                            selectionMode = selectionMode,
-                            selected = offer.id in selectedIds,
-                            onToggleSelect = { onToggleSelect(offer) },
-                            onLongPress = { onLongPress(offer) },
-                            modifier = swipeModifier.then(animatedModifier),
-                        )
-                    }
+                        layout = layout,
+                        actions = actionsForOffer(offer),
+                        onAction = { onAction(it, offer) },
+                        onOpen = { onOpen(offer) },
+                        selectionMode = selectionMode,
+                        selected = offer.id in selectedIds,
+                        onToggleSelect = { onToggleSelect(offer) },
+                        onLongPress = { onLongPress(offer) },
+                        modifier = swipeModifier.then(animatedModifier),
+                    )
                 }
             }
             if (isLoadingMore) {
@@ -656,158 +628,4 @@ private fun swipeActionColor(action: UserOfferAction): Color = when (action) {
     UserOfferAction.ACTIVATE -> MaterialTheme.colorScheme.primary
     UserOfferAction.MARK_FINISHED -> MaterialTheme.colorScheme.tertiary
     else -> MaterialTheme.colorScheme.onSurfaceVariant
-}
-
-@SuppressLint("ConfigurationScreenWidthHeight")
-@Composable
-fun UserOffersCreationBlock(
-    onCreate: (UserOfferCreationMethod) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
-        ),
-        shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.AddCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(
-                        text = "Создать товар",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = "Выберите источник",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    CreationTile(
-                        label = "Фото",
-                        icon = Icons.Outlined.PhotoCamera,
-                        onClick = { onCreate(UserOfferCreationMethod.PHOTO) },
-                        modifier = Modifier.weight(1f),
-                    )
-                    CreationTile(
-                        label = "Ссылка",
-                        icon = Icons.Outlined.Link,
-                        onClick = { onCreate(UserOfferCreationMethod.LINK) },
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    CreationTile(
-                        label = "Голос",
-                        icon = Icons.Outlined.KeyboardVoice,
-                        onClick = { onCreate(UserOfferCreationMethod.VOICE) },
-                        modifier = Modifier.weight(1f),
-                    )
-                    CreationTile(
-                        label = "JSON",
-                        icon = Icons.Outlined.Description,
-                        onClick = { onCreate(UserOfferCreationMethod.JSON_FILE) },
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun CreationTile(
-    label: String,
-    icon: ImageVector,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val interaction = remember { MutableInteractionSource() }
-    val pressed by interaction.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) 0.96f else 1f,
-        label = "tile-press",
-    )
-
-    Card(
-        modifier = modifier
-            .height(108.dp)
-            .fillMaxWidth()
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-        ),
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    Brush.linearGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-                        )
-                    )
-                )
-                .clickable(
-                    interactionSource = interaction,
-                    indication = null,
-                    onClick = onClick,
-                )
-                .padding(12.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = label,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.height(30.dp),
-                )
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-        }
-    }
 }

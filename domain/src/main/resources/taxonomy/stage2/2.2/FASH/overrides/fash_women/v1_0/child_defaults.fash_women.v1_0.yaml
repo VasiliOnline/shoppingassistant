@@ -1,0 +1,48 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+pack_type: child_override_pack
+extends: FASH.APPAREL_COMMON
+public_category: true
+defaults:
+  target_gender:
+    default: WOMEN
+    allowed:
+    - WOMEN
+    - UNISEX
+    hidden_in_user_form: true
+    can_show_as_secondary_filter: true
+  age_group:
+    default: ADULT
+    allowed:
+    - ADULT
+    - TEEN
+    hidden_in_user_form: true
+    can_show_as_secondary_filter: false
+  size_system:
+    default: INT
+    preferred_order:
+    - INT
+    - RU
+    - EU
+    - JEANS_WL
+    - BRA_EU
+    - TIGHTS_NUMERIC
+    - ONE_SIZE
+  condition:
+    default_for_new_listing: null
+    required: true
+  locale: ru-RU
+inheritance:
+  attributes: inherit_all_from_FASH.APPAREL_COMMON
+  values: inherit_all_from_FASH.APPAREL_COMMON_with_child_allowed_blocked_overrides
+  aliases: inherit_common_aliases_plus_child_aliases
+  facets: inherit_common_facets_plus_child_priority_overrides
+  user_surface: inherit_common_surface_plus_child_group_overrides
+  size_policy: inherit_common_size_policy_plus_women_size_priority
+do_not_duplicate_common_attributes: true
+child_specific_behavior:
+  generic_apparel_without_gender: route_candidate_not_final_if_no_context_except_strong_female_default_types
+  female_gender_text: boost_FASH.WOMEN
+  unisex_text: allow_UNISEX_with_lower_route_confidence_if_no_female_context
+  male_or_kids_text: route_to_other_child_or_ambiguous_not_FASH.WOMEN
+  dress_skirt_bra_default: may_boost_FASH.WOMEN_when_adult_context_and_no_kids_or_male_signals

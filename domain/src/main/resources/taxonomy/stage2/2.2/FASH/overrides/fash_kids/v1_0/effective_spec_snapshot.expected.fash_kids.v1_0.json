@@ -1,0 +1,130 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "expected_merge": {
+    "inherited_from_common": [
+      "apparel_type",
+      "brand",
+      "condition",
+      "color",
+      "material_primary",
+      "fit",
+      "season",
+      "size"
+    ],
+    "child_defaults": {
+      "target_gender": "KIDS",
+      "age_group": "KIDS",
+      "condition": "UNKNOWN",
+      "seller_input_policy": "short_form_by_apparel_type"
+    },
+    "child_allowed_values": {
+      "target_gender": [
+        "BOYS",
+        "GIRLS",
+        "KIDS",
+        "UNISEX"
+      ],
+      "age_group": [
+        "NEWBORN",
+        "BABY",
+        "TODDLER",
+        "KIDS",
+        "TEEN"
+      ],
+      "condition": [
+        "NEW",
+        "LIKE_NEW",
+        "GOOD",
+        "FAIR",
+        "USED",
+        "UNKNOWN"
+      ]
+    },
+    "child_type_priority_high": [
+      "TSHIRT",
+      "LONGSLEEVE",
+      "HOODIE",
+      "SWEATSHIRT",
+      "SWEATER",
+      "JEANS",
+      "TROUSERS",
+      "JACKET",
+      "DOWN_JACKET",
+      "COAT",
+      "DRESS",
+      "SKIRT",
+      "SHORTS"
+    ],
+    "child_type_priority_medium": [
+      "SHIRT",
+      "POLO",
+      "LEGGINGS",
+      "TRACKSUIT",
+      "SPORTSWEAR",
+      "UNDERWEAR",
+      "SOCKS",
+      "PAJAMAS",
+      "HOMEWEAR",
+      "THERMAL_UNDERWEAR",
+      "VEST",
+      "RAINCOAT",
+      "SWIMWEAR"
+    ],
+    "child_type_priority_low": [
+      "BLOUSE",
+      "CARDIGAN",
+      "ROMPER",
+      "JUMPSUIT",
+      "OVERALLS",
+      "BODYSUIT",
+      "HAT_SCARF_SET",
+      "SCHOOL_UNIFORM",
+      "COSTUME",
+      "FORMALWEAR",
+      "BABY_SET"
+    ],
+    "child_blocked_or_cross_route": [
+      "SHOES",
+      "SNEAKERS",
+      "BOOTS",
+      "SANDALS",
+      "BAG",
+      "BACKPACK",
+      "TOY",
+      "STROLLER",
+      "CAR_SEAT",
+      "DIAPER",
+      "FEEDING_BOTTLE",
+      "WATCH",
+      "JEWELRY",
+      "BELT",
+      "WALLET"
+    ],
+    "primary_facets": [
+      "apparel_type",
+      "target_gender",
+      "age_group",
+      "size",
+      "condition",
+      "brand",
+      "price"
+    ],
+    "initial_fields": [
+      "apparel_type",
+      "target_gender",
+      "age_group",
+      "size",
+      "condition",
+      "brand",
+      "color",
+      "season"
+    ]
+  },
+  "assertions": [
+    "target_gender.default == KIDS",
+    "allowed target_gender includes BOYS,GIRLS,KIDS,UNISEX",
+    "age_group supports NEWBORN,BABY,TODDLER,KIDS,TEEN",
+    "FASH.SHOES/FASH.BAGS/FASH.ACCESSORIES/KIDS.* guards remain active"
+  ]
+}

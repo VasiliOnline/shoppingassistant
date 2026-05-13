@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.catalog
 
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
@@ -64,6 +65,76 @@ class TaxonomyValidatorTest {
         )
         val report = validator.validate(categories, aliases = emptyList(), mappings = baseMappings())
         assertContainsIssue(report, "CATEGORY_CYCLE")
+    }
+
+    @Test
+    fun categoryWithoutAnyDisplayTitle_detected() {
+        val categories = listOf(
+            category("TECH", null, CategorySegment.TECH).copy(title = localizedTextOf("ru" to "  ")),
+            category("TECH.PHONES", "TECH", CategorySegment.TECH),
+        )
+
+        val report = validator.validate(categories, aliases = emptyList(), mappings = baseMappings())
+
+        assertContainsIssue(report, "CATEGORY_TITLE_BLANK")
+    }
+
+    @Test
+    fun deprecatedCategory_withoutReplacement_detected() {
+        val categories = listOf(
+            category("TECH", null, CategorySegment.TECH),
+            category(
+                code = "TECH.PHONES",
+                parentCode = "TECH",
+                segment = CategorySegment.TECH,
+                status = CategoryStatus.DEPRECATED,
+            ),
+        )
+        val report = validator.validate(categories, aliases = emptyList(), mappings = baseMappings())
+        assertContainsIssue(report, "CATEGORY_DEPRECATED_REPLACEMENT_MISSING")
+    }
+
+    @Test
+    fun replacementCycle_detected() {
+        val categories = listOf(
+            category(
+                code = "TECH",
+                parentCode = null,
+                segment = CategorySegment.TECH,
+                status = CategoryStatus.DEPRECATED,
+                replacementCode = "TECH.PHONES",
+            ),
+            category(
+                code = "TECH.PHONES",
+                parentCode = "TECH",
+                segment = CategorySegment.TECH,
+                status = CategoryStatus.DEPRECATED,
+                replacementCode = "TECH",
+            ),
+        )
+        val mappings = listOf(
+            mapping("TECH", 222L, "Electronics"),
+            mapping("TECH.PHONES", 267L, "Electronics > Communications > Telephony > Mobile Phones"),
+        )
+
+        val report = validator.validate(categories, aliases = emptyList(), mappings = mappings)
+        assertContainsIssue(report, "CATEGORY_REPLACEMENT_CYCLE")
+    }
+
+    @Test
+    fun replacementForActiveCategory_detected() {
+        val categories = listOf(
+            category(
+                code = "TECH",
+                parentCode = null,
+                segment = CategorySegment.TECH,
+                status = CategoryStatus.ACTIVE,
+                replacementCode = "TECH.PHONES",
+            ),
+            category("TECH.PHONES", "TECH", CategorySegment.TECH),
+        )
+        val report = validator.validate(categories, aliases = emptyList(), mappings = baseMappings())
+        assertContainsIssue(report, "CATEGORY_REPLACEMENT_FOR_NON_DEPRECATED")
     }
 
     @Test
@@ -157,7 +228,7 @@ class TaxonomyValidatorTest {
             BrowseNode(
                 browseCode = "NODE.TECH.PHONES",
                 parentBrowseCode = "ROOT.UNKNOWN",
-                titleRu = "Смартфоны",
+                title = localizedTextOf("ru" to "Смартфоны"),
                 targetCategoryCode = "TECH.PHONES",
                 targetType = BrowseTargetType.CATEGORY,
                 order = 1,
@@ -178,7 +249,7 @@ class TaxonomyValidatorTest {
         val browse = listOf(
             BrowseNode(
                 browseCode = "ROOT.TECH",
-                titleRu = "Электроника",
+                title = localizedTextOf("ru" to "Электроника"),
                 targetCategoryCode = "TECH",
                 targetType = BrowseTargetType.CATEGORY,
                 order = 1,
@@ -200,13 +271,13 @@ class TaxonomyValidatorTest {
             BrowseNode(
                 browseCode = "ROOT.TECH",
                 parentBrowseCode = "NODE.TECH.PHONES",
-                titleRu = "Электроника",
+                title = localizedTextOf("ru" to "Электроника"),
                 order = 1,
             ),
             BrowseNode(
                 browseCode = "NODE.TECH.PHONES",
                 parentBrowseCode = "ROOT.TECH",
-                titleRu = "Смартфоны",
+                title = localizedTextOf("ru" to "Смартфоны"),
                 targetCategoryCode = "TECH.PHONES",
                 targetType = BrowseTargetType.CATEGORY,
                 order = 1,
@@ -324,7 +395,7 @@ class TaxonomyValidatorTest {
         val browseRootsOnly = listOf(
             BrowseNode(
                 browseCode = "ROOT.TECH",
-                titleRu = "Электроника",
+                title = localizedTextOf("ru" to "Электроника"),
                 order = 1,
             ),
         )
@@ -446,6 +517,81 @@ class TaxonomyValidatorTest {
         assertContainsIssue(report, "ALIAS_ENTRY_LOCALE_NOT_ALLOWED")
     }
 
+    @Test
+    fun languageOnlyGovernanceAliasLocales_areAccepted() {
+        val aliasEntries = listOf(
+            AliasEntry(
+                locale = "en",
+                term = "apple",
+                normalizedTerm = "apple",
+                kind = AliasKind.BRAND,
+                targetCode = "APPLE",
+                weight = 98,
+                matchKind = AliasMatchKind.EXACT,
+                source = AliasSource.LEARNED,
+            ),
+            AliasEntry(
+                locale = "ru",
+                term = "128 гб",
+                normalizedTerm = "128 гб",
+                kind = AliasKind.ATTRIBUTE_HINT,
+                targetCode = "memory_gb",
+                weight = 95,
+                matchKind = AliasMatchKind.TOKEN,
+                source = AliasSource.LEARNED,
+            ),
+        )
+        val report = validator.validate(
+            categories = baseCategories(),
+            aliases = baseAliases(),
+            mappings = baseMappings(),
+            browseNodes = baseBrowseNodes(),
+            aliasEntries = aliasEntries,
+        )
+
+        assertTrue(report.summary(), report.failIssues.isEmpty())
+        assertDoesNotContainIssue(report, "ALIAS_ENTRY_LOCALE_UNSUPPORTED")
+        assertDoesNotContainIssue(report, "ALIAS_ENTRY_LOCALE_NOT_ALLOWED")
+        assertDoesNotContainIssue(report, "ALIAS_ENTRY_TARGET_MISSING")
+        assertDoesNotContainIssue(report, "ALIAS_ENTRY_TARGET_KIND_MISMATCH")
+    }
+
+    @Test
+    fun plusSemanticsInGovernanceAliases_areAccepted() {
+        val aliasEntries = listOf(
+            AliasEntry(
+                locale = "en",
+                term = "snap 8+ gen1",
+                normalizedTerm = "snap 8 plus gen1",
+                kind = AliasKind.ATTRIBUTE_HINT,
+                targetCode = "chipset_family",
+                weight = 95,
+                matchKind = AliasMatchKind.TOKEN,
+                source = AliasSource.LEARNED,
+            ),
+            AliasEntry(
+                locale = "ru",
+                term = "7+ ген 2",
+                normalizedTerm = "7 plus ген 2",
+                kind = AliasKind.ATTRIBUTE_HINT,
+                targetCode = "chipset_family",
+                weight = 95,
+                matchKind = AliasMatchKind.TOKEN,
+                source = AliasSource.LEARNED,
+            ),
+        )
+        val report = validator.validate(
+            categories = baseCategories(),
+            aliases = baseAliases(),
+            mappings = baseMappings(),
+            browseNodes = baseBrowseNodes(),
+            aliasEntries = aliasEntries,
+        )
+
+        assertTrue(report.summary(), report.failIssues.isEmpty())
+        assertDoesNotContainIssue(report, "ALIAS_ENTRY_TERM_NOT_NORMALIZED")
+    }
+
     private fun baseCategories(): List<Category> = listOf(
         category(code = "TECH", parentCode = null, segment = CategorySegment.TECH),
         category(code = "TECH.PHONES", parentCode = "TECH", segment = CategorySegment.TECH),
@@ -457,13 +603,13 @@ class TaxonomyValidatorTest {
     private fun baseBrowseNodes(): List<BrowseNode> = listOf(
         BrowseNode(
             browseCode = "ROOT.TECH",
-            titleRu = "Электроника",
+            title = localizedTextOf("ru" to "Электроника"),
             order = 1,
         ),
         BrowseNode(
             browseCode = "NODE.TECH.PHONES",
             parentBrowseCode = "ROOT.TECH",
-            titleRu = "Смартфоны",
+            title = localizedTextOf("ru" to "Смартфоны"),
             targetCategoryCode = "TECH.PHONES",
             targetType = BrowseTargetType.CATEGORY,
             order = 1,
@@ -489,11 +635,15 @@ class TaxonomyValidatorTest {
         code: String,
         parentCode: String?,
         segment: CategorySegment,
+        status: CategoryStatus = CategoryStatus.ACTIVE,
+        replacementCode: String? = null,
     ): Category = Category(
         code = code,
         parentCode = parentCode,
         segment = segment,
-        title = code,
+        title = localizedTextOf("ru" to code),
+        status = status,
+        replacementCode = replacementCode,
     )
 
     private fun mapping(
@@ -510,5 +660,10 @@ class TaxonomyValidatorTest {
     private fun assertContainsIssue(report: TaxonomyValidationReport, issueCode: String) {
         val hasIssue = report.issues.any { it.code == issueCode }
         assertTrue(report.summary(), hasIssue)
+    }
+
+    private fun assertDoesNotContainIssue(report: TaxonomyValidationReport, issueCode: String) {
+        val hasIssue = report.issues.any { it.code == issueCode }
+        assertFalse(report.summary(), hasIssue)
     }
 }

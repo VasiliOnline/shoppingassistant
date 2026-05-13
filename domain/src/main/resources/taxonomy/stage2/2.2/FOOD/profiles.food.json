@@ -8,8 +8,27 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "FOOD",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -242,9 +261,70 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "package_text",
+        "title": "Текст на упаковке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "FOOD.GROCERIES",
         "attributeCode": "product_name",
@@ -358,6 +438,30 @@
         "attributeCode": "is_gluten_free",
         "uiOrder": 190,
         "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "package_text",
+        "uiOrder": 191,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 192,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "primary_color",
+        "uiOrder": 193,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.GROCERIES",
+        "attributeCode": "shape",
+        "uiOrder": 194,
+        "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
@@ -373,6 +477,18 @@
       "status": "ACTIVE"
     },
     "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название блюда",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null,
+        "requiredBy": "2026-04-01"
+      },
       {
         "code": "restaurant_name",
         "title": "Ресторан/сеть",
@@ -681,9 +797,76 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "secondary_color",
+        "title": "Дополнительный цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "product_name",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
       {
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "restaurant_name",
@@ -844,6 +1027,30 @@
         "categoryCode": "FOOD.READY_MEALS",
         "attributeCode": "is_gluten_free",
         "uiOrder": 270,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "primary_color",
+        "uiOrder": 271,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "secondary_color",
+        "uiOrder": 272,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "shape",
+        "uiOrder": 273,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.READY_MEALS",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 274,
         "isRequiredForCategory": false
       }
     ],
@@ -1069,9 +1276,70 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "package_text",
+        "title": "Текст на упаковке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "FOOD.DRINKS",
         "attributeCode": "product_name",
@@ -1178,6 +1446,30 @@
         "categoryCode": "FOOD.DRINKS",
         "attributeCode": "is_gluten_free",
         "uiOrder": 180,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "package_text",
+        "uiOrder": 181,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 182,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "primary_color",
+        "uiOrder": 183,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.DRINKS",
+        "attributeCode": "shape",
+        "uiOrder": 184,
         "isRequiredForCategory": false
       }
     ],
@@ -1403,9 +1695,70 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "package_text",
+        "title": "Текст на упаковке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "FOOD.SNACKS",
         "attributeCode": "product_name",
@@ -1513,13 +1866,33 @@
         "attributeCode": "is_gluten_free",
         "uiOrder": 180,
         "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "package_text",
+        "uiOrder": 181,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 182,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "primary_color",
+        "uiOrder": 183,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FOOD.SNACKS",
+        "attributeCode": "shape",
+        "uiOrder": 184,
+        "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
     "requiredIfRules": []
   }
 ]
-
-
-
-

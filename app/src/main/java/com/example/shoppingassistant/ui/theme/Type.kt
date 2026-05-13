@@ -12,6 +12,9 @@ private val Manrope = FontFamily(
     Font(R.font.manrope_wght, FontWeight.Normal),
     Font(R.font.manrope_wght, FontWeight.Medium),
     Font(R.font.manrope_wght, FontWeight.SemiBold),
+    Font(R.font.manrope_wght, FontWeight.Bold),
+    Font(R.font.manrope_wght, FontWeight.ExtraBold),
+    Font(R.font.manrope_wght, FontWeight.Black),
 )
 
 val Typography = Typography(

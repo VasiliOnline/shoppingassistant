@@ -37,6 +37,27 @@ class Stage21KidsQueryRouterTest {
     }
 
     @Test
+    fun route_baby_apparel_disambiguation_to_fash_kids() = runBlocking {
+        val result = router.route(query = "боди для малыша 68", locale = "ru-RU")
+        assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
+        assertEquals("FASH.KIDS", result.primaryTargetCode)
+    }
+
+    @Test
+    fun route_kids_shoes_disambiguation_to_fash_shoes() = runBlocking {
+        val result = router.route(query = "детская обувь кроссовки", locale = "ru-RU")
+        assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
+        assertEquals("FASH.SHOES", result.primaryTargetCode)
+    }
+
+    @Test
+    fun route_kids_backpack_disambiguation_to_fash_bags() = runBlocking {
+        val result = router.route(query = "детский рюкзак", locale = "ru-RU")
+        assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
+        assertEquals("FASH.BAGS", result.primaryTargetCode)
+    }
+
+    @Test
     fun route_phone_disambiguation_to_tech_phones() = runBlocking {
         val result = router.route(query = "iphone 15", locale = "ru-RU")
         assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)

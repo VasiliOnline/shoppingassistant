@@ -45,6 +45,35 @@ data class VisionCategoryCandidate(
 )
 
 @Serializable
+data class VisionAttributeCandidate(
+    val code: String,
+    val kind: String? = null,
+    val text: String? = null,
+    val number: Double? = null,
+    val bool: Boolean? = null,
+    val confidence: Float? = null,
+)
+
+@Serializable
+data class VisionRawExtraction(
+    val categoryHint: String? = null,
+    val brand: String? = null,
+    val model: String? = null,
+    val title: String? = null,
+    val reasonCodes: List<String> = emptyList(),
+    val attributes: List<VisionAttributeCandidate> = emptyList(),
+)
+
+@Serializable
+data class VisionBindOutcome(
+    val rawCategoryHint: String? = null,
+    val resolvedCategoryCode: String? = null,
+    val acceptedAttributeCodes: List<String> = emptyList(),
+    val unresolvedAttributeCodes: List<String> = emptyList(),
+    val missingRequiredKeys: List<String> = emptyList(),
+)
+
+@Serializable
 enum class VisionSource {
     TECH_OCR,
     VISUAL,
@@ -74,6 +103,8 @@ data class VisionNormalizeResult(
     val normalizedQuery: NormalizedQuery? = null,
     val categoryCode: String? = null,
     val categoryCandidates: List<VisionCategoryCandidate> = emptyList(),
+    val rawExtraction: VisionRawExtraction? = null,
+    val bindOutcome: VisionBindOutcome? = null,
     val title: String? = null,
     val missingRequiredKeys: List<String> = emptyList(),
     val confidence: Float? = null,

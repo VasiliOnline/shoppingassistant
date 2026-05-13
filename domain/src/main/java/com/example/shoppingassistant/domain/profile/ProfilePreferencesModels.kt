@@ -18,6 +18,12 @@ enum class BottomBarStyle {
 }
 
 @Serializable
+enum class ProfileEntryMode {
+    PUBLIC,
+    ACCOUNT,
+}
+
+@Serializable
 data class ProfileSettings(
     val languageCode: String = "",
     val countryCode: String = "",
@@ -25,6 +31,9 @@ data class ProfileSettings(
     val hideUndeliverable: Boolean = false,
     val photoPeekEnabled: Boolean = false,
     val bottomBarStyle: BottomBarStyle = BottomBarStyle.SOLID,
+    val profileEntryMode: ProfileEntryMode = ProfileEntryMode.PUBLIC,
+    val deliveryAddresses: List<BuyerDeliveryAddress> = emptyList(),
+    val activeDeliveryAddressId: String? = null,
 )
 
 @Serializable

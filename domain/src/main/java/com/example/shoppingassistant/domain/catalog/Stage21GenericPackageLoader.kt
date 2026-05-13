@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.catalog
 
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import kotlinx.serialization.json.Json
 import java.nio.charset.StandardCharsets
 
@@ -113,8 +114,7 @@ internal object Stage21HomeFamilySchemaAdapter : Stage21SchemaAdapter<Stage21Hom
                 parentBrowseCode = parentCode,
                 nodeKind = nodeKind,
                 titleKey = row.optional("slug")?.let { "catalog.${descriptor.l0Code.lowercase()}.$it" },
-                titleRu = row.required("title_ru"),
-                titleEn = null,
+                title = localizedTextOf("ru" to row.required("title_ru")),
                 targetCategoryCode = targetCategoryCode,
                 targetType = targetCategoryCode?.let { BrowseTargetType.CATEGORY },
                 order = row.optional("sort_order")?.toIntOrNull() ?: 0,
@@ -247,8 +247,7 @@ internal object Stage21ApplSchemaAdapter : Stage21SchemaAdapter<Stage21ApplPacka
                 parentBrowseCode = row.optional("parent_id")?.let { mapBrowseCode(it, descriptor) },
                 nodeKind = nodeKind,
                 titleKey = null,
-                titleRu = row.required("title_ru"),
-                titleEn = null,
+                title = localizedTextOf("ru" to row.required("title_ru")),
                 targetCategoryCode = targetCanonicalCode,
                 targetType = targetCanonicalCode?.let { BrowseTargetType.CATEGORY },
                 order = row.optional("rank")?.toIntOrNull() ?: 0,
@@ -279,7 +278,13 @@ internal object Stage21ApplSchemaAdapter : Stage21SchemaAdapter<Stage21ApplPacka
                     ApplAliasTargetType.CANONICAL -> rawTargetId
                 },
                 flag = flag,
-                weightOverride = row.optional("weight")?.toIntOrNull(),
+                matchKind = parseSharedAliasMatchKind(row.required("match_kind"), descriptor.aliasesFile),
+                negativeTokens = parseNegativeTokens(row.optional("negative_tokens")),
+                isBlocked = row.optional("is_blocked")?.toBooleanStrictOrNullCompat() ?: false,
+                source = parseSharedAliasSource(row.required("source"), descriptor.aliasesFile),
+                weight = row.required("weight").toIntOrNull()
+                    ?: error("Unsupported weight in ${descriptor.aliasesFile}: '${row.optional("weight")}'"),
+                notes = row.optional("notes"),
             )
         }
 
@@ -368,8 +373,10 @@ internal object Stage21TechSchemaAdapter : Stage21SchemaAdapter<Stage21TechPacka
                 parentBrowseCode = row.optional("parent_browse_node_code")?.let { mapBrowseCode(it, descriptor) },
                 nodeKind = nodeKind,
                 titleKey = row.optional("analytics_key")?.let { "catalog.$it" },
-                titleRu = row.required("title_ru"),
-                titleEn = row.optional("title_en"),
+                title = localizedTextOf(
+                    "ru" to row.required("title_ru"),
+                    "en" to row.optional("title_en"),
+                ),
                 targetCategoryCode = targetCategoryCode,
                 targetType = if (targetCategoryCode == null) null else BrowseTargetType.CATEGORY,
                 order = row.required("sort_order").toIntOrNull() ?: 0,
@@ -505,6 +512,28 @@ private fun parseAliasStatus(raw: String?): Boolean = when (raw?.trim()?.lowerca
     null, "", "active" -> true
     "inactive", "hidden", "blocked" -> false
     else -> true
+}
+
+private fun parseSharedAliasMatchKind(
+    raw: String,
+    sourceName: String,
+): AliasMatchKind = when (raw.trim().uppercase()) {
+    "EXACT" -> AliasMatchKind.EXACT
+    "PREFIX", "CONTAINS" -> AliasMatchKind.PREFIX
+    "TOKEN" -> AliasMatchKind.TOKEN
+    "FUZZY", "REGEX" -> AliasMatchKind.FUZZY
+    else -> error("Unsupported match_kind in $sourceName: '$raw'")
+}
+
+private fun parseSharedAliasSource(
+    raw: String,
+    sourceName: String,
+): AliasSource = when (raw.trim().uppercase()) {
+    "SEED" -> AliasSource.SEED
+    "ANALYTICS" -> AliasSource.ANALYTICS
+    "MANUAL" -> AliasSource.MANUAL
+    "LEARNED" -> AliasSource.LEARNED
+    else -> error("Unsupported source in $sourceName: '$raw'")
 }
 
 private fun parseNegativeTokens(raw: String?): List<String> = raw

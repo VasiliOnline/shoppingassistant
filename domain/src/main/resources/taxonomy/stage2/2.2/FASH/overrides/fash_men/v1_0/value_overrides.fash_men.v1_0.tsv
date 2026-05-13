@@ -1,0 +1,78 @@
+dictionary_code	value_code	override_type	priority	visibility	reason
+apparel_type	TSHIRT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	SHIRT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	HOODIE	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	SWEATSHIRT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	SWEATER	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	JEANS	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	TROUSERS	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	JACKET	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	COAT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	DOWN_JACKET	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	POLO	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	LONGSLEEVE	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core men apparel type
+apparel_type	SHORTS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	SUIT	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	BLAZER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	TRACKSUIT	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	UNDERWEAR	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	TURTLENECK	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	SOCKS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	VEST	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	CARDIGAN	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	CHINOS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	CARGO_PANTS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	BOMBER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	DENIM_JACKET	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	LEATHER_JACKET	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	WINDBREAKER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	PARKA	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	THERMAL_UNDERWEAR	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	ACTIVE_TOP	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	ACTIVE_BOTTOM	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported men apparel type
+apparel_type	RAINCOAT	ALLOW	LOW	T2_ADVANCED	Rare but valid men apparel type
+apparel_type	ROBE	ALLOW	LOW	T2_ADVANCED	Rare but valid men apparel type
+apparel_type	PAJAMAS	ALLOW	LOW	T2_ADVANCED	Rare but valid men apparel type
+apparel_type	SWIMWEAR	ALLOW	LOW	T2_ADVANCED	Rare but valid men apparel type
+apparel_type	UNIFORM	ALLOW	LOW	T2_ADVANCED	Rare but valid men apparel type
+apparel_type	DRESS	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	SKIRT	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	BRA	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	BLOUSE	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	ROMPER	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	TOP	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	TANK_TOP	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	TIGHTS	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+apparel_type	JUMPSUIT	BLOCK_OR_CROSS_ROUTE	BLOCKED	HIDDEN_IN_FASH_MEN_PRIMARY_UI	Cross-route or non-core for P0 men branch
+target_gender	MEN	ALLOW	HIGH	HIDDEN_DEFAULT_OR_SECONDARY_FILTER	Allowed gender segment for men branch
+target_gender	UNISEX	ALLOW	HIGH	HIDDEN_DEFAULT_OR_SECONDARY_FILTER	Allowed gender segment for men branch
+target_gender	WOMEN	BLOCK_OR_ROUTE_OTHER	BLOCKED	HIDDEN	Not valid default for FASH.MEN
+target_gender	GIRLS	BLOCK_OR_ROUTE_OTHER	BLOCKED	HIDDEN	Not valid default for FASH.MEN
+target_gender	BOYS	BLOCK_OR_ROUTE_OTHER	BLOCKED	HIDDEN	Not valid default for FASH.MEN
+target_gender	KIDS	BLOCK_OR_ROUTE_OTHER	BLOCKED	HIDDEN	Not valid default for FASH.MEN
+target_gender	BABY	BLOCK_OR_ROUTE_OTHER	BLOCKED	HIDDEN	Not valid default for FASH.MEN
+age_group	ADULT	ALLOW	HIGH	HIDDEN_DEFAULT_OR_SECONDARY_FILTER	Allowed age group for FASH.MEN
+age_group	TEEN	ALLOW	HIGH	HIDDEN_DEFAULT_OR_SECONDARY_FILTER	Allowed age group for FASH.MEN
+age_group	BABY	BLOCK_OR_ROUTE_KIDS	BLOCKED	HIDDEN	Should route to FASH.KIDS
+age_group	TODDLER	BLOCK_OR_ROUTE_KIDS	BLOCKED	HIDDEN	Should route to FASH.KIDS
+age_group	KIDS	BLOCK_OR_ROUTE_KIDS	BLOCKED	HIDDEN	Should route to FASH.KIDS
+size_label	S	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	M	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	L	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	XL	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	XXL	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	3XL	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_46	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_48	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_50	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_52	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_54	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_56	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	RU_58	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W30	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W31	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W32	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W33	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W34	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W36	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority
+size_label	W38	PROMOTE	HIGH	T1_VISIBLE_PRIMARY	Male size priority

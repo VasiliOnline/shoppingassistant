@@ -25,7 +25,31 @@
         "reason": "Для кухонной посуды приоритет на новые товары."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "material",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CERAMIC"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "material",
+            "allowedValues": [
+              "CERAMIC",
+              "GLASS",
+              "STEEL"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.KITCHEN_DINING по атрибуту material."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -54,7 +78,31 @@
         "reason": "Исключаем нетипичный цвет для базового ассортимента освещения."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.LIGHTING по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -118,7 +166,30 @@
         "reason": "Базовые цвета для сантехнических категорий."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "material",
+            "op": "EQUALS_ANY",
+            "values": [
+              "STEEL"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "material",
+            "allowedValues": [
+              "STEEL",
+              "PLASTIC"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.PLUMBING по атрибуту material."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -149,7 +220,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWDER"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "POWDER",
+              "CAPSULE",
+              "TABLET",
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.CLEANING по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -195,7 +291,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.FURNITURE по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -237,7 +358,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'used_for'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.GARDEN по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -283,7 +429,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.STORAGE по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -329,7 +500,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории HOME.TEXTILES по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

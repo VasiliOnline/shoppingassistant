@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 internal object Stage21ApplPackageLoader {
     private val descriptor = Stage21PackageDescriptor(
         l0Code = "APPL",
-        basePath = "taxonomy/stage2/2.1/APPL",
+        basePath = "${CatalogContractPaths.stage21Base}/APPL",
         browseNodesFile = "browse_nodes.appl.tsv",
         aliasesFile = "aliases.appl.tsv",
         goldenQueriesFile = "queries_golden.appl.tsv",
@@ -37,7 +37,12 @@ data class ApplAliasSeedRow(
     val targetType: ApplAliasTargetType,
     val targetId: String,
     val flag: ApplAliasFlag,
-    val weightOverride: Int?,
+    val matchKind: AliasMatchKind,
+    val negativeTokens: List<String> = emptyList(),
+    val isBlocked: Boolean = false,
+    val source: AliasSource = AliasSource.SEED,
+    val weight: Int,
+    val notes: String? = null,
 )
 
 enum class ApplAliasTargetType {
@@ -71,11 +76,6 @@ internal data class Stage21ApplQualityGate(
 )
 
 private fun ApplAliasSeedRow.toAliasEntry(): AliasEntry {
-    val weight = weightOverride ?: when (flag) {
-        ApplAliasFlag.POSITIVE -> 78
-        ApplAliasFlag.DISAMBIGUATE -> 90
-        ApplAliasFlag.NEGATIVE_FOR_APPL -> 94
-    }
     return AliasEntry(
         locale = locale,
         term = query,
@@ -86,9 +86,9 @@ private fun ApplAliasSeedRow.toAliasEntry(): AliasEntry {
         },
         targetCode = targetId,
         weight = weight,
-        matchKind = AliasMatchKind.EXACT,
-        isBlocked = false,
-        source = AliasSource.SEED,
-        notes = "stage2.1.appl:${flag.name.lowercase()}:$aliasId",
+        matchKind = matchKind,
+        isBlocked = isBlocked,
+        source = source,
+        notes = notes ?: "stage2.1.appl:${flag.name.lowercase()}:$aliasId",
     )
 }

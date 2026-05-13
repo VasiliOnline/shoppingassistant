@@ -13,6 +13,8 @@ data class ProfileSummaryResponse(
     val email: String,
     val displayName: String,
     val phone: String? = null,
+    val pendingPhone: String? = null,
+    val pendingPhoneRequestedAt: Long? = null,
     val avatarUrl: String? = null,
     val city: String? = null,
     val emailVerified: Boolean = false,
@@ -32,6 +34,8 @@ data class ProfileUpdateRequest(
     val city: String? = null,
     val phone: String? = null,
     val avatarUrl: String? = null,
+    val bio: String? = null,
+    val website: String? = null,
 )
 
 /**
@@ -40,6 +44,12 @@ data class ProfileUpdateRequest(
 @Serializable
 data class ProfilePhotosUpdateRequest(
     val photos: List<String> = emptyList(),
+)
+
+@Serializable
+data class ProfileErrorResponse(
+    val code: String,
+    val message: String,
 )
 
 /**
@@ -51,6 +61,8 @@ fun AuthUser.toProfileSummaryResponse(): ProfileSummaryResponse =
         email = email,
         displayName = displayName ?: email,
         phone = phone,
+        pendingPhone = pendingPhone,
+        pendingPhoneRequestedAt = pendingPhoneRequestedAt,
         avatarUrl = avatarUrl,
         city = city,
         emailVerified = emailVerified,

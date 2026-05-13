@@ -1,0 +1,299 @@
+version: '1.0'
+categoryCode: FASH.MEN
+extends: FASH.APPAREL_COMMON
+purpose: Product user surface for men apparel branch. Keep UI compact; inherit advanced data but only show relevant group
+  fields.
+initial_form_limit: 8
+common_hidden_defaults:
+- target_gender
+- age_group
+- apparel_type_group
+- size_text_raw
+- brand_text_raw
+- normalization_confidence
+- visual_evidence_flags
+common_initial_fields:
+- apparel_type
+- condition
+- size_label
+- color_primary
+- brand
+- material_primary
+- fit
+- season
+group_overrides:
+  TOP:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - sleeve_length
+    advanced:
+    - pattern
+    - neckline
+    - style_aesthetic
+    - occasion
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - sleeve_length
+    - fit
+  KNITWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+    advanced:
+    - hood
+    - closure_type
+    - pattern
+    - neckline
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    - season
+  OUTERWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - season
+    - outerwear_weight
+    - hood
+    advanced:
+    - closure_type
+    - water_resistance
+    - insulation_material
+    - material_primary
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - season
+    - outerwear_weight
+    - water_resistance
+  BOTTOM:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - fit
+    - leg_fit
+    - waist_rise
+    advanced:
+    - waist_type
+    - length_type
+    - material_primary
+    - pattern
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - waist_rise
+    - leg_fit
+    - fit
+  SET:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - occasion
+    - fit
+    - pack_type
+    advanced:
+    - material_primary
+    - pattern
+    - style_aesthetic
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - occasion
+    - fit
+  UNDERWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - pack_type
+    advanced:
+    - defect_type
+    - pattern
+    primary_filters:
+    - apparel_type
+    - size_label
+    - brand
+    - material_primary
+    - pack_type
+  SOCKS_HOSIERY:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - pack_type
+    advanced:
+    - season
+    - pattern
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - brand
+    - material_primary
+    - pack_type
+  SPORT:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - activity
+    - fit
+    - material_primary
+    advanced:
+    - breathable
+    - stretch
+    - season
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - brand
+    - activity
+    - fit
+    - material_primary
+  BASE_LAYER:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - season
+    - material_primary
+    - fit
+    advanced:
+    - activity
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - brand
+    - season
+    - activity
+    - material_primary
+  SLEEPWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - sleeve_length
+    advanced:
+    - length_type
+    - pattern
+    - measurements
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+  SWIMWEAR:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+    - fit
+    advanced:
+    - stretch
+    - occasion
+    - defect_type
+    primary_filters:
+    - apparel_type
+    - size_label
+    - color_primary
+    - brand
+    - material_primary
+  SPECIAL:
+    initial:
+    - apparel_type
+    - condition
+    - size_label
+    - color_primary
+    - brand
+    - occasion
+    - material_primary
+    advanced:
+    - closure_type
+    - defect_type
+    - measurements
+    primary_filters:
+    - apparel_type
+    - size_label
+    - brand
+    - occasion
+    - condition
+ui_groups:
+  measurements:
+    type: ui_group_not_attribute
+    display_ru: Мерки
+    show_when: advanced_or_seller_wants_more_precision
+    expands_to:
+    - chest_cm
+    - waist_cm
+    - shoulder_cm
+    - sleeve_cm
+    - inseam_cm
+    - total_length_cm
+empty_state_copy_ru: Выберите тип одежды — форма покажет только нужные поля.

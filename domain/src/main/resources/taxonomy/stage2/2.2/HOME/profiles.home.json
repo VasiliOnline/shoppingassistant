@@ -8,8 +8,27 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "HOME",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -479,6 +498,17 @@
     },
     "attributes": [
       {
+        "code": "product_name",
+        "title": "Название товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
         "code": "volume_ml",
         "title": "Объём (мл)",
         "dataType": "INT",
@@ -526,26 +556,32 @@
     "categoryAttributes": [
       {
         "categoryCode": "HOME.KITCHEN_DINING",
-        "attributeCode": "volume_ml",
+        "attributeCode": "product_name",
         "uiOrder": 1,
-        "isRequiredForCategory": false
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "HOME.KITCHEN_DINING",
-        "attributeCode": "material",
+        "attributeCode": "volume_ml",
         "uiOrder": 2,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "HOME.KITCHEN_DINING",
-        "attributeCode": "has_lid",
+        "attributeCode": "material",
         "uiOrder": 3,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "HOME.KITCHEN_DINING",
-        "attributeCode": "is_thermal",
+        "attributeCode": "has_lid",
         "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "HOME.KITCHEN_DINING",
+        "attributeCode": "is_thermal",
+        "uiOrder": 5,
         "isRequiredForCategory": false
       }
     ],

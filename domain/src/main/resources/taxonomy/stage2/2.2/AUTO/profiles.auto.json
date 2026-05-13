@@ -8,8 +8,27 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "AUTO",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -88,9 +107,59 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "color"
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "package_text",
+        "title": "Текст на упаковке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "AUTO.PARTS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "AUTO.PARTS",
         "attributeCode": "brand",
@@ -125,6 +194,24 @@
         "categoryCode": "AUTO.PARTS",
         "attributeCode": "color",
         "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "AUTO.PARTS",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "AUTO.PARTS",
+        "attributeCode": "package_text",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "AUTO.PARTS",
+        "attributeCode": "shape",
+        "uiOrder": 9,
         "isRequiredForCategory": false
       }
     ],
@@ -324,9 +411,59 @@
         "facetEnabled": false,
         "multiValued": true,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "package_text",
+        "title": "Текст на упаковке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "AUTO.ACCESSORIES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "AUTO.ACCESSORIES",
         "attributeCode": "brand",
@@ -361,6 +498,24 @@
         "categoryCode": "AUTO.ACCESSORIES",
         "attributeCode": "included_accessories",
         "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "AUTO.ACCESSORIES",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "AUTO.ACCESSORIES",
+        "attributeCode": "package_text",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "AUTO.ACCESSORIES",
+        "attributeCode": "shape",
+        "uiOrder": 9,
         "isRequiredForCategory": false
       }
     ],
@@ -503,4 +658,3 @@
     "requiredIfRules": []
   }
 ]
-

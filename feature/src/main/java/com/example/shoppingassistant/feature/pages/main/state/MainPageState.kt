@@ -3,7 +3,6 @@ package com.example.shoppingassistant.feature.pages.main.state
 
 import com.example.shoppingassistant.domain.model.ProductDto
 import com.example.shoppingassistant.feature.pages.main.ui.InputMode
-import com.example.shoppingassistant.feature.pages.main.vision.PhotoWizardState
 import com.example.shoppingassistant.feature.pages.model.AttributeDef
 import com.example.shoppingassistant.feature.pages.model.BoundSegment
 import com.example.shoppingassistant.feature.pages.model.FilterStage
@@ -18,6 +17,20 @@ data class CategoryChipUi(
     val code: String,
     val title: String,
     val breadcrumb: String? = null,
+)
+
+data class RecentSearchQueryUi(
+    val text: String,
+    val usedAtMillis: Long,
+)
+
+data class PopularSearchQueryUi(
+    val text: String,
+    val totalCount: Int,
+    val todayCount: Int,
+    val monthCount: Int,
+    val yearCount: Int,
+    val lastUsedAtMillis: Long,
 )
 
 data class NearbyBrandFacet(
@@ -61,6 +74,7 @@ data class MainPageState(
     val chosenText: String? = null,
     val product: Product? = null,
     val attributeDefs: List<AttributeDef> = emptyList(),
+    val attributeLiveValuesByKey: Map<String, List<String>> = emptyMap(),
     val selectedFilters: Map<String, String> = emptyMap(),
     val boundSegments: List<BoundSegment> = emptyList(),
     val requiredKeys: Set<String> = emptySet(),
@@ -110,17 +124,15 @@ data class MainPageState(
     val facetCountsLoading: Boolean = false,
     val attrFacetCounts: Map<String, Int> = emptyMap(),
     val attrFacetCountsLoading: Set<String> = emptySet(),
-    val expressFillActive: Boolean = false,
-    val expressFillQueue: List<String> = emptyList(),
-    val expressFillNeedsPhoto: Boolean = false,
     val frequentCategories: List<CategoryChipUi> = emptyList(),
     val popularCategories: List<CategoryChipUi> = emptyList(),
+    val recentSearchQueries: List<RecentSearchQueryUi> = emptyList(),
+    val popularSearchQueries: List<PopularSearchQueryUi> = emptyList(),
     val nearbyCategoryChips: List<CategoryChipUi> = emptyList(),
     val suggestions: List<MainSuggestItem> = emptyList(),
     val topOffers: List<ProductDto> = emptyList(),
     val prefetchedOffers: List<ExplainedItem> = emptyList(),
     val showTopOffersSheet: Boolean = false,
-    val photoWizard: PhotoWizardState = PhotoWizardState(),
+    val visualSearch: VisualSearchSessionState = VisualSearchSessionState(),
     val voiceWizard: VoiceWizardState = VoiceWizardState(),
-    val categoryFallback: CategoryFallbackState = CategoryFallbackState(),
 )

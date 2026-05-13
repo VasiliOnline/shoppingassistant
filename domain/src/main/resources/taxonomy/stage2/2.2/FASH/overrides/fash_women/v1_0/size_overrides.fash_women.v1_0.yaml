@@ -1,0 +1,111 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+extends: FASH.APPAREL_COMMON
+size_priority:
+  international:
+    primary:
+    - XXS
+    - XS
+    - S
+    - M
+    - L
+    - XL
+    - XXL
+    - 3XL
+    secondary:
+    - 4XL
+    - 5XL
+  ru:
+    primary:
+    - RU_40
+    - RU_42
+    - RU_44
+    - RU_46
+    - RU_48
+    - RU_50
+    - RU_52
+    - RU_54
+    secondary:
+    - RU_56
+    - RU_58
+  eu:
+    primary:
+    - EU_34
+    - EU_36
+    - EU_38
+    - EU_40
+    - EU_42
+    - EU_44
+    - EU_46
+    - EU_48
+    secondary:
+    - EU_50
+    - EU_52
+  jeans:
+    waist:
+    - W24
+    - W25
+    - W26
+    - W27
+    - W28
+    - W29
+    - W30
+    - W31
+    - W32
+    - W33
+    - W34
+    - W36
+    length:
+    - L28
+    - L30
+    - L32
+    - L34
+    - L36
+  bra_eu:
+    band:
+    - '70'
+    - '75'
+    - '80'
+    - '85'
+    - '90'
+    - '95'
+    - '100'
+    cup:
+    - AA
+    - A
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+  tights_numeric:
+    primary:
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    secondary:
+    - S/M
+    - M/L
+    - L/XL
+  one_size:
+  - ONE_SIZE
+ui_policy:
+  show_bra_size_widget_for:
+  - BRA
+  show_tights_size_widget_for:
+  - TIGHTS
+  show_jeans_wl_widget_for:
+  - JEANS
+  - TROUSERS
+  - CHINOS
+  - CARGO_PANTS
+  show_measurements_as_advanced_group: true
+  do_not_force_cross_system_conversion_without_evidence: true
+normalization_notes:
+- Keep size_text_raw for audit and matching.
+- For women apparel, RU/EU/INT ambiguity is common; if evidence weak, keep raw text and lower confidence.
+- For bras, normalize band+cup only when both are present or clearly inferred from label.

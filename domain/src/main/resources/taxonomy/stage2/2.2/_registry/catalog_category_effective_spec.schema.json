@@ -1,0 +1,390 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shoppingassistant.local/schemas/catalog/category-effective-spec.schema.json",
+  "title": "CatalogCategoryEffectiveSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "category",
+    "readiness",
+    "attributes",
+    "systemAttributes",
+    "requiredIfRules",
+    "constraints",
+    "meta"
+  ],
+  "properties": {
+    "category": {
+      "$ref": "#/$defs/category"
+    },
+    "readiness": {
+      "$ref": "#/$defs/readiness"
+    },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attributeSpec"
+      }
+    },
+    "systemAttributes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attributeSpec"
+      }
+    },
+    "requiredIfRules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requiredIfRule"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/catalogConstraints"
+      }
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    }
+  },
+  "$defs": {
+    "localizedText": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "readiness": {
+      "type": "string",
+      "enum": [
+        "READY",
+        "BETA",
+        "INTERNAL"
+      ]
+    },
+    "categorySegment": {
+      "type": "string",
+      "enum": [
+        "TECH",
+        "APPL",
+        "HOME",
+        "FASH",
+        "BEAUTY",
+        "KIDS",
+        "FOOD",
+        "PETS",
+        "SPORT",
+        "AUTO",
+        "OTHER"
+      ]
+    },
+    "categoryStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "DEPRECATED",
+        "HIDDEN"
+      ]
+    },
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "segment",
+        "title",
+        "status"
+      ],
+      "properties": {
+        "code": { "type": "string" },
+        "segment": { "$ref": "#/$defs/categorySegment" },
+        "title": { "$ref": "#/$defs/localizedText" },
+        "parentCode": { "type": ["string", "null"] },
+        "description": { "type": ["string", "null"] },
+        "status": { "$ref": "#/$defs/categoryStatus" },
+        "replacementCode": { "type": ["string", "null"] }
+      }
+    },
+    "attributeDataType": {
+      "type": "string",
+      "enum": [
+        "STRING",
+        "INT",
+        "DECIMAL",
+        "BOOL",
+        "ENUM",
+        "STRING_LIST"
+      ]
+    },
+    "valueType": {
+      "type": "string",
+      "enum": [
+        "STRING",
+        "NUMBER",
+        "ENUM",
+        "BOOLEAN"
+      ]
+    },
+    "valueSetType": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "SEMI_CLOSED",
+        "OPEN"
+      ]
+    },
+    "widgetHint": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "CHIPS",
+        "DROPDOWN",
+        "TOGGLE",
+        "RANGE_INPUT"
+      ]
+    },
+    "catalogValueOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valueCode",
+        "labels",
+        "aliases",
+        "rank"
+      ],
+      "properties": {
+        "valueCode": { "type": "string" },
+        "labels": { "$ref": "#/$defs/localizedText" },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rank": { "type": "integer" }
+      }
+    },
+    "attributeSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "title",
+        "labels",
+        "dataType",
+        "valueType",
+        "valueSetType",
+        "uiOrder",
+        "requiredForCategory",
+        "requiredForSearch",
+        "requiredForOffer",
+        "requiredForExpress",
+        "facetEnabled",
+        "multiValued",
+        "isIdentity",
+        "isFacet",
+        "dictionaryRequired",
+        "enumOnly",
+        "widgetHint",
+        "options"
+      ],
+      "properties": {
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "labels": { "$ref": "#/$defs/localizedText" },
+        "dataType": { "$ref": "#/$defs/attributeDataType" },
+        "valueType": { "$ref": "#/$defs/valueType" },
+        "valueSetType": { "$ref": "#/$defs/valueSetType" },
+        "uiOrder": { "type": "integer" },
+        "requiredForCategory": { "type": "boolean" },
+        "requiredForSearch": { "type": "boolean" },
+        "requiredForOffer": { "type": "boolean" },
+        "requiredForExpress": { "type": "boolean" },
+        "requiredBy": { "type": ["string", "null"] },
+        "facetEnabled": { "type": "boolean" },
+        "multiValued": { "type": "boolean" },
+        "valueDictCode": { "type": ["string", "null"] },
+        "unit": { "type": ["string", "null"] },
+        "normalization": { "type": ["string", "null"] },
+        "isIdentity": { "type": "boolean" },
+        "isFacet": { "type": "boolean" },
+        "dictionaryRequired": { "type": "boolean" },
+        "enumOnly": { "type": "boolean" },
+        "regexPattern": { "type": ["string", "null"] },
+        "minValue": { "type": ["number", "null"] },
+        "maxValue": { "type": ["number", "null"] },
+        "widgetHint": { "$ref": "#/$defs/widgetHint" },
+        "options": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/catalogValueOption" }
+        }
+      }
+    },
+    "attributeConditionOp": {
+      "type": "string",
+      "enum": [
+        "EQUALS_ANY",
+        "STARTS_WITH_ANY"
+      ]
+    },
+    "attributeCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attributeCode",
+        "op",
+        "values"
+      ],
+      "properties": {
+        "attributeCode": { "type": "string" },
+        "op": { "$ref": "#/$defs/attributeConditionOp" },
+        "values": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "requiredIfRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requiredAttributeCode",
+        "whenAll"
+      ],
+      "properties": {
+        "requiredAttributeCode": { "type": "string" },
+        "whenAll": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attributeCondition" }
+        }
+      }
+    },
+    "constraintScope": {
+      "type": "string",
+      "enum": [
+        "GLOBAL",
+        "CATEGORY",
+        "BRAND",
+        "MODEL"
+      ]
+    },
+    "attributeValueConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attributeCode",
+        "allowedValues",
+        "forbiddenValues"
+      ],
+      "properties": {
+        "attributeCode": { "type": "string" },
+        "allowedValues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbiddenValues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "compatibilityRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "whenAll",
+        "apply"
+      ],
+      "properties": {
+        "whenAll": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attributeCondition" }
+        },
+        "apply": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attributeValueConstraint" }
+        }
+      }
+    },
+    "catalogConstraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "attributeConstraints",
+        "compatibilityRules"
+      ],
+      "properties": {
+        "scope": { "$ref": "#/$defs/constraintScope" },
+        "categoryCode": { "type": ["string", "null"] },
+        "brand": { "type": ["string", "null"] },
+        "model": { "type": ["string", "null"] },
+        "effectiveFrom": { "type": ["string", "null"] },
+        "effectiveTo": { "type": ["string", "null"] },
+        "attributeConstraints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/attributeValueConstraint" }
+        },
+        "compatibilityRules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/compatibilityRule" }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "identityAttributeCodes",
+        "facetAttributeCodes",
+        "hasTypedConstraints",
+        "hasDictionaries",
+        "completenessGatePassed",
+        "editorialReadiness",
+        "operationalReadiness",
+        "editorialBlockingIssues",
+        "operationalBlockingIssues",
+        "operationalSampleCount",
+        "operationalDroppedRate",
+        "operationalUnknownAttributeRate",
+        "operationalRequiredMissingRate",
+        "operationalLowConfidenceRate",
+        "readinessBlockingIssues"
+      ],
+      "properties": {
+        "source": { "type": "string" },
+        "identityAttributeCodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "facetAttributeCodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "hasTypedConstraints": { "type": "boolean" },
+        "hasDictionaries": { "type": "boolean" },
+        "completenessGatePassed": { "type": "boolean" },
+        "editorialReadiness": { "$ref": "#/$defs/readiness" },
+        "operationalReadiness": { "$ref": "#/$defs/readiness" },
+        "editorialBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationalBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "operationalSampleCount": { "type": "integer" },
+        "operationalDroppedRate": { "type": "number" },
+        "operationalUnknownAttributeRate": { "type": "number" },
+        "operationalRequiredMissingRate": { "type": "number" },
+        "operationalLowConfidenceRate": { "type": "number" },
+        "readinessBlockingIssues": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

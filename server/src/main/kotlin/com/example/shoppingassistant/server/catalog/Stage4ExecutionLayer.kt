@@ -746,11 +746,11 @@ class Stage4ExecutionLayerImpl(
 
     private fun loadAllowedAttributesByCategoryFromSeed(): Map<String, Set<String>> {
         val byCategory = LinkedHashMap<String, MutableSet<String>>()
-        CatalogSeed.profiles.forEach { profile ->
-            val categoryCode = normalizeCategoryCode(profile.category.code)
+        CatalogSeed.categoryWriteSpecs.forEach { spec ->
+            val categoryCode = normalizeCategoryCode(spec.category.code)
             if (categoryCode.isEmpty()) return@forEach
             val bucket = byCategory.getOrPut(categoryCode) { LinkedHashSet() }
-            profile.categoryAttributes.forEach { categoryAttribute ->
+            spec.categoryAttributes.forEach { categoryAttribute ->
                 val attributeCode = normalizeAttributeCode(categoryAttribute.attributeCode)
                 if (attributeCode.isNotEmpty()) {
                     bucket.add(attributeCode)
@@ -814,8 +814,8 @@ class Stage4ExecutionLayerImpl(
 
     private fun loadDictionaryTokensFromSeed(): Map<String, Map<String, String>> {
         val tokensByAttribute = LinkedHashMap<String, LinkedHashMap<String, String>>()
-        CatalogSeed.profiles.forEach { profile ->
-            profile.valueDictionaries.forEach { dictionary ->
+        CatalogSeed.categoryWriteSpecs.forEach { spec ->
+            spec.valueDictionaries.forEach { dictionary ->
                 val attributeCode = normalizeAttributeCode(dictionary.attributeCode)
                 if (attributeCode.isEmpty()) return@forEach
                 val bucket = tokensByAttribute.getOrPut(attributeCode) { LinkedHashMap() }

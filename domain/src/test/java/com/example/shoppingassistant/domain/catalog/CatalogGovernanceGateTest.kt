@@ -58,6 +58,18 @@ class CatalogGovernanceGateTest {
 
         val changes = versionEntry.arrayValue("changes")
         assertTrue("Changelog entry for ${meta.dataVersion} must contain changes.", changes.isNotEmpty())
+
+        val readinessPolicy = parseObject("taxonomy/stage2/2.2/_registry/readiness_governance_policy.json")
+        val governanceHooks = readinessPolicy.arrayValue("governanceHooks")
+        assertTrue("Governance hooks must be declared.", governanceHooks.isNotEmpty())
+        governanceHooks.forEach { element ->
+            val hook = element as? JsonObject ?: error("governanceHooks entries must be objects.")
+            assertTrue("governanceHooks.code must be set.", hook.value("code").isNotBlank())
+            assertTrue("governanceHooks.trigger must be set.", hook.value("trigger").isNotBlank())
+            assertTrue("governanceHooks.transport must be set.", hook.value("transport").isNotBlank())
+            assertTrue("governanceHooks.targetEnvVar must be set.", hook.value("targetEnvVar").isNotBlank())
+            assertTrue("governanceHooks.description must be set.", hook.value("description").isNotBlank())
+        }
     }
 
     private fun parseObject(resourcePath: String): JsonObject =

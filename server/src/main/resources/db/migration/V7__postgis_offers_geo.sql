@@ -15,5 +15,5 @@ CREATE INDEX IF NOT EXISTS idx_offers_lat_lon ON offers(lat, lon);
 
 -- PostGIS index for ST_DWithin / ST_Distance
 CREATE INDEX IF NOT EXISTS idx_offers_geo_gist
-    ON offers USING GIST ((ST_SetSRID(ST_MakePoint(lon, lat), 4326))::geography)
+    ON offers USING GIST (((ST_SetSRID(ST_MakePoint(lon, lat), 4326))::geography))
     WHERE lat IS NOT NULL AND lon IS NOT NULL;

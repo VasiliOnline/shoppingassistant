@@ -1,0 +1,55 @@
+{
+  "categoryCode": "TECH.PHONE_ACCESSORIES",
+  "version": "1.2.0-useful-production",
+  "task": "visual_route_and_accessory_attribute_extraction",
+  "routeIdentityMode": "accessory_type_first",
+  "requiredOutput": [
+    "accessory_type"
+  ],
+  "extractIfVisibleOrText": [
+    "brand",
+    "compatible_phone_brand",
+    "compatible_phone_family",
+    "compatible_phone_model",
+    "compatible_model_text",
+    "color",
+    "material",
+    "case_form_factor",
+    "protector_type",
+    "connector_input",
+    "connector_output",
+    "connector_a",
+    "connector_b",
+    "max_power_watt",
+    "capacity_mah",
+    "cable_length_m",
+    "charging_protocol",
+    "mount_location",
+    "mount_attachment",
+    "pack_quantity"
+  ],
+  "systemHidden": [
+    "compatibility_mode",
+    "compatible_model_text",
+    "compatibility_confidence",
+    "evidence_policy"
+  ],
+  "compatibilityCriticalTypes": [
+    "CAMERA_PROTECTOR",
+    "CASE",
+    "PHONE_REPAIR_PART",
+    "PHONE_SKIN_DECAL",
+    "SCREEN_PROTECTOR"
+  ],
+  "doNotInfer": [
+    "Do not guess compatible phone model from a generic transparent case without printed text, box, label, screen, or distinctive camera cutout evidence.",
+    "Do not return compatible_phone_family/model as a closed catalog code; use external TECH.PHONES refs only after server validation.",
+    "Do not infer connector power, storage, waterproof rating, or certification unless visible on packaging/marking/OCR.",
+    "Return NEED_MORE_PHOTOS when accessory_type is clear but compatibility evidence is insufficient."
+  ],
+  "recommendedNextPhotos": {
+    "compatibility": "back_label_or_packaging_model_list",
+    "charger_or_cable": "connector_closeup_and_power_marking",
+    "case_or_protector": "packaging_or_cutout_closeup"
+  }
+}

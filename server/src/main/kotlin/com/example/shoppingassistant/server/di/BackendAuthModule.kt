@@ -43,6 +43,7 @@ import com.example.shoppingassistant.server.auth.AuthAuditService
 import com.example.shoppingassistant.server.auth.ChangeEmailService
 import com.example.shoppingassistant.server.auth.ChangeEmailTokenStore
 import com.example.shoppingassistant.server.auth.InMemoryChangeEmailTokenStore
+import com.example.shoppingassistant.server.auth.LettuceChangeEmailTokenStore
 import com.example.shoppingassistant.server.auth.LoggingSmsResetNotificationSender
 import com.example.shoppingassistant.server.auth.SmsResetNotificationSender
 import com.example.shoppingassistant.server.auth.HttpSmsResetNotificationSender
@@ -188,7 +189,17 @@ val backendAuthModule = module {
     }
 
     // --- Change email tokens ---
-    single<ChangeEmailTokenStore> { InMemoryChangeEmailTokenStore() }
+    single<ChangeEmailTokenStore> {
+        val redisConfig: RedisConfig = get()
+        if (redisConfig.enabled && !redisConfig.url.isNullOrBlank()) {
+            val client = RedisClient.create(redisConfig.url)
+            val connection = client.connect()
+            val commands = connection.sync()
+            LettuceChangeEmailTokenStore(commands = commands)
+        } else {
+            InMemoryChangeEmailTokenStore()
+        }
+    }
 
     single {
         ChangeEmailService(
@@ -272,6 +283,7 @@ val backendAuthModule = module {
             tokenManager = get(),
             resetNotificationSender = get(),
             smsResetNotificationSender = get(),
+            sessionManager = get(),
         )
     }
 

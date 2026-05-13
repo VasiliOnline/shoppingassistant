@@ -1,0 +1,87 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "positive_route_patterns": [
+    {
+      "pattern": "детск* + apparel term",
+      "target": "FASH.KIDS"
+    },
+    {
+      "pattern": "для мальчика + apparel term",
+      "target": "FASH.KIDS",
+      "set_target_gender": "BOYS"
+    },
+    {
+      "pattern": "для девочки + apparel term",
+      "target": "FASH.KIDS",
+      "set_target_gender": "GIRLS"
+    },
+    {
+      "pattern": "на рост <height_cm> + apparel term",
+      "target": "FASH.KIDS"
+    },
+    {
+      "pattern": "на <age> лет + apparel term",
+      "target": "FASH.KIDS"
+    }
+  ],
+  "negative_guards": [
+    {
+      "terms": [
+        "кроссовки",
+        "ботинки",
+        "сапоги",
+        "сандалии",
+        "туфли"
+      ],
+      "target": "FASH.SHOES"
+    },
+    {
+      "terms": [
+        "рюкзак",
+        "сумка",
+        "портфель"
+      ],
+      "target": "FASH.BAGS"
+    },
+    {
+      "terms": [
+        "ремень",
+        "часы",
+        "очки",
+        "украшения"
+      ],
+      "target": "FASH.ACCESSORIES"
+    },
+    {
+      "terms": [
+        "коляска",
+        "автокресло"
+      ],
+      "target": "KIDS.STROLLERS_CARSEATS"
+    },
+    {
+      "terms": [
+        "подгузники",
+        "бутылочка",
+        "соска",
+        "манеж"
+      ],
+      "target": "KIDS.BABY_GEAR"
+    },
+    {
+      "terms": [
+        "игрушка",
+        "кукла",
+        "конструктор"
+      ],
+      "target": "KIDS.TOYS_GAMES"
+    }
+  ],
+  "ambiguity_policy": {
+    "generic_apparel_without_kids_signal": "route_to_FASH_MEN_WOMEN_OR_common_candidate_not_FASH_KIDS",
+    "baby_term_without_apparel": "route_to_KIDS.BABY_GEAR",
+    "school_term_with_clothing": "route_to_FASH.KIDS",
+    "school_term_with_bag": "route_to_FASH.BAGS"
+  }
+}

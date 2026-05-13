@@ -3,6 +3,7 @@
     "presetCode": "FP.FOOD.READY.DEFAULT",
     "categoryCode": "FOOD.READY_MEALS",
     "titleRu": "Готовая еда по умолчанию",
+    "titleEn": "Default Ready Meals",
     "order": 10,
     "rules": [
       {
@@ -36,13 +37,14 @@
         "boolValue": null
       }
     ],
-        "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
   {
     "presetCode": "FP.FOOD.READY.PIZZA",
     "categoryCode": "FOOD.READY_MEALS",
     "titleRu": "Пицца",
+    "titleEn": "Pizza",
     "order": 30,
     "rules": [
       {
@@ -77,13 +79,14 @@
         "boolValue": null
       }
     ],
-        "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
   {
     "presetCode": "FP.FOOD.READY.SUSHI",
     "categoryCode": "FOOD.READY_MEALS",
     "titleRu": "Суши и роллы",
+    "titleEn": "Sushi and Rolls",
     "order": 20,
     "rules": [
       {
@@ -108,13 +111,14 @@
         "boolValue": null
       }
     ],
-        "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
   {
     "presetCode": "FP.TECH.PHONES.DEFAULT",
     "categoryCode": "TECH.PHONES",
     "titleRu": "Смартфоны по умолчанию",
+    "titleEn": "Default Smartphones",
     "order": 10,
     "rules": [
       {
@@ -137,13 +141,14 @@
         "boolValue": null
       }
     ],
-        "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
   {
     "presetCode": "FP.TECH.PHONES.BUDGET",
     "categoryCode": "TECH.PHONES",
     "titleRu": "Смартфоны до 50K",
+    "titleEn": "Smartphones under 50K",
     "order": 20,
     "rules": [
       {
@@ -182,6 +187,7 @@
     "presetCode": "FP.TECH.PHONES.PREMIUM",
     "categoryCode": "TECH.PHONES",
     "titleRu": "Смартфоны премиум",
+    "titleEn": "Premium Smartphones",
     "order": 30,
     "rules": [
       {
@@ -214,9 +220,133 @@
     "effectiveTo": null
   },
   {
+    "presetCode": "FP.TECH.PHONES.FRESH",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "Свежие смартфоны",
+    "titleEn": "Fresh Smartphones",
+    "order": 40,
+    "rules": [
+      {
+        "facetKey": "release_year",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 2024.0,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 richer phone facts preset",
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONES.ESIM",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "С eSIM",
+    "titleEn": "With eSIM",
+    "order": 50,
+    "rules": [
+      {
+        "facetKey": "esim_support",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": true
+      }
+    ],
+    "notes": "Stage 3.0 richer phone facts preset",
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONES.WIRELESS",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "С беспроводной зарядкой",
+    "titleEn": "Wireless Charging Phones",
+    "order": 60,
+    "rules": [
+      {
+        "facetKey": "wireless_charging",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": true
+      }
+    ],
+    "notes": "Stage 3.0 richer phone facts preset",
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONES.FAST_CHARGE",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "Быстрая проводная зарядка",
+    "titleEn": "Fast Wired Charging Phones",
+    "order": 70,
+    "rules": [
+      {
+        "facetKey": "wired_charging_w",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 45.0,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 richer phone facts preset",
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONES.BIG_BATTERY",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "С ёмкой батареей",
+    "titleEn": "Big Battery Phones",
+    "order": 80,
+    "rules": [
+      {
+        "facetKey": "battery_mah",
+        "includeValues": [],
+        "excludeValues": [],
+        "minValue": 5000.0,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 richer phone facts preset",
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "presetCode": "FP.TECH.PHONES.IP_PROTECTED",
+    "categoryCode": "TECH.PHONES",
+    "titleRu": "С защитой IP",
+    "titleEn": "IP Rated Phones",
+    "order": 90,
+    "rules": [
+      {
+        "facetKey": "ip_rating",
+        "includeValues": [
+          "IP67",
+          "IP68"
+        ],
+        "excludeValues": [],
+        "minValue": null,
+        "maxValue": null,
+        "boolValue": null
+      }
+    ],
+    "notes": "Stage 3.0 richer phone facts preset",
+    "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
     "presetCode": "FP.BEAUTY.HAIRCARE.DEFAULT",
     "categoryCode": "BEAUTY.HAIRCARE",
     "titleRu": "Уход за волосами по умолчанию",
+    "titleEn": "Default Hair Care",
     "order": 10,
     "rules": [
       {
@@ -247,6 +377,7 @@
     "presetCode": "FP.BEAUTY.BODYCARE.DEFAULT",
     "categoryCode": "BEAUTY.BODYCARE",
     "titleRu": "Уход за телом и гигиена по умолчанию",
+    "titleEn": "Default Body Care and Hygiene",
     "order": 10,
     "rules": [
       {
@@ -277,6 +408,7 @@
     "presetCode": "FP.BEAUTY.MAKEUP.DEFAULT",
     "categoryCode": "BEAUTY.MAKEUP",
     "titleRu": "Декоративная косметика по умолчанию",
+    "titleEn": "Default Makeup",
     "order": 10,
     "rules": [
       {
@@ -307,6 +439,7 @@
     "presetCode": "FP.BEAUTY.FRAGRANCE.DEFAULT",
     "categoryCode": "BEAUTY.FRAGRANCE",
     "titleRu": "Парфюмерия по умолчанию",
+    "titleEn": "Default Fragrances",
     "order": 10,
     "rules": [
       {
@@ -337,6 +470,7 @@
     "presetCode": "FP.BEAUTY.DEVICES.DEFAULT",
     "categoryCode": "BEAUTY.DEVICES",
     "titleRu": "Техника для красоты и здоровья по умолчанию",
+    "titleEn": "Default Beauty and Health Devices",
     "order": 10,
     "rules": [
       {
@@ -367,6 +501,7 @@
     "presetCode": "FP.BEAUTY.HEALTH.DEFAULT",
     "categoryCode": "BEAUTY.HEALTH",
     "titleRu": "Товары для здоровья (витамины, мед-товары) по умолчанию",
+    "titleEn": "Default Health Products (vitamins, medical supplies)",
     "order": 10,
     "rules": [
       {
@@ -397,6 +532,7 @@
     "presetCode": "FP.KIDS.STROLLERS_CARSEATS.DEFAULT",
     "categoryCode": "KIDS.STROLLERS_CARSEATS",
     "titleRu": "Коляски и автокресла по умолчанию",
+    "titleEn": "Default Strollers and Car Seats",
     "order": 10,
     "rules": [
       {
@@ -427,6 +563,7 @@
     "presetCode": "FP.KIDS.NURSERY_FURNITURE.DEFAULT",
     "categoryCode": "KIDS.NURSERY_FURNITURE",
     "titleRu": "Детская мебель и безопасность по умолчанию",
+    "titleEn": "Default Kids' Furniture and Safety",
     "order": 10,
     "rules": [
       {
@@ -457,6 +594,7 @@
     "presetCode": "FP.KIDS.TOYS_GAMES.DEFAULT",
     "categoryCode": "KIDS.TOYS_GAMES",
     "titleRu": "Игрушки и игры по умолчанию",
+    "titleEn": "Default Toys and Games",
     "order": 10,
     "rules": [
       {
@@ -487,6 +625,7 @@
     "presetCode": "FP.KIDS.BABY_GEAR.DEFAULT",
     "categoryCode": "KIDS.BABY_GEAR",
     "titleRu": "Товары для ухода за малышами по умолчанию",
+    "titleEn": "Default Baby Care Products",
     "order": 10,
     "rules": [
       {
@@ -517,6 +656,7 @@
     "presetCode": "FP.FOOD.GROCERIES.DEFAULT",
     "categoryCode": "FOOD.GROCERIES",
     "titleRu": "Продукты (бакалея, свежие и т.п.) по умолчанию",
+    "titleEn": "Default Groceries (pantry, fresh produce, etc.)",
     "order": 10,
     "rules": [
       {
@@ -557,6 +697,7 @@
     "presetCode": "FP.FOOD.GROCERIES.HEALTHY",
     "categoryCode": "FOOD.GROCERIES",
     "titleRu": "Полезный выбор",
+    "titleEn": "Healthy Choice",
     "order": 20,
     "rules": [
       {
@@ -594,6 +735,7 @@
     "presetCode": "FP.FOOD.GROCERIES.LONG_SHELF",
     "categoryCode": "FOOD.GROCERIES",
     "titleRu": "Длительное хранение",
+    "titleEn": "Long Shelf Life",
     "order": 30,
     "rules": [
       {
@@ -631,6 +773,7 @@
     "presetCode": "FP.FOOD.DRINKS.DEFAULT",
     "categoryCode": "FOOD.DRINKS",
     "titleRu": "Напитки по умолчанию",
+    "titleEn": "Default Drinks",
     "order": 10,
     "rules": [
       {
@@ -670,6 +813,7 @@
     "presetCode": "FP.FOOD.DRINKS.LOW_CAL",
     "categoryCode": "FOOD.DRINKS",
     "titleRu": "Низкая калорийность",
+    "titleEn": "Low Calorie",
     "order": 20,
     "rules": [
       {
@@ -708,6 +852,7 @@
     "presetCode": "FP.FOOD.DRINKS.PROTEIN",
     "categoryCode": "FOOD.DRINKS",
     "titleRu": "Протеиновые напитки",
+    "titleEn": "Protein Drinks",
     "order": 30,
     "rules": [
       {
@@ -743,6 +888,7 @@
     "presetCode": "FP.PETS.FOOD.DEFAULT",
     "categoryCode": "PETS.FOOD",
     "titleRu": "Корм по умолчанию",
+    "titleEn": "Default Pet Food",
     "order": 10,
     "rules": [
       {
@@ -773,6 +919,7 @@
     "presetCode": "FP.BEAUTY.SKINCARE.DEFAULT",
     "categoryCode": "BEAUTY.SKINCARE",
     "titleRu": "Уход за лицом и кожей по умолчанию",
+    "titleEn": "Default Face and Skin Care",
     "order": 10,
     "rules": [
       {
@@ -803,6 +950,7 @@
     "presetCode": "FP.PETS.HYGIENE.DEFAULT",
     "categoryCode": "PETS.HYGIENE",
     "titleRu": "Гигиена и наполнители по умолчанию",
+    "titleEn": "Default Hygiene and Litter",
     "order": 10,
     "rules": [
       {
@@ -833,6 +981,7 @@
     "presetCode": "FP.PETS.ACCESSORIES.DEFAULT",
     "categoryCode": "PETS.ACCESSORIES",
     "titleRu": "Аксессуары по умолчанию",
+    "titleEn": "Default Accessories",
     "order": 10,
     "rules": [
       {
@@ -863,6 +1012,7 @@
     "presetCode": "FP.PETS.HEALTH.DEFAULT",
     "categoryCode": "PETS.HEALTH",
     "titleRu": "Здоровье и вет-товары по умолчанию",
+    "titleEn": "Default Health and Veterinary Products",
     "order": 10,
     "rules": [
       {
@@ -893,6 +1043,7 @@
     "presetCode": "FP.SPORT.FITNESS.DEFAULT",
     "categoryCode": "SPORT.FITNESS",
     "titleRu": "Фитнес и тренировки по умолчанию",
+    "titleEn": "Default Fitness and Workouts",
     "order": 10,
     "rules": [
       {
@@ -923,6 +1074,7 @@
     "presetCode": "FP.SPORT.OUTDOOR.DEFAULT",
     "categoryCode": "SPORT.OUTDOOR",
     "titleRu": "Туризм и кемпинг по умолчанию",
+    "titleEn": "Default Camping and Outdoors",
     "order": 10,
     "rules": [
       {
@@ -953,6 +1105,7 @@
     "presetCode": "FP.SPORT.BIKES_SCOOTERS.DEFAULT",
     "categoryCode": "SPORT.BIKES_SCOOTERS",
     "titleRu": "Велосипеды и самокаты по умолчанию",
+    "titleEn": "Default Bikes and Scooters",
     "order": 10,
     "rules": [
       {
@@ -983,6 +1136,7 @@
     "presetCode": "FP.SPORT.EQUIPMENT.DEFAULT",
     "categoryCode": "SPORT.EQUIPMENT",
     "titleRu": "Спортивный инвентарь по умолчанию",
+    "titleEn": "Default Sports Equipment",
     "order": 10,
     "rules": [
       {
@@ -1013,6 +1167,7 @@
     "presetCode": "FP.SPORT.HOBBY.DEFAULT",
     "categoryCode": "SPORT.HOBBY",
     "titleRu": "Хобби и творчество по умолчанию",
+    "titleEn": "Default Hobbies and Crafts",
     "order": 10,
     "rules": [
       {
@@ -1043,6 +1198,7 @@
     "presetCode": "FP.AUTO.PARTS.DEFAULT",
     "categoryCode": "AUTO.PARTS",
     "titleRu": "Запчасти по умолчанию",
+    "titleEn": "Default Parts",
     "order": 10,
     "rules": [
       {
@@ -1073,6 +1229,7 @@
     "presetCode": "FP.AUTO.TIRES_WHEELS.DEFAULT",
     "categoryCode": "AUTO.TIRES_WHEELS",
     "titleRu": "Шины и диски по умолчанию",
+    "titleEn": "Default Tires and Rims",
     "order": 10,
     "rules": [
       {
@@ -1103,6 +1260,7 @@
     "presetCode": "FP.FOOD.SNACKS.DEFAULT",
     "categoryCode": "FOOD.SNACKS",
     "titleRu": "Снеки и сладкое по умолчанию",
+    "titleEn": "Default Snacks and Sweets",
     "order": 10,
     "rules": [
       {
@@ -1141,6 +1299,7 @@
     "presetCode": "FP.FASH.BAGS.DEFAULT",
     "categoryCode": "FASH.BAGS",
     "titleRu": "Сумки и рюкзаки по умолчанию",
+    "titleEn": "Default Bags and Backpacks",
     "order": 10,
     "rules": [
       {
@@ -1171,6 +1330,7 @@
     "presetCode": "FP.FASH.SHOES.DEFAULT",
     "categoryCode": "FASH.SHOES",
     "titleRu": "Обувь по умолчанию",
+    "titleEn": "Default Shoes",
     "order": 10,
     "rules": [
       {
@@ -1201,6 +1361,7 @@
     "presetCode": "FP.AUTO.ACCESSORIES.DEFAULT",
     "categoryCode": "AUTO.ACCESSORIES",
     "titleRu": "Аксессуары по умолчанию",
+    "titleEn": "Default Accessories",
     "order": 10,
     "rules": [
       {
@@ -1231,6 +1392,7 @@
     "presetCode": "FP.TECH.PHONE_ACCESSORIES.DEFAULT",
     "categoryCode": "TECH.PHONE_ACCESSORIES",
     "titleRu": "Аксессуары для телефонов по умолчанию",
+    "titleEn": "Default Phone Accessories",
     "order": 10,
     "rules": [
       {
@@ -1261,6 +1423,7 @@
     "presetCode": "FP.TECH.LAPTOPS.DEFAULT",
     "categoryCode": "TECH.LAPTOPS",
     "titleRu": "Ноутбуки по умолчанию",
+    "titleEn": "Default Laptops",
     "order": 10,
     "rules": [
       {
@@ -1299,6 +1462,7 @@
     "presetCode": "FP.TECH.LAPTOPS.STUDENT",
     "categoryCode": "TECH.LAPTOPS",
     "titleRu": "Ноутбуки для учёбы",
+    "titleEn": "Laptops for Study",
     "order": 20,
     "rules": [
       {
@@ -1334,6 +1498,7 @@
     "presetCode": "FP.TECH.LAPTOPS.PERFORMANCE",
     "categoryCode": "TECH.LAPTOPS",
     "titleRu": "Производительные ноутбуки",
+    "titleEn": "High-Performance Laptops",
     "order": 30,
     "rules": [
       {
@@ -1369,6 +1534,7 @@
     "presetCode": "FP.TECH.PC_COMPONENTS.DEFAULT",
     "categoryCode": "TECH.PC_COMPONENTS",
     "titleRu": "ПК и комплектующие по умолчанию",
+    "titleEn": "Default PCs and Components",
     "order": 10,
     "rules": [
       {
@@ -1399,6 +1565,7 @@
     "presetCode": "FP.TECH.TABLETS_EBOOKS.DEFAULT",
     "categoryCode": "TECH.TABLETS_EBOOKS",
     "titleRu": "Планшеты и электронные книги по умолчанию",
+    "titleEn": "Default Tablets and E-Readers",
     "order": 10,
     "rules": [
       {
@@ -1437,6 +1604,7 @@
     "presetCode": "FP.TECH.TV_VIDEO.DEFAULT",
     "categoryCode": "TECH.TV_VIDEO",
     "titleRu": "ТВ и видео по умолчанию",
+    "titleEn": "Default TV and Video",
     "order": 10,
     "rules": [
       {
@@ -1467,6 +1635,7 @@
     "presetCode": "FP.TECH.AUDIO.DEFAULT",
     "categoryCode": "TECH.AUDIO",
     "titleRu": "Аудио и наушники по умолчанию",
+    "titleEn": "Default Audio and Headphones",
     "order": 10,
     "rules": [
       {
@@ -1497,6 +1666,7 @@
     "presetCode": "FP.TECH.GAMING.DEFAULT",
     "categoryCode": "TECH.GAMING",
     "titleRu": "Игровые приставки и игры по умолчанию",
+    "titleEn": "Default Game Consoles and Games",
     "order": 10,
     "rules": [
       {
@@ -1527,6 +1697,7 @@
     "presetCode": "FP.TECH.CAMERAS.DEFAULT",
     "categoryCode": "TECH.CAMERAS",
     "titleRu": "Фото и видеокамеры по умолчанию",
+    "titleEn": "Default Cameras and Camcorders",
     "order": 10,
     "rules": [
       {
@@ -1557,6 +1728,7 @@
     "presetCode": "FP.TECH.SMART_HOME.DEFAULT",
     "categoryCode": "TECH.SMART_HOME",
     "titleRu": "Умный дом и гаджеты по умолчанию",
+    "titleEn": "Default Smart Home and Gadgets",
     "order": 10,
     "rules": [
       {
@@ -1587,6 +1759,7 @@
     "presetCode": "FP.APPL.MAJOR.DEFAULT",
     "categoryCode": "APPL.MAJOR",
     "titleRu": "Крупная техника (холодильники, стиралки и т.п.) по умолчанию",
+    "titleEn": "Default Large Appliances (fridges, washers, etc.)",
     "order": 10,
     "rules": [
       {
@@ -1617,6 +1790,7 @@
     "presetCode": "FP.APPL.SMALL.DEFAULT",
     "categoryCode": "APPL.SMALL",
     "titleRu": "Малая техника (пылесосы, кухня и т.п.) по умолчанию",
+    "titleEn": "Default Small Appliances (vacuum cleaners, kitchen, etc.)",
     "order": 10,
     "rules": [
       {
@@ -1647,6 +1821,7 @@
     "presetCode": "FP.FASH.ACCESSORIES.DEFAULT",
     "categoryCode": "FASH.ACCESSORIES",
     "titleRu": "Аксессуары по умолчанию",
+    "titleEn": "Default Accessories",
     "order": 10,
     "rules": [
       {
@@ -1677,6 +1852,7 @@
     "presetCode": "FP.APPL.CLIMATE.DEFAULT",
     "categoryCode": "APPL.CLIMATE",
     "titleRu": "Климат (кондиционеры, обогреватели, очистители) по умолчанию",
+    "titleEn": "Default Climate (air conditioners, heaters, purifiers)",
     "order": 10,
     "rules": [
       {
@@ -1707,6 +1883,7 @@
     "presetCode": "FP.HOME.STORAGE.DEFAULT",
     "categoryCode": "HOME.STORAGE",
     "titleRu": "Хранение и организация по умолчанию",
+    "titleEn": "Default Storage and Organization",
     "order": 10,
     "rules": [
       {
@@ -1737,6 +1914,7 @@
     "presetCode": "FP.HOME.LIGHTING.DEFAULT",
     "categoryCode": "HOME.LIGHTING",
     "titleRu": "Освещение по умолчанию",
+    "titleEn": "Default Lighting",
     "order": 10,
     "rules": [
       {
@@ -1767,6 +1945,7 @@
     "presetCode": "FP.HOME.TEXTILES.DEFAULT",
     "categoryCode": "HOME.TEXTILES",
     "titleRu": "Текстиль и интерьер по умолчанию",
+    "titleEn": "Default Textiles and Interior",
     "order": 10,
     "rules": [
       {
@@ -1797,6 +1976,7 @@
     "presetCode": "FP.HOME.KITCHEN_DINING.DEFAULT",
     "categoryCode": "HOME.KITCHEN_DINING",
     "titleRu": "Посуда и кухня по умолчанию",
+    "titleEn": "Default Tableware and Kitchen",
     "order": 10,
     "rules": [
       {
@@ -1827,6 +2007,7 @@
     "presetCode": "FP.HOME.CLEANING.DEFAULT",
     "categoryCode": "HOME.CLEANING",
     "titleRu": "Бытовая химия и уборка по умолчанию",
+    "titleEn": "Default Home Cleaning Supplies",
     "order": 10,
     "rules": [
       {
@@ -1857,6 +2038,7 @@
     "presetCode": "FP.HOME.REPAIR_TOOLS.DEFAULT",
     "categoryCode": "HOME.REPAIR_TOOLS",
     "titleRu": "Ремонт и инструменты по умолчанию",
+    "titleEn": "Default Renovation and Tools",
     "order": 10,
     "rules": [
       {
@@ -1887,6 +2069,7 @@
     "presetCode": "FP.HOME.PLUMBING.DEFAULT",
     "categoryCode": "HOME.PLUMBING",
     "titleRu": "Сантехника по умолчанию",
+    "titleEn": "Default Plumbing",
     "order": 10,
     "rules": [
       {
@@ -1917,6 +2100,7 @@
     "presetCode": "FP.HOME.GARDEN.DEFAULT",
     "categoryCode": "HOME.GARDEN",
     "titleRu": "Дача и сад по умолчанию",
+    "titleEn": "Default Garden and Outdoors",
     "order": 10,
     "rules": [
       {
@@ -1947,6 +2131,7 @@
     "presetCode": "FP.FASH.WOMEN.DEFAULT",
     "categoryCode": "FASH.WOMEN",
     "titleRu": "Женская одежда по умолчанию",
+    "titleEn": "Default Women's Clothing",
     "order": 10,
     "rules": [
       {
@@ -1977,6 +2162,7 @@
     "presetCode": "FP.FASH.MEN.DEFAULT",
     "categoryCode": "FASH.MEN",
     "titleRu": "Мужская одежда по умолчанию",
+    "titleEn": "Default Men's Clothing",
     "order": 10,
     "rules": [
       {
@@ -2007,6 +2193,7 @@
     "presetCode": "FP.FASH.KIDS.DEFAULT",
     "categoryCode": "FASH.KIDS",
     "titleRu": "Детская одежда по умолчанию",
+    "titleEn": "Default Kids' Clothing",
     "order": 10,
     "rules": [
       {
@@ -2037,6 +2224,7 @@
     "presetCode": "FP.HOME.FURNITURE.DEFAULT",
     "categoryCode": "HOME.FURNITURE",
     "titleRu": "Мебель по умолчанию",
+    "titleEn": "Default Furniture",
     "order": 10,
     "rules": [
       {
@@ -2067,6 +2255,7 @@
     "presetCode": "FP.AUTO.TOOLS_GARAGE.DEFAULT",
     "categoryCode": "AUTO.TOOLS_GARAGE",
     "titleRu": "Гараж и инструменты по умолчанию",
+    "titleEn": "Default Garage and Tools",
     "order": 10,
     "rules": [
       {

@@ -4,6 +4,7 @@ import java.security.SecureRandom
 import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import io.lettuce.core.api.sync.RedisCommands
 
 data class ChangeEmailPayload(val userId: Long, val newEmail: String)
 
@@ -33,6 +34,26 @@ class InMemoryChangeEmailTokenStore(
         }
         store.remove(token)
         return entry.payload
+    }
+}
+
+class LettuceChangeEmailTokenStore(
+    private val commands: RedisCommands<String, String>,
+    private val ttlSeconds: Long = TimeUnit.HOURS.toSeconds(24),
+    private val keyPrefix: String = "change_email:",
+) : ChangeEmailTokenStore {
+    override fun save(token: String, payload: ChangeEmailPayload) {
+        commands.setex(keyPrefix + token, ttlSeconds, "${payload.userId}:${payload.newEmail}")
+    }
+
+    override fun consume(token: String): ChangeEmailPayload? {
+        val raw = commands.get(keyPrefix + token) ?: return null
+        commands.del(keyPrefix + token)
+        val delimiter = raw.indexOf(':')
+        if (delimiter <= 0 || delimiter >= raw.length - 1) return null
+        val userId = raw.substring(0, delimiter).toLongOrNull() ?: return null
+        val email = raw.substring(delimiter + 1)
+        return ChangeEmailPayload(userId = userId, newEmail = email)
     }
 }
 

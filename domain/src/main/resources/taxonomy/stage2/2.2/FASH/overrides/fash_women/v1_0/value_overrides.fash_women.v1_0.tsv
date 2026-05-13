@@ -1,0 +1,98 @@
+dictionary_code	value_code	override_type	priority	visibility	reason
+apparel_type	DRESS	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	BLOUSE	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	TOP	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	TSHIRT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	SHIRT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	SKIRT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	JEANS	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	TROUSERS	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	LEGGINGS	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	JACKET	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	COAT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	DOWN_JACKET	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	CARDIGAN	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	SWEATER	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	HOODIE	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	JUMPSUIT	ALLOW	HIGH	T1_VISIBLE_PRIMARY	Core women apparel type
+apparel_type	LONGSLEEVE	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	TANK_TOP	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	POLO	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	SWEATSHIRT	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	SHORTS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	SUIT	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	BLAZER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	TRACKSUIT	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	UNDERWEAR	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	BRA	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	TIGHTS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	SOCKS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	VEST	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	CHINOS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	CARGO_PANTS	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	BOMBER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	DENIM_JACKET	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	LEATHER_JACKET	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	WINDBREAKER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	PARKA	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	THERMAL_UNDERWEAR	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	ACTIVE_TOP	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	ACTIVE_BOTTOM	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	ROMPER	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	TURTLENECK	ALLOW	MEDIUM	T1_VISIBLE_SECONDARY	Supported women apparel type
+apparel_type	RAINCOAT	ALLOW	LOW	T2_ADVANCED	Less frequent women apparel type
+apparel_type	ROBE	ALLOW	LOW	T2_ADVANCED	Less frequent women apparel type
+apparel_type	PAJAMAS	ALLOW	LOW	T2_ADVANCED	Less frequent women apparel type
+apparel_type	SWIMWEAR	ALLOW	LOW	T2_ADVANCED	Less frequent women apparel type
+apparel_type	UNIFORM	ALLOW	LOW	T2_ADVANCED	Less frequent women apparel type
+apparel_type	BOXERS_MALE_ONLY	BLOCK	BLOCKED	HIDDEN	Not part of FASH.APPAREL_COMMON or should route elsewhere
+apparel_type	BOYS_UNIFORM_ONLY	BLOCK	BLOCKED	HIDDEN	Not part of FASH.APPAREL_COMMON or should route elsewhere
+apparel_type	JOCKSTRAP	BLOCK	BLOCKED	HIDDEN	Not part of FASH.APPAREL_COMMON or should route elsewhere
+target_gender	WOMEN	ALLOW	DEFAULT	HIDDEN_DEFAULT	FASH.WOMEN gender policy
+target_gender	UNISEX	ALLOW	ALLOWED	SECONDARY_OR_BLOCKED	FASH.WOMEN gender policy
+target_gender	MEN	BLOCK	BLOCKED	SECONDARY_OR_BLOCKED	FASH.WOMEN gender policy
+target_gender	BOYS	BLOCK	BLOCKED	SECONDARY_OR_BLOCKED	FASH.WOMEN gender policy
+target_gender	GIRLS	BLOCK	BLOCKED	SECONDARY_OR_BLOCKED	FASH.WOMEN gender policy
+age_group	ADULT	ALLOW	DEFAULT	HIDDEN_DEFAULT	FASH.WOMEN age policy
+age_group	TEEN	ALLOW	ALLOWED	BLOCKED_OR_AMBIGUOUS	FASH.WOMEN age policy
+age_group	KIDS	BLOCK	BLOCKED	BLOCKED_OR_AMBIGUOUS	FASH.WOMEN age policy
+age_group	TODDLER	BLOCK	BLOCKED	BLOCKED_OR_AMBIGUOUS	FASH.WOMEN age policy
+age_group	BABY	BLOCK	BLOCKED	BLOCKED_OR_AMBIGUOUS	FASH.WOMEN age policy
+size_label	XXS	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	XS	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	S	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	M	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	L	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	XL	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	XXL	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	3XL	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	RU_40	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	RU_42	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	RU_44	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	RU_46	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	RU_48	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	RU_50	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	RU_52	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	EU_34	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	EU_36	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	EU_38	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	EU_40	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	EU_42	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	EU_44	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	W24	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	W25	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	W26	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	W27	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	W28	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	W29	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	W30	PRIORITIZE	HIGH	T1_VISIBLE	Women size priority
+size_label	W32	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+size_label	ONE_SIZE	PRIORITIZE	MEDIUM	T1_VISIBLE	Women size priority
+bra_cup	AA	ALLOW	MEDIUM	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	A	ALLOW	HIGH	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	B	ALLOW	HIGH	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	C	ALLOW	HIGH	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	D	ALLOW	HIGH	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	E	ALLOW	MEDIUM	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	F	ALLOW	MEDIUM	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA
+bra_cup	G	ALLOW	MEDIUM	T1_VISIBLE	Bra cup allowed for FASH.WOMEN/BRA

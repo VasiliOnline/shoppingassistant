@@ -1,33 +1,41 @@
 package com.example.shoppingassistant.feature.pages.di
 
-import com.example.shoppingassistant.feature.pages.profile.ProfileViewModel
-import com.example.shoppingassistant.feature.auth.DebugAuthStore
+import com.example.shoppingassistant.feature.pages.profile.AccountProfileViewModel
+import com.example.shoppingassistant.feature.pages.profile.CatalogGovernanceAdminViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val profileModule = module {
     viewModel {
-        ProfileViewModel(
+        AccountProfileViewModel(
             getCurrentUser = get(),
-            getProfileSettings = get(),
-            profileSettingsStore = get(),
-            getExternalLinks = get(),
-            saveExternalLinks = get(),
-            getProfileCache = get(),
-            saveProfileCache = get(),
-            loginUserUseCase = get(),
-            registerUserUseCase = get(),
-            logoutUseCase = get(),
-            changePasswordUseCase = get(),
-            updateProfileTask = get(),
+            getProfileView = get(),
+            updatePublicProfile = get(),
+            updateProfilePrivacy = get(),
+            updateSellerDeliveryZonesTask = get(),
             requestEmailChangeTask = get(),
             confirmEmailChangeTask = get(),
             deleteAccountTask = get(),
-            updatePhotosTask = get(),
+            changePasswordUseCase = get(),
             uploadPhotoUseCase = get(),
+            loginUserUseCase = get(),
+            registerUserUseCase = get(),
+            logoutUseCase = get(),
             authRepository = get(),
-            analyticsLogger = get(),
-            debugAuthStore = get<DebugAuthStore>(),
+            getProfileSettings = get(),
+            profileSettingsStore = get(),
+            profileViewCacheRepository = get(),
+            listDraftOffers = get(),
+            getTrackedItems = get(),
+            listNotificationsPage = get(),
+            markNotificationRead = get(),
+            markAllNotificationsRead = get(),
+            notificationsSettingsStorage = get(),
+        )
+    }
+    viewModel {
+        CatalogGovernanceAdminViewModel(
+            repository = get(),
         )
     }
 }

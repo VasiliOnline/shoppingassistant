@@ -1,0 +1,43 @@
+category_code: TECH.PHONE_ACCESSORIES
+pack_version: 1.2.0-useful-production
+targets:
+  category_profile: domain/src/main/resources/taxonomy/stage2/2.2/TECH/profiles.tech.json
+  attributes_registry: domain/src/main/resources/taxonomy/stage2/2.2/_registry/attributes.json
+  value_dictionaries_registry: domain/src/main/resources/taxonomy/stage2/2.2/_registry/value_dictionaries.json
+  browse_nodes: domain/src/main/resources/taxonomy/stage2/2.1/TECH/browse_nodes.tech.tsv
+  aliases: domain/src/main/resources/taxonomy/stage2/2.1/TECH/aliases.tech.tsv
+  golden_queries: domain/src/main/resources/taxonomy/stage2/2.1/TECH/queries_golden.tech.tsv
+  facet_presentation: domain/src/main/resources/taxonomy/stage4/4.0/facet_presentation_profiles.json
+mapping:
+  control_attribute: accessory_type
+  attributes_file_target: Stage22 category profile + immutable registry
+  values_file_target: Stage22 registry value dictionaries keyed by attributeCode
+  conditional_rules_target: Stage22 requiredIfRules and Stage4 typed_constraints.requiredIf
+  facet_schema_target: Stage4 facet presentation profile TECH_PHONE_ACCESSORIES_USEFUL_CORE
+  aliases_target: Stage21 TECH routing aliases with TECH.PHONES collision guard
+external_refs:
+  compatible_phone_brand: TECH.PHONES.brand
+  compatible_phone_family: TECH.PHONES.family
+  compatible_phone_model: TECH.PHONES.model
+  compatible_model_text: free_text_evidence_only
+external_ref_policy:
+  compatible_phone_family:
+    registry_value_type: STRING
+    registry_value_set_type: OPEN
+    dictionary_code: null
+  compatible_phone_model:
+    registry_value_type: STRING
+    registry_value_set_type: OPEN
+    dictionary_code: null
+  rule: Do not require closed dictionaries for phone family/model refs until TECH.PHONES exposes canonical family/model dictionaries.
+route_guardrails:
+  phone_route_examples:
+    - iphone 13
+    - samsung s23
+    - redmi note 12
+  accessory_route_examples:
+    - чехол iphone 13
+    - стекло iphone 13
+    - зарядка iphone
+    - кабель type c
+    - держатель телефона

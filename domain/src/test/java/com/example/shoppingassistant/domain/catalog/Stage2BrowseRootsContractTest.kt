@@ -6,24 +6,45 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class Stage2BrowseRootsContractTest {
-    private val requiredBrowseRoots = setOf(
-        "B.TECH",
-        "B.APPL",
-        "B.HOME",
-        "B.FASH",
-        "B.BEAUTY",
-        "B.KIDS",
-        "B.FOOD",
-        "B.PETS",
-        "B.SPORT",
-        "B.AUTO",
-    )
+    private val requiredBrowseRoots = CatalogL0Registry.requiredBrowseRootCodes
 
     @Test
     fun browseSeed_containsAllRequiredRoots() {
         val rootCodes = browseRootCodes()
         val missing = (requiredBrowseRoots - rootCodes).sorted()
         assertTrue("Missing required browse roots: ${missing.joinToString(", ")}", missing.isEmpty())
+    }
+
+    @Test
+    fun categorySegmentEnum_matchesSeedRootCategories() {
+        val rootCategoryCodes = CatalogSeed.categories
+            .asSequence()
+            .filter { it.parentCode.isNullOrBlank() }
+            .map { it.code.trim() }
+            .filter { it.isNotEmpty() }
+            .toSet()
+        val supportedSegments = CatalogL0Registry.requiredPackageCodes.toSet()
+
+        assertEquals(
+            "CatalogL0Registry drifted from stage2.0 root categories",
+            rootCategoryCodes,
+            supportedSegments,
+        )
+    }
+
+    @Test
+    fun categorySegmentEnum_matchesCatalogL0Registry() {
+        val enumSegments = CategorySegment.values()
+            .asSequence()
+            .filterNot { it == CategorySegment.OTHER }
+            .map { it.name }
+            .toSet()
+
+        assertEquals(
+            "CategorySegment enum drifted from CatalogL0Registry",
+            CatalogL0Registry.requiredPackageCodes.toSet(),
+            enumSegments,
+        )
     }
 
     @Test
@@ -69,11 +90,6 @@ class Stage2BrowseRootsContractTest {
                 name = "auto",
                 result = Stage21AutoQueryRouter().route(query = "каталог запчастей pdf", locale = "ru-RU"),
                 expectedBrowseRoot = "B.AUTO",
-            ),
-            FallbackScenario(
-                name = "hybrid",
-                result = Stage21HybridQueryRouter().route(query = "абракадабра qwerty", locale = "ru-RU"),
-                expectedBrowseRoot = "B.TECH",
             ),
         )
 

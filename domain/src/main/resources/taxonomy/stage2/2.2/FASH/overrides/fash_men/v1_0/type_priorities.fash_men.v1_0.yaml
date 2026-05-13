@@ -1,0 +1,145 @@
+version: '1.0'
+categoryCode: FASH.MEN
+extends: FASH.APPAREL_COMMON
+type_priority:
+  high:
+  - TSHIRT
+  - SHIRT
+  - HOODIE
+  - SWEATSHIRT
+  - SWEATER
+  - JEANS
+  - TROUSERS
+  - JACKET
+  - COAT
+  - DOWN_JACKET
+  - POLO
+  - LONGSLEEVE
+  medium:
+  - SHORTS
+  - SUIT
+  - BLAZER
+  - TRACKSUIT
+  - UNDERWEAR
+  - TURTLENECK
+  - SOCKS
+  - VEST
+  - CARDIGAN
+  - CHINOS
+  - CARGO_PANTS
+  - BOMBER
+  - DENIM_JACKET
+  - LEATHER_JACKET
+  - WINDBREAKER
+  - PARKA
+  - THERMAL_UNDERWEAR
+  - ACTIVE_TOP
+  - ACTIVE_BOTTOM
+  low_or_rare:
+  - RAINCOAT
+  - ROBE
+  - PAJAMAS
+  - SWIMWEAR
+  - UNIFORM
+  blocked_or_cross_route: &id001
+  - DRESS
+  - SKIRT
+  - BRA
+  - BLOUSE
+  - ROMPER
+  - TOP
+  - TANK_TOP
+  - TIGHTS
+  - JUMPSUIT
+allowed_apparel_types:
+- TSHIRT
+- SHIRT
+- HOODIE
+- SWEATSHIRT
+- SWEATER
+- JEANS
+- TROUSERS
+- JACKET
+- COAT
+- DOWN_JACKET
+- POLO
+- LONGSLEEVE
+- SHORTS
+- SUIT
+- BLAZER
+- TRACKSUIT
+- UNDERWEAR
+- TURTLENECK
+- SOCKS
+- VEST
+- CARDIGAN
+- CHINOS
+- CARGO_PANTS
+- BOMBER
+- DENIM_JACKET
+- LEATHER_JACKET
+- WINDBREAKER
+- PARKA
+- THERMAL_UNDERWEAR
+- ACTIVE_TOP
+- ACTIVE_BOTTOM
+- RAINCOAT
+- ROBE
+- PAJAMAS
+- SWIMWEAR
+- UNIFORM
+blocked_apparel_types: *id001
+type_group_overrides:
+  TOP:
+  - TSHIRT
+  - LONGSLEEVE
+  - SHIRT
+  - POLO
+  - TURTLENECK
+  KNITWEAR:
+  - SWEATER
+  - SWEATSHIRT
+  - HOODIE
+  - CARDIGAN
+  OUTERWEAR:
+  - VEST
+  - BLAZER
+  - JACKET
+  - BOMBER
+  - DENIM_JACKET
+  - LEATHER_JACKET
+  - WINDBREAKER
+  - RAINCOAT
+  - COAT
+  - PARKA
+  - DOWN_JACKET
+  BOTTOM:
+  - JEANS
+  - TROUSERS
+  - CHINOS
+  - CARGO_PANTS
+  - SHORTS
+  SET:
+  - SUIT
+  - TRACKSUIT
+  SLEEPWEAR:
+  - PAJAMAS
+  - ROBE
+  UNDERWEAR:
+  - UNDERWEAR
+  SOCKS_HOSIERY:
+  - SOCKS
+  BASE_LAYER:
+  - THERMAL_UNDERWEAR
+  SWIMWEAR:
+  - SWIMWEAR
+  SPORT:
+  - ACTIVE_TOP
+  - ACTIVE_BOTTOM
+  SPECIAL:
+  - UNIFORM
+policy:
+  blocked_types_are_not_removed_from_common_dictionary: true
+  blocked_types_must_not_be_offered_as_primary_values_in_FASH_MEN: true
+  rare_gender_nonconforming_items: route_to_review_or_generic_apparel_candidate_not_auto_FASH.MEN
+  generic_unisex_basics: allowed_if_target_gender=UNISEX_or_no_gender_evidence

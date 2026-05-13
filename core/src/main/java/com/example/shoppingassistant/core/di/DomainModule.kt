@@ -6,6 +6,7 @@ import com.example.shoppingassistant.core.data.link.LinkTemplateBuilderTask
 import com.example.shoppingassistant.core.data.link.LinkTemplateMapperImpl
 import com.example.shoppingassistant.core.data.link.LinkTemplateMapperTask
 import com.example.shoppingassistant.core.usecase.CreateOfferPriceAlertUseCase
+import com.example.shoppingassistant.core.usecase.GetOfferDetailsUseCase
 import com.example.shoppingassistant.core.usecase.GetTop3FromCandidatesUseCase
 import com.example.shoppingassistant.core.usecase.SearchOffersUseCase
 import com.example.shoppingassistant.core.usecase.SearchOffersWithFacetsUseCase
@@ -31,6 +32,15 @@ import com.example.shoppingassistant.domain.facet.GetFacetDefinitionsTask
 import com.example.shoppingassistant.domain.facet.GetFacetPresetTask
 import com.example.shoppingassistant.domain.facet.GetFacetPresetsTask
 import com.example.shoppingassistant.domain.ingest.LoadRawOfferTask
+import com.example.shoppingassistant.domain.localoffer.ConfirmLocalOfferGeoSnapshotTask
+import com.example.shoppingassistant.domain.localoffer.CreateLocalOfferDraftTask
+import com.example.shoppingassistant.domain.localoffer.CreateOrResumeLocalOfferSessionTask
+import com.example.shoppingassistant.domain.localoffer.GetLocalOfferDraftTask
+import com.example.shoppingassistant.domain.localoffer.GetLocalOfferPreviewTask
+import com.example.shoppingassistant.domain.localoffer.GetLocalOfferPublishPreflightTask
+import com.example.shoppingassistant.domain.localoffer.ListLocalOfferDraftsTask
+import com.example.shoppingassistant.domain.localoffer.PublishLocalOfferDraftTask
+import com.example.shoppingassistant.domain.localoffer.UpdateLocalOfferDraftReviewTask
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferTask
 import com.example.shoppingassistant.domain.useroffers.PerformUserOfferActionTask
 import com.example.shoppingassistant.domain.useroffers.UpdateUserOfferPriceTask
@@ -40,14 +50,24 @@ import com.example.shoppingassistant.domain.profile.ClearProfileCacheTask
 import com.example.shoppingassistant.domain.profile.ConfirmEmailChangeTask
 import com.example.shoppingassistant.domain.profile.DeleteAccountTask
 import com.example.shoppingassistant.domain.profile.GetExternalLinksTask
+import com.example.shoppingassistant.domain.profile.GetProfileViewTask
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
 import com.example.shoppingassistant.domain.profile.GetProfileSettingsTask
 import com.example.shoppingassistant.domain.profile.RequestEmailChangeTask
 import com.example.shoppingassistant.domain.profile.SaveExternalLinksTask
 import com.example.shoppingassistant.domain.profile.SaveProfileCacheTask
 import com.example.shoppingassistant.domain.profile.SaveProfileSettingsTask
+import com.example.shoppingassistant.domain.shortlisting.CreateShortListingDraftTask
+import com.example.shoppingassistant.domain.shortlisting.GetShortListingDraftTask
+import com.example.shoppingassistant.domain.shortlisting.GetShortListingPublishPreflightTask
+import com.example.shoppingassistant.domain.shortlisting.ListShortListingDraftsTask
+import com.example.shoppingassistant.domain.shortlisting.PublishShortListingDraftTask
+import com.example.shoppingassistant.domain.shortlisting.UpdateShortListingDraftReviewTask
+import com.example.shoppingassistant.domain.profile.UpdateProfilePrivacyTask
 import com.example.shoppingassistant.domain.profile.UpdateProfilePhotosTask
 import com.example.shoppingassistant.domain.profile.UpdateProfileTask
+import com.example.shoppingassistant.domain.profile.UpdateSellerDeliveryZonesTask
+import com.example.shoppingassistant.domain.profile.UpdatePublicProfileTask
 import com.example.shoppingassistant.domain.storage.UploadPhotoUseCase
 import com.example.shoppingassistant.domain.subscriptions.*
 import com.example.shoppingassistant.domain.tracks.*
@@ -58,6 +78,11 @@ import com.example.shoppingassistant.domain.ugc.draft.GetDraftOfferTask
 import com.example.shoppingassistant.domain.ugc.draft.ListDraftOffersTask
 import com.example.shoppingassistant.domain.ugc.draft.ObserveDraftOfferTask
 import com.example.shoppingassistant.domain.ugc.draft.SaveDraftOfferTask
+import com.example.shoppingassistant.domain.visualsearch.BindVisualSearchQueryUseCase
+import com.example.shoppingassistant.domain.visualsearch.GetVisualSearchRecoveryPlanUseCase
+import com.example.shoppingassistant.domain.visualsearch.NormalizeVisualSearchDraftUseCase
+import com.example.shoppingassistant.domain.visualsearch.ReuseVisualSearchContextUseCase
+import com.example.shoppingassistant.domain.visualsearch.TrackVisualSearchEventsUseCase
 import com.example.shoppingassistant.domain.vision.NormalizeImageUseCase
 import com.example.shoppingassistant.domain.vision.NormalizePhotosUseCase
 import com.example.shoppingassistant.domain.vision.GetVisionUsageUseCase
@@ -66,6 +91,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
     single { GetTop3FromCandidatesUseCase(get()) }
+    single { GetOfferDetailsUseCase(get(), get()) }
     single { SearchOffersUseCase(get(), get(), get()) }
     single { SearchOffersWithFacetsUseCase(get(), get(), get()) }
     single { TrackPresetObservabilityEventsUseCase(get(), get()) }
@@ -99,6 +125,7 @@ val domainModule = module {
     single { ConfirmEmailChangeTask(get()) }
     single { DeleteAccountTask(get()) }
     single { GetProfileSettingsTask(get()) }
+    single { GetProfileViewTask(get()) }
     single { SaveProfileSettingsTask(get()) }
     single { GetExternalLinksTask(get()) }
     single { SaveExternalLinksTask(get()) }
@@ -106,13 +133,36 @@ val domainModule = module {
     single { GetProfileCacheTask(get()) }
     single { SaveProfileCacheTask(get()) }
     single { ClearProfileCacheTask(get()) }
+    single { UpdatePublicProfileTask(get()) }
+    single { UpdateProfilePrivacyTask(get()) }
+    single { UpdateSellerDeliveryZonesTask(get()) }
 
     single { UploadPhotoUseCase(get()) }
     single { NormalizeImageUseCase(get()) }
     single { NormalizePhotosUseCase(get()) }
     single { GetVisionUsageUseCase(get()) }
     single { ConsumeVisionUsageUseCase(get()) }
+    single { ReuseVisualSearchContextUseCase(get()) }
+    single { NormalizeVisualSearchDraftUseCase(get()) }
+    single { BindVisualSearchQueryUseCase(get()) }
+    single { GetVisualSearchRecoveryPlanUseCase(get()) }
+    single { TrackVisualSearchEventsUseCase(get()) }
     single { MirrorByUrlUseCase(get()) }
+    single { CreateOrResumeLocalOfferSessionTask(get()) }
+    single { ConfirmLocalOfferGeoSnapshotTask(get()) }
+    single { ListLocalOfferDraftsTask(get()) }
+    single { CreateLocalOfferDraftTask(get()) }
+    single { GetLocalOfferDraftTask(get()) }
+    single { UpdateLocalOfferDraftReviewTask(get()) }
+    single { GetLocalOfferPreviewTask(get()) }
+    single { GetLocalOfferPublishPreflightTask(get()) }
+    single { PublishLocalOfferDraftTask(get()) }
+    single { ListShortListingDraftsTask(get()) }
+    single { CreateShortListingDraftTask(get()) }
+    single { GetShortListingDraftTask(get()) }
+    single { UpdateShortListingDraftReviewTask(get()) }
+    single { GetShortListingPublishPreflightTask(get()) }
+    single { PublishShortListingDraftTask(get()) }
 
     single { CreateDraftOfferTask(get()) }
     single { SaveDraftOfferTask(get()) }

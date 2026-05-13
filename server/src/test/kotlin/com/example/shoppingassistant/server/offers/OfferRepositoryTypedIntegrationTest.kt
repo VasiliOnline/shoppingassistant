@@ -11,6 +11,7 @@ import com.example.shoppingassistant.domain.model.ProductDto
 import com.example.shoppingassistant.domain.model.TypedAttributeFilter
 import com.example.shoppingassistant.domain.model.TypedAttributeOperator
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
+import com.example.shoppingassistant.domain.model.asDoubleOrNull
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayer
 import com.example.shoppingassistant.server.catalog.Stage4IngestNormalizationOutcome
 import com.example.shoppingassistant.server.config.DatabaseConfig
@@ -112,6 +113,30 @@ class OfferRepositoryTypedIntegrationTest {
         assertEquals(seed.matchingOfferId.toString(), ranged.single().id)
     }
 
+    @Test
+    fun searchOffers_sorts_by_model_release_year_for_product_freshness() = runBlocking {
+        requireDocker()
+        seedOffers()
+        val repository = OfferRepositoryImpl(
+            rankService = RankService(engine = ZeroScoringEngine),
+            stage4ExecutionLayer = IdentityStage4ExecutionLayer(),
+        )
+
+        val result = repository.searchOffers(
+            OfferSearchCriteria(
+                brand = null,
+                model = null,
+                sort = OfferSort.MODEL_FRESHNESS_DESC,
+                limit = 10,
+            ),
+        )
+
+        assertEquals(2, result.size)
+        assertEquals("X2", result.first().product.model)
+        assertEquals(2026.0, result.first().product.specs["release_year"]?.asDoubleOrNull())
+        assertEquals("X1", result.last().product.model)
+    }
+
     private suspend fun seedOffers(): SeedResult = DatabaseFactory.dbQuery {
         val now = System.currentTimeMillis()
         val sellerId = AuthUsersTable.insert {
@@ -132,6 +157,7 @@ class OfferRepositoryTypedIntegrationTest {
                 "ram_gb" to TypedAttributeValue.Number(8.0),
                 "wireless" to TypedAttributeValue.Bool(true),
                 "color" to TypedAttributeValue.Text("black"),
+                "release_year" to TypedAttributeValue.Number(2024.0),
             )
             it[updatedAt] = now
         }.resultedValues!!.single()[ProductsTable.id]
@@ -145,8 +171,9 @@ class OfferRepositoryTypedIntegrationTest {
                 "ram_gb" to TypedAttributeValue.Number(6.0),
                 "wireless" to TypedAttributeValue.Bool(false),
                 "color" to TypedAttributeValue.Text("white"),
+                "release_year" to TypedAttributeValue.Number(2026.0),
             )
-            it[updatedAt] = now
+            it[updatedAt] = now - 3_600_000L
         }.resultedValues!!.single()[ProductsTable.id]
 
         val matchingOfferId = OffersTable.insert {

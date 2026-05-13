@@ -15,6 +15,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.speech.RecognizerIntent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -91,6 +92,7 @@ import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -115,6 +117,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -125,8 +128,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
@@ -155,23 +161,32 @@ import com.example.shoppingassistant.domain.catalog.RouteQueryTask
 import com.example.shoppingassistant.domain.menu.ActionKey
 import com.example.shoppingassistant.domain.menu.ModeKey
 import com.example.shoppingassistant.domain.menu.UserPanel
+import com.example.shoppingassistant.domain.model.Normalization
 import com.example.shoppingassistant.domain.model.NormalizedQuery
 import com.example.shoppingassistant.domain.model.OfferSort
+import com.example.shoppingassistant.domain.search.InterpretedSearchIntent
+import com.example.shoppingassistant.domain.search.SearchInterpretationDependencies
+import com.example.shoppingassistant.domain.search.SearchInterpretationPipeline
+import com.example.shoppingassistant.domain.search.SearchInterpretationRequest
+import com.example.shoppingassistant.domain.search.SearchRequestSource
+import com.example.shoppingassistant.domain.search.SearchRouteResult
+import com.example.shoppingassistant.domain.search.SearchSuggestionCandidate
+import com.example.shoppingassistant.domain.search.SearchSuggestionKind
+import com.example.shoppingassistant.domain.search.SearchTemplateContext
+import com.example.shoppingassistant.domain.search.SearchTextNormalizer
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchCaptureMode
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchSource
 import com.example.shoppingassistant.domain.ugc.draft.DraftInputOrigin
 import com.example.shoppingassistant.feature.metrics.FlowMetrics
 import com.example.shoppingassistant.feature.navigation.AppRoutes
 import com.example.shoppingassistant.feature.pages.categories.FeedCategoriesPage
 import com.example.shoppingassistant.feature.pages.common.normalizedQueryFromSnapshot
-import com.example.shoppingassistant.feature.pages.draft.DraftMode
-import com.example.shoppingassistant.feature.pages.draft.DraftPage
-import com.example.shoppingassistant.feature.pages.draft.DraftPayload
-import com.example.shoppingassistant.feature.pages.draft.DraftPhotoInput
-import com.example.shoppingassistant.feature.pages.draft.DraftSource
-import com.example.shoppingassistant.feature.pages.draft.create.CreateDraftSheet
-import com.example.shoppingassistant.feature.pages.draft.photo.PhotoPostFlow
+import com.example.shoppingassistant.feature.pages.draft.create.DraftMediaImporter
 import com.example.shoppingassistant.feature.pages.main.link.LinkInputState
 import com.example.shoppingassistant.feature.pages.main.state.CategoryChipUi
 import com.example.shoppingassistant.feature.pages.main.state.MainPageViewModel
+import com.example.shoppingassistant.feature.pages.main.state.VisualSearchAssetUi
+import com.example.shoppingassistant.feature.pages.main.state.VisualSearchInsightUi
 import com.example.shoppingassistant.feature.pages.main.suggest.AutoPresetSuggest
 import com.example.shoppingassistant.feature.pages.main.suggest.AutoTemplateSuggest
 import com.example.shoppingassistant.feature.pages.main.suggest.CategoryAnchorSuggest
@@ -180,9 +195,16 @@ import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestItem
 import com.example.shoppingassistant.feature.pages.main.suggest.PresetTemplateSuggest
 import com.example.shoppingassistant.feature.pages.main.suggest.ProductAnchorSuggest
 import com.example.shoppingassistant.feature.pages.main.suggest.TextFixSuggest
+import com.example.shoppingassistant.feature.pages.main.visualsearch.VisualSearchCameraScreen
+import com.example.shoppingassistant.feature.pages.main.visualsearch.VisualSearchCaptureAnalysis
+import com.example.shoppingassistant.feature.pages.main.visualsearch.VisualSearchCaptureAnalyzer
+import com.example.shoppingassistant.feature.pages.main.state.PopularSearchQueryUi
+import com.example.shoppingassistant.feature.pages.main.state.RecentSearchQueryUi
 import com.example.shoppingassistant.feature.pages.results.ResultsOrigin
 import com.example.shoppingassistant.feature.pages.results.ResultsPage
 import com.example.shoppingassistant.feature.pages.results.ResultsPayload
+import com.example.shoppingassistant.feature.pages.results.toResultsQuery
+import com.example.shoppingassistant.feature.pages.localoffer.LocalOfferSheet
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackedItemsLoadState
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackedItemsState
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackedItemsViewModel
@@ -214,9 +236,12 @@ import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
 import com.example.shoppingassistant.feature.ui.layout.AppTopBar
 import com.example.shoppingassistant.feature.ui.layout.ScreenRoot
 import com.example.shoppingassistant.feature.ui.state.StateHost
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeCard
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeTone
 import com.example.shoppingassistant.feature.ui.state.model.ScreenState
 import com.example.shoppingassistant.feature.ui.menu.UserPanelBar
 import com.example.shoppingassistant.feature.ui.menu.UserPanelEditor
+import kotlin.math.roundToInt
 import com.example.shoppingassistant.feature.ui.menu.defaultActionCatalog
 import com.example.shoppingassistant.feature.ui.menu.defaultModeCatalog
 import com.example.shoppingassistant.feature.R
@@ -250,6 +275,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
+import java.io.File
+import java.util.Base64
 import java.util.Date
 import java.util.Locale
 import kotlin.math.max
@@ -275,6 +302,7 @@ fun MainPage(
         ?: remember { mutableStateOf(TrackedItemsState()) })
     val retryTrackedItems: () -> Unit = { trackedItemsViewModel?.load() }
     val context = LocalContext.current
+    val visualMediaImporter = remember(context) { DraftMediaImporter(context) }
     val localIntentLabels = LocalSearchIntent.entries.associateWith { intent ->
         stringResource(localIntentLabelRes(intent))
     }
@@ -357,6 +385,89 @@ fun MainPage(
         }
     }
 
+    var visualCameraPermissionGranted by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED,
+        )
+    }
+    val visualCaptureAnalyzer = remember(context.applicationContext) {
+        VisualSearchCaptureAnalyzer(context.applicationContext)
+    }
+    DisposableEffect(visualCaptureAnalyzer) {
+        onDispose { visualCaptureAnalyzer.close() }
+    }
+
+    val visualGalleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val media = visualMediaImporter.importPhoto(uri)
+            if (media == null) {
+                Toast.makeText(context, "Не удалось импортировать фото.", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+            val localUri = media.localUri?.toString() ?: return@launch
+            val inlineBase64 = context.encodeVisualSearchInlineBase64(localUri)
+            val captureMode = state.visualSearch.captureMode
+            val analysis = runCatching {
+                visualCaptureAnalyzer.analyzeUri(Uri.parse(localUri), captureMode)
+            }.getOrNull()
+            val insight = buildVisualSearchInsight(
+                analysis = analysis,
+                routeQueryTask = routeQueryTask,
+                getBrowseNodeTask = getBrowseNodeTask,
+                viewModel = viewModel,
+            )
+            viewModel.onVisualSearchAssetPicked(
+                source = VisualSearchSource.GALLERY,
+                captureMode = captureMode,
+                insight = insight,
+                asset = VisualSearchAssetUi(
+                    fingerprint = media.id,
+                    localUri = localUri,
+                    widthPx = media.width,
+                    heightPx = media.height,
+                    byteSize = media.byteSize,
+                    inlineBase64 = inlineBase64,
+                ),
+            )
+        }
+    }
+
+    val visualCameraPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        visualCameraPermissionGranted = granted
+        val deniedPermanent = if (!granted) {
+            val activity = context.findActivity()
+            activity?.let {
+                !ActivityCompat.shouldShowRequestPermissionRationale(
+                    it,
+                    Manifest.permission.CAMERA,
+                )
+            } == true
+        } else {
+            false
+        }
+        when {
+            granted -> Unit
+            deniedPermanent -> {
+                Toast.makeText(
+                    context,
+                    "Доступ к камере отключён. Откройте настройки приложения.",
+                    Toast.LENGTH_LONG,
+                ).show()
+                val intent = Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", context.packageName, null),
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+            }
+            else -> {
+                Toast.makeText(context, "Для камеры нужен доступ.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     LaunchedEffect(Unit) {
         val granted = ContextCompat.checkSelfPermission(
             context,
@@ -393,7 +504,8 @@ fun MainPage(
     var createDraftId by rememberSaveable { mutableStateOf<String?>(null) }
     var createDraftVisible by rememberSaveable { mutableStateOf(false) }
     var searchPayload by remember { mutableStateOf<ResultsPayload?>(null) }
-    var searchDraftPayload by remember { mutableStateOf<DraftPayload?>(null) }
+    var searchLoadingQuery by rememberSaveable { mutableStateOf("") }
+    var searchRequestVersion by rememberSaveable { mutableStateOf(0) }
     var linkOverlayVisible by rememberSaveable { mutableStateOf(false) }
     var linkOverlayMode by rememberSaveable { mutableStateOf(LinkOverlayMode.Create) }
     var linkInput by remember { mutableStateOf(LinkInputState()) }
@@ -406,9 +518,67 @@ fun MainPage(
     var nearbyReturnSection by rememberSaveable { mutableStateOf<NearbyFilterSection?>(null) }
     var nearbyDraftCategoryChips by remember { mutableStateOf<List<CategoryChipUi>>(emptyList()) }
     var nearbyDraftLeafCategoryCode by remember { mutableStateOf<String?>(null) }
+
+    val speechToTextLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        if (result.resultCode != Activity.RESULT_OK) return@rememberLauncherForActivityResult
+        val transcript = result.data
+            ?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            ?.firstOrNull()
+            ?.trim()
+            .orEmpty()
+        if (transcript.isBlank()) return@rememberLauncherForActivityResult
+        val normalizedTranscript = SearchTextNormalizer.normalize(transcript)
+        viewModel.onQueryChange(normalizedTranscript)
+        rootMode = RootMode.Search
+        searchStage = SearchStage.Focused
+    }
     var showAllSelectedFeed by remember { mutableStateOf(false) }
     var panelEditMode by rememberSaveable { mutableStateOf(false) }
     var panelDraft by remember { mutableStateOf<UserPanel?>(null) }
+    val searchInterpretationPipeline = remember { SearchInterpretationPipeline() }
+    val searchInterpretationDeps = remember(viewModel, routeQueryTask, getBrowseNodeTask) {
+        object : SearchInterpretationDependencies {
+            override suspend fun route(queryText: String): SearchRouteResult? {
+                val routed = runCatching { routeQueryTask(queryText) }.getOrNull() ?: return null
+                return SearchRouteResult(
+                    routeType = routed.routeType,
+                    primaryTargetCode = routed.primaryTargetCode,
+                    facetCollectionCode = routed.facetCollectionCode,
+                    facetPresetCode = routed.facetPresetCode,
+                )
+            }
+
+            override suspend fun resolveBrowseCategory(browseCode: String): String? =
+                runCatching {
+                    getBrowseNodeTask(browseCode)
+                        ?.takeIf { node -> node.targetType == BrowseTargetType.CATEGORY }
+                        ?.targetCategoryCode
+                }.getOrNull()
+
+            override suspend fun resolveCategoryRedirect(categoryCode: String): String? =
+                runCatching { viewModel.resolveCategoryRedirect(categoryCode) }.getOrNull()
+
+            override suspend fun inferCategory(
+                queryText: String,
+                baseFilters: Map<String, String>,
+            ): String? = viewModel.inferLeafCategoryByFacets(
+                queryText = queryText,
+                baseFilters = baseFilters,
+            )
+
+            override suspend fun parseAttributes(
+                queryText: String,
+                categoryCode: String?,
+                baseFilters: Map<String, String>,
+            ): Map<String, String> = viewModel.parseSubmitAttributes(
+                queryText = queryText,
+                categoryCode = categoryCode,
+                baseFilters = baseFilters,
+            )
+        }
+    }
 
     val supportedSourcesHint = remember {
         val names = sourceRegistry.all()
@@ -432,6 +602,8 @@ fun MainPage(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 viewModel.refreshCurrentUser()
+                visualCameraPermissionGranted =
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -472,6 +644,46 @@ fun MainPage(
         }
     }
 
+    val visualSearchCategoryOptions = remember(
+        state.template.categoryCode,
+        state.template.lockedTitle,
+        state.frequentCategories,
+        state.popularCategories,
+        state.nearbyCategoryChips,
+        state.visualSearch.selectedCategoryCode,
+        state.visualSearch.selectedCategoryTitle,
+        state.visualSearch.insight?.suggestedCategoryCode,
+        state.visualSearch.insight?.suggestedCategoryTitle,
+    ) {
+        buildList {
+            val selectedCode = state.visualSearch.selectedCategoryCode
+            val selectedTitle = state.visualSearch.selectedCategoryTitle
+                ?: state.template.lockedTitle
+                ?: selectedCode
+            if (!selectedCode.isNullOrBlank() && !selectedTitle.isNullOrBlank()) {
+                add(
+                    CategoryChipUi(
+                        code = selectedCode,
+                        title = selectedTitle,
+                    ),
+                )
+            }
+            val suggestedCode = state.visualSearch.insight?.suggestedCategoryCode
+            val suggestedTitle = state.visualSearch.insight?.suggestedCategoryTitle
+            if (!suggestedCode.isNullOrBlank() && !suggestedTitle.isNullOrBlank() && suggestedCode != selectedCode) {
+                add(
+                    CategoryChipUi(
+                        code = suggestedCode,
+                        title = suggestedTitle,
+                    ),
+                )
+            }
+            addAll(state.frequentCategories)
+            addAll(state.popularCategories)
+            addAll(state.nearbyCategoryChips)
+        }.distinctBy { chip -> chip.code }
+    }
+
     val panelConfig = UserPanelDefaults.config
     val modeCatalog = remember(state.currentUserId) {
         defaultModeCatalog(isLoggedIn = !isGuest)
@@ -503,106 +715,291 @@ fun MainPage(
         panelDraft = UserPanelDefaults.defaultPanel().copy(isEditMode = true)
     }
 
-    fun navigateToResults(payload: ResultsPayload, taps: Int) {
+    val navigateToResults: (ResultsPayload, Int) -> Unit = { payload, taps ->
         FlowMetrics.startResults(taps)
+        searchLoadingQuery = payload.queryText
         searchPayload = payload
         searchStage = SearchStage.Results
         rootMode = RootMode.Search
     }
 
-    fun navigateToDraft(payload: DraftPayload, taps: Int) {
-        FlowMetrics.startDraft(taps)
-        if (payload.mode == DraftMode.Search) {
-            searchDraftPayload = payload
-            searchStage = SearchStage.Wizard
-            rootMode = RootMode.Search
-        } else {
-            createDraftVisible = true
-            createDraftOrigin = payload.source.toDraftOrigin()
-            createDraftId = null
+    fun invalidateSearchRequest() {
+        searchRequestVersion += 1
+    }
+
+    fun showResultsLoading(queryText: String): Int {
+        val requestVersion = searchRequestVersion + 1
+        searchRequestVersion = requestVersion
+        searchLoadingQuery = queryText.trim()
+        searchPayload = null
+        searchStage = SearchStage.Results
+        rootMode = RootMode.Search
+        return requestVersion
+    }
+
+    fun stopResultsLoading() {
+        invalidateSearchRequest()
+        searchPayload = null
+        searchLoadingQuery = ""
+        searchStage = if (state.template.inputText.isBlank()) SearchStage.Idle else SearchStage.Focused
+        rootMode = RootMode.Search
+    }
+
+    fun closeResultsToSearchHub() {
+        invalidateSearchRequest()
+        focusManager.clearFocus(force = true)
+        searchPayload = null
+        searchLoadingQuery = ""
+        searchStage = SearchStage.Idle
+        rootMode = RootMode.Search
+        viewModel.resetTemplate()
+    }
+
+    LaunchedEffect(state.visualSearch.pendingResultsPayload) {
+        val payload = state.visualSearch.pendingResultsPayload ?: return@LaunchedEffect
+        focusManager.clearFocus(force = true)
+        viewModel.recordSearchHistory(
+            queryText = payload.queryText,
+            query = payload.query,
+            categoryCode = payload.categoryCode,
+        )
+        navigateToResults(payload, 1)
+        viewModel.consumePendingVisualResults()
+    }
+
+    fun openCreateFlow(origin: DraftInputOrigin?) {
+        createDraftVisible = true
+        createDraftOrigin = origin
+        createDraftId = null
+    }
+
+    fun openVisualSearch() {
+        focusManager.clearFocus(force = true)
+        viewModel.openVisualSearchEntry()
+        if (!visualCameraPermissionGranted) {
+            visualCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
-    fun startPhotoCreate(input: DraftPhotoInput) {
-        FlowMetrics.markCreateAction("photo", "create")
-        navigateToDraft(
-            DraftPayload(DraftSource.Photo, DraftMode.Create, photoInput = input),
-            taps = 1,
+    fun openVisualGallery() {
+        focusManager.clearFocus(force = true)
+        visualGalleryLauncher.launch("image/*")
+    }
+
+    fun startSpeechToText() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault().toLanguageTag())
+            putExtra(RecognizerIntent.EXTRA_PROMPT, "Скажите поисковый запрос")
+        }
+        if (intent.resolveActivity(context.packageManager) == null) {
+            Toast.makeText(context, "Распознавание речи недоступно на устройстве.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        focusManager.clearFocus(force = true)
+        speechToTextLauncher.launch(intent)
+    }
+
+    fun showLegacySearchFlowRemoved(channel: String) {
+        val message = when (channel) {
+            "photo" -> "Поиск по фото будет возвращён новым flow. Legacy wizard удалён."
+            "link" -> "Поиск по ссылке будет возвращён новым flow. Legacy wizard удалён."
+            "voice" -> "Поиск голосом будет возвращён новым flow. Legacy wizard удалён."
+            else -> "Legacy search flow удалён."
+        }
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun isCategoryLevelFilterKey(key: String): Boolean =
+        key.startsWith("category_level_") || key == "category_selector"
+
+    fun stripCategoryLevelFilters(filters: Map<String, String>): Map<String, String> =
+        filters.filterKeys { key -> !isCategoryLevelFilterKey(key) }
+
+    fun candidateFromSuggestion(item: MainSuggestItem): SearchSuggestionCandidate? = when (item) {
+        is TextFixSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.TEXT_FIX,
+            text = item.fixedText,
+        )
+        is ProductAnchorSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.PRODUCT_ANCHOR,
+            text = item.text,
+            categoryCode = item.categoryCode,
+            attrs = buildMap {
+                item.brand?.takeIf { value -> value.isNotBlank() }?.let { put("brand", it) }
+                item.model?.takeIf { value -> value.isNotBlank() }?.let { put("model", it) }
+            },
+        )
+        is CategoryAnchorSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.CATEGORY_ANCHOR,
+            text = item.breadcrumb.ifBlank { item.categoryCode },
+            categoryCode = item.categoryCode,
+        )
+        is PresetTemplateSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.PRESET_TEMPLATE,
+            text = item.text,
+            categoryCode = item.preset.snapshot.categoryCode,
+            attrs = item.preset.snapshot.attrs
+                .mapNotNull { attr ->
+                    val key = attr.key.trim()
+                    val value = attr.value.trim()
+                    if (key.isBlank() || value.isBlank()) null else key to value
+                }
+                .toMap(LinkedHashMap()),
+        )
+        is HistoryTemplateSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.HISTORY_TEMPLATE,
+            text = item.text,
+            categoryCode = item.entry.snapshot.data.categoryCode,
+            attrs = item.entry.snapshot.data.attrs
+                .mapNotNull { attr ->
+                    val key = attr.key.trim()
+                    val value = attr.value.trim()
+                    if (key.isBlank() || value.isBlank()) null else key to value
+                }
+                .toMap(LinkedHashMap()),
+        )
+        is AutoPresetSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.AUTO_PRESET,
+            text = item.text,
+        )
+        is AutoTemplateSuggest -> SearchSuggestionCandidate(
+            kind = SearchSuggestionKind.AUTO_TEMPLATE,
+            text = item.text,
+            categoryCode = item.categoryCode,
+            attrs = buildMap {
+                item.brand.takeIf { value -> value.isNotBlank() }?.let { put("brand", it) }
+                item.model.takeIf { value -> value.isNotBlank() }?.let { put("model", it) }
+                item.modelLine?.takeIf { value -> value.isNotBlank() }?.let { put("model_line", it) }
+            },
+        )
+        else -> null
+    }
+
+    fun suggestionCandidates(): List<SearchSuggestionCandidate> =
+        state.suggestions.mapNotNull(::candidateFromSuggestion)
+
+    fun templateContextForInterpretation(): SearchTemplateContext = SearchTemplateContext(
+        inputText = state.template.inputText,
+        categoryCode = state.template.categoryCode,
+        selectedFilters = stripCategoryLevelFilters(state.template.asSelectedFilters()),
+        isLocked = state.template.isLocked,
+    )
+
+    suspend fun interpretSearchIntent(
+        text: String,
+        source: SearchRequestSource,
+        selectedSuggestion: SearchSuggestionCandidate? = null,
+    ): InterpretedSearchIntent {
+        val request = SearchInterpretationRequest(
+            inputText = text,
+            source = source,
+            selectedSuggestion = selectedSuggestion,
+            suggestions = suggestionCandidates(),
+            templateContext = templateContextForInterpretation(),
+        )
+        return searchInterpretationPipeline.interpret(request, searchInterpretationDeps)
+    }
+
+    fun resultsOriginFromIntent(intent: InterpretedSearchIntent): ResultsOrigin = when {
+        intent.provenance.source == SearchRequestSource.SUGGESTION &&
+            intent.provenance.suggestionKind == SearchSuggestionKind.CATEGORY_ANCHOR -> ResultsOrigin.Category
+        intent.provenance.source == SearchRequestSource.SUGGESTION -> ResultsOrigin.Suggestion
+        else -> ResultsOrigin.Text
+    }
+
+    fun payloadFromIntent(intent: InterpretedSearchIntent): ResultsPayload {
+        return ResultsPayload(
+            query = intent.toResultsQuery(),
+            queryText = intent.queryText,
+            categoryCode = intent.categoryCode,
+            facetCollectionCode = intent.facetCollectionCode,
+            facetPresetCode = intent.facetPresetCode,
+            origin = resultsOriginFromIntent(intent),
         )
     }
 
-    fun startVoiceCreate() {
-        FlowMetrics.markCreateAction("voice", "create")
-        navigateToDraft(
-            DraftPayload(DraftSource.Voice, DraftMode.Create),
-            taps = 1,
+    suspend fun openResultsFromIntent(
+        intent: InterpretedSearchIntent,
+        openedFromSuggestion: Boolean,
+    ) {
+        FlowMetrics.markEvent(
+            "search_interpretation_applied",
+            "source=${intent.provenance.source.name.lowercase()} kind=${intent.provenance.suggestionKind?.name?.lowercase() ?: "none"} template_ctx=${intent.provenance.usedTemplateContext} route_category=${intent.provenance.usedRouteCategory} inferred_category=${intent.provenance.usedInferredCategory} parsed_attrs=${intent.provenance.usedParsedAttributes}",
         )
+        val payload = payloadFromIntent(intent)
+        if (intent.provenance.usedInferredCategory && !intent.categoryCode.isNullOrBlank()) {
+            FlowMetrics.markEvent(
+                "search_submit_category_inferred",
+                "source=facet_fallback category=${intent.categoryCode}",
+            )
+        }
+        if (openedFromSuggestion) {
+            FlowMetrics.markOpenResultsFromSuggestion()
+        } else {
+            FlowMetrics.markOpenResultsFromText()
+        }
+        viewModel.recordSearchHistory(
+            queryText = payload.queryText,
+            query = payload.query,
+            categoryCode = payload.categoryCode,
+        )
+        navigateToResults(payload, 1)
     }
 
     fun startSearchByText(text: String) {
-        val trimmed = text.trim()
-        if (trimmed.isBlank()) {
+        val normalizedInput = SearchTextNormalizer.normalize(text)
+        if (normalizedInput.isBlank()) {
             Toast.makeText(context, "Введите запрос", Toast.LENGTH_SHORT).show()
             return
         }
+        val requestVersion = showResultsLoading(normalizedInput)
         scope.launch {
-            val query = BrandModelRules.fromRaw(trimmed)
-            val routed = runCatching { routeQueryTask(trimmed) }.getOrNull()
-            var routedCollectionCode = routed?.facetCollectionCode?.takeIf { it.isNotBlank() }
-            val routedPresetCode = routed?.facetPresetCode?.takeIf { it.isNotBlank() }
-            val routedCategoryCode = when (routed?.routeType) {
-                QueryRouteType.OPEN_CATEGORY -> routed.primaryTargetCode?.takeIf { it.isNotBlank() }
-                QueryRouteType.OPEN_BROWSE -> {
-                    val browseCode = routed.primaryTargetCode?.takeIf { it.isNotBlank() }
-                    if (browseCode == null) {
-                        null
-                    } else {
-                        routedCollectionCode = routedCollectionCode ?: browseCode
-                        runCatching {
-                            getBrowseNodeTask(browseCode)
-                                ?.takeIf { it.targetType == BrowseTargetType.CATEGORY }
-                                ?.targetCategoryCode
-                                ?.takeIf { it.isNotBlank() }
-                        }.getOrNull()
-                    }
-                }
-                QueryRouteType.RUN_SEARCH,
-                null,
-                -> null
+            val intent = runCatching {
+                interpretSearchIntent(
+                    text = normalizedInput,
+                    source = SearchRequestSource.RAW_TEXT,
+                )
+            }.getOrElse { throwable ->
+                stopResultsLoading()
+                Toast.makeText(
+                    context,
+                    throwable.message ?: "Не удалось подготовить результаты поиска.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@launch
             }
-            val resolvedCategoryCode = routedCategoryCode ?: state.template.categoryCode
-            viewModel.recordSearchHistory(
-                queryText = trimmed,
-                query = query,
-                categoryCode = resolvedCategoryCode,
-            )
-            val payload = ResultsPayload(
-                query = query,
-                queryText = trimmed,
-                categoryCode = resolvedCategoryCode,
-                facetCollectionCode = routedCollectionCode,
-                facetPresetCode = routedPresetCode,
-                origin = ResultsOrigin.Text,
-            )
-            FlowMetrics.markOpenResultsFromText()
-            navigateToResults(payload, taps = 1)
+            if (requestVersion != searchRequestVersion) return@launch
+            openResultsFromIntent(intent, openedFromSuggestion = false)
         }
     }
 
-    fun startPhotoSearch(input: DraftPhotoInput) {
-        FlowMetrics.markCreateAction("photo", "search")
-        navigateToDraft(
-            DraftPayload(DraftSource.Photo, DraftMode.Search, photoInput = input),
-            taps = 1,
-        )
-    }
-
-    fun startVoiceSearch() {
-        FlowMetrics.markCreateAction("voice", "search")
-        navigateToDraft(
-            DraftPayload(DraftSource.Voice, DraftMode.Search),
-            taps = 1,
-        )
+    fun startSearchBySuggestion(item: MainSuggestItem) {
+        val selectedSuggestion = candidateFromSuggestion(item)
+        if (selectedSuggestion == null) {
+            viewModel.onSuggestChosen(item)
+            return
+        }
+        val requestVersion = showResultsLoading(selectedSuggestion.text)
+        scope.launch {
+            val intent = runCatching {
+                interpretSearchIntent(
+                    text = selectedSuggestion.text,
+                    source = SearchRequestSource.SUGGESTION,
+                    selectedSuggestion = selectedSuggestion,
+                )
+            }.getOrElse { throwable ->
+                stopResultsLoading()
+                Toast.makeText(
+                    context,
+                    throwable.message ?: "Не удалось подготовить результаты поиска.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@launch
+            }
+            if (requestVersion != searchRequestVersion) return@launch
+            openResultsFromIntent(intent, openedFromSuggestion = true)
+        }
     }
 
     fun startLocalIntent(
@@ -643,14 +1040,18 @@ fun MainPage(
             origin = ResultsOrigin.Suggestion,
         )
         FlowMetrics.markOpenResultsFromSuggestion()
-        navigateToResults(payload, taps = 1)
+        navigateToResults(payload, 1)
     }
 
     fun openSearchHub(expanded: Boolean) {
+        invalidateSearchRequest()
         rootMode = RootMode.Search
         searchStage = if (expanded) SearchStage.Focused else SearchStage.Idle
         searchPayload = null
-        searchDraftPayload = null
+        searchLoadingQuery = ""
+        if (expanded) {
+            viewModel.refreshSuggestionsForCurrentInput()
+        }
     }
 
     LaunchedEffect(openSearchHubOnStart) {
@@ -751,11 +1152,19 @@ fun MainPage(
     }
 
     fun openFeedOffer(item: ExplainedItem) {
-        val url = item.dto.externalUrl
-        if (!url.isNullOrBlank()) {
-            openExternal(url)
+        if (navController != null) {
+            navController.navigate(
+                AppRoutes.offer(
+                    offerId = item.dto.id,
+                ),
+            )
         } else {
-            Toast.makeText(context, "No details link available.", Toast.LENGTH_SHORT).show()
+            val url = item.dto.externalUrl
+            if (!url.isNullOrBlank()) {
+                openExternal(url)
+            } else {
+                Toast.makeText(context, "No details link available.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -788,7 +1197,7 @@ fun MainPage(
                 searchStage = SearchStage.Idle
             }
             ModeKey.PROFILE -> {
-                navController?.navigate(AppRoutes.Profile)
+                navController?.navigate(AppRoutes.profile())
             }
             else -> Unit
         }
@@ -828,12 +1237,16 @@ fun MainPage(
         locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
-    fun openLocationSettings() {
+    fun openAppSettings() {
         val intent = Intent(
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.fromParts("package", context.packageName, null),
         ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
+    }
+
+    fun openLocationSettings() {
+        openAppSettings()
     }
 
     fun expandNearbyRadius() {
@@ -927,122 +1340,26 @@ fun MainPage(
         when (linkOverlayMode) {
             LinkOverlayMode.Create -> {
                 FlowMetrics.markCreateAction("link", "create")
-                navigateToDraft(DraftPayload(DraftSource.Link, DraftMode.Create, linkUrl = url), taps = 2)
+                openCreateFlow(DraftInputOrigin.LINK)
             }
             LinkOverlayMode.Search -> {
-                FlowMetrics.markCreateAction("link", "search")
-                navigateToDraft(DraftPayload(DraftSource.Link, DraftMode.Search, linkUrl = url), taps = 1)
+                showLegacySearchFlowRemoved("link")
             }
         }
     }
 
-    fun payloadFromSuggestion(item: MainSuggestItem): ResultsPayload? {
-        return when (item) {
-            is TextFixSuggest -> ResultsPayload(
-                query = BrandModelRules.fromRaw(item.fixedText),
-                queryText = item.fixedText,
-                origin = ResultsOrigin.Suggestion,
-            )
-            is ProductAnchorSuggest -> {
-                val text = item.text
-                ResultsPayload(
-                    query = BrandModelRules.fromRaw(text),
-                    queryText = text,
-                    categoryCode = item.categoryCode,
-                    origin = ResultsOrigin.Suggestion,
-                )
-            }
-            is CategoryAnchorSuggest -> ResultsPayload(
-                query = null,
-                queryText = item.breadcrumb,
-                categoryCode = item.categoryCode,
-                origin = ResultsOrigin.Category,
-            )
-            is PresetTemplateSuggest -> ResultsPayload(
-                query = normalizedQueryFromSnapshot(item.preset.snapshot),
-                queryText = item.text,
-                categoryCode = item.preset.snapshot.categoryCode,
-                origin = ResultsOrigin.Suggestion,
-            )
-            is HistoryTemplateSuggest -> ResultsPayload(
-                query = normalizedQueryFromSnapshot(item.entry.snapshot.data),
-                queryText = item.text,
-                categoryCode = item.entry.snapshot.data.categoryCode,
-                origin = ResultsOrigin.Suggestion,
-            )
-            is AutoPresetSuggest -> ResultsPayload(
-                query = BrandModelRules.fromRaw(item.text),
-                queryText = item.text,
-                origin = ResultsOrigin.Suggestion,
-            )
-            is AutoTemplateSuggest -> ResultsPayload(
-                query = BrandModelRules.fromRaw(item.text),
-                queryText = item.text,
-                categoryCode = item.categoryCode,
-                origin = ResultsOrigin.Suggestion,
-            )
-            else -> null
-        }
-    }
+    fun normalizedQueryForText(
+        text: String,
+        attrs: Map<String, String> = emptyMap(),
+    ): NormalizedQuery = BrandModelRules.fromRaw(
+        text,
+        Normalization.normalizeAttrs(attrs),
+    )
 
-    fun suggestionQuery(item: MainSuggestItem): SuggestionQuery? {
-        val (query, text, categoryCode) = when (item) {
-            is TextFixSuggest -> Triple(
-                BrandModelRules.fromRaw(item.fixedText),
-                item.fixedText,
-                null,
-            )
-            is ProductAnchorSuggest -> Triple(
-                BrandModelRules.fromRaw(item.text),
-                item.text,
-                item.categoryCode,
-            )
-            is AutoPresetSuggest -> Triple(
-                BrandModelRules.fromRaw(item.text),
-                item.text,
-                null,
-            )
-            is AutoTemplateSuggest -> Triple(
-                BrandModelRules.fromRaw(item.text),
-                item.text,
-                item.categoryCode,
-            )
-            is CategoryAnchorSuggest -> Triple(
-                null,
-                item.breadcrumb.ifBlank { item.categoryCode },
-                item.categoryCode,
-            )
-            is PresetTemplateSuggest -> Triple(
-                normalizedQueryFromSnapshot(item.preset.snapshot),
-                item.text,
-                item.preset.snapshot.categoryCode,
-            )
-            is HistoryTemplateSuggest -> Triple(
-                normalizedQueryFromSnapshot(item.entry.snapshot.data),
-                item.text,
-                item.entry.snapshot.data.categoryCode,
-            )
-            else -> Triple(null, "", null)
-        }
-        val trimmed = text.trim()
-        return trimmed.takeIf { it.isNotBlank() }?.let {
-            SuggestionQuery(query, trimmed, categoryCode)
-        }
-    }
-
-    fun openDraftFromSuggestion(item: MainSuggestItem, mode: DraftMode): Boolean {
-        val query = suggestionQuery(item) ?: return false
-        navigateToDraft(
-            DraftPayload(
-                source = DraftSource.Text,
-                mode = mode,
-                query = query.query,
-                queryText = query.queryText,
-                categoryCode = query.categoryCode,
-            ),
-            taps = 1,
-        )
-        return true
+    fun autoTemplateAttrs(item: AutoTemplateSuggest): Map<String, String> = buildMap {
+        item.brand.takeIf { it.isNotBlank() }?.let { put("brand", it) }
+        item.model.takeIf { it.isNotBlank() }?.let { put("model", it) }
+        item.modelLine?.takeIf { it.isNotBlank() }?.let { put("model_line", it) }
     }
 
     fun trackSuggestion(item: MainSuggestItem) {
@@ -1200,8 +1517,7 @@ fun MainPage(
     }
     val overlayUsesOwnInsets = nearbyCategoriesPickerVisible ||
         dashboardState == DashboardState.FeedCategories ||
-        searchStage == SearchStage.Results ||
-        searchStage == SearchStage.Wizard
+        searchStage == SearchStage.Results
     val showUserPanel = !createDraftVisible &&
         !linkOverlayVisible &&
         !overlayUsesOwnInsets
@@ -1247,11 +1563,8 @@ fun MainPage(
             }
             RootMode.Search -> {
                 when (searchStage) {
-                    SearchStage.Results,
-                    SearchStage.Wizard -> {
-                        searchStage = SearchStage.Idle
-                        searchPayload = null
-                        searchDraftPayload = null
+                    SearchStage.Results -> {
+                        closeResultsToSearchHub()
                     }
                     SearchStage.Focused -> {
                         searchStage = SearchStage.Idle
@@ -1367,9 +1680,9 @@ fun MainPage(
                     onProfileClick = { handleModeClick(ModeKey.PROFILE) },
                     onOpenDraft = { openDraftById(it) },
                     onOpenSearchHub = { openSearchHub(expanded = true) },
-                    onSearchByPhoto = { startPhotoSearch(DraftPhotoInput.Camera) },
-                    onSearchByLink = { openLinkOverlay(LinkOverlayMode.Search) },
-                    onSearchByVoice = { startVoiceSearch() },
+                    onSearchByPhoto = ::openVisualSearch,
+                    onSearchByLink = { showLegacySearchFlowRemoved("link") },
+                    onSearchByVoice = { showLegacySearchFlowRemoved("voice") },
                     isGuest = isGuest,
                     viewModel = viewModel,
                 )
@@ -1379,6 +1692,8 @@ fun MainPage(
                     suggestions = state.suggestions,
                     frequentCategories = state.frequentCategories,
                     popularCategories = state.popularCategories,
+                    recentSearchQueries = state.recentSearchQueries,
+                    popularSearchQueries = state.popularSearchQueries,
                     localIntents = LocalSearchIntent.values().toList(),
                     onLocalIntent = { intent ->
                         val label = localIntentLabels[intent].orEmpty()
@@ -1392,54 +1707,24 @@ fun MainPage(
                         focusManager.clearFocus(force = true)
                         startSearchByText(state.template.inputText)
                     },
-                    onSuggestionClick = { item ->
-                        when (item) {
-                            is PresetTemplateSuggest,
-                            is HistoryTemplateSuggest -> {
-                                if (openDraftFromSuggestion(item, DraftMode.Search)) {
-                                    focusManager.clearFocus(force = true)
-                                    return@SearchScreen
-                                }
-                            }
-                            is TextFixSuggest -> {
-                                viewModel.onSuggestChosen(item)
-                                return@SearchScreen
-                            }
-                            is CategoryAnchorSuggest -> {
-                                viewModel.onSuggestChosen(item)
-                                return@SearchScreen
-                            }
-                            is AutoTemplateSuggest -> {
-                                viewModel.onSuggestChosen(item)
-                                return@SearchScreen
-                            }
-                            else -> viewModel.onSuggestChosen(item)
-                        }
-                        val payload = payloadFromSuggestion(item) ?: return@SearchScreen
-                        FlowMetrics.markOpenResultsFromSuggestion()
-                        viewModel.recordSearchHistory(
-                            queryText = payload.queryText,
-                            query = payload.query,
-                            categoryCode = payload.categoryCode,
-                        )
+                    onSearchByRawText = { rawText ->
+                        val normalizedRawText = SearchTextNormalizer.normalize(rawText)
+                        viewModel.onQueryChange(normalizedRawText)
                         focusManager.clearFocus(force = true)
-                        navigateToResults(payload, taps = 1)
+                        startSearchByText(normalizedRawText)
+                    },
+                    onSuggestionClick = { item ->
+                        focusManager.clearFocus(force = true)
+                        startSearchBySuggestion(item)
                     },
                     onSuggestionAction = { item, action ->
                         when (action) {
                             SuggestionAction.Search -> {
-                                val payload = payloadFromSuggestion(item) ?: return@SearchScreen
-                                FlowMetrics.markOpenResultsFromSuggestion()
-                                viewModel.recordSearchHistory(
-                                    queryText = payload.queryText,
-                                    query = payload.query,
-                                    categoryCode = payload.categoryCode,
-                                )
                                 focusManager.clearFocus(force = true)
-                                navigateToResults(payload, taps = 1)
+                                startSearchBySuggestion(item)
                             }
                             SuggestionAction.Track -> trackSuggestion(item)
-                            SuggestionAction.Create -> openDraftFromSuggestion(item, DraftMode.Create)
+                            SuggestionAction.Create -> openCreateFlow(DraftInputOrigin.TEXT)
                         }
                     },
                     onOpenResults = { payload ->
@@ -1449,38 +1734,20 @@ fun MainPage(
                             query = payload.query,
                             categoryCode = payload.categoryCode,
                         )
-                        navigateToResults(payload, taps = 1)
+                        navigateToResults(payload, 1)
                     },
-                    onPhotoSearch = {
-                        focusManager.clearFocus(force = true)
-                        startPhotoSearch(it)
-                    },
+                    onPhotoSearch = ::openVisualSearch,
                     onLinkSearch = {
                         focusManager.clearFocus(force = true)
-                        openLinkOverlay(LinkOverlayMode.Search)
+                        showLegacySearchFlowRemoved("link")
                     },
-                    onVoiceSearch = {
-                        focusManager.clearFocus(force = true)
-                        startVoiceSearch()
-                    },
+                    onVoiceSearch = ::startSpeechToText,
                     hasSelection = state.template.isLocked,
                     resultsPayload = searchPayload,
-                    onCloseResults = {
-                        searchStage = SearchStage.Idle
-                        searchPayload = null
-                    },
-                    onCloseToDashboard = {
-                        searchStage = SearchStage.Idle
-                        searchPayload = null
-                    },
-                    searchDraftPayload = searchDraftPayload,
-                    onDismissWizard = {
-                        searchDraftPayload = null
-                        searchStage = SearchStage.Idle
-                    },
-                    onOpenDraft = { payload ->
-                        navigateToDraft(payload, taps = 1)
-                    },
+                    resultsLoadingQuery = searchLoadingQuery,
+                    onCloseResults = ::closeResultsToSearchHub,
+                    onCloseToDashboard = ::closeResultsToSearchHub,
+                    onOpenCreate = { openCreateFlow(DraftInputOrigin.TEXT) },
                     navController = navController,
                     viewModel = viewModel,
                 )
@@ -1510,6 +1777,57 @@ fun MainPage(
                 }
             }
         }
+    }
+
+    if (state.visualSearch.visible) {
+        VisualSearchCameraScreen(
+            state = state.visualSearch,
+            hasCameraPermission = visualCameraPermissionGranted,
+            onDismiss = viewModel::dismissVisualSearch,
+            onRequestPermission = {
+                if (!visualCameraPermissionGranted) {
+                    visualCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                }
+            },
+            onPickGallery = ::openVisualGallery,
+            onCaptureModeChange = viewModel::updateVisualSearchCaptureMode,
+            onCaptureBitmap = { bitmap, captureMode ->
+                val media = visualMediaImporter.importBitmap(bitmap)
+                if (media == null) {
+                    Toast.makeText(context, "Не удалось обработать снимок.", Toast.LENGTH_SHORT).show()
+                    return@VisualSearchCameraScreen
+                }
+                val localUri = media.localUri?.toString()
+                if (localUri == null) {
+                    Toast.makeText(context, "Не удалось сохранить снимок.", Toast.LENGTH_SHORT).show()
+                    return@VisualSearchCameraScreen
+                }
+                val inlineBase64 = context.encodeVisualSearchInlineBase64(localUri)
+                val analysis = runCatching {
+                    visualCaptureAnalyzer.analyzeUri(Uri.parse(localUri), captureMode)
+                }.getOrNull()
+                val insight = buildVisualSearchInsight(
+                    analysis = analysis,
+                    routeQueryTask = routeQueryTask,
+                    getBrowseNodeTask = getBrowseNodeTask,
+                    viewModel = viewModel,
+                )
+                viewModel.onVisualSearchAssetPicked(
+                    source = VisualSearchSource.CAMERA,
+                    captureMode = captureMode,
+                    insight = insight,
+                    asset = VisualSearchAssetUi(
+                        fingerprint = media.id,
+                        localUri = localUri,
+                        widthPx = media.width,
+                        heightPx = media.height,
+                        byteSize = media.byteSize,
+                        inlineBase64 = inlineBase64,
+                    ),
+                )
+            },
+            onSubmitSearch = { viewModel.submitVisualSearch(autoTriggered = false) },
+        )
     }
 
     if (showAllSelectedFeed) {
@@ -1617,24 +1935,8 @@ fun MainPage(
         )
     }
 
-    val usePhotoPostFlow = createDraftId == null &&
-        (createDraftOrigin == null || createDraftOrigin == DraftInputOrigin.PHOTO)
-
-    if (createDraftVisible && usePhotoPostFlow) {
-        PhotoPostFlow(
-            visible = true,
-            draftId = createDraftId,
-            origin = createDraftOrigin,
-            onDismiss = { dismissCreateSheet() },
-            onOpenManual = {
-                createDraftOrigin = DraftInputOrigin.TEXT
-                createDraftId = null
-            },
-        )
-    }
-
-    if (createDraftVisible && !usePhotoPostFlow) {
-        CreateDraftSheet(
+    if (createDraftVisible) {
+        LocalOfferSheet(
             visible = true,
             draftId = createDraftId,
             origin = createDraftOrigin,
@@ -1657,13 +1959,6 @@ fun MainPage(
     }
 }
 
-private fun DraftSource.toDraftOrigin(): DraftInputOrigin = when (this) {
-    DraftSource.Photo -> DraftInputOrigin.PHOTO
-    DraftSource.Link -> DraftInputOrigin.LINK
-    DraftSource.Voice -> DraftInputOrigin.VOICE
-    DraftSource.Text -> DraftInputOrigin.TEXT
-}
-
 private enum class RootMode {
     Dashboard,
     Search,
@@ -1678,11 +1973,25 @@ private enum class DashboardState {
     MessagesExpanded,
 }
 
+private fun Context.encodeVisualSearchInlineBase64(localUri: String): String? {
+    val bytes = runCatching {
+        val uri = Uri.parse(localUri)
+        when (uri.scheme?.lowercase(Locale.ROOT)) {
+            "file" -> {
+                val file = File(java.net.URI(localUri))
+                if (file.exists()) file.readBytes() else null
+            }
+            else -> contentResolver.openInputStream(uri)?.use { stream -> stream.readBytes() }
+        }
+    }.getOrNull() ?: return null
+    if (bytes.isEmpty() || bytes.size > 3_500_000) return null
+    return Base64.getEncoder().encodeToString(bytes)
+}
+
 private enum class SearchStage {
     Idle,
     Focused,
     Results,
-    Wizard,
 }
 
 private enum class LocalSearchIntent {
@@ -1697,11 +2006,6 @@ private fun localIntentLabelRes(intent: LocalSearchIntent): Int = when (intent) 
     LocalSearchIntent.Today -> R.string.search_local_intent_today
     LocalSearchIntent.Used -> R.string.search_local_intent_used
     LocalSearchIntent.New -> R.string.search_local_intent_new
-}
-
-private enum class PostState {
-    Start,
-    Wizard,
 }
 
 private enum class LinkOverlayMode {
@@ -1738,12 +2042,6 @@ private data class NotificationPreview(
     val message: String,
     val details: String?,
     val timeLabel: String,
-)
-
-private data class SuggestionQuery(
-    val query: NormalizedQuery?,
-    val queryText: String,
-    val categoryCode: String?,
 )
 
 private fun NearbyFiltersState.locationLabel(
@@ -2041,39 +2339,18 @@ internal fun MainCatalogErrorBanner(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.55f),
-        modifier = modifier.testTag("main_catalog_error_banner"),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.ErrorOutline,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
-            )
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                modifier = Modifier
-                    .weight(1f)
-                    .testTag("main_catalog_error_message"),
-            )
-            TextButton(
-                onClick = onRetry,
-                modifier = Modifier.testTag("main_catalog_error_retry"),
-            ) {
-                Text(stringResource(R.string.state_error_retry))
-            }
-        }
-    }
+    SystemNoticeCard(
+        body = message,
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("main_catalog_error_banner"),
+        tone = SystemNoticeTone.Error,
+        bodyModifier = Modifier.testTag("main_catalog_error_message"),
+        actionLabel = stringResource(R.string.state_error_retry),
+        onAction = onRetry,
+        actionModifier = Modifier.testTag("main_catalog_error_retry"),
+        compact = true,
+    )
 }
 
 @Composable
@@ -2668,6 +2945,8 @@ private fun SearchScreen(
     suggestions: List<MainSuggestItem>,
     frequentCategories: List<CategoryChipUi>,
     popularCategories: List<CategoryChipUi>,
+    recentSearchQueries: List<RecentSearchQueryUi>,
+    popularSearchQueries: List<PopularSearchQueryUi>,
     localIntents: List<LocalSearchIntent>,
     onLocalIntent: (LocalSearchIntent) -> Unit,
     onClearHistory: () -> Unit,
@@ -2675,23 +2954,22 @@ private fun SearchScreen(
     onStageChange: (SearchStage) -> Unit,
     onInputChange: (String) -> Unit,
     onSearch: () -> Unit,
+    onSearchByRawText: (String) -> Unit,
     onSuggestionClick: (MainSuggestItem) -> Unit,
     onSuggestionAction: (MainSuggestItem, SuggestionAction) -> Unit,
     onOpenResults: (ResultsPayload) -> Unit,
-    onPhotoSearch: (DraftPhotoInput) -> Unit,
+    onPhotoSearch: () -> Unit,
     onLinkSearch: () -> Unit,
     onVoiceSearch: () -> Unit,
     hasSelection: Boolean,
     resultsPayload: ResultsPayload?,
+    resultsLoadingQuery: String?,
     onCloseResults: () -> Unit,
     onCloseToDashboard: () -> Unit,
-    searchDraftPayload: DraftPayload?,
-    onDismissWizard: () -> Unit,
-    onOpenDraft: (DraftPayload) -> Unit,
+    onOpenCreate: () -> Unit,
     navController: NavHostController?,
     viewModel: MainPageViewModel,
 ) {
-    val focusManager = LocalFocusManager.current
     val handleInputChange: (String) -> Unit = { text ->
         onInputChange(text)
         if (text.isBlank()) {
@@ -2705,7 +2983,11 @@ private fun SearchScreen(
     when (stage) {
         SearchStage.Results -> {
             if (resultsPayload == null) {
-                onCloseResults()
+                SearchResultsLoading(
+                    queryText = resultsLoadingQuery ?: input,
+                    onBack = onCloseResults,
+                    onClose = onCloseToDashboard,
+                )
                 return
             }
             SwipeBackSurface(
@@ -2724,38 +3006,23 @@ private fun SearchScreen(
                     onBack = onCloseResults,
                     onClose = onCloseToDashboard,
                     onEditQuery = {
-                        onCloseResults()
                         onStageChange(SearchStage.Focused)
+                        viewModel.onQueryChange(resultsPayload.queryText)
+                        viewModel.refreshSuggestionsForCurrentInput()
                     },
-                    onOpenDraft = onOpenDraft,
+                    onOpenCreate = onOpenCreate,
                     applySafeInsets = true,
                     extraBottomPadding = 0.dp,
                 )
             }
-        }
-        SearchStage.Wizard -> {
-            if (searchDraftPayload == null) {
-                onDismissWizard()
-                return
-            }
-            DraftPage(
-                payload = searchDraftPayload,
-                navController = navController,
-                providedViewModel = viewModel,
-                onBack = onDismissWizard,
-                onOpenResults = { payload ->
-                    onDismissWizard()
-                    onOpenResults(payload)
-                },
-                applySafeInsets = true,
-                extraBottomPadding = 0.dp,
-            )
         }
         SearchStage.Idle,
         SearchStage.Focused -> {
             SearchStart(
                 input = input,
                 suggestions = suggestions,
+                recentSearchQueries = recentSearchQueries,
+                popularSearchQueries = popularSearchQueries,
                 focused = stage == SearchStage.Focused,
                 onFocusChange = { focused ->
                     when {
@@ -2765,16 +3032,14 @@ private fun SearchScreen(
                 },
                 onInputChange = handleInputChange,
                 onSearch = onSearch,
+                onSearchByRawText = onSearchByRawText,
                 onSuggestionClick = onSuggestionClick,
                 onSuggestionAction = onSuggestionAction,
+                onClearHistory = onClearHistory,
                 onPhotoSearch = onPhotoSearch,
                 onLinkSearch = onLinkSearch,
                 onVoiceSearch = onVoiceSearch,
                 hasSelection = hasSelection,
-                onCancel = {
-                    focusManager.clearFocus(force = true)
-                    onStageChange(SearchStage.Idle)
-                },
             )
         }
     }
@@ -2784,21 +3049,24 @@ private fun SearchScreen(
 private fun SearchStart(
     input: String,
     suggestions: List<MainSuggestItem>,
+    recentSearchQueries: List<RecentSearchQueryUi>,
+    popularSearchQueries: List<PopularSearchQueryUi>,
     focused: Boolean,
     onFocusChange: (Boolean) -> Unit,
     onInputChange: (String) -> Unit,
     onSearch: () -> Unit,
+    onSearchByRawText: (String) -> Unit,
     onSuggestionClick: (MainSuggestItem) -> Unit,
     onSuggestionAction: (MainSuggestItem, SuggestionAction) -> Unit,
-    onPhotoSearch: (DraftPhotoInput) -> Unit,
+    onClearHistory: () -> Unit,
+    onPhotoSearch: () -> Unit,
     onLinkSearch: () -> Unit,
     onVoiceSearch: () -> Unit,
     hasSelection: Boolean,
-    onCancel: () -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
     val hubMode = input.isBlank()
-    val contentAlignment = if (hubMode) Alignment.Center else Alignment.TopCenter
+    val hasHubContent = recentSearchQueries.isNotEmpty() || popularSearchQueries.isNotEmpty()
+    val showTabsPanel = hubMode && (focused || hasHubContent)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -2823,17 +3091,14 @@ private fun SearchStart(
                 )
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = contentAlignment,
+                    contentAlignment = Alignment.TopCenter,
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 0.dp, vertical = if (!hubMode && focused) 16.dp else 0.dp),
+                            .padding(horizontal = 0.dp, vertical = 18.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        if (!hubMode) {
-                            SearchFocusBar(onBack = onCancel)
-                        }
                         InputRow(
                             input = input,
                             onInputChange = onInputChange,
@@ -2843,20 +3108,295 @@ private fun SearchStart(
                             onSuggestionAction = onSuggestionAction,
                             hideSuggestions = !focused || hubMode,
                             hasSelection = hasSelection,
-                            onPhotoClick = { onPhotoSearch(DraftPhotoInput.Camera) },
+                            onPhotoClick = onPhotoSearch,
                             onLinkClick = onLinkSearch,
                             onVoiceClick = onVoiceSearch,
-                            showMediaActions = false,
-                            showInlineMediaActions = false,
-                            showHubSuggestionsWhenEmpty = true,
-                            showHubSuggestionsWhenUnfocused = true,
-                            hubSuggestionScale = 1f,
-                            enforceFocus = !hubMode,
+                            onClear = {
+                                onInputChange("")
+                                onFocusChange(false)
+                            },
+                            showMediaActions = true,
+                            showInlineMediaActions = true,
+                            showPhotoAction = true,
+                            showLinkAction = false,
+                            showVoiceAction = true,
+                            showHubSuggestionsWhenEmpty = false,
+                            showHubSuggestionsWhenUnfocused = false,
+                            inputFontWeight = FontWeight.SemiBold,
+                            enforceFocus = focused,
                             autoFocus = focused,
                             onFocusChange = onFocusChange,
                             modifier = Modifier
                                 .fillMaxWidth(0.9f)
                                 .align(Alignment.CenterHorizontally),
+                        )
+                        if (showTabsPanel) {
+                            SearchHubTabsPanel(
+                                recentSearchQueries = recentSearchQueries,
+                                popularSearchQueries = popularSearchQueries,
+                                onRecentQueryClick = { queryText ->
+                                    onSearchByRawText(queryText)
+                                },
+                                onPopularQueryClick = { queryText ->
+                                    onSearchByRawText(queryText)
+                                },
+                                onClearHistory = onClearHistory,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .align(Alignment.CenterHorizontally),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchResultsLoading(
+    queryText: String,
+    onBack: () -> Unit,
+    onClose: () -> Unit,
+) {
+    SwipeBackSurface(
+        onDismiss = onBack,
+        background = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+            )
+        },
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                AppTopBar(
+                    title = "Результаты",
+                    onBack = onBack,
+                    applySafeInsets = true,
+                    trailingContent = {
+                        IconButton(onClick = onClose) {
+                            Icon(
+                                imageVector = Icons.Outlined.Close,
+                                contentDescription = "Закрыть",
+                            )
+                        }
+                    },
+                )
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    item {
+                        Surface(
+                            shape = RoundedCornerShape(28.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f),
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp)
+                                    .padding(horizontal = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Search,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                                Text(
+                                    text = queryText.ifBlank { "Ищем результаты…" },
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f),
+                                )
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(18.dp),
+                                    strokeWidth = 2.dp,
+                                )
+                            }
+                        }
+                    }
+                    items(count = 5) {
+                        ScenarioCardSkeleton(modifier = Modifier.fillMaxWidth())
+                    }
+                }
+            }
+        }
+    }
+}
+
+private enum class SearchHubTab {
+    Recent,
+    Popular,
+}
+
+private enum class SearchPopularPeriod {
+    Today,
+    Month,
+    Year,
+    AllTime,
+}
+
+@Composable
+private fun SearchHubTabsPanel(
+    recentSearchQueries: List<RecentSearchQueryUi>,
+    popularSearchQueries: List<PopularSearchQueryUi>,
+    onRecentQueryClick: (String) -> Unit,
+    onPopularQueryClick: (String) -> Unit,
+    onClearHistory: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var activeTab by rememberSaveable { mutableStateOf(SearchHubTab.Recent) }
+    var activePeriod by rememberSaveable { mutableStateOf(SearchPopularPeriod.Today) }
+
+    val popularByPeriod = remember(popularSearchQueries, activePeriod) {
+        popularSearchQueries
+            .map { item ->
+                val count = when (activePeriod) {
+                    SearchPopularPeriod.Today -> item.todayCount
+                    SearchPopularPeriod.Month -> item.monthCount
+                    SearchPopularPeriod.Year -> item.yearCount
+                    SearchPopularPeriod.AllTime -> item.totalCount
+                }
+                item to count
+            }
+            .filter { (_, count) -> count > 0 }
+            .sortedWith(
+                compareByDescending<Pair<PopularSearchQueryUi, Int>> { (_, count) -> count }
+                    .thenByDescending { (item, _) -> item.lastUsedAtMillis },
+            )
+            .take(30)
+    }
+    val hasAnyPopular = popularSearchQueries.any { item -> item.totalCount > 0 }
+
+    LaunchedEffect(recentSearchQueries.isNotEmpty(), hasAnyPopular) {
+        if (recentSearchQueries.isEmpty() && hasAnyPopular) {
+            activeTab = SearchHubTab.Popular
+        }
+    }
+
+    LaunchedEffect(activeTab, popularByPeriod.isEmpty(), hasAnyPopular) {
+        if (activeTab == SearchHubTab.Popular && popularByPeriod.isEmpty() && hasAnyPopular) {
+            activePeriod = SearchPopularPeriod.AllTime
+        }
+    }
+
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = Color.Transparent,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Top,
+            ) {
+                SlidingUnderlineTabs(
+                    items = listOf(
+                        SlidingUnderlineTabItem(label = "Недавние", value = SearchHubTab.Recent),
+                        SlidingUnderlineTabItem(label = "Популярное", value = SearchHubTab.Popular),
+                    ),
+                    selected = activeTab,
+                    onSelect = { activeTab = it },
+                    modifier = Modifier.weight(1f),
+                )
+                if (activeTab == SearchHubTab.Recent && recentSearchQueries.isNotEmpty()) {
+                    TextButton(
+                        onClick = onClearHistory,
+                        shape = RectangleShape,
+                        modifier = Modifier.heightIn(min = 34.dp),
+                    ) {
+                        Text("Очистить")
+                    }
+                }
+            }
+
+            when (activeTab) {
+                SearchHubTab.Recent -> {
+                    if (recentSearchQueries.isNotEmpty()) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 280.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            items(recentSearchQueries, key = { query -> "${query.text}:${query.usedAtMillis}" }) { query ->
+                                SearchRecentQueryRow(
+                                    text = query.text,
+                                    relativeTime = formatSearchRelativeTime(query.usedAtMillis),
+                                    onClick = { onRecentQueryClick(query.text) },
+                                )
+                            }
+                        }
+                    } else {
+                        SearchHubEmptyLine(
+                            text = "Недавние запросы появятся после первого поиска.",
+                        )
+                    }
+                }
+
+                SearchHubTab.Popular -> {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        SearchHubPeriodChip(
+                            text = "Сегодня",
+                            active = activePeriod == SearchPopularPeriod.Today,
+                            onClick = { activePeriod = SearchPopularPeriod.Today },
+                        )
+                        SearchHubPeriodChip(
+                            text = "Месяц",
+                            active = activePeriod == SearchPopularPeriod.Month,
+                            onClick = { activePeriod = SearchPopularPeriod.Month },
+                        )
+                        SearchHubPeriodChip(
+                            text = "Год",
+                            active = activePeriod == SearchPopularPeriod.Year,
+                            onClick = { activePeriod = SearchPopularPeriod.Year },
+                        )
+                        SearchHubPeriodChip(
+                            text = "Всё",
+                            active = activePeriod == SearchPopularPeriod.AllTime,
+                            onClick = { activePeriod = SearchPopularPeriod.AllTime },
+                        )
+                    }
+
+                    if (popularByPeriod.isNotEmpty()) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 280.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            items(popularByPeriod, key = { (query, _) -> query.text }) { (query, count) ->
+                                SearchQueryChip(
+                                    text = query.text,
+                                    countText = count.toString(),
+                                    onClick = { onPopularQueryClick(query.text) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            }
+                        }
+                    } else {
+                        SearchHubEmptyLine(
+                            text = "Популярные запросы появятся после нескольких поисков.",
                         )
                     }
                 }
@@ -2866,143 +3406,243 @@ private fun SearchStart(
 }
 
 @Composable
-private fun SearchFocusBar(
-    onBack: () -> Unit,
+private fun SearchHubEmptyLine(
+    text: String,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+    )
+}
+
+private data class SlidingUnderlineTabItem<T>(
+    val label: String,
+    val value: T,
+)
+
+@Composable
+private fun <T> SlidingUnderlineTabs(
+    items: List<SlidingUnderlineTabItem<T>>,
+    selected: T,
+    onSelect: (T) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val density = LocalDensity.current
+    val tabWidths = remember(items) { mutableStateMapOf<Int, Int>() }
+    val tabOffsets = remember(items) { mutableStateMapOf<Int, Int>() }
+    val selectedIndex = items.indexOfFirst { item -> item.value == selected }.coerceAtLeast(0)
+    val indicatorWidthPx = tabWidths[selectedIndex] ?: 0
+    val indicatorOffsetPx = tabOffsets[selectedIndex] ?: 0
+    val animatedWidth by animateFloatAsState(
+        targetValue = indicatorWidthPx.toFloat(),
+        animationSpec = tween(durationMillis = 220),
+        label = "search_tab_indicator_width",
+    )
+    val animatedOffset by animateFloatAsState(
+        targetValue = indicatorOffsetPx.toFloat(),
+        animationSpec = tween(durationMillis = 220),
+        label = "search_tab_indicator_offset",
+    )
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(
-                onClick = onBack,
-                modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp),
-            ) {
-                Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Назад")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            items.forEachIndexed { index, item ->
+                val isSelected = item.value == selected
+                Box(
+                    modifier = Modifier
+                        .onGloballyPositioned { coordinates ->
+                            tabWidths[index] = coordinates.size.width
+                            tabOffsets[index] = coordinates.positionInParent().x.roundToInt()
+                        }
+                        .clickable { onSelect(item.value) }
+                        .padding(vertical = 2.dp),
+                    contentAlignment = Alignment.CenterStart,
+                ) {
+                    Text(
+                        text = item.label,
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Normal,
+                        ),
+                        color = if (isSelected) Color(0xFF202124) else Color(0xFF5F6368),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
-            Text(
-                text = "Поиск",
-                style = MaterialTheme.typography.titleMedium,
-            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp),
+        ) {
+            if (animatedWidth > 0f) {
+                Box(
+                    modifier = Modifier
+                        .offset(x = with(density) { animatedOffset.toDp() })
+                        .width(with(density) { animatedWidth.toDp() })
+                        .height(2.dp)
+                        .background(Color.Black),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun PostScreen(
-    stage: PostState,
-    onStartPhoto: () -> Unit,
-    onStartGallery: () -> Unit,
-    onStartVoice: () -> Unit,
-    onStartLink: () -> Unit,
-    onStartManual: () -> Unit,
-    draftPayload: DraftPayload?,
-    onDismissWizard: () -> Unit,
-    onWizardDone: () -> Unit,
-    navController: NavHostController?,
-    viewModel: MainPageViewModel,
-) {
-    when (stage) {
-        PostState.Start -> Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            ScenarioCard(
-                ui = ScenarioCardUi(
-                    id = "post_photo",
-                    icon = Icons.Outlined.CameraAlt,
-                    title = "Сфотографировать",
-                    subtitle = "Самый быстрый способ",
-                    onContinue = onStartPhoto,
-                    onOverflowAction = {},
-                ),
-                overflowActions = emptyList(),
-            )
-            ScenarioCard(
-                ui = ScenarioCardUi(
-                    id = "post_link",
-                    icon = Icons.Outlined.Link,
-                    title = "Вставить ссылку",
-                    subtitle = "Соберём карточку по URL",
-                    onContinue = onStartLink,
-                    onOverflowAction = {},
-                ),
-                overflowActions = emptyList(),
-            )
-
-            Text(
-                text = "Ещё способы",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            SecondaryScenarioRow(
-                icon = Icons.Outlined.CameraAlt,
-                title = "Галерея",
-                onClick = onStartGallery,
-            )
-            SecondaryScenarioRow(
-                icon = Icons.Outlined.Mic,
-                title = "Голос",
-                onClick = onStartVoice,
-            )
-            SecondaryScenarioRow(
-                icon = Icons.Outlined.Edit,
-                title = "Вручную",
-                onClick = onStartManual,
-            )
-        }
-        PostState.Wizard -> {
-            if (draftPayload == null) {
-                onDismissWizard()
-                return
-            }
-            DraftPage(
-                payload = draftPayload,
-                navController = navController,
-                providedViewModel = viewModel,
-                onBack = onDismissWizard,
-                onWizardDone = onWizardDone,
-                applySafeInsets = false,
-                extraBottomPadding = 0.dp,
-            )
-        }
-    }
-}
-
-
-
-@Composable
-private fun SecondaryScenarioRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String,
+private fun SearchHubPeriodChip(
+    text: String,
+    active: Boolean,
     onClick: () -> Unit,
 ) {
     Surface(
-        shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        shape = RoundedCornerShape(7.dp),
+        color = if (active) {
+            Color(0xFF3C4043)
+        } else {
+            Color(0xFFF1F3F4)
+        },
+        modifier = Modifier
+            .heightIn(min = 28.dp)
+            .clickable(onClick = onClick),
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                letterSpacing = 0.sp,
+            ),
+            color = if (active) Color.White else Color(0xFF202124),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+        )
+    }
+}
+
+@Composable
+private fun SearchQueryChip(
+    text: String,
+    countText: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = Color.Transparent,
+        modifier = modifier.clickable(onClick = onClick),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
+            )
+            if (!countText.isNullOrBlank()) {
+                Text(
+                    text = countText,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchRecentQueryRow(
+    text: String,
+    relativeTime: String,
+    onClick: () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = Color.Transparent,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
             .clickable(onClick = onClick),
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(24.dp),
-            )
             Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
+                text = text,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                text = relativeTime,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
             )
         }
+    }
+}
+
+private fun formatSearchRelativeTime(usedAtMillis: Long, nowMillis: Long = System.currentTimeMillis()): String {
+    val diffMs = (nowMillis - usedAtMillis).coerceAtLeast(0L)
+    val minuteMs = 60_000L
+    val hourMs = 60 * minuteMs
+    val dayMs = 24 * hourMs
+    val monthMs = 30 * dayMs
+    val yearMs = 365 * dayMs
+
+    return when {
+        diffMs < minuteMs -> "только что"
+        diffMs < hourMs -> {
+            val value = (diffMs / minuteMs).toInt().coerceAtLeast(1)
+            "$value ${ruPlural(value, "минута", "минуты", "минут")} назад"
+        }
+        diffMs < dayMs -> {
+            val value = (diffMs / hourMs).toInt().coerceAtLeast(1)
+            "$value ${ruPlural(value, "час", "часа", "часов")} назад"
+        }
+        diffMs < monthMs -> {
+            val value = (diffMs / dayMs).toInt().coerceAtLeast(1)
+            "$value ${ruPlural(value, "день", "дня", "дней")} назад"
+        }
+        diffMs < yearMs -> {
+            val value = (diffMs / monthMs).toInt().coerceAtLeast(1)
+            "$value ${ruPlural(value, "месяц", "месяца", "месяцев")} назад"
+        }
+        else -> {
+            val value = (diffMs / yearMs).toInt().coerceAtLeast(1)
+            "$value ${ruPlural(value, "год", "года", "лет")} назад"
+        }
+    }
+}
+
+private fun ruPlural(value: Int, one: String, few: String, many: String): String {
+    val mod10 = value % 10
+    val mod100 = value % 100
+    return when {
+        mod10 == 1 && mod100 != 11 -> one
+        mod10 in 2..4 && mod100 !in 12..14 -> few
+        else -> many
     }
 }
 
@@ -3637,7 +4277,9 @@ private fun CategoryChip(
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.Normal,
+            ),
             color = fg,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -4641,41 +5283,36 @@ private fun NearbySheetActionsRow(
 private fun NearbyLocationHintCard(
     onAction: () -> Unit,
 ) {
-    Surface(
-        shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.surface,
+    val secondaryButtonBackground = MaterialTheme.colorScheme.secondary.copy(alpha = 0.08f)
+    val secondaryButtonContent = MaterialTheme.colorScheme.secondary
+    SystemNoticeCard(
+        body = "Включите геолокацию, чтобы видеть объявления рядом.",
+        tone = SystemNoticeTone.Info,
+        iconOverride = Icons.Outlined.Place,
+        compact = true,
         modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Place,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(28.dp),
-                )
-                Text(
-                    text = "Включите определение местоположения, чтобы видеть объявления рядом.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+        bottomContent = {
             Button(
                 onClick = onAction,
-                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = secondaryButtonBackground,
+                    contentColor = secondaryButtonContent,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 38.dp),
             ) {
-                Text("Разрешить определять местоположение")
+                Text(
+                    text = "Включить геолокацию",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    ),
+                )
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -5047,32 +5684,16 @@ private fun NearbyErrorCard(
     message: String,
     onRetry: () -> Unit,
 ) {
-    Surface(
-        shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.errorContainer,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                modifier = Modifier.weight(1f),
-            )
-            TextButton(onClick = {
-                FlowMetrics.markNearbyFiltersErrorCta("retry")
-                onRetry()
-            }) {
-                Text("Повторить")
-            }
-        }
-    }
+    SystemNoticeCard(
+        body = "Не удалось обновить предложения рядом. $message",
+        tone = SystemNoticeTone.Error,
+        compact = true,
+        actionLabel = "Повторить",
+        onAction = {
+            FlowMetrics.markNearbyFiltersErrorCta("retry")
+            onRetry()
+        },
+    )
 }
 
 @Composable
@@ -5080,32 +5701,16 @@ private fun NearbyErrorInline(
     message: String,
     onRetry: () -> Unit,
 ) {
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.errorContainer,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                modifier = Modifier.weight(1f),
-            )
-            TextButton(onClick = {
-                FlowMetrics.markNearbyFiltersErrorCta("retry")
-                onRetry()
-            }) {
-                Text("Повторить")
-            }
-        }
-    }
+    SystemNoticeCard(
+        body = message,
+        tone = SystemNoticeTone.Error,
+        compact = true,
+        actionLabel = "Повторить",
+        onAction = {
+            FlowMetrics.markNearbyFiltersErrorCta("retry")
+            onRetry()
+        },
+    )
 }
 
 @Composable
@@ -5114,22 +5719,11 @@ private fun NearbyPermissionBanner(
     onOpenSettings: (() -> Unit)?,
     onPickCity: () -> Unit,
 ) {
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            Text(
-                text = "Геолокация недоступна. Используем город из профиля.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+    SystemNoticeCard(
+        body = "Используем город из профиля, пока вы не разрешите доступ к геолокации или не выберете город вручную.",
+        tone = SystemNoticeTone.Info,
+        compact = true,
+        bottomContent = {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -5139,8 +5733,8 @@ private fun NearbyPermissionBanner(
                 InlineActionChip(label = primaryLabel, onClick = primaryAction)
                 InlineActionChip(label = "Выбрать город", onClick = onPickCity)
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -5149,16 +5743,19 @@ private fun InlineActionChip(
     onClick: () -> Unit,
 ) {
     Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = RectangleShape,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
         modifier = Modifier
             .heightIn(min = 32.dp)
             .clickable(onClick = onClick),
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontWeight = FontWeight.Medium,
+            ),
+            color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -5298,6 +5895,319 @@ private fun isLikelyEmulatorPlaceholderLocation(
     val hasGoogleplexText = label.contains("mountain view") || label.contains("amphitheatre")
     return nearGoogleplex && hasGoogleplexText
 }
+
+private data class ResolvedVisualCategoryHint(
+    val chip: CategoryChipUi,
+    val promote: Boolean,
+)
+
+private suspend fun buildVisualSearchInsight(
+    analysis: VisualSearchCaptureAnalysis?,
+    routeQueryTask: RouteQueryTask,
+    getBrowseNodeTask: GetBrowseNodeTask,
+    viewModel: MainPageViewModel,
+): VisualSearchInsightUi? {
+    if (analysis == null) return null
+    val categoryHint = resolveVisualSearchCategoryHint(
+        analysis = analysis,
+        routeQueryTask = routeQueryTask,
+        getBrowseNodeTask = getBrowseNodeTask,
+        viewModel = viewModel,
+    )
+    val title = preferredVisualSearchInsightTitle(analysis = analysis, categoryHint = categoryHint)
+    val subtitle = buildString {
+        when (analysis.captureMode) {
+            VisualSearchCaptureMode.BARCODE -> {
+                append("Считали штрихкод и сначала покажем самую точную выдачу.")
+            }
+            VisualSearchCaptureMode.OCR -> {
+                analysis.textHints.firstOrNull()?.let { text ->
+                    append("Нашли текст в кадре и покажем товары по нему.")
+                }
+            }
+            VisualSearchCaptureMode.IMAGE -> {
+                append("Сначала покажем наиболее вероятные товары по фото.")
+            }
+        }
+        val categoryTitle = categoryHint?.chip?.title
+        if (!categoryTitle.isNullOrBlank() && !sameVisualLabel(categoryTitle, title)) {
+            if (isNotEmpty()) append("  ·  ")
+            append("Раздел: $categoryTitle")
+        }
+    }.ifBlank {
+        when (analysis.captureMode) {
+            VisualSearchCaptureMode.BARCODE -> "Попробуем сразу открыть точную выдачу."
+            VisualSearchCaptureMode.OCR -> "Сначала покажем товары по найденному тексту."
+            VisualSearchCaptureMode.IMAGE -> "Сначала покажем наиболее вероятные товары по фото."
+        }
+    }
+    val hintLabels = buildList {
+        if (!analysis.barcodeValue.isNullOrBlank()) add("Штрихкод")
+        if (analysis.textHints.isNotEmpty()) add("Текст")
+        analysis.objectLabel
+            ?.takeIf { label -> label.isNotBlank() && !sameVisualLabel(label, title) }
+            ?.let { add(it) }
+        categoryHint?.chip?.title
+            ?.takeIf { text -> text.isNotBlank() && !sameVisualLabel(text, title) }
+            ?.let { add(it) }
+    }.distinct().take(3)
+    return VisualSearchInsightUi(
+        title = title,
+        subtitle = subtitle,
+        suggestedCategoryCode = categoryHint?.chip?.code,
+        suggestedCategoryTitle = categoryHint?.chip?.title,
+        promoteSuggestedCategory = categoryHint?.promote == true,
+        suggestedRegion = analysis.suggestedRegion,
+        barcodeValue = analysis.barcodeValue,
+        recognizedText = analysis.recognizedText,
+        imageLabelHints = analysis.imageLabels,
+        objectLabel = analysis.objectLabel,
+        objectConfidence = analysis.objectConfidence,
+        hintLabels = hintLabels,
+    )
+}
+
+private fun preferredVisualSearchInsightTitle(
+    analysis: VisualSearchCaptureAnalysis,
+    categoryHint: ResolvedVisualCategoryHint?,
+): String = when (analysis.captureMode) {
+    VisualSearchCaptureMode.BARCODE ->
+        categoryHint?.chip?.title
+            ?.takeIf { it.isNotBlank() }
+            ?: "Товар по штрихкоду"
+    VisualSearchCaptureMode.OCR ->
+        bestVisualSearchHint(analysis)
+            ?: analysis.imageLabels.firstOrNull()
+            ?: categoryHint?.chip?.title
+            ?: "Товар по фото"
+    VisualSearchCaptureMode.IMAGE ->
+        bestVisualSearchHint(analysis)
+            ?: categoryHint?.chip?.title
+            ?: "Товар по фото"
+}
+
+private fun sameVisualLabel(left: String?, right: String?): Boolean =
+    left?.trim()?.lowercase(Locale.ROOT) == right?.trim()?.lowercase(Locale.ROOT)
+
+private fun bestVisualSearchHint(
+    analysis: VisualSearchCaptureAnalysis,
+): String? = buildList {
+    analysis.objectLabel?.let(::add)
+    addAll(analysis.queryHints)
+    addAll(analysis.imageLabels)
+    addAll(analysis.textHints)
+}
+    .map { candidate -> candidate.trim() }
+    .filter { candidate -> candidate.isNotEmpty() }
+    .distinct()
+    .map(::humanizeVisualSearchHint)
+    .filter { candidate -> !isWeakVisualInsight(candidate) }
+    .maxByOrNull(::visualInsightScore)
+
+private fun humanizeVisualSearchHint(raw: String): String {
+    val normalized = raw.trim().lowercase(Locale.ROOT)
+    return when (normalized) {
+        "mouse",
+        "computer mouse",
+            -> "Компьютерная мышь"
+        "wireless mouse" -> "Беспроводная мышь"
+        "keyboard" -> "Клавиатура"
+        "laptop",
+        "laptop computer",
+            -> "Ноутбук"
+        "smartphone",
+        "cell phone",
+            -> "Смартфон"
+        "tv",
+        "television",
+            -> "Телевизор"
+        "computer monitor",
+        "monitor",
+            -> "Монитор"
+        "headphones",
+        "earphones",
+            -> "Наушники"
+        else -> raw.trim().replaceFirstChar { ch ->
+            if (ch.isLowerCase()) ch.titlecase(Locale.ROOT) else ch.toString()
+        }
+    }
+}
+
+private fun visualInsightScore(raw: String): Int {
+    val normalized = raw.trim().lowercase(Locale.ROOT)
+    var score = 0
+    if (BrandModelRules.fromKnownFamily(raw) != null) score += 10
+    if (normalized in strongVisualInsightPhrases) score += 8
+    if (looksLikeProductModelInsight(normalized)) score += 5
+    strongVisualInsightTokens.forEach { token ->
+        if (normalized.contains(token)) score += 4
+    }
+    weakVisualInsightTokens.forEach { token ->
+        if (normalized.contains(token)) score -= 6
+    }
+    return score
+}
+
+private fun isWeakVisualInsight(raw: String): Boolean {
+    val normalized = raw.trim().lowercase(Locale.ROOT)
+    if (normalized.isBlank()) return true
+    if (normalized.length < 3) return true
+    if (normalized in weakVisualInsightPhrases) return true
+    return visualInsightScore(normalized) <= 0
+}
+
+private fun looksLikeProductModelInsight(normalized: String): Boolean {
+    val tokens = normalized
+        .split(' ')
+        .map { token -> token.trim() }
+        .filter { token -> token.isNotEmpty() }
+    if (tokens.isEmpty() || tokens.size > 2) return false
+    if (tokens.any { token -> token.length == 1 }) return false
+    val hasMixedAlphaNumericToken = tokens.any { token ->
+        token.any { ch -> ch.isLetter() } &&
+            token.any { ch -> ch.isDigit() } &&
+            token.length in 4..18
+    }
+    val compactLength = tokens.joinToString("").length
+    return hasMixedAlphaNumericToken && compactLength in 5..24
+}
+
+private suspend fun resolveVisualSearchCategoryHint(
+    analysis: VisualSearchCaptureAnalysis,
+    routeQueryTask: RouteQueryTask,
+    getBrowseNodeTask: GetBrowseNodeTask,
+    viewModel: MainPageViewModel,
+): ResolvedVisualCategoryHint? {
+    val queryHints = analysis.queryHints
+        .map { hint -> hint.trim() }
+        .filter { hint -> hint.length >= 3 && !isWeakVisualInsight(hint) }
+        .distinct()
+    queryHints.forEach { hint ->
+        val routed = runCatching { routeQueryTask(hint) }.getOrNull() ?: return@forEach
+        val candidateCode = when (routed.routeType) {
+            QueryRouteType.OPEN_CATEGORY -> routed.primaryTargetCode
+            QueryRouteType.OPEN_BROWSE -> routed.primaryTargetCode
+                ?.let { browseCode -> getBrowseNodeTask(browseCode) }
+                ?.takeIf { node -> node.targetType == BrowseTargetType.CATEGORY }
+                ?.targetCategoryCode
+            QueryRouteType.RUN_SEARCH -> null
+        }
+            ?.let { rawCode -> viewModel.resolveCategoryRedirect(rawCode) ?: rawCode }
+            ?.trim()
+            ?.takeIf { code -> code.isNotEmpty() }
+            ?: return@forEach
+        val confidence = routed.confidence
+        val title = viewModel.visualSearchCategoryTitle(candidateCode) ?: hint
+        return ResolvedVisualCategoryHint(
+            chip = CategoryChipUi(code = candidateCode, title = title),
+            promote = shouldPromoteResolvedVisualCategoryHint(
+                analysis = analysis,
+                hint = hint,
+                confidence = confidence,
+            ),
+        )
+    }
+    val textFallback = analysis.recognizedText
+        ?.trim()
+        ?.takeIf { text -> text.isNotEmpty() }
+        ?: return null
+    val categoryCode = viewModel.inferLeafCategoryByFacets(textFallback) ?: return null
+    val title = viewModel.visualSearchCategoryTitle(categoryCode) ?: textFallback.take(48)
+    return ResolvedVisualCategoryHint(
+        chip = CategoryChipUi(code = categoryCode, title = title),
+        promote = true,
+    )
+}
+
+private fun shouldPromoteResolvedVisualCategoryHint(
+    analysis: VisualSearchCaptureAnalysis,
+    hint: String,
+    confidence: Double,
+): Boolean {
+    if (analysis.captureMode == VisualSearchCaptureMode.OCR) return true
+    if (confidence >= 0.78) return true
+    val normalizedHint = humanizeVisualSearchHint(hint)
+    return confidence >= 0.58 && visualInsightScore(normalizedHint) >= 8
+}
+
+private val strongVisualInsightPhrases = setOf(
+    "компьютерная мышь",
+    "беспроводная мышь",
+    "мышь",
+    "клавиатура",
+    "смартфон",
+    "ноутбук",
+    "монитор",
+    "телевизор",
+    "наушники",
+    "computer mouse",
+    "wireless mouse",
+    "mouse",
+    "keyboard",
+    "smartphone",
+    "laptop",
+    "monitor",
+    "tv",
+)
+
+private val strongVisualInsightTokens = setOf(
+    "мыш",
+    "mouse",
+    "клавиат",
+    "keyboard",
+    "смартфон",
+    "smartphone",
+    "ноутбук",
+    "laptop",
+    "монитор",
+    "monitor",
+    "телевиз",
+    "tv",
+    "науш",
+    "headphone",
+    "barcode",
+    "model",
+)
+
+private val weakVisualInsightPhrases = setOf(
+    "tableware",
+    "cutlery",
+    "dishware",
+    "kitchenware",
+    "serveware",
+    "flatware",
+    "silverware",
+    "utensil",
+    "utensils",
+    "wall",
+    "room",
+    "interior",
+    "home",
+    "property",
+    "floor",
+    "ceiling",
+    "screen",
+    "display",
+    "object",
+)
+
+private val weakVisualInsightTokens = setOf(
+    "tableware",
+    "cutlery",
+    "dishware",
+    "kitchenware",
+    "serveware",
+    "flatware",
+    "silverware",
+    "utensil",
+    "interior",
+    "room",
+    "wall",
+    "floor",
+    "ceiling",
+    "property",
+    "home",
+)
 
 private fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this
@@ -6003,48 +6913,80 @@ private fun EmptyInlineCard(
     actionLabel: String?,
     onAction: () -> Unit,
 ) {
-    Surface(
-        shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.surface,
-        modifier = Modifier.fillMaxWidth(),
+    val cardBackground = MaterialTheme.colorScheme.secondary.copy(alpha = 0.10f)
+    val secondaryButtonBackground = MaterialTheme.colorScheme.secondary.copy(alpha = 0.06f)
+    val secondaryButtonContent = MaterialTheme.colorScheme.secondary
+    val message = remember(title, subtitle) {
+        buildString {
+            append(title.trim())
+            subtitle.trim()
+                .takeIf { it.isNotEmpty() }
+                ?.let { details ->
+                    if (isNotEmpty()) append(". ")
+                    append(details)
+                }
+        }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(cardBackground),
+        verticalArrangement = Arrangement.spacedBy(0.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(28.dp),
+                modifier = Modifier.size(22.dp),
             )
-            Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
+            )
+        }
+        if (!actionLabel.isNullOrBlank()) {
+            Button(
+                onClick = onAction,
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = secondaryButtonBackground,
+                    contentColor = secondaryButtonContent,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 0.dp)
+                    .heightIn(min = 38.dp),
+            ) {
                 Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                    text = actionLabel,
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-            if (!actionLabel.isNullOrBlank()) {
-                TextButton(
-                    onClick = onAction,
-                    modifier = Modifier.heightIn(min = 48.dp),
-                ) {
-                    Text(actionLabel, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
             }
         }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)),
+        )
     }
 }
 

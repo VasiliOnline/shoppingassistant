@@ -2,10 +2,8 @@
 // GPT: task=MainPage part=state/MainPageViewModel role=state v=1
 package com.example.shoppingassistant.feature.pages.main.state
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shoppingassistant.core.data.AttributeService
 import com.example.shoppingassistant.core.data.BrandModelRules
 import com.example.shoppingassistant.core.data.Normalizer
 import com.example.shoppingassistant.core.data.ProductRepository
@@ -27,11 +25,16 @@ import com.example.shoppingassistant.core.data.searchTopExplained
 import com.example.shoppingassistant.core.rank.RankService
 import com.example.shoppingassistant.core.data.ExplainedItem
 import com.example.shoppingassistant.core.usecase.SearchOffersWithFacetsUseCase
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
 import com.example.shoppingassistant.domain.catalog.Category
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.i18n.displayTitle
 import com.example.shoppingassistant.domain.template.TemplateAnchorType
 import com.example.shoppingassistant.domain.template.TemplateHistoryEntry
 import com.example.shoppingassistant.domain.template.TemplateHistoryRepository
@@ -57,11 +60,11 @@ import com.example.shoppingassistant.domain.model.TypedAttributeOperator
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
 import com.example.shoppingassistant.domain.model.ValueFacet
 import com.example.shoppingassistant.domain.model.toTypedAttributesGuess
+import com.example.shoppingassistant.domain.search.SearchTextNormalizer
 import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
 import com.example.shoppingassistant.domain.ingest.IngestStatus
 import com.example.shoppingassistant.domain.ingest.SourceType
-import com.example.shoppingassistant.domain.offers.OfferCategory
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferResult
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferStatus
 import com.example.shoppingassistant.domain.facet.FacetCountMode
@@ -75,12 +78,33 @@ import com.example.shoppingassistant.domain.tracks.TrackState
 import com.example.shoppingassistant.domain.tracks.TrackTarget
 import com.example.shoppingassistant.domain.tracks.TrackTargetSpec
 import com.example.shoppingassistant.domain.tracks.TrackType
-import com.example.shoppingassistant.domain.vision.NormalizePhotosUseCase
-import com.example.shoppingassistant.domain.vision.GetVisionUsageUseCase
-import com.example.shoppingassistant.domain.vision.VisionNextAction
-import com.example.shoppingassistant.domain.vision.VisionNormalizeRequest
-import com.example.shoppingassistant.domain.vision.VisionPhotoInput
-import com.example.shoppingassistant.domain.vision.VisionPhotoRole
+import com.example.shoppingassistant.domain.visualsearch.BindVisualSearchQueryUseCase
+import com.example.shoppingassistant.domain.visualsearch.GetVisualSearchRecoveryPlanUseCase
+import com.example.shoppingassistant.domain.visualsearch.NormalizeVisualSearchDraftUseCase
+import com.example.shoppingassistant.domain.visualsearch.ReuseVisualSearchContextUseCase
+import com.example.shoppingassistant.domain.visualsearch.TrackVisualSearchEventsUseCase
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchBindQueryRequest
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchBinderStatus
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchCaptureMode
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchCandidateValue
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchCandidateProjection
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchChip
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchChipKind
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchContextReuseRequest
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchEntryPoint
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchEnvelopeStatus
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchEvent
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchEventBatchRequest
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchImageAsset
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchIntent
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchNormalizeDraftRequest
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchPreflightSignals
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchRecoveryActionType
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchRecoveryPlanRequest
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchSelectedRegion
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchSelectionMode
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchSource
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchTransportMetadata
 import com.example.shoppingassistant.feature.pages.main.context.buildCategoryDictionary
 import com.example.shoppingassistant.feature.pages.main.context.attributeCatalogFor
 import com.example.shoppingassistant.feature.pages.main.context.resolveProduct
@@ -94,16 +118,19 @@ import com.example.shoppingassistant.feature.pages.main.suggest.PresetTemplateSu
 import com.example.shoppingassistant.feature.pages.main.suggest.ProductAnchorSuggest
 import com.example.shoppingassistant.feature.pages.main.suggest.SectionHeaderSuggest
 import com.example.shoppingassistant.feature.pages.main.suggest.TextFixSuggest
+import com.example.shoppingassistant.feature.pages.main.visualsearch.VisualSearchPreflightCategoryRouter
 import com.example.shoppingassistant.feature.pages.main.ui.InputMode
-import com.example.shoppingassistant.feature.pages.main.vision.PhotoSlot
-import com.example.shoppingassistant.feature.pages.main.vision.PhotoSlotStatus
-import com.example.shoppingassistant.feature.pages.main.vision.PhotoWizardState
-import com.example.shoppingassistant.feature.pages.main.vision.PhotoWizardStep
 import com.example.shoppingassistant.feature.pages.model.AttributeDef
 import com.example.shoppingassistant.feature.pages.model.BoundSegment
 import com.example.shoppingassistant.feature.pages.model.FilterStage
 import com.example.shoppingassistant.feature.pages.model.ValueDef
+import com.example.shoppingassistant.feature.pages.model.matchFreeQueryAttributeValue
+import com.example.shoppingassistant.feature.pages.model.parseFreeQueryAttributes
+import com.example.shoppingassistant.feature.pages.model.toFeatureParseableAttributeDefs
 import com.example.shoppingassistant.feature.pages.model.Product
+import com.example.shoppingassistant.feature.pages.results.ResultsOrigin
+import com.example.shoppingassistant.feature.pages.results.ResultsPayload
+import com.example.shoppingassistant.feature.pages.results.ResultsVisualContext
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCardUi
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferStatus
 import com.example.shoppingassistant.feature.pages.useroffers.sync.UserOffersSyncTask
@@ -118,15 +145,19 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Locale
+import java.util.UUID
 import kotlin.math.pow
 import kotlin.math.round
 
 class MainPageViewModel(
     private val repository: ProductRepository,
     private val rankService: RankService,
-    private val attrSvc: AttributeService,
-    private val catalogRepository: CatalogRepository,
+    private val liveValuesRepository: CatalogLiveValuesRepository,
+    private val catalogRepository: CatalogReadRepository,
+    private val catalogTaxonomyRepository: CatalogTaxonomyRepository,
     private val constraintsResolver: CatalogConstraintsResolver,
     private val getFacetCounts: GetFacetCountsTask,
     private val getCurrentUser: GetCurrentUserUseCase,
@@ -141,8 +172,11 @@ class MainPageViewModel(
     private val trackRepository: TrackRepository,
     private val templatePresetsRepository: TemplatePresetsRepository,
     private val generateTemplatePresetsTask: GenerateTemplatePresetsTask,
-    private val normalizePhotosUseCase: NormalizePhotosUseCase,
-    private val getVisionUsageUseCase: GetVisionUsageUseCase,
+    private val reuseVisualSearchContext: ReuseVisualSearchContextUseCase,
+    private val normalizeVisualSearchDraft: NormalizeVisualSearchDraftUseCase,
+    private val bindVisualSearchQuery: BindVisualSearchQueryUseCase,
+    private val getVisualSearchRecoveryPlan: GetVisualSearchRecoveryPlanUseCase,
+    private val trackVisualSearchEvents: TrackVisualSearchEventsUseCase,
     private val searchOffersWithFacets: SearchOffersWithFacetsUseCase,
     private val nearbyFiltersStorage: NearbyFiltersStorage,
     private val debugAuthStore: DebugAuthStore,
@@ -155,6 +189,7 @@ class MainPageViewModel(
     private var categoryRequiredIfRules: List<RequiredIfRule> = emptyList()
     private var categoryConstraints: List<CatalogConstraints> = emptyList()
     private var categoryDictionary: CategoryDictionary = buildCategoryDictionary(null, emptyList(), emptyList(), emptyList())
+    @Volatile private var submitLeafAttributeDefsCache: Map<String, List<AttributeDef>>? = null
     private data class CategoryIndex(
         val byCode: Map<String, Category>,
         val parentCodes: Set<String>,
@@ -167,6 +202,7 @@ class MainPageViewModel(
     )
     @Volatile private var categoryIndex: CategoryIndex? = null
     private val atomicIdentityKeys = setOf("brand", "model", "model_line", "product_name")
+    private val submitIdentityKeys = setOf("brand", "model", "model_line", "product_name")
     private val expressRequiredKeys = setOf("price", "currency", "condition")
     private val linkRequiredKeys = setOf("price", "currency", "brand")
     private val breadcrumbSeparator = " → "
@@ -200,6 +236,7 @@ class MainPageViewModel(
         }
         updateSuggestions("")
         refreshCategoryChips()
+        refreshSearchQueryInsights()
         loadNearbyFilters()
     }
 
@@ -220,6 +257,7 @@ class MainPageViewModel(
     fun retryCatalogLoad() {
         clearCatalogError()
         categoryIndex = null
+        submitLeafAttributeDefsCache = null
         viewModelScope.launch {
             ensureCategoryIndex()
         }
@@ -238,7 +276,7 @@ class MainPageViewModel(
     private suspend fun ensureCategoryIndex(): CategoryIndex {
         val cached = categoryIndex
         if (cached != null) return cached
-        val categories = runCatching { catalogRepository.listCategories() }
+        val categories = runCatching { catalogTaxonomyRepository.listCategories() }
             .onFailure { throwable ->
                 showCatalogError(
                     throwable.message
@@ -257,14 +295,15 @@ class MainPageViewModel(
     private fun buildCategoryIndex(categories: List<Category>): CategoryIndex {
         val byCode = categories.associateBy { it.code }
         val parentCodes = categories.mapNotNull { it.parentCode }.toSet()
+        val localeTag = java.util.Locale.getDefault().toLanguageTag()
 
-        fun titleOf(code: String): String = byCode[code]?.title ?: code
+        fun titleOf(code: String): String = byCode[code]?.displayTitle(locale = localeTag) ?: code
         fun breadcrumb(code: String): String {
             val path = ArrayList<String>()
             var cur: Category? = byCode[code]
             val seen = HashSet<String>()
             while (cur != null && seen.add(cur.code)) {
-                val t = cur.title?.takeIf { it.isNotBlank() } ?: cur.code
+                val t = cur.displayTitle(locale = localeTag)
                 path.add(t)
                 cur = cur.parentCode?.let { byCode[it] }
             }
@@ -277,6 +316,19 @@ class MainPageViewModel(
             parentCodes = parentCodes,
             breadcrumbByCode = breadcrumbByCode,
         )
+    }
+
+    suspend fun resolveCategoryRedirect(categoryCode: String): String? {
+        val normalizedCode = categoryCode.trim().uppercase(Locale.ROOT)
+        if (normalizedCode.isBlank()) return null
+        val index = ensureCategoryIndex()
+        val resolution = runCatching {
+            catalogTaxonomyRepository.resolveCategoryCode(normalizedCode)
+        }.getOrNull() ?: return normalizedCode
+        if (resolution.cycleDetected || resolution.unresolvedTarget != null) {
+            return normalizedCode
+        }
+        return resolution.resolvedCode
     }
 
     private fun splitBreadcrumb(raw: String?): List<String> {
@@ -345,6 +397,136 @@ class MainPageViewModel(
     private fun stripCategoryFilters(filters: Map<String, String>): Map<String, String> =
         filters.filterKeys { key -> !isCategoryLevelKey(key) }
 
+    suspend fun parseSubmitAttributes(
+        queryText: String,
+        categoryCode: String?,
+        baseFilters: Map<String, String> = emptyMap(),
+    ): Map<String, String> {
+        val normalizedQuery = SearchTextNormalizer.normalize(queryText)
+        if (normalizedQuery.isBlank()) return emptyMap()
+
+        val base = stripCategoryFilters(baseFilters)
+            .mapNotNull { (key, value) ->
+                val normalizedKey = key.trim()
+                val normalizedValue = value.trim()
+                if (normalizedKey.isBlank() || normalizedValue.isBlank()) null
+                else normalizedKey to normalizedValue
+            }
+            .toMap(LinkedHashMap())
+
+        val normalizedCategory = categoryCode?.trim()?.takeIf { it.isNotEmpty() } ?: return base
+        val defs = runCatching {
+            attributeCatalogFor(
+                product = null,
+                liveValuesRepository = liveValuesRepository,
+                catalog = catalogRepository,
+                constraintsResolver = constraintsResolver,
+                categoryCode = normalizedCategory,
+                selectedFilters = base,
+            ).defs
+        }.getOrElse { emptyList() }
+
+        if (defs.isEmpty()) return base
+        val parsed = parseAttributesFromFreeQuery(
+            queryText = normalizedQuery,
+            attributeDefs = defs,
+        )
+        if (parsed.isEmpty()) return base
+        return (base + parsed).toMap(LinkedHashMap())
+    }
+
+    suspend fun inferLeafCategoryByFacets(
+        queryText: String,
+        baseFilters: Map<String, String> = emptyMap(),
+    ): String? {
+        val normalizedQuery = SearchTextNormalizer.normalize(queryText)
+        if (normalizedQuery.isBlank()) return null
+
+        val cleanedBase = stripCategoryFilters(baseFilters)
+            .mapNotNull { (key, value) ->
+                val normalizedKey = key.trim()
+                val normalizedValue = value.trim()
+                if (normalizedKey.isBlank() || normalizedValue.isBlank()) null
+                else normalizedKey to normalizedValue
+            }
+            .toMap(LinkedHashMap())
+
+        val defsByLeaf = resolveLeafSubmitAttributeDefs()
+        if (defsByLeaf.isEmpty()) return null
+
+        data class Candidate(
+            val categoryCode: String,
+            val score: Int,
+            val totalMatches: Int,
+            val nonIdentityMatches: Int,
+        )
+
+        val candidates = defsByLeaf.mapNotNull { (leafCode, defs) ->
+            val parsed = parseAttributesFromFreeQuery(
+                queryText = normalizedQuery,
+                attributeDefs = defs,
+            )
+            val merged = (cleanedBase + parsed)
+            val totalMatches = merged.keys.count { key -> !isCategoryLevelKey(key) }
+            val nonIdentityMatches = merged.keys.count { key ->
+                !isCategoryLevelKey(key) && key !in submitIdentityKeys
+            }
+            if (totalMatches < 2 || nonIdentityMatches == 0) return@mapNotNull null
+            val score = merged.keys
+                .filterNot { key -> isCategoryLevelKey(key) }
+                .sumOf { key -> if (key in submitIdentityKeys) 1 else 2 }
+            Candidate(
+                categoryCode = leafCode,
+                score = score,
+                totalMatches = totalMatches,
+                nonIdentityMatches = nonIdentityMatches,
+            )
+        }.sortedWith(
+            compareByDescending<Candidate> { it.score }
+                .thenByDescending { it.nonIdentityMatches }
+                .thenByDescending { it.totalMatches },
+        )
+
+        val winner = candidates.firstOrNull() ?: return null
+        if (winner.score < 4) return null
+        val runnerUp = candidates.getOrNull(1)
+        if (runnerUp != null) {
+            val scoreGap = winner.score - runnerUp.score
+            if (scoreGap <= 0) return null
+            if (
+                scoreGap == 1 &&
+                winner.nonIdentityMatches <= runnerUp.nonIdentityMatches &&
+                winner.totalMatches <= runnerUp.totalMatches
+            ) {
+                return null
+            }
+        }
+        return winner.categoryCode
+    }
+
+    private suspend fun resolveLeafSubmitAttributeDefs(): Map<String, List<AttributeDef>> {
+        val cached = submitLeafAttributeDefsCache
+        if (cached != null) return cached
+
+        val index = ensureCategoryIndex()
+        val leafCodes = index.byCode.keys
+            .filterNot { code -> code in index.parentCodes }
+            .sorted()
+        val resolved = linkedMapOf<String, List<AttributeDef>>()
+
+        leafCodes.forEach { leafCode ->
+            val spec = runCatching { catalogRepository.getCategoryEffectiveSpec(leafCode) }.getOrNull()
+                ?: return@forEach
+            val defs = spec.toFeatureParseableAttributeDefs()
+            if (defs.isNotEmpty()) {
+                resolved[leafCode] = defs
+            }
+        }
+
+        submitLeafAttributeDefsCache = resolved
+        return resolved
+    }
+
     private fun injectCategoryAttributes(
         attrs: Map<String, TemplateAttribute>,
         categoryCode: String?,
@@ -403,9 +585,9 @@ class MainPageViewModel(
         val code = categoryCode?.takeIf { it.isNotBlank() } ?: return false
         val index = ensureCategoryIndex()
         if (code in index.parentCodes) return false
-        val profile = runCatching { catalogRepository.getCategoryProfile(code) }.getOrNull() ?: return false
-        val attrCodes = (profile.categoryAttributes.map { it.attributeCode } + profile.attributes.map { it.code })
-            .map { it.lowercase() }
+        val spec = runCatching { catalogRepository.getCategoryEffectiveSpec(code) }.getOrNull() ?: return false
+        val attrCodes = spec.allAttributes()
+            .map { it.code.lowercase() }
             .toSet()
         return atomicIdentityKeys.none { key -> key in attrCodes }
     }
@@ -835,6 +1017,7 @@ class MainPageViewModel(
                 templateHistoryRepository.deleteByIds(toDrop)
             }
             refreshCategoryChips()
+            refreshSearchQueryInsights()
             onResult(true)
         }
     }
@@ -861,13 +1044,118 @@ class MainPageViewModel(
                 templateHistoryRepository.deleteByIds(history.map { it.snapshot.templateId })
             }
             refreshCategoryChips()
+            refreshSearchQueryInsights()
             updateSuggestions(_state.value.template.inputText)
         }
     }
 
+    private fun refreshSearchQueryInsights() {
+        viewModelScope.launch {
+            val history = runCatching { templateHistoryRepository.listRecent(limit = 100) }
+                .getOrElse { emptyList() }
+                .sortedByDescending { it.usedAtMillis }
+
+            val recent = history
+                .mapNotNull { entry ->
+                    val text = entry.snapshot.toSearchQueryText() ?: return@mapNotNull null
+                    RecentSearchQueryUi(
+                        text = text,
+                        usedAtMillis = entry.usedAtMillis,
+                    )
+                }
+                .distinctBy { item -> item.text.lowercase(Locale.getDefault()) }
+                .take(20)
+
+            val zoneId = ZoneId.systemDefault()
+            val today = LocalDate.now(zoneId)
+            val startOfToday = today.atStartOfDay(zoneId).toInstant().toEpochMilli()
+            val startOfMonth = today.withDayOfMonth(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
+            val startOfYear = today.withDayOfYear(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
+
+            data class Counter(
+                val text: String,
+                var totalCount: Int = 0,
+                var todayCount: Int = 0,
+                var monthCount: Int = 0,
+                var yearCount: Int = 0,
+                var lastUsedAtMillis: Long = 0L,
+            )
+
+            val byNormalizedQuery = linkedMapOf<String, Counter>()
+            history.forEach { entry ->
+                val text = entry.snapshot.toSearchQueryText() ?: return@forEach
+                val normalizedKey = normalizeSearchQueryKey(text)
+                if (normalizedKey.isBlank()) return@forEach
+                val counter = byNormalizedQuery.getOrPut(normalizedKey) { Counter(text = text) }
+                counter.totalCount += 1
+                if (entry.usedAtMillis >= startOfYear) counter.yearCount += 1
+                if (entry.usedAtMillis >= startOfMonth) counter.monthCount += 1
+                if (entry.usedAtMillis >= startOfToday) counter.todayCount += 1
+                counter.lastUsedAtMillis = maxOf(counter.lastUsedAtMillis, entry.usedAtMillis)
+            }
+
+            val popular = byNormalizedQuery
+                .values
+                .map { counter ->
+                    PopularSearchQueryUi(
+                        text = counter.text,
+                        totalCount = counter.totalCount,
+                        todayCount = counter.todayCount,
+                        monthCount = counter.monthCount,
+                        yearCount = counter.yearCount,
+                        lastUsedAtMillis = counter.lastUsedAtMillis,
+                    )
+                }
+                .sortedWith(
+                    compareByDescending<PopularSearchQueryUi> { item -> item.totalCount }
+                        .thenByDescending { item -> item.lastUsedAtMillis },
+                )
+                .take(30)
+
+            reduce {
+                it.copy(
+                    recentSearchQueries = recent,
+                    popularSearchQueries = popular,
+                )
+            }
+        }
+    }
+
+    private fun TemplateSnapshot.toSearchQueryText(): String? {
+        val attrsByKey = data.attrs.associate { attr -> attr.key to attr.value }
+        val brand = attrsByKey["brand"]?.trim().orEmpty()
+        val model = attrsByKey["model"]?.trim().orEmpty()
+        val titleFromAttrs = SearchTextNormalizer.normalize(
+            listOfNotNull(
+            brand.takeIf { value -> value.isNotBlank() },
+            model.takeIf { value -> value.isNotBlank() },
+            ).joinToString(" "),
+        )
+        if (titleFromAttrs.isNotBlank()) return titleFromAttrs
+
+        val freeText = SearchTextNormalizer.normalize(data.freeText.orEmpty())
+        if (freeText.isNotBlank()) return freeText
+
+        if (data.anchorType == TemplateAnchorType.CATEGORY) {
+            val categoryCode = data.categoryCode?.trim().orEmpty()
+            if (categoryCode.isNotBlank()) {
+                val trail = categoryTrailFor(categoryCode)
+                if (trail.isNotEmpty()) {
+                    return trail.last()
+                }
+            }
+        }
+
+        val anchor = SearchTextNormalizer.normalize(data.anchorId)
+        return anchor.takeIf { value -> value.isNotBlank() }
+    }
+
+    private fun normalizeSearchQueryKey(raw: String): String =
+        SearchTextNormalizer.normalizeKey(raw, Locale.getDefault())
+
     private fun refreshCategoryChips() {
         viewModelScope.launch {
-            val categories = runCatching { catalogRepository.listCategories() }
+            val categories = runCatching { catalogTaxonomyRepository.listCategories() }
                 .onFailure { throwable ->
                     showCatalogError(
                         throwable.message
@@ -892,7 +1180,7 @@ class MainPageViewModel(
                     val category = byCode[entry.key] ?: return@mapNotNull null
                     CategoryChipUi(
                         code = category.code,
-                        title = category.title ?: category.code,
+                        title = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()),
                         breadcrumb = categoryBreadcrumbFor(category.code),
                     )
                 }
@@ -908,7 +1196,7 @@ class MainPageViewModel(
                     val category = byCode[code] ?: return@mapNotNull null
                     CategoryChipUi(
                         code = category.code,
-                        title = category.title ?: category.code,
+                        title = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()),
                         breadcrumb = categoryBreadcrumbFor(category.code),
                     )
                 }
@@ -958,7 +1246,7 @@ class MainPageViewModel(
             val category = index.byCode[code]
             CategoryChipUi(
                 code = code,
-                title = category?.title ?: code,
+                title = category?.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()) ?: code,
                 breadcrumb = index.breadcrumbByCode[code],
             )
         }.sortedBy { it.title }
@@ -1756,6 +2044,7 @@ class MainPageViewModel(
                     isTemplateActive = forcedActive,
                     product = if (shouldDropSearchState) null else state.product,
                     attributeDefs = if (shouldDropSearchState) emptyList() else state.attributeDefs,
+                    attributeLiveValuesByKey = if (shouldDropSearchState) emptyMap() else state.attributeLiveValuesByKey,
                     foundCount = if (shouldDropSearchState) null else state.foundCount,
                     prefetchedOffers = if (shouldDropSearchState) emptyList() else state.prefetchedOffers,
                 )
@@ -1767,6 +2056,46 @@ class MainPageViewModel(
 
     private fun recomputeTemplate(template: UiTemplate): UiTemplate =
         templateEngine.onInputTextChanged(template, template.inputText, categoryDictionary)
+
+    private fun updateVisualSearchSession(
+        transform: (VisualSearchSessionState) -> VisualSearchSessionState,
+    ) {
+        reduce { state ->
+            state.copy(
+                visualSearch = synchronizeVisualSearchSession(transform(state.visualSearch)),
+            )
+        }
+    }
+
+    private fun synchronizeVisualSearchSession(
+        session: VisualSearchSessionState,
+    ): VisualSearchSessionState {
+        val effectiveAsset = session.asset ?: session.capturedAssets.lastOrNull()
+        if (effectiveAsset == null) {
+            return session.copy(
+                selectedRegion = null,
+                preflight = null,
+            )
+        }
+        if (session.asset == null) {
+            return synchronizeVisualSearchSession(
+                session.copy(
+                    asset = effectiveAsset,
+                ),
+            )
+        }
+        val selectedRegion = when (session.selectionMode) {
+            VisualSearchSelectionMode.MANUAL_CROP -> session.selectedRegion ?: defaultVisualSearchRegion()
+            VisualSearchSelectionMode.AUTO_TARGET -> session.selectedRegion ?: session.insight?.suggestedRegion
+            VisualSearchSelectionMode.WHOLE_FRAME -> null
+        }
+        val normalized = session.copy(
+            selectedRegion = selectedRegion,
+        )
+        return normalized.copy(
+            preflight = buildVisualSearchPreflightUi(normalized),
+        )
+    }
 
     fun onInputModeChange(mode: InputMode) {
         reduce {
@@ -1782,531 +2111,1354 @@ class MainPageViewModel(
         }
     }
 
-    fun openPhotoWizard(step: PhotoWizardStep = PhotoWizardStep.FRONT) {
+    fun openVisualSearchEntry() {
+        val sessionId = UUID.randomUUID().toString()
         reduce { state ->
             state.copy(
                 inputMode = InputMode.Photo,
-                photoWizard = PhotoWizardState(visible = true, step = step),
+                visualSearch = synchronizeVisualSearchSession(
+                    VisualSearchSessionState(
+                        visible = true,
+                        sessionId = sessionId,
+                        step = VisualSearchSessionStep.Source,
+                        captureMode = VisualSearchCaptureMode.IMAGE,
+                    ),
+                ),
             )
         }
+        trackVisualSearchEvent(
+            sessionId = sessionId,
+            name = "visual_search_entry_tap",
+            payload = mapOf("placement" to "search_hub_card"),
+        )
     }
 
-
-    fun closePhotoWizard() {
+    fun dismissVisualSearch() {
         reduce { state ->
             state.copy(
-                photoWizard = state.photoWizard.copy(
-                    visible = false,
-                    pendingRole = null,
+                inputMode = InputMode.Text,
+                visualSearch = VisualSearchSessionState(),
+            )
+        }
+    }
+
+    fun onVisualSearchAssetPicked(
+        source: VisualSearchSource,
+        asset: VisualSearchAssetUi,
+        captureMode: VisualSearchCaptureMode = VisualSearchCaptureMode.IMAGE,
+        insight: VisualSearchInsightUi? = null,
+    ) {
+        val current = _state.value.visualSearch
+        val sessionId = current.sessionId ?: UUID.randomUUID().toString()
+        val resolvedCategoryCode = current.selectedCategoryCode
+            ?: insight?.takeIf { candidate -> candidate.promoteSuggestedCategory }?.suggestedCategoryCode
+        val resolvedCategoryTitle = current.selectedCategoryTitle
+            ?: insight?.takeIf { candidate -> candidate.promoteSuggestedCategory }?.suggestedCategoryTitle
+            ?: resolveVisualSearchCategoryTitle(resolvedCategoryCode)
+        val resolvedSelectionMode = when {
+            current.selectionMode == VisualSearchSelectionMode.MANUAL_CROP && current.selectedRegion != null ->
+                VisualSearchSelectionMode.MANUAL_CROP
+            captureMode == VisualSearchCaptureMode.IMAGE && insight?.objectLabel != null ->
+                VisualSearchSelectionMode.AUTO_TARGET
+            captureMode == VisualSearchCaptureMode.IMAGE ->
+                VisualSearchSelectionMode.AUTO_TARGET
+            else ->
+                VisualSearchSelectionMode.WHOLE_FRAME
+        }
+        updateVisualSearchSession { session ->
+            val nextCapturedAssets = appendVisualSearchCapturedAsset(
+                current = session.capturedAssets,
+                incoming = asset,
+            )
+            session.copy(
+                visible = true,
+                sessionId = sessionId,
+                step = VisualSearchSessionStep.Source,
+                source = if (captureMode == VisualSearchCaptureMode.BARCODE) {
+                    VisualSearchSource.BARCODE_MODE
+                } else {
+                    source
+                },
+                asset = asset,
+                capturedAssets = nextCapturedAssets,
+                captureMode = captureMode,
+                selectionMode = resolvedSelectionMode,
+                selectedRegion = if (resolvedSelectionMode == VisualSearchSelectionMode.AUTO_TARGET) {
+                    insight?.suggestedRegion
+                } else {
+                    session.selectedRegion
+                },
+                selectedCategoryCode = resolvedCategoryCode,
+                selectedCategoryTitle = resolvedCategoryTitle,
+                insight = insight,
+                binderStatus = null,
+                isSubmitting = false,
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+                pendingResultsPayload = null,
+            )
+        }
+        trackVisualSearchEvent(
+            sessionId = sessionId,
+            name = "visual_search_source_selected",
+            payload = mapOf(
+                "source" to source.name.lowercase(Locale.ROOT),
+                "captureMode" to captureMode.name.lowercase(Locale.ROOT),
+                "has_category" to (!resolvedCategoryCode.isNullOrBlank()).toString(),
+            ),
+        )
+    }
+
+    fun updateVisualSearchCaptureMode(mode: VisualSearchCaptureMode) {
+        val sessionId = _state.value.visualSearch.sessionId
+        updateVisualSearchSession { session ->
+            session.copy(
+                captureMode = mode,
+                selectionMode = if (mode == VisualSearchCaptureMode.IMAGE) {
+                    if (session.selectionMode == VisualSearchSelectionMode.MANUAL_CROP) {
+                        session.selectionMode
+                    } else {
+                        VisualSearchSelectionMode.AUTO_TARGET
+                    }
+                } else {
+                    VisualSearchSelectionMode.WHOLE_FRAME
+                },
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+            )
+        }
+        sessionId?.let {
+            trackVisualSearchEvent(
+                sessionId = it,
+                name = "visual_search_capture_mode_changed",
+                payload = mapOf("captureMode" to mode.name.lowercase(Locale.ROOT)),
+            )
+        }
+    }
+
+    fun updateVisualSearchIntent(intent: VisualSearchIntent) {
+        val sessionId = _state.value.visualSearch.sessionId
+        updateVisualSearchSession { session ->
+            session.copy(
+                intent = intent,
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+            )
+        }
+        sessionId?.let {
+            trackVisualSearchEvent(
+                sessionId = it,
+                name = "visual_search_intent_changed",
+                payload = mapOf("intent" to intent.name.lowercase(Locale.ROOT)),
+            )
+        }
+    }
+
+    fun updateVisualSearchSelectionMode(mode: VisualSearchSelectionMode) {
+        val sessionId = _state.value.visualSearch.sessionId
+        updateVisualSearchSession { session ->
+            session.copy(
+                selectionMode = mode,
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+            )
+        }
+        sessionId?.let {
+            trackVisualSearchEvent(
+                sessionId = it,
+                name = "visual_search_selection_mode_changed",
+                payload = mapOf("selectionMode" to mode.name.lowercase(Locale.ROOT)),
+            )
+        }
+    }
+
+    fun selectVisualSearchRegion(region: VisualSearchRegionUi?) {
+        val sessionId = _state.value.visualSearch.sessionId
+        updateVisualSearchSession { session ->
+            session.copy(
+                selectionMode = VisualSearchSelectionMode.MANUAL_CROP,
+                selectedRegion = region ?: defaultVisualSearchRegion(),
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+            )
+        }
+        sessionId?.let {
+            trackVisualSearchEvent(
+                sessionId = it,
+                name = "visual_search_region_selected",
+                payload = mapOf("region" to (region?.label ?: "default")),
+            )
+        }
+    }
+
+    fun selectVisualSearchCategory(
+        categoryCode: String,
+        categoryTitle: String? = null,
+    ) {
+        val normalizedCode = categoryCode.trim()
+        if (normalizedCode.isEmpty()) return
+        val sessionId = _state.value.visualSearch.sessionId
+        updateVisualSearchSession { session ->
+            session.copy(
+                selectedCategoryCode = normalizedCode,
+                selectedCategoryTitle = categoryTitle
+                    ?.takeIf { it.isNotBlank() }
+                    ?: resolveVisualSearchCategoryTitle(normalizedCode),
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+            )
+        }
+        sessionId?.let {
+            trackVisualSearchEvent(
+                sessionId = it,
+                name = "visual_search_category_selected",
+                payload = mapOf("categoryCode" to normalizedCode),
+            )
+        }
+    }
+
+    fun clearVisualSearchMessage() {
+        reduce { state ->
+            state.copy(
+                visualSearch = state.visualSearch.copy(
                     errorMessage = null,
+                    recoveryMessage = null,
+                    recoveryActions = emptyList(),
                 ),
             )
         }
     }
 
-    fun dismissCategoryFallback() {
-        reduce { it.copy(categoryFallback = CategoryFallbackState()) }
+    fun consumePendingVisualResults() {
+        reduce { state ->
+            state.copy(
+                visualSearch = state.visualSearch.copy(
+                    pendingResultsPayload = null,
+                ),
+            )
+        }
     }
 
-    fun applyCategoryCandidate(candidate: com.example.shoppingassistant.domain.vision.VisionCategoryCandidate) {
-        applyCategorySelectionFromFilter(candidate.code)
-        reduce { it.copy(categoryFallback = CategoryFallbackState()) }
+    fun applyVisualSearchRecoveryAction(actionType: VisualSearchRecoveryActionType) {
+        val current = _state.value.visualSearch
+        when (actionType) {
+            VisualSearchRecoveryActionType.RETAKE_PHOTO -> {
+                updateVisualSearchSession { session ->
+                    session.copy(
+                        step = VisualSearchSessionStep.Source,
+                        asset = null,
+                        capturedAssets = emptyList(),
+                        source = null,
+                        insight = null,
+                        binderStatus = null,
+                        isSubmitting = false,
+                        errorMessage = null,
+                        recoveryMessage = null,
+                        recoveryActions = emptyList(),
+                        pendingResultsPayload = null,
+                    )
+                }
+            }
+
+            VisualSearchRecoveryActionType.CHOOSE_CATEGORY_MANUALLY -> {
+                updateVisualSearchSession { session ->
+                    session.copy(
+                        step = VisualSearchSessionStep.Source,
+                        errorMessage = null,
+                        recoveryMessage = null,
+                        recoveryActions = emptyList(),
+                    )
+                }
+            }
+
+            VisualSearchRecoveryActionType.ADD_TEXT -> {
+                val fallbackText = current.selectedCategoryTitle
+                    ?.takeIf { it.isNotBlank() }
+                    ?: current.insight?.title?.takeIf { it.isNotBlank() }
+                    ?: current.selectedCategoryCode
+                    ?: return
+                dismissVisualSearch()
+                onQueryChange(fallbackText)
+            }
+
+            VisualSearchRecoveryActionType.REFINE_INTENT -> {
+                val nextIntent = when (current.intent) {
+                    VisualSearchIntent.EXACT_SAME -> VisualSearchIntent.SIMILAR
+                    VisualSearchIntent.SIMILAR -> VisualSearchIntent.IDENTIFY_FIRST
+                    else -> VisualSearchIntent.IDENTIFY_FIRST
+                }
+                updateVisualSearchIntent(nextIntent)
+            }
+
+            VisualSearchRecoveryActionType.CONTINUE_WITHOUT_AI,
+            VisualSearchRecoveryActionType.RETRY,
+                -> submitVisualSearch(autoTriggered = false)
+        }
     }
 
-    fun setPhotoWizardStep(step: PhotoWizardStep) {
-        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(step = step, errorMessage = null)) }
-    }
-
-    fun requestPhotoSlot(role: VisionPhotoRole) {
-        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(pendingRole = role, errorMessage = null)) }
-    }
-
-    fun clearPendingPhotoRole() {
-        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(pendingRole = null)) }
-    }
-
-    fun addWizardPhoto(
-        role: VisionPhotoRole,
-        uri: String,
-        base64: String?,
-        hash: String?,
-        qualityOk: Boolean,
+    fun submitVisualSearch(
+        autoTriggered: Boolean = false,
     ) {
-        if (uri.isBlank()) return
-        val current = _state.value
-        val wizard = current.photoWizard
-        val total = wizard.totalPhotos()
-        val slotOccupied = wizard.allSlots().any { it.role == role && !it.uri.isNullOrBlank() }
-        if (!slotOccupied && total >= 8) {
-            reduce {
-                it.copy(
-                    photoWizard = wizard.copy(
-                        pendingRole = null,
-                        errorMessage = "Можно добавить максимум 8 фото",
+        val snapshot = _state.value.visualSearch
+        val sessionId = snapshot.sessionId ?: UUID.randomUUID().toString()
+        val asset = snapshot.asset
+        val categoryCode = snapshot.selectedCategoryCode?.trim()?.takeIf { it.isNotEmpty() }
+        if (asset == null) {
+            reduce { state ->
+                state.copy(
+                    visualSearch = state.visualSearch.copy(
+                        sessionId = sessionId,
+                        errorMessage = "Добавьте фото для поиска.",
                     ),
                 )
             }
             return
         }
-        val isDuplicate = !hash.isNullOrBlank() &&
-            wizard.allSlots().any { it.role != role && it.hash == hash }
-        val appearance = updateSlot(wizard.appearanceSlots, role, uri, base64, hash, isDuplicate, qualityOk)
-        val tech = updateSlot(wizard.techSlots, role, uri, base64, hash, isDuplicate, qualityOk)
-        val error = when {
-            isDuplicate -> "Похоже, это то же фото"
-            total >= 8 && wizard.allSlots().none { it.role == role && !it.uri.isNullOrBlank() } ->
-                "Можно добавить максимум 8 фото"
-            !qualityOk -> "Низкое качество. Попробуйте сфокусироваться ближе."
+
+        updateVisualSearchSession { session ->
+            session.copy(
+                sessionId = sessionId,
+                isSubmitting = true,
+                binderStatus = null,
+                errorMessage = null,
+                recoveryMessage = null,
+                recoveryActions = emptyList(),
+            )
+        }
+
+        viewModelScope.launch {
+            val current = _state.value.visualSearch
+            val source = current.source ?: VisualSearchSource.GALLERY
+            val metadata = VisualSearchTransportMetadata(visualSessionId = sessionId)
+            val querySessionId = "qs-${UUID.randomUUID()}"
+            val locale = Locale.getDefault().toLanguageTag()
+            val photoUris = buildVisualResultsPhotoUris(current)
+            val preflight = current.preflight?.signals ?: buildVisualSearchPreflightUi(current)?.signals ?: VisualSearchPreflightSignals()
+            val selectedRegion = current.selectedRegion?.toDomainModel()
+            val cheapProjection = buildVisualSearchCheapProjection(
+                session = current,
+                categoryCode = categoryCode,
+                preflight = preflight,
+            )
+
+            trackVisualSearchEvent(
+                sessionId = sessionId,
+                name = "visual_search_submit_started",
+                payload = mapOf(
+                    "autoTriggered" to autoTriggered.toString(),
+                    "intent" to current.intent.name.lowercase(Locale.ROOT),
+                    "categoryCode" to (categoryCode ?: "none"),
+                    "captureMode" to current.captureMode.name.lowercase(Locale.ROOT),
+                    "selectionMode" to current.selectionMode.name.lowercase(Locale.ROOT),
+                ),
+            )
+
+            val reusedQuery = runCatching {
+                reuseVisualSearchContext(
+                    metadata = metadata,
+                    request = VisualSearchContextReuseRequest(
+                        assetFingerprint = asset.fingerprint,
+                        source = source,
+                        entryPoint = VisualSearchEntryPoint.SEARCH_HUB_PHOTO_CARD,
+                    ),
+                )
+            }.getOrNull()?.reusedQuery
+
+            if (reusedQuery?.qualityApproved == true) {
+                openVisualResultsFromBoundQuery(
+                    sessionId = sessionId,
+                    captureMode = current.captureMode,
+                    intent = current.intent,
+                    categoryTitle = current.selectedCategoryTitle ?: current.insight?.suggestedCategoryTitle,
+                    hypothesisTitle = current.insight?.title,
+                    hypothesisSubtitle = current.insight?.subtitle,
+                    boundQuery = reusedQuery,
+                    rankedCandidates = emptyList(),
+                    photoUris = photoUris,
+                )
+                return@launch
+            }
+
+            val normalizeResponse = runCatching {
+                normalizeVisualSearchDraft(
+                    metadata = metadata.copy(
+                        idempotencyKey = "normalize-$sessionId-${System.currentTimeMillis()}",
+                    ),
+                    request = VisualSearchNormalizeDraftRequest(
+                        asset = asset.toDomainModel(),
+                        contextAssets = buildVisualSearchContextAssets(current, asset),
+                        source = source,
+                        entryPoint = VisualSearchEntryPoint.SEARCH_HUB_PHOTO_CARD,
+                        selectionMode = current.selectionMode,
+                        intent = current.intent,
+                        selectedRegion = selectedRegion,
+                        preflightSignals = preflight,
+                        manualCategoryCode = categoryCode,
+                        locale = locale,
+                    ),
+                )
+            }.getOrNull()
+            val normalizationDraft = normalizeResponse?.draft
+                ?.takeIf { normalizeResponse.status != VisualSearchEnvelopeStatus.FAILED }
+            val normalizeReasonCodes = collectVisualSearchNormalizeReasonCodes(normalizeResponse)
+            val normalizedTitle = normalizationDraft?.projection?.title
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+            if (!normalizedTitle.isNullOrBlank()) {
+                updateVisualSearchSession { session ->
+                    val currentInsight = session.insight
+                    session.copy(
+                        insight = (currentInsight ?: VisualSearchInsightUi()).copy(
+                            title = currentInsight?.title ?: normalizedTitle,
+                            subtitle = currentInsight?.subtitle ?: "Собрали ориентир по фото и готовы открыть выдачу.",
+                        ),
+                    )
+                }
+            }
+
+            trackVisualSearchEvent(
+                sessionId = sessionId,
+                name = "visual_search_normalize_completed",
+                payload = mapOf(
+                    "status" to (normalizeResponse?.status?.name?.lowercase(Locale.ROOT) ?: "missing"),
+                    "provider" to (normalizationDraft?.providerName ?: "none"),
+                    "reasonCodes" to normalizeReasonCodes.joinToString(","),
+                ),
+            )
+
+            val bindResponse = runCatching {
+                bindVisualSearchQuery(
+                    metadata = metadata.copy(
+                        idempotencyKey = "bind-$sessionId-${System.currentTimeMillis()}",
+                    ),
+                    request = VisualSearchBindQueryRequest(
+                        intent = current.intent,
+                        source = source,
+                        selectionMode = current.selectionMode,
+                        querySessionId = querySessionId,
+                        manualCategoryCode = categoryCode,
+                        preflightSignals = preflight,
+                        cheapProjection = cheapProjection,
+                        normalizationDraft = normalizationDraft,
+                        locale = locale,
+                        fingerprint = asset.fingerprint,
+                    ),
+                )
+            }.getOrNull()
+
+            val boundQuery = bindResponse?.boundQuery
+            if (boundQuery?.qualityApproved == true) {
+                openVisualResultsFromBoundQuery(
+                    sessionId = sessionId,
+                    captureMode = current.captureMode,
+                    intent = current.intent,
+                    categoryTitle = current.selectedCategoryTitle ?: current.insight?.suggestedCategoryTitle,
+                    hypothesisTitle = current.insight?.title,
+                    hypothesisSubtitle = current.insight?.subtitle,
+                    boundQuery = boundQuery,
+                    rankedCandidates = bindResponse?.rankedCandidates.orEmpty(),
+                    photoUris = photoUris,
+                )
+                return@launch
+            }
+
+            val weakConfidenceRetakePreferred = shouldPreferRetakeForVisualSearch(
+                session = current,
+                preflight = preflight,
+            )
+            val reasonCodes = (
+                parseVisualSearchReasonCodes(bindResponse?.error?.details?.get("reasonCodes")) +
+                    normalizeReasonCodes
+                ).distinct()
+            val fallbackSubtitle = when {
+                normalizationDraft?.needsMorePhotos == true || normalizationDraft?.missingEvidence?.isNotEmpty() == true ->
+                    "Не удалось точно определить модель по первому фото. Добавьте снимок с другого ракурса."
+                weakConfidenceRetakePreferred ->
+                    "Если выдача слишком широкая, добавьте фото крупнее или с другого ракурса."
+                else ->
+                    visualSearchErrorMessage(bindResponse?.error?.messageKey)
+            }
+            val fallbackBoundQuery = boundQuery
+                ?: bindResponse
+                    ?.rankedCandidates
+                    ?.sortedWith(
+                        compareByDescending<com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate> { candidate ->
+                            candidate.isPrimary
+                        }.thenBy { candidate -> candidate.rank },
+                    )
+                    ?.firstOrNull()
+                    ?.query
+
+            if (fallbackBoundQuery != null) {
+                openVisualResultsFromBoundQuery(
+                    sessionId = sessionId,
+                    captureMode = current.captureMode,
+                    intent = current.intent,
+                    categoryTitle = current.selectedCategoryTitle ?: current.insight?.suggestedCategoryTitle,
+                    hypothesisTitle = current.insight?.title,
+                    hypothesisSubtitle = fallbackSubtitle,
+                    boundQuery = fallbackBoundQuery,
+                    rankedCandidates = bindResponse?.rankedCandidates.orEmpty(),
+                    photoUris = photoUris,
+                )
+                return@launch
+            }
+
+            openVisualResultsFromFallbackProjection(
+                sessionId = sessionId,
+                captureMode = current.captureMode,
+                intent = current.intent,
+                querySessionId = querySessionId,
+                selectedCategoryCode = categoryCode,
+                selectedCategoryTitle = current.selectedCategoryTitle ?: current.insight?.suggestedCategoryTitle,
+                hypothesisTitle = current.insight?.title,
+                hypothesisSubtitle = fallbackSubtitle,
+                cheapProjection = cheapProjection,
+                normalizationDraft = normalizationDraft,
+                reusableFingerprint = asset.fingerprint,
+                reasonCodes = reasonCodes,
+                photoUris = photoUris,
+            )
+        }
+    }
+
+    private fun openVisualResultsFromBoundQuery(
+        sessionId: String,
+        captureMode: VisualSearchCaptureMode,
+        intent: VisualSearchIntent,
+        categoryTitle: String?,
+        hypothesisTitle: String?,
+        hypothesisSubtitle: String?,
+        boundQuery: com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundQuery,
+        rankedCandidates: List<com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate>,
+        photoUris: List<String>,
+    ) {
+        val searchCriteria = boundQuery.searchCriteria
+        val previewTitle = boundQuery.previewTitle
+            ?.takeIf { value -> value.isNotBlank() }
+            ?: hypothesisTitle?.takeIf { value -> value.isNotBlank() }
+        val resultsCandidates = mapResultsVisualCandidates(
+            selected = boundQuery,
+            rankedCandidates = rankedCandidates,
+        )
+        val payload = ResultsPayload(
+            query = boundQuery.normalizedQuery,
+            queryText = previewTitle
+                ?: categoryTitle
+                ?: resolveVisualSearchCategoryTitle(boundQuery.categoryCode)
+                ?: "Поиск по фото",
+            categoryCode = boundQuery.categoryCode,
+            facetCollectionCode = searchCriteria.facetCollectionCode,
+            facetPresetCode = searchCriteria.facetPresetCode,
+            sellerId = searchCriteria.sellerId,
+            querySessionId = searchCriteria.querySessionId ?: "qs-${UUID.randomUUID()}",
+            location = searchCriteria.location,
+            radiusKm = searchCriteria.radiusKm,
+            conditions = searchCriteria.conditions,
+            sort = searchCriteria.sort,
+            origin = ResultsOrigin.Photo,
+            visualContext = ResultsVisualContext(
+                visualSessionId = sessionId,
+                binderStatus = boundQuery.binderStatus,
+                routeKind = boundQuery.routeKind,
+                qualityApproved = boundQuery.qualityApproved,
+                captureMode = captureMode,
+                intent = intent,
+                previewTitle = previewTitle,
+                previewSubtitle = hypothesisSubtitle,
+                chips = boundQuery.chips,
+                modelCandidates = boundQuery.modelCandidates,
+                rankedCandidates = resultsCandidates,
+                selectedCandidateRank = resolveResultsVisualSelectedCandidateRank(
+                    selected = boundQuery,
+                    rankedCandidates = resultsCandidates,
+                ),
+                exactRoute = boundQuery.exactRoute,
+                reusableFingerprint = boundQuery.reusableFingerprint,
+                photoUris = photoUris,
+            ),
+        )
+        reduce { state ->
+            state.copy(
+                inputMode = InputMode.Text,
+                visualSearch = state.visualSearch.copy(
+                    visible = false,
+                    step = VisualSearchSessionStep.Hidden,
+                    binderStatus = boundQuery.binderStatus,
+                    isSubmitting = false,
+                    errorMessage = null,
+                    recoveryMessage = null,
+                    recoveryActions = emptyList(),
+                    pendingResultsPayload = payload,
+                ),
+            )
+        }
+        trackVisualSearchEvent(
+            sessionId = sessionId,
+            name = "visual_search_results_opened",
+            payload = mapOf(
+                "binder_status" to boundQuery.binderStatus.name.lowercase(Locale.ROOT),
+                "categoryCode" to boundQuery.categoryCode,
+                "exactRoute" to boundQuery.exactRoute.toString(),
+            ),
+        )
+    }
+
+    private fun openVisualResultsFromFallbackProjection(
+        sessionId: String,
+        captureMode: VisualSearchCaptureMode,
+        intent: VisualSearchIntent,
+        querySessionId: String,
+        selectedCategoryCode: String?,
+        selectedCategoryTitle: String?,
+        hypothesisTitle: String?,
+        hypothesisSubtitle: String?,
+        cheapProjection: VisualSearchCandidateProjection,
+        normalizationDraft: com.example.shoppingassistant.domain.visualsearch.VisualSearchNormalizationDraft?,
+        reusableFingerprint: String?,
+        reasonCodes: List<String>,
+        photoUris: List<String>,
+    ) {
+        val resolvedCategoryCode = selectedCategoryCode?.trim()?.takeIf { value -> value.isNotEmpty() }
+            ?: normalizationDraft?.projection?.categoryCode?.trim()?.takeIf { value -> value.isNotEmpty() }
+            ?: cheapProjection.categoryCode?.trim()?.takeIf { value -> value.isNotEmpty() }
+        val projection = normalizationDraft?.projection
+        val fallbackBrand = projection?.brand.visualSearchSafeAnchorText()
+        val fallbackModel = projection?.model.visualSearchSafeExactModelText()
+        val fallbackModelCandidates = projection?.modelCandidates
+            .orEmpty()
+            .mapNotNull { candidate -> candidate.visualSearchSafeModelCandidate() }
+            .distinctBy { candidate -> normalizeSearchQueryKey(candidate.text) }
+            .take(2)
+        val resolvedCategoryLabel = resolveVisualSearchCategoryTitle(resolvedCategoryCode)
+            ?: selectedCategoryTitle?.takeIf { value -> value.isNotBlank() }
+            ?: resolvedCategoryCode
+            ?: "Категория не определена"
+        val resolvedPreviewTitle = buildVisualSearchPhotoPreviewTitle(
+            rawTitles = listOf(hypothesisTitle, projection?.title, cheapProjection.title),
+            brand = fallbackBrand,
+            model = fallbackModel,
+            modelCandidates = fallbackModelCandidates.map { candidate -> candidate.text },
+            categoryLabel = resolvedCategoryLabel.takeUnless { it == "Категория не определена" },
+        )
+        val fallbackQuery = resolveVisualSearchFallbackQuery(
+            brand = fallbackBrand,
+            model = fallbackModel,
+            categoryLabel = resolvedCategoryLabel.takeUnless { it == "Категория не определена" },
+        )
+        val chips = buildList {
+            resolvedCategoryCode?.let { code ->
+                add(
+                    VisualSearchChip(
+                        kind = VisualSearchChipKind.CATEGORY,
+                        code = code,
+                        label = resolvedCategoryLabel,
+                    ),
+                )
+            }
+            fallbackBrand?.let { brand ->
+                add(
+                    VisualSearchChip(
+                        kind = VisualSearchChipKind.BRAND,
+                        label = brand,
+                    ),
+                )
+            }
+            fallbackModel?.let { model ->
+                add(
+                    VisualSearchChip(
+                        kind = VisualSearchChipKind.MODEL,
+                        label = model,
+                    ),
+                )
+            }
+        }
+            .distinctBy { chip -> "${chip.kind.name}:${chip.code ?: chip.label.lowercase(Locale.ROOT)}" }
+            .take(3)
+        val payload = ResultsPayload(
+            query = fallbackQuery,
+            queryText = resolvedPreviewTitle,
+            categoryCode = resolvedCategoryCode,
+            querySessionId = querySessionId,
+            sort = OfferSort.RANK,
+            origin = ResultsOrigin.Photo,
+            visualContext = ResultsVisualContext(
+                visualSessionId = sessionId,
+                binderStatus = VisualSearchBinderStatus.REJECTED,
+                routeKind = null,
+                qualityApproved = false,
+                captureMode = captureMode,
+                intent = intent,
+                previewTitle = resolvedPreviewTitle,
+                previewSubtitle = hypothesisSubtitle,
+                chips = chips,
+                modelCandidates = fallbackModelCandidates,
+                rankedCandidates = emptyList(),
+                selectedCandidateRank = null,
+                exactRoute = false,
+                reusableFingerprint = reusableFingerprint,
+                photoUris = photoUris,
+            ),
+        )
+        reduce { state ->
+            state.copy(
+                inputMode = InputMode.Text,
+                visualSearch = state.visualSearch.copy(
+                    visible = false,
+                    step = VisualSearchSessionStep.Hidden,
+                    binderStatus = VisualSearchBinderStatus.REJECTED,
+                    isSubmitting = false,
+                    errorMessage = null,
+                    recoveryMessage = null,
+                    recoveryActions = emptyList(),
+                    pendingResultsPayload = payload,
+                ),
+            )
+        }
+        trackVisualSearchEvent(
+            sessionId = sessionId,
+            name = "visual_search_results_opened",
+            payload = mapOf(
+                "binder_status" to "rejected_fallback",
+                "categoryCode" to (resolvedCategoryCode ?: "none"),
+                "exactRoute" to "false",
+                "reasonCodes" to reasonCodes.joinToString(","),
+            ),
+        )
+    }
+
+    private fun resolveVisualSearchFallbackQuery(
+        brand: String?,
+        model: String?,
+        categoryLabel: String?,
+    ): NormalizedQuery? {
+        val normalizedCandidates = buildList {
+            if (!brand.isNullOrBlank() && !model.isNullOrBlank()) add("$brand $model")
+            if (!brand.isNullOrBlank()) add(brand)
+            add(model.orEmpty())
+            add(categoryLabel.orEmpty())
+        }
+            .map { candidate -> normalizeVisualSearchFallbackCandidate(candidate) }
+            .map { candidate -> SearchTextNormalizer.normalize(candidate) }
+            .map { candidate -> candidate.trim() }
+            .filter { candidate -> candidate.isNotEmpty() }
+            .filterNot(::isWeakVisualSearchFallbackTextValue)
+            .distinct()
+        val rawQuery = normalizedCandidates.firstOrNull(::isStrongVisualSearchFallbackText)
+            ?: normalizedCandidates.firstOrNull()
+            ?: return null
+        return BrandModelRules.fromRaw(rawQuery)
+    }
+
+    private fun VisualSearchCandidateValue?.visualSearchSafeAnchorText(): String? {
+        val candidate = this ?: return null
+        val text = candidate.text.trim().takeIf { value -> value.isNotEmpty() } ?: return null
+        if (isGenericVisualSearchIdentity(text)) return null
+        val source = normalizeVisualSearchIdentitySource(candidate.source)
+        val confidence = candidate.confidence ?: 0f
+        if (source in visualSearchExactIdentitySources || source in visualSearchVisualAnchorSources) return text
+        return text.takeIf { confidence >= visualSearchFallbackAnchorConfidence }
+    }
+
+    private fun VisualSearchCandidateValue?.visualSearchSafeExactModelText(): String? {
+        val candidate = this ?: return null
+        val text = candidate.text.trim().takeIf { value -> value.isNotEmpty() } ?: return null
+        if (isGenericVisualSearchIdentity(text)) return null
+        val source = normalizeVisualSearchIdentitySource(candidate.source)
+        val confidence = candidate.confidence ?: 0f
+        return when {
+            source in visualSearchExactIdentitySources && confidence >= visualSearchFallbackAnchorConfidence -> text
+            source == "VISUAL_DISTINCTIVE" && confidence >= visualSearchFallbackExactModelConfidence -> text
             else -> null
         }
-        val updatedWizardBase = wizard.copy(
-            appearanceSlots = appearance,
-            techSlots = tech,
-            pendingRole = null,
-            errorMessage = error,
-        )
-        val stepRoles = when (wizard.step) {
-            PhotoWizardStep.FRONT -> setOf(VisionPhotoRole.FRONT)
-            PhotoWizardStep.OPTIONAL -> setOf(
-                VisionPhotoRole.BACK,
-                VisionPhotoRole.LEFT,
-                VisionPhotoRole.RIGHT,
-                VisionPhotoRole.TOP,
-                VisionPhotoRole.BOTTOM,
-            )
-            PhotoWizardStep.SPECS -> setOf(VisionPhotoRole.TECH_1, VisionPhotoRole.TECH_2)
-        }
-        val canAutoAdvance = error == null &&
-            role in stepRoles &&
-            updatedWizardBase.allSlots()
-                .firstOrNull { it.role == role }
-                ?.status == PhotoSlotStatus.ADDED
-        val nextStep = when (wizard.step) {
-            PhotoWizardStep.FRONT -> PhotoWizardStep.OPTIONAL
-            PhotoWizardStep.OPTIONAL -> PhotoWizardStep.SPECS
-            PhotoWizardStep.SPECS -> null
-        }
-        val updatedWizard = if (canAutoAdvance && nextStep != null) {
-            updatedWizardBase.copy(step = nextStep)
-        } else {
-            updatedWizardBase
-        }
-        if (current.template.mode == TemplateMode.ExpressFromPhoto) {
-            val updatedTemplate = syncTemplatePhotos(current.template, updatedWizard)
-            applyTemplate(updatedTemplate) { it.copy(photoWizard = updatedWizard) }
-        } else {
-            reduce { it.copy(photoWizard = updatedWizard) }
-        }
     }
 
-    fun removeWizardPhoto(role: VisionPhotoRole) {
-        val current = _state.value
-        val wizard = current.photoWizard
-        val appearance = clearSlot(wizard.appearanceSlots, role)
-        val tech = clearSlot(wizard.techSlots, role)
-        val updatedWizard = wizard.copy(
-            appearanceSlots = appearance,
-            techSlots = tech,
-            errorMessage = null,
-        )
-        if (current.template.mode == TemplateMode.ExpressFromPhoto) {
-            val updatedTemplate = syncTemplatePhotos(current.template, updatedWizard)
-            applyTemplate(updatedTemplate) { it.copy(photoWizard = updatedWizard) }
-        } else {
-            reduce { it.copy(photoWizard = updatedWizard) }
+    private fun VisualSearchCandidateValue.visualSearchSafeModelCandidate(): VisualSearchCandidateValue? {
+        val text = this.text.trim().takeIf { value -> value.isNotEmpty() } ?: return null
+        if (isGenericVisualSearchIdentity(text)) return null
+        val confidence = this.confidence ?: 0f
+        if (confidence < visualSearchFallbackModelCandidateConfidence) return null
+        val source = normalizeVisualSearchIdentitySource(this.source)
+        if (source != null && source !in visualSearchExactIdentitySources && source !in visualSearchVisualAnchorSources) {
+            return null
         }
+        return copy(text = text)
     }
 
-    fun removeWizardPhotoByUri(uri: String) {
-        val role = _state.value.photoWizard.allSlots().firstOrNull { it.uri == uri }?.role ?: return
-        removeWizardPhoto(role)
+    private fun normalizeVisualSearchIdentitySource(raw: String?): String? =
+        raw?.trim()?.uppercase(Locale.ROOT)?.takeIf { value -> value.isNotEmpty() }
+
+    private fun isGenericVisualSearchIdentity(raw: String): Boolean {
+        val normalized = SearchTextNormalizer.normalizeKey(raw, Locale.ROOT)
+            .replace('-', ' ')
+            .replace('_', ' ')
+            .trim()
+        return normalized in genericVisualSearchIdentityAnchors
     }
 
-    fun setWizardError(message: String) {
-        reduce { state -> state.copy(photoWizard = state.photoWizard.copy(errorMessage = message)) }
-    }
-    @SuppressLint("SimpleDateFormat")
-    fun recognizeWizardPhotos(inputs: List<VisionPhotoInput>, locale: String? = null) {
-        val current = _state.value
-        val wizard = current.photoWizard
-        val selectedInputs = buildVisionInputsForWizard(inputs, wizard, maxPhotos = 8)
-// Доп. защита: после фильтрации front мог выпасть (например, из-за пустого base64).
-        val hasFront = selectedInputs.any { it.role == VisionPhotoRole.FRONT }
-        if (!hasFront) {
-            val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
-            setWizardError(if (lang.startsWith("ru")) "Нужно фото лицевой стороны." else "Front photo is required.")
-            return
-        }
-
-// Требование: минимум 2 фото внешнего вида (FRONT + любая другая грань).
-        val appearanceRoles = setOf(
-            VisionPhotoRole.FRONT,
-            VisionPhotoRole.BACK,
-            VisionPhotoRole.LEFT,
-            VisionPhotoRole.RIGHT,
-            VisionPhotoRole.TOP,
-            VisionPhotoRole.BOTTOM,
-        )
-        val appearanceCount = selectedInputs.count { it.role in appearanceRoles }
-        if (appearanceCount < 2) {
-            val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
-            setWizardError(
-                if (lang.startsWith("ru")) {
-                    "Добавьте минимум две фотографии, чтобы не заполнять характеристики вручную."
-                } else {
-                    "Add at least two photos to avoid filling specs manually."
-                }
-            )
-            return
-        }
-
-        reduce { it.copy(photoWizard = wizard.copy(isRecognizing = true, errorMessage = null)) }
-        viewModelScope.launch {
-            val request = VisionNormalizeRequest(
-                photos = selectedInputs,
-                userKey = current.currentUserId,
-                locale = locale,
-                categoryHint = current.template.categoryCode ?: current.product?.categoryCode,
-                // Парсим только front/back ТОЛЬКО если оба есть и нет тех-фото.
-                parseFrontBackOnly =
-                    selectedInputs.any { it.role == VisionPhotoRole.FRONT } &&
-                            selectedInputs.any { it.role == VisionPhotoRole.BACK } &&
-                            selectedInputs.none { it.role == VisionPhotoRole.TECH_1 || it.role == VisionPhotoRole.TECH_2 },
-            )
-            // дальше без изменений...
-
-
-            val result = runCatching { normalizePhotosUseCase(request) }.getOrNull()
-            if (result == null) {
-                reduce {
-                    it.copy(
-                        photoWizard = it.photoWizard.copy(
-                            isRecognizing = false,
-                            errorMessage = "Не удалось распознать. Попробуйте другие фото.",
-                        ),
-                    )
-                }
-                return@launch
-            }
-
-            val fatalErrors = result.errors.filterNot { it == "NOT_IN_CATALOG" }
-            if (fatalErrors.isNotEmpty()) {
-                val message = when {
-                    fatalErrors.contains("LIMIT_EXCEEDED") -> {
-                        val usage = runCatching { getVisionUsageUseCase(current.currentUserId) }.getOrNull()?.usage
-                        val resetAt = usage?.resetAtMillis
-                        val resetText = resetAt?.let { millis ->
-                            java.text.SimpleDateFormat("HH:mm").format(java.util.Date(millis))
-                        }
-                        if (resetText != null) {
-                            "Лимит распознаваний исчерпан. Обновится в $resetText. Можно заполнить вручную."
-                        } else {
-                            "Лимит распознаваний исчерпан. Попробуйте позже или заполните вручную."
-                        }
-                    }
-
-                    fatalErrors.contains("MIN_APPEARANCE_PHOTOS") -> {
-                        val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
-                        if (lang.startsWith("ru")) {
-                            "Добавьте минимум две фотографии, чтобы не заполнять характеристики вручную."
-                        } else {
-                            "Add at least two photos to avoid filling specs manually."
-                        }
-                    }
-
-                    fatalErrors.contains("MISSING_FRONT_BACK") -> {
-                        val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
-                        if (lang.startsWith("ru")) {
-                            "Добавьте фото лицевой стороны и ещё одну грань товара."
-                        } else {
-                            "Add a front photo and one more side of the item."
-                        }
-                    }
-
-                    else -> {
-                        val lang = (locale ?: java.util.Locale.getDefault().language).lowercase()
-                        if (lang.startsWith("ru")) {
-                            "Не удалось распознать. Попробуйте другие фото."
-                        } else {
-                            "Recognition failed. Try different photos."
-                        }
-                    }
-                }
-
-                reduce {
-                    it.copy(
-                        photoWizard = it.photoWizard.copy(
-                            isRecognizing = false,
-                            errorMessage = message,
-                        ),
-                    )
-                }
-                return@launch
-            }
-
-            if (result.normalizedQuery == null) {
-                reduce {
-                    it.copy(
-                        photoWizard = it.photoWizard.copy(
-                            isRecognizing = false,
-                            errorMessage = "Не удалось распознать. Попробуйте другие фото.",
-                        ),
-                    )
-                }
-                return@launch
-            }
-
-            val stepOverride = stepForNextAction(result.nextAction)
-            val keepWizardOpen = result.nextAction != null
-            applyVisionResult(
-                result = result,
-                keepWizardOpen = keepWizardOpen,
-                wizardStep = stepOverride,
-                wizardError = if (keepWizardOpen) hintForNextAction(result.nextAction) else null,
-            )
-        }
-    }
-    private fun buildVisionInputsForWizard(
-        inputs: List<VisionPhotoInput>,
-        wizard: PhotoWizardState,
-        maxPhotos: Int,
-    ): List<VisionPhotoInput> {
-        val byRole = inputs
+    private fun buildVisualSearchPhotoPreviewTitle(
+        rawTitles: List<String?>,
+        brand: String?,
+        model: String?,
+        modelCandidates: List<String>,
+        categoryLabel: String?,
+    ): String {
+        val identityTitle = listOfNotNull(
+            brand?.trim()?.takeIf { it.isNotEmpty() },
+            model?.trim()?.takeIf { it.isNotEmpty() },
+        ).joinToString(" ").takeIf { it.isNotBlank() }
+        if (identityTitle != null) return identityTitle
+        modelCandidates
+            .firstOrNull { candidate -> candidate.isNotBlank() }
+            ?.let { return it.trim() }
+        categoryLabel
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { return it }
+        return rawTitles
             .asSequence()
-            .filter { it.base64.isNotBlank() }
-            .associateBy { it.role }
+            .mapNotNull { title -> title?.trim()?.takeIf { it.isNotEmpty() } }
+            .firstOrNull { title -> isSafeVisualSearchPreviewTitle(title) }
+            ?: "Поиск по фото"
+    }
 
-        val slotsByRole = wizard.allSlots().associateBy { it.role }
+    private fun isSafeVisualSearchPreviewTitle(raw: String): Boolean =
+        !isGenericVisualSearchPreviewTitle(raw) && !isWeakVisualSearchFallbackTextValue(raw)
 
-        // Приоритет: tech -> front/back -> остальные грани.
-        val order = listOf(
-            VisionPhotoRole.TECH_1,
-            VisionPhotoRole.TECH_2,
-            VisionPhotoRole.FRONT,
-            VisionPhotoRole.BACK,
-            VisionPhotoRole.LEFT,
-            VisionPhotoRole.RIGHT,
-            VisionPhotoRole.TOP,
-            VisionPhotoRole.BOTTOM,
+    private fun isGenericVisualSearchPreviewTitle(raw: String): Boolean {
+        val normalized = SearchTextNormalizer.normalizeKey(raw, Locale.ROOT)
+            .replace('-', ' ')
+            .replace('_', ' ')
+            .trim()
+        return normalized in genericVisualSearchPreviewTitles
+    }
+
+    private fun firstSafeVisualSearchHint(vararg candidates: String?): String? =
+        candidates
+            .asSequence()
+            .mapNotNull { candidate -> candidate?.trim()?.takeIf { it.isNotEmpty() } }
+            .firstOrNull(::isSafeVisualSearchPreviewTitle)
+
+    private fun List<String>.firstSafeVisualSearchHint(): String? =
+        asSequence()
+            .map { candidate -> candidate.trim() }
+            .filter { candidate -> candidate.isNotEmpty() }
+            .firstOrNull(::isSafeVisualSearchPreviewTitle)
+
+    private fun normalizeVisualSearchFallbackCandidate(raw: String): String {
+        val normalized = raw.trim()
+        if (normalized.isEmpty()) return ""
+        return when (normalized.lowercase(Locale.ROOT)) {
+            "mouse",
+            "computer mouse",
+            "wireless mouse",
+                -> "компьютерная мышь"
+            "keyboard" -> "клавиатура"
+            "laptop",
+            "laptop computer",
+                -> "ноутбук"
+            "smartphone",
+            "cell phone",
+                -> "смартфон"
+            "computer monitor",
+            "monitor",
+                -> "монитор"
+            "television",
+            "tv",
+                -> "телевизор"
+            else -> normalized
+        }
+    }
+
+    private fun buildVisualSearchPreflightUi(
+        session: VisualSearchSessionState,
+    ): VisualSearchPreflightUi? {
+        val asset = session.asset ?: return null
+        val categoryCode = session.selectedCategoryCode?.trim()?.takeIf { it.isNotEmpty() }
+        val insight = session.insight
+        val barcodeValue = insight?.barcodeValue?.trim()?.takeIf { it.isNotEmpty() }
+        val ocrTextHints = insight?.recognizedText
+            ?.split(textLineBreakRegex)
+            ?.map { line -> line.trim() }
+            ?.filter { line -> line.isNotEmpty() }
+            .orEmpty()
+            .take(3)
+        val imageLabelHints = insight?.imageLabelHints.orEmpty()
+        val width = asset.widthPx
+        val height = asset.heightPx
+        val minSide = minOf(width ?: Int.MAX_VALUE, height ?: Int.MAX_VALUE)
+        val pixelCount = if (width != null && height != null) width * height else null
+        val lowResolution = (minSide != Int.MAX_VALUE && minSide < 720) ||
+            (pixelCount != null && pixelCount < 900_000)
+        val aspectRatio = if (width != null && height != null && width > 0 && height > 0) {
+            width.toFloat() / height.toFloat()
+        } else {
+            1f
+        }
+        val wideAspect = aspectRatio >= 1.8f || aspectRatio <= 0.62f
+        val exactRouteReady = !barcodeValue.isNullOrBlank()
+        val requiresObjectPicker = session.captureMode == VisualSearchCaptureMode.IMAGE &&
+            session.selectionMode == VisualSearchSelectionMode.WHOLE_FRAME &&
+            (wideAspect || session.intent == VisualSearchIntent.EXACT_SAME)
+        val hasTextHints = ocrTextHints.isNotEmpty()
+        val hasImageHints = imageLabelHints.isNotEmpty() || !insight?.objectLabel.isNullOrBlank()
+        val categoryCandidates = VisualSearchPreflightCategoryRouter.route(
+            selectedCategoryCode = categoryCode,
+            barcodeValue = barcodeValue,
+            ocrTextHints = ocrTextHints,
+            imageLabelHints = imageLabelHints,
+            objectLabel = insight?.objectLabel,
+            objectConfidence = insight?.objectConfidence,
         )
-
-        val out = ArrayList<VisionPhotoInput>(maxPhotos)
-        for (role in order) {
-            if (out.size >= maxPhotos) break
-
-            // 1) Если UI уже прислал base64 по этой роли — берём его.
-            val fromUi = byRole[role]
-            if (fromUi != null) {
-                out.add(fromUi)
-                continue
+        val cheapProjectionReady = !categoryCode.isNullOrBlank() || exactRouteReady || hasTextHints || hasImageHints
+        val admitServerAi = !lowResolution && session.source != VisualSearchSource.BARCODE_MODE
+        val reasonCodes = buildList {
+            if (!categoryCode.isNullOrBlank()) add("CATEGORY_HINT_PRESENT")
+            if (categoryCandidates.isNotEmpty()) add("CATEGORY_SHORTLIST_PRESENT")
+            if (exactRouteReady) add("BARCODE_EXACT_STRONG")
+            if (cheapProjectionReady) add("CHEAP_PROJECTION_READY")
+            if (admitServerAi) add("SERVER_AI_ADMISSIBLE")
+            if (requiresObjectPicker) add("OBJECT_PICKER_RECOMMENDED")
+            if (wideAspect) add("WIDE_ASPECT_FRAME")
+            if (lowResolution) add("LOW_RESOLUTION")
+            if (hasTextHints) add("OCR_HINT_PRESENT")
+            if (hasImageHints) add("IMAGE_LABEL_HINT_PRESENT")
+            when (session.selectionMode) {
+                VisualSearchSelectionMode.MANUAL_CROP -> add("MANUAL_CROP_SELECTED")
+                VisualSearchSelectionMode.AUTO_TARGET -> add("AUTO_TARGET_SELECTED")
+                VisualSearchSelectionMode.WHOLE_FRAME -> add("WHOLE_FRAME_SELECTED")
             }
-
-            // 2) Иначе пытаемся поднять base64 из wizard-слота.
-            val slot = slotsByRole[role] ?: continue
-            if (slot.uri.isNullOrBlank()) continue
-            if (slot.status == PhotoSlotStatus.DUPLICATE || slot.status == PhotoSlotStatus.ERROR) continue
-            val base64 = slot.base64?.takeIf { it.isNotBlank() } ?: continue
-
-            out.add(VisionPhotoInput(role = role, base64 = base64))
+            if (session.selectedRegion != null) add("FOCUS_REGION_PROVIDED")
+            if (session.source == VisualSearchSource.SCREENSHOT) add("SCREENSHOT_SOURCE")
+        }.distinct()
+        val hintLabels = buildList {
+            if (!categoryCode.isNullOrBlank()) add("Категория выбрана")
+            if (categoryCandidates.isNotEmpty()) add("Есть shortlist категорий")
+            if (exactRouteReady) add("Штрихкод найден")
+            if (requiresObjectPicker) add("Лучше выбрать предмет")
+            if (session.selectedRegion != null) add("Предмет выделен")
+            if (session.selectionMode == VisualSearchSelectionMode.AUTO_TARGET) add("Автовыбор предмета")
+            if (hasTextHints) add("Есть текст")
+            if (hasImageHints) add("Есть подсказки по фото")
+            if (lowResolution) add("Качество может снизить точность")
         }
-
-        return out
-    }
-
-
-    private fun updateSlot(
-        slots: List<PhotoSlot>,
-        role: VisionPhotoRole,
-        uri: String,
-        base64: String?,
-        hash: String?,
-        isDuplicate: Boolean,
-        qualityOk: Boolean,
-    ): List<PhotoSlot> {
-        return slots.map { slot ->
-            if (slot.role != role) slot
-            else slot.copy(
-                uri = uri,
-                base64 = base64,
-                hash = hash,
-                status = when {
-                    isDuplicate -> PhotoSlotStatus.DUPLICATE
-                    !qualityOk -> PhotoSlotStatus.ERROR
-                    else -> PhotoSlotStatus.ADDED
-                },
-                error = when {
-                    isDuplicate -> "Дубликат"
-                    !qualityOk -> "Низкое качество"
-                    else -> null
-                },
-            )
+        val summary = when {
+            exactRouteReady ->
+                "Нашли штрихкод. Сначала попробуем самый точный поиск."
+            categoryCode.isNullOrBlank() && (hasTextHints || hasImageHints) ->
+                "Сначала покажем наиболее вероятные результаты по фото. Уточнения понадобятся только если выдача окажется слишком широкой."
+            requiresObjectPicker && session.selectionMode == VisualSearchSelectionMode.WHOLE_FRAME ->
+                "В кадре несколько зон. Если результаты будут слишком широкими, лучше выбрать один предмет."
+            session.selectionMode == VisualSearchSelectionMode.MANUAL_CROP ->
+                "Предмет уже выделен. Это поможет точнее сузить результаты."
+            cheapProjectionReady && admitServerAi ->
+                "Собрали ориентиры по фото и готовы открыть первую выдачу."
+            cheapProjectionReady ->
+                "Есть достаточно подсказок, чтобы открыть первую выдачу даже без категории."
+            else ->
+                "Сначала попробуем определить предмет по фото. Если уверенности не хватит, предложим уточнения."
         }
-    }
-
-    private fun clearSlot(slots: List<PhotoSlot>, role: VisionPhotoRole): List<PhotoSlot> {
-        return slots.map { slot ->
-            if (slot.role != role) slot else slot.copy(
-                uri = null,
-                base64 = null,
-                hash = null,
-                status = PhotoSlotStatus.EMPTY,
-                error = null,
-            )
-        }
-    }
-
-    private fun applyVisionResult(
-        result: com.example.shoppingassistant.domain.vision.VisionNormalizeResult,
-        keepWizardOpen: Boolean = false,
-        wizardStep: PhotoWizardStep? = null,
-        wizardError: String? = null,
-    ) {
-        val current = _state.value
-        val wizard = current.photoWizard
-        val normalized = result.normalizedQuery
-        val titleCandidate = result.title
-            ?: listOfNotNull(normalized?.brand, normalized?.model).joinToString(" ").ifBlank { null }
-        val categoryCode = result.categoryCode ?: current.template.categoryCode
-        val baseInput = titleCandidate ?: current.template.inputText
-        val resolvedProduct = resolveProduct(titleCandidate)?.copy(categoryCode = categoryCode)
-            ?: run {
-                val brand = normalized?.brand?.takeIf { it.isNotBlank() }
-                val model = normalized?.model?.takeIf { it.isNotBlank() }
-                if (brand != null && model != null) {
-                    Product(brand = brand, model = model, categoryCode = categoryCode)
-                } else null
-            }
-
-        val visionAttrs = buildMap<String, TemplateAttribute> {
-            normalized?.brand?.takeIf { it.isNotBlank() }?.let { put("brand", TemplateAttribute("brand", it, ValueSource.FromSuggestion)) }
-            normalized?.model?.takeIf { it.isNotBlank() }?.let { put("model", TemplateAttribute("model", it, ValueSource.FromSuggestion)) }
-            normalized?.attributes?.forEach { (code, value) ->
-                val raw = value.asRawString().trim()
-                if (raw.isNotBlank()) {
-                    put(code, TemplateAttribute(code, raw, ValueSource.FromSuggestion))
-                }
-            }
-        }
-        val mergedAttrs = current.template.attributes.toMutableMap().apply {
-            visionAttrs.forEach { (key, value) ->
-                val existing = this[key]
-                if (existing == null || existing.source == ValueSource.ParsedFromText) {
-                    this[key] = value
-                }
-            }
-        }
-
-        val photoUrls = wizard.allSlots().mapNotNull { it.uri?.takeIf { uri -> uri.isNotBlank() } }
-        val primary = wizard.appearanceSlots.firstOrNull { !it.uri.isNullOrBlank() }?.uri
-            ?: photoUrls.firstOrNull()
-
-        val base = current.template.copy(
-            inputText = baseInput,
-            lockedTitle = titleCandidate ?: current.template.lockedTitle,
-            isLocked = titleCandidate != null,
-            categoryCode = categoryCode,
-            anchorType = categoryCode?.let { com.example.shoppingassistant.domain.template.TemplateAnchorType.CATEGORY },
-            anchorId = categoryCode ?: current.template.anchorId ?: titleCandidate ?: baseInput,
-            attributes = mergedAttrs,
-            mode = current.template.mode,
-            photoUrls = photoUrls,
-            primaryPhotoUrl = primary,
+        return VisualSearchPreflightUi(
+            signals = VisualSearchPreflightSignals(
+                reasonCodes = reasonCodes,
+                exactRouteReady = exactRouteReady,
+                cheapProjectionReady = cheapProjectionReady,
+                admitServerAi = admitServerAi,
+                requiresObjectPicker = requiresObjectPicker,
+                exactCategoryCode = categoryCode,
+                barcodeValue = barcodeValue,
+                captureMode = session.captureMode,
+                ocrTextHints = ocrTextHints,
+                imageLabelHints = imageLabelHints,
+                objectLabel = insight?.objectLabel,
+                objectConfidence = insight?.objectConfidence,
+                categoryCandidates = categoryCandidates,
+            ),
+            summary = summary,
+            hintLabels = hintLabels,
         )
-
-        val updated = templateEngine.onInputTextChanged(base, base.inputText, categoryDictionary)
-        applyTemplate(updated) {
-            it.copy(
-                product = resolvedProduct,
-                photoWizard = wizard.copy(
-                    visible = keepWizardOpen || wizard.visible,
-                    step = wizardStep ?: wizard.step,
-                    pendingRole = null,
-                    isRecognizing = false,
-                    errorMessage = wizardError,
-                    lastResult = result,
-                ),
-            )
-        }
-        refreshAttributes(product = resolvedProduct, categoryCode = categoryCode)
-        maybeShowCategoryFallback(categoryCode, result.categoryCandidates, resolvedProduct != null)
     }
 
-    private fun maybeShowCategoryFallback(
+    private fun buildVisualSearchCheapProjection(
+        session: VisualSearchSessionState,
         categoryCode: String?,
-        candidates: List<com.example.shoppingassistant.domain.vision.VisionCategoryCandidate>,
-        hasProductMatch: Boolean,
-    ) {
-        val code = categoryCode?.takeIf { it.isNotBlank() }
-        viewModelScope.launch {
-            if (hasProductMatch && code != null) {
-                val profile = runCatching { catalogRepository.getCategoryProfile(code) }.getOrNull()
-                if (profile != null) {
-                    reduce { it.copy(categoryFallback = CategoryFallbackState()) }
-                    return@launch
+        preflight: VisualSearchPreflightSignals,
+    ): VisualSearchCandidateProjection {
+        val categoryCandidate = preflight.categoryCandidates
+            .maxByOrNull { candidate -> candidate.confidence ?: 0f }
+        val resolvedCategoryCode = categoryCode
+            ?: session.selectedCategoryCode?.trim()?.takeIf { it.isNotEmpty() }
+            ?: session.insight
+                ?.takeIf { insight -> insight.promoteSuggestedCategory }
+                ?.suggestedCategoryCode
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+            ?: preflight.exactCategoryCode?.trim()?.takeIf { it.isNotEmpty() }
+            ?: categoryCandidate?.categoryCode?.trim()?.takeIf { it.isNotEmpty() }
+        val categoryTitle = session.selectedCategoryTitle
+            ?.takeIf { it.isNotBlank() }
+            ?: session.insight
+                ?.takeIf { insight -> insight.promoteSuggestedCategory }
+                ?.suggestedCategoryTitle
+                ?.takeIf { it.isNotBlank() }
+            ?: resolveVisualSearchCategoryTitle(resolvedCategoryCode)
+        val rawTitle = session.insight?.title
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() && isSafeVisualSearchPreviewTitle(it) }
+        val safeImageLabelTitle = session.insight?.imageLabelHints.orEmpty().firstSafeVisualSearchHint()
+        val safeObjectTitle = firstSafeVisualSearchHint(session.insight?.objectLabel)
+        val safeRecognizedTextTitle = firstSafeVisualSearchHint(session.insight?.recognizedText?.take(64))
+        return VisualSearchCandidateProjection(
+            categoryCode = resolvedCategoryCode,
+            categoryConfidence = when {
+                categoryCode != null -> 1f
+                !session.selectedCategoryCode.isNullOrBlank() -> 1f
+                session.insight?.promoteSuggestedCategory == true &&
+                    !session.insight.suggestedCategoryCode.isNullOrBlank() -> 0.74f
+                !preflight.exactCategoryCode.isNullOrBlank() -> 0.92f
+                categoryCandidate != null -> categoryCandidate.confidence
+                else -> null
+            },
+            title = rawTitle
+                ?: safeObjectTitle
+                ?: safeImageLabelTitle
+                ?: categoryTitle
+                ?: safeRecognizedTextTitle,
+            reasonCodes = preflight.reasonCodes,
+        )
+    }
+
+    private fun buildVisualResultsPhotoUris(
+        session: VisualSearchSessionState,
+    ): List<String> = buildVisualSearchAssetStrip(session)
+        .mapNotNull { asset ->
+            asset.localUri
+                .trim()
+                .takeIf { it.isNotEmpty() }
+        }
+
+    private fun appendVisualSearchCapturedAsset(
+        current: List<VisualSearchAssetUi>,
+        incoming: VisualSearchAssetUi,
+    ): List<VisualSearchAssetUi> = buildList {
+        current
+            .filterNot { item -> item.fingerprint == incoming.fingerprint }
+            .takeLast(VISUAL_SEARCH_MAX_CAPTURE_ASSETS - 1)
+            .forEach(::add)
+        add(incoming)
+    }
+
+    private fun buildVisualSearchAssetStrip(
+        session: VisualSearchSessionState,
+    ): List<VisualSearchAssetUi> = buildList {
+        session.asset?.let(::add)
+        session.capturedAssets.forEach(::add)
+    }
+        .distinctBy { asset -> asset.fingerprint.trim() }
+        .take(VISUAL_SEARCH_MAX_CAPTURE_ASSETS)
+
+    private fun buildVisualSearchContextAssets(
+        session: VisualSearchSessionState,
+        primaryAsset: VisualSearchAssetUi,
+    ): List<VisualSearchImageAsset> = buildVisualSearchAssetStrip(session)
+        .filterNot { asset -> asset.fingerprint == primaryAsset.fingerprint }
+        .map { asset -> asset.toDomainModel() }
+
+    private fun mapResultsVisualCandidates(
+        selected: com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundQuery,
+        rankedCandidates: List<com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate>,
+    ): List<com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate> {
+        val normalizedCandidates = rankedCandidates
+            .mapIndexed { index, candidate ->
+                candidate.copy(
+                    rank = candidate.rank.coerceAtLeast(index + 1),
+                    isPrimary = candidate.query == selected,
+                )
+            }
+        val selectedCandidate = (
+            normalizedCandidates.firstOrNull { candidate -> candidate.query == selected }
+                ?: com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate(
+                    rank = 1,
+                    confidence = null,
+                    query = selected,
+                    reasonCodes = emptyList(),
+                    isPrimary = true,
+                )
+        ).copy(
+            rank = 1,
+            isPrimary = true,
+        )
+        val candidatesWithSelected = buildList {
+            add(selectedCandidate)
+            normalizedCandidates
+                .filterNot { candidate -> candidate.query == selected }
+                .forEach { candidate ->
+                    add(
+                        candidate.copy(
+                            rank = candidate.rank.coerceAtLeast(size + 1),
+                            isPrimary = false,
+                        ),
+                    )
                 }
+        }
+        return candidatesWithSelected
+            .distinctBy { candidate ->
+                listOf(
+                    candidate.query.categoryCode,
+                    candidate.query.routeKind.name,
+                    candidate.query.previewTitle.orEmpty(),
+                    candidate.query.searchCriteria.brand.orEmpty(),
+                    candidate.query.searchCriteria.model.orEmpty(),
+                    candidate.query.searchCriteria.facetCollectionCode.orEmpty(),
+                    candidate.query.searchCriteria.facetPresetCode.orEmpty(),
+                )
+                    .joinToString("|")
             }
-            val fallbackCandidates = candidates.ifEmpty {
-                runCatching { catalogRepository.listCategories() }
-                    .onFailure { throwable ->
-                        showCatalogError(
-                            throwable.message
-                                ?: "Не удалось загрузить категории. Повторите попытку.",
-                        )
-                    }
-                    .getOrElse { categoryIndex?.byCode?.values?.toList().orEmpty() }
-                    .take(3)
-                    .map { cat ->
-                        com.example.shoppingassistant.domain.vision.VisionCategoryCandidate(
-                            code = cat.code,
-                            title = cat.title,
-                            score = 0.5f,
-                        )
-                    }
+            .sortedWith(
+                compareByDescending<com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate> { candidate ->
+                    candidate.isPrimary
+                }.thenBy { candidate -> candidate.rank },
+            )
+            .mapIndexed { index, candidate ->
+                candidate.copy(rank = index + 1)
             }
-            reduce {
-                it.copy(
-                    categoryFallback = CategoryFallbackState(
-                        visible = fallbackCandidates.isNotEmpty(),
-                        candidates = fallbackCandidates,
-                        message = "Не нашли точную категорию. Выберите подходящую:",
+            .take(3)
+    }
+
+    private fun resolveResultsVisualSelectedCandidateRank(
+        selected: com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundQuery,
+        rankedCandidates: List<com.example.shoppingassistant.domain.visualsearch.VisualSearchBoundCandidate>,
+    ): Int? = rankedCandidates
+        .firstOrNull { candidate -> candidate.query == selected }
+        ?.rank
+
+    private fun shouldPreferRetakeForVisualSearch(
+        session: VisualSearchSessionState,
+        preflight: VisualSearchPreflightSignals,
+    ): Boolean {
+        if (session.captureMode != VisualSearchCaptureMode.IMAGE) return false
+        if (!preflight.barcodeValue.isNullOrBlank()) return false
+        val objectConfidence = preflight.objectConfidence ?: 0f
+        val hasStrongObject = objectConfidence >= 0.56f
+        val hasStrongTextHint = preflight.ocrTextHints.any(::isStrongVisualSearchFallbackText)
+        val hasStrongHint = hasStrongTextHint ||
+            preflight.imageLabelHints.any(::isStrongVisualSearchFallbackText) ||
+            preflight.objectLabel?.let(::isStrongVisualSearchFallbackText) == true
+        val hasCategory = !session.selectedCategoryCode.isNullOrBlank() ||
+            (
+                session.insight?.promoteSuggestedCategory == true &&
+                    !session.insight.suggestedCategoryCode.isNullOrBlank()
+                )
+        val lowResolution = preflight.reasonCodes.any { code -> code == "LOW_RESOLUTION" }
+        return (!hasStrongObject && !hasStrongHint && !hasCategory) ||
+            (lowResolution && !hasStrongObject && !hasCategory)
+    }
+
+    private fun isStrongVisualSearchFallbackText(raw: String): Boolean {
+        val normalized = raw.trim().lowercase(Locale.ROOT)
+        if (isWeakVisualSearchFallbackTextValue(normalized)) return false
+        if (isComputerMouseVisualSearchText(normalized)) return true
+        if (normalized.isBlank()) return false
+        if (normalized.length < 3) return false
+        if (BrandModelRules.fromKnownFamily(raw) != null) return true
+        if (strongVisualSearchTokens.any { token -> normalized.contains(token) }) return true
+        return looksLikeProductModelHint(normalized)
+    }
+
+    private fun isWeakVisualSearchFallbackTextValue(raw: String): Boolean {
+        val normalized = SearchTextNormalizer.normalizeKey(raw, Locale.ROOT)
+            .replace('-', ' ')
+            .replace('_', ' ')
+            .trim()
+        if (normalized.isBlank()) return true
+        if (normalized in weakVisualSearchFallbackTerms) return true
+        return weakVisualSearchFallbackTokens.any { token -> normalized.contains(token) }
+    }
+
+    private fun isComputerMouseVisualSearchText(raw: String): Boolean {
+        val normalized = SearchTextNormalizer.normalizeKey(raw, Locale.ROOT)
+            .replace('-', ' ')
+            .replace('_', ' ')
+            .trim()
+        return normalized in computerMouseVisualSearchPhrases ||
+            computerMouseVisualSearchTokens.any { token -> normalized.contains(token) }
+    }
+
+    private fun looksLikeProductModelHint(normalized: String): Boolean {
+        val tokens = normalized
+            .split(' ')
+            .map { token -> token.trim() }
+            .filter { token -> token.isNotEmpty() }
+        if (tokens.isEmpty() || tokens.size > 2) return false
+        if (tokens.count { token -> token.length == 1 } > 0) return false
+        val hasMixedAlphaNumericToken = tokens.any { token ->
+            token.any { ch -> ch.isLetter() } &&
+                token.any { ch -> ch.isDigit() } &&
+                token.length in 4..18
+        }
+        val compactLength = tokens.joinToString("").length
+        return hasMixedAlphaNumericToken && compactLength in 5..24
+    }
+
+    private fun collectVisualSearchNormalizeReasonCodes(
+        response: com.example.shoppingassistant.domain.visualsearch.VisualSearchNormalizeDraftResponse?,
+    ): List<String> = buildList {
+        addAll(response?.draft?.reasonCodes.orEmpty())
+        addAll(parseVisualSearchReasonCodes(response?.error?.details?.get("reasonCodes")))
+        response?.error?.details?.get("reason")
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { add(it.uppercase(Locale.ROOT)) }
+        when (response?.error?.messageKey) {
+            "visual_search.error.offline" -> add("OFFLINE_DURING_AI")
+            "visual_search.error.feature_disabled" -> add("FEATURE_DISABLED_DURING_AI")
+        }
+    }.distinct()
+
+    private fun defaultVisualSearchRegion(): VisualSearchRegionUi = VisualSearchRegionUi(
+        label = "Объект",
+        left = 0.15f,
+        top = 0.10f,
+        width = 0.70f,
+        height = 0.80f,
+    )
+
+    private fun defaultVisualSearchRecoveryActions(): List<VisualSearchRecoveryActionUi> = listOf(
+        VisualSearchRecoveryActionUi(
+            type = VisualSearchRecoveryActionType.RETAKE_PHOTO,
+            label = visualSearchRecoveryActionLabel(VisualSearchRecoveryActionType.RETAKE_PHOTO),
+        ),
+        VisualSearchRecoveryActionUi(
+            type = VisualSearchRecoveryActionType.ADD_TEXT,
+            label = visualSearchRecoveryActionLabel(VisualSearchRecoveryActionType.ADD_TEXT),
+        ),
+        VisualSearchRecoveryActionUi(
+            type = VisualSearchRecoveryActionType.CHOOSE_CATEGORY_MANUALLY,
+            label = visualSearchRecoveryActionLabel(VisualSearchRecoveryActionType.CHOOSE_CATEGORY_MANUALLY),
+        ),
+    )
+
+    private fun lowConfidenceVisualSearchRecoveryActions(): List<VisualSearchRecoveryActionUi> = listOf(
+        VisualSearchRecoveryActionUi(
+            type = VisualSearchRecoveryActionType.RETAKE_PHOTO,
+            label = visualSearchRecoveryActionLabel(VisualSearchRecoveryActionType.RETAKE_PHOTO),
+        ),
+        VisualSearchRecoveryActionUi(
+            type = VisualSearchRecoveryActionType.ADD_TEXT,
+            label = visualSearchRecoveryActionLabel(VisualSearchRecoveryActionType.ADD_TEXT),
+        ),
+        VisualSearchRecoveryActionUi(
+            type = VisualSearchRecoveryActionType.CHOOSE_CATEGORY_MANUALLY,
+            label = visualSearchRecoveryActionLabel(VisualSearchRecoveryActionType.CHOOSE_CATEGORY_MANUALLY),
+        ),
+    )
+
+    private fun resolveVisualSearchCategoryTitle(categoryCode: String?): String? {
+        val normalizedCode = categoryCode?.trim()?.takeIf { it.isNotBlank() } ?: return null
+        val breadcrumb = normalizeBreadcrumb(categoryIndex?.breadcrumbByCode?.get(normalizedCode))
+        return breadcrumbTail(breadcrumb).ifBlank { normalizedCode }
+    }
+
+    fun visualSearchCategoryTitle(categoryCode: String?): String? =
+        resolveVisualSearchCategoryTitle(categoryCode)
+
+    private fun parseVisualSearchReasonCodes(raw: String?): List<String> {
+        val normalized = raw
+            ?.trim()
+            ?.removePrefix("[")
+            ?.removeSuffix("]")
+            .orEmpty()
+        if (normalized.isBlank()) return emptyList()
+        return normalized.split(',')
+            .map { token -> token.trim().trim('"') }
+            .filter { token -> token.isNotBlank() }
+            .distinct()
+    }
+
+    private fun VisualSearchAssetUi.toDomainModel(): VisualSearchImageAsset = VisualSearchImageAsset(
+        sha256 = fingerprint,
+        mimeType = guessVisualSearchMimeType(localUri),
+        widthPx = widthPx,
+        heightPx = heightPx,
+        byteSize = byteSize,
+        storageKey = localUri,
+        inlineBase64 = inlineBase64,
+    )
+
+    private fun VisualSearchRegionUi.toDomainModel(): VisualSearchSelectedRegion = VisualSearchSelectedRegion(
+        left = left.coerceIn(0f, 1f),
+        top = top.coerceIn(0f, 1f),
+        width = width.coerceIn(0.05f, 1f),
+        height = height.coerceIn(0.05f, 1f),
+    )
+
+    private fun guessVisualSearchMimeType(localUri: String): String {
+        val extension = localUri.substringAfterLast('.', missingDelimiterValue = "")
+            .substringBefore('?')
+            .lowercase(Locale.ROOT)
+        return when (extension) {
+            "png" -> "image/png"
+            "webp" -> "image/webp"
+            "heic",
+            "heif",
+                -> "image/heif"
+            else -> "image/jpeg"
+        }
+    }
+
+    private fun visualSearchErrorMessage(messageKey: String?): String = when (messageKey) {
+        "visual_search.error.invalid_asset" ->
+            "Это фото не удалось прочитать. Попробуйте выбрать другой файл."
+        "visual_search.error.offline",
+        "visual_search.error.feature_disabled",
+            -> "Сейчас доступны только базовые подсказки по фото. Можно продолжить без уточнения."
+        else -> "Не удалось уверенно распознать товар по этому кадру."
+    }
+
+    private fun visualSearchRecoveryMessage(messageKey: String?): String = when (messageKey) {
+        "visual_search.recovery.hard_stop" ->
+            "Попробуйте выбрать предмет, добавить категорию или сделать новый снимок."
+        "visual_search.recovery.weak_results" ->
+            "Поиск получился слишком широким. Уточните цель или категорию."
+        else -> "Можно немного уточнить фото и повторить поиск."
+    }
+
+    private fun visualSearchRecoveryActionLabel(actionType: VisualSearchRecoveryActionType): String = when (actionType) {
+        VisualSearchRecoveryActionType.RETAKE_PHOTO -> "Переснять фото"
+        VisualSearchRecoveryActionType.CHOOSE_CATEGORY_MANUALLY -> "Выбрать категорию"
+        VisualSearchRecoveryActionType.ADD_TEXT -> "Добавить текст"
+        VisualSearchRecoveryActionType.REFINE_INTENT -> "Уточнить цель"
+        VisualSearchRecoveryActionType.CONTINUE_WITHOUT_AI -> "Показать шире"
+        VisualSearchRecoveryActionType.RETRY -> "Повторить"
+    }
+
+    private fun trackVisualSearchEvent(
+        sessionId: String,
+        name: String,
+        payload: Map<String, String> = emptyMap(),
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                trackVisualSearchEvents(
+                    metadata = VisualSearchTransportMetadata(visualSessionId = sessionId),
+                    request = VisualSearchEventBatchRequest(
+                        events = listOf(
+                            VisualSearchEvent(
+                                name = name,
+                                happenedAtMs = System.currentTimeMillis(),
+                                payload = payload,
+                            ),
+                        ),
                     ),
                 )
             }
-            if (fallbackCandidates.isNotEmpty()) {
-                clearCatalogError()
-            }
         }
-    }
-
-    private fun stepForNextAction(action: VisionNextAction?): PhotoWizardStep? = when (action) {
-        VisionNextAction.ADD_TECH_PHOTO,
-        VisionNextAction.RETAKE_CLEAR_TEXT,
-            -> PhotoWizardStep.SPECS
-
-        VisionNextAction.ADD_BACK_PHOTO -> PhotoWizardStep.OPTIONAL
-        VisionNextAction.RETAKE_PHOTO -> PhotoWizardStep.FRONT
-        null -> null
-    }
-
-    private fun hintForNextAction(action: com.example.shoppingassistant.domain.vision.VisionNextAction?): String? {
-        return when (action) {
-            com.example.shoppingassistant.domain.vision.VisionNextAction.ADD_TECH_PHOTO ->
-                "Добавьте тех. фото (шильдик/наклейка) для точного распознавания."
-            com.example.shoppingassistant.domain.vision.VisionNextAction.ADD_BACK_PHOTO ->
-                "Добавьте заднюю сторону, чтобы уточнить характеристики."
-            com.example.shoppingassistant.domain.vision.VisionNextAction.RETAKE_CLEAR_TEXT ->
-                "Сделайте тех. фото крупнее и с читаемым текстом."
-            com.example.shoppingassistant.domain.vision.VisionNextAction.RETAKE_PHOTO ->
-                "Переснимите фото: попробуйте лучшую фокусировку."
-            null -> null
-        }
-    }
-
-    private fun syncTemplatePhotos(template: UiTemplate, wizard: PhotoWizardState): UiTemplate {
-        val photoUrls = wizard.allSlots().mapNotNull { it.uri?.takeIf { uri -> uri.isNotBlank() } }
-        val primary = wizard.appearanceSlots.firstOrNull { !it.uri.isNullOrBlank() }?.uri
-            ?: photoUrls.firstOrNull()
-        return template.copy(photoUrls = photoUrls, primaryPhotoUrl = primary)
     }
 
     fun onQueryChange(value: String) {
@@ -2321,6 +3473,10 @@ class MainPageViewModel(
         applyTemplate(updated) { it.copy(chosenText = null, boundSegments = emptyList()) }
         enforceTemplateConsistency(value.trimStart())
         updateSuggestions(value)
+    }
+
+    fun refreshSuggestionsForCurrentInput() {
+        updateSuggestions(_state.value.template.inputText)
     }
 
     fun onSuggestionChosen(text: String, product: Product?) {
@@ -2400,6 +3556,7 @@ class MainPageViewModel(
                 chosenText = null,
                 product = null,
                 attributeDefs = emptyList(),
+                attributeLiveValuesByKey = emptyMap(),
                 selectedFilters = emptyMap(),
                 requiredKeys = emptySet(),
                 errorKeys = emptySet(),
@@ -2424,8 +3581,7 @@ class MainPageViewModel(
                 createOfferMessage = null,
                 lastCreatedOfferId = null,
                 suggestions = emptyList(),
-                photoWizard = PhotoWizardState(),
-                categoryFallback = CategoryFallbackState(),
+                visualSearch = VisualSearchSessionState(),
             )
         }
         updateSuggestions("")
@@ -2438,6 +3594,7 @@ class MainPageViewModel(
                 chosenText = null,
                 product = null,
                 attributeDefs = emptyList(),
+                attributeLiveValuesByKey = emptyMap(),
                 selectedFilters = emptyMap(),
                 requiredKeys = emptySet(),
                 errorKeys = emptySet(),
@@ -2561,9 +3718,6 @@ class MainPageViewModel(
                 showFilterSheet = true,
                 filterStage = FilterStage.ATTRS,
                 currentAttrKey = null,
-                expressFillActive = false,
-                expressFillQueue = emptyList(),
-                expressFillNeedsPhoto = false,
                 facetCountsKey = null,
                 facetCounts = null,
                 facetCountsLoading = false,
@@ -2584,50 +3738,7 @@ class MainPageViewModel(
     }
 
     fun onPickAttributeValue(def: AttributeDef, value: String) {
-        val flowState = _state.value
-        val isFlowStep = flowState.expressFillActive && flowState.expressFillQueue.firstOrNull() == def.key
         setAttributeValue(def.key, value)
-        if (isFlowStep) {
-            val remaining = flowState.expressFillQueue.drop(1)
-            if (remaining.isNotEmpty()) {
-                val nextKey = remaining.first()
-                reduce {
-                    it.copy(
-                        showFilterSheet = true,
-                        filterStage = FilterStage.VALUES,
-                        currentAttrKey = nextKey,
-                        expressFillQueue = remaining,
-                    )
-                }
-                val nextDef = _state.value.attributeDefs.firstOrNull { it.key == nextKey }
-                requestFacetCounts(nextDef)
-            } else {
-                val needsPhoto = flowState.expressFillNeedsPhoto
-                reduce {
-                    it.copy(
-                        showFilterSheet = false,
-                        filterStage = FilterStage.ATTRS,
-                        currentAttrKey = null,
-                        expressFillActive = false,
-                        expressFillQueue = emptyList(),
-                        expressFillNeedsPhoto = false,
-                    )
-                }
-                if (needsPhoto) {
-                    openPhotoWizard(step = PhotoWizardStep.FRONT)
-                }
-            }
-            return
-        }
-        if (flowState.expressFillActive) {
-            reduce {
-                it.copy(
-                    expressFillActive = false,
-                    expressFillQueue = emptyList(),
-                    expressFillNeedsPhoto = false,
-                )
-            }
-        }
         reduce {
             it.copy(
                 showFilterSheet = false,
@@ -2656,9 +3767,6 @@ class MainPageViewModel(
                 it.copy(
                     filterStage = FilterStage.ATTRS,
                     currentAttrKey = null,
-                    expressFillActive = false,
-                    expressFillQueue = emptyList(),
-                    expressFillNeedsPhoto = false,
                     facetCountsKey = null,
                     facetCounts = null,
                     facetCountsLoading = false,
@@ -2667,9 +3775,6 @@ class MainPageViewModel(
                 it.copy(
                     showFilterSheet = false,
                     currentAttrKey = null,
-                    expressFillActive = false,
-                    expressFillQueue = emptyList(),
-                    expressFillNeedsPhoto = false,
                     facetCountsKey = null,
                     facetCounts = null,
                     facetCountsLoading = false,
@@ -2679,47 +3784,6 @@ class MainPageViewModel(
         if (wasValues) {
             refreshAttrFacetCountsIfVisible()
         }
-    }
-
-    fun startExpressFillFlow(): Boolean {
-        val state = _state.value
-        val selected = state.template.asSelectedFilters()
-        val hasPhotos = !state.template.primaryPhotoUrl.isNullOrBlank() || state.template.photoUrls.isNotEmpty()
-        val categoryKeys = categoryLevelKeysFor(
-            categoryCode = state.template.categoryCode,
-            defs = state.attributeDefs,
-        )
-        val expressKeys =
-            (categoryKeys + listOf("price", "condition") + state.template.requiredKeys).distinct()
-        val availableKeys = state.attributeDefs.map { it.key }.toSet()
-        val missingKeys = expressKeys.filter { key ->
-            key in availableKeys && selected[key].isNullOrBlank()
-        }
-        val needsPhoto = !hasPhotos
-        if (missingKeys.isEmpty()) {
-            if (needsPhoto) {
-                openPhotoWizard(step = PhotoWizardStep.FRONT)
-                return true
-            }
-            return false
-        }
-        val firstKey = missingKeys.first()
-        reduce {
-            it.copy(
-                showFilterSheet = true,
-                filterStage = FilterStage.VALUES,
-                currentAttrKey = firstKey,
-                expressFillActive = true,
-                expressFillQueue = missingKeys,
-                expressFillNeedsPhoto = needsPhoto,
-                facetCountsKey = null,
-                facetCounts = null,
-                facetCountsLoading = false,
-            )
-        }
-        val def = _state.value.attributeDefs.firstOrNull { it.key == firstKey }
-        requestFacetCounts(def)
-        return true
     }
 
     private fun refreshFacetCountsIfVisible() {
@@ -2967,12 +4031,12 @@ class MainPageViewModel(
     }
 
     fun attachLinkTemplate(linkTemplate: LinkTemplateRaw) {
-        val resolvedCategoryCode = resolveCategoryCode(linkTemplate.category)
+        val resolvedCategoryCode = linkTemplate.categoryCode.takeIf { it.isNotBlank() }
         val uiCatalogResult = runCatching {
             runBlocking {
                 attributeCatalogFor(
                     product = null,
-                    svc = attrSvc,
+                    liveValuesRepository = liveValuesRepository,
                     catalog = catalogRepository,
                     constraintsResolver = constraintsResolver,
                     categoryCode = resolvedCategoryCode,
@@ -2999,7 +4063,12 @@ class MainPageViewModel(
 
         if (uiCatalog.defs.isNotEmpty()) {
             rebuildDictionary(resolvedCategoryCode, uiCatalog.defs, uiCatalog.requiredIfRules)
-            _state.update { it.copy(attributeDefs = uiCatalog.defs) }
+            _state.update {
+                it.copy(
+                    attributeDefs = uiCatalog.defs,
+                    attributeLiveValuesByKey = uiCatalog.liveValuesByKey,
+                )
+            }
         } else {
             rebuildDictionary(resolvedCategoryCode, _state.value.attributeDefs, uiCatalog.requiredIfRules)
         }
@@ -3279,7 +4348,7 @@ class MainPageViewModel(
             val uiCatalogResult = runCatching {
                 attributeCatalogFor(
                     product = product,
-                    svc = attrSvc,
+                    liveValuesRepository = liveValuesRepository,
                     catalog = catalogRepository,
                     constraintsResolver = constraintsResolver,
                     categoryCode = resolvedCategory,
@@ -3316,13 +4385,15 @@ class MainPageViewModel(
                 .map { def -> def.copy(locked = def.key in lockedKeys) }
 
             var extended = ensureTemplateAttributes(defs, template.mode)
-            if (extended.isEmpty()) {
-                extended = if (resolvedCategory?.startsWith("TECH.") == true) defaultSearchAttributes() else emptyList()
-            }
             extended = withCategoryDefs(extended)
             val dictDefs = extended.filterNot { def -> isCategoryLevelKey(def.key) }
             rebuildDictionary(resolvedCategory, dictDefs, uiCatalog.requiredIfRules, uiCatalog.constraints)
-            _state.update { it.copy(attributeDefs = extended) }
+            _state.update {
+                it.copy(
+                    attributeDefs = extended,
+                    attributeLiveValuesByKey = uiCatalog.liveValuesByKey,
+                )
+            }
             val cleanedAttrs = filterTemplateAttributes(
                 attrs = template.attributes,
                 allowedKeys = dictDefs.map { it.key }.toSet(),
@@ -3338,24 +4409,6 @@ class MainPageViewModel(
         }
     }
 
-    private fun resolveCategoryCode(category: OfferCategory?): String? = when (category) {
-        OfferCategory.FAST_FOOD -> "FOOD.READY_MEALS"
-        OfferCategory.SUPPLEMENTS -> "BEAUTY.HEALTH"
-        OfferCategory.TECH -> "TECH.PHONES"
-        OfferCategory.ENTERTAINMENT_TOYS -> "KIDS.TOYS_GAMES"
-        else -> null
-    }
-
-    private fun defaultSearchAttributes(): List<AttributeDef> = listOf(
-        AttributeDef("brand", "Бренд", requiredForSearch = true, requiredForOffer = true),
-        AttributeDef("model", "Модель", requiredForSearch = true),
-        AttributeDef("color", "Цвет", options = listOf("black", "white", "gray")),
-        AttributeDef("storage", "Память", options = listOf("128GB", "256GB", "512GB")),
-        AttributeDef("condition", "Состояние", options = listOf("Новый", "Как новый", "Б/У")),
-        AttributeDef("price", "Цена", requiredForOffer = true, requiredForExpress = true),
-        AttributeDef("currency", "Валюта", options = listOf("RUB", "USD", "EUR"), requiredForOffer = true, requiredForExpress = true),
-    )
-
     private fun requiredKeysFor(mode: TemplateMode): Set<String> = when (mode) {
         TemplateMode.SearchOrSubscribe -> emptySet()
         TemplateMode.OfferFromLink -> linkRequiredKeys
@@ -3366,25 +4419,7 @@ class MainPageViewModel(
     private fun ensureTemplateAttributes(
         defs: List<AttributeDef>,
         mode: TemplateMode,
-    ): List<AttributeDef> {
-        if (mode == TemplateMode.SearchOrSubscribe) return defs
-
-        val mutable = defs.toMutableList()
-        val supportsBrand = defs.any { it.key == "brand" }
-        fun addIfMissing(key: String, title: String, options: List<String>) {
-            if (mutable.none { it.key == key }) {
-                mutable.add(AttributeDef(key, title, options))
-            }
-        }
-
-        if (supportsBrand) {
-            addIfMissing("brand", "Бренд", listOf("Указать бренд"))
-        }
-        addIfMissing("price", "Цена", listOf("Указать цену"))
-        addIfMissing("currency", "Валюта", listOf("RUB", "USD", "EUR"))
-        addIfMissing("condition", "Состояние", listOf("Новый", "Как новый", "Б/У"))
-        return mutable
-    }
+    ): List<AttributeDef> = defs
 
     private fun enforceTemplateConsistency(newQuery: String) {
         // Раньше мы жёстко сбрасывали шаблон при рассинхроне текста и бренда/модели.
@@ -3528,7 +4563,7 @@ class MainPageViewModel(
             val range = seg.range
             if (range.first < 0 || range.last >= newQuery.length) return@forEach
             val fragment = newQuery.substring(range.first, range.last + 1)
-            val matched = matchValue(def, fragment)
+            val matched = def?.let { matchFreeQueryAttributeValue(it, fragment) }
             if (matched != null) {
                 kept.add(seg.copy(value = matched, range = range))
                 filters[seg.key] = matched
@@ -3555,7 +4590,7 @@ class MainPageViewModel(
         var foundKey: String? = null
         var foundCanonical: String? = null
         attributeDefs.forEach { def ->
-            val canon = matchValue(def, focus)
+            val canon = matchFreeQueryAttributeValue(def, focus)
             if (canon != null) {
                 if (foundCanonical != null && foundCanonical != canon) {
                     return null // неоднозначно
@@ -3600,7 +4635,7 @@ class MainPageViewModel(
             var matchedKey: String? = null
             var matchedCanon: String? = null
             attributeDefs.forEach { def ->
-                val m = matchValue(def, token)
+                val m = matchFreeQueryAttributeValue(def, token)
                 if (m != null) {
                     if (matchedCanon != null && matchedCanon != m) {
                         matchedKey = null
@@ -3625,24 +4660,15 @@ class MainPageViewModel(
         return result
     }
 
-    private fun matchValue(def: AttributeDef?, text: String): String? {
-        if (def == null || isCategoryLevelKey(def.key)) return null
-        val normalized = text.trim().lowercase()
-        if (normalized.isBlank()) return null
-        val values = def.allowedValues.ifEmpty {
-            def.options.map { ValueDef(canonical = it, synonyms = listOf(it)) }
-        }
-        values.forEach { v ->
-            if (v.canonical.equals(normalized, ignoreCase = true)) return v.canonical
-            if (v.synonyms.any { syn -> syn.equals(normalized, ignoreCase = true) }) return v.canonical
-            if (normalized.length >= 3 &&
-                (v.canonical.startsWith(normalized, ignoreCase = true) ||
-                        v.synonyms.any { syn -> syn.startsWith(normalized, ignoreCase = true) })
-            ) {
-                return v.canonical
-            }
-        }
-        return null
+    private fun parseAttributesFromFreeQuery(
+        queryText: String,
+        attributeDefs: List<AttributeDef>,
+    ): Map<String, String> {
+        val defs = attributeDefs.filterNot { def -> isCategoryLevelKey(def.key) }
+        return parseFreeQueryAttributes(
+            queryText = queryText,
+            attributeDefs = defs,
+        )
     }
 
     fun submitQuery(displayText: String? = null) {
@@ -3684,6 +4710,152 @@ class MainPageViewModel(
         private const val NEARBY_FETCH_DEBOUNCE_MS = 250L
         private const val NEARBY_COUNT_DEBOUNCE_MS = 250L
         private const val NEARBY_PRIVACY_DECIMALS = 3
+        private const val visualSearchFallbackAnchorConfidence = 0.55f
+        private const val visualSearchFallbackModelCandidateConfidence = 0.42f
+        private const val visualSearchFallbackExactModelConfidence = 0.92f
+        private val textLineBreakRegex = Regex("[\\r\\n]+")
+        private val visualSearchExactIdentitySources = setOf(
+            "TEXT_EXACT",
+            "LOGO_EXACT",
+            "BARCODE_EXACT",
+            "USER_HINT",
+            "CATALOG_SHORTLIST",
+        )
+        private val visualSearchVisualAnchorSources = setOf(
+            "VISUAL_DISTINCTIVE",
+            "VISUAL_PATTERN",
+        )
+        private val genericVisualSearchPreviewTitles = setOf(
+            "item from photo",
+            "photo search",
+            "product from photo",
+            "search by photo",
+            "visual search",
+            "поиск по фото",
+            "товар по фото",
+            "предмет по фото",
+            "объект по фото",
+        )
+        private val genericVisualSearchIdentityAnchors = setOf(
+            "accessory",
+            "battery",
+            "bracelet",
+            "camera",
+            "candy",
+            "charger",
+            "chocolate",
+            "coffee",
+            "console",
+            "cutlery",
+            "drink",
+            "grocery",
+            "headphones",
+            "honey",
+            "hoodie",
+            "jacket",
+            "jeans",
+            "laptop",
+            "mouse",
+            "pants",
+            "phone",
+            "product",
+            "shoe",
+            "shoes",
+            "shirt",
+            "smartphone",
+            "sneakers",
+            "speaker",
+            "suit",
+            "sweater",
+            "tea",
+            "thermometer",
+            "watch",
+            "wrist watch",
+        )
+        private val strongVisualSearchTokens = setOf(
+            "мыш",
+            "клавиат",
+            "ноутбук",
+            "смартфон",
+            "телефон",
+            "науш",
+            "монитор",
+            "телевиз",
+            "пульт",
+            "часы",
+            "сумк",
+            "обув",
+            "камера",
+            "bar",
+            "model",
+            "mouse",
+            "keyboard",
+            "headphone",
+            "laptop",
+            "smartphone",
+            "phone",
+            "monitor",
+            "tv",
+        )
+        private val weakVisualSearchFallbackTerms = setOf(
+            "товар по фото",
+            "предмет",
+            "объект",
+            "текст",
+            "изображение",
+            "tableware",
+            "cutlery",
+            "dishware",
+            "kitchenware",
+            "serveware",
+            "flatware",
+            "silverware",
+            "utensil",
+            "utensils",
+            "посуда",
+            "посуда и кухня",
+            "кухня",
+            "wall",
+            "room",
+            "home",
+            "interior",
+            "furniture",
+            "screen",
+            "display",
+        )
+        private val weakVisualSearchFallbackTokens = setOf(
+            "tableware",
+            "cutlery",
+            "dishware",
+            "kitchenware",
+            "serveware",
+            "flatware",
+            "silverware",
+            "utensil",
+            "посуда",
+            "кухн",
+            "interior",
+            "room",
+            "wall",
+            "floor",
+            "ceiling",
+            "furniture",
+        )
+        private val computerMouseVisualSearchPhrases = setOf(
+            "computer mouse",
+            "wireless mouse",
+            "gaming mouse",
+            "pc mouse",
+            "optical mouse",
+            "компьютерная мышь",
+            "беспроводная мышь",
+            "игровая мышь",
+            "оптическая мышь",
+        )
+        private val computerMouseVisualSearchTokens = setOf(
+            "mouse",
+            "мышь",
+        )
     }
 }
 

@@ -2,11 +2,12 @@ package com.example.shoppingassistant.core.data.template.presets.generate
 
 import com.example.shoppingassistant.core.data.db.AttributeValueStat
 import com.example.shoppingassistant.core.data.db.ProductDao
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
-import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintCheckResult
+import com.example.shoppingassistant.domain.i18n.displayLabel
 import com.example.shoppingassistant.domain.template.TemplateAnchorType
 import com.example.shoppingassistant.domain.template.TemplateIdTask
 import com.example.shoppingassistant.domain.template.TemplateSnapshotAttr
@@ -22,7 +23,7 @@ import com.example.shoppingassistant.domain.template.presets.generate.PresetAnch
 class GenerateTemplatePresetsTaskImpl(
     private val anchorSource: PresetAnchorSource,
     private val dao: ProductDao,
-    private val catalogRepository: CatalogRepository,
+    private val catalogRepository: CatalogReadRepository,
     private val constraintsResolver: CatalogConstraintsResolver,
     private val idTask: TemplateIdTask,
     private val presetsRepository: TemplatePresetsRepository,
@@ -31,16 +32,17 @@ class GenerateTemplatePresetsTaskImpl(
     override suspend fun generate(request: GenerateTemplatePresetsRequest): List<TemplatePreset> {
         val categoryCode = request.categoryCode.trim()
         if (categoryCode.isBlank()) return emptyList()
-
-        val profile = catalogRepository.getCategoryProfile(categoryCode) ?: return emptyList()
         val anchors = anchorSource.listTopAnchors(request.limit)
             .filter { it.samples >= request.minSamples }
 
         val presets = anchors.mapNotNull { anchor ->
-            val constraints = catalogRepository.listConstraints(categoryCode, anchor.brand, anchor.model)
+            val spec = catalogRepository.getCategoryEffectiveSpec(
+                categoryCode = categoryCode,
+                brand = anchor.brand,
+                model = anchor.model,
+            ) ?: return@mapNotNull null
             val attrs = buildAttributes(
-                profile = profile,
-                constraints = constraints,
+                spec = spec,
                 brand = anchor.brand,
                 model = anchor.model,
                 maxAttributes = request.maxAttributes,
@@ -71,8 +73,7 @@ class GenerateTemplatePresetsTaskImpl(
     }
 
     private suspend fun buildAttributes(
-        profile: CategoryProfile,
-        constraints: List<CatalogConstraints>,
+        spec: CatalogCategoryEffectiveSpec,
         brand: String,
         model: String,
         maxAttributes: Int,
@@ -81,7 +82,8 @@ class GenerateTemplatePresetsTaskImpl(
         attrs["brand"] = brand
         attrs["model"] = model
 
-        val profileKeys = profile.attributes.map { it.code }.toSet()
+        val allAttributes = spec.allAttributes()
+        val profileKeys = allAttributes.map { it.code }.toSet()
         val statsByKey = dao.attributeValueStats(brand, model)
             .mapNotNull { stat ->
                 val mapped = mapDbKeyToProfileKey(stat.key, profileKeys) ?: return@mapNotNull null
@@ -89,37 +91,36 @@ class GenerateTemplatePresetsTaskImpl(
             }
             .groupBy({ it.first }, { it.second })
 
-        val orderedKeys = profile.categoryAttributes
+        val orderedKeys = allAttributes
             .sortedBy { it.uiOrder }
-            .map { it.attributeCode }
+            .map { it.code }
             .filterNot { it == "brand" || it == "model" }
 
-        val dictByAttr = profile.valueDictionaries.associateBy { it.attributeCode }
         var picked = 0
         for (key in orderedKeys) {
             if (picked >= maxAttributes) break
             val stats = statsByKey[key].orEmpty()
             if (stats.isEmpty()) continue
 
-            val constraintResult = constraintsResolver.evaluate(constraints, attrs)
+            val constraintResult = constraintsResolver.evaluate(spec.constraints, attrs)
             val value = pickValue(
                 stats = stats,
                 constraintResult = constraintResult,
                 attributeCode = key,
-                dictEntries = dictByAttr[key]?.entries.orEmpty(),
+                dictEntries = allAttributes.firstOrNull { it.code == key }?.options.orEmpty(),
             ) ?: continue
 
             attrs[key] = value
             picked++
         }
 
-        val violations = constraintsResolver.evaluate(constraints, attrs).violations
+        val violations = constraintsResolver.evaluate(spec.constraints, attrs).violations
         if (violations.isNotEmpty()) {
             val cleaned = attrs.toMutableMap()
             violations.keys.forEach { key ->
                 if (key != "brand" && key != "model") cleaned.remove(key)
             }
-            val finalViolations = constraintsResolver.evaluate(constraints, cleaned).violations
+            val finalViolations = constraintsResolver.evaluate(spec.constraints, cleaned).violations
             if (finalViolations.isNotEmpty()) return emptyMap()
             return cleaned
         }
@@ -131,7 +132,7 @@ class GenerateTemplatePresetsTaskImpl(
         stats: List<AttributeValueStat>,
         constraintResult: ConstraintCheckResult,
         attributeCode: String,
-        dictEntries: List<com.example.shoppingassistant.domain.catalog.AttributeValueDictEntry>,
+        dictEntries: List<com.example.shoppingassistant.domain.catalog.CatalogValueOption>,
     ): String? {
         val allowed = constraintResult.allowedValuesByAttribute[attributeCode].orEmpty()
         val forbidden = constraintResult.forbiddenValuesByAttribute[attributeCode].orEmpty()
@@ -154,16 +155,22 @@ class GenerateTemplatePresetsTaskImpl(
 
     private fun resolveCanonical(
         raw: String,
-        dictEntries: List<com.example.shoppingassistant.domain.catalog.AttributeValueDictEntry>,
+        dictEntries: List<com.example.shoppingassistant.domain.catalog.CatalogValueOption>,
     ): String? {
         if (dictEntries.isEmpty()) return null
         val trimmed = raw.trim()
-        dictEntries.firstOrNull { it.canonicalValue.equals(trimmed, ignoreCase = true) }
-            ?.let { return it.canonicalValue }
+        dictEntries.firstOrNull { entry ->
+            entry.valueCode.equals(trimmed, ignoreCase = true) ||
+                entry.displayLabel().equals(trimmed, ignoreCase = true)
+        }?.let { return it.valueCode }
         return dictEntries.firstOrNull { entry ->
-            entry.synonyms.any { syn -> syn.equals(trimmed, ignoreCase = true) }
-        }?.canonicalValue
+            entry.aliases.any { syn -> syn.equals(trimmed, ignoreCase = true) } ||
+                entry.labels.values.any { label -> label.equals(trimmed, ignoreCase = true) }
+        }?.valueCode
     }
+
+    private fun com.example.shoppingassistant.domain.catalog.CatalogValueOption.displayLabel(): String =
+        labels.resolve(locale = "ru", fallback = valueCode) ?: valueCode
 
     private fun mapDbKeyToProfileKey(dbKey: String, profileKeys: Set<String>): String? {
         val canonical = canonicalKey(dbKey)

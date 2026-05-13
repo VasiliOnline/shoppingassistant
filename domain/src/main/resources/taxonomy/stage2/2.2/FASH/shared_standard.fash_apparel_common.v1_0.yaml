@@ -1,0 +1,63 @@
+version: '1.0'
+standard_code: FASH.APPAREL_COMMON
+artifact_type: shared_standard_pack
+do_not_create_canonical_category: true
+runtime_inheritance:
+  enabled: true
+  shared_profiles_file: shared_profiles.fash.json
+  extends_field: extendsProfiles
+materialized_into:
+- FASH.MEN
+- FASH.WOMEN
+- FASH.KIDS
+excluded_public_categories:
+- FASH.SHOES
+- FASH.BAGS
+- FASH.ACCESSORIES
+source_pack: C:\Users\Asus\Downloads\FASH_APPAREL_COMMON_shared_standard_pack_v1_0_RU
+hardening:
+  field_groups:
+    measurements:
+      type: ui_group
+      expands_to:
+      - chest_cm
+      - waist_cm
+      - hips_cm
+      - shoulder_cm
+      - sleeve_cm
+      - inseam_cm
+      - total_length_cm
+  alias_target_formats:
+    dictionary_value:
+      format: '{dictionary_code}:{value_code}'
+      example: condition:NEW
+      adapter_required: true
+  inheritance_contract:
+    effective_spec: child_profile = extendsProfiles(FASH.APPAREL_COMMON) + child overrides
+    duplicate_attribute_codes: false
+    public_category_code: false
+runtime_contract:
+  initial_form_limit: 8
+  common_initial_fields:
+  - apparel_type
+  - condition
+  - size_system
+  - size_label
+  - color_primary
+  - material_primary
+  - brand
+  common_advanced_fields:
+  - pattern
+  - style_aesthetic
+  - occasion
+  - measurements
+  - defect_type
+  - model_or_line_text
+  - care_instruction
+  hidden_system_fields:
+  - apparel_type_group
+  - size_text_raw
+  - brand_text_raw
+  - visual_evidence_flags
+  - normalization_confidence
+  - source_text_evidence

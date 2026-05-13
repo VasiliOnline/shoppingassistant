@@ -9,6 +9,8 @@ object AppRoutes {
     const val MainRoute = "$Main?$ArgOpenSearchHub={$ArgOpenSearchHub}"
     const val Ingest = "ingest"
     const val Profile = "profile"
+    const val ArgProfileUserId = "userId"
+    const val ProfileRoute = "$Profile?$ArgProfileUserId={$ArgProfileUserId}"
     const val FeedCategories = "feedCategories"
 
     const val TrackedItems = "tracked_items"
@@ -18,6 +20,7 @@ object AppRoutes {
     const val TrackedItemsEvents = "tracked_items/{$ArgTrackId}/events"
 
     const val Chat = "chat"
+    const val Offer = "offer"
     const val ArgOfferId = "offerId"
     const val ArgSellerName = "sellerName"
     const val ArgOfferTitle = "offerTitle"
@@ -29,6 +32,11 @@ object AppRoutes {
     const val ArgSourceName = "sourceName"
     const val ArgQuerySessionId = "querySessionId"
     const val ArgPosition = "position"
+    const val OfferRoute =
+        "$Offer?" +
+            "$ArgOfferId={$ArgOfferId}&" +
+            "$ArgQuerySessionId={$ArgQuerySessionId}&" +
+            "$ArgPosition={$ArgPosition}"
     const val ChatRoute =
         "$Chat?" +
             "$ArgOfferId={$ArgOfferId}&" +
@@ -62,6 +70,23 @@ object AppRoutes {
     fun trackedItemsTop10(trackId: String): String = "tracked_items/$trackId/top10"
     fun trackedItemsEdit(trackId: String): String = "tracked_items/$trackId/edit"
     fun trackedItemsEvents(trackId: String): String = "tracked_items/$trackId/events"
+    fun profile(userId: Long? = null): String =
+        if (userId == null) {
+            Profile
+        } else {
+            "$Profile?$ArgProfileUserId=$userId"
+        }
+
+    fun offer(
+        offerId: String,
+        querySessionId: String? = null,
+        position: Int? = null,
+    ): String = buildString {
+        append("$Offer?")
+        append("$ArgOfferId=${Uri.encode(offerId)}")
+        append("&$ArgQuerySessionId=${Uri.encode(querySessionId.orEmpty())}")
+        append("&$ArgPosition=${position ?: ""}")
+    }
 
     fun chat(
         offerId: String,

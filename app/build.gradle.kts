@@ -22,6 +22,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
     }
 
@@ -41,6 +42,18 @@ android {
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
+
+    // Build separate APKs per ABI so emulator/device installs only the matching native libs.
+    // This avoids the oversized universal debug APK produced by ML Kit and MapLibre binaries.
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("x86", "x86_64", "arm64-v8a", "armeabi-v7a")
+            isUniversalApk = false
+        }
+    }
+
     buildToolsVersion = "36.0.0"
 }
 
@@ -78,6 +91,11 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     testImplementation("junit:junit:4.13.2")
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // FCM push (реальные push-уведомления через Firebase Cloud Messaging)
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))

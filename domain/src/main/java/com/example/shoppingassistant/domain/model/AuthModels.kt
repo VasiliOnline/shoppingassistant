@@ -9,6 +9,8 @@ data class AuthUser(
     val email: String,
     val displayName: String?,
     val phone: String?,
+    val pendingPhone: String? = null,
+    val pendingPhoneRequestedAt: Long? = null,
     val avatarUrl: String?,
     val city: String?,
     val emailVerified: Boolean = false,

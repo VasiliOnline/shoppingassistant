@@ -3,6 +3,7 @@ package com.example.shoppingassistant.core.data.offers
 import com.example.shoppingassistant.core.config.BackendConfig
 import com.example.shoppingassistant.core.network.BackendClient
 import com.example.shoppingassistant.domain.auth.AuthRepository
+import com.example.shoppingassistant.domain.model.OfferDetailsPage
 import com.example.shoppingassistant.domain.model.OfferFull
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsRequest
@@ -10,6 +11,7 @@ import com.example.shoppingassistant.domain.model.OfferSearchWithFacetsResponse
 import com.example.shoppingassistant.domain.model.PresetObservabilityBatchRequest
 import com.example.shoppingassistant.domain.model.PresetObservabilityBatchResponse
 import io.ktor.client.call.body
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -48,6 +50,30 @@ class OfferRemoteDataSourceImpl(
             emptyList()
         } else {
             emptyList()
+        }
+    }
+
+    override suspend fun getOfferDetails(
+        offerId: String,
+        bearerToken: String?,
+    ): OfferDetailsPage? {
+        val client = backendClient.client
+        val token = bearerToken ?: authRepository.currentToken()
+
+        val response: HttpResponse = client.get("$baseUrl/api/offers/$offerId") {
+            if (!token.isNullOrBlank()) {
+                header("Authorization", ensureBearer(token))
+            }
+        }
+
+        return when (response.status) {
+            HttpStatusCode.OK -> response.body()
+            HttpStatusCode.NotFound -> null
+            HttpStatusCode.Unauthorized -> {
+                authRepository.logout()
+                throw IllegalStateException("Unauthorized")
+            }
+            else -> throw IllegalStateException("Failed to fetch offer details: ${response.status}")
         }
     }
 

@@ -1,0 +1,734 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ShoppingAssistant Catalog Runtime API",
+    "version": "2.2.0",
+    "description": "Server-authoritative runtime contract for catalog effective spec, taxonomy, readiness, governance, live-values, and compatibility negotiation."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/catalog/version": {
+      "get": {
+        "operationId": "getCatalogVersion",
+        "summary": "Resolve runtime schema and data version",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime version payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogVersionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/runtime-compatibility": {
+      "get": {
+        "operationId": "getCatalogRuntimeCompatibility",
+        "summary": "Read machine-readable runtime compatibility policy",
+        "responses": {
+          "200": {
+            "description": "Compatibility policy response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogRuntimeCompatibilityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/openapi.json": {
+      "get": {
+        "operationId": "getCatalogOpenApiDocument",
+        "summary": "Read the formal OpenAPI contract for catalog runtime endpoints",
+        "responses": {
+          "200": {
+            "description": "OpenAPI document",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/categories": {
+      "get": {
+        "operationId": "listCatalogCategories",
+        "summary": "List taxonomy categories",
+        "responses": {
+          "200": {
+            "description": "Taxonomy categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/categories/{categoryCode}/resolve": {
+      "get": {
+        "operationId": "resolveCatalogCategory",
+        "summary": "Resolve deprecated category codes to canonical targets",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryCodePath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category redirect resolution",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogCategoryResolveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/catalog/aliases": {
+      "get": {
+        "operationId": "listCategoryAliases",
+        "summary": "List category aliases",
+        "responses": {
+          "200": {
+            "description": "Alias list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/browse-nodes": {
+      "get": {
+        "operationId": "listBrowseNodes",
+        "summary": "List browse nodes",
+        "responses": {
+          "200": {
+            "description": "Browse node list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/browse-nodes/{browseCode}": {
+      "get": {
+        "operationId": "getBrowseNode",
+        "summary": "Get a browse node by code",
+        "parameters": [
+          {
+            "name": "browseCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Browse node payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/catalog/alias-entries": {
+      "get": {
+        "operationId": "listAliasEntries",
+        "summary": "List typed alias entries",
+        "parameters": [
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alias entry rows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/google-mappings": {
+      "get": {
+        "operationId": "listGoogleTaxonomyMappings",
+        "summary": "List Google taxonomy mappings or mapping for a category",
+        "parameters": [
+          {
+            "name": "categoryCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Google taxonomy mappings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/google-mappings/{categoryCode}": {
+      "get": {
+        "operationId": "getGoogleTaxonomyMapping",
+        "summary": "Get Google taxonomy mapping by category code",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryCodePath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Google taxonomy mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/catalog/effective-spec/{categoryCode}": {
+      "get": {
+        "operationId": "getCatalogEffectiveSpec",
+        "summary": "Get category effective spec",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryCodePath"
+          },
+          {
+            "$ref": "#/components/parameters/BrandQuery"
+          },
+          {
+            "$ref": "#/components/parameters/ModelQuery"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Effective spec payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogCategoryEffectiveSpec"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/catalog/readiness": {
+      "get": {
+        "operationId": "getCatalogReadinessInventory",
+        "summary": "Get readiness inventory for all visible categories",
+        "responses": {
+          "200": {
+            "description": "Readiness inventory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogReadinessInventoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/readiness/governance": {
+      "get": {
+        "operationId": "getCatalogReadinessGovernance",
+        "summary": "Get governance policy and release metadata",
+        "responses": {
+          "200": {
+            "description": "Governance response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogReadinessGovernanceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/readiness/governance/reports": {
+      "get": {
+        "operationId": "listCatalogGovernanceReports",
+        "summary": "List persisted governance automation reports",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Governance reports",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogGovernanceReportsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/readiness/{categoryCode}/history": {
+      "get": {
+        "operationId": "getCatalogReadinessHistory",
+        "summary": "Get readiness history for one category",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/CategoryCodePath"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 90
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "History response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogReadinessHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/catalog/live-values": {
+      "get": {
+        "operationId": "getCatalogLiveValues",
+        "summary": "Get live enrichment values separate from canonical effective spec",
+        "parameters": [
+          {
+            "name": "categoryCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/BrandQuery"
+          },
+          {
+            "$ref": "#/components/parameters/ModelQuery"
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attributeCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Live values snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogLiveValuesSnapshot"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/sources": {
+      "get": {
+        "operationId": "getCatalogGovernanceSources",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/sources",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/refresh-status": {
+      "get": {
+        "operationId": "getCatalogGovernanceRefreshStatus",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/refresh-status",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/refresh-runs": {
+      "get": {
+        "operationId": "getCatalogGovernanceRefreshRuns",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/refresh-runs",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/model-enrichment-queue": {
+      "get": {
+        "operationId": "getCatalogGovernanceModelEnrichmentQueue",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/model-enrichment-queue",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/model-enrichment-promote": {
+      "get": {
+        "operationId": "getCatalogGovernanceModelEnrichmentPromote",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/model-enrichment-promote",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/review-queue": {
+      "get": {
+        "operationId": "getCatalogGovernanceReviewQueue",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/review-queue",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/review-action": {
+      "get": {
+        "operationId": "getCatalogGovernanceReviewAction",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/review-action",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/publish-events": {
+      "get": {
+        "operationId": "getCatalogGovernancePublishEvents",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/publish-events",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/refresh": {
+      "get": {
+        "operationId": "getCatalogGovernanceRefresh",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/refresh",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/governance/rebuild": {
+      "get": {
+        "operationId": "getCatalogGovernanceRebuild",
+        "summary": "Catalog runtime endpoint /api/catalog/governance/rebuild",
+        "responses": {
+          "200": {
+            "description": "Catalog runtime response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "CategoryCodePath": {
+        "name": "categoryCode",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "BrandQuery": {
+        "name": "brand",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "ModelQuery": {
+        "name": "model",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request is invalid"
+      },
+      "NotFound": {
+        "description": "Requested entity was not found"
+      }
+    },
+    "schemas": {
+      "Category": {
+        "type": "object"
+      },
+      "CatalogCategoryResolveResponse": {
+        "type": "object"
+      },
+      "CatalogCategoryEffectiveSpec": {
+        "type": "object",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_category_effective_spec.schema.json"
+      },
+      "CatalogVersionResponse": {
+        "type": "object",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/versionResponse"
+      },
+      "CatalogReadinessInventoryResponse": {
+        "type": "array",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/inventoryResponse"
+      },
+      "CatalogReadinessHistoryResponse": {
+        "type": "object",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/historyResponse"
+      },
+      "CatalogReadinessGovernanceResponse": {
+        "type": "object",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/governanceResponse"
+      },
+      "CatalogGovernanceReportsResponse": {
+        "type": "array",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/governanceReportsResponse"
+      },
+      "CatalogRuntimeCompatibilityResponse": {
+        "type": "object",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/runtimeCompatibilityResponse"
+      },
+      "CatalogLiveValuesSnapshot": {
+        "type": "object",
+        "x-registrySchemaRef": "taxonomy/stage2/2.2/_registry/catalog_runtime_contract.schema.json#/$defs/liveValuesSnapshot"
+      }
+    }
+  }
+}

@@ -1,10 +1,9 @@
 package com.example.shoppingassistant.core.data.link
 
-import com.example.shoppingassistant.domain.ingest.SourceType
-import com.example.shoppingassistant.domain.offers.OfferCategory
 import com.example.shoppingassistant.domain.offers.TrackedOfferInput
 import com.example.shoppingassistant.domain.offers.TrackedOfferSource
 import com.example.shoppingassistant.domain.model.Normalization
+import java.util.Locale
 
 /**
  * Чистый маппер LinkTemplateRaw + selectedFilters → TrackedOfferInput.
@@ -31,7 +30,9 @@ class LinkTemplateMapperImpl : LinkTemplateMapperTask {
             title = selectedFilters["title"]
                 ?: template.title
                 ?: listOfNotNull(brand, model).joinToString(" ").ifBlank { "Предложение" },
-            category = template.category.takeIf { it != OfferCategory.OTHER } ?: OfferCategory.TECH,
+            categoryCode = template.categoryCode.trim().uppercase(Locale.ROOT).ifBlank { null },
+            categoryConfidence = template.categoryConfidence.coerceIn(0.0, 1.0),
+            parserVersion = template.parserVersion.trim().takeIf { it.isNotEmpty() },
             brand = brand,
             model = model,
             priceValue = price,

@@ -2,10 +2,11 @@ package com.example.shoppingassistant.server.catalog
 
 import com.example.shoppingassistant.domain.catalog.AttributeCondition
 import com.example.shoppingassistant.domain.catalog.AttributeDataType
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryReadiness
 import com.example.shoppingassistant.domain.catalog.AttributeDef
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryWriteSpec
 import com.example.shoppingassistant.domain.catalog.Category
 import com.example.shoppingassistant.domain.catalog.CategoryAttribute
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
 import com.example.shoppingassistant.domain.catalog.CategorySegment
 import com.example.shoppingassistant.domain.catalog.CategoryStatus
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
@@ -14,11 +15,14 @@ import com.example.shoppingassistant.domain.catalog.Stage22ValueType
 import com.example.shoppingassistant.domain.catalog.Stage40RequiredIfCondition
 import com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import com.example.shoppingassistant.server.config.DatabaseConfig
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -45,27 +49,27 @@ class CatalogRepositoryImplIntegrationTest {
 
         val repository = CatalogRepositoryImpl()
 
-        val categoryOnly = repository.listConstraints(
+        val categoryOnly = repository.loadConstraints(
             categoryCode = "TECH.PHONES",
             brand = null,
             model = null,
         )
         assertEquals(listOf(ConstraintScope.CATEGORY), categoryOnly.map { it.scope })
 
-        val withModel = repository.listConstraints(
+        val withModel = repository.loadConstraints(
             categoryCode = "TECH.PHONES",
             brand = "apple",
             model = "iphone 16 pro",
         )
         assertEquals(
-            listOf(ConstraintScope.CATEGORY, ConstraintScope.MODEL),
+            listOf(ConstraintScope.CATEGORY, ConstraintScope.BRAND, ConstraintScope.MODEL),
             withModel.map { it.scope },
         )
 
-        val unmatchedBrandModel = repository.listConstraints(
+        val unmatchedBrandModel = repository.loadConstraints(
             categoryCode = "TECH.PHONES",
-            brand = "Samsung",
-            model = "Galaxy S24",
+            brand = "Nokia",
+            model = "3310",
         )
         assertEquals(listOf(ConstraintScope.CATEGORY), unmatchedBrandModel.map { it.scope })
     }
@@ -75,7 +79,7 @@ class CatalogRepositoryImplIntegrationTest {
         requireDocker()
 
         val repository = CatalogRepositoryImpl()
-        val result = repository.listConstraints(
+        val result = repository.loadConstraints(
             categoryCode = "UNKNOWN.CATEGORY",
             brand = "Apple",
             model = "iPhone 16 Pro",
@@ -113,7 +117,49 @@ class CatalogRepositoryImplIntegrationTest {
     }
 
     @Test
-    fun upsertProfile_roundTrip_persistsRequiredIfRules_andPreservesOtherCategoryRules() = runBlocking {
+    fun getCategoryEffectiveSpec_downgrades_leaf_readiness_when_operational_metrics_are_insufficient() = runBlocking {
+        requireDocker()
+
+        DatabaseFactory.dbQuery {
+            CatalogStage4ExecutionMetricsTable.deleteAll()
+            repeat(2) { index ->
+                CatalogStage4ExecutionMetricsTable.insert { stmt ->
+                    stmt[metricDate] = kotlinx.datetime.Clock.System.now()
+                        .toLocalDateTime(kotlinx.datetime.TimeZone.UTC)
+                        .date
+                    stmt[stream] = Stage4ExecutionStream.OFFERS_INGEST.code
+                    stmt[normalizedCount] = 5
+                    stmt[droppedCount] = 0
+                    stmt[logicalDedupCount] = 0
+                    stmt[unknownAttributeCount] = 0
+                    stmt[reasonCodes] = emptyList()
+                    stmt[metadata] = mapOf(
+                        "categoryCode" to "TECH.PHONES",
+                        "operation" to "test-$index",
+                        "requiredForCategoryMissingCount" to "0",
+                        "categoryConfidenceLowCount" to "0",
+                    )
+                    stmt[createdAt] = System.currentTimeMillis() + index
+                }
+            }
+        }
+
+        val repository = CatalogRepositoryImpl()
+        val spec = assertNotNull(repository.getCategoryEffectiveSpec("TECH.PHONES"))
+
+        assertEquals(CatalogCategoryReadiness.BETA, spec.readiness)
+        assertEquals(CatalogCategoryReadiness.READY, spec.meta.editorialReadiness)
+        assertEquals(CatalogCategoryReadiness.BETA, spec.meta.operationalReadiness)
+        assertTrue(
+            spec.meta.readinessBlockingIssues.any { it.startsWith("operational_samples_below_min:") },
+        )
+        assertTrue(
+            spec.meta.operationalBlockingIssues.any { it.startsWith("operational_samples_below_min:") },
+        )
+    }
+
+    @Test
+    fun upsertCategorySpec_roundTrip_persistsRequiredIfRules_andPreservesOtherCategoryRules() = runBlocking {
         requireDocker()
 
         val repository = CatalogRepositoryImpl()
@@ -208,13 +254,13 @@ class CatalogRepositoryImplIntegrationTest {
             }
         }
 
-        repository.upsertProfile(
-            CategoryProfile(
+        repository.upsertCategorySpec(
+            CatalogCategoryWriteSpec(
                 category = Category(
                     code = categoryCode,
                     segment = CategorySegment.TECH,
                     status = CategoryStatus.ACTIVE,
-                    title = "RequiredIf Upsert Test",
+                    title = localizedTextOf("ru" to "RequiredIf Upsert Test"),
                 ),
                 attributes = listOf(
                     AttributeDef(
@@ -254,9 +300,8 @@ class CatalogRepositoryImplIntegrationTest {
             ),
         )
 
-        val storedProfile = repository.getCategoryProfile(categoryCode)
-        assertNotNull(storedProfile)
-        val persistedRule = storedProfile.requiredIfRules.singleOrNull {
+        val storedSpec = assertNotNull(repository.getCategoryEffectiveSpec(categoryCode))
+        val persistedRule = storedSpec.requiredIfRules.singleOrNull {
             it.requiredAttributeCode == requiredAttributeCode
         }
         assertNotNull(persistedRule)
@@ -366,3 +411,4 @@ class CatalogRepositoryImplIntegrationTest {
         }
     }
 }
+

@@ -8,8 +8,27 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "FASH",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -20,133 +39,17 @@
       "title": "Женская одежда",
       "parentCode": "FASH",
       "description": null,
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "titleRu": "Женская одежда",
+      "titleEn": "Women's clothing"
     },
-    "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "model_line",
-        "title": "Линейка",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "gender",
-        "title": "Пол",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "gender"
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
-        "code": "size_eu",
-        "title": "Размер EU",
-        "dataType": "DECIMAL",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "colorway",
-        "title": "Окраска/колорвей",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "material",
-        "title": "Материал",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "material"
-      }
-    ],
-    "categoryAttributes": [
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "brand",
-        "uiOrder": 1,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "model_line",
-        "uiOrder": 2,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "gender",
-        "uiOrder": 3,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "condition",
-        "uiOrder": 4,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "size_eu",
-        "uiOrder": 5,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "colorway",
-        "uiOrder": 6,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "FASH.WOMEN",
-        "attributeCode": "material",
-        "uiOrder": 7,
-        "isRequiredForCategory": false
-      }
-    ],
+    "attributes": [],
+    "categoryAttributes": [],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "FASH.APPAREL_COMMON"
+    ]
   },
   {
     "category": {
@@ -155,133 +58,17 @@
       "title": "Мужская одежда",
       "parentCode": "FASH",
       "description": null,
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "titleRu": "Мужская одежда",
+      "titleEn": "Men's clothing"
     },
-    "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "model_line",
-        "title": "Линейка",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "gender",
-        "title": "Пол",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "gender"
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
-        "code": "size_eu",
-        "title": "Размер EU",
-        "dataType": "DECIMAL",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "colorway",
-        "title": "Окраска/колорвей",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "material",
-        "title": "Материал",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "material"
-      }
-    ],
-    "categoryAttributes": [
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "brand",
-        "uiOrder": 1,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "model_line",
-        "uiOrder": 2,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "gender",
-        "uiOrder": 3,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "condition",
-        "uiOrder": 4,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "size_eu",
-        "uiOrder": 5,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "colorway",
-        "uiOrder": 6,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "FASH.MEN",
-        "attributeCode": "material",
-        "uiOrder": 7,
-        "isRequiredForCategory": false
-      }
-    ],
+    "attributes": [],
+    "categoryAttributes": [],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "FASH.APPAREL_COMMON"
+    ]
   },
   {
     "category": {
@@ -290,133 +77,17 @@
       "title": "Детская одежда",
       "parentCode": "FASH",
       "description": null,
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "titleRu": "Детская одежда",
+      "titleEn": "Kids' clothing"
     },
-    "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "model_line",
-        "title": "Линейка",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "gender",
-        "title": "Пол",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "gender"
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
-        "code": "size_eu",
-        "title": "Размер EU",
-        "dataType": "DECIMAL",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "colorway",
-        "title": "Окраска/колорвей",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "material",
-        "title": "Материал",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "material"
-      }
-    ],
-    "categoryAttributes": [
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "brand",
-        "uiOrder": 1,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "model_line",
-        "uiOrder": 2,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "gender",
-        "uiOrder": 3,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "condition",
-        "uiOrder": 4,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "size_eu",
-        "uiOrder": 5,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "colorway",
-        "uiOrder": 6,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "FASH.KIDS",
-        "attributeCode": "material",
-        "uiOrder": 7,
-        "isRequiredForCategory": false
-      }
-    ],
+    "attributes": [],
+    "categoryAttributes": [],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "FASH.APPAREL_COMMON"
+    ]
   },
   {
     "category": {
@@ -559,9 +230,81 @@
         "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "secondary_color",
+        "title": "Дополнительный цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pattern",
+        "title": "Узор",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_logo_present",
+        "title": "Виден логотип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "FASH.SHOES",
         "attributeCode": "brand",
@@ -632,6 +375,36 @@
         "categoryCode": "FASH.SHOES",
         "attributeCode": "material_sole",
         "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "primary_color",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "secondary_color",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "pattern",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.SHOES",
+        "attributeCode": "visible_logo_present",
+        "uiOrder": 17,
         "isRequiredForCategory": false
       }
     ],
@@ -713,9 +486,92 @@
         "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "secondary_color",
+        "title": "Дополнительный цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pattern",
+        "title": "Узор",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_logo_present",
+        "title": "Виден логотип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "FASH.ACCESSORIES",
         "attributeCode": "brand",
@@ -750,6 +606,42 @@
         "categoryCode": "FASH.ACCESSORIES",
         "attributeCode": "colorway",
         "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "primary_color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "secondary_color",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "pattern",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "shape",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "FASH.ACCESSORIES",
+        "attributeCode": "visible_logo_present",
+        "uiOrder": 12,
         "isRequiredForCategory": false
       }
     ],
@@ -892,4 +784,3 @@
     "requiredIfRules": []
   }
 ]
-

@@ -29,6 +29,7 @@ data class ProductDto(
     val updatedAt: Long? = null,
     val trustScore: Double? = null,
     val distanceKm: Float? = null,
+    val attributes: Map<String, TypedAttributeValue> = emptyMap(),
 )
 
 enum class OfferSource {

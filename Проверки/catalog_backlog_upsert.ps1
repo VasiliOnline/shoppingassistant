@@ -13,6 +13,8 @@ param(
     [string]$PgConn = $env:PG_CONN,
     [string]$PsqlPath = "psql",
     [int]$MinIssueCount = 1,
+    [switch]$EnforceSlaGate,
+    [switch]$NoSlaGate,
     [switch]$Apply
 )
 
@@ -325,6 +327,21 @@ $issues = @(
 )
 
 Write-Host "Backlog rows: $($issues.Count). Mode: $Provider. Apply: $($Apply.IsPresent)"
+
+$slaGateEnabled = $EnforceSlaGate.IsPresent -or (-not $NoSlaGate.IsPresent)
+if ($slaGateEnabled) {
+    $slaGateTypes = @("UNKNOWN_ATTRIBUTE", "STAGE4_UNKNOWN_CLOSED_SET_VALUE")
+    $violations = $issues | Where-Object { $_.IssueType -in $slaGateTypes -and $_.IssueCount -gt 0 }
+    if ($violations.Count -gt 0) {
+        $summary = ($violations | Sort-Object IssueType,Category | ForEach-Object {
+            "$($_.IssueType)|$($_.Category)|$($_.IssueKey):$($_.IssueCount)"
+        }) -join "; "
+        throw "SLA gate failed. Non-zero backlog for UNKNOWN_ATTRIBUTE / STAGE4_UNKNOWN_CLOSED_SET_VALUE: $summary"
+    }
+    Write-Host "SLA gate passed for UNKNOWN_ATTRIBUTE and STAGE4_UNKNOWN_CLOSED_SET_VALUE."
+} else {
+    Write-Warning "SLA gate is disabled via -NoSlaGate."
+}
 
 # ---------- Jira ----------
 function Get-JiraAuthHeader {

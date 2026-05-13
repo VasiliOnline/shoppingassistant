@@ -19,11 +19,20 @@ class FacetDefinitionApiRepository(
     private val backendClient: BackendClient,
     private val fallback: FacetDefinitionRepository,
     private val allowSeedFallback: Boolean = false,
+    private val versionVerifier: CatalogRuntimeVersionVerifier = NoopCatalogRuntimeVersionVerifier,
 ) : FacetDefinitionRepository {
 
     private val baseUrl get() = BackendConfig.BASE_URL
 
     override suspend fun listFacetDefinitions(): List<FacetDefinition> {
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetDefinitions.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.listFacetDefinitions() },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/definitions")
         }.getOrElse { error ->
@@ -35,6 +44,14 @@ class FacetDefinitionApiRepository(
         }
 
         return if (response.status.isSuccess()) {
+            runCatching { versionVerifier.verifyResponseVersion(response, operation = "listFacetDefinitions") }
+                .getOrElse { error ->
+                    return fallbackOrThrow(
+                        operation = "listFacetDefinitions.versionHeader",
+                        error = error,
+                        fallbackCall = { fallback.listFacetDefinitions() },
+                    )
+                }
             runCatching { response.body<List<FacetDefinition>>() }.getOrElse { error ->
                 fallbackOrThrow(
                     operation = "listFacetDefinitions.decode",
@@ -55,6 +72,14 @@ class FacetDefinitionApiRepository(
         val normalized = categoryCode.trim()
         if (normalized.isBlank()) return emptyList()
 
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetDefinitionsByCategory.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.listFacetDefinitions(normalized) },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/definitions") {
                 parameter("categoryCode", normalized)
@@ -68,6 +93,14 @@ class FacetDefinitionApiRepository(
         }
 
         return if (response.status.isSuccess()) {
+            runCatching { versionVerifier.verifyResponseVersion(response, operation = "listFacetDefinitionsByCategory") }
+                .getOrElse { error ->
+                    return fallbackOrThrow(
+                        operation = "listFacetDefinitionsByCategory.versionHeader",
+                        error = error,
+                        fallbackCall = { fallback.listFacetDefinitions(normalized) },
+                    )
+                }
             runCatching { response.body<List<FacetDefinition>>() }.getOrElse { error ->
                 fallbackOrThrow(
                     operation = "listFacetDefinitionsByCategory.decode",
@@ -88,11 +121,27 @@ class FacetDefinitionApiRepository(
         val normalized = facetKey.trim()
         if (normalized.isBlank()) return null
 
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetDefinition.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.getFacetDefinition(normalized) },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/definitions/$normalized")
         }.getOrElse { error ->
             return fallbackOrThrow(
                 operation = "getFacetDefinition",
+                error = error,
+                fallbackCall = { fallback.getFacetDefinition(normalized) },
+            )
+        }
+
+        runCatching { versionVerifier.verifyResponseVersion(response, operation = "getFacetDefinition") }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetDefinition.versionHeader",
                 error = error,
                 fallbackCall = { fallback.getFacetDefinition(normalized) },
             )
@@ -129,11 +178,20 @@ class FacetPresetApiRepository(
     private val backendClient: BackendClient,
     private val fallback: FacetPresetRepository,
     private val allowSeedFallback: Boolean = false,
+    private val versionVerifier: CatalogRuntimeVersionVerifier = NoopCatalogRuntimeVersionVerifier,
 ) : FacetPresetRepository {
 
     private val baseUrl get() = BackendConfig.BASE_URL
 
     override suspend fun listFacetPresets(): List<FacetPreset> {
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetPresets.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.listFacetPresets() },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/presets")
         }.getOrElse { error ->
@@ -145,6 +203,14 @@ class FacetPresetApiRepository(
         }
 
         return if (response.status.isSuccess()) {
+            runCatching { versionVerifier.verifyResponseVersion(response, operation = "listFacetPresets") }
+                .getOrElse { error ->
+                    return fallbackOrThrow(
+                        operation = "listFacetPresets.versionHeader",
+                        error = error,
+                        fallbackCall = { fallback.listFacetPresets() },
+                    )
+                }
             runCatching { response.body<List<FacetPreset>>() }.getOrElse { error ->
                 fallbackOrThrow(
                     operation = "listFacetPresets.decode",
@@ -165,6 +231,14 @@ class FacetPresetApiRepository(
         val normalized = categoryCode.trim()
         if (normalized.isBlank()) return emptyList()
 
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetPresetsByCategory.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.listFacetPresets(normalized) },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/presets") {
                 parameter("categoryCode", normalized)
@@ -178,6 +252,14 @@ class FacetPresetApiRepository(
         }
 
         return if (response.status.isSuccess()) {
+            runCatching { versionVerifier.verifyResponseVersion(response, operation = "listFacetPresetsByCategory") }
+                .getOrElse { error ->
+                    return fallbackOrThrow(
+                        operation = "listFacetPresetsByCategory.versionHeader",
+                        error = error,
+                        fallbackCall = { fallback.listFacetPresets(normalized) },
+                    )
+                }
             runCatching { response.body<List<FacetPreset>>() }.getOrElse { error ->
                 fallbackOrThrow(
                     operation = "listFacetPresetsByCategory.decode",
@@ -198,11 +280,27 @@ class FacetPresetApiRepository(
         val normalized = presetCode.trim()
         if (normalized.isBlank()) return null
 
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetPreset.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.getFacetPreset(normalized) },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/presets/$normalized")
         }.getOrElse { error ->
             return fallbackOrThrow(
                 operation = "getFacetPreset",
+                error = error,
+                fallbackCall = { fallback.getFacetPreset(normalized) },
+            )
+        }
+
+        runCatching { versionVerifier.verifyResponseVersion(response, operation = "getFacetPreset") }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetPreset.versionHeader",
                 error = error,
                 fallbackCall = { fallback.getFacetPreset(normalized) },
             )
@@ -239,11 +337,20 @@ class FacetCollectionApiRepository(
     private val backendClient: BackendClient,
     private val fallback: FacetCollectionRepository,
     private val allowSeedFallback: Boolean = false,
+    private val versionVerifier: CatalogRuntimeVersionVerifier = NoopCatalogRuntimeVersionVerifier,
 ) : FacetCollectionRepository {
 
     private val baseUrl get() = BackendConfig.BASE_URL
 
     override suspend fun listFacetCollections(): List<FacetCollection> {
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetCollections.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.listFacetCollections() },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections")
         }.getOrElse { error ->
@@ -255,6 +362,14 @@ class FacetCollectionApiRepository(
         }
 
         return if (response.status.isSuccess()) {
+            runCatching { versionVerifier.verifyResponseVersion(response, operation = "listFacetCollections") }
+                .getOrElse { error ->
+                    return fallbackOrThrow(
+                        operation = "listFacetCollections.versionHeader",
+                        error = error,
+                        fallbackCall = { fallback.listFacetCollections() },
+                    )
+                }
             runCatching { response.body<List<FacetCollection>>() }.getOrElse { error ->
                 fallbackOrThrow(
                     operation = "listFacetCollections.decode",
@@ -275,6 +390,14 @@ class FacetCollectionApiRepository(
         val normalized = categoryCode.trim()
         if (normalized.isBlank()) return emptyList()
 
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "listFacetCollectionsByCategory.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.listFacetCollections(normalized) },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections") {
                 parameter("categoryCode", normalized)
@@ -288,6 +411,14 @@ class FacetCollectionApiRepository(
         }
 
         return if (response.status.isSuccess()) {
+            runCatching { versionVerifier.verifyResponseVersion(response, operation = "listFacetCollectionsByCategory") }
+                .getOrElse { error ->
+                    return fallbackOrThrow(
+                        operation = "listFacetCollectionsByCategory.versionHeader",
+                        error = error,
+                        fallbackCall = { fallback.listFacetCollections(normalized) },
+                    )
+                }
             runCatching { response.body<List<FacetCollection>>() }.getOrElse { error ->
                 fallbackOrThrow(
                     operation = "listFacetCollectionsByCategory.decode",
@@ -307,6 +438,14 @@ class FacetCollectionApiRepository(
     override suspend fun getFacetCollection(collectionCode: String): FacetCollection? {
         val normalized = collectionCode.trim()
         if (normalized.isBlank()) return null
+
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetCollection.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.getFacetCollection(normalized) },
+            )
+        }
 
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections/$normalized")
@@ -329,6 +468,14 @@ class FacetCollectionApiRepository(
         val normalized = browseCode.trim()
         if (normalized.isBlank()) return null
 
+        runCatching { versionVerifier.ensureCompatible() }.getOrElse { error ->
+            return fallbackOrThrow(
+                operation = "getFacetCollectionByBrowseCode.versionNegotiation",
+                error = error,
+                fallbackCall = { fallback.getFacetCollectionByBrowseCode(normalized) },
+            )
+        }
+
         val response = runCatching {
             backendClient.client.get("$baseUrl/api/catalog/facets/collections/by-browse/$normalized")
         }.getOrElse { error ->
@@ -350,7 +497,9 @@ class FacetCollectionApiRepository(
         response: HttpResponse,
         operation: String,
         fallbackCall: suspend () -> FacetCollection?,
-    ): FacetCollection? = when {
+    ): FacetCollection? {
+        versionVerifier.verifyResponseVersion(response, operation = operation)
+        return when {
         response.status == HttpStatusCode.NotFound -> null
         response.status.isSuccess() -> runCatching { response.body<FacetCollection>() }.getOrElse { error ->
             fallbackOrThrow(
@@ -364,6 +513,7 @@ class FacetCollectionApiRepository(
             error = IllegalStateException("Unexpected status=${response.status}"),
             fallbackCall = fallbackCall,
         )
+    }
     }
 
     private suspend fun <T> fallbackOrThrow(

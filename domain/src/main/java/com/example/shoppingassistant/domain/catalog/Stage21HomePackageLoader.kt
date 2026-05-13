@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 internal object Stage21HomePackageLoader {
     private val descriptor = Stage21PackageDescriptor(
         l0Code = "HOME",
-        basePath = "taxonomy/stage2/2.1/HOME",
+        basePath = "${CatalogContractPaths.stage21Base}/HOME",
         browseNodesFile = "browse_nodes.home.tsv",
         aliasesFile = "aliases.home.tsv",
         goldenQueriesFile = "queries_golden.home.tsv",

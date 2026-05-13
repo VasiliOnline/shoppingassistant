@@ -1,9 +1,7 @@
 package com.example.shoppingassistant.core.data.catalog
 
-import com.example.shoppingassistant.domain.catalog.AttributeValueDict
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
 import com.example.shoppingassistant.domain.catalog.Category
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
-import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 
 /**
  * Источник данных каталога категорий/атрибутов (локальный или удалённый).
@@ -11,13 +9,9 @@ import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstrain
  */
 interface CatalogDataSource {
     suspend fun listCategories(): List<Category>
-    suspend fun listProfiles(): List<CategoryProfile>
-    suspend fun getProfile(code: String): CategoryProfile?
-    suspend fun getAttributeValueDict(attributeCode: String): AttributeValueDict?
-    suspend fun listConstraints(
-        categoryCode: String,
+    suspend fun getEffectiveSpec(
+        code: String,
         brand: String? = null,
         model: String? = null,
-    ): List<CatalogConstraints>
-    suspend fun saveProfile(profile: CategoryProfile)
+    ): CatalogCategoryEffectiveSpec?
 }

@@ -63,6 +63,7 @@ internal data class Stage22PackageDescriptor(
     val profilesFile: String? = null,
     val constraintsFile: String? = null,
     val valueDictsFile: String? = null,
+    val sharedProfilesFile: String? = null,
 )
 
 @Serializable
@@ -84,7 +85,6 @@ internal data class Stage22PackageDescriptorsDocument(
 )
 
 internal object Stage22RegistryLoader {
-    private const val REGISTRY_BASE_PATH = "taxonomy/stage2/2.2/_registry"
     private const val ATTRIBUTES_FILE = "attributes.json"
     private const val VALUE_DICTIONARIES_FILE = "value_dictionaries.json"
     private const val META_FILE = "registry_meta.json"
@@ -98,16 +98,17 @@ internal object Stage22RegistryLoader {
     fun loadPackageDescriptors(): List<Stage22PackageDescriptor> = descriptorsCache
 
     private fun loadSnapshotInternal(): Stage22RegistrySnapshot {
+        val registryBasePath = CatalogContractPaths.stage22RegistryBase
         val attributesDoc = CatalogSeedResourceReader.readJson(
-            resourcePath = "$REGISTRY_BASE_PATH/$ATTRIBUTES_FILE",
+            resourcePath = "$registryBasePath/$ATTRIBUTES_FILE",
             deserializer = Stage22AttributesDocument.serializer(),
         )
         val valueDictionariesDoc = CatalogSeedResourceReader.readJson(
-            resourcePath = "$REGISTRY_BASE_PATH/$VALUE_DICTIONARIES_FILE",
+            resourcePath = "$registryBasePath/$VALUE_DICTIONARIES_FILE",
             deserializer = Stage22ValueDictionariesDocument.serializer(),
         )
         val meta = CatalogSeedResourceReader.readJson(
-            resourcePath = "$REGISTRY_BASE_PATH/$META_FILE",
+            resourcePath = "$registryBasePath/$META_FILE",
             deserializer = Stage22RegistryMeta.serializer(),
         )
 
@@ -173,8 +174,9 @@ internal object Stage22RegistryLoader {
     }
 
     private fun loadDescriptorsInternal(): List<Stage22PackageDescriptor> {
+        val registryBasePath = CatalogContractPaths.stage22RegistryBase
         val document = CatalogSeedResourceReader.readJson(
-            resourcePath = "$REGISTRY_BASE_PATH/$PACKAGE_DESCRIPTORS_FILE",
+            resourcePath = "$registryBasePath/$PACKAGE_DESCRIPTORS_FILE",
             deserializer = Stage22PackageDescriptorsDocument.serializer(),
         )
         val normalized = LinkedHashMap<String, Stage22PackageDescriptor>()
@@ -184,12 +186,17 @@ internal object Stage22RegistryLoader {
             if (normalized.containsKey(l0Code)) {
                 error("Duplicate l0Code in Stage 2.2 package descriptor registry: '$l0Code'")
             }
+            val basePath = descriptor.basePath.trim().ifEmpty { CatalogContractPaths.stage22DefaultPackageBase(l0Code) }
+            check(basePath.startsWith("${CatalogContractPaths.stage22Base}/")) {
+                "Stage 2.2 package '$l0Code' basePath '$basePath' must be under '${CatalogContractPaths.stage22Base}/'."
+            }
             normalized[l0Code] = descriptor.copy(
                 l0Code = l0Code,
-                basePath = descriptor.basePath.trim().ifEmpty { "taxonomy/stage2/2.2/$l0Code" },
+                basePath = basePath,
                 profilesFile = descriptor.profilesFile?.trim()?.takeIf { it.isNotEmpty() },
                 constraintsFile = descriptor.constraintsFile?.trim()?.takeIf { it.isNotEmpty() },
                 valueDictsFile = descriptor.valueDictsFile?.trim()?.takeIf { it.isNotEmpty() },
+                sharedProfilesFile = descriptor.sharedProfilesFile?.trim()?.takeIf { it.isNotEmpty() },
             )
         }
         return normalized.values.toList()

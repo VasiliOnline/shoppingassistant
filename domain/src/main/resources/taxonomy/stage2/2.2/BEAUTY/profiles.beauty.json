@@ -8,8 +8,27 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -839,9 +858,70 @@
         "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": "substance_code"
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "package_text",
+        "title": "Текст на упаковке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_label_text",
+        "title": "Текст этикетки/лейбла",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "BEAUTY.HEALTH",
         "attributeCode": "product_name",
@@ -919,10 +999,33 @@
         "attributeCode": "substance_code",
         "uiOrder": 13,
         "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "package_text",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "visible_label_text",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "primary_color",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "BEAUTY.HEALTH",
+        "attributeCode": "shape",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
     "requiredIfRules": []
   }
 ]
-

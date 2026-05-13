@@ -98,18 +98,7 @@ data class TaxonomyValidationReport(
 class TaxonomyValidator {
     private val categoryCodeRegex = Regex("^[A-Z][A-Z0-9_]*(\\.[A-Z][A-Z0-9_]*){0,2}$")
     private val browseCodeRegex = Regex("^[A-Z][A-Z0-9_]*(\\.[A-Z0-9][A-Z0-9_]*){0,5}$")
-    private val requiredBrowseRoots = setOf(
-        "B.TECH",
-        "B.APPL",
-        "B.HOME",
-        "B.FASH",
-        "B.BEAUTY",
-        "B.KIDS",
-        "B.FOOD",
-        "B.PETS",
-        "B.SPORT",
-        "B.AUTO",
-    )
+    private val requiredBrowseRoots = CatalogL0Registry.requiredBrowseRootCodes
     private val hardGenericAliasTerms = setOf(
         "товар",
         "товары",
@@ -147,8 +136,21 @@ class TaxonomyValidator {
         "косметика",
         "игрушки",
     )
-    private val localeRegex = Regex("^[a-z]{2}-[a-z]{2}$", RegexOption.IGNORE_CASE)
-    private val allowedAliasLocales = setOf("ru-ru", "en-us")
+    private val localeRegex = Regex("^[a-z]{2}(?:-[a-z]{2})?$", RegexOption.IGNORE_CASE)
+    private val allowedAliasLocaleLanguages = setOf("ru", "en")
+    private val brandCodeRegex = Regex("^[A-Z][A-Z0-9_]*$")
+    private val attributeCodeRegex = Regex("^[a-z][a-z0-9_]*$")
+    private val knownBrandCodes: Set<String> by lazy {
+        CatalogGovernanceCuratedSeed.snapshot.packs
+            .asSequence()
+            .flatMap { pack -> pack.brands.asSequence() }
+            .map { brand -> brand.code.trim().uppercase() }
+            .filter { code -> code.isNotEmpty() }
+            .toSet()
+    }
+    private val knownAttributeCodes: Set<String> by lazy {
+        CatalogSystemAttributeRegistryLoader.load().attributesByCode.keys
+    }
 
     fun validate(
         categories: List<Category>,
@@ -176,6 +178,13 @@ class TaxonomyValidator {
             }
             if (!categoryCodeSeen.add(code)) {
                 fail(issues, "CATEGORY_CODE_DUPLICATE", "Category code '$code' is duplicated.")
+            }
+            if (category.title.isBlank()) {
+                fail(
+                    issues,
+                    "CATEGORY_TITLE_BLANK",
+                    "Category '$code' must have at least one non-blank display title.",
+                )
             }
 
             categoriesByCode[code] = category
@@ -206,6 +215,11 @@ class TaxonomyValidator {
                 )
             }
         }
+
+        validateCategoryReplacementContracts(
+            categoriesByCode = categoriesByCode,
+            issues = issues,
+        )
 
         val cycleReported = HashSet<String>()
         val depthMemo = HashMap<String, Int>()
@@ -474,8 +488,12 @@ class TaxonomyValidator {
             if (!seenBrowseCodes.add(browseCode)) {
                 fail(issues, "BROWSE_CODE_DUPLICATE", "Browse code '$browseCode' is duplicated.")
             }
-            if (node.titleRu.trim().isBlank()) {
-                fail(issues, "BROWSE_TITLE_BLANK", "Browse node '$browseCode' has blank titleRu.")
+            if (node.title.isBlank()) {
+                fail(
+                    issues,
+                    "BROWSE_TITLE_BLANK",
+                    "Browse node '$browseCode' must have at least one non-blank display title.",
+                )
             }
             if (node.order < 0) {
                 fail(issues, "BROWSE_ORDER_INVALID", "Browse node '$browseCode' has negative order ${node.order}.")
@@ -633,6 +651,7 @@ class TaxonomyValidator {
         aliasEntries.forEach { entry ->
             val locale = entry.locale.trim()
             val localeKey = locale.lowercase()
+            val localeLanguage = aliasLocaleLanguage(localeKey)
             if (localeKey.isNotBlank()) {
                 localeCounts[localeKey] = (localeCounts[localeKey] ?: 0) + 1
             }
@@ -648,11 +667,11 @@ class TaxonomyValidator {
                     "ALIAS_ENTRY_LOCALE_UNSUPPORTED",
                     "Alias entry '${entry.term}' has unsupported locale '$locale'.",
                 )
-            } else if (localeKey !in allowedAliasLocales) {
+            } else if (localeLanguage !in allowedAliasLocaleLanguages) {
                 fail(
                     issues,
                     "ALIAS_ENTRY_LOCALE_NOT_ALLOWED",
-                    "Alias entry '${entry.term}' uses locale '$locale' outside allowed set: ${allowedAliasLocales.sorted().joinToString(", ")}.",
+                    "Alias entry '${entry.term}' uses locale '$locale' outside allowed languages: ${allowedAliasLocaleLanguages.sorted().joinToString(", ")}.",
                 )
             }
             if (normalized.isBlank()) {
@@ -694,16 +713,23 @@ class TaxonomyValidator {
 
             val targetCategoryExists = categoriesByCode.containsKey(targetCode)
             val targetBrowseExists = browseByCode.containsKey(targetCode)
-            if (!targetCategoryExists && !targetBrowseExists) {
-                fail(
-                    issues,
-                    "ALIAS_ENTRY_TARGET_MISSING",
-                    "Alias entry '$normalizedTerm' points to unknown target '$targetCode'.",
-                )
-            }
+            val targetBrandExists = isValidBrandAliasTarget(
+                targetCode = targetCode,
+                targetCategoryExists = targetCategoryExists,
+                targetBrowseExists = targetBrowseExists,
+            )
+            val targetAttributeExists = isValidAttributeHintTarget(targetCode)
+            val targetExists = targetCategoryExists || targetBrowseExists || targetBrandExists || targetAttributeExists
 
             when (entry.kind) {
                 AliasKind.CATEGORY -> {
+                    if (!targetExists) {
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_TARGET_MISSING",
+                            "Alias entry '$normalizedTerm' points to unknown target '$targetCode'.",
+                        )
+                    }
                     if (!targetCategoryExists) {
                         fail(
                             issues,
@@ -720,6 +746,13 @@ class TaxonomyValidator {
                 }
 
                 AliasKind.BROWSE -> {
+                    if (!targetExists) {
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_TARGET_MISSING",
+                            "Alias entry '$normalizedTerm' points to unknown target '$targetCode'.",
+                        )
+                    }
                     if (!targetBrowseExists) {
                         fail(
                             issues,
@@ -729,10 +762,38 @@ class TaxonomyValidator {
                     }
                 }
 
-                AliasKind.BRAND,
-                AliasKind.ATTRIBUTE_HINT,
-                -> {
-                    // Can point either to category or browse node.
+                AliasKind.BRAND -> {
+                    if (!targetExists) {
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_TARGET_MISSING",
+                            "Alias entry '$normalizedTerm' points to unknown target '$targetCode'.",
+                        )
+                    }
+                    if (!targetBrandExists) {
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_TARGET_KIND_MISMATCH",
+                            "Brand alias '$normalizedTerm' must point to canonical brand code.",
+                        )
+                    }
+                }
+
+                AliasKind.ATTRIBUTE_HINT -> {
+                    if (!targetExists) {
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_TARGET_MISSING",
+                            "Alias entry '$normalizedTerm' points to unknown target '$targetCode'.",
+                        )
+                    }
+                    if (!targetAttributeExists) {
+                        fail(
+                            issues,
+                            "ALIAS_ENTRY_TARGET_KIND_MISMATCH",
+                            "Attribute hint alias '$normalizedTerm' must point to catalog attribute code.",
+                        )
+                    }
                 }
             }
 
@@ -765,10 +826,13 @@ class TaxonomyValidator {
 
         val totalLocaleCount = localeCounts.values.sum()
         if (totalLocaleCount > 0) {
-            val nonPrimaryCount = totalLocaleCount - (localeCounts[PRIMARY_ALIAS_LOCALE] ?: 0)
+            val primaryCount = localeCounts.entries.sumOf { (localeKey, count) ->
+                if (aliasLocaleLanguage(localeKey) == PRIMARY_ALIAS_LANGUAGE) count else 0
+            }
+            val nonPrimaryCount = totalLocaleCount - primaryCount
             if (nonPrimaryCount > 0) {
                 val share = nonPrimaryCount.toDouble() / totalLocaleCount.toDouble()
-                val message = "Non-primary alias locales share=${"%.4f".format(share)} ($nonPrimaryCount/$totalLocaleCount). Primary locale is '$PRIMARY_ALIAS_LOCALE'."
+                val message = "Non-primary alias locales share=${"%.4f".format(share)} ($nonPrimaryCount/$totalLocaleCount). Primary locale family is '$PRIMARY_ALIAS_LANGUAGE'."
                 if (share > NON_PRIMARY_ALIAS_LOCALE_WARN_SHARE) {
                     warn(issues, "ALIAS_ENTRY_NON_PRIMARY_LOCALE_SHARE", message)
                 } else {
@@ -949,29 +1013,124 @@ class TaxonomyValidator {
         return depth
     }
 
-    private fun segmentFromCode(code: String): CategorySegment? = when (code.substringBefore('.')) {
-        "TECH" -> CategorySegment.TECH
-        "APPL" -> CategorySegment.APPL
-        "HOME" -> CategorySegment.HOME
-        "FASH" -> CategorySegment.FASH
-        "BEAUTY" -> CategorySegment.BEAUTY
-        "KIDS" -> CategorySegment.KIDS
-        "FOOD" -> CategorySegment.FOOD
-        "PETS" -> CategorySegment.PETS
-        "SPORT" -> CategorySegment.SPORT
-        "AUTO" -> CategorySegment.AUTO
-        "SUPP" -> CategorySegment.SUPP
-        else -> CategorySegment.OTHER
+    private fun validateCategoryReplacementContracts(
+        categoriesByCode: Map<String, Category>,
+        issues: MutableList<TaxonomyValidationIssue>,
+    ) {
+        categoriesByCode.values.forEach { category ->
+            val code = category.code.trim()
+            val replacementCode = category.replacementCode?.trim()?.takeIf { it.isNotEmpty() }
+
+            if (category.status == CategoryStatus.DEPRECATED && replacementCode == null) {
+                fail(
+                    issues,
+                    "CATEGORY_DEPRECATED_REPLACEMENT_MISSING",
+                    "Deprecated category '$code' must define replacementCode.",
+                )
+            }
+            if (category.status != CategoryStatus.DEPRECATED && replacementCode != null) {
+                fail(
+                    issues,
+                    "CATEGORY_REPLACEMENT_FOR_NON_DEPRECATED",
+                    "Category '$code' defines replacementCode but status is '${category.status}'.",
+                )
+            }
+            if (replacementCode != null && replacementCode == code) {
+                fail(
+                    issues,
+                    "CATEGORY_REPLACEMENT_SELF",
+                    "Category '$code' cannot replace itself.",
+                )
+            }
+            if (replacementCode != null && !categoriesByCode.containsKey(replacementCode)) {
+                fail(
+                    issues,
+                    "CATEGORY_REPLACEMENT_TARGET_MISSING",
+                    "Category '$code' replacementCode points to unknown category '$replacementCode'.",
+                )
+            }
+        }
+
+        val cycleReported = HashSet<String>()
+        val terminalMemo = HashMap<String, String?>()
+        categoriesByCode.keys.forEach { code ->
+            computeReplacementTerminal(
+                code = code,
+                categoriesByCode = categoriesByCode,
+                memo = terminalMemo,
+                path = LinkedHashSet(),
+                cycleReported = cycleReported,
+                issues = issues,
+            )
+        }
+
+        categoriesByCode.values
+            .filter { it.status == CategoryStatus.DEPRECATED }
+            .forEach { category ->
+                val code = category.code.trim()
+                val terminalCode = terminalMemo[code] ?: return@forEach
+                val terminal = categoriesByCode[terminalCode] ?: return@forEach
+                if (terminal.status != CategoryStatus.ACTIVE) {
+                    fail(
+                        issues,
+                        "CATEGORY_REPLACEMENT_CHAIN_NOT_ACTIVE",
+                        "Deprecated category '$code' resolves to '$terminalCode' with status '${terminal.status}', expected ACTIVE.",
+                    )
+                }
+            }
     }
 
-    private fun normalizeAlias(value: String): String = value
-        .trim()
-        .lowercase()
-        .replace('ё', 'е')
-        .replace("[-‐‑‒–—]+".toRegex(), " ")
-        .replace("[^\\p{L}\\p{N}\\s]".toRegex(), " ")
-        .replace("\\s+".toRegex(), " ")
-        .trim()
+    private fun computeReplacementTerminal(
+        code: String,
+        categoriesByCode: Map<String, Category>,
+        memo: MutableMap<String, String?>,
+        path: LinkedHashSet<String>,
+        cycleReported: MutableSet<String>,
+        issues: MutableList<TaxonomyValidationIssue>,
+    ): String? {
+        memo[code]?.let { return it }
+        val category = categoriesByCode[code] ?: return null
+        val replacementCode = category.replacementCode?.trim()?.takeIf { it.isNotEmpty() }
+        if (replacementCode == null) {
+            memo[code] = code
+            return code
+        }
+        if (!path.add(code)) {
+            val cycle = (path + code).joinToString(" -> ")
+            if (cycleReported.add(cycle)) {
+                fail(
+                    issues,
+                    "CATEGORY_REPLACEMENT_CYCLE",
+                    "Cycle detected in category replacement chain: $cycle.",
+                )
+            }
+            memo[code] = null
+            return null
+        }
+
+        val terminal = if (!categoriesByCode.containsKey(replacementCode)) {
+            null
+        } else {
+            computeReplacementTerminal(
+                code = replacementCode,
+                categoriesByCode = categoriesByCode,
+                memo = memo,
+                path = path,
+                cycleReported = cycleReported,
+                issues = issues,
+            )
+        }
+
+        path.remove(code)
+        memo[code] = terminal
+        return terminal
+    }
+
+    private fun segmentFromCode(code: String): CategorySegment? =
+        CatalogL0Registry.segmentForL0Code(code.substringBefore('.')) ?: CategorySegment.OTHER
+
+    private fun normalizeAlias(value: String): String =
+        Stage21QueryTextNormalizer.normalize(value)
 
     private fun aliasStem(value: String): String = value
         .trim()
@@ -1020,6 +1179,28 @@ class TaxonomyValidator {
             .groupingBy { it.locale.trim().lowercase().ifBlank { "<blank>" } }
             .eachCount()
             .toSortedMap()
+
+    private fun aliasLocaleLanguage(locale: String): String =
+        locale.substringBefore('-').trim()
+
+    private fun isValidBrandAliasTarget(
+        targetCode: String,
+        targetCategoryExists: Boolean,
+        targetBrowseExists: Boolean,
+    ): Boolean {
+        val normalized = targetCode.trim().uppercase()
+        if (normalized.isEmpty()) return false
+        if (normalized in knownBrandCodes) return true
+        if (targetCategoryExists || targetBrowseExists) return false
+        return brandCodeRegex.matches(normalized)
+    }
+
+    private fun isValidAttributeHintTarget(targetCode: String): Boolean {
+        val normalized = targetCode.trim().lowercase()
+        if (normalized.isEmpty()) return false
+        if (normalized in knownAttributeCodes) return true
+        return attributeCodeRegex.matches(normalized)
+    }
 
     private fun normalizeParentCode(parentBrowseCode: String?): String =
         parentBrowseCode?.trim()?.takeIf(String::isNotEmpty).orEmpty()
@@ -1080,7 +1261,7 @@ class TaxonomyValidator {
     private companion object {
         private const val SOFT_GENERIC_WARN_WEIGHT = 90
         private const val GENERIC_TOP_LIMIT = 8
-        private const val PRIMARY_ALIAS_LOCALE = "ru-ru"
+        private const val PRIMARY_ALIAS_LANGUAGE = "ru"
         private const val NON_PRIMARY_ALIAS_LOCALE_WARN_SHARE = 0.20
     }
 }

@@ -1,0 +1,11 @@
+ALTER TABLE categories
+    ADD COLUMN IF NOT EXISTS title_en VARCHAR(255) NULL;
+
+ALTER TABLE facet_definitions
+    ADD COLUMN IF NOT EXISTS title_en VARCHAR(255) NULL;
+
+ALTER TABLE facet_presets
+    ADD COLUMN IF NOT EXISTS title_en VARCHAR(255) NULL;
+
+ALTER TABLE facet_collections
+    ADD COLUMN IF NOT EXISTS title_en VARCHAR(255) NULL;

@@ -7,6 +7,11 @@ plugins {
 group = "com.example.shoppingassistant"
 version = "0.0.1"
 
+// Workaround for Windows file locks under `server/build/...` during local verification.
+// Allow overriding the module build dir so compilation/tests can run against `server_alt`.
+val serverBuildDirName = providers.gradleProperty("serverBuildDirName").orElse("server")
+layout.buildDirectory.set(rootProject.layout.buildDirectory.dir(serverBuildDirName))
+
 val ktorVersion = "3.0.0"
 val logbackVersion = "1.5.21"
 // Используем ту же версию Koin, что и в Android-модулях
@@ -15,8 +20,11 @@ val koinVersion = "4.0.0"
 dependencies {
     implementation(project(":rank"))
     implementation("io.lettuce:lettuce-core:6.5.0.RELEASE")
+    implementation("org.flywaydb:flyway-core:10.17.3")
+    implementation("org.flywaydb:flyway-database-postgresql:10.17.3")
 
     implementation("org.postgresql:postgresql:42.7.1")
+    implementation("com.twelvemonkeys.imageio:imageio-webp:3.12.0")
 
     implementation("org.jetbrains.exposed:exposed-core:0.56.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.56.0")
@@ -62,4 +70,49 @@ kotlin {
 
 application {
     mainClass.set("com.example.shoppingassistant.server.ServerMainKt")
+}
+
+tasks.register<JavaExec>("runListingVisionEval") {
+    group = "application"
+    description = "Runs offline listing vision evaluation against a labeled photo-set manifest."
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("com.example.shoppingassistant.server.vision.ListingVisionEvalRunnerKt")
+    project.findProperty("evalManifest")?.toString()?.let { manifestPath ->
+        args(manifestPath)
+    }
+    project.findProperty("evalOutput")?.toString()?.let { outputPath ->
+        args(outputPath)
+    }
+}
+
+tasks.register<JavaExec>("runVisualSearchEval") {
+    group = "application"
+    description = "Runs offline visual search evaluation against a local image."
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("com.example.shoppingassistant.server.visualsearch.VisualSearchEvalRunnerKt")
+    project.findProperty("evalImage")?.toString()?.let { imagePath ->
+        args(imagePath)
+    }
+    project.findProperty("evalOutput")?.toString()?.let { outputPath ->
+        args(outputPath)
+    }
+}
+
+tasks.register<JavaExec>("runVisualSearchBenchmark") {
+    group = "application"
+    description = "Runs offline visual search benchmark across multiple local images and models."
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("com.example.shoppingassistant.server.visualsearch.VisualSearchBenchmarkRunnerKt")
+    project.findProperty("benchManifest")?.toString()?.let { manifestPath ->
+        args(manifestPath)
+    }
+    project.findProperty("benchOutput")?.toString()?.let { outputPath ->
+        args(outputPath)
+    }
+    project.findProperty("benchModels")?.toString()?.let { models ->
+        args(models)
+    }
+    project.findProperty("benchRuns")?.toString()?.let { runs ->
+        args(runs)
+    }
 }

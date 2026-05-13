@@ -29,6 +29,10 @@ disambiguation_ordered_rules:
   - брюк
   - джинс
   - комбинезон
+  - боди
+  - бодик
+  - ползунк
+  - песочник
   and_any_tokens:
   - детск
   - для мальчик
@@ -38,6 +42,16 @@ disambiguation_ordered_rules:
   then_route_canonical: FASH.KIDS
   confidence: 0.9
   notes: Kids clothing belongs to FASH.KIDS
+- id: R.FASH_KIDS_BABY_APPAREL
+  if_any_tokens:
+  - боди
+  - бодик
+  - ползунк
+  - песочник
+  - распашонк
+  then_route_canonical: FASH.KIDS
+  confidence: 0.9
+  notes: Baby apparel belongs to FASH.KIDS, not KIDS.BABY_GEAR
 - id: R.FASH_KIDS_SHOES
   if_any_tokens:
   - обув
@@ -51,9 +65,36 @@ disambiguation_ordered_rules:
   - для девочк
   - для ребенка
   - для ребёнка
-  then_route_canonical: FASH.KIDS
+  then_route_canonical: FASH.SHOES
   confidence: 0.88
-  notes: Kids shoes are treated as FASH.KIDS in this taxonomy slice
+  notes: FASH.KIDS child override v1.0: kids shoes route to FASH.SHOES
+- id: R.FASH_KIDS_BAGS
+  if_any_tokens:
+  - рюкзак
+  - сумк
+  - портфель
+  and_any_tokens:
+  - детск
+  - школьн
+  - для мальчик
+  - для девочк
+  - для ребенка
+  - для ребёнка
+  then_route_canonical: FASH.BAGS
+  confidence: 0.88
+  notes: FASH.KIDS child override v1.0: kids bags route to FASH.BAGS
+- id: R.KIDS_BABY_GEAR
+  if_any_tokens:
+  - подгузник
+  - памперс
+  - бутылочк
+  - соска
+  - пустышк
+  - пеленк
+  - манеж
+  then_route_canonical: KIDS.BABY_GEAR
+  confidence: 0.9
+  notes: Baby care items are KIDS.BABY_GEAR, not FASH.KIDS apparel
 - id: R.PET_FOOD_EXCLUDE
   if_any_tokens:
   - корм

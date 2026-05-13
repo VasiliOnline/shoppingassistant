@@ -1,0 +1,74 @@
+{
+  "categoryCode": "FASH.MEN",
+  "extends": "FASH.APPAREL_COMMON",
+  "expected_effective_spec": {
+    "source_layers": [
+      "FASH.APPAREL_COMMON",
+      "FASH.MEN"
+    ],
+    "inherited_attributes_required_present": [
+      "apparel_type",
+      "condition",
+      "size_system",
+      "size_label",
+      "color_primary",
+      "material_primary",
+      "brand",
+      "target_gender",
+      "age_group",
+      "fit",
+      "season"
+    ],
+    "child_defaults": {
+      "target_gender": "MEN",
+      "age_group": "ADULT"
+    },
+    "allowed_target_gender": [
+      "MEN",
+      "UNISEX"
+    ],
+    "allowed_age_group": [
+      "ADULT",
+      "TEEN"
+    ],
+    "allowed_apparel_types_count": 36,
+    "blocked_apparel_types": [
+      "DRESS",
+      "SKIRT",
+      "BRA",
+      "BLOUSE",
+      "ROMPER",
+      "TOP",
+      "TANK_TOP",
+      "TIGHTS",
+      "JUMPSUIT"
+    ],
+    "primary_user_surface_limit": {
+      "initial_fields_max": 8,
+      "primary_facets_max": 7
+    },
+    "hidden_from_primary_ui": [
+      "apparel_type_group",
+      "size_text_raw",
+      "brand_text_raw",
+      "visual_evidence_flags",
+      "normalization_confidence",
+      "source_text_evidence",
+      "bra_cup"
+    ],
+    "routing_guards_must_exist": [
+      "FASH.SHOES",
+      "FASH.BAGS",
+      "FASH.ACCESSORIES",
+      "BEAUTY.FRAGRANCE",
+      "FASH.KIDS",
+      "FASH.WOMEN"
+    ]
+  },
+  "expected_runtime_behavior": {
+    "generic_query_futbolka": "route candidate, not final child without context",
+    "query_muzhskaya_futbolka": "FASH.MEN",
+    "query_muzhskie_krossovki": "FASH.SHOES_not_FASH.MEN",
+    "vision_generic_black_hoodie": "UNISEX_or_NEED_MORE_CONTEXT_without_text_or_branch_context"
+  }
+}

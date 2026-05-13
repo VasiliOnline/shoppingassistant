@@ -1,0 +1,33 @@
+version: 1.1-compat-patch-for-fash-men
+target_standard: FASH.APPAREL_COMMON
+purpose: Minimum hardening required before/with FASH.MEN import
+patches:
+  measurements:
+    declare_as: ui_group_not_attribute
+    expands_to:
+    - chest_cm
+    - waist_cm
+    - shoulder_cm
+    - sleeve_cm
+    - inseam_cm
+    - total_length_cm
+    validator_behavior: Do not fail if measurements appears in user_surface as ui_group
+  alias_target_format:
+    dictionary_value: '{dictionary_code}:{value_code}'
+    category: '{canonical_category_code}'
+    apparel_type: '{value_code}'
+  inheritance_contract:
+    child_may_override:
+    - defaults
+    - allowed_values
+    - blocked_values
+    - visibility
+    - facet_priority
+    - user_surface
+    - aliases
+    - routing_guardrails
+    child_must_not_override:
+    - attribute meaning
+    - data_type of inherited attribute
+    - canonical code stability
+apply_before_or_together_with: FASH.MEN v1.0

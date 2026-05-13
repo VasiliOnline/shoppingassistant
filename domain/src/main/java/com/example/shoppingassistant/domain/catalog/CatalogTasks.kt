@@ -2,7 +2,7 @@ package com.example.shoppingassistant.domain.catalog
 
 import com.example.shoppingassistant.domain.model.Money
 import com.example.shoppingassistant.domain.model.SellerType
-import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
+import com.example.shoppingassistant.domain.i18n.LocalizedText
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,7 +17,6 @@ enum class CategorySegment {
     PETS,
     SPORT,
     AUTO,
-    SUPP,
     OTHER,
 }
 
@@ -32,10 +31,11 @@ enum class CategoryStatus {
 data class Category(
     val code: String,               // "TECH.PHONES"
     val segment: CategorySegment,   // TECH / FOOD / ...
-    val title: String? = null,      // Человекочитаемое имя
+    val title: LocalizedText = LocalizedText.Empty,
     val parentCode: String? = null, // Иерархия при необходимости
     val description: String? = null,
     val status: CategoryStatus = CategoryStatus.ACTIVE,
+    val replacementCode: String? = null, // Каноническая замена для DEPRECATED-ветки
 )
 
 @Serializable
@@ -109,7 +109,7 @@ data class RequiredIfRule(
 )
 
 @Serializable
-data class CategoryProfile(
+data class CatalogCategoryWriteSpec(
     val category: Category,
     val attributes: List<AttributeDef>,
     val categoryAttributes: List<CategoryAttribute>,
@@ -156,16 +156,30 @@ enum class OfferOrigin {
 }
 
 /**
- * Доменный контракт каталога категорий/атрибутов.
+ * Product-read контракт каталога.
+ * Product/UI потребители читают категорийную runtime-семантику только через effective spec.
  */
-interface CatalogRepository {
-    suspend fun listCategories(): List<Category>
-    suspend fun getCategoryProfile(categoryCode: String): CategoryProfile?
-    suspend fun listAttributeValueDict(attributeCode: String): AttributeValueDict?
-    suspend fun listConstraints(
+interface CatalogReadRepository {
+    suspend fun getCategoryEffectiveSpec(
         categoryCode: String,
         brand: String? = null,
         model: String? = null,
-    ): List<CatalogConstraints>
-    suspend fun upsertProfile(profile: CategoryProfile)
+    ): CatalogCategoryEffectiveSpec?
+}
+
+/**
+ * Taxonomy-read контракт каталога.
+ * Отдельно от product effective spec отдаёт навигационное дерево и redirect resolution.
+ */
+interface CatalogTaxonomyRepository {
+    suspend fun listCategories(): List<Category>
+
+    suspend fun resolveCategoryCode(
+        categoryCode: String,
+        maxHops: Int = 32,
+    ): CategoryRedirectResolution?
+}
+
+interface CatalogWriteRepository {
+    suspend fun upsertCategorySpec(spec: CatalogCategoryWriteSpec)
 }

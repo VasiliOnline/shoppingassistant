@@ -1,0 +1,69 @@
+{
+  "pack_code": "FASH.MEN",
+  "pack_name": "Goody Goods FASH.MEN Child Override Production Pack",
+  "version": "1.0",
+  "created_at": "2026-05-12",
+  "artifact_type": "child_override_pack",
+  "categoryCode": "FASH.MEN",
+  "extends": "FASH.APPAREL_COMMON",
+  "public_category": true,
+  "inheritance_model": {
+    "inherits_attributes_from": "FASH.APPAREL_COMMON",
+    "inherits_values_from": "FASH.APPAREL_COMMON",
+    "inherits_common_aliases_from": "FASH.APPAREL_COMMON",
+    "inherits_common_facet_schema_from": "FASH.APPAREL_COMMON",
+    "inherits_size_policy_from": "FASH.APPAREL_COMMON",
+    "no_duplicate_common_attribute_codes": true,
+    "child_pack_contains_only_overrides": true
+  },
+  "business_goal": "Production-ready male apparel branch built on shared apparel standard with small user surface, safe routing and runtime-ready gates.",
+  "counts": {
+    "aliases": 165,
+    "golden_queries": 82,
+    "sample_offers": 44,
+    "allowed_apparel_types": 36,
+    "blocked_apparel_types": 9,
+    "type_groups": 12,
+    "value_override_rows": 77
+  },
+  "definition_of_done": [
+    "FASH.MEN effective spec builds as FASH.APPAREL_COMMON + child overrides",
+    "No duplicated common attributes in child pack",
+    "target_gender default MEN; allowed MEN and UNISEX only",
+    "age_group default ADULT; allowed ADULT and TEEN only",
+    "DRESS/SKIRT/BRA/BLOUSE/ROMPER are blocked/cross-route, not regular male apparel types",
+    "Primary user surface per type group stays <= 8 initial fields and <= 7 primary filters",
+    "Negative route queries do not route shoes/bags/accessories/beauty/watches into FASH.MEN",
+    "Vision does not infer MEN from color/style alone",
+    "Golden queries and sample offers validate route, type, defaults and inherited fields"
+  ],
+  "runtime_readiness": {
+    "intended_status_after_merge": "READY_CANDIDATE",
+    "requires_common_standard": "FASH.APPAREL_COMMON >= 1.1 or adapter patch in common_dependency_patch file",
+    "requires_validators": [
+      "Stage22SeedValidator",
+      "FacetSchemaValidator",
+      "FashMenChildOverrideGate",
+      "FashRouteConflictGate"
+    ]
+  },
+  "files": [
+    "README_FASH_MEN_CHILD_OVERRIDE_PRODUCTION_v1_0_RU.md",
+    "aliases.fash_men.ru.v1_0.tsv",
+    "child_defaults.fash_men.v1_0.yaml",
+    "common_dependency_patch.fash_apparel_common.v1_1_for_fash_men.yaml",
+    "effective_spec_snapshot.expected.fash_men.v1_0.json",
+    "facet_overrides.fash_men.v1_0.yaml",
+    "golden_queries.fash_men.v1_0.tsv",
+    "integration_mapping.fash_men.v1_0.yaml",
+    "quality_gates.fash_men.v1_0.yaml",
+    "routing_guardrails.fash_men.v1_0.yaml",
+    "sample_offers.fash_men.v1_0.jsonl",
+    "schema_pack.fash_men.v1_0.json",
+    "size_overrides.fash_men.v1_0.yaml",
+    "type_priorities.fash_men.v1_0.yaml",
+    "user_surface.fash_men.v1_0.yaml",
+    "value_overrides.fash_men.v1_0.tsv",
+    "vision_rules.fash_men.v1_0.yaml"
+  ]
+}

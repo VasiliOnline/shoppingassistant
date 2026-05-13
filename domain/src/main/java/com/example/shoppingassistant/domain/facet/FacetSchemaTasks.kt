@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.facet
 
+import com.example.shoppingassistant.domain.i18n.LocalizedText
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,6 +19,23 @@ enum class FacetValueSource {
 }
 
 @Serializable
+enum class FacetSelectionMode {
+    SINGLE,
+    MULTI,
+    RANGE,
+    BOOLEAN,
+}
+
+@Serializable
+enum class FacetUiWidget {
+    CHECKBOX_GROUP,
+    RADIO_GROUP,
+    RANGE_INPUT,
+    TOGGLE,
+    TEXT_INPUT,
+}
+
+@Serializable
 data class FacetUiConfig(
     val order: Int = 0,
     val pinned: Boolean = false,
@@ -28,9 +46,14 @@ data class FacetUiConfig(
 @Serializable
 data class FacetDefinition(
     val facetKey: String,
-    val titleRu: String,
+    val title: LocalizedText = LocalizedText.Empty,
     val valueType: FacetDataType,
     val appliesToCategoryCodes: List<String>,
+    val attributeCode: String? = null,
+    val dictionaryCode: String? = null,
+    val selectionMode: FacetSelectionMode? = null,
+    val uiWidget: FacetUiWidget? = null,
+    val normalizationRef: String? = null,
     val source: FacetValueSource = FacetValueSource.OFFER,
     val effectiveFrom: String? = null, // ISO date (yyyy-MM-dd), inclusive
     val effectiveTo: String? = null, // ISO date (yyyy-MM-dd), inclusive
@@ -51,7 +74,7 @@ data class FacetPresetRule(
 data class FacetPreset(
     val presetCode: String,
     val categoryCode: String,
-    val titleRu: String,
+    val title: LocalizedText = LocalizedText.Empty,
     val order: Int = 0,
     val effectiveFrom: String? = null, // ISO date (yyyy-MM-dd), inclusive
     val effectiveTo: String? = null, // ISO date (yyyy-MM-dd), inclusive
@@ -63,7 +86,7 @@ data class FacetPreset(
 data class FacetCollection(
     val collectionCode: String,
     val categoryCode: String,
-    val titleRu: String,
+    val title: LocalizedText = LocalizedText.Empty,
     val browseCode: String? = null,
     val presetCode: String? = null,
     val order: Int = 0,
@@ -133,3 +156,9 @@ class GetFacetCollectionByBrowseCodeTask(
     suspend operator fun invoke(browseCode: String): FacetCollection? =
         repository.getFacetCollectionByBrowseCode(browseCode)
 }
+
+fun FacetDefinition.runtimeFilterKey(): String =
+    attributeCode
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
+        ?: facetKey.trim().lowercase()

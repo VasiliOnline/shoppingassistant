@@ -1,0 +1,13 @@
+{
+  "parent_pack": "FASH.APPAREL_COMMON",
+  "required_version": ">=1.1",
+  "patches_required_before_child_merge": {
+    "measurements": "declare_as_ui_group_or_expand_to_measurement_attributes",
+    "alias_target_format": "dictionary_value uses {dictionary_code}:{value_code}",
+    "inheritance_contract": "child override packs must not duplicate common attributes"
+  },
+  "kids_specific_external_notes": {
+    "height_cm": "must be supported as child sizing dictionary",
+    "age_label": "must be supported as child sizing dictionary"
+  }
+}

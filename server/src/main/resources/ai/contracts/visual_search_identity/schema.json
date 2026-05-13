@@ -1,0 +1,288 @@
+{
+  "type": "object",
+  "properties": {
+    "identity_status": {
+      "type": "string",
+      "enum": ["TYPE_ONLY_COMPLETE", "ENRICHED", "PARTIAL", "NO_IDENTITY", "ROUTE_CONFLICT"],
+      "description": "Identity enrichment result for the routed primary product."
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "description": "Overall identity confidence from 0 to 1, or null."
+    },
+    "route_conflict": {
+      "type": "boolean",
+      "description": "True when router_result selected a category/type that conflicts with the primary product."
+    },
+    "primary_object": {
+      "type": ["string", "null"],
+      "description": "Primary sale item being identified."
+    },
+    "primary_object_confidence": {
+      "type": ["number", "null"],
+      "description": "Primary object confidence from 0 to 1, or null."
+    },
+    "category_code": {
+      "type": ["string", "null"],
+      "description": "Routed or corrected catalog category code for the primary object."
+    },
+    "category_confidence": {
+      "type": ["number", "null"],
+      "description": "Category confidence from 0 to 1, or null."
+    },
+    "browse_node_code": {
+      "type": ["string", "null"],
+      "description": "Routed or corrected browse node code when available; otherwise null."
+    },
+    "item_type": {
+      "type": ["string", "null"],
+      "description": "Routed or corrected product type anchor."
+    },
+    "item_type_label": {
+      "type": ["string", "null"],
+      "description": "Human-facing product type label."
+    },
+    "item_type_confidence": {
+      "type": ["number", "null"],
+      "description": "Item type confidence from 0 to 1, or null."
+    },
+    "visible_brand": {
+      "type": ["string", "null"],
+      "description": "Brand visibly present on the primary product, its tag/label, or own primary packaging."
+    },
+    "visible_brand_confidence": {
+      "type": ["number", "null"],
+      "description": "Visible brand confidence from 0 to 1, or null."
+    },
+    "visible_brand_source": {
+      "$ref": "#/$defs/visible_brand_source"
+    },
+    "brand": {
+      "type": ["string", "null"],
+      "description": "Search brand anchor for the primary object."
+    },
+    "brand_confidence": {
+      "type": ["number", "null"],
+      "description": "Brand confidence from 0 to 1, or null."
+    },
+    "brand_source": {
+      "$ref": "#/$defs/identity_source"
+    },
+    "brand_candidates": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/brand_candidate" },
+      "description": "Ranked plausible brand candidates for UI chips/search expansion when exact brand is uncertain."
+    },
+    "family": {
+      "type": ["string", "null"],
+      "description": "Product line/family for rich-identity goods; otherwise null."
+    },
+    "family_confidence": {
+      "type": ["number", "null"],
+      "description": "Family confidence from 0 to 1, or null."
+    },
+    "family_source": {
+      "$ref": "#/$defs/identity_source"
+    },
+    "family_candidates": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/family_candidate" },
+      "description": "Ranked plausible product family/line candidates for UI chips/search expansion when exact family is uncertain."
+    },
+    "model": {
+      "type": ["string", "null"],
+      "description": "Exact model only when strongly supported."
+    },
+    "model_confidence": {
+      "type": ["number", "null"],
+      "description": "Exact model confidence from 0 to 1, or null."
+    },
+    "model_source": {
+      "$ref": "#/$defs/identity_source"
+    },
+    "model_candidates": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/model_candidate" },
+      "description": "Ranked plausible exact model candidates. These are suggestions, not hard filters."
+    },
+    "color": {
+      "type": ["string", "null"],
+      "description": "Dominant retrieval-relevant product color, or null."
+    },
+    "color_confidence": {
+      "type": ["number", "null"],
+      "description": "Color confidence from 0 to 1, or null."
+    },
+    "visual_attributes": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/visual_attribute" },
+      "description": "Visible similarity/search attributes for the primary product, such as primary_color, print_text, pattern, material, shape, package_text, or visible_label_text."
+    },
+    "search_title": {
+      "type": ["string", "null"],
+      "description": "Short product-facing title for UI/search."
+    },
+    "needs_more_photos": {
+      "type": "boolean",
+      "description": "True when another view would materially improve identity or resolve route conflict."
+    },
+    "missing_evidence": {
+      "type": "array",
+      "maxItems": 3,
+      "items": { "type": "string" },
+      "description": "Compact uppercase evidence codes."
+    },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 4,
+      "items": { "type": "string" },
+      "description": "Compact uppercase reason codes."
+    }
+  },
+  "required": [
+    "identity_status",
+    "confidence",
+    "route_conflict",
+    "primary_object",
+    "primary_object_confidence",
+    "category_code",
+    "category_confidence",
+    "browse_node_code",
+    "item_type",
+    "item_type_label",
+    "item_type_confidence",
+    "visible_brand",
+    "visible_brand_confidence",
+    "visible_brand_source",
+    "brand",
+    "brand_confidence",
+    "brand_source",
+    "brand_candidates",
+    "family",
+    "family_confidence",
+    "family_source",
+    "family_candidates",
+    "model",
+    "model_confidence",
+    "model_source",
+    "model_candidates",
+    "color",
+    "color_confidence",
+    "visual_attributes",
+    "search_title",
+    "needs_more_photos",
+    "missing_evidence",
+    "reason_codes"
+  ],
+  "$defs": {
+    "visible_brand_source": {
+      "type": ["string", "null"],
+      "enum": [null, "TEXT_ON_PRODUCT", "LOGO_ON_PRODUCT", "TAG_LABEL", "PRIMARY_PACKAGING", "USER_HINT"]
+    },
+    "identity_source": {
+      "type": ["string", "null"],
+      "enum": [
+        null,
+        "TEXT_EXACT",
+        "LOGO_EXACT",
+        "BARCODE_EXACT",
+        "USER_HINT",
+        "CATALOG_SHORTLIST",
+        "VISUAL_DISTINCTIVE",
+        "VISUAL_PATTERN",
+        "VISUAL_WEAK"
+      ]
+    },
+    "model_candidate": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "Plausible exact model candidate."
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "description": "Candidate confidence from 0 to 1, or null."
+        },
+        "source": {
+          "$ref": "#/$defs/identity_source"
+        }
+      },
+      "required": ["model", "confidence", "source"],
+      "additionalProperties": false
+    },
+    "brand_candidate": {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "type": "string",
+          "description": "Plausible brand candidate."
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "description": "Candidate confidence from 0 to 1, or null."
+        },
+        "source": {
+          "$ref": "#/$defs/identity_source"
+        }
+      },
+      "required": ["brand", "confidence", "source"],
+      "additionalProperties": false
+    },
+    "family_candidate": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "type": "string",
+          "description": "Plausible product family/line candidate."
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "description": "Candidate confidence from 0 to 1, or null."
+        },
+        "source": {
+          "$ref": "#/$defs/identity_source"
+        }
+      },
+      "required": ["family", "confidence", "source"],
+      "additionalProperties": false
+    },
+    "visual_attribute": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Attribute code, e.g. primary_color, secondary_color, print_text, pattern, graphic_theme, material, shape, form_factor, package_text, visible_label_text."
+        },
+        "kind": {
+          "type": ["string", "null"],
+          "enum": [null, "text", "number", "bool"],
+          "description": "Value type."
+        },
+        "text": {
+          "type": ["string", "null"],
+          "description": "Text value when kind is text."
+        },
+        "number": {
+          "type": ["number", "null"],
+          "description": "Numeric value when kind is number."
+        },
+        "bool": {
+          "type": ["boolean", "null"],
+          "description": "Boolean value when kind is bool."
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "description": "Attribute confidence from 0 to 1, or null."
+        }
+      },
+      "required": ["code", "kind", "text", "number", "bool", "confidence"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

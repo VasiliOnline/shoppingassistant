@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.catalog
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -49,5 +50,20 @@ class Stage21ApplPackageLoaderTest {
         }
 
         assertTrue("Missing required ambiguous tests in golden set: $missing", missing.isEmpty())
+    }
+
+    @Test
+    fun appl_alias_seed_rows_define_explicit_runtime_semantics() {
+        val conditioner = Stage21ApplPackageLoader.aliasSeedRows.first { it.query == "кондиционер" }
+        val hairConditioner = Stage21ApplPackageLoader.aliasSeedRows.first { it.query == "кондиционер для волос" }
+
+        assertEquals(AliasMatchKind.TOKEN, conditioner.matchKind)
+        assertEquals(listOf("волос", "белья"), conditioner.negativeTokens)
+        assertEquals(76, conditioner.weight)
+        assertEquals(AliasSource.SEED, conditioner.source)
+
+        assertEquals(AliasMatchKind.PREFIX, hairConditioner.matchKind)
+        assertEquals(90, hairConditioner.weight)
+        assertTrue(hairConditioner.negativeTokens.isEmpty())
     }
 }

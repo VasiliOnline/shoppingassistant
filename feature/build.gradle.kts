@@ -7,7 +7,9 @@ plugins {
 }
 
 // Workaround for Windows file lock on `feature/build/.../classes.jar` (e.g. IDE/AV scanning).
-layout.buildDirectory.set(rootProject.layout.buildDirectory.dir("feature_alt"))
+// Allow overriding the shared build dir so local verification can avoid stale locks in `feature_alt`.
+val featureBuildDirName = providers.gradleProperty("featureBuildDirName").orElse("feature_alt")
+layout.buildDirectory.set(rootProject.layout.buildDirectory.dir(featureBuildDirName))
 
 android {
     namespace = "com.example.shoppingassistant.feature"
@@ -62,6 +64,14 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("io.insert-koin:koin-android:4.0.0")
     implementation("io.insert-koin:koin-androidx-compose:4.0.0") // <-- ЭТО ВАЖНО
+    implementation("androidx.camera:camera-core:1.5.3")
+    implementation("androidx.camera:camera-camera2:1.5.3")
+    implementation("androidx.camera:camera-lifecycle:1.5.3")
+    implementation("androidx.camera:camera-view:1.5.3")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:image-labeling:17.0.9")
+    implementation("com.google.mlkit:object-detection:17.0.2")
 
     // JSON сериализация для экранов (IngestPage и пр.)
     implementation(libs.kotlinx.serialization.json)
@@ -81,6 +91,7 @@ dependencies {
 
     implementation(project(":core"))
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

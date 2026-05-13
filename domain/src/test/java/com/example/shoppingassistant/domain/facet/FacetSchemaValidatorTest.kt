@@ -1,6 +1,7 @@
 package com.example.shoppingassistant.domain.facet
 
 import com.example.shoppingassistant.domain.catalog.CatalogSeed
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -28,7 +29,7 @@ class FacetSchemaValidatorTest {
         val brokenCollections = CatalogSeed.facetCollections + FacetCollection(
             collectionCode = "B.FOOD.READY.BROKEN",
             categoryCode = "FOOD.READY_MEALS",
-            titleRu = "Broken",
+            title = localizedTextOf("ru" to "Broken"),
             browseCode = "B.FOOD.READY.99",
             presetCode = "FP.MISSING.PRESET",
         )
@@ -82,6 +83,40 @@ class FacetSchemaValidatorTest {
 
         assertFalse(report.isValid)
         assertTrue(report.failIssues.any { it.code == "FACET_EFFECTIVE_WINDOW_INVALID" })
+    }
+
+    @Test
+    fun englishOnlyFacetTitles_areAccepted() {
+        val definitions = CatalogSeed.facetDefinitions.map { definition ->
+            definition.copy(
+                title = localizedTextOf(
+                    "en" to definition.title.resolve(locale = "ru", fallback = definition.facetKey),
+                ),
+            )
+        }
+        val presets = CatalogSeed.facetPresets.map { preset ->
+            preset.copy(
+                title = localizedTextOf(
+                    "en" to preset.title.resolve(locale = "ru", fallback = preset.presetCode),
+                ),
+            )
+        }
+        val collections = CatalogSeed.facetCollections.map { collection ->
+            collection.copy(
+                title = localizedTextOf(
+                    "en" to collection.title.resolve(locale = "ru", fallback = collection.collectionCode),
+                ),
+            )
+        }
+
+        val report = validator.validate(
+            categories = CatalogSeed.categories,
+            definitions = definitions,
+            presets = presets,
+            collections = collections,
+        )
+
+        assertTrue(report.summary(), report.isValid)
     }
 
     @Test

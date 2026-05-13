@@ -8,8 +8,27 @@
       "description": null,
       "status": "ACTIVE"
     },
-    "attributes": [],
-    "categoryAttributes": [],
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      }
+    ],
     "valueDictionaries": [],
     "requiredIfRules": []
   },
@@ -46,6 +65,17 @@
         "valueDictCode": null
       },
       {
+        "code": "model_line",
+        "title": "Линейка",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
         "code": "memory_gb",
         "title": "Память (ГБ)",
         "dataType": "INT",
@@ -68,6 +98,28 @@
         "valueDictCode": "condition"
       },
       {
+        "code": "release_year",
+        "title": "Год релиза",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "release_date",
+        "title": "Дата релиза",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
         "code": "network_type",
         "title": "Сеть",
         "dataType": "ENUM",
@@ -84,6 +136,39 @@
         "dataType": "INT",
         "requiredForSearch": false,
         "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "refresh_rate_hz",
+        "title": "Частота обновления (Гц)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "chipset_family",
+        "title": "Чипсет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
@@ -143,9 +228,114 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "color"
+      },
+      {
+        "code": "battery_mah",
+        "title": "Батарея (мА·ч)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wired_charging_w",
+        "title": "Проводная зарядка (Вт)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_charging",
+        "title": "Беспроводная зарядка",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "esim_support",
+        "title": "eSIM",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ip_rating",
+        "title": "Защита IP",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_logo_present",
+        "title": "Виден логотип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "TECH.PHONES",
         "attributeCode": "brand",
@@ -160,56 +350,140 @@
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "memory_gb",
+        "attributeCode": "model_line",
         "uiOrder": 3,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "condition",
+        "attributeCode": "memory_gb",
         "uiOrder": 4,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "network_type",
+        "attributeCode": "condition",
         "uiOrder": 5,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "ram_gb",
+        "attributeCode": "release_year",
         "uiOrder": 6,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "os_family",
+        "attributeCode": "release_date",
         "uiOrder": 7,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "dual_sim",
+        "attributeCode": "network_type",
         "uiOrder": 8,
-        "isRequiredForCategory": false
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "region_code",
+        "attributeCode": "ram_gb",
         "uiOrder": 9,
-        "isRequiredForCategory": false
+        "isRequiredForCategory": true
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "battery_health_percent",
+        "attributeCode": "refresh_rate_hz",
         "uiOrder": 10,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "color",
+        "attributeCode": "screen_size_inch",
         "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "chipset_family",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "os_family",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "dual_sim",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "region_code",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "battery_health_percent",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "color",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "battery_mah",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "wired_charging_w",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "wireless_charging",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "esim_support",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "ip_rating",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "primary_color",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "visible_logo_present",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONES",
+        "attributeCode": "shape",
+        "uiOrder": 25,
         "isRequiredForCategory": false
       }
     ],
@@ -240,37 +514,92 @@
     },
     "attributes": [
       {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
+        "code": "accessory_type",
+        "title": "Тип аксессуара",
+        "dataType": "ENUM",
+        "requiredForSearch": true,
         "requiredForOffer": true,
-        "requiredForExpress": false,
+        "requiredForExpress": true,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "accessory_type"
       },
       {
-        "code": "model",
-        "title": "Модель",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
+        "code": "accessory_subtype",
+        "title": "Подтип аксессуара",
         "dataType": "ENUM",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "condition"
+        "valueDictCode": "accessory_subtype"
+      },
+      {
+        "code": "brand",
+        "title": "Бренд аксессуара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_phone_brand",
+        "title": "Совместимый бренд телефона",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "compatible_phone_brand"
+      },
+      {
+        "code": "compatible_phone_family",
+        "title": "Совместимая линейка телефона",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_phone_model",
+        "title": "Совместимая модель телефона",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
       },
       {
         "code": "color",
@@ -280,7 +609,7 @@
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
-        "multiValued": false,
+        "multiValued": true,
         "valueDictCode": "color"
       },
       {
@@ -291,12 +620,815 @@
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
-        "multiValued": false,
+        "multiValued": true,
         "valueDictCode": "material"
       },
       {
-        "code": "included_accessories",
-        "title": "Комплектация",
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "pack_quantity",
+        "title": "Количество в комплекте",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "included_items",
+        "title": "Что в комплекте",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "included_items"
+      },
+      {
+        "code": "certification",
+        "title": "Сертификация/маркировка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "certification"
+      },
+      {
+        "code": "warranty_months",
+        "title": "Гарантия, месяцев",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "case_form_factor",
+        "title": "Форм-фактор чехла",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "case_form_factor"
+      },
+      {
+        "code": "protection_level",
+        "title": "Уровень защиты",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "protection_level"
+      },
+      {
+        "code": "case_features",
+        "title": "Особенности чехла",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "case_features"
+      },
+      {
+        "code": "magnetic_alignment",
+        "title": "Магнитное позиционирование",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_charging_compatible",
+        "title": "Совместим с беспроводной зарядкой",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "drop_protection_m",
+        "title": "Защита от падения, м",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "protector_type",
+        "title": "Тип защитного покрытия",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "protector_type"
+      },
+      {
+        "code": "protector_coverage",
+        "title": "Покрытие защитного стекла/плёнки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "protector_coverage"
+      },
+      {
+        "code": "hardness_rating",
+        "title": "Твёрдость",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "hardness_rating"
+      },
+      {
+        "code": "thickness_mm",
+        "title": "Толщина, мм",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "oleophobic_coating",
+        "title": "Олеофобное покрытие",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "privacy_filter",
+        "title": "Антишпион/приватность",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "case_friendly",
+        "title": "Совместимо с чехлом",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "connector_input",
+        "title": "Входной разъём",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "connector_input"
+      },
+      {
+        "code": "connector_output",
+        "title": "Выходной разъём",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "connector_output"
+      },
+      {
+        "code": "connector_a",
+        "title": "Разъём A",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "connector_a"
+      },
+      {
+        "code": "connector_b",
+        "title": "Разъём B",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "connector_b"
+      },
+      {
+        "code": "cable_length_m",
+        "title": "Длина кабеля, м",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "charging_protocol",
+        "title": "Протокол быстрой зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "charging_protocol"
+      },
+      {
+        "code": "data_transfer",
+        "title": "Передача данных",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "data_standard",
+        "title": "Стандарт передачи данных",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "data_standard"
+      },
+      {
+        "code": "ports_count",
+        "title": "Количество портов",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "output_ports",
+        "title": "Выходные порты",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "output_ports"
+      },
+      {
+        "code": "wall_charger_plug",
+        "title": "Тип вилки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wall_charger_plug"
+      },
+      {
+        "code": "car_charger_socket",
+        "title": "Автомобильный разъём",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "car_charger_socket"
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "wireless_form_factor",
+        "title": "Форм-фактор беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_form_factor"
+      },
+      {
+        "code": "capacity_mah",
+        "title": "Ёмкость, мА·ч",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "capacity_wh",
+        "title": "Ёмкость, Вт·ч",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pass_through_charging",
+        "title": "Сквозная зарядка",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "built_in_cable",
+        "title": "Встроенный кабель",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "mount_location",
+        "title": "Место установки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "mount_location"
+      },
+      {
+        "code": "mount_attachment",
+        "title": "Тип крепления",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "mount_attachment"
+      },
+      {
+        "code": "rotation_support",
+        "title": "Поворот/регулировка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "rotation_support"
+      },
+      {
+        "code": "grip_stand_type",
+        "title": "Тип держателя/подставки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "grip_stand_type"
+      },
+      {
+        "code": "memory_card_type",
+        "title": "Тип карты памяти",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "memory_card_type"
+      },
+      {
+        "code": "storage_capacity_gb",
+        "title": "Объём памяти, ГБ",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "speed_class",
+        "title": "Класс скорости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "speed_class"
+      },
+      {
+        "code": "app_performance_class",
+        "title": "Класс приложений",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "app_performance_class"
+      },
+      {
+        "code": "sim_tool_type",
+        "title": "Тип SIM-аксессуара",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "sim_tool_type"
+      },
+      {
+        "code": "stylus_type",
+        "title": "Тип стилуса",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "stylus_type"
+      },
+      {
+        "code": "tip_type",
+        "title": "Тип наконечника",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "tip_type"
+      },
+      {
+        "code": "repair_part_type",
+        "title": "Тип запчасти",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "repair_part_type"
+      },
+      {
+        "code": "waterproof_rating",
+        "title": "Водозащита",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waterproof_rating"
+      },
+      {
+        "code": "cleaning_kit_type",
+        "title": "Тип набора для чистки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "cleaning_kit_type"
+      },
+      {
+        "code": "evidence_policy",
+        "title": "Политика доказательств",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "evidence_policy"
+      },
+      {
+        "code": "compatibility_confidence",
+        "title": "Уверенность совместимости",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_strictness",
+        "title": "Строгость совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_strictness"
+      },
+      {
+        "code": "target_ecosystem",
+        "title": "Экосистема/платформа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "target_ecosystem"
+      },
+      {
+        "code": "compatible_screen_size_min_in",
+        "title": "Мин. диагональ совместимого телефона, дюймы",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_screen_size_max_in",
+        "title": "Макс. диагональ совместимого телефона, дюймы",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "phone_width_min_mm",
+        "title": "Мин. ширина телефона, мм",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "phone_width_max_mm",
+        "title": "Макс. ширина телефона, мм",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "case_has_magsafe_ring",
+        "title": "Кольцо MagSafe в чехле",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "raised_screen_lip_mm",
+        "title": "Бортик экрана, мм",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "raised_camera_lip_mm",
+        "title": "Бортик камеры, мм",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "anti_yellowing",
+        "title": "Антижелтизна",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "card_slots_count",
+        "title": "Количество карманов для карт",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "strap_included",
+        "title": "Ремешок в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "protector_installation_frame",
+        "title": "Рамка для установки",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "blue_light_filter",
+        "title": "Фильтр синего света",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "anti_glare",
+        "title": "Антиблик",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "scratch_resistant",
+        "title": "Защита от царапин",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "charger_technology",
+        "title": "Технология зарядного устройства",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "charger_technology"
+      },
+      {
+        "code": "power_class",
+        "title": "Класс мощности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "power_class"
+      },
+      {
+        "code": "safety_protections",
+        "title": "Защиты питания",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "safety_protections"
+      },
+      {
+        "code": "input_voltage_range",
+        "title": "Входное напряжение",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "output_voltage_profiles",
+        "title": "Профили выходного напряжения",
         "dataType": "STRING_LIST",
         "requiredForSearch": false,
         "requiredForOffer": false,
@@ -304,48 +1436,1976 @@
         "facetEnabled": false,
         "multiValued": true,
         "valueDictCode": null
+      },
+      {
+        "code": "max_current_amp",
+        "title": "Макс. ток, А",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "cable_shape",
+        "title": "Форма кабеля",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "cable_shape"
+      },
+      {
+        "code": "connector_a_form_factor",
+        "title": "Форм-фактор разъёма A",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "connector_a_form_factor"
+      },
+      {
+        "code": "connector_b_form_factor",
+        "title": "Форм-фактор разъёма B",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "connector_b_form_factor"
+      },
+      {
+        "code": "e_marker_chip",
+        "title": "E-marker чип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "video_output_support",
+        "title": "Поддержка видео",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "otg_support",
+        "title": "OTG",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "pass_through_power_watt",
+        "title": "Сквозная зарядка, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "battery_cell_type",
+        "title": "Тип аккумуляторных ячеек",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "battery_cell_type"
+      },
+      {
+        "code": "charge_indicator_type",
+        "title": "Индикатор заряда",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "charge_indicator_type"
+      },
+      {
+        "code": "airline_safe",
+        "title": "Допустимо в самолёт",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_device_targets",
+        "title": "Для каких устройств беспроводная зарядка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "wireless_device_targets"
+      },
+      {
+        "code": "max_wireless_devices",
+        "title": "Макс. устройств беспроводной зарядки",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "case_thickness_max_mm",
+        "title": "Макс. толщина чехла для зарядки, мм",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "cooling_type",
+        "title": "Тип охлаждения",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "cooling_type"
+      },
+      {
+        "code": "holder_mechanism",
+        "title": "Механизм держателя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "holder_mechanism"
+      },
+      {
+        "code": "arm_length_cm",
+        "title": "Длина штанги/руки, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "tripod_mount_thread",
+        "title": "Резьба штатива",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "tripod_mount_thread"
+      },
+      {
+        "code": "remote_shutter_included",
+        "title": "Пульт в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "bluetooth_version",
+        "title": "Bluetooth версия",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "bluetooth_version"
+      },
+      {
+        "code": "light_diameter_cm",
+        "title": "Диаметр кольцевой лампы, см",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "light_color_temperature_k",
+        "title": "Цветовая температура, K",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brightness_levels",
+        "title": "Уровни яркости",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "game_controller_layout",
+        "title": "Раскладка контроллера",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "game_controller_layout"
+      },
+      {
+        "code": "cooler_power_watt",
+        "title": "Мощность кулера, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "memory_read_speed_mbps",
+        "title": "Скорость чтения, МБ/с",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "memory_write_speed_mbps",
+        "title": "Скорость записи, МБ/с",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "part_quality_grade",
+        "title": "Класс/качество запчасти",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "part_quality_grade"
+      },
+      {
+        "code": "repair_consumable_type",
+        "title": "Тип расходника для ремонта",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "repair_consumable_type"
+      },
+      {
+        "code": "repair_tool_type",
+        "title": "Тип инструмента для ремонта",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "repair_tool_type"
+      },
+      {
+        "code": "includes_adhesive",
+        "title": "Клей/проклейка в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "waterproof_seal_included",
+        "title": "Влагозащитная проклейка в комплекте",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "skin_finish",
+        "title": "Финиш скина/наклейки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "skin_finish"
+      },
+      {
+        "code": "adhesive_type",
+        "title": "Тип клейкой основы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "adhesive_type"
+      },
+      {
+        "code": "waterproof_pouch_size",
+        "title": "Размер водонепроницаемого пакета",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "waterproof_pouch_size"
       }
     ],
     "categoryAttributes": [
       {
         "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "brand",
+        "attributeCode": "accessory_type",
         "uiOrder": 1,
         "isRequiredForCategory": true
       },
       {
         "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "model",
+        "attributeCode": "accessory_subtype",
         "uiOrder": 2,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "condition",
+        "attributeCode": "brand",
         "uiOrder": 3,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "color",
+        "attributeCode": "compatibility_mode",
         "uiOrder": 4,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "material",
+        "attributeCode": "compatible_phone_brand",
         "uiOrder": 5,
         "isRequiredForCategory": false
       },
       {
         "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "included_accessories",
+        "attributeCode": "compatible_phone_family",
         "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "compatible_phone_model",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "color",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "material",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "condition",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "pack_quantity",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "included_items",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "certification",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "warranty_months",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "case_form_factor",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "protection_level",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "case_features",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "magnetic_alignment",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "wireless_charging_compatible",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "drop_protection_m",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "protector_type",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "protector_coverage",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "hardness_rating",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "thickness_mm",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "oleophobic_coating",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "privacy_filter",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "case_friendly",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "connector_input",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "connector_output",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "connector_a",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "connector_b",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "cable_length_m",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "charging_protocol",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "data_transfer",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "data_standard",
+        "uiOrder": 37,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "ports_count",
+        "uiOrder": 38,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "output_ports",
+        "uiOrder": 39,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "wall_charger_plug",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "car_charger_socket",
+        "uiOrder": 41,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 42,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "wireless_form_factor",
+        "uiOrder": 43,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "capacity_mah",
+        "uiOrder": 44,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "capacity_wh",
+        "uiOrder": 45,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "pass_through_charging",
+        "uiOrder": 46,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "built_in_cable",
+        "uiOrder": 47,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "mount_location",
+        "uiOrder": 48,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "mount_attachment",
+        "uiOrder": 49,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "rotation_support",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "grip_stand_type",
+        "uiOrder": 51,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "memory_card_type",
+        "uiOrder": 52,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "storage_capacity_gb",
+        "uiOrder": 53,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "speed_class",
+        "uiOrder": 54,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "app_performance_class",
+        "uiOrder": 55,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "sim_tool_type",
+        "uiOrder": 56,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "stylus_type",
+        "uiOrder": 57,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "tip_type",
+        "uiOrder": 58,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "repair_part_type",
+        "uiOrder": 59,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "waterproof_rating",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "cleaning_kit_type",
+        "uiOrder": 61,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "evidence_policy",
+        "uiOrder": 62,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "compatibility_confidence",
+        "uiOrder": 63,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "compatibility_strictness",
+        "uiOrder": 64,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "target_ecosystem",
+        "uiOrder": 65,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "compatible_screen_size_min_in",
+        "uiOrder": 66,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "compatible_screen_size_max_in",
+        "uiOrder": 67,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "phone_width_min_mm",
+        "uiOrder": 68,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "phone_width_max_mm",
+        "uiOrder": 69,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "case_has_magsafe_ring",
+        "uiOrder": 70,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "raised_screen_lip_mm",
+        "uiOrder": 71,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "raised_camera_lip_mm",
+        "uiOrder": 72,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "anti_yellowing",
+        "uiOrder": 73,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "card_slots_count",
+        "uiOrder": 74,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "strap_included",
+        "uiOrder": 75,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "protector_installation_frame",
+        "uiOrder": 76,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "blue_light_filter",
+        "uiOrder": 77,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "anti_glare",
+        "uiOrder": 78,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "scratch_resistant",
+        "uiOrder": 79,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "charger_technology",
+        "uiOrder": 80,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "power_class",
+        "uiOrder": 81,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "safety_protections",
+        "uiOrder": 82,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "input_voltage_range",
+        "uiOrder": 83,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "output_voltage_profiles",
+        "uiOrder": 84,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "max_current_amp",
+        "uiOrder": 85,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "cable_shape",
+        "uiOrder": 86,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "connector_a_form_factor",
+        "uiOrder": 87,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "connector_b_form_factor",
+        "uiOrder": 88,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "e_marker_chip",
+        "uiOrder": 89,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "video_output_support",
+        "uiOrder": 90,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "otg_support",
+        "uiOrder": 91,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "pass_through_power_watt",
+        "uiOrder": 92,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "battery_cell_type",
+        "uiOrder": 93,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "charge_indicator_type",
+        "uiOrder": 94,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "airline_safe",
+        "uiOrder": 95,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "wireless_device_targets",
+        "uiOrder": 96,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "max_wireless_devices",
+        "uiOrder": 97,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "case_thickness_max_mm",
+        "uiOrder": 98,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "cooling_type",
+        "uiOrder": 99,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "holder_mechanism",
+        "uiOrder": 100,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "arm_length_cm",
+        "uiOrder": 101,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "tripod_mount_thread",
+        "uiOrder": 102,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "remote_shutter_included",
+        "uiOrder": 103,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "bluetooth_version",
+        "uiOrder": 104,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "light_diameter_cm",
+        "uiOrder": 105,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "light_color_temperature_k",
+        "uiOrder": 106,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "brightness_levels",
+        "uiOrder": 107,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "game_controller_layout",
+        "uiOrder": 108,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "cooler_power_watt",
+        "uiOrder": 109,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "memory_read_speed_mbps",
+        "uiOrder": 110,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "memory_write_speed_mbps",
+        "uiOrder": 111,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "part_quality_grade",
+        "uiOrder": 112,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "repair_consumable_type",
+        "uiOrder": 113,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "repair_tool_type",
+        "uiOrder": 114,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "includes_adhesive",
+        "uiOrder": 115,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "waterproof_seal_included",
+        "uiOrder": 116,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "skin_finish",
+        "uiOrder": 117,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "adhesive_type",
+        "uiOrder": 118,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PHONE_ACCESSORIES",
+        "attributeCode": "waterproof_pouch_size",
+        "uiOrder": 119,
         "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "capacity_mah",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWER_BANK"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "car_charger_socket",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAR_CHARGER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "case_form_factor",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CASE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "cleaning_kit_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CLEANING_KIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "ADAPTER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "ANTI_DUST_PLUG"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "BICYCLE_MOTORCYCLE_MOUNT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "BUNDLE_KIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CABLE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAMERA_LENS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAMERA_PROTECTOR"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CARD_HOLDER_WALLET"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAR_CHARGER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAR_KIT_PHONE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CASE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CHARGER_WALL"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CLEANING_KIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "DESK_STAND"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "GAME_TRIGGER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "GRIP_STAND"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HOLDER_MOUNT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HUB_DOCK"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "LANYARD_STRAP"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MAGNETIC_PLATE_RING"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MEMORY_CARD"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MOBILE_GAME_CONTROLLER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_ARMBAND"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_CAMERA_ACCESSORY"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_CHARM_DECOR"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_COOLER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_GAMING_ACCESSORY"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_REPAIR_PART"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_SKIN_DECAL"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_WALLET_POUCH"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWER_BANK"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PRIVACY_CAMERA_COVER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "REMOTE_SHUTTER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "REPAIR_CONSUMABLE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "REPAIR_TOOL_KIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "RING_LIGHT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SCREEN_PROTECTOR"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SELFIE_STICK_TRIPOD"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SIM_ACCESSORY"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "STYLUS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "USB_FLASH_DRIVE_PHONE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WATERPROOF_POUCH"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "compatibility_mode",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WIRELESS_CHARGER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_a",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CABLE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_a",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "USB_FLASH_DRIVE_PHONE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_b",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "ANTI_DUST_PLUG"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_b",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CABLE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_input",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "ADAPTER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_input",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HUB_DOCK"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_output",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "ADAPTER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_output",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAR_CHARGER"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "connector_output",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CHARGER_WALL"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "grip_stand_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "GRIP_STAND"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "memory_card_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MEMORY_CARD"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "mount_location",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "BICYCLE_MOTORCYCLE_MOUNT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "mount_location",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HOLDER_MOUNT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "output_ports",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "HUB_DOCK"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "protector_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CAMERA_PROTECTOR"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "protector_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SCREEN_PROTECTOR"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "repair_consumable_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "REPAIR_CONSUMABLE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "repair_part_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PHONE_REPAIR_PART"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "repair_tool_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "REPAIR_TOOL_KIT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "sim_tool_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "SIM_ACCESSORY"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "storage_capacity_gb",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MEMORY_CARD"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "storage_capacity_gb",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "USB_FLASH_DRIVE_PHONE"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "stylus_type",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "STYLUS"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "waterproof_rating",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WATERPROOF_POUCH"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "wireless_standard",
+        "whenAll": [
+          {
+            "attributeCode": "accessory_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WIRELESS_CHARGER"
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     "category": {
@@ -1047,9 +4107,70 @@
         "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "secondary_color",
+        "title": "Дополнительный цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_logo_present",
+        "title": "Виден логотип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "TECH.AUDIO",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "TECH.AUDIO",
         "attributeCode": "brand",
@@ -1084,6 +4205,30 @@
         "categoryCode": "TECH.AUDIO",
         "attributeCode": "weight_kg",
         "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.AUDIO",
+        "attributeCode": "primary_color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.AUDIO",
+        "attributeCode": "secondary_color",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.AUDIO",
+        "attributeCode": "shape",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.AUDIO",
+        "attributeCode": "visible_logo_present",
+        "uiOrder": 10,
         "isRequiredForCategory": false
       }
     ],
@@ -1165,9 +4310,59 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "color"
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_logo_present",
+        "title": "Виден логотип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "TECH.GAMING",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "TECH.GAMING",
         "attributeCode": "brand",
@@ -1202,6 +4397,24 @@
         "categoryCode": "TECH.GAMING",
         "attributeCode": "color",
         "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.GAMING",
+        "attributeCode": "primary_color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.GAMING",
+        "attributeCode": "visible_logo_present",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.GAMING",
+        "attributeCode": "shape",
+        "uiOrder": 9,
         "isRequiredForCategory": false
       }
     ],
@@ -1401,9 +4614,59 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "color"
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "primary_color",
+        "title": "Основной цвет",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "shape",
+        "title": "Форма",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "visible_logo_present",
+        "title": "Виден логотип",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
+      {
+        "categoryCode": "TECH.SMART_HOME",
+        "attributeCode": "type_of_item",
+        "uiOrder": 0,
+        "isRequiredForCategory": false
+      },
       {
         "categoryCode": "TECH.SMART_HOME",
         "attributeCode": "brand",
@@ -1439,10 +4702,27 @@
         "attributeCode": "color",
         "uiOrder": 6,
         "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SMART_HOME",
+        "attributeCode": "primary_color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SMART_HOME",
+        "attributeCode": "shape",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SMART_HOME",
+        "attributeCode": "visible_logo_present",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
     "requiredIfRules": []
   }
 ]
-

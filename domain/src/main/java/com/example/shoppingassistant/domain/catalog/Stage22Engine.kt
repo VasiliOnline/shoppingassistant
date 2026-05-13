@@ -72,7 +72,6 @@ internal data class Stage22EffectiveCategorySpec(
 )
 
 internal class Stage22ProfileResolver(
-    private val registry: Stage22RegistrySnapshot,
     profiles: List<Stage22CategoryProfile>,
 ) {
     private val profileByCategory: Map<String, Stage22CategoryProfile> =
@@ -90,27 +89,23 @@ internal class Stage22ProfileResolver(
 
     fun resolve(categoryCode: String): Stage22ResolvedProfile {
         val resolvedCode = categoryCode.trim()
-        val fallback = fallbackProfile(resolvedCode)
-        val categoryProfile = profileByCategory[resolvedCode] ?: return fallback
-        if (categoryProfile.attributes.isEmpty()) return fallback
-
-        val mergedUsage = LinkedHashMap<String, Stage22AttributeUsage>()
-        fallback.attributes.forEach { mergedUsage[it.attributeCode] = it }
-        categoryProfile.attributes.forEach { usage ->
-            mergedUsage[usage.attributeCode] = usage
+        val categoryProfile = profileByCategory[resolvedCode]
+            ?: error("Missing Stage 2.2 profile for category '$resolvedCode'.")
+        check(categoryProfile.attributes.isNotEmpty()) {
+            "Stage 2.2 profile for category '$resolvedCode' has empty attributes."
         }
 
-        val effectiveAttributes = mergedUsage.values
+        val effectiveAttributes = categoryProfile.attributes
             .sortedWith(compareBy<Stage22AttributeUsage> { it.uiOrder }.thenBy { it.attributeCode })
 
         val effectiveIdentity = selectDimensionAttributes(
             profileValues = categoryProfile.identityAttributes,
-            fallbackValues = fallback.identityAttributes,
+            fallbackValues = emptyList(),
             effectiveAttributes = effectiveAttributes,
         )
         val effectiveFacet = selectDimensionAttributes(
             profileValues = categoryProfile.facetAttributes,
-            fallbackValues = fallback.facetAttributes,
+            fallbackValues = emptyList(),
             effectiveAttributes = effectiveAttributes,
         )
 
@@ -120,46 +115,7 @@ internal class Stage22ProfileResolver(
             identityAttributes = effectiveIdentity,
             facetAttributes = effectiveFacet,
             isFallback = false,
-            sourceL0 = categoryProfile.sourceL0 ?: fallback.sourceL0,
-        )
-    }
-
-    private fun fallbackProfile(categoryCode: String): Stage22ResolvedProfile {
-        val preferred = listOf("product_name", "brand", "model")
-        val selected = preferred.filter { registry.attributes.containsKey(it) }
-        val fallbackCodes = if (selected.isNotEmpty()) {
-            selected
-        } else {
-            registry.attributes.values
-                .asSequence()
-                .filter { it.isIdentity }
-                .map { it.attributeCode }
-                .take(3)
-                .toList()
-        }
-
-        val fallbackAttributes = fallbackCodes.mapIndexed { index, attributeCode ->
-            Stage22AttributeUsage(
-                attributeCode = attributeCode,
-                required = attributeCode == "product_name",
-                uiOrder = (index + 1) * 10,
-                visibility = Stage22Visibility.VISIBLE,
-            )
-        }
-        val identityAttributes = fallbackAttributes
-            .map { it.attributeCode }
-            .filter { code -> registry.attributes[code]?.isIdentity == true }
-        val facetAttributes = fallbackAttributes
-            .map { it.attributeCode }
-            .filter { code -> registry.attributes[code]?.isFacet == true }
-
-        return Stage22ResolvedProfile(
-            categoryCode = categoryCode,
-            attributes = fallbackAttributes,
-            identityAttributes = identityAttributes,
-            facetAttributes = facetAttributes,
-            isFallback = true,
-            sourceL0 = categoryCode.substringBefore('.').ifBlank { null },
+            sourceL0 = categoryProfile.sourceL0 ?: resolvedCode.substringBefore('.').ifBlank { null },
         )
     }
 
@@ -404,7 +360,6 @@ internal class Stage22EffectiveSpecEngine private constructor(
 ) {
     private val categoryCodes = categories.map { it.code }.toSet()
     private val profileResolver = Stage22ProfileResolver(
-        registry = registry,
         profiles = profiles,
     )
     private val constraintsResolver = Stage22ConstraintsResolver(

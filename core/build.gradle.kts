@@ -20,6 +20,14 @@ android {
         jvmToolchain(21)
     }
 
+    sourceSets.getByName("androidTest").assets.srcDir(file("schemas"))
+
+}
+
+ksp {
+    arg("room.schemaLocation", file("schemas").path)
+    arg("room.generateKotlin", "true")
+    arg("room.incremental", "true")
 }
 
 dependencies {
@@ -56,4 +64,5 @@ dependencies {
 
     implementation(project(":domain"))
     testImplementation("junit:junit:4.13.2")
+    testImplementation("io.ktor:ktor-client-mock:3.0.0")
 }

@@ -29,11 +29,11 @@ data class DatabaseConfig(
          *  - DB_PASSWORD — пароль (обязателен на проде, локально можно временно без него)
          */
         fun fromEnv(): DatabaseConfig {
-            val host = System.getenv("DB_HOST") ?: "localhost"
-            val port = System.getenv("DB_PORT")?.toIntOrNull() ?: 5432
-            val name = System.getenv("DB_NAME") ?: "shoppingassistant"
-            val user = System.getenv("DB_USER") ?: "Boss"
-            val password = System.getenv("DB_PASSWORD")
+            val host = envValue("DB_HOST") ?: "localhost"
+            val port = envValue("DB_PORT")?.toIntOrNull() ?: 5432
+            val name = envValue("DB_NAME") ?: "shoppingassistant"
+            val user = envValue("DB_USER") ?: "Boss"
+            val password = envValue("DB_PASSWORD")
                 ?: throw IllegalStateException("DB_PASSWORD must be provided for production")
 
             val url = "jdbc:postgresql://$host:$port/$name"
@@ -74,15 +74,14 @@ data class ServerConfig(
          *  Параметры БД читаем через [DatabaseConfig.fromEnv].
          */
         fun fromEnv(): ServerConfig {
-            val port = System.getenv("APP_PORT")?.toIntOrNull() ?: 8081
-            val host = System.getenv("APP_HOST") ?: "0.0.0.0"
-            val cors = System.getenv("APP_CORS_ORIGINS")
+            val port = envValue("APP_PORT")?.toIntOrNull() ?: 8081
+            val host = envValue("APP_HOST") ?: "0.0.0.0"
+            val cors = envValue("APP_CORS_ORIGINS")
                 ?.split(',')
                 ?.map { it.trim() }
                 ?.filter { it.isNotEmpty() }
                 ?: emptyList()
-            val enableHsts = (System.getenv("ENABLE_HSTS") ?: "false")
-                .equals("true", ignoreCase = true)
+            val enableHsts = parseBooleanEnv("ENABLE_HSTS", defaultValue = false)
 
             val dbConfig = DatabaseConfig.fromEnv()
 

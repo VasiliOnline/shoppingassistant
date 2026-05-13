@@ -1,4 +1,4 @@
--- Catalog migration parity post-check for V4 -> V6 -> V9 -> V10 -> V11 -> V12 -> V13 -> V14 -> V15 -> V16 -> V17 -> V18.
+-- Catalog migration parity post-check for V4 -> V6 -> V9 -> V10 -> V11 -> V12 -> V13 -> V14 -> V15 -> V16 -> V17 -> V18 -> V20 -> V21 -> V22 -> V23.
 -- Run against each target environment (staging/prod) after deploy.
 
 -- 1) Show applied migration rows.
@@ -9,7 +9,7 @@ SELECT
     installed_on,
     success
 FROM flyway_schema_history
-WHERE version IN ('4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18')
+WHERE version IN ('4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '20', '21', '22', '23')
 ORDER BY installed_rank;
 
 -- 2) Verify required migration order and completeness.
@@ -19,29 +19,40 @@ WITH applied AS (
         installed_rank
     FROM flyway_schema_history
     WHERE success = TRUE
-      AND version IN ('4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18')
+      AND version IN ('4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '20', '21', '22', '23')
 )
 SELECT
     CASE
-        WHEN COUNT(*) = 12
-         AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']
+        WHEN COUNT(*) = 16
+         AND ARRAY_AGG(version ORDER BY installed_rank) = ARRAY['4', '6', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '20', '21', '22', '23']
             THEN 'OK'
         ELSE 'FAIL'
     END AS migration_order_status,
     ARRAY_AGG(version ORDER BY installed_rank) AS applied_order
 FROM applied;
 
--- 3) Check required columns introduced by V11/V12/V15/V16/V17.
+-- 3) Check required columns introduced by V11/V12/V15/V16/V17/V22/V23.
 WITH expected(table_name, column_name) AS (
     VALUES
         ('categories', 'status'),
+        ('categories', 'title_ru'),
+        ('categories', 'title_en'),
+        ('categories', 'replacement_code'),
+        ('category_aliases', 'alias'),
+        ('browse_nodes', 'browse_code'),
+        ('browse_nodes', 'title_en'),
+        ('alias_entries', 'locale'),
+        ('google_taxonomy_mappings', 'canonical_code'),
         ('attribute_defs', 'required_by'),
         ('catalog_constraints', 'effective_from'),
         ('catalog_constraints', 'effective_to'),
         ('facet_definitions', 'effective_from'),
         ('facet_definitions', 'effective_to'),
+        ('facet_definitions', 'title_en'),
         ('facet_presets', 'effective_from'),
         ('facet_presets', 'effective_to'),
+        ('facet_presets', 'title_en'),
+        ('facet_collections', 'title_en'),
         ('catalog_preset_events', 'idempotency_key'),
         ('catalog_preset_events', 'event_type'),
         ('catalog_preset_events', 'query_session_id'),
@@ -73,6 +84,24 @@ SELECT
     COUNT(*) AS invalid_category_status_count
 FROM categories
 WHERE status IS NULL OR BTRIM(status) = '';
+
+SELECT
+    COUNT(*) AS invalid_category_replacement_self_count
+FROM categories
+WHERE replacement_code IS NOT NULL
+  AND BTRIM(replacement_code) <> ''
+  AND replacement_code = code;
+
+SELECT
+    COUNT(*) AS invalid_category_replacement_target_missing_count
+FROM categories c
+WHERE c.replacement_code IS NOT NULL
+  AND BTRIM(c.replacement_code) <> ''
+  AND NOT EXISTS (
+    SELECT 1
+    FROM categories t
+    WHERE t.code = c.replacement_code
+  );
 
 SELECT
     COUNT(*) AS invalid_required_by_format_count

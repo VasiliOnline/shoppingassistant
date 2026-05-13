@@ -5,6 +5,7 @@ import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservability
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepositoryImpl
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayer
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionLayerImpl
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelEnrichmentService
 import com.example.shoppingassistant.server.offers.OfferRepositoryImpl
 import com.example.shoppingassistant.server.offers.PresetObservabilityRepository
 import com.example.shoppingassistant.server.offers.PresetObservabilityRepositoryImpl
@@ -25,7 +26,15 @@ val backendOffersModule = module {
     single<Stage4ExecutionObservabilityRepository> { Stage4ExecutionObservabilityRepositoryImpl() }
     single<OfferRepository> { OfferRepositoryImpl(get(), get()) }
     single<PresetObservabilityRepository> { PresetObservabilityRepositoryImpl(get(), get()) }
-    single<TrackedOfferRepository> { TrackedOfferRepositoryImpl(get(), get(), get(), get()) }
+    single<TrackedOfferRepository> {
+        TrackedOfferRepositoryImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            phoneModelEnrichmentService = get<CatalogPhoneModelEnrichmentService>(),
+        )
+    }
     single<Stage4RuntimeBackfillService> { Stage4RuntimeBackfillServiceImpl(get(), get()) }
     single<UserOffersBackendRepository> { UserOffersRepositoryImpl() }
     single<UserOffersActionsService> { UserOffersActionsServiceImpl(get(), get()) }

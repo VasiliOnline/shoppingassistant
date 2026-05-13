@@ -1,6 +1,6 @@
 package com.example.shoppingassistant.domain.template.status
 
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.template.TemplateSnapshotData
@@ -31,7 +31,7 @@ data class TemplateStatusResult(
 @Serializable
 data class TemplateStatusContext(
     val template: TemplateSnapshotData,
-    val profile: CategoryProfile? = null,
+    val effectiveSpec: CatalogCategoryEffectiveSpec? = null,
     val constraints: List<CatalogConstraints> = emptyList(),
     val requiredIfRules: List<RequiredIfRule> = emptyList(),
     val hasPhotos: Boolean = false,

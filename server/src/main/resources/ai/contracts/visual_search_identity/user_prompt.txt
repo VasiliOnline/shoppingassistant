@@ -1,0 +1,36 @@
+Enrich this routed product photo for catalog search.
+
+Use the image first. Use router_result as the starting route. Use grounding_packet only as catalog context and weak hints.
+
+Required workflow:
+1. Verify the router primary object against the image.
+2. Keep category_code and item_type from router_result unless they conflict with the visible primary product.
+3. If a brand name/logo/tag/label is visible on the primary product or its own packaging, return visible_brand and brand.
+4. Decide identity_status:
+   - TYPE_ONLY_COMPLETE when category + item type (+ visible brand and visual attributes if present) is enough.
+   - ENRICHED when brand/family/model candidates improve retrieval and are supported.
+   - PARTIAL when the product needs rich identity but only partial anchors are safe.
+   - NO_IDENTITY when route is usable but no safe brand/family/model is available.
+   - ROUTE_CONFLICT when router_result is incompatible with the primary product.
+5. For rich-identity goods, return supported brand/family and 1-2 model_candidates when plausible.
+6. Return brand_candidates/family_candidates when the visual evidence is useful but not strong enough for hard brand/family.
+7. Return exact model only when strongly supported.
+8. Return color and visual_attributes when visible and useful for retrieval/similar-item search.
+9. Return JSON only.
+
+Rules:
+- Do not reroute because of background objects.
+- Do not use decorative text, background packaging, marketplace/app UI, listing page text, seller watermarks, camera overlays, or platform names as visible_brand/brand.
+- Use brand text only when it is physically on the primary product, its tag/label, or its own packaging, or when the product design is distinctive enough.
+- Do not fill family/model for generic type-only goods just because the category profile can support those fields.
+- Do not leave category_code and item_type empty when the primary product class is visible.
+- Do not turn a model candidate into exact model unless the evidence is strong.
+- If router_result is wrong, set route_conflict=true and fill corrected fields.
+- For clothing, bags, home goods, food, beauty, pet products, and packaging-heavy goods, visual_attributes are useful even when brand/family/model are null.
+- Put clothing artwork text in print_text, not brand, unless it is clearly a brand logo/tag.
+
+router_result:
+{{router_result}}
+
+grounding_packet:
+{{grounding_packet}}

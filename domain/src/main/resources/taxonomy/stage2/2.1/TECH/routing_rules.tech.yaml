@@ -42,7 +42,7 @@ triggers:
       add: 10
   TECH.PHONE_ACCESSORIES:
     bonus:
-    - pattern: \b(чехол|стекло|пленк|зарядк|кабель|пауэрбанк|power\s?bank)\b
+    - pattern: \b(чехол|чехл[\p{L}\p{N}_]*|стекло|стекл[\p{L}\p{N}_]*|пленк[\p{L}\p{N}_]*|зарядк[\p{L}\p{N}_]*|кабель|кабел[\p{L}\p{N}_]*|пауэрбанк|power\s?bank)\b
       add: 15
     - pattern: \b(lightning|type\s?c|usb\s?c|адаптер|держатель|попсокет)\b
       add: 10
@@ -98,7 +98,7 @@ conflicts:
 - pattern: \b(airpods|earbuds|buds)\b
   prefer: TECH.AUDIO
   penalty_other: 10
-- pattern: \b(чехол|стекло|зарядк|кабель)\b
+- pattern: \b(чехол|чехл[\p{L}\p{N}_]*|стекло|стекл[\p{L}\p{N}_]*|зарядк[\p{L}\p{N}_]*|кабель|кабел[\p{L}\p{N}_]*)\b
   prefer: TECH.PHONE_ACCESSORIES
   penalty_other: 8
 - pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi)\b

@@ -1,6 +1,7 @@
 package com.example.shoppingassistant.server.db
 
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
+import com.example.shoppingassistant.server.ai.AiAgentRegistryOverridesTable
 import com.example.shoppingassistant.server.config.DatabaseConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.builtins.ListSerializer
@@ -14,9 +15,13 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.Connection
+import java.sql.DriverManager
 import com.example.shoppingassistant.server.catalog.AttributeDefsTable
 import com.example.shoppingassistant.server.catalog.AttributeValueDictTable
+import com.example.shoppingassistant.server.catalog.AliasEntriesTable
+import com.example.shoppingassistant.server.catalog.BrowseNodesTable
 import com.example.shoppingassistant.server.catalog.CategoriesTable
+import com.example.shoppingassistant.server.catalog.CategoryAliasesTable
 import com.example.shoppingassistant.server.catalog.CategoryAttributesTable
 import com.example.shoppingassistant.server.catalog.CatalogConstraintsTable
 import com.example.shoppingassistant.server.catalog.CatalogStage4ContractMetaTable
@@ -24,11 +29,31 @@ import com.example.shoppingassistant.server.catalog.CatalogStage4DedupTemplatesT
 import com.example.shoppingassistant.server.catalog.CatalogStage4ExecutionMetricsTable
 import com.example.shoppingassistant.server.catalog.CatalogStage4ImmutableAttributesTable
 import com.example.shoppingassistant.server.catalog.CatalogStage4NormalizationRulesTable
+import com.example.shoppingassistant.server.catalog.CatalogReadinessSnapshotsTable
+import com.example.shoppingassistant.server.catalog.CatalogReadinessAutomationLeasesTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceReportsTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceHookDeliveriesTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceAliasesTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceBrandsTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceDecisionsTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernancePublishEventsTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceProductFamiliesTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceRefreshRunsTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceOfficialPhoneEndpointOverlaysTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceSourceRegistryTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceSourcesTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceValueCandidatesTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceValueCanonTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceValueObservationsTable
+import com.example.shoppingassistant.server.catalog.CatalogGovernanceModelsTable
+import com.example.shoppingassistant.server.catalog.CatalogPhoneModelEnrichmentCandidatesTable
 import com.example.shoppingassistant.server.catalog.CatalogStage4TypedConstraintsTable
 import com.example.shoppingassistant.server.catalog.FacetCollectionsTable
 import com.example.shoppingassistant.server.catalog.FacetDefinitionsTable
 import com.example.shoppingassistant.server.catalog.FacetPresetsTable
+import com.example.shoppingassistant.server.catalog.GoogleTaxonomyMappingsTable
 import com.example.shoppingassistant.server.catalog.CatalogSeeder
+import com.example.shoppingassistant.server.catalog.CatalogSeedSyncMode
 import com.example.shoppingassistant.server.offers.OffersTable
 import com.example.shoppingassistant.server.offers.ProductI18nTable
 import com.example.shoppingassistant.server.offers.ProductsTable
@@ -37,17 +62,19 @@ import com.example.shoppingassistant.server.offers.UserReviewsTable
 import com.example.shoppingassistant.server.offers.UserProfilesTable
 import com.example.shoppingassistant.server.offers.SellerStatsTable
 import com.example.shoppingassistant.server.offers.AlertsTable
-import com.example.shoppingassistant.server.offers.CatalogPresetEventsTable
 import com.example.shoppingassistant.server.offers.OfferPriceHistoryTable
 import com.example.shoppingassistant.server.offers.OfferSourcesTable
 import com.example.shoppingassistant.server.auth.DefaultPasswordHasher
 import com.example.shoppingassistant.server.subscriptions.SubscriptionNotificationsTable
 import com.example.shoppingassistant.server.subscriptions.SubscriptionsEngineStateTable
+import com.example.shoppingassistant.server.shortlisting.ShortListingDraftsTable
 import com.example.shoppingassistant.server.push.PushTokensTable
 import com.example.shoppingassistant.server.tracks.TrackEventsTable
 import com.example.shoppingassistant.server.tracks.TracksTable
 import com.example.shoppingassistant.server.tracks.top10.TrackTop10SnapshotsTable
 import com.example.shoppingassistant.server.vision.VisionUsageTable
+import org.flywaydb.core.Flyway
+import org.flywaydb.core.api.MigrationVersion
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
@@ -67,6 +94,8 @@ object DatabaseFactory {
      * Подключаемся к БД и создаём минимальную схему (таблица auth_users).
      */
     fun init(config: DatabaseConfig) {
+        runMigrations(config)
+
         val database = Database.connect(
             url = config.url,
             driver = config.driver,
@@ -99,6 +128,8 @@ object DatabaseFactory {
         }
         val catalogSeedSyncEnabled = (System.getenv("CATALOG_SEED_SYNC_ENABLED") ?: catalogSeedSyncDefault)
             .equals("true", ignoreCase = true)
+        // Безопасный дефолт: upsert-only. Для полного destructive sync нужен явный opt-in.
+        val catalogSeedSyncMode = CatalogSeedSyncMode.fromEnv(System.getenv("CATALOG_SEED_SYNC_MODE"))
 
         // На этом шаге создаём недостающие таблицы/колонки и приводим данные в порядок.
         transaction(database) {
@@ -117,7 +148,6 @@ object DatabaseFactory {
                     UserReviewsTable,
                     AlertsTable,
                     OfferPriceHistoryTable,
-                    CatalogPresetEventsTable,
                     SubscriptionNotificationsTable,
                     SubscriptionsEngineStateTable,
                     TracksTable,
@@ -125,6 +155,10 @@ object DatabaseFactory {
                     TrackTop10SnapshotsTable,
                     PushTokensTable,
                     CategoriesTable,
+                    CategoryAliasesTable,
+                    BrowseNodesTable,
+                    AliasEntriesTable,
+                    GoogleTaxonomyMappingsTable,
                     AttributeDefsTable,
                     CategoryAttributesTable,
                     AttributeValueDictTable,
@@ -138,8 +172,31 @@ object DatabaseFactory {
                     CatalogStage4DedupTemplatesTable,
                     CatalogStage4TypedConstraintsTable,
                     CatalogStage4ExecutionMetricsTable,
+                    CatalogReadinessSnapshotsTable,
+                    CatalogReadinessAutomationLeasesTable,
+                    CatalogGovernanceSourcesTable,
+                    CatalogGovernanceSourceRegistryTable,
+                    CatalogGovernanceOfficialPhoneEndpointOverlaysTable,
+                    CatalogGovernanceRefreshRunsTable,
+                    CatalogGovernancePublishEventsTable,
+                    CatalogGovernanceBrandsTable,
+                    CatalogGovernanceProductFamiliesTable,
+                    CatalogGovernanceModelsTable,
+                    CatalogGovernanceValueCanonTable,
+                    CatalogGovernanceAliasesTable,
+                    CatalogGovernanceValueObservationsTable,
+                    CatalogGovernanceValueCandidatesTable,
+                    CatalogPhoneModelEnrichmentCandidatesTable,
+                    CatalogGovernanceDecisionsTable,
+                    CatalogGovernanceReportsTable,
+                    CatalogGovernanceHookDeliveriesTable,
                     VisionUsageTable,
+                    ShortListingDraftsTable,
+                    AiAgentRegistryOverridesTable,
                 )
+                // catalog_preset_events is managed by Flyway as a partitioned table.
+                // Exposed auto-DDL attempts to recreate its uniqueness contract and
+                // collides with the existing relation names in local/test databases.
             }
             // Если created_at добавился к уже существующим пользователям — заполняем null.
             AuthUsersTable.update({ AuthUsersTable.createdAt.isNull() }) { stmt ->
@@ -155,7 +212,7 @@ object DatabaseFactory {
                 seedDemoOffers()
             }
             if (catalogSeedSyncEnabled) {
-                CatalogSeeder.seedIfEmpty()
+                CatalogSeeder.seedIfEmpty(syncMode = catalogSeedSyncMode)
             }
         }
     }
@@ -171,6 +228,90 @@ object DatabaseFactory {
         newSuspendedTransaction(Dispatchers.IO) {
             block()
         }
+
+    /**
+     * Старые локальные Docker-БД создавались до реального Flyway-runner и могут
+     * не иметь flyway_schema_history при уже существующей схеме. Для таких баз
+     * считаем legacy baseline = V23 и докатываем V24+ миграции, где появились
+     * readiness tables и title_localized JSONB.
+     *
+     * Для пустой базы Flyway выполнит весь набор V1..N как обычно.
+     */
+    private fun runMigrations(config: DatabaseConfig) {
+        upgradeLegacyFlywaySchemaHistory(config)
+
+        Flyway.configure()
+            .dataSource(config.url, config.user, config.password ?: "")
+            .locations("classpath:db/migration")
+            .baselineOnMigrate(true)
+            .baselineVersion(MigrationVersion.fromVersion("23"))
+            .load()
+            .migrate()
+    }
+
+    private fun upgradeLegacyFlywaySchemaHistory(config: DatabaseConfig) {
+        DriverManager.getConnection(config.url, config.user, config.password ?: "").use { connection ->
+            connection.createStatement().use { statement ->
+                statement.execute("drop table if exists flyway_schema_history_legacy_bootstrap cascade")
+            }
+
+            val legacyColumns = linkedSetOf(
+                "type",
+                "script",
+                "checksum",
+                "installed_by",
+                "execution_time",
+            )
+            val existingColumns = connection.prepareStatement(
+                """
+                select column_name
+                from information_schema.columns
+                where table_name = 'flyway_schema_history'
+                """.trimIndent(),
+            ).use { statement ->
+                statement.executeQuery().use { rs ->
+                    buildSet {
+                        while (rs.next()) {
+                            add(rs.getString(1).trim().lowercase())
+                        }
+                    }
+                }
+            }
+            if (existingColumns.isEmpty()) return
+
+            val appliedVersions = mutableSetOf<String>()
+            var hasUnderscoreDescriptions = false
+            connection.prepareStatement(
+                """
+                select version, description
+                from flyway_schema_history
+                where success = true
+                """.trimIndent(),
+            ).use { statement ->
+                statement.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        rs.getString("version")?.trim()?.takeIf { it.isNotEmpty() }?.let(appliedVersions::add)
+                        if (rs.getString("description")?.contains('_') == true) {
+                            hasUnderscoreDescriptions = true
+                        }
+                    }
+                }
+            }
+
+            val legacyMissingVersions = setOf("1", "2", "3", "5", "7", "8").any { it !in appliedVersions }
+            val needsRebaseline =
+                legacyColumns.any { it !in existingColumns } ||
+                    hasUnderscoreDescriptions ||
+                    legacyMissingVersions
+
+            if (!needsRebaseline) return
+
+            connection.createStatement().use { statement ->
+                statement.execute("drop table if exists flyway_schema_history_legacy_bootstrap cascade")
+                statement.execute("drop table if exists flyway_schema_history cascade")
+            }
+        }
+    }
 }
 
 private fun seedDemoOffers() {
@@ -296,6 +437,8 @@ object AuthUsersTable : Table("auth_users") {
 
     val displayName = varchar("display_name", length = 255).nullable()
     val phone = varchar("phone", length = 64).nullable()
+    val pendingPhone = varchar("pending_phone", length = 64).nullable()
+    val pendingPhoneRequestedAt = long("pending_phone_requested_at").nullable()
     val phoneVerifiedAt = long("phone_verified_at").nullable()
     val avatarUrl = varchar("avatar_url", length = 512).nullable()
     val city = varchar("city", length = 255).nullable()

@@ -6,6 +6,7 @@ import com.example.shoppingassistant.domain.catalog.AttributeCondition
 import com.example.shoppingassistant.domain.catalog.AttributeConditionOp
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
+import com.example.shoppingassistant.domain.search.SearchTextNormalizer
 
 /**
  * Реализация TemplateEngine в стиле Tasks.
@@ -76,13 +77,14 @@ class TemplateEngineTaskImpl(
         if (newValue.isNullOrBlank()) {
             mutable.remove(code)
         } else {
-            val canonical = resolveCanonical(newValue, attrDict)
-            if (canonical == null) {
+            val resolved = resolveCanonical(newValue, attrDict)
+            if (resolved == null) {
                 val raw = newValue.trim()
                 if (raw.isNotBlank()) {
                     mutable[code] = TemplateAttribute(
                         code = code,
                         canonicalValue = raw,
+                        displayValue = raw,
                         source = ValueSource.UserSelected,
                     )
                 }
@@ -98,7 +100,8 @@ class TemplateEngineTaskImpl(
             }
             mutable[code] = TemplateAttribute(
                 code = code,
-                canonicalValue = canonical,
+                canonicalValue = resolved.first,
+                displayValue = resolved.second,
                 source = ValueSource.UserSelected,
             )
         }
@@ -138,7 +141,7 @@ class TemplateEngineTaskImpl(
             lockedTitle = cleanedTitle,
             isLocked = true,
             attributes = merged,
-            categoryCode = linkTemplate.category.name,
+            categoryCode = linkTemplate.categoryCode.takeIf { it.isNotBlank() },
             linkMeta = TemplateLinkMeta(
                 url = linkTemplate.sourceMeta.url,
                 sourceType = linkTemplate.sourceMeta.sourceType,
@@ -190,15 +193,11 @@ class TemplateEngineTaskImpl(
     }
 
     private fun normalizeInput(text: String): String {
-        if (text.isBlank()) return ""
-        val hasTrailingSpace = text.last().isWhitespace()
-        val trimmedStart = text.trimStart()
-        val collapsed = trimmedStart.replace("\\s+".toRegex(), " ").trimEnd()
-        return if (hasTrailingSpace && collapsed.isNotEmpty()) "$collapsed " else collapsed
+        return SearchTextNormalizer.normalizeForEditing(text)
     }
 
     private fun normalizeToken(token: String): String =
-        token.lowercase().replace("[^\\p{L}\\p{N}]+".toRegex(), "")
+        SearchTextNormalizer.normalizeToken(token)
 
     private fun isHeaderIntact(currentText: String, lockedTitle: String): Boolean {
         if (lockedTitle.isBlank()) return false
@@ -236,9 +235,11 @@ class TemplateEngineTaskImpl(
         completed.forEach { (token, range) ->
             val matched = findAttributeForToken(token, dict)
             if (matched != null) {
+                val attrDict = dict.attributes[matched.first]
                 attrs[matched.first] = TemplateAttribute(
                     code = matched.first,
                     canonicalValue = matched.second,
+                    displayValue = attrDict?.displayByCanonical?.get(matched.second) ?: matched.second,
                     source = ValueSource.ParsedFromText,
                 )
                 var start = range.first
@@ -284,28 +285,29 @@ class TemplateEngineTaskImpl(
 
     private fun stripAttributesFromTitle(rawTitle: String, dict: CategoryDictionary): String {
         if (rawTitle.isBlank()) return rawTitle
-        val tokens = rawTitle.split("\\s+".toRegex()).filter { it.isNotBlank() }
+        val tokens = SearchTextNormalizer.tokens(rawTitle)
         if (tokens.isEmpty()) return rawTitle.trim()
 
         val kept = tokens.filter { findAttributeForToken(it, dict) == null }
         return kept.joinToString(" ").trim()
     }
 
-    private fun resolveCanonical(raw: String, dict: AttributeDict?): String? {
+    private fun resolveCanonical(raw: String, dict: AttributeDict?): Pair<String, String>? {
         if (dict == null) return null
         val trimmed = raw.trim()
         if (dict.canonicalValues.isEmpty()) {
-            return trimmed.takeIf { it.isNotBlank() }
+            return trimmed.takeIf { it.isNotBlank() }?.let { it to it }
         }
         val direct = dict.canonicalValues.firstOrNull { it.equals(trimmed, ignoreCase = true) }
-        if (direct != null) return direct
+        if (direct != null) {
+            return direct to (dict.displayByCanonical[direct] ?: direct)
+        }
 
         val normToken = normalizeToken(trimmed)
-        dict.tokenToCanonical[normToken]?.let { return it }
-
-        // Пробуем без пробелов/разделителей.
-        val compact = normalizeToken(trimmed.replace("\\s+".toRegex(), ""))
-        return dict.tokenToCanonical[compact]
+        dict.tokenToCanonical[normToken]?.let { canonical ->
+            return canonical to (dict.displayByCanonical[canonical] ?: canonical)
+        }
+        return null
     }
 
     private fun mergeAttributes(
@@ -340,7 +342,8 @@ class TemplateEngineTaskImpl(
             if (canonical != null) {
                 result[code] = TemplateAttribute(
                     code = code,
-                    canonicalValue = canonical,
+                    canonicalValue = canonical.first,
+                    displayValue = canonical.second,
                     source = ValueSource.FromSuggestion,
                 )
             }

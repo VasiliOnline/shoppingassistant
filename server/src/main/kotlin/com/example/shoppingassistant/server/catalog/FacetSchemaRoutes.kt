@@ -18,6 +18,7 @@ fun Route.facetSchemaRoutes() {
 
     route("/api/catalog/facets") {
         get("/definitions") {
+            call.attachCatalogVersionHeader()
             val categoryCode = call.request.queryParameters["categoryCode"]?.trim().orEmpty()
             val result = if (categoryCode.isBlank()) {
                 definitionRepository.listFacetDefinitions()
@@ -28,6 +29,7 @@ fun Route.facetSchemaRoutes() {
         }
 
         get("/definitions/{facetKey}") {
+            call.attachCatalogVersionHeader()
             val facetKey = call.parameters["facetKey"]?.trim().orEmpty()
             if (facetKey.isBlank()) {
                 call.respond(HttpStatusCode.BadRequest, "facetKey is required")
@@ -42,6 +44,7 @@ fun Route.facetSchemaRoutes() {
         }
 
         get("/presets") {
+            call.attachCatalogVersionHeader()
             val categoryCode = call.request.queryParameters["categoryCode"]?.trim().orEmpty()
             val result = if (categoryCode.isBlank()) {
                 presetRepository.listFacetPresets()
@@ -52,6 +55,7 @@ fun Route.facetSchemaRoutes() {
         }
 
         get("/presets/{presetCode}") {
+            call.attachCatalogVersionHeader()
             val presetCode = call.parameters["presetCode"]?.trim().orEmpty()
             if (presetCode.isBlank()) {
                 call.respond(HttpStatusCode.BadRequest, "presetCode is required")
@@ -66,6 +70,7 @@ fun Route.facetSchemaRoutes() {
         }
 
         get("/collections") {
+            call.attachCatalogVersionHeader()
             val categoryCode = call.request.queryParameters["categoryCode"]?.trim().orEmpty()
             val result = if (categoryCode.isBlank()) {
                 collectionRepository.listFacetCollections()
@@ -76,6 +81,7 @@ fun Route.facetSchemaRoutes() {
         }
 
         get("/collections/{collectionCode}") {
+            call.attachCatalogVersionHeader()
             val collectionCode = call.parameters["collectionCode"]?.trim().orEmpty()
             if (collectionCode.isBlank()) {
                 call.respond(HttpStatusCode.BadRequest, "collectionCode is required")
@@ -90,6 +96,7 @@ fun Route.facetSchemaRoutes() {
         }
 
         get("/collections/by-browse/{browseCode}") {
+            call.attachCatalogVersionHeader()
             val browseCode = call.parameters["browseCode"]?.trim().orEmpty()
             if (browseCode.isBlank()) {
                 call.respond(HttpStatusCode.BadRequest, "browseCode is required")

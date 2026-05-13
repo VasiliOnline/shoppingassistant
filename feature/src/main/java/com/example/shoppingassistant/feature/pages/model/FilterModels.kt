@@ -6,7 +6,6 @@ data class AttributeDef(
     val title: String,
     val options: List<String> = emptyList(),
     val allowedValues: List<ValueDef> = emptyList(),
-    val observedValues: List<String> = emptyList(),
     val requiredForSearch: Boolean = false,
     val requiredForOffer: Boolean = false,
     val requiredForExpress: Boolean = false,
@@ -24,7 +23,8 @@ data class AttributeDef(
 
 /** Допустимое значение атрибута с синонимами для парсинга. */
 data class ValueDef(
-    val canonical: String,
+    val code: String,
+    val label: String,
     val synonyms: List<String> = emptyList(),
     val rank: Int = 0,
 )

@@ -9,7 +9,6 @@ import com.example.shoppingassistant.core.config.SearchFeatureGate
 import com.example.shoppingassistant.core.config.SearchFeatureGateImpl
 import com.example.shoppingassistant.core.config.SearchRemoteConfigService
 import com.example.shoppingassistant.core.config.SearchRemoteConfigServiceImpl
-import com.example.shoppingassistant.core.data.AttributeService
 import com.example.shoppingassistant.core.data.ProductRepository
 import com.example.shoppingassistant.core.data.ProductRepositoryImpl
 import com.example.shoppingassistant.core.data.auth.AuthTokenStorage
@@ -21,17 +20,26 @@ import com.example.shoppingassistant.core.data.catalog.AliasEntryRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.BrowseNodeRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.CategoryOfferCountsRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.CatalogApiDataSource
+import com.example.shoppingassistant.core.data.catalog.CatalogGovernanceAdminApiRepository
+import com.example.shoppingassistant.core.data.catalog.CatalogGovernanceAdminRepository
 import com.example.shoppingassistant.core.data.catalog.CatalogDataSource
+import com.example.shoppingassistant.core.data.catalog.CatalogLiveValuesApiRepository
+import com.example.shoppingassistant.core.data.catalog.CatalogRuntimeVersionVerifier
 import com.example.shoppingassistant.core.data.catalog.FacetCollectionRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.FacetDefinitionRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.FacetPresetRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.FacetCollectionApiRepository
 import com.example.shoppingassistant.core.data.catalog.FacetDefinitionApiRepository
 import com.example.shoppingassistant.core.data.catalog.FacetPresetApiRepository
+import com.example.shoppingassistant.core.data.catalog.GoogleTaxonomyMappingApiRepository
+import com.example.shoppingassistant.core.data.catalog.AliasEntryApiRepository
+import com.example.shoppingassistant.core.data.catalog.BrowseNodeApiRepository
+import com.example.shoppingassistant.core.data.catalog.CategoryAliasApiRepository
 import com.example.shoppingassistant.core.data.catalog.FacetSchemaGate
 import com.example.shoppingassistant.core.data.catalog.CatalogRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.GoogleTaxonomyMappingRepositoryImpl
 import com.example.shoppingassistant.core.data.catalog.SeededCatalogDataSource
+import com.example.shoppingassistant.core.data.catalog.StrictCatalogRuntimeVersionVerifier
 import com.example.shoppingassistant.core.data.catalog.TaxonomyGate
 import com.example.shoppingassistant.core.data.catalog.constraints.CatalogConstraintsResolverImpl
 import com.example.shoppingassistant.core.data.db.AppDatabase
@@ -52,6 +60,7 @@ import com.example.shoppingassistant.core.data.useroffers.UserOffersRepositoryIm
 import com.example.shoppingassistant.core.data.useroffers.price.UserOffersPriceRemoteDataSource
 import com.example.shoppingassistant.core.data.useroffers.price.UserOffersPriceRemoteDataSourceImpl
 import com.example.shoppingassistant.core.data.useroffers.price.UserOffersPriceRepositoryImpl
+import com.example.shoppingassistant.core.data.visualsearch.VisualSearchRemoteRepository
 import com.example.shoppingassistant.core.data.tracks.TrackEventsRepositoryImpl
 import com.example.shoppingassistant.core.data.tracks.TrackFilterOptionsHistoryStore
 import com.example.shoppingassistant.core.data.tracks.TrackFilterOptionsHistoryStoreImpl
@@ -63,8 +72,11 @@ import com.example.shoppingassistant.core.data.tracks.TracksRemoteDataSourceImpl
 import com.example.shoppingassistant.core.data.tracks.TracksRepositoryImpl
 import com.example.shoppingassistant.core.data.tracks.TemplateSubscriptionsToTracksMigration
 import com.example.shoppingassistant.core.data.profile.ProfilePreferencesStorage
+import com.example.shoppingassistant.core.data.profile.ProfileContractRepositoryImpl
 import com.example.shoppingassistant.core.data.profile.ProfileSettingsStore
 import com.example.shoppingassistant.core.data.profile.ProfileRepositoryImpl
+import com.example.shoppingassistant.core.data.localoffer.LocalOfferRemoteRepository
+import com.example.shoppingassistant.core.data.shortlisting.ShortListingRemoteRepository
 import com.example.shoppingassistant.core.data.menu.UserPanelStorage
 import com.example.shoppingassistant.core.data.menu.UserPanelStorageImpl
 import com.example.shoppingassistant.core.data.menu.UserPanelStore
@@ -112,7 +124,9 @@ import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
 import com.example.shoppingassistant.domain.catalog.AliasEntryRepository
 import com.example.shoppingassistant.domain.catalog.BrowseNodeRepository
 import com.example.shoppingassistant.domain.catalog.CategoryOfferCountsRepository
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesRepository
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.catalog.GoogleTaxonomyMappingRepository
 import com.example.shoppingassistant.domain.catalog.QueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21ApplQueryRouter
@@ -120,14 +134,14 @@ import com.example.shoppingassistant.domain.catalog.Stage21AutoQueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21BeautyQueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21FashQueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21FoodQueryRouter
-import com.example.shoppingassistant.domain.catalog.Stage21TechGoldenRunner
 import com.example.shoppingassistant.domain.catalog.Stage21HomeQueryRouter
-import com.example.shoppingassistant.domain.catalog.Stage21HybridQueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21KidsQueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21PetsQueryRouter
+import com.example.shoppingassistant.domain.catalog.Stage21RuntimeQueryRouter
 import com.example.shoppingassistant.domain.catalog.Stage21SportQueryRouter
+import com.example.shoppingassistant.domain.catalog.Stage21TechGoldenRunner
 import com.example.shoppingassistant.domain.catalog.Stage21TechQueryRouter
-import com.example.shoppingassistant.domain.catalog.SeedAliasFirstQueryRouter
+import com.example.shoppingassistant.domain.catalog.SeedRunSearchQueryRouter
 import com.example.shoppingassistant.domain.catalog.TaxonomyValidator
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
 import com.example.shoppingassistant.domain.facet.FacetCountsRepository
@@ -140,9 +154,13 @@ import com.example.shoppingassistant.domain.useroffers.UserOffersActionsReposito
 import com.example.shoppingassistant.domain.useroffers.UserOffersPriceRepository
 import com.example.shoppingassistant.domain.useroffers.UserOffersRepository
 import com.example.shoppingassistant.domain.profile.ExternalLinksRepository
+import com.example.shoppingassistant.domain.profile.ProfileContractRepository
 import com.example.shoppingassistant.domain.profile.ProfileCacheRepository
 import com.example.shoppingassistant.domain.profile.ProfileRepository
 import com.example.shoppingassistant.domain.profile.ProfileSettingsRepository
+import com.example.shoppingassistant.domain.profile.ProfileViewCacheRepository
+import com.example.shoppingassistant.domain.localoffer.LocalOfferRepository
+import com.example.shoppingassistant.domain.shortlisting.ShortListingRepository
 import com.example.shoppingassistant.domain.storage.PhotoStorageRepository
 import com.example.shoppingassistant.domain.subscriptions.SubscriptionsRepository
 import com.example.shoppingassistant.domain.tracks.TrackEventsRepository
@@ -160,6 +178,7 @@ import com.example.shoppingassistant.domain.template.presets.generate.PresetAnch
 import com.example.shoppingassistant.domain.template.status.TemplateStatusResolver
 import com.example.shoppingassistant.domain.ugc.UgcMirrorRepository
 import com.example.shoppingassistant.domain.ugc.draft.DraftOffersRepository
+import com.example.shoppingassistant.domain.visualsearch.VisualSearchRepository
 import com.example.shoppingassistant.domain.vision.VisionRepository
 import com.example.shoppingassistant.domain.vision.VisionUsageRepository
 import org.koin.core.module.Module
@@ -242,9 +261,11 @@ val coreModule: Module = module {
     single<BackendClient> { createBackendHttpClient() }
 
     // --- Core services ---
-    single { AttributeService(get()) }
+    single { CatalogLiveValuesApiRepository(get(), get()) }
+    single<CatalogLiveValuesRepository> { get<CatalogLiveValuesApiRepository>() }
+    single<CatalogGovernanceAdminRepository> { CatalogGovernanceAdminApiRepository(get()) }
     single<ProfileAnalyticsLogger> { LogcatProfileAnalyticsLogger() }
-    single<SearchRemoteConfigService> { SearchRemoteConfigServiceImpl() }
+    single<SearchRemoteConfigService> { SearchRemoteConfigServiceImpl(get()) }
     single<SearchFeatureGate> { SearchFeatureGateImpl(get()) }
 
     // --- Facet counts ---
@@ -252,36 +273,71 @@ val coreModule: Module = module {
     single<FacetCountsRepository> { get<FacetCountsRepositoryImpl>() }
 
     // --- Catalog ---
+    single<CatalogRuntimeVersionVerifier> { StrictCatalogRuntimeVersionVerifier(get()) }
     single { SeededCatalogDataSource() }
     single {
         CatalogApiDataSource(
             backendClient = get(),
             fallback = get<SeededCatalogDataSource>(),
             allowSeedFallback = false,
+            versionVerifier = get(),
         )
     }
     single<CatalogDataSource> { get<CatalogApiDataSource>() }
 
     single { CatalogRepositoryImpl(get()) }
-    single<CatalogRepository> { get<CatalogRepositoryImpl>() }
+    single<CatalogReadRepository> { get<CatalogRepositoryImpl>() }
+    single<CatalogTaxonomyRepository> { get<CatalogRepositoryImpl>() }
 
     single { CatalogConstraintsResolverImpl() }
     single<CatalogConstraintsResolver> { get<CatalogConstraintsResolverImpl>() }
 
     // --- Category aliases ---
     single { CategoryAliasRepositoryImpl() }
-    single<CategoryAliasRepository> { get<CategoryAliasRepositoryImpl>() }
+    single {
+        CategoryAliasApiRepository(
+            backendClient = get(),
+            fallback = get<CategoryAliasRepositoryImpl>(),
+            allowSeedFallback = false,
+            versionVerifier = get(),
+        )
+    }
+    single<CategoryAliasRepository> { get<CategoryAliasApiRepository>() }
 
     // --- Stage 2.0: browse nodes + typed aliases ---
     single { BrowseNodeRepositoryImpl() }
-    single<BrowseNodeRepository> { get<BrowseNodeRepositoryImpl>() }
+    single {
+        BrowseNodeApiRepository(
+            backendClient = get(),
+            fallback = get<BrowseNodeRepositoryImpl>(),
+            allowSeedFallback = false,
+            versionVerifier = get(),
+        )
+    }
+    single<BrowseNodeRepository> { get<BrowseNodeApiRepository>() }
 
     single { AliasEntryRepositoryImpl() }
-    single<AliasEntryRepository> { get<AliasEntryRepositoryImpl>() }
+    single {
+        AliasEntryApiRepository(
+            backendClient = get(),
+            fallback = get<AliasEntryRepositoryImpl>(),
+            allowSeedFallback = false,
+            versionVerifier = get(),
+        )
+    }
+    single<AliasEntryRepository> { get<AliasEntryApiRepository>() }
 
     // --- Google taxonomy mappings ---
     single { GoogleTaxonomyMappingRepositoryImpl() }
-    single<GoogleTaxonomyMappingRepository> { get<GoogleTaxonomyMappingRepositoryImpl>() }
+    single {
+        GoogleTaxonomyMappingApiRepository(
+            backendClient = get(),
+            fallback = get<GoogleTaxonomyMappingRepositoryImpl>(),
+            allowSeedFallback = false,
+            versionVerifier = get(),
+        )
+    }
+    single<GoogleTaxonomyMappingRepository> { get<GoogleTaxonomyMappingApiRepository>() }
 
     // --- Taxonomy validation gate ---
     single { TaxonomyValidator() }
@@ -294,6 +350,7 @@ val coreModule: Module = module {
             backendClient = get(),
             fallback = get<FacetDefinitionRepositoryImpl>(),
             allowSeedFallback = false,
+            versionVerifier = get(),
         )
     }
     single<FacetDefinitionRepository> { get<FacetDefinitionApiRepository>() }
@@ -304,6 +361,7 @@ val coreModule: Module = module {
             backendClient = get(),
             fallback = get<FacetPresetRepositoryImpl>(),
             allowSeedFallback = false,
+            versionVerifier = get(),
         )
     }
     single<FacetPresetRepository> { get<FacetPresetApiRepository>() }
@@ -314,6 +372,7 @@ val coreModule: Module = module {
             backendClient = get(),
             fallback = get<FacetCollectionRepositoryImpl>(),
             allowSeedFallback = false,
+            versionVerifier = get(),
         )
     }
     single<FacetCollectionRepository> { get<FacetCollectionApiRepository>() }
@@ -321,21 +380,37 @@ val coreModule: Module = module {
     single { FacetSchemaValidator() }
     single { FacetSchemaGate(get(), get(), get(), get(), get()) }
 
-    // --- Stage 2.1 query routing (TECH + APPL + HOME + FASH + BEAUTY + KIDS + FOOD + PETS + SPORT + AUTO) ---
-    single { Stage21TechGoldenRunner(get()) }
+    // --- Query routing: Stage 2.1 runtime routers + deterministic RUN_SEARCH fallback ---
+    single { Stage21TechGoldenRunner() }
+    single { SeedRunSearchQueryRouter() }
     single { Stage21TechQueryRouter() }
     single { Stage21ApplQueryRouter() }
     single { Stage21HomeQueryRouter() }
-    single { Stage21FashQueryRouter() }
     single { Stage21BeautyQueryRouter() }
-    single { Stage21KidsQueryRouter() }
+    single { Stage21FashQueryRouter() }
     single { Stage21FoodQueryRouter() }
+    single { Stage21KidsQueryRouter() }
     single { Stage21PetsQueryRouter() }
     single { Stage21SportQueryRouter() }
     single { Stage21AutoQueryRouter() }
-    single { Stage21HybridQueryRouter(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { SeedAliasFirstQueryRouter(get(), get<Stage21HybridQueryRouter>()) }
-    single<QueryRouter> { get<SeedAliasFirstQueryRouter>() }
+    single {
+        Stage21RuntimeQueryRouter(
+            segmentRouters = listOf(
+                get<Stage21TechQueryRouter>(),
+                get<Stage21ApplQueryRouter>(),
+                get<Stage21HomeQueryRouter>(),
+                get<Stage21BeautyQueryRouter>(),
+                get<Stage21FashQueryRouter>(),
+                get<Stage21FoodQueryRouter>(),
+                get<Stage21KidsQueryRouter>(),
+                get<Stage21PetsQueryRouter>(),
+                get<Stage21SportQueryRouter>(),
+                get<Stage21AutoQueryRouter>(),
+            ),
+            fallbackRouter = get<SeedRunSearchQueryRouter>(),
+        )
+    }
+    single<QueryRouter> { get<Stage21RuntimeQueryRouter>() }
 
     // --- Category offer counts ---
     single { CategoryOfferCountsRepositoryImpl(get<CategoryOfferCountsDao>()) }
@@ -408,6 +483,7 @@ val coreModule: Module = module {
     single<ProfileSettingsRepository> { get<ProfilePreferencesStorage>() }
     single<ExternalLinksRepository> { get<ProfilePreferencesStorage>() }
     single<ProfileCacheRepository> { get<ProfilePreferencesStorage>() }
+    single<ProfileViewCacheRepository> { get<ProfilePreferencesStorage>() }
     single { ProfileSettingsStore(get()) }
     single { UserPanelStorageImpl(get()) }
     single<UserPanelStorage> { get<UserPanelStorageImpl>() }
@@ -415,6 +491,8 @@ val coreModule: Module = module {
 
     single { ProfileRepositoryImpl(get()) }
     single<ProfileRepository> { get<ProfileRepositoryImpl>() }
+    single { ProfileContractRepositoryImpl(get(), get()) }
+    single<ProfileContractRepository> { get<ProfileContractRepositoryImpl>() }
 
     single { PhotoStorageRemoteRepository(get()) }
     single<PhotoStorageRepository> { get<PhotoStorageRemoteRepository>() }
@@ -427,8 +505,17 @@ val coreModule: Module = module {
     single { VisionUsageRemoteRepository(get(), get()) }
     single<VisionUsageRepository> { get<VisionUsageRemoteRepository>() }
 
+    single { VisualSearchRemoteRepository(get()) }
+    single<VisualSearchRepository> { get<VisualSearchRemoteRepository>() }
+
     single { UgcMirrorRemoteRepository(get()) }
     single<UgcMirrorRepository> { get<UgcMirrorRemoteRepository>() }
+
+    single { LocalOfferRemoteRepository(get(), get()) }
+    single<LocalOfferRepository> { get<LocalOfferRemoteRepository>() }
+
+    single { ShortListingRemoteRepository(get(), get()) }
+    single<ShortListingRepository> { get<ShortListingRemoteRepository>() }
 
     // --- Draft offers (local) ---
     single { DraftOffersRepositoryImpl(get()) }
@@ -521,3 +608,4 @@ val coreModule: Module = module {
     single { TrackingPushTokensRemoteDataSourceImpl(get(), get()) }
     single<TrackingPushTokensRemoteDataSource> { get<TrackingPushTokensRemoteDataSourceImpl>() }
 }
+

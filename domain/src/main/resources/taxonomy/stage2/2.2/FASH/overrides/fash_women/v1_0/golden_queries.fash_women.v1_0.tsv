@@ -1,0 +1,97 @@
+query	expected_route	expected_apparel_type	expected_target_gender	should_not_route_to	intent	notes
+женское платье	FASH.WOMEN	DRESS	WOMEN		positive	
+женская юбка	FASH.WOMEN	SKIRT	WOMEN		positive	
+блузка женская белая	FASH.WOMEN	BLOUSE	WOMEN		positive	
+женский топ черный	FASH.WOMEN	TOP	WOMEN		positive	
+женская футболка oversize	FASH.WOMEN	TSHIRT	WOMEN		positive	
+рубашка женская хлопок	FASH.WOMEN	SHIRT	WOMEN		positive	
+женские джинсы mom	FASH.WOMEN	JEANS	WOMEN		positive	
+женские брюки широкие	FASH.WOMEN	TROUSERS	WOMEN		positive	
+леггинсы женские спортивные	FASH.WOMEN	LEGGINGS	WOMEN		positive	
+женская куртка кожаная	FASH.WOMEN	LEATHER_JACKET	WOMEN		positive	
+пальто женское шерстяное	FASH.WOMEN	COAT	WOMEN		positive	
+женский пуховик зимний	FASH.WOMEN	DOWN_JACKET	WOMEN		positive	
+женский кардиган	FASH.WOMEN	CARDIGAN	WOMEN		positive	
+свитер женский кашемир	FASH.WOMEN	SWEATER	WOMEN		positive	
+худи женское xl	FASH.WOMEN	HOODIE	WOMEN		positive	
+женский комбинезон	FASH.WOMEN	JUMPSUIT	WOMEN		positive	
+лонгслив женский	FASH.WOMEN	LONGSLEEVE	WOMEN		positive	
+майка женская	FASH.WOMEN	TANK_TOP	WOMEN		positive	
+женское поло	FASH.WOMEN	POLO	WOMEN		positive	
+свитшот женский	FASH.WOMEN	SWEATSHIRT	WOMEN		positive	
+женские шорты	FASH.WOMEN	SHORTS	WOMEN		positive	
+брючный костюм женский	FASH.WOMEN	SUIT	WOMEN		positive	
+женский пиджак	FASH.WOMEN	BLAZER	WOMEN		positive	
+спортивный костюм женский	FASH.WOMEN	TRACKSUIT	WOMEN		positive	
+женское белье комплект	FASH.WOMEN	UNDERWEAR	WOMEN		positive	
+бюстгальтер 75B	FASH.WOMEN	BRA	WOMEN		positive	
+женские колготки 40 ден	FASH.WOMEN	TIGHTS	WOMEN		positive	
+женские носки комплект	FASH.WOMEN	SOCKS	WOMEN		positive	
+жилет женский пуховый	FASH.WOMEN	VEST	WOMEN		positive	
+женские чиносы	FASH.WOMEN	CHINOS	WOMEN		positive	
+брюки карго женские	FASH.WOMEN	CARGO_PANTS	WOMEN		positive	
+женский бомбер	FASH.WOMEN	BOMBER	WOMEN		positive	
+джинсовка женская	FASH.WOMEN	DENIM_JACKET	WOMEN		positive	
+женская ветровка	FASH.WOMEN	WINDBREAKER	WOMEN		positive	
+женская парка	FASH.WOMEN	PARKA	WOMEN		positive	
+женское термобелье	FASH.WOMEN	THERMAL_UNDERWEAR	WOMEN		positive	
+спортивный топ женский	FASH.WOMEN	ACTIVE_TOP	WOMEN		positive	
+тренировочные леггинсы женские	FASH.WOMEN	ACTIVE_BOTTOM	WOMEN		positive	
+женский ромпер	FASH.WOMEN	ROMPER	WOMEN		positive	
+водолазка женская	FASH.WOMEN	TURTLENECK	WOMEN		positive	
+женский плащ	FASH.WOMEN	RAINCOAT	WOMEN		positive	
+женская пижама	FASH.WOMEN	PAJAMAS	WOMEN		positive	
+женский халат	FASH.WOMEN	ROBE	WOMEN		positive	
+женский купальник	FASH.WOMEN	SWIMWEAR	WOMEN		positive	
+женская форма медицинская	FASH.WOMEN	UNIFORM	WOMEN		positive	
+женские кроссовки nike	FASH.SHOES			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+женская сумка кожаная	FASH.BAGS			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+женский ремень кожаный	FASH.ACCESSORIES			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+женские часы casio	FASH.ACCESSORIES			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+женский парфюм dior	BEAUTY.FRAGRANCE			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+помада красная	BEAUTY.MAKEUP			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+детское платье 110	FASH.KIDS			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+платье для девочки	FASH.KIDS			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+мужская рубашка	FASH.MEN			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+мужские джинсы	FASH.MEN			FASH.WOMEN	negative_route_guard	must not finalize as FASH.WOMEN
+женское платье черное размер M	FASH.WOMEN	DRESS	WOMEN		positive_variant	
+женская блузка черное размер M	FASH.WOMEN	BLOUSE	WOMEN		positive_variant	
+женская футболка черное размер M	FASH.WOMEN	TSHIRT	WOMEN		positive_variant	
+женские джинсы черное размер M	FASH.WOMEN	JEANS	WOMEN		positive_variant	
+женская юбка черное размер M	FASH.WOMEN	SKIRT	WOMEN		positive_variant	
+женское платье белое размер M	FASH.WOMEN	DRESS	WOMEN		positive_variant	
+женская блузка белое размер M	FASH.WOMEN	BLOUSE	WOMEN		positive_variant	
+женская футболка белое размер M	FASH.WOMEN	TSHIRT	WOMEN		positive_variant	
+женские джинсы белое размер M	FASH.WOMEN	JEANS	WOMEN		positive_variant	
+женская юбка белое размер M	FASH.WOMEN	SKIRT	WOMEN		positive_variant	
+женское платье синее размер M	FASH.WOMEN	DRESS	WOMEN		positive_variant	
+женская блузка синее размер M	FASH.WOMEN	BLOUSE	WOMEN		positive_variant	
+женская футболка синее размер M	FASH.WOMEN	TSHIRT	WOMEN		positive_variant	
+женские джинсы синее размер M	FASH.WOMEN	JEANS	WOMEN		positive_variant	
+женская юбка синее размер M	FASH.WOMEN	SKIRT	WOMEN		positive_variant	
+женское платье бежевое размер M	FASH.WOMEN	DRESS	WOMEN		positive_variant	
+женская блузка бежевое размер M	FASH.WOMEN	BLOUSE	WOMEN		positive_variant	
+женская футболка бежевое размер M	FASH.WOMEN	TSHIRT	WOMEN		positive_variant	
+женские джинсы бежевое размер M	FASH.WOMEN	JEANS	WOMEN		positive_variant	
+женская юбка бежевое размер M	FASH.WOMEN	SKIRT	WOMEN		positive_variant	
+женское платье розовое размер M	FASH.WOMEN	DRESS	WOMEN		positive_variant	
+женская блузка розовое размер M	FASH.WOMEN	BLOUSE	WOMEN		positive_variant	
+женская футболка розовое размер M	FASH.WOMEN	TSHIRT	WOMEN		positive_variant	
+женские джинсы розовое размер M	FASH.WOMEN	JEANS	WOMEN		positive_variant	
+женская юбка розовое размер M	FASH.WOMEN	SKIRT	WOMEN		positive_variant	
+женское платье красное размер M	FASH.WOMEN	DRESS	WOMEN		positive_variant	
+женская блузка красное размер M	FASH.WOMEN	BLOUSE	WOMEN		positive_variant	
+женская футболка красное размер M	FASH.WOMEN	TSHIRT	WOMEN		positive_variant	
+женские джинсы красное размер M	FASH.WOMEN	JEANS	WOMEN		positive_variant	
+женская юбка красное размер M	FASH.WOMEN	SKIRT	WOMEN		positive_variant	
+женское платье размер XS	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер S	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер M	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер L	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер XL	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер RU_42	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер RU_44	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер RU_46	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер EU_38	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер W28	FASH.WOMEN	DRESS	WOMEN		size_variant	
+женское платье размер W30	FASH.WOMEN	DRESS	WOMEN		size_variant	

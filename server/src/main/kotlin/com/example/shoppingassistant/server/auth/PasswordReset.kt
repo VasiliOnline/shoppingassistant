@@ -152,6 +152,7 @@ class PasswordResetService(
     private val tokenManager: PasswordResetTokenManager,
     private val resetNotificationSender: ResetNotificationSender,
     private val smsResetNotificationSender: SmsResetNotificationSender,
+    private val sessionManager: SessionManager,
 ) {
 
     /**
@@ -215,7 +216,7 @@ class PasswordResetService(
         val userId = tokenManager.consumeResetToken(resetToken) ?: return false
         val newHash = passwordHasher.hash(newPassword)
 
-        return DatabaseFactory.dbQuery {
+        val updated = DatabaseFactory.dbQuery {
             val updatedRows = AuthUsersTable.update(
                 where = { AuthUsersTable.id eq userId },
             ) { row ->
@@ -223,6 +224,10 @@ class PasswordResetService(
             }
             updatedRows > 0
         }
+        if (updated) {
+            sessionManager.invalidateAllForUser(userId)
+        }
+        return updated
     }
 
     private fun normalizeEmail(email: String): String =

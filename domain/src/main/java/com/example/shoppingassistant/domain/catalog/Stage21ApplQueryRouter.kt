@@ -26,8 +26,10 @@ class Stage21ApplQueryRouter(
                 tokens = tokenize(normalize(row.normalizedQuery)).filter { it.length >= 3 },
                 targetType = row.targetType,
                 targetId = row.targetId,
-                flag = row.flag,
-                weight = row.weightOverride ?: defaultWeightFor(row.flag),
+                weight = row.weight,
+                matchKind = row.matchKind,
+                negativeTokens = row.negativeTokens.map(::normalize).filter { it.isNotBlank() },
+                isBlocked = row.isBlocked,
             )
         }
         .filter { it.normalizedQuery.isNotBlank() }
@@ -156,14 +158,26 @@ class Stage21ApplQueryRouter(
         applAliases.forEach { alias ->
             val phraseMatched = containsPhrase(normalizedQuery, alias.normalizedQuery)
             val exactMatched = normalizedQuery == alias.normalizedQuery
-            val tokenMatches = alias.tokens.count { aliasToken ->
+            val exactTokenMatches = alias.tokens.count { aliasToken ->
                 matchesRuleToken(queryTokens, normalizedQuery, aliasToken)
             }
-            val fuzzyMatched = !phraseMatched && tokenMatches == 0 &&
-                alias.tokens.size == 1 &&
-                fuzzyTokenMatch(alias.tokens.first(), queryTokens)
+            val tokenMatched = alias.tokens.isNotEmpty() && exactTokenMatches == alias.tokens.size
+            val fuzzyMatched = alias.tokens.isNotEmpty() && alias.tokens.all { aliasToken ->
+                matchesRuleToken(queryTokens, normalizedQuery, aliasToken) ||
+                    fuzzyTokenMatch(aliasToken, queryTokens)
+            }
+            val negativeTokenMatched = alias.negativeTokens.any { negativeToken ->
+                matchesRuleToken(queryTokens, normalizedQuery, negativeToken)
+            }
 
-            if (!phraseMatched && tokenMatches == 0 && !fuzzyMatched) {
+            val semanticMatched = when (alias.matchKind) {
+                AliasMatchKind.EXACT -> exactMatched
+                AliasMatchKind.PREFIX -> phraseMatched
+                AliasMatchKind.TOKEN -> tokenMatched
+                AliasMatchKind.FUZZY -> fuzzyMatched
+            }
+
+            if (!semanticMatched || alias.isBlocked) {
                 return@forEach
             }
 
@@ -175,29 +189,30 @@ class Stage21ApplQueryRouter(
                 .firstOrNull()
                 ?: 0
 
-            val phraseScore = if (phraseMatched) rules.phraseExact else 0
-            val tokenScore = tokenMatches * rules.tokenMatch
-            val editDistanceScore = if (fuzzyMatched) rules.editDistanceClose else 0
+            val matchScore = when (alias.matchKind) {
+                AliasMatchKind.EXACT ->
+                    rules.phraseExact + (if (tokenMatched) alias.tokens.size * rules.tokenMatch else 0)
+                AliasMatchKind.PREFIX ->
+                    rules.phraseExact
+                AliasMatchKind.TOKEN ->
+                    (alias.tokens.size * rules.tokenMatch) + if (exactMatched) rules.phraseExact else 0
+                AliasMatchKind.FUZZY ->
+                    rules.editDistanceClose + if (exactMatched) rules.phraseExact else 0
+            }
             val localePenalty = if (alias.locale.equals(locale, ignoreCase = true)) 0 else 2
+            val negativeTokenPenalty = if (negativeTokenMatched) rules.negativeToken else 0
 
             val score = (
                 alias.weight +
-                    phraseScore +
-                    tokenScore +
-                    editDistanceScore +
+                    matchScore +
                     specificityBonus -
-                    localePenalty
+                    localePenalty +
+                    negativeTokenPenalty
                 ).coerceAtLeast(0)
 
             val routeType = when (alias.targetType) {
                 ApplAliasTargetType.NODE -> QueryRouteType.OPEN_BROWSE
                 ApplAliasTargetType.CANONICAL -> QueryRouteType.OPEN_CATEGORY
-            }
-            val matchKind = when {
-                exactMatched -> AliasMatchKind.EXACT
-                phraseMatched -> AliasMatchKind.PREFIX
-                tokenMatches > 0 -> AliasMatchKind.TOKEN
-                else -> AliasMatchKind.FUZZY
             }
 
             val candidate = ApplScoredCandidate(
@@ -206,7 +221,7 @@ class Stage21ApplQueryRouter(
                 routeType = routeType,
                 score = score,
                 matchedAlias = alias.query,
-                matchKind = matchKind,
+                matchKind = alias.matchKind,
             )
 
             val current = byTarget[alias.targetId]
@@ -333,12 +348,6 @@ class Stage21ApplQueryRouter(
         return prev[right.length]
     }
 
-    private fun defaultWeightFor(flag: ApplAliasFlag): Int = when (flag) {
-        ApplAliasFlag.POSITIVE -> 76
-        ApplAliasFlag.DISAMBIGUATE -> 90
-        ApplAliasFlag.NEGATIVE_FOR_APPL -> 94
-    }
-
     private companion object {
         private const val APPL_CANONICAL_ROOT = "APPL"
         private const val APPL_CANONICAL_PREFIX = "APPL."
@@ -353,8 +362,10 @@ private data class ApplAliasRuntimeEntry(
     val tokens: List<String>,
     val targetType: ApplAliasTargetType,
     val targetId: String,
-    val flag: ApplAliasFlag,
     val weight: Int,
+    val matchKind: AliasMatchKind,
+    val negativeTokens: List<String>,
+    val isBlocked: Boolean,
 )
 
 private data class ApplScoredCandidate(

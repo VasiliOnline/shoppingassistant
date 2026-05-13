@@ -21,25 +21,21 @@ import com.example.shoppingassistant.feature.pages.chat.ChatPage
 import com.example.shoppingassistant.feature.pages.chat.ChatProps
 import com.example.shoppingassistant.feature.pages.categories.FeedCategoriesPage
 import com.example.shoppingassistant.feature.pages.ingest.IngestPage
-import com.example.shoppingassistant.feature.pages.draft.DraftPage
-import com.example.shoppingassistant.feature.pages.draft.DraftRoutes
 import com.example.shoppingassistant.feature.pages.main.ui.MainPage
 import com.example.shoppingassistant.feature.pages.profile.ProfilePage
 import com.example.shoppingassistant.feature.pages.results.ResultsPage
 import com.example.shoppingassistant.feature.pages.results.ResultsRoutes
+import com.example.shoppingassistant.feature.pages.offers.OfferPage
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackEventsPage
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackEditPage
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackTop10Page
 import com.example.shoppingassistant.feature.pages.trackeditems.TrackedItemsPage
 import com.example.shoppingassistant.feature.pages.useroffers.UserOffersPage
-import com.example.shoppingassistant.feature.pages.draft.create.CreateDraftSheet
-import com.example.shoppingassistant.feature.pages.draft.photo.PhotoPostFlow
 import com.example.shoppingassistant.feature.pages.results.ResultsMode
 import com.example.shoppingassistant.feature.pages.results.ResultsOrigin
 import com.example.shoppingassistant.feature.pages.results.ResultsPayload
-import com.example.shoppingassistant.feature.pages.draft.DraftMode
-import com.example.shoppingassistant.feature.pages.draft.DraftPayload
-import com.example.shoppingassistant.feature.pages.draft.DraftSource
+import com.example.shoppingassistant.feature.pages.localoffer.LocalOfferSheet
+import com.example.shoppingassistant.domain.localoffer.LocalOfferDraftIds
 import com.example.shoppingassistant.domain.ugc.draft.DraftInputOrigin
 import com.example.shoppingassistant.feature.pages.useroffers.UserOfferCreationMethod
 import com.example.shoppingassistant.feature.pages.useroffers.UserOffersTab
@@ -121,8 +117,18 @@ fun AppRoot(modifier: Modifier = Modifier) {
                                 }
                             },
                             onOpen = { offerId ->
+                                val canonicalDraftId = offerId.toCanonicalLocalOfferDraftIdOrNull()
+                                if (canonicalDraftId != null) {
+                                    createDraftOrigin = null
+                                    createDraftId = canonicalDraftId
+                                    createDraftVisible = true
+                                } else {
+                                    nav.navigate(AppRoutes.offer(offerId))
+                                }
+                            },
+                            onEdit = { offerId ->
                                 createDraftOrigin = null
-                                createDraftId = offerId
+                                createDraftId = offerId.toCanonicalLocalOfferDraftIdOrNull() ?: offerId
                                 createDraftVisible = true
                             },
                             onFindOffers = {
@@ -147,8 +153,8 @@ fun AppRoot(modifier: Modifier = Modifier) {
                     ResultsPage(
                         payload = payload,
                         navController = nav,
-                        onOpenDraft = { draftPayload ->
-                            createDraftOrigin = draftPayload.source.toDraftOrigin()
+                        onOpenCreate = {
+                            createDraftOrigin = DraftInputOrigin.TEXT
                             createDraftId = null
                             createDraftVisible = true
                         },
@@ -160,28 +166,6 @@ fun AppRoot(modifier: Modifier = Modifier) {
                         },
                     )
                 }
-                composable(
-                    route = "${DraftRoutes.Route}?${DraftRoutes.ArgPayload}={${DraftRoutes.ArgPayload}}",
-                    arguments = listOf(
-                        navArgument(DraftRoutes.ArgPayload) { defaultValue = "" },
-                    ),
-                ) { entry ->
-                    val payload =
-                        DraftRoutes.parse(entry.arguments?.getString(DraftRoutes.ArgPayload))
-                    if (payload == null) {
-                        nav.popBackStack()
-                    } else if (payload.mode == DraftMode.Create) {
-                        LaunchedEffect(payload) {
-                            createDraftOrigin = payload.source.toDraftOrigin()
-                            createDraftId = null
-                            createDraftVisible = true
-                            nav.popBackStack()
-                        }
-                    } else {
-                        DraftPage(payload = payload, navController = nav)
-                    }
-                }
-
                 composable(AppRoutes.TrackedItems) {
                     TrackedItemsPage(
                         onBack = { nav.popBackStack() },
@@ -252,12 +236,63 @@ fun AppRoot(modifier: Modifier = Modifier) {
                         },
                     )
                 }
-                composable(AppRoutes.Profile) {
+                composable(
+                    route = AppRoutes.ProfileRoute,
+                    arguments = listOf(
+                        navArgument(AppRoutes.ArgProfileUserId) { defaultValue = "" },
+                    ),
+                ) { entry ->
+                    val targetUserId =
+                        entry.arguments?.getString(AppRoutes.ArgProfileUserId)?.toLongOrNull()
                     ProfilePage(
-                        onMyItemsClick = { navigateSafely(nav, AppRoutes.myItems()) },
-                        onTrackedItemsClick = { navigateSafely(nav, AppRoutes.TrackedItems) },
-                        onClose = { nav.popBackStack() },
+                        targetUserId = targetUserId,
+                        onBack = { nav.popBackStack() },
+                        onOpenMyItems = { tab -> navigateSafely(nav, AppRoutes.myItems(tab)) },
+                        onOpenTrackedItems = { navigateSafely(nav, AppRoutes.TrackedItems) },
+                        onOpenSellerListings = { sellerId, sellerName ->
+                            val payload = ResultsPayload(
+                                sellerId = sellerId,
+                                sellerName = sellerName,
+                                mode = ResultsMode.Offers,
+                                origin = ResultsOrigin.Text,
+                            )
+                            nav.navigate(ResultsRoutes.build(payload))
+                        },
+                        onOpenOffer = { offerId ->
+                            nav.navigate(AppRoutes.offer(offerId))
+                        },
                     )
+                }
+
+                composable(
+                    route = AppRoutes.OfferRoute,
+                    arguments = listOf(
+                        navArgument(AppRoutes.ArgOfferId) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgQuerySessionId) { defaultValue = "" },
+                        navArgument(AppRoutes.ArgPosition) { defaultValue = "" },
+                    ),
+                ) { entry ->
+                    val offerId = entry.arguments?.getString(AppRoutes.ArgOfferId).orEmpty()
+                    val querySessionId =
+                        entry.arguments?.getString(AppRoutes.ArgQuerySessionId).orEmpty().ifBlank { null }
+                    val position =
+                        entry.arguments?.getString(AppRoutes.ArgPosition)?.toIntOrNull()
+                    if (offerId.isBlank()) {
+                        nav.popBackStack()
+                    } else {
+                        OfferPage(
+                            offerId = offerId,
+                            querySessionId = querySessionId,
+                            position = position,
+                            navController = nav,
+                            onBack = { nav.popBackStack() },
+                            onEditOffer = { targetOfferId ->
+                                createDraftOrigin = null
+                                createDraftId = targetOfferId.toCanonicalLocalOfferDraftIdOrNull() ?: targetOfferId
+                                createDraftVisible = true
+                            },
+                        )
+                    }
                 }
 
                 composable(
@@ -316,31 +351,8 @@ fun AppRoot(modifier: Modifier = Modifier) {
                     )
                 }
             }
-
-
-
-            val usePhotoPostFlow = createDraftId == null &&
-                (createDraftOrigin == null || createDraftOrigin == DraftInputOrigin.PHOTO)
-
-            if (createDraftVisible && usePhotoPostFlow) {
-                PhotoPostFlow(
-                    visible = true,
-                    draftId = createDraftId,
-                    origin = createDraftOrigin,
-                    onDismiss = {
-                        createDraftVisible = false
-                        createDraftOrigin = null
-                        createDraftId = null
-                    },
-                    onOpenManual = {
-                        createDraftOrigin = DraftInputOrigin.TEXT
-                        createDraftId = null
-                    },
-                )
-            }
-
-            if (createDraftVisible && !usePhotoPostFlow) {
-                CreateDraftSheet(
+            if (createDraftVisible) {
+                LocalOfferSheet(
                     visible = true,
                     draftId = createDraftId,
                     origin = createDraftOrigin,
@@ -363,12 +375,8 @@ private fun UserOfferCreationMethod.toDraftOrigin(): DraftInputOrigin? = when (t
     UserOfferCreationMethod.JSON_FILE -> null
 }
 
-private fun DraftSource.toDraftOrigin(): DraftInputOrigin = when (this) {
-    DraftSource.Photo -> DraftInputOrigin.PHOTO
-    DraftSource.Link -> DraftInputOrigin.LINK
-    DraftSource.Voice -> DraftInputOrigin.VOICE
-    DraftSource.Text -> DraftInputOrigin.TEXT
-}
+private fun String.toCanonicalLocalOfferDraftIdOrNull(): String? =
+    LocalOfferDraftIds.canonicalOrNull(this)
 
 private fun navigateSafely(nav: NavHostController, route: String) {
     val current = nav.currentDestination?.route

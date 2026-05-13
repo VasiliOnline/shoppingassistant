@@ -14,6 +14,9 @@ import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSort
 import com.example.shoppingassistant.domain.model.ProductDto
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
+import com.example.shoppingassistant.domain.profile.DeliveryAddressLocation
+import com.example.shoppingassistant.domain.profile.DeliveryAreaScope
+import com.example.shoppingassistant.domain.profile.SellerDeliveryZone
 import com.example.shoppingassistant.domain.tracks.TrackFilters
 import com.example.shoppingassistant.domain.tracks.TrackMatchKeyFactory
 import com.example.shoppingassistant.domain.tracks.TrackOfferSort
@@ -693,6 +696,81 @@ class CatalogTracksContractIntegrationTest {
     }
 
     @Test
+    fun deliverableOnly_matches_city_delivery_zones_against_active_address() = runBlocking {
+        val productId = createProduct(
+            categoryCode = TECH_PHONES,
+            brand = "zone",
+            model = "city",
+        )
+        val sellerMatchId = createUser(
+            displayName = "City Match",
+            city = "Moscow",
+            countryCode = "RU",
+            deliveryZones = listOf(
+                SellerDeliveryZone(
+                    id = "moscow-city",
+                    scope = DeliveryAreaScope.CITY,
+                    location = DeliveryAddressLocation(
+                        countryCode = "RU",
+                        adminArea = "Moscow",
+                        locality = "Moscow",
+                    ),
+                ),
+            ),
+        )
+        val sellerMissId = createUser(
+            displayName = "City Miss",
+            city = "Saint Petersburg",
+            countryCode = "RU",
+            deliveryZones = listOf(
+                SellerDeliveryZone(
+                    id = "spb-city",
+                    scope = DeliveryAreaScope.CITY,
+                    location = DeliveryAddressLocation(
+                        countryCode = "RU",
+                        adminArea = "Saint Petersburg",
+                        locality = "Saint Petersburg",
+                    ),
+                ),
+            ),
+        )
+        val matchingOfferId = createOffer(
+            productId = productId,
+            sellerId = sellerMatchId,
+            priceCents = 90_000L,
+            condition = "used",
+            deliveryChannel = "delivery",
+        )
+        createOffer(
+            productId = productId,
+            sellerId = sellerMissId,
+            priceCents = 91_000L,
+            condition = "used",
+            deliveryChannel = "delivery",
+        )
+
+        val result = offerRepository.searchOffers(
+            OfferSearchCriteria(
+                brand = "zone",
+                model = "city",
+                categoryCode = TECH_PHONES,
+                deliverableOnly = true,
+                userCountry = "RU",
+                deliveryAddress = DeliveryAddressLocation(
+                    countryCode = "RU",
+                    adminArea = "Moscow",
+                    locality = "Moscow",
+                    addressLine = "Tverskaya 1",
+                ),
+                limit = 100,
+                sort = OfferSort.PRICE_ASC,
+            ),
+        )
+
+        assertEquals(listOf(matchingOfferId.toString()), result.map { it.id })
+    }
+
+    @Test
     fun facetPreset_collection_querySession_and_guardrail_metric_work() = runBlocking {
         val sellerId = createUser(
             displayName = "Preset Seller",
@@ -836,7 +914,7 @@ class CatalogTracksContractIntegrationTest {
     }
 
     @Test
-    fun getCategoryProfile_returns_requiredIf_rules_from_stage4_constraints() = runBlocking {
+    fun getCategoryEffectiveSpec_returns_requiredIf_rules_from_stage4_constraints() = runBlocking {
         val requiredAttributeCode = "contract_required_if_model"
         val triggerAttributeCode = "contract_required_if_condition"
         val now = System.currentTimeMillis()
@@ -902,10 +980,8 @@ class CatalogTracksContractIntegrationTest {
             }
         }
 
-        val profile = catalogRepository.getCategoryProfile(TECH_PHONES)
-        assertNotNull(profile)
-
-        val rule = profile.requiredIfRules.firstOrNull { it.requiredAttributeCode == requiredAttributeCode }
+        val spec = assertNotNull(catalogRepository.getCategoryEffectiveSpec(TECH_PHONES))
+        val rule = spec.requiredIfRules.firstOrNull { it.requiredAttributeCode == requiredAttributeCode }
         assertNotNull(rule)
         assertEquals(1, rule.whenAll.size)
         assertEquals(triggerAttributeCode, rule.whenAll.first().attributeCode)
@@ -1017,6 +1093,7 @@ class CatalogTracksContractIntegrationTest {
         city: String,
         countryCode: String,
         shippingCountries: List<String>? = listOf(countryCode),
+        deliveryZones: List<SellerDeliveryZone>? = null,
         createPreferencesRow: Boolean = true,
     ): Long = DatabaseFactory.dbQuery {
         val now = System.currentTimeMillis()
@@ -1046,6 +1123,7 @@ class CatalogTracksContractIntegrationTest {
                 stmt[UserPreferencesTable.userId] = userId
                 stmt[UserPreferencesTable.badges] = emptyList()
                 stmt[UserPreferencesTable.shippingCountries] = shippingCountries
+                stmt[UserPreferencesTable.deliveryZones] = deliveryZones
                 stmt[UserPreferencesTable.ratingValue] = 4.6
                 stmt[UserPreferencesTable.ratingCount] = 10
             }
@@ -1194,3 +1272,4 @@ private object ZeroScoringEngineContract : ScoringEngine {
             score = 0f,
         )
 }
+

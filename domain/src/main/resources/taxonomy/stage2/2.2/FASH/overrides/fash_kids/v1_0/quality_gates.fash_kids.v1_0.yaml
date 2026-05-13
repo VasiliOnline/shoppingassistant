@@ -1,0 +1,31 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "gates": {
+    "inheritance": [
+      "parent_pack_exists:FASH.APPAREL_COMMON>=1.1",
+      "no_duplicate_common_attributes",
+      "effective_spec_snapshot_matches"
+    ],
+    "routing": [
+      "positive_kids_apparel_queries_route_to_FASH.KIDS",
+      "shoes_bags_accessories_toys_babygear_queries_do_not_route_to_FASH.KIDS",
+      "generic_men_women_apparel_does_not_route_to_FASH.KIDS"
+    ],
+    "user_surface": [
+      "initial_fields_per_group<=8",
+      "primary_facets_per_group<=7",
+      "system_hidden_fields_not_user_visible"
+    ],
+    "vision": [
+      "must_not_infer_gender_from_color_or_print",
+      "must_not_infer_exact_age_or_size_from_photo",
+      "returns_UNISEX_or_UNKNOWN_when_context_weak"
+    ],
+    "fixtures": [
+      "golden_queries_unique",
+      "sample_offers_parse",
+      "negative_guards_present"
+    ]
+  },
+  "blocking": true
+}

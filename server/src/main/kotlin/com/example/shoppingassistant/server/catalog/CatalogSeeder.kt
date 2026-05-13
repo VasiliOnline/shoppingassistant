@@ -1,13 +1,28 @@
 package com.example.shoppingassistant.server.catalog
 
 import com.example.shoppingassistant.domain.catalog.CatalogSeed
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryWriteSpec
+import com.example.shoppingassistant.domain.catalog.AttributeValueDict
+import com.example.shoppingassistant.domain.catalog.AliasEntry
+import com.example.shoppingassistant.domain.catalog.AliasKind
+import com.example.shoppingassistant.domain.catalog.AliasMatchKind
+import com.example.shoppingassistant.domain.catalog.AliasSource
+import com.example.shoppingassistant.domain.catalog.BrowseNode
+import com.example.shoppingassistant.domain.catalog.BrowseNodeKind
+import com.example.shoppingassistant.domain.catalog.BrowseNodeStatus
+import com.example.shoppingassistant.domain.catalog.BrowseTargetType
+import com.example.shoppingassistant.domain.catalog.CategoryAlias
+import com.example.shoppingassistant.domain.catalog.GoogleTaxonomyMapping
+import com.example.shoppingassistant.domain.catalog.GoogleTaxonomyMappingType
+import com.example.shoppingassistant.domain.catalog.CategoryStatus
 import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueConstraint
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.CompatibilityRule
 import com.example.shoppingassistant.domain.facet.FacetCollection
 import com.example.shoppingassistant.domain.facet.FacetDefinition
 import com.example.shoppingassistant.domain.facet.FacetPreset
+import com.example.shoppingassistant.domain.i18n.LocalizedText
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.deleteWhere
@@ -16,43 +31,216 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import org.jetbrains.exposed.sql.and
+import java.util.Locale
+
+enum class CatalogSeedSyncMode(
+    val allowsDestructiveOps: Boolean,
+) {
+    UPSERT_ONLY(allowsDestructiveOps = false),
+    FULL_SYNC(allowsDestructiveOps = true),
+    ;
+
+    companion object {
+        fun fromEnv(raw: String?): CatalogSeedSyncMode {
+            val normalized = raw?.trim()?.uppercase().orEmpty()
+            if (normalized.isEmpty()) return UPSERT_ONLY
+            return when (normalized) {
+                "UPSERT_ONLY", "UPSERT", "SAFE" -> UPSERT_ONLY
+                "FULL_SYNC", "FULL", "DESTRUCTIVE" -> FULL_SYNC
+                else -> error(
+                    "Unsupported CATALOG_SEED_SYNC_MODE='$raw'. " +
+                        "Supported values: UPSERT_ONLY, FULL_SYNC.",
+                )
+            }
+        }
+    }
+}
+
+data class CatalogStage20BackfillReport(
+    val syncMode: CatalogSeedSyncMode,
+    val ensureReferencedCategories: Boolean,
+    val categoriesEnsured: Int,
+    val categoryAliasesTotal: Long,
+    val browseNodesTotal: Long,
+    val aliasEntriesTotal: Long,
+    val googleMappingsTotal: Long,
+)
 
 /**
  * Инициализация справочников категорий/атрибутов из domain-сидов.
  */
 object CatalogSeeder {
-    fun seedIfEmpty() {
-        syncProfiles(CatalogSeed.profiles)
-        syncConstraints(CatalogSeed.constraints)
-        syncFacetDefinitions(CatalogSeed.facetDefinitions)
-        syncFacetPresets(CatalogSeed.facetPresets)
-        syncFacetCollections(CatalogSeed.facetCollections)
-        syncStage40Contract()
+    fun seedIfEmpty(
+        syncMode: CatalogSeedSyncMode = CatalogSeedSyncMode.UPSERT_ONLY,
+    ) {
+        syncCategorySpecs(CatalogSeed.categoryWriteSpecs, syncMode = syncMode)
+        syncCategoryAliases(CatalogSeed.categoryAliases, syncMode = syncMode)
+        syncBrowseNodes(CatalogSeed.browseNodes, syncMode = syncMode)
+        syncAliasEntries(CatalogSeed.aliasEntries, syncMode = syncMode)
+        syncGoogleMappings(CatalogSeed.googleMappings, syncMode = syncMode)
+        syncAttributeValueDict(CatalogSeed.valueDictionaries, syncMode = syncMode)
+        syncConstraints(CatalogSeed.constraints, syncMode = syncMode)
+        syncFacetDefinitions(CatalogSeed.facetDefinitions, syncMode = syncMode)
+        syncFacetPresets(CatalogSeed.facetPresets, syncMode = syncMode)
+        syncFacetCollections(CatalogSeed.facetCollections, syncMode = syncMode)
+        syncStage40Contract(syncMode = syncMode)
     }
 
-    private fun syncProfiles(profiles: List<CategoryProfile>) {
-        val normalizedProfiles = profiles
-            .map(::normalizeProfile)
+    fun syncRuntimeContracts(
+        syncMode: CatalogSeedSyncMode = CatalogSeedSyncMode.UPSERT_ONLY,
+    ) {
+        syncCategorySpecs(CatalogSeed.categoryWriteSpecs, syncMode = syncMode)
+        syncAttributeValueDict(CatalogSeed.valueDictionaries, syncMode = syncMode)
+        syncStage40Contract(syncMode = syncMode)
+    }
+
+    fun seedStage20Taxonomy(
+        syncMode: CatalogSeedSyncMode = CatalogSeedSyncMode.UPSERT_ONLY,
+        ensureReferencedCategories: Boolean = false,
+    ): CatalogStage20BackfillReport {
+        val categoriesEnsured = if (ensureReferencedCategories) {
+            ensureStage20ReferencedCategories()
+        } else {
+            0
+        }
+
+        syncCategoryAliases(CatalogSeed.categoryAliases, syncMode = syncMode)
+        syncBrowseNodes(CatalogSeed.browseNodes, syncMode = syncMode)
+        syncAliasEntries(CatalogSeed.aliasEntries, syncMode = syncMode)
+        syncGoogleMappings(CatalogSeed.googleMappings, syncMode = syncMode)
+
+        return CatalogStage20BackfillReport(
+            syncMode = syncMode,
+            ensureReferencedCategories = ensureReferencedCategories,
+            categoriesEnsured = categoriesEnsured,
+            categoryAliasesTotal = CategoryAliasesTable.selectAll().count(),
+            browseNodesTotal = BrowseNodesTable.selectAll().count(),
+            aliasEntriesTotal = AliasEntriesTable.selectAll().count(),
+            googleMappingsTotal = GoogleTaxonomyMappingsTable.selectAll().count(),
+        )
+    }
+
+    fun syncServingAliasEntries(
+        aliasEntries: List<AliasEntry>,
+        syncMode: CatalogSeedSyncMode = CatalogSeedSyncMode.UPSERT_ONLY,
+    ) {
+        syncAliasEntries(aliasEntries, syncMode = syncMode)
+    }
+
+    fun syncServingAttributeValueDict(
+        dictionaries: List<AttributeValueDict>,
+        syncMode: CatalogSeedSyncMode = CatalogSeedSyncMode.UPSERT_ONLY,
+    ) {
+        syncAttributeValueDict(dictionaries, syncMode = syncMode)
+    }
+
+    private fun syncCategorySpecs(
+        specs: List<CatalogCategoryWriteSpec>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
+        val normalizedProfiles = specs
+            .map(::normalizeWriteSpec)
             .filter { it.category.code.isNotEmpty() }
             .distinctBy { it.category.code }
             .sortedBy { it.category.code }
 
-        syncCategories(normalizedProfiles.map { it.category })
-        syncAttributeDefs(normalizedProfiles.flatMap { it.attributes })
-        syncCategoryAttributes(normalizedProfiles.flatMap { it.categoryAttributes })
-        syncAttributeValueDict(normalizedProfiles)
+        syncCategories(normalizedProfiles.map { it.category }, syncMode = syncMode)
+        syncAttributeDefs(normalizedProfiles.flatMap { it.attributes }, syncMode = syncMode)
+        syncCategoryAttributes(
+            normalizedProfiles.flatMap { it.categoryAttributes },
+            syncMode = syncMode,
+        )
     }
 
-    private fun syncCategories(categories: List<com.example.shoppingassistant.domain.catalog.Category>) {
-        val seedRows = categories
-            .map { category ->
-                category.copy(
-                    code = category.code.trim(),
-                    title = category.title?.trim()?.takeIf { it.isNotEmpty() },
-                    parentCode = category.parentCode?.trim()?.takeIf { it.isNotEmpty() },
-                    description = category.description?.trim()?.takeIf { it.isNotEmpty() },
-                )
+    private fun ensureStage20ReferencedCategories(): Int {
+        val categoriesByCode = CatalogSeed.categories
+            .map(::normalizeSeedCategory)
+            .filter { it.code.isNotEmpty() }
+            .associateBy { it.code }
+        if (categoriesByCode.isEmpty()) return 0
+
+        val referencedCodes = collectStage20ReferencedCategoryCodes()
+        if (referencedCodes.isEmpty()) return 0
+
+        val requiredCodes = linkedSetOf<String>()
+        val queue = ArrayDeque<String>()
+        referencedCodes.forEach { code ->
+            if (requiredCodes.add(code)) {
+                queue.addLast(code)
             }
+        }
+
+        while (queue.isNotEmpty()) {
+            val currentCode = queue.removeFirst()
+            val parentCode = categoriesByCode[currentCode]?.parentCode ?: continue
+            if (requiredCodes.add(parentCode)) {
+                queue.addLast(parentCode)
+            }
+        }
+
+        val existingCodes = CategoriesTable
+            .selectAll()
+            .map { row -> row[CategoriesTable.code] }
+            .toSet()
+
+        val missingCodes = (requiredCodes - existingCodes).sorted()
+        var inserted = 0
+        missingCodes.forEach { code ->
+            val category = categoriesByCode[code] ?: return@forEach
+            CategoriesTable.insert { stmt ->
+                stmt[CategoriesTable.code] = category.code
+                stmt[CategoriesTable.segment] = category.segment.name
+                stmt[CategoriesTable.status] = category.status.name
+                stmt[CategoriesTable.titleLocalized] = category.title
+                stmt[CategoriesTable.titleRu] = category.title.storageRu(category.code)
+                stmt[CategoriesTable.titleEn] = category.title.storageEn()
+                stmt[CategoriesTable.parentCode] = category.parentCode
+                stmt[CategoriesTable.description] = category.description
+                stmt[CategoriesTable.replacementCode] = category.replacementCode
+            }
+            inserted += 1
+        }
+        return inserted
+    }
+
+    private fun collectStage20ReferencedCategoryCodes(): Set<String> {
+        val aliasCategoryCodes = CatalogSeed.categoryAliases
+            .asSequence()
+            .map { alias -> alias.categoryCode.trim() }
+            .filter { code -> code.isNotEmpty() }
+
+        val browseCategoryCodes = CatalogSeed.browseNodes
+            .asSequence()
+            .mapNotNull { node -> node.targetCategoryCode?.trim()?.takeIf { it.isNotEmpty() } }
+
+        val aliasEntryCategoryCodes = CatalogSeed.aliasEntries
+            .asSequence()
+            .filter { entry -> entry.kind == AliasKind.CATEGORY }
+            .map { entry -> entry.targetCode.trim() }
+            .filter { code -> code.isNotEmpty() }
+
+        val googleCategoryCodes = CatalogSeed.googleMappings
+            .asSequence()
+            .map { mapping -> mapping.canonicalCode.trim() }
+            .filter { code -> code.isNotEmpty() }
+
+        return sequenceOf(
+            aliasCategoryCodes,
+            browseCategoryCodes,
+            aliasEntryCategoryCodes,
+            googleCategoryCodes,
+        )
+            .flatten()
+            .toSet()
+    }
+
+    private fun syncCategories(
+        categories: List<com.example.shoppingassistant.domain.catalog.Category>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
+        val seedRows = categories
+            .map(::normalizeSeedCategory)
             .filter { it.code.isNotEmpty() }
             .distinctBy { it.code }
             .sortedBy { it.code }
@@ -65,31 +253,389 @@ object CatalogSeeder {
 
         val staleCodes = existingCodes - seedCodes
         if (staleCodes.isNotEmpty()) {
-            CategoriesTable.deleteWhere { CategoriesTable.code inList staleCodes.toList() }
+            if (syncMode.allowsDestructiveOps) {
+                CategoriesTable.deleteWhere { CategoriesTable.code inList staleCodes.toList() }
+            } else {
+                CategoriesTable.update({ CategoriesTable.code inList staleCodes.toList() }) { stmt ->
+                    stmt[status] = CategoryStatus.DEPRECATED.name
+                }
+            }
         }
 
         seedRows.forEach { category ->
             val updated = CategoriesTable.update({ CategoriesTable.code eq category.code }) { stmt ->
                 stmt[segment] = category.segment.name
                 stmt[status] = category.status.name
-                stmt[title] = category.title
+                stmt[titleLocalized] = category.title
+                stmt[titleRu] = category.title.storageRu(category.code)
+                stmt[titleEn] = category.title.storageEn()
                 stmt[parentCode] = category.parentCode
                 stmt[description] = category.description
+                stmt[replacementCode] = category.replacementCode
             }
             if (updated == 0) {
                 CategoriesTable.insert { stmt ->
                     stmt[code] = category.code
                     stmt[segment] = category.segment.name
                     stmt[status] = category.status.name
-                    stmt[title] = category.title
+                    stmt[titleLocalized] = category.title
+                    stmt[titleRu] = category.title.storageRu(category.code)
+                    stmt[titleEn] = category.title.storageEn()
                     stmt[parentCode] = category.parentCode
                     stmt[description] = category.description
+                    stmt[replacementCode] = category.replacementCode
                 }
             }
         }
     }
 
-    private fun syncAttributeDefs(attributes: List<com.example.shoppingassistant.domain.catalog.AttributeDef>) {
+    private fun syncCategoryAliases(
+        aliases: List<CategoryAlias>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
+        val knownCategoryCodes = CategoriesTable
+            .selectAll()
+            .map { row -> row[CategoriesTable.code] }
+            .toSet()
+
+        val seedRows = aliases
+            .mapNotNull { alias ->
+                val normalizedAlias = alias.alias.trim()
+                val normalizedCategoryCode = alias.categoryCode.trim()
+                if (normalizedAlias.isEmpty() || normalizedCategoryCode.isEmpty()) return@mapNotNull null
+                if (normalizedCategoryCode !in knownCategoryCodes) return@mapNotNull null
+                CategoryAliasPayload(
+                    alias = normalizedAlias,
+                    categoryCode = normalizedCategoryCode,
+                )
+            }
+            .distinctBy { "${it.alias}|${it.categoryCode}" }
+            .sortedWith(compareBy<CategoryAliasPayload> { it.alias.lowercase(Locale.ROOT) }.thenBy { it.categoryCode })
+
+        if (syncMode.allowsDestructiveOps) {
+            CategoryAliasesTable.deleteAll()
+            if (seedRows.isNotEmpty()) {
+                CategoryAliasesTable.batchInsert(seedRows) { row ->
+                    this[CategoryAliasesTable.alias] = row.alias
+                    this[CategoryAliasesTable.categoryCode] = row.categoryCode
+                }
+            }
+            return
+        }
+
+        val existingKeys = CategoryAliasesTable
+            .selectAll()
+            .map { row -> row[CategoryAliasesTable.alias] to row[CategoryAliasesTable.categoryCode] }
+            .toSet()
+
+        seedRows.forEach { row ->
+            val key = row.alias to row.categoryCode
+            if (key !in existingKeys) {
+                CategoryAliasesTable.insert { stmt ->
+                    stmt[CategoryAliasesTable.alias] = row.alias
+                    stmt[CategoryAliasesTable.categoryCode] = row.categoryCode
+                }
+            }
+        }
+    }
+
+    private fun syncBrowseNodes(
+        browseNodes: List<BrowseNode>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
+        val seedRows = browseNodes
+            .mapNotNull { node ->
+                val browseCode = node.browseCode.trim()
+                if (browseCode.isEmpty()) return@mapNotNull null
+                BrowseNodePayload(
+                    browseCode = browseCode,
+                    parentBrowseCode = node.parentBrowseCode?.trim()?.takeIf { it.isNotEmpty() },
+                    nodeKind = node.nodeKind.name,
+                    titleKey = node.titleKey?.trim()?.takeIf { it.isNotEmpty() },
+                    title = node.title,
+                    titleRu = node.title.storageRu(browseCode),
+                    titleEn = node.title.storageEn(),
+                    targetCategoryCode = node.targetCategoryCode?.trim()?.takeIf { it.isNotEmpty() },
+                    targetType = node.targetType?.name,
+                    order = node.order,
+                    availabilityScope = node.availabilityScope.trim().ifEmpty { "ALL" },
+                    iconKey = node.iconKey?.trim()?.takeIf { it.isNotEmpty() },
+                    analyticsKey = node.analyticsKey?.trim()?.takeIf { it.isNotEmpty() },
+                    searchKeywordsRu = node.searchKeywordsRu
+                        .map { keyword -> keyword.trim() }
+                        .filter { keyword -> keyword.isNotEmpty() }
+                        .distinct(),
+                    status = node.status.name,
+                    tags = node.tags
+                        .map { tag -> tag.trim() }
+                        .filter { tag -> tag.isNotEmpty() }
+                        .distinct(),
+                    notes = node.notes?.trim()?.takeIf { it.isNotEmpty() },
+                )
+            }
+            .distinctBy { it.browseCode }
+            .sortedBy { it.browseCode }
+
+        if (syncMode.allowsDestructiveOps) {
+            BrowseNodesTable.deleteAll()
+            if (seedRows.isNotEmpty()) {
+                BrowseNodesTable.batchInsert(seedRows) { row ->
+                    this[BrowseNodesTable.browseCode] = row.browseCode
+                    this[BrowseNodesTable.parentBrowseCode] = row.parentBrowseCode
+                    this[BrowseNodesTable.nodeKind] = row.nodeKind
+                    this[BrowseNodesTable.titleKey] = row.titleKey
+                    this[BrowseNodesTable.titleLocalized] = row.title
+                    this[BrowseNodesTable.titleRu] = row.titleRu
+                    this[BrowseNodesTable.titleEn] = row.titleEn
+                    this[BrowseNodesTable.targetCategoryCode] = row.targetCategoryCode
+                    this[BrowseNodesTable.targetType] = row.targetType
+                    this[BrowseNodesTable.order] = row.order
+                    this[BrowseNodesTable.availabilityScope] = row.availabilityScope
+                    this[BrowseNodesTable.iconKey] = row.iconKey
+                    this[BrowseNodesTable.analyticsKey] = row.analyticsKey
+                    this[BrowseNodesTable.searchKeywordsRu] = row.searchKeywordsRu
+                    this[BrowseNodesTable.status] = row.status
+                    this[BrowseNodesTable.tags] = row.tags
+                    this[BrowseNodesTable.notes] = row.notes
+                }
+            }
+            return
+        }
+
+        seedRows.forEach { row ->
+            val updated = BrowseNodesTable.update({ BrowseNodesTable.browseCode eq row.browseCode }) { stmt ->
+                stmt[BrowseNodesTable.parentBrowseCode] = row.parentBrowseCode
+                stmt[BrowseNodesTable.nodeKind] = row.nodeKind
+                stmt[BrowseNodesTable.titleKey] = row.titleKey
+                stmt[BrowseNodesTable.titleLocalized] = row.title
+                stmt[BrowseNodesTable.titleRu] = row.titleRu
+                stmt[BrowseNodesTable.titleEn] = row.titleEn
+                stmt[BrowseNodesTable.targetCategoryCode] = row.targetCategoryCode
+                stmt[BrowseNodesTable.targetType] = row.targetType
+                stmt[BrowseNodesTable.order] = row.order
+                stmt[BrowseNodesTable.availabilityScope] = row.availabilityScope
+                stmt[BrowseNodesTable.iconKey] = row.iconKey
+                stmt[BrowseNodesTable.analyticsKey] = row.analyticsKey
+                stmt[BrowseNodesTable.searchKeywordsRu] = row.searchKeywordsRu
+                stmt[BrowseNodesTable.status] = row.status
+                stmt[BrowseNodesTable.tags] = row.tags
+                stmt[BrowseNodesTable.notes] = row.notes
+            }
+            if (updated == 0) {
+                BrowseNodesTable.insert { stmt ->
+                    stmt[BrowseNodesTable.browseCode] = row.browseCode
+                    stmt[BrowseNodesTable.parentBrowseCode] = row.parentBrowseCode
+                    stmt[BrowseNodesTable.nodeKind] = row.nodeKind
+                    stmt[BrowseNodesTable.titleKey] = row.titleKey
+                    stmt[BrowseNodesTable.titleLocalized] = row.title
+                    stmt[BrowseNodesTable.titleRu] = row.titleRu
+                    stmt[BrowseNodesTable.titleEn] = row.titleEn
+                    stmt[BrowseNodesTable.targetCategoryCode] = row.targetCategoryCode
+                    stmt[BrowseNodesTable.targetType] = row.targetType
+                    stmt[BrowseNodesTable.order] = row.order
+                    stmt[BrowseNodesTable.availabilityScope] = row.availabilityScope
+                    stmt[BrowseNodesTable.iconKey] = row.iconKey
+                    stmt[BrowseNodesTable.analyticsKey] = row.analyticsKey
+                    stmt[BrowseNodesTable.searchKeywordsRu] = row.searchKeywordsRu
+                    stmt[BrowseNodesTable.status] = row.status
+                    stmt[BrowseNodesTable.tags] = row.tags
+                    stmt[BrowseNodesTable.notes] = row.notes
+                }
+            }
+        }
+    }
+
+    private fun syncAliasEntries(
+        aliasEntries: List<AliasEntry>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
+        val seedRows = aliasEntries
+            .mapNotNull { entry ->
+                val locale = entry.locale.trim()
+                val term = entry.term.trim()
+                val normalizedTerm = normalizeAliasTerm(entry.normalizedTerm.ifBlank { term })
+                val targetCode = entry.targetCode.trim()
+                if (locale.isEmpty() || term.isEmpty() || normalizedTerm.isEmpty() || targetCode.isEmpty()) {
+                    return@mapNotNull null
+                }
+                AliasEntryPayload(
+                    locale = locale,
+                    term = term,
+                    normalizedTerm = normalizedTerm,
+                    kind = entry.kind.name,
+                    targetCode = targetCode,
+                    weight = entry.weight.coerceIn(0, 100),
+                    matchKind = entry.matchKind.name,
+                    isBlocked = entry.isBlocked,
+                    source = entry.source.name,
+                    notes = entry.notes?.trim()?.takeIf { it.isNotEmpty() },
+                )
+            }
+            .distinctBy { "${it.locale}|${it.normalizedTerm}|${it.kind}|${it.targetCode}" }
+            .sortedWith(
+                compareBy<AliasEntryPayload> { it.locale.lowercase(Locale.ROOT) }
+                    .thenBy { it.normalizedTerm }
+                    .thenBy { it.kind }
+                    .thenBy { it.targetCode },
+            )
+
+        if (syncMode.allowsDestructiveOps) {
+            AliasEntriesTable.deleteAll()
+            if (seedRows.isNotEmpty()) {
+                AliasEntriesTable.batchInsert(seedRows) { row ->
+                    this[AliasEntriesTable.locale] = row.locale
+                    this[AliasEntriesTable.term] = row.term
+                    this[AliasEntriesTable.normalizedTerm] = row.normalizedTerm
+                    this[AliasEntriesTable.kind] = row.kind
+                    this[AliasEntriesTable.targetCode] = row.targetCode
+                    this[AliasEntriesTable.weight] = row.weight
+                    this[AliasEntriesTable.matchKind] = row.matchKind
+                    this[AliasEntriesTable.isBlocked] = row.isBlocked
+                    this[AliasEntriesTable.aliasSource] = row.source
+                    this[AliasEntriesTable.notes] = row.notes
+                }
+            }
+            return
+        }
+
+        val normalizedByLogicalKey = seedRows.associate { row ->
+            aliasEntryLogicalKey(
+                locale = row.locale,
+                term = row.term,
+                kind = row.kind,
+                targetCode = row.targetCode,
+            ) to row.normalizedTerm
+        }
+        if (normalizedByLogicalKey.isNotEmpty()) {
+            val staleRows = AliasEntriesTable
+                .selectAll()
+                .mapNotNull { existingRow ->
+                    val logicalKey = aliasEntryLogicalKey(
+                        locale = existingRow[AliasEntriesTable.locale],
+                        term = existingRow[AliasEntriesTable.term],
+                        kind = existingRow[AliasEntriesTable.kind],
+                        targetCode = existingRow[AliasEntriesTable.targetCode],
+                    )
+                    val expectedNormalizedTerm = normalizedByLogicalKey[logicalKey] ?: return@mapNotNull null
+                    val currentNormalizedTerm = existingRow[AliasEntriesTable.normalizedTerm]
+                    if (currentNormalizedTerm == expectedNormalizedTerm) {
+                        return@mapNotNull null
+                    }
+                    AliasEntryPrimaryKey(
+                        locale = existingRow[AliasEntriesTable.locale],
+                        normalizedTerm = currentNormalizedTerm,
+                        kind = existingRow[AliasEntriesTable.kind],
+                        targetCode = existingRow[AliasEntriesTable.targetCode],
+                    )
+                }
+
+            staleRows.forEach { row ->
+                AliasEntriesTable.deleteWhere {
+                    (AliasEntriesTable.locale eq row.locale) and
+                        (AliasEntriesTable.normalizedTerm eq row.normalizedTerm) and
+                        (AliasEntriesTable.kind eq row.kind) and
+                        (AliasEntriesTable.targetCode eq row.targetCode)
+                }
+            }
+        }
+
+        seedRows.forEach { row ->
+            val updated = AliasEntriesTable.update({
+                (AliasEntriesTable.locale eq row.locale) and
+                    (AliasEntriesTable.normalizedTerm eq row.normalizedTerm) and
+                    (AliasEntriesTable.kind eq row.kind) and
+                    (AliasEntriesTable.targetCode eq row.targetCode)
+            }) { stmt ->
+                stmt[AliasEntriesTable.term] = row.term
+                stmt[AliasEntriesTable.weight] = row.weight
+                stmt[AliasEntriesTable.matchKind] = row.matchKind
+                stmt[AliasEntriesTable.isBlocked] = row.isBlocked
+                stmt[AliasEntriesTable.aliasSource] = row.source
+                stmt[AliasEntriesTable.notes] = row.notes
+            }
+            if (updated == 0) {
+                AliasEntriesTable.insert { stmt ->
+                    stmt[AliasEntriesTable.locale] = row.locale
+                    stmt[AliasEntriesTable.term] = row.term
+                    stmt[AliasEntriesTable.normalizedTerm] = row.normalizedTerm
+                    stmt[AliasEntriesTable.kind] = row.kind
+                    stmt[AliasEntriesTable.targetCode] = row.targetCode
+                    stmt[AliasEntriesTable.weight] = row.weight
+                    stmt[AliasEntriesTable.matchKind] = row.matchKind
+                    stmt[AliasEntriesTable.isBlocked] = row.isBlocked
+                    stmt[AliasEntriesTable.aliasSource] = row.source
+                    stmt[AliasEntriesTable.notes] = row.notes
+                }
+            }
+        }
+    }
+
+    private fun syncGoogleMappings(
+        mappings: List<GoogleTaxonomyMapping>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
+        val knownCategoryCodes = CategoriesTable
+            .selectAll()
+            .map { row -> row[CategoriesTable.code] }
+            .toSet()
+
+        val seedRows = mappings
+            .mapNotNull { mapping ->
+                val canonicalCode = mapping.canonicalCode.trim()
+                if (canonicalCode.isEmpty() || canonicalCode !in knownCategoryCodes) return@mapNotNull null
+                GoogleMappingPayload(
+                    canonicalCode = canonicalCode,
+                    mappingType = mapping.mappingType.name,
+                    googleIds = mapping.googleIds.filter { id -> id > 0L }.distinct(),
+                    googlePaths = mapping.googlePaths
+                        .map { path -> path.trim() }
+                        .filter { path -> path.isNotEmpty() }
+                        .distinct(),
+                    notes = mapping.notes?.trim()?.takeIf { it.isNotEmpty() },
+                )
+            }
+            .distinctBy { it.canonicalCode }
+            .sortedBy { it.canonicalCode }
+
+        if (syncMode.allowsDestructiveOps) {
+            GoogleTaxonomyMappingsTable.deleteAll()
+            if (seedRows.isNotEmpty()) {
+                GoogleTaxonomyMappingsTable.batchInsert(seedRows) { row ->
+                    this[GoogleTaxonomyMappingsTable.canonicalCode] = row.canonicalCode
+                    this[GoogleTaxonomyMappingsTable.mappingType] = row.mappingType
+                    this[GoogleTaxonomyMappingsTable.googleIds] = row.googleIds
+                    this[GoogleTaxonomyMappingsTable.googlePaths] = row.googlePaths
+                    this[GoogleTaxonomyMappingsTable.notes] = row.notes
+                }
+            }
+            return
+        }
+
+        seedRows.forEach { row ->
+            val updated = GoogleTaxonomyMappingsTable.update({
+                GoogleTaxonomyMappingsTable.canonicalCode eq row.canonicalCode
+            }) { stmt ->
+                stmt[GoogleTaxonomyMappingsTable.mappingType] = row.mappingType
+                stmt[GoogleTaxonomyMappingsTable.googleIds] = row.googleIds
+                stmt[GoogleTaxonomyMappingsTable.googlePaths] = row.googlePaths
+                stmt[GoogleTaxonomyMappingsTable.notes] = row.notes
+            }
+            if (updated == 0) {
+                GoogleTaxonomyMappingsTable.insert { stmt ->
+                    stmt[GoogleTaxonomyMappingsTable.canonicalCode] = row.canonicalCode
+                    stmt[GoogleTaxonomyMappingsTable.mappingType] = row.mappingType
+                    stmt[GoogleTaxonomyMappingsTable.googleIds] = row.googleIds
+                    stmt[GoogleTaxonomyMappingsTable.googlePaths] = row.googlePaths
+                    stmt[GoogleTaxonomyMappingsTable.notes] = row.notes
+                }
+            }
+        }
+    }
+
+    private fun syncAttributeDefs(
+        attributes: List<com.example.shoppingassistant.domain.catalog.AttributeDef>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val seedRows = attributes
             .map { def ->
                 def.copy(
@@ -109,7 +655,7 @@ object CatalogSeeder {
             .map { row -> row[AttributeDefsTable.code] }
             .toSet()
         val staleCodes = existingCodes - seedCodes
-        if (staleCodes.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleCodes.isNotEmpty()) {
             AttributeDefsTable.deleteWhere { AttributeDefsTable.code inList staleCodes.toList() }
         }
 
@@ -142,7 +688,10 @@ object CatalogSeeder {
         }
     }
 
-    private fun syncCategoryAttributes(categoryAttributes: List<com.example.shoppingassistant.domain.catalog.CategoryAttribute>) {
+    private fun syncCategoryAttributes(
+        categoryAttributes: List<com.example.shoppingassistant.domain.catalog.CategoryAttribute>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val knownCategoryCodes = CategoriesTable
             .selectAll()
             .map { row -> row[CategoriesTable.code] }
@@ -163,28 +712,50 @@ object CatalogSeeder {
             .distinctBy { "${it.categoryCode}|${it.attributeCode}" }
             .sortedWith(compareBy<com.example.shoppingassistant.domain.catalog.CategoryAttribute> { it.categoryCode }.thenBy { it.uiOrder }.thenBy { it.attributeCode })
 
-        CategoryAttributesTable.deleteAll()
-        if (seedRows.isNotEmpty()) {
-            CategoryAttributesTable.batchInsert(seedRows) { attr ->
-                this[CategoryAttributesTable.categoryCode] = attr.categoryCode
-                this[CategoryAttributesTable.attributeCode] = attr.attributeCode
-                this[CategoryAttributesTable.uiOrder] = attr.uiOrder
-                this[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
+        if (syncMode.allowsDestructiveOps) {
+            CategoryAttributesTable.deleteAll()
+            if (seedRows.isNotEmpty()) {
+                CategoryAttributesTable.batchInsert(seedRows) { attr ->
+                    this[CategoryAttributesTable.categoryCode] = attr.categoryCode
+                    this[CategoryAttributesTable.attributeCode] = attr.attributeCode
+                    this[CategoryAttributesTable.uiOrder] = attr.uiOrder
+                    this[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
+                }
+            }
+            return
+        }
+
+        seedRows.forEach { attr ->
+            val updated = CategoryAttributesTable.update({
+                (CategoryAttributesTable.categoryCode eq attr.categoryCode) and
+                    (CategoryAttributesTable.attributeCode eq attr.attributeCode)
+            }) { stmt ->
+                stmt[CategoryAttributesTable.uiOrder] = attr.uiOrder
+                stmt[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
+            }
+            if (updated == 0) {
+                CategoryAttributesTable.insert { stmt ->
+                    stmt[CategoryAttributesTable.categoryCode] = attr.categoryCode
+                    stmt[CategoryAttributesTable.attributeCode] = attr.attributeCode
+                    stmt[CategoryAttributesTable.uiOrder] = attr.uiOrder
+                    stmt[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
+                }
             }
         }
     }
 
-    private fun syncAttributeValueDict(profiles: List<CategoryProfile>) {
+    private fun syncAttributeValueDict(
+        valueDictionaries: List<AttributeValueDict>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val knownAttributeCodes = AttributeDefsTable
             .selectAll()
             .map { row -> row[AttributeDefsTable.code] }
             .toSet()
 
-        val seedRows = profiles
-            .flatMap { profile ->
-                profile.valueDictionaries.flatMap { dict ->
-                    dict.entries.map { entry -> dict.attributeCode to entry }
-                }
+        val seedRows = valueDictionaries
+            .flatMap { dict ->
+                dict.entries.map { entry -> dict.attributeCode to entry }
             }
             .mapNotNull { (attributeCode, entry) ->
                 val normalizedAttributeCode = attributeCode.trim()
@@ -205,23 +776,53 @@ object CatalogSeeder {
             .distinctBy { row -> "${row.attributeCode}|${row.canonicalCode}" }
             .sortedWith(compareBy<AttributeDictRow> { it.attributeCode }.thenBy { it.canonicalCode })
 
-        AttributeValueDictTable.deleteAll()
-        if (seedRows.isNotEmpty()) {
-            AttributeValueDictTable.batchInsert(seedRows) { row ->
-                this[AttributeValueDictTable.attributeCode] = row.attributeCode
-                this[AttributeValueDictTable.canonicalCode] = row.canonicalCode
-                this[AttributeValueDictTable.canonicalValue] = row.canonicalValue
-                this[AttributeValueDictTable.synonyms] = row.synonyms
+        if (syncMode.allowsDestructiveOps) {
+            AttributeValueDictTable.deleteAll()
+            if (seedRows.isNotEmpty()) {
+                AttributeValueDictTable.batchInsert(seedRows) { row ->
+                    this[AttributeValueDictTable.attributeCode] = row.attributeCode
+                    this[AttributeValueDictTable.canonicalCode] = row.canonicalCode
+                    this[AttributeValueDictTable.canonicalValue] = row.canonicalValue
+                    this[AttributeValueDictTable.synonyms] = row.synonyms
+                }
+            }
+            return
+        }
+
+        seedRows.forEach { row ->
+            val updated = AttributeValueDictTable.update({
+                (AttributeValueDictTable.attributeCode eq row.attributeCode) and
+                    (AttributeValueDictTable.canonicalCode eq row.canonicalCode)
+            }) { stmt ->
+                stmt[AttributeValueDictTable.canonicalValue] = row.canonicalValue
+                stmt[AttributeValueDictTable.synonyms] = row.synonyms
+            }
+            if (updated == 0) {
+                AttributeValueDictTable.insert { stmt ->
+                    stmt[AttributeValueDictTable.attributeCode] = row.attributeCode
+                    stmt[AttributeValueDictTable.canonicalCode] = row.canonicalCode
+                    stmt[AttributeValueDictTable.canonicalValue] = row.canonicalValue
+                    stmt[AttributeValueDictTable.synonyms] = row.synonyms
+                }
             }
         }
     }
 
-    private fun syncConstraints(constraints: List<CatalogConstraints>) {
+    private fun syncConstraints(
+        constraints: List<CatalogConstraints>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val seedRows = constraints
             .map(::normalizeConstraintRow)
-            .sortedBy { it.key }
+            .fold(LinkedHashMap<String, ConstraintPayload>()) { acc, row ->
+                val existing = acc[row.identityKey]
+                acc[row.identityKey] = if (existing == null) row else existing.mergeWith(row)
+                acc
+            }
+            .values
+            .sortedBy { it.identityKey }
 
-        if (seedRows.isEmpty()) {
+        if (seedRows.isEmpty() && syncMode.allowsDestructiveOps) {
             CatalogConstraintsTable.deleteAll()
             return
         }
@@ -243,7 +844,7 @@ object CatalogSeeder {
                     ),
                 )
             }
-            .groupBy { it.payload.key }
+            .groupBy { it.payload.identityKey }
 
         val currentByKey = LinkedHashMap<String, ExistingConstraintRow>()
         val duplicateIdsToDelete = mutableListOf<Long>()
@@ -253,28 +854,28 @@ object CatalogSeeder {
             duplicateIdsToDelete += ordered.drop(1).map { it.id }
         }
 
-        if (duplicateIdsToDelete.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && duplicateIdsToDelete.isNotEmpty()) {
             CatalogConstraintsTable.deleteWhere { CatalogConstraintsTable.id inList duplicateIdsToDelete }
         }
 
-        val seedKeys = seedRows.map { it.key }.toSet()
+        val seedKeys = seedRows.map { it.identityKey }.toSet()
         val staleIdsToDelete = currentByKey
             .filterKeys { it !in seedKeys }
             .values
             .map { it.id }
-        if (staleIdsToDelete.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleIdsToDelete.isNotEmpty()) {
             CatalogConstraintsTable.deleteWhere { CatalogConstraintsTable.id inList staleIdsToDelete }
         }
 
         val toInsert = mutableListOf<ConstraintPayload>()
         seedRows.forEach { seedRow ->
-            val current = currentByKey[seedRow.key]?.payload
+            val current = currentByKey[seedRow.identityKey]?.payload
             if (current == null) {
                 toInsert += seedRow
                 return@forEach
             }
             if (current != seedRow) {
-                val id = currentByKey[seedRow.key]?.id ?: return@forEach
+                val id = currentByKey[seedRow.identityKey]?.id ?: return@forEach
                 CatalogConstraintsTable.update({ CatalogConstraintsTable.id eq id }) { stmt ->
                     stmt[CatalogConstraintsTable.scope] = seedRow.scope
                     stmt[CatalogConstraintsTable.categoryCode] = seedRow.categoryCode
@@ -302,12 +903,18 @@ object CatalogSeeder {
         }
     }
 
-    private fun syncFacetDefinitions(definitions: List<FacetDefinition>) {
+    private fun syncFacetDefinitions(
+        definitions: List<FacetDefinition>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val seedRows = definitions
             .map { definition ->
                 definition.copy(
                     facetKey = definition.facetKey.trim(),
-                    titleRu = definition.titleRu.trim(),
+                    title = localizedTextOf(
+                        "ru" to definition.title.storageRu(definition.facetKey),
+                        "en" to definition.title.storageEn(),
+                    ),
                     effectiveFrom = definition.effectiveFrom?.trim()?.takeIf { it.isNotEmpty() },
                     effectiveTo = definition.effectiveTo?.trim()?.takeIf { it.isNotEmpty() },
                     appliesToCategoryCodes = definition.appliesToCategoryCodes
@@ -326,7 +933,11 @@ object CatalogSeeder {
                 facetKey = row[FacetDefinitionsTable.facetKey],
                 payload = FacetDefinition(
                     facetKey = row[FacetDefinitionsTable.facetKey],
-                    titleRu = row[FacetDefinitionsTable.titleRu],
+                    title = localizedTextFromStorage(
+                        localized = row[FacetDefinitionsTable.titleLocalized],
+                        titleRu = row[FacetDefinitionsTable.titleRu],
+                        titleEn = row[FacetDefinitionsTable.titleEn],
+                    ),
                     valueType = com.example.shoppingassistant.domain.facet.FacetDataType.valueOf(row[FacetDefinitionsTable.valueType]),
                     appliesToCategoryCodes = row[FacetDefinitionsTable.appliesToCategoryCodes],
                     source = com.example.shoppingassistant.domain.facet.FacetValueSource.valueOf(row[FacetDefinitionsTable.valueSource]),
@@ -343,7 +954,7 @@ object CatalogSeeder {
         }.associateBy { it.facetKey }
 
         val staleKeys = existingRows.keys - seedKeys
-        if (staleKeys.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleKeys.isNotEmpty()) {
             FacetDefinitionsTable.deleteWhere { FacetDefinitionsTable.facetKey inList staleKeys.toList() }
         }
 
@@ -352,7 +963,9 @@ object CatalogSeeder {
             if (existing == null) {
                 FacetDefinitionsTable.insert { stmt ->
                     stmt[FacetDefinitionsTable.facetKey] = seed.facetKey
-                    stmt[FacetDefinitionsTable.titleRu] = seed.titleRu
+                    stmt[FacetDefinitionsTable.titleLocalized] = seed.title
+                    stmt[FacetDefinitionsTable.titleRu] = seed.title.storageRu(seed.facetKey)
+                    stmt[FacetDefinitionsTable.titleEn] = seed.title.storageEn()
                     stmt[FacetDefinitionsTable.valueType] = seed.valueType.name
                     stmt[FacetDefinitionsTable.valueSource] = seed.source.name
                     stmt[FacetDefinitionsTable.effectiveFrom] = seed.effectiveFrom
@@ -365,7 +978,9 @@ object CatalogSeeder {
                 }
             } else if (existing != seed) {
                 FacetDefinitionsTable.update({ FacetDefinitionsTable.facetKey eq seed.facetKey }) { stmt ->
-                    stmt[FacetDefinitionsTable.titleRu] = seed.titleRu
+                    stmt[FacetDefinitionsTable.titleLocalized] = seed.title
+                    stmt[FacetDefinitionsTable.titleRu] = seed.title.storageRu(seed.facetKey)
+                    stmt[FacetDefinitionsTable.titleEn] = seed.title.storageEn()
                     stmt[FacetDefinitionsTable.valueType] = seed.valueType.name
                     stmt[FacetDefinitionsTable.valueSource] = seed.source.name
                     stmt[FacetDefinitionsTable.effectiveFrom] = seed.effectiveFrom
@@ -380,13 +995,19 @@ object CatalogSeeder {
         }
     }
 
-    private fun syncFacetPresets(presets: List<FacetPreset>) {
+    private fun syncFacetPresets(
+        presets: List<FacetPreset>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val seedRows = presets
             .map { preset ->
                 preset.copy(
                     presetCode = preset.presetCode.trim(),
                     categoryCode = preset.categoryCode.trim(),
-                    titleRu = preset.titleRu.trim(),
+                    title = localizedTextOf(
+                        "ru" to preset.title.storageRu(preset.presetCode),
+                        "en" to preset.title.storageEn(),
+                    ),
                     effectiveFrom = preset.effectiveFrom?.trim()?.takeIf { it.isNotEmpty() },
                     effectiveTo = preset.effectiveTo?.trim()?.takeIf { it.isNotEmpty() },
                 )
@@ -402,7 +1023,11 @@ object CatalogSeeder {
                 payload = FacetPreset(
                     presetCode = row[FacetPresetsTable.presetCode],
                     categoryCode = row[FacetPresetsTable.categoryCode],
-                    titleRu = row[FacetPresetsTable.titleRu],
+                    title = localizedTextFromStorage(
+                        localized = row[FacetPresetsTable.titleLocalized],
+                        titleRu = row[FacetPresetsTable.titleRu],
+                        titleEn = row[FacetPresetsTable.titleEn],
+                    ),
                     order = row[FacetPresetsTable.order],
                     effectiveFrom = row[FacetPresetsTable.effectiveFrom],
                     effectiveTo = row[FacetPresetsTable.effectiveTo],
@@ -413,7 +1038,7 @@ object CatalogSeeder {
         }.associateBy { it.presetCode }
 
         val staleCodes = existingRows.keys - seedCodes
-        if (staleCodes.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleCodes.isNotEmpty()) {
             FacetPresetsTable.deleteWhere { FacetPresetsTable.presetCode inList staleCodes.toList() }
         }
 
@@ -423,7 +1048,9 @@ object CatalogSeeder {
                 FacetPresetsTable.insert { stmt ->
                     stmt[FacetPresetsTable.presetCode] = seed.presetCode
                     stmt[FacetPresetsTable.categoryCode] = seed.categoryCode
-                    stmt[FacetPresetsTable.titleRu] = seed.titleRu
+                    stmt[FacetPresetsTable.titleLocalized] = seed.title
+                    stmt[FacetPresetsTable.titleRu] = seed.title.storageRu(seed.presetCode)
+                    stmt[FacetPresetsTable.titleEn] = seed.title.storageEn()
                     stmt[FacetPresetsTable.order] = seed.order
                     stmt[FacetPresetsTable.effectiveFrom] = seed.effectiveFrom
                     stmt[FacetPresetsTable.effectiveTo] = seed.effectiveTo
@@ -433,7 +1060,9 @@ object CatalogSeeder {
             } else if (existing != seed) {
                 FacetPresetsTable.update({ FacetPresetsTable.presetCode eq seed.presetCode }) { stmt ->
                     stmt[FacetPresetsTable.categoryCode] = seed.categoryCode
-                    stmt[FacetPresetsTable.titleRu] = seed.titleRu
+                    stmt[FacetPresetsTable.titleLocalized] = seed.title
+                    stmt[FacetPresetsTable.titleRu] = seed.title.storageRu(seed.presetCode)
+                    stmt[FacetPresetsTable.titleEn] = seed.title.storageEn()
                     stmt[FacetPresetsTable.order] = seed.order
                     stmt[FacetPresetsTable.effectiveFrom] = seed.effectiveFrom
                     stmt[FacetPresetsTable.effectiveTo] = seed.effectiveTo
@@ -444,13 +1073,19 @@ object CatalogSeeder {
         }
     }
 
-    private fun syncFacetCollections(collections: List<FacetCollection>) {
+    private fun syncFacetCollections(
+        collections: List<FacetCollection>,
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val seedRows = collections
             .map { collection ->
                 collection.copy(
                     collectionCode = collection.collectionCode.trim(),
                     categoryCode = collection.categoryCode.trim(),
-                    titleRu = collection.titleRu.trim(),
+                    title = localizedTextOf(
+                        "ru" to collection.title.storageRu(collection.collectionCode),
+                        "en" to collection.title.storageEn(),
+                    ),
                     browseCode = collection.browseCode?.trim()?.takeIf { it.isNotEmpty() },
                     presetCode = collection.presetCode?.trim()?.takeIf { it.isNotEmpty() },
                     tags = collection.tags.map { it.trim() }.filter { it.isNotEmpty() }.distinct(),
@@ -467,7 +1102,11 @@ object CatalogSeeder {
                 payload = FacetCollection(
                     collectionCode = row[FacetCollectionsTable.collectionCode],
                     categoryCode = row[FacetCollectionsTable.categoryCode],
-                    titleRu = row[FacetCollectionsTable.titleRu],
+                    title = localizedTextFromStorage(
+                        localized = row[FacetCollectionsTable.titleLocalized],
+                        titleRu = row[FacetCollectionsTable.titleRu],
+                        titleEn = row[FacetCollectionsTable.titleEn],
+                    ),
                     browseCode = row[FacetCollectionsTable.browseCode],
                     presetCode = row[FacetCollectionsTable.presetCode],
                     order = row[FacetCollectionsTable.order],
@@ -478,7 +1117,7 @@ object CatalogSeeder {
         }.associateBy { it.collectionCode }
 
         val staleCodes = existingRows.keys - seedCodes
-        if (staleCodes.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleCodes.isNotEmpty()) {
             FacetCollectionsTable.deleteWhere { FacetCollectionsTable.collectionCode inList staleCodes.toList() }
         }
 
@@ -488,7 +1127,9 @@ object CatalogSeeder {
                 FacetCollectionsTable.insert { stmt ->
                     stmt[FacetCollectionsTable.collectionCode] = seed.collectionCode
                     stmt[FacetCollectionsTable.categoryCode] = seed.categoryCode
-                    stmt[FacetCollectionsTable.titleRu] = seed.titleRu
+                    stmt[FacetCollectionsTable.titleLocalized] = seed.title
+                    stmt[FacetCollectionsTable.titleRu] = seed.title.storageRu(seed.collectionCode)
+                    stmt[FacetCollectionsTable.titleEn] = seed.title.storageEn()
                     stmt[FacetCollectionsTable.browseCode] = seed.browseCode
                     stmt[FacetCollectionsTable.presetCode] = seed.presetCode
                     stmt[FacetCollectionsTable.order] = seed.order
@@ -498,7 +1139,9 @@ object CatalogSeeder {
             } else if (existing != seed) {
                 FacetCollectionsTable.update({ FacetCollectionsTable.collectionCode eq seed.collectionCode }) { stmt ->
                     stmt[FacetCollectionsTable.categoryCode] = seed.categoryCode
-                    stmt[FacetCollectionsTable.titleRu] = seed.titleRu
+                    stmt[FacetCollectionsTable.titleLocalized] = seed.title
+                    stmt[FacetCollectionsTable.titleRu] = seed.title.storageRu(seed.collectionCode)
+                    stmt[FacetCollectionsTable.titleEn] = seed.title.storageEn()
                     stmt[FacetCollectionsTable.browseCode] = seed.browseCode
                     stmt[FacetCollectionsTable.presetCode] = seed.presetCode
                     stmt[FacetCollectionsTable.order] = seed.order
@@ -509,21 +1152,24 @@ object CatalogSeeder {
         }
     }
 
-    private fun syncStage40Contract() {
+    private fun syncStage40Contract(
+        syncMode: CatalogSeedSyncMode,
+    ) {
         val immutableDoc = CatalogSeed.stage40ImmutableSchema
         val normalizationDoc = CatalogSeed.stage40NormalizationContract
         val dedupDoc = CatalogSeed.stage40DedupKeys
         val typedConstraintsDoc = CatalogSeed.stage40TypedConstraints
 
-        syncStage40Meta(immutableDoc)
-        syncStage40ImmutableAttributes(immutableDoc.attributes)
-        syncStage40NormalizationRules(normalizationDoc.rules)
-        syncStage40DedupTemplates(dedupDoc.templates)
-        syncStage40TypedConstraints(typedConstraintsDoc.constraints)
+        syncStage40Meta(immutableDoc, syncMode = syncMode)
+        syncStage40ImmutableAttributes(immutableDoc.attributes, syncMode = syncMode)
+        syncStage40NormalizationRules(normalizationDoc.rules, syncMode = syncMode)
+        syncStage40DedupTemplates(dedupDoc.templates, syncMode = syncMode)
+        syncStage40TypedConstraints(typedConstraintsDoc.constraints, syncMode = syncMode)
     }
 
     private fun syncStage40Meta(
         immutableDoc: com.example.shoppingassistant.domain.catalog.Stage40ImmutableSchemaDocument,
+        syncMode: CatalogSeedSyncMode,
     ) {
         val stage = immutableDoc.stage.trim()
         if (stage.isEmpty()) return
@@ -549,7 +1195,7 @@ object CatalogSeeder {
         }.associateBy { it.stage }
 
         val staleStages = existingRows.keys - setOf(seed.stage)
-        if (staleStages.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleStages.isNotEmpty()) {
             CatalogStage4ContractMetaTable.deleteWhere { CatalogStage4ContractMetaTable.stage inList staleStages.toList() }
         }
 
@@ -578,6 +1224,7 @@ object CatalogSeeder {
 
     private fun syncStage40ImmutableAttributes(
         attributes: List<com.example.shoppingassistant.domain.catalog.Stage40ImmutableAttribute>,
+        syncMode: CatalogSeedSyncMode,
     ) {
         val seedRows = attributes
             .map { attribute ->
@@ -613,7 +1260,7 @@ object CatalogSeeder {
         }.associateBy { it.attributeCode }
 
         val staleCodes = existingRows.keys - seedCodes
-        if (staleCodes.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleCodes.isNotEmpty()) {
             CatalogStage4ImmutableAttributesTable.deleteWhere {
                 CatalogStage4ImmutableAttributesTable.attributeCode inList staleCodes.toList()
             }
@@ -652,6 +1299,7 @@ object CatalogSeeder {
 
     private fun syncStage40NormalizationRules(
         rules: List<com.example.shoppingassistant.domain.catalog.Stage40NormalizationRule>,
+        syncMode: CatalogSeedSyncMode,
     ) {
         val seedRows = rules
             .map { rule ->
@@ -683,7 +1331,7 @@ object CatalogSeeder {
         }.associateBy { it.attributeCode }
 
         val staleCodes = existingRows.keys - seedCodes
-        if (staleCodes.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleCodes.isNotEmpty()) {
             CatalogStage4NormalizationRulesTable.deleteWhere {
                 CatalogStage4NormalizationRulesTable.attributeCode inList staleCodes.toList()
             }
@@ -718,6 +1366,7 @@ object CatalogSeeder {
 
     private fun syncStage40DedupTemplates(
         templates: List<com.example.shoppingassistant.domain.catalog.Stage40DedupTemplate>,
+        syncMode: CatalogSeedSyncMode,
     ) {
         val seedRows = templates
             .map { template ->
@@ -745,7 +1394,7 @@ object CatalogSeeder {
         }.associateBy { it.entity }
 
         val staleEntities = existingRows.keys - seedEntities
-        if (staleEntities.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleEntities.isNotEmpty()) {
             CatalogStage4DedupTemplatesTable.deleteWhere {
                 CatalogStage4DedupTemplatesTable.entity inList staleEntities.toList()
             }
@@ -774,6 +1423,7 @@ object CatalogSeeder {
 
     private fun syncStage40TypedConstraints(
         constraints: List<com.example.shoppingassistant.domain.catalog.Stage40TypedConstraint>,
+        syncMode: CatalogSeedSyncMode,
     ) {
         val seedRows = constraints
             .mapNotNull { constraint ->
@@ -810,7 +1460,7 @@ object CatalogSeeder {
         }.associateBy { it.attributeCode }
 
         val staleCodes = existingRows.keys - seedCodes
-        if (staleCodes.isNotEmpty()) {
+        if (syncMode.allowsDestructiveOps && staleCodes.isNotEmpty()) {
             CatalogStage4TypedConstraintsTable.deleteWhere {
                 CatalogStage4TypedConstraintsTable.attributeCode inList staleCodes.toList()
             }
@@ -933,6 +1583,59 @@ object CatalogSeeder {
         val synonyms: List<String>,
     )
 
+    private data class CategoryAliasPayload(
+        val alias: String,
+        val categoryCode: String,
+    )
+
+    private data class BrowseNodePayload(
+        val browseCode: String,
+        val parentBrowseCode: String?,
+        val nodeKind: String,
+        val titleKey: String?,
+        val title: LocalizedText,
+        val titleRu: String,
+        val titleEn: String?,
+        val targetCategoryCode: String?,
+        val targetType: String?,
+        val order: Int,
+        val availabilityScope: String,
+        val iconKey: String?,
+        val analyticsKey: String?,
+        val searchKeywordsRu: List<String>,
+        val status: String,
+        val tags: List<String>,
+        val notes: String?,
+    )
+
+    private data class AliasEntryPayload(
+        val locale: String,
+        val term: String,
+        val normalizedTerm: String,
+        val kind: String,
+        val targetCode: String,
+        val weight: Int,
+        val matchKind: String,
+        val isBlocked: Boolean,
+        val source: String,
+        val notes: String?,
+    )
+
+    private data class AliasEntryPrimaryKey(
+        val locale: String,
+        val normalizedTerm: String,
+        val kind: String,
+        val targetCode: String,
+    )
+
+    private data class GoogleMappingPayload(
+        val canonicalCode: String,
+        val mappingType: String,
+        val googleIds: List<Long>,
+        val googlePaths: List<String>,
+        val notes: String?,
+    )
+
     private data class Stage40MetaPayload(
         val stage: String,
         val schemaVersion: String,
@@ -992,7 +1695,7 @@ object CatalogSeeder {
         val attributeConstraints: List<AttributeValueConstraint>,
         val compatibilityRules: List<CompatibilityRule>,
     ) {
-        val key: String = buildString {
+        val identityKey: String = buildString {
             append(scope)
             append("|")
             append(categoryCode.orEmpty())
@@ -1000,34 +1703,149 @@ object CatalogSeeder {
             append(brand?.lowercase().orEmpty())
             append("|")
             append(model?.lowercase().orEmpty())
-            append("|")
-            append(effectiveFrom.orEmpty())
-            append("|")
-            append(effectiveTo.orEmpty())
         }
+
+        fun mergeWith(incoming: ConstraintPayload): ConstraintPayload = ConstraintPayload(
+            scope = incoming.scope,
+            categoryCode = incoming.categoryCode ?: categoryCode,
+            brand = incoming.brand ?: brand,
+            model = incoming.model ?: model,
+            effectiveFrom = incoming.effectiveFrom ?: effectiveFrom,
+            effectiveTo = incoming.effectiveTo ?: effectiveTo,
+            attributeConstraints = mergeAttributeConstraints(attributeConstraints, incoming.attributeConstraints),
+            compatibilityRules = normalizeCompatibilityRules(compatibilityRules + incoming.compatibilityRules),
+        )
     }
 
-    private fun normalizeProfile(profile: CategoryProfile): CategoryProfile {
-        val normalizedCategory = profile.category.copy(
-            code = profile.category.code.trim(),
-            title = profile.category.title?.trim()?.takeIf { it.isNotEmpty() },
-            parentCode = profile.category.parentCode?.trim()?.takeIf { it.isNotEmpty() },
-            description = profile.category.description?.trim()?.takeIf { it.isNotEmpty() },
+    private fun mergeAttributeConstraints(
+        base: List<AttributeValueConstraint>,
+        incoming: List<AttributeValueConstraint>,
+    ): List<AttributeValueConstraint> {
+        val merged = LinkedHashMap<String, AttributeValueConstraint>()
+        (base + incoming).forEach { rawConstraint ->
+            val constraint = normalizeAttributeConstraint(rawConstraint) ?: return@forEach
+            val key = normalizeAttributeKey(constraint.attributeCode)
+            val existing = merged[key]
+            merged[key] = if (existing == null) {
+                constraint
+            } else {
+                AttributeValueConstraint(
+                    attributeCode = constraint.attributeCode,
+                    allowedValues = if (constraint.allowedValues.isNotEmpty()) constraint.allowedValues else existing.allowedValues,
+                    forbiddenValues = if (constraint.forbiddenValues.isNotEmpty()) constraint.forbiddenValues else existing.forbiddenValues,
+                    reason = constraint.reason?.takeIf { it.isNotEmpty() } ?: existing.reason,
+                )
+            }
+        }
+        return merged.values.sortedBy { constraint -> normalizeAttributeKey(constraint.attributeCode) }
+    }
+
+    private fun normalizeAttributeConstraint(
+        constraint: AttributeValueConstraint,
+    ): AttributeValueConstraint? {
+        val attributeCode = constraint.attributeCode.trim().takeIf { it.isNotEmpty() } ?: return null
+        return AttributeValueConstraint(
+            attributeCode = attributeCode,
+            allowedValues = constraint.allowedValues
+                .map { value -> value.trim() }
+                .filter { value -> value.isNotEmpty() }
+                .distinct(),
+            forbiddenValues = constraint.forbiddenValues
+                .map { value -> value.trim() }
+                .filter { value -> value.isNotEmpty() }
+                .distinct(),
+            reason = constraint.reason?.trim()?.takeIf { it.isNotEmpty() },
         )
-        val normalizedAttributes = profile.attributes.map { attribute ->
+    }
+
+    private fun normalizeCompatibilityRules(
+        rules: List<CompatibilityRule>,
+    ): List<CompatibilityRule> =
+        rules
+            .mapNotNull { rule ->
+                val normalizedWhenAll = rule.whenAll
+                    .mapNotNull { condition ->
+                        val attributeCode = condition.attributeCode.trim().takeIf { it.isNotEmpty() }
+                            ?: return@mapNotNull null
+                        val values = condition.values
+                            .map { value -> value.trim() }
+                            .filter { value -> value.isNotEmpty() }
+                            .distinct()
+                            .sorted()
+                        if (values.isEmpty()) {
+                            null
+                        } else {
+                            com.example.shoppingassistant.domain.catalog.AttributeCondition(
+                                attributeCode = attributeCode,
+                                op = condition.op,
+                                values = values,
+                            )
+                        }
+                    }
+                    .sortedBy { condition ->
+                        "${normalizeAttributeKey(condition.attributeCode)}|${condition.op.name}|${condition.values.joinToString(",")}"
+                    }
+                val normalizedApply = mergeAttributeConstraints(emptyList(), rule.apply)
+                if (normalizedWhenAll.isEmpty() || normalizedApply.isEmpty()) {
+                    null
+                } else {
+                    CompatibilityRule(
+                        whenAll = normalizedWhenAll,
+                        apply = normalizedApply,
+                    )
+                }
+            }
+            .distinctBy { rule ->
+                buildString {
+                    append(
+                        rule.whenAll.joinToString(";") { condition ->
+                            "${normalizeAttributeKey(condition.attributeCode)}:${condition.op.name}:${condition.values.joinToString(",")}"
+                        },
+                    )
+                    append("->")
+                    append(
+                        rule.apply.joinToString(";") { apply ->
+                            "${normalizeAttributeKey(apply.attributeCode)}:${apply.allowedValues.joinToString(",")}!${apply.forbiddenValues.joinToString(",")}@${apply.reason.orEmpty()}"
+                        },
+                    )
+                }
+            }
+
+    private fun normalizeAttributeKey(value: String): String =
+        value.trim().lowercase(Locale.ROOT)
+
+    private fun normalizeAliasTerm(value: String): String = value
+        .trim()
+        .lowercase(Locale.ROOT)
+        .replace('ё', 'е')
+        .replace("[-‐‑‒–—]+".toRegex(), " ")
+        .replace("[^\\p{L}\\p{N}\\s]".toRegex(), " ")
+        .replace("\\s+".toRegex(), " ")
+        .trim()
+
+    private fun aliasEntryLogicalKey(
+        locale: String,
+        term: String,
+        kind: String,
+        targetCode: String,
+    ): String = listOf(locale, term, kind, targetCode).joinToString("|")
+
+    private fun normalizeWriteSpec(spec: CatalogCategoryWriteSpec): CatalogCategoryWriteSpec {
+        val normalizedCategory = normalizeSeedCategory(spec.category)
+        val normalizedAttributes = spec.attributes.map { attribute ->
             attribute.copy(
                 code = attribute.code.trim(),
                 title = attribute.title.trim(),
                 valueDictCode = attribute.valueDictCode?.trim()?.takeIf { it.isNotEmpty() },
             )
         }
-        val normalizedCategoryAttributes = profile.categoryAttributes.map { categoryAttribute ->
+        val normalizedCategoryAttributes = spec.categoryAttributes.map { categoryAttribute ->
             categoryAttribute.copy(
                 categoryCode = categoryAttribute.categoryCode.trim(),
                 attributeCode = categoryAttribute.attributeCode.trim(),
             )
         }
-        val normalizedDicts = profile.valueDictionaries.map { dictionary ->
+        val normalizedDicts = spec.valueDictionaries.map { dictionary ->
             dictionary.copy(
                 attributeCode = dictionary.attributeCode.trim(),
                 code = dictionary.code?.trim()?.takeIf { it.isNotEmpty() },
@@ -1044,11 +1862,30 @@ object CatalogSeeder {
             )
         }
 
-        return profile.copy(
+        return spec.copy(
             category = normalizedCategory,
             attributes = normalizedAttributes,
             categoryAttributes = normalizedCategoryAttributes,
             valueDictionaries = normalizedDicts,
         )
     }
+
+    private fun normalizeSeedCategory(
+        category: com.example.shoppingassistant.domain.catalog.Category,
+    ): com.example.shoppingassistant.domain.catalog.Category = category.copy(
+        code = category.code.trim(),
+        title = localizedTextOf(
+            "ru" to category.title["ru"]?.trim()?.takeIf { it.isNotEmpty() },
+            "en" to category.title["en"]?.trim()?.takeIf { it.isNotEmpty() },
+        ),
+        parentCode = category.parentCode?.trim()?.takeIf { it.isNotEmpty() },
+        description = category.description?.trim()?.takeIf { it.isNotEmpty() },
+        replacementCode = category.replacementCode?.trim()?.takeIf { it.isNotEmpty() },
+    )
+
+    private fun LocalizedText.storageRu(fallback: String): String =
+        resolve(locale = "ru", fallback = fallback)?.trim()?.takeIf { it.isNotEmpty() } ?: fallback
+
+    private fun LocalizedText.storageEn(): String? =
+        this["en"]?.trim()?.takeIf { it.isNotEmpty() }
 }

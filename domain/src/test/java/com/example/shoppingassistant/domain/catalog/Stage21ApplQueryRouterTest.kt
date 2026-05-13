@@ -2,6 +2,7 @@ package com.example.shoppingassistant.domain.catalog
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class Stage21ApplQueryRouterTest {
@@ -19,6 +20,20 @@ class Stage21ApplQueryRouterTest {
         val result = router.route(query = "робот пылесос", locale = "ru-RU")
         assertEquals(QueryRouteType.OPEN_BROWSE, result.routeType)
         assertEquals("B.APPL.HOMECARE.ROBOT.VACUUMS", result.primaryTargetCode)
+    }
+
+    @Test
+    fun route_robot_vacuum_with_reversed_tokens_to_specific_leaf() = runBlocking {
+        val result = router.route(query = "пылесос робот", locale = "ru-RU")
+        assertEquals(QueryRouteType.OPEN_BROWSE, result.routeType)
+        assertEquals("B.APPL.HOMECARE.ROBOT.VACUUMS", result.primaryTargetCode)
+    }
+
+    @Test
+    fun debug_candidates_keep_data_owned_match_kind_from_alias_seed() = runBlocking {
+        val debug = router.routeWithCandidates(query = "купить холодильник", locale = "ru-RU")
+        assertTrue(debug.topCandidates.isNotEmpty())
+        assertEquals(AliasMatchKind.TOKEN, debug.topCandidates.first().matchKind)
     }
 
     @Test

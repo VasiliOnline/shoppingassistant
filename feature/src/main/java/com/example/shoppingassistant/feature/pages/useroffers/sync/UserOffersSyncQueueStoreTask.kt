@@ -2,13 +2,14 @@ package com.example.shoppingassistant.feature.pages.useroffers.sync
 
 import android.content.Context
 import com.example.shoppingassistant.domain.ingest.SourceType
-import com.example.shoppingassistant.domain.offers.OfferCategory
 import com.example.shoppingassistant.domain.offers.TrackedOfferInput
 import com.example.shoppingassistant.domain.offers.TrackedOfferSource
+import com.example.shoppingassistant.domain.offers.toFallbackCategoryCode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.Locale
 
 class UserOffersSyncQueueStoreTask(
     context: Context,
@@ -90,7 +91,9 @@ class UserOffersSyncQueueStoreTask(
     private fun encodePayload(payload: TrackedOfferInput): JSONObject = JSONObject().apply {
         put("userId", payload.userId)
         put("title", payload.title)
-        put("category", payload.category.name)
+        put("categoryCode", payload.categoryCode)
+        put("categoryConfidence", payload.categoryConfidence)
+        put("parserVersion", payload.parserVersion)
         put("brand", payload.brand)
         put("model", payload.model)
         put("primaryAttribute", payload.primaryAttribute)
@@ -131,7 +134,11 @@ class UserOffersSyncQueueStoreTask(
     private fun parsePayload(obj: JSONObject): TrackedOfferInput? {
         val userId = obj.optString("userId").takeIf { it.isNotBlank() } ?: return null
         val title = obj.optString("title").takeIf { it.isNotBlank() } ?: return null
-        val category = obj.optString("category").toOfferCategory()
+        val categoryCode = obj.optString("categoryCode")
+            .takeIf { it.isNotBlank() }
+            ?.trim()
+            ?.uppercase(Locale.ROOT)
+            ?: obj.optString("category").toLegacyCategoryCode()
         val priceValue = obj.optDouble("priceValue").takeIf { !it.isNaN() && it > 0 } ?: return null
         val currency = obj.optString("currency").ifBlank { "USD" }
         val sourceObj = obj.optJSONObject("source") ?: return null
@@ -142,7 +149,9 @@ class UserOffersSyncQueueStoreTask(
         return TrackedOfferInput(
             userId = userId,
             title = title,
-            category = category,
+            categoryCode = categoryCode,
+            categoryConfidence = obj.optDouble("categoryConfidence").takeIf { !it.isNaN() }?.coerceIn(0.0, 1.0),
+            parserVersion = obj.optString("parserVersion").takeIf { it.isNotBlank() },
             brand = obj.optString("brand").takeIf { it.isNotBlank() },
             model = obj.optString("model").takeIf { it.isNotBlank() },
             primaryAttribute = obj.optString("primaryAttribute").takeIf { it.isNotBlank() },
@@ -173,9 +182,11 @@ class UserOffersSyncQueueStoreTask(
         UserOfferSyncStatus.valueOf(this)
     }.getOrDefault(UserOfferSyncStatus.CREATED)
 
-    private fun String.toOfferCategory(): OfferCategory = runCatching {
-        OfferCategory.valueOf(this)
-    }.getOrDefault(OfferCategory.OTHER)
+    private fun String.toLegacyCategoryCode(): String? = runCatching {
+        com.example.shoppingassistant.domain.offers.OfferCategory
+            .valueOf(this)
+            .toFallbackCategoryCode()
+    }.getOrNull()
 
     private fun String.toSourceType(): SourceType = runCatching {
         SourceType.valueOf(this)

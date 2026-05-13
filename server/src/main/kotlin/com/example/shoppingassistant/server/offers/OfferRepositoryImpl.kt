@@ -1,16 +1,24 @@
 package com.example.shoppingassistant.server.offers
 
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
 import com.example.shoppingassistant.domain.facet.FacetCollection
 import com.example.shoppingassistant.domain.facet.FacetPreset
 import com.example.shoppingassistant.domain.facet.FacetPurchaseFormat
 import com.example.shoppingassistant.domain.facet.FacetRuntimeFilters
 import com.example.shoppingassistant.domain.facet.FacetRuntimeFiltersApplier
+import com.example.shoppingassistant.domain.i18n.LocalizedText
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import com.example.shoppingassistant.domain.model.BrandFacet
 import com.example.shoppingassistant.domain.model.GeoMode
 import com.example.shoppingassistant.domain.model.Money
 import com.example.shoppingassistant.domain.model.Normalization
+import com.example.shoppingassistant.domain.model.OfferDetailCapabilities
+import com.example.shoppingassistant.domain.model.OfferDetailState
+import com.example.shoppingassistant.domain.model.OfferDetailsPage
 import com.example.shoppingassistant.domain.model.OfferFacetType
 import com.example.shoppingassistant.domain.model.OfferFull
+import com.example.shoppingassistant.domain.model.OfferProvenance
+import com.example.shoppingassistant.domain.model.OfferRelatedOffer
 import com.example.shoppingassistant.domain.model.OfferRepository
 import com.example.shoppingassistant.domain.model.OfferSearchCriteria
 import com.example.shoppingassistant.domain.model.OfferSearchFacets
@@ -28,6 +36,9 @@ import com.example.shoppingassistant.domain.model.UserProfile
 import com.example.shoppingassistant.domain.model.UserRating
 import com.example.shoppingassistant.domain.model.ValueFacet
 import com.example.shoppingassistant.domain.model.rawAttributes
+import com.example.shoppingassistant.domain.profile.DeliveryAddressLocation
+import com.example.shoppingassistant.domain.profile.legacyShippingCountriesToDeliveryZones
+import com.example.shoppingassistant.domain.profile.normalized
 import com.example.shoppingassistant.core.rank.RankService
 import com.example.shoppingassistant.server.catalog.FacetCollectionsTable
 import com.example.shoppingassistant.server.catalog.FacetPresetsTable
@@ -37,6 +48,7 @@ import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservability
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionObservabilityRepositoryImpl
 import com.example.shoppingassistant.server.catalog.Stage4ExecutionStream
 import com.example.shoppingassistant.server.db.DatabaseFactory
+import com.example.shoppingassistant.server.offers.publicOfferVisibilityOp
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -67,11 +79,13 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNotNull
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.neq
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.security.MessageDigest
 import java.util.Locale
 import org.slf4j.LoggerFactory
+import org.jetbrains.exposed.sql.max
 
 /**
  * Реализация репозитория офферов на Exposed.
@@ -234,6 +248,68 @@ class OfferRepositoryImpl(
             )
         }
 
+    override suspend fun getOfferDetails(offerId: String): OfferDetailsPage? =
+        DatabaseFactory.dbQuery {
+            val numericOfferId = offerId.toLongOrNull() ?: return@dbQuery null
+            val detailCriteria = OfferSearchCriteria(
+                brand = null,
+                model = null,
+                limit = 1,
+            )
+            val joined = buildBaseJoin(detailCriteria)
+            val row = joined
+                .select(joined.columns)
+                .where { OffersTable.id eq numericOfferId }
+                .andWhere { publicOfferVisibilityOp() }
+                .limit(1)
+                .firstOrNull()
+                ?: return@dbQuery null
+
+            val categoryCode = row[ProductsTable.category]
+            val baseOffer = row.toOfferFull(
+                lang = null,
+                distanceMetersExpr = null,
+            )
+            val enrichedOffer = aggregateRatings(
+                attachOfferSourceUrls(listOf(baseOffer)),
+            ).first()
+
+            val sourceSnapshot = loadOfferSourceSnapshot(numericOfferId)
+            val sourceUpdatedAtMillis = loadSourceUpdatedAt(
+                offerId = numericOfferId,
+                canTrackPrice = sourceSnapshot?.canTrackPrice == true,
+            )
+            val detailState = resolveDetailState(
+                sourceSnapshot = sourceSnapshot,
+                ownerUserId = row[OffersTable.userId],
+            )
+            val relatedOffers = loadRelatedOffers(
+                offerId = numericOfferId,
+                categoryCode = categoryCode,
+            )
+
+            OfferDetailsPage(
+                offer = enrichedOffer,
+                categoryCode = categoryCode,
+                detailState = detailState,
+                provenance = OfferProvenance(
+                    sourceName = sourceSnapshot?.displayName,
+                    sourceUrl = sourceSnapshot?.preferredUrl,
+                    canonicalUrl = sourceSnapshot?.canonicalUrl,
+                    sourceDomain = sourceSnapshot?.domainName,
+                    sourceIconUrl = sourceSnapshot?.sourceIconUrl,
+                    sourceType = sourceSnapshot?.sourceType,
+                    lastSyncedAtMillis = sourceUpdatedAtMillis,
+                ),
+                capabilities = OfferDetailCapabilities(
+                    canChat = detailState != OfferDetailState.EXTERNAL_UNCLAIMED,
+                    canOpenSource = !sourceSnapshot?.preferredUrl.isNullOrBlank(),
+                    canTrackPrice = sourceSnapshot?.canTrackPrice == true,
+                ),
+                relatedOffers = relatedOffers,
+            )
+        }
+
     private fun buildBaseJoin(criteria: OfferSearchCriteria): ColumnSet =
         OffersTable
             .innerJoin(ProductsTable, { productId }, { ProductsTable.id })
@@ -251,6 +327,91 @@ class OfferRepositoryImpl(
                     base
                 }
             }
+
+    private fun loadOfferSourceSnapshot(offerId: Long): OfferSourceSnapshot? =
+        OfferSourcesTable
+            .selectAll()
+            .where { OfferSourcesTable.offerId eq offerId }
+            .orderBy(OfferSourcesTable.createdAt to SortOrder.DESC)
+            .limit(1)
+            .firstOrNull()
+            ?.toOfferSourceSnapshot()
+
+    private fun loadSourceUpdatedAt(
+        offerId: Long,
+        canTrackPrice: Boolean,
+    ): Long? {
+        if (!canTrackPrice) return null
+        val maxCollectedAt = OfferPriceHistoryTable.collectedAt.max()
+        return OfferPriceHistoryTable
+            .select(maxCollectedAt)
+            .where { OfferPriceHistoryTable.offerId eq offerId }
+            .andWhere {
+                OfferPriceHistoryTable.dataSource.isNull() or
+                    (OfferPriceHistoryTable.dataSource neq USER_UPDATE_SOURCE)
+            }
+            .firstOrNull()
+            ?.get(maxCollectedAt)
+    }
+
+    private fun resolveDetailState(
+        sourceSnapshot: OfferSourceSnapshot?,
+        ownerUserId: Long,
+    ): OfferDetailState = when {
+        sourceSnapshot == null -> OfferDetailState.NATIVE_LOCAL
+        sourceSnapshot.ownerUserId == ownerUserId -> OfferDetailState.EXTERNAL_CLAIMED
+        else -> OfferDetailState.EXTERNAL_UNCLAIMED
+    }
+
+    private fun loadRelatedOffers(
+        offerId: Long,
+        categoryCode: String?,
+    ): List<OfferRelatedOffer> {
+        if (categoryCode.isNullOrBlank()) return emptyList()
+
+        val rows = OffersTable
+            .innerJoin(ProductsTable, { productId }, { ProductsTable.id })
+            .select(
+                OffersTable.id,
+                OffersTable.priceCents,
+                OffersTable.currency,
+                OffersTable.updatedAt,
+                OffersTable.imageUrls,
+                ProductsTable.titleNorm,
+                ProductsTable.imageUrls,
+            )
+            .where { ProductsTable.category eq categoryCode }
+            .andWhere { OffersTable.id neq offerId }
+            .andWhere { publicOfferVisibilityOp() }
+            .orderBy(OffersTable.updatedAt to SortOrder.DESC)
+            .limit(6)
+            .toList()
+
+        if (rows.isEmpty()) return emptyList()
+
+        val sourceByOfferId = OfferSourcesTable
+            .selectAll()
+            .where { OfferSourcesTable.offerId inList rows.map { it[OffersTable.id] } }
+            .associateBy(
+                keySelector = { it[OfferSourcesTable.offerId] },
+                valueTransform = { it.toOfferSourceSnapshot() },
+            )
+
+        return rows.map { row ->
+            val relatedOfferId = row[OffersTable.id]
+            val imageUrl = row[OffersTable.imageUrls]?.firstOrNull()
+                ?: row[ProductsTable.imageUrls]?.firstOrNull()
+            OfferRelatedOffer(
+                id = relatedOfferId.toString(),
+                title = row[ProductsTable.titleNorm],
+                price = Money(row[OffersTable.priceCents]),
+                currency = row[OffersTable.currency],
+                imageUrl = imageUrl,
+                sourceName = sourceByOfferId[relatedOfferId]?.displayName,
+                updatedAtMillis = row[OffersTable.updatedAt],
+            )
+        }
+    }
 
     private fun normalizeCriteria(criteria: OfferSearchCriteria): OfferSearchCriteria {
         val normalizedFacetCollectionCode = stage4ExecutionLayer.normalizeCatalogCode(criteria.facetCollectionCode)
@@ -339,6 +500,7 @@ class OfferRepositoryImpl(
             facetCollectionCode = resolvedCollectionCode ?: criteria.facetCollectionCode,
             facetPresetCode = resolvedPresetCode ?: explicitPresetCode ?: criteria.facetPresetCode,
             attributes = criteria.attributes,
+            attributeFilters = emptyMap(),
             brands = buildSet {
                 addAll(criteria.brands)
                 criteria.brand?.takeIf { it.isNotBlank() }?.let { add(it) }
@@ -362,6 +524,7 @@ class OfferRepositoryImpl(
             base = runtimeBase,
             collection = collection,
             preset = preset,
+            definitions = CatalogSeed.facetDefinitions,
         )
         val normalizedBrands = applied.brands
             .map { it.trim() }
@@ -372,6 +535,9 @@ class OfferRepositoryImpl(
             .filter { it.isNotBlank() }
             .distinct()
         val deliveryChannels = applied.purchaseFormat.toDeliveryChannels() ?: criteria.deliveryChannels
+        val mergedAttributeFilters = LinkedHashMap(applied.attributeFilters).apply {
+            putAll(criteria.attributeFilters)
+        }
 
         return criteria.copy(
             categoryCode = applied.categoryCode ?: sessionPreset?.categoryCode ?: criteria.categoryCode,
@@ -385,6 +551,7 @@ class OfferRepositoryImpl(
             conditions = if (normalizedConditions.isNotEmpty()) normalizedConditions else criteria.conditions,
             deliveryChannels = deliveryChannels,
             attributes = applied.attributes,
+            attributeFilters = mergedAttributeFilters,
         )
     }
 
@@ -454,7 +621,11 @@ class OfferRepositoryImpl(
         return FacetCollection(
             collectionCode = row[FacetCollectionsTable.collectionCode],
             categoryCode = row[FacetCollectionsTable.categoryCode],
-            titleRu = row[FacetCollectionsTable.titleRu],
+            title = localizedTextFromStorage(
+                localized = row[FacetCollectionsTable.titleLocalized],
+                titleRu = row[FacetCollectionsTable.titleRu],
+                titleEn = row[FacetCollectionsTable.titleEn],
+            ),
             browseCode = row[FacetCollectionsTable.browseCode],
             presetCode = row[FacetCollectionsTable.presetCode],
             order = row[FacetCollectionsTable.order],
@@ -470,7 +641,11 @@ class OfferRepositoryImpl(
         return FacetPreset(
             presetCode = row[FacetPresetsTable.presetCode],
             categoryCode = row[FacetPresetsTable.categoryCode],
-            titleRu = row[FacetPresetsTable.titleRu],
+            title = localizedTextFromStorage(
+                localized = row[FacetPresetsTable.titleLocalized],
+                titleRu = row[FacetPresetsTable.titleRu],
+                titleEn = row[FacetPresetsTable.titleEn],
+            ),
             order = row[FacetPresetsTable.order],
             effectiveFrom = row[FacetPresetsTable.effectiveFrom],
             effectiveTo = row[FacetPresetsTable.effectiveTo],
@@ -510,6 +685,7 @@ class OfferRepositoryImpl(
         includeConditionFilter: Boolean = true,
         includeDeliveryChannelFilter: Boolean = true,
     ) {
+        andWhere { publicOfferVisibilityOp() }
         criteria.categoryCode?.takeIf { it.isNotBlank() }?.let { category ->
             andWhere { ProductsTable.category eq category }
         }
@@ -531,6 +707,9 @@ class OfferRepositoryImpl(
         }
         criteria.model?.takeIf { it.isNotBlank() }?.let { model ->
             andWhere { ProductsTable.model eq model }
+        }
+        criteria.sellerId?.let { sellerId ->
+            andWhere { OffersTable.userId eq sellerId }
         }
         criteria.priceMin?.let { minPrice ->
             andWhere { OffersTable.priceCents greaterEq toMinorUnits(minPrice) }
@@ -596,7 +775,10 @@ class OfferRepositoryImpl(
             }
         }
         if (criteria.deliverableOnly) {
-            applyDeliverableOnlyFilter(criteria.userCountry)
+            applyDeliverableOnlyFilter(
+                deliveryAddress = criteria.deliveryAddress,
+                userCountryCode = criteria.userCountry,
+            )
         }
         if (geoFilter.mode == GeoMode.RADIUS &&
             geoFilter.centerLat != null &&
@@ -664,22 +846,40 @@ class OfferRepositoryImpl(
         andWhere { combined }
     }
 
-    private fun org.jetbrains.exposed.sql.Query.applyDeliverableOnlyFilter(userCountryCode: String?) {
-        val normalizedCountryCode = userCountryCode
+    private fun org.jetbrains.exposed.sql.Query.applyDeliverableOnlyFilter(
+        deliveryAddress: DeliveryAddressLocation?,
+        userCountryCode: String?,
+    ) {
+        val normalizedAddress = deliveryAddress?.normalized()
+        val normalizedCountryCode = normalizedAddress?.countryCode
+            ?.trim()
+            ?.uppercase(Locale.ROOT)
+            ?.takeIf { it.isNotEmpty() }
+            ?: userCountryCode
             ?.trim()
             ?.uppercase(Locale.ROOT)
             ?.takeIf { it.isNotEmpty() }
             ?: return
         val acceptedTokens = buildDeliverabilityTokens(normalizedCountryCode)
-        if (acceptedTokens.isEmpty()) return
+        val zonesMissing = UserPreferencesTable.deliveryZones.isNull()
+        val zonesExplicitlyEmpty = UserPreferencesTable.deliveryZones.isNotNull() and
+            jsonArrayIsEmptyOp(UserPreferencesTable.deliveryZones)
+        val legacyShippingMatch = UserPreferencesTable.shippingCountries.isNull() or
+            jsonArrayIsEmptyOp(UserPreferencesTable.shippingCountries) or
+            jsonArrayContainsAnyIgnoreCaseOp(
+                column = UserPreferencesTable.shippingCountries,
+                acceptedValues = acceptedTokens,
+            )
+        val zoneMatch = jsonDeliveryZonesMatchOp(
+            column = UserPreferencesTable.deliveryZones,
+            deliveryAddress = normalizedAddress,
+            normalizedCountryCode = normalizedCountryCode,
+        )
 
         andWhere {
-            UserPreferencesTable.shippingCountries.isNull() or
-                jsonArrayIsEmptyOp(UserPreferencesTable.shippingCountries) or
-                jsonArrayContainsAnyIgnoreCaseOp(
-                    column = UserPreferencesTable.shippingCountries,
-                    acceptedValues = acceptedTokens,
-                )
+            zonesExplicitlyEmpty or
+                zoneMatch or
+                (zonesMissing and legacyShippingMatch)
         }
     }
 
@@ -728,11 +928,64 @@ class OfferRepositoryImpl(
         }
     }
 
+    private fun jsonDeliveryZonesMatchOp(
+        column: Column<*>,
+        deliveryAddress: DeliveryAddressLocation?,
+        normalizedCountryCode: String,
+    ): Op<Boolean> = object : Op<Boolean>() {
+        override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+            val regionToken = normalizeDeliveryZoneToken(deliveryAddress?.adminArea)
+            val cityToken = normalizeDeliveryZoneToken(deliveryAddress?.locality)
+            val pointToken = normalizeDeliveryZoneToken(deliveryAddress?.addressLine)
+
+            queryBuilder.append("EXISTS (SELECT 1 FROM jsonb_array_elements(COALESCE(")
+            queryBuilder.append(column)
+            queryBuilder.append(", '[]'::jsonb)) AS zone(value) WHERE UPPER(COALESCE(zone.value->'location'->>'countryCode', '')) = ")
+            queryBuilder.registerArgument(TextColumnType(), normalizedCountryCode)
+            queryBuilder.append(" AND (")
+            queryBuilder.append("UPPER(COALESCE(zone.value->>'scope', '')) = 'COUNTRY'")
+
+            if (regionToken != null) {
+                queryBuilder.append(" OR (UPPER(COALESCE(zone.value->>'scope', '')) = 'REGION' AND LOWER(TRIM(COALESCE(zone.value->'location'->>'adminArea', ''))) = ")
+                queryBuilder.registerArgument(TextColumnType(), regionToken)
+                queryBuilder.append(")")
+            }
+
+            if (cityToken != null) {
+                queryBuilder.append(" OR (UPPER(COALESCE(zone.value->>'scope', '')) = 'CITY' AND LOWER(TRIM(COALESCE(zone.value->'location'->>'locality', ''))) = ")
+                queryBuilder.registerArgument(TextColumnType(), cityToken)
+                queryBuilder.append(")")
+            }
+
+            if (pointToken != null) {
+                queryBuilder.append(" OR (UPPER(COALESCE(zone.value->>'scope', '')) = 'POINT' AND LOWER(TRIM(COALESCE(zone.value->'location'->>'addressLine', ''))) = ")
+                queryBuilder.registerArgument(TextColumnType(), pointToken)
+                if (cityToken != null) {
+                    queryBuilder.append(" AND LOWER(TRIM(COALESCE(zone.value->'location'->>'locality', ''))) = ")
+                    queryBuilder.registerArgument(TextColumnType(), cityToken)
+                }
+                if (regionToken != null) {
+                    queryBuilder.append(" AND LOWER(TRIM(COALESCE(zone.value->'location'->>'adminArea', ''))) = ")
+                    queryBuilder.registerArgument(TextColumnType(), regionToken)
+                }
+                queryBuilder.append(")")
+            }
+
+            queryBuilder.append("))")
+        }
+    }
+
     private fun org.jetbrains.exposed.sql.Query.applySort(criteria: OfferSearchCriteria) {
         when (criteria.sort) {
             OfferSort.PRICE_ASC -> orderBy(OffersTable.priceCents to SortOrder.ASC)
             OfferSort.PRICE_DESC -> orderBy(OffersTable.priceCents to SortOrder.DESC)
             OfferSort.NEWEST -> orderBy(OffersTable.updatedAt to SortOrder.DESC)
+            OfferSort.MODEL_FRESHNESS_DESC -> {
+                orderBy(
+                    productNumericSpecExpr("release_year") to SortOrder.DESC,
+                    OffersTable.updatedAt to SortOrder.DESC,
+                )
+            }
             OfferSort.DELIVERY_ASC, OfferSort.DISTANCE_ASC -> {
                 val distanceExpr = distanceMetersExprOrNull(criteria.centerLat, criteria.centerLon)
                 if (distanceExpr != null) {
@@ -1016,6 +1269,9 @@ class OfferRepositoryImpl(
             .replace(MULTI_UNDERSCORE_REGEX, "_")
             .trim('_')
 
+    private fun normalizeDeliveryZoneToken(rawValue: String?): String? =
+        rawValue?.trim()?.lowercase(Locale.ROOT)?.takeIf { value -> value.isNotEmpty() }
+
     private fun resolveGeoFilter(criteria: OfferSearchCriteria): GeoFilter {
         val hasCoords = criteria.centerLat != null && criteria.centerLon != null
         val hasRadius = criteria.radiusKm != null
@@ -1043,6 +1299,47 @@ class OfferRepositoryImpl(
 
     private fun clampRadiusKm(value: Int): Int =
         value.coerceIn(MIN_RADIUS_KM, MAX_RADIUS_KM)
+
+    private fun localizedTextFromStorage(
+        localized: LocalizedText?,
+        titleRu: String?,
+        titleEn: String?,
+    ): LocalizedText =
+        localized?.takeUnless { it.isBlank() }
+            ?: localizedTextOf("ru" to titleRu, "en" to titleEn)
+
+    private fun normalizeOfferCondition(value: String?): String? {
+        val raw = value?.trim()?.lowercase(Locale.ROOT).orEmpty()
+        if (raw.isBlank()) return null
+        val collapsed = raw
+            .replace("ё", "е")
+            .replace("-", "_")
+            .replace(" ", "_")
+            .replace("/", "_")
+            .replace(Regex("_+"), "_")
+            .trim('_')
+        val normalized = when (collapsed) {
+            "new", "brand_new", "новый", "новое" -> "new"
+            "like_new", "likenew", "как_новый", "как_новое", "почти_новый" -> "like_new"
+            "used", "бу", "б_у", "second_hand", "secondhand" -> "used"
+            else -> collapsed
+        }
+        return normalized.takeIf { it.isNotBlank() }
+    }
+
+    private fun expandOfferConditionAliases(value: String?): Set<String> {
+        val normalized = normalizeOfferCondition(value) ?: return emptySet()
+        val aliases = when (normalized) {
+            "new" -> listOf("new", "brand new", "brand_new", "новый", "новое")
+            "like_new" -> listOf("like_new", "like new", "как новый", "как новое")
+            "used" -> listOf("used", "б/у", "бу", "б_у", "second hand", "secondhand")
+            else -> listOf(normalized)
+        }
+        return aliases
+            .map { item -> item.trim().lowercase(Locale.ROOT) }
+            .filter { item -> item.isNotBlank() }
+            .toSet()
+    }
 
     private fun buildFiltersHash(
         criteria: OfferSearchCriteria,
@@ -1133,6 +1430,23 @@ class OfferRepositoryImpl(
             QueryParameter(replacement, TextColumnType()),
             QueryParameter("g", TextColumnType()),
         )
+
+    private fun productNumericSpecExpr(attributeCode: String): ExpressionWithColumnType<Double?> =
+        object : ExpressionWithColumnType<Double?>() {
+            override val columnType = DoubleColumnType()
+
+            override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+                queryBuilder.append("CASE WHEN COALESCE(")
+                queryBuilder.append(ProductsTable.specs)
+                queryBuilder.append("->>")
+                queryBuilder.registerArgument(TextColumnType(), attributeCode)
+                queryBuilder.append(", '') ~ '^-?[0-9]+(?:[\\.,][0-9]+)?$' THEN REPLACE(")
+                queryBuilder.append(ProductsTable.specs)
+                queryBuilder.append("->>")
+                queryBuilder.registerArgument(TextColumnType(), attributeCode)
+                queryBuilder.append(", ',', '.')::double precision ELSE NULL END")
+            }
+        }
 
     private fun distanceMetersExprOrNull(centerLat: Double?, centerLon: Double?): ExpressionWithColumnType<Double>? {
         if (centerLat == null || centerLon == null) return null
@@ -1246,6 +1560,7 @@ class OfferRepositoryImpl(
                 deliveryTime = null, // нет в модели OfferFull; заполняйте при расширении данных
                 sellerRating = it.seller.rating?.value,
                 sellerRatingCount = it.seller.rating?.count,
+                attributes = it.product.specs,
             )
         }
         val rankedIds = rankService.topN(
@@ -1368,6 +1683,9 @@ class OfferRepositoryImpl(
             badges = this.tryGet(UserPreferencesTable.badges)?.mapNotNull { name -> runCatching { UserBadge.valueOf(name) }.getOrNull() }
                 ?: emptyList(),
             shippingCountries = this.tryGet(UserPreferencesTable.shippingCountries) ?: emptyList(),
+            deliveryZones = this.tryGet(UserPreferencesTable.deliveryZones)
+                ?.takeIf { zones -> zones.isNotEmpty() }
+                ?: legacyShippingCountriesToDeliveryZones(this.tryGet(UserPreferencesTable.shippingCountries)),
         )
 
         val seller = UserProfile(
@@ -1412,7 +1730,42 @@ class OfferRepositoryImpl(
     private fun <T> ResultRow.tryGet(column: Column<T>): T? =
         runCatching { this[column] }.getOrNull()
 
+    private fun ResultRow.toOfferSourceSnapshot(): OfferSourceSnapshot {
+        val canonicalUrl = this[OfferSourcesTable.canonicalUrl]?.trim()?.takeIf { it.isNotEmpty() }
+        val sourceUrl = this[OfferSourcesTable.sourceUrl].trim().takeIf { it.isNotEmpty() }
+        val domainName = this[OfferSourcesTable.domainName]?.trim()?.takeIf { it.isNotEmpty() }
+        val sourceType = this[OfferSourcesTable.sourceType].trim().takeIf { it.isNotEmpty() }
+        val sourceIconUrl = this[OfferSourcesTable.sourceIconUrl]?.trim()?.takeIf { it.isNotEmpty() }
+        return OfferSourceSnapshot(
+            ownerUserId = this[OfferSourcesTable.userId],
+            sourceType = sourceType,
+            sourceUrl = sourceUrl,
+            canonicalUrl = canonicalUrl,
+            preferredUrl = canonicalUrl ?: sourceUrl,
+            domainName = domainName,
+            sourceIconUrl = sourceIconUrl,
+            canTrackPrice = this[OfferSourcesTable.canTrackPrice],
+            displayName = domainName ?: sourceUrl?.let(::extractHost) ?: sourceType,
+        )
+    }
+
+    private fun extractHost(url: String): String? =
+        runCatching { java.net.URI(url).host?.removePrefix("www.") }.getOrNull()
+
+    private data class OfferSourceSnapshot(
+        val ownerUserId: Long,
+        val sourceType: String?,
+        val sourceUrl: String?,
+        val canonicalUrl: String?,
+        val preferredUrl: String?,
+        val domainName: String?,
+        val sourceIconUrl: String?,
+        val canTrackPrice: Boolean,
+        val displayName: String?,
+    )
+
     private companion object {
+        private const val USER_UPDATE_SOURCE = "user_update"
         private const val BRAND_FACET_SQL_LIMIT = 100
         private const val BRAND_FACET_LIMIT = 50
         private const val SIMPLE_FACET_SQL_LIMIT = 100

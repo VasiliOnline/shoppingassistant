@@ -1,0 +1,27 @@
+{
+  "categoryCode": "FASH.WOMEN",
+  "version": "1.0",
+  "status": "PASS",
+  "checks": {
+    "yaml_json_parse": "PASS",
+    "golden_queries_unique": "PASS",
+    "initial_fields_limit": "PASS",
+    "primary_facets_limit": "PASS",
+    "allowed_blocked_disjoint": "PASS",
+    "strong_female_types_allowed": "PASS"
+  },
+  "counts": {
+    "aliases": 251,
+    "golden_queries": 96,
+    "sample_offers": 52,
+    "allowed_apparel_types": 46,
+    "blocked_apparel_types": 3,
+    "type_groups": 13,
+    "value_override_rows": 97
+  },
+  "errors": [],
+  "warnings": [
+    "Requires FASH.APPAREL_COMMON v1.1 hardening/adapters before repo merge.",
+    "Runtime validator names are proposed gates; implement or map to existing gate names."
+  ]
+}

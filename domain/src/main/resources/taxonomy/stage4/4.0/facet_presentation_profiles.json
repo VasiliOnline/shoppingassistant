@@ -1,0 +1,975 @@
+{
+  "schemaVersion": "1.0.0",
+  "profiles": [
+    {
+      "profileCode": "GLOBAL_CORE",
+      "categoryPrefixes": [
+        "*"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "model"
+      ],
+      "requiresBrandContextTypedFacetKeys": [
+        "model"
+      ]
+    },
+    {
+      "profileCode": "TECH_PHONES_CORE",
+      "categoryPrefixes": [
+        "TECH.PHONES"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price",
+        "condition"
+      ],
+      "hiddenTypedFacetKeys": [
+        "os_family"
+      ],
+      "mainTypedFacetKeys": [
+        "model",
+        "memory_gb"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "network_type",
+        "ram_gb",
+        "refresh_rate_hz",
+        "chipset_family"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "model",
+        "memory_gb",
+        "color",
+        "network_type",
+        "ram_gb",
+        "refresh_rate_hz",
+        "chipset_family",
+        "os_family"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "os_family"
+      ],
+      "additionalTypedFacetKeys": [
+        "color",
+        "network_type",
+        "ram_gb",
+        "refresh_rate_hz",
+        "chipset_family",
+        "release_year",
+        "screen_size_inch",
+        "wireless_charging",
+        "esim_support"
+      ],
+      "orderedTypedFacetKeys": [
+        "model",
+        "memory_gb",
+        "color",
+        "network_type",
+        "ram_gb",
+        "refresh_rate_hz",
+        "chipset_family",
+        "release_year",
+        "screen_size_inch",
+        "wireless_charging",
+        "esim_support"
+      ]
+    },
+    {
+      "profileCode": "TECH_PHONE_ACCESSORIES_USEFUL_CORE",
+      "categoryPrefixes": [
+        "TECH.PHONE_ACCESSORIES"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price",
+        "condition"
+      ],
+      "hiddenTypedFacetKeys": [
+        "compatibility_mode",
+        "compatible_model_text",
+        "compatibility_confidence",
+        "evidence_policy",
+        "compatibility_strictness",
+        "output_voltage_profiles"
+      ],
+      "mainTypedFacetKeys": [
+        "accessory_type",
+        "compatible_phone_brand",
+        "compatible_phone_model",
+        "case_form_factor",
+        "protector_type",
+        "connector_output"
+      ],
+      "additionalTypedFacetKeys": [
+        "compatible_phone_family",
+        "color",
+        "material",
+        "accessory_subtype",
+        "max_power_watt",
+        "charging_protocol",
+        "ports_count",
+        "power_class",
+        "capacity_mah",
+        "cable_length_m",
+        "connector_a",
+        "connector_b",
+        "mount_location",
+        "mount_attachment",
+        "case_features",
+        "protection_level",
+        "protector_coverage",
+        "hardness_rating",
+        "wireless_standard",
+        "pack_quantity"
+      ],
+      "orderedTypedFacetKeys": [
+        "accessory_type",
+        "compatible_phone_brand",
+        "compatible_phone_model",
+        "brand",
+        "color",
+        "condition",
+        "case_form_factor",
+        "protector_type",
+        "connector_output",
+        "max_power_watt",
+        "charging_protocol",
+        "ports_count",
+        "material",
+        "compatible_phone_family",
+        "accessory_subtype",
+        "power_class",
+        "capacity_mah",
+        "cable_length_m",
+        "connector_a",
+        "connector_b",
+        "mount_location",
+        "mount_attachment",
+        "case_features",
+        "protection_level",
+        "protector_coverage",
+        "hardness_rating",
+        "wireless_standard",
+        "pack_quantity"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "accessory_type",
+        "compatible_phone_brand",
+        "compatible_phone_model",
+        "brand",
+        "color",
+        "condition",
+        "case_form_factor",
+        "protector_type",
+        "connector_output",
+        "max_power_watt",
+        "charging_protocol",
+        "ports_count",
+        "material",
+        "compatible_phone_family",
+        "accessory_subtype",
+        "power_class",
+        "capacity_mah",
+        "cable_length_m",
+        "connector_a",
+        "connector_b",
+        "mount_location",
+        "mount_attachment",
+        "case_features",
+        "protection_level",
+        "protector_coverage",
+        "hardness_rating",
+        "wireless_standard",
+        "pack_quantity"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "charging_protocol",
+        "ports_count",
+        "power_class",
+        "capacity_mah",
+        "mount_location",
+        "mount_attachment"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "compatibility_mode",
+        "compatible_model_text",
+        "compatibility_confidence",
+        "evidence_policy"
+      ],
+      "requiresBrandContextTypedFacetKeys": [
+        "compatible_phone_model",
+        "compatible_phone_family"
+      ]
+    },
+    {
+      "profileCode": "FASH_APPAREL_COMMON_CORE",
+      "categoryPrefixes": [
+        "FASH.MEN",
+        "FASH.WOMEN",
+        "FASH.KIDS"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price",
+        "condition"
+      ],
+      "hiddenTypedFacetKeys": [
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "gender_cut",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence"
+      ],
+      "mainTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "material_primary",
+        "season",
+        "fit"
+      ],
+      "additionalTypedFacetKeys": [
+        "condition",
+        "target_gender",
+        "age_group",
+        "size_system",
+        "color_secondary",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "sleeve_length",
+        "neckline",
+        "closure_type",
+        "pack_type",
+        "length_type",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "dress_length",
+        "skirt_length",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "lining",
+        "pockets",
+        "activity",
+        "bra_cup"
+      ],
+      "orderedTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "material_primary",
+        "season",
+        "fit",
+        "condition",
+        "target_gender",
+        "age_group",
+        "size_system",
+        "color_secondary",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "sleeve_length",
+        "neckline",
+        "closure_type",
+        "pack_type",
+        "length_type",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "dress_length",
+        "skirt_length",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "lining",
+        "pockets",
+        "activity",
+        "bra_cup"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "material_primary",
+        "season",
+        "fit",
+        "condition",
+        "target_gender",
+        "age_group",
+        "size_system",
+        "color_secondary",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "sleeve_length",
+        "neckline",
+        "closure_type",
+        "pack_type",
+        "length_type",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "dress_length",
+        "skirt_length",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "lining",
+        "pockets",
+        "activity",
+        "bra_cup"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "size_label",
+        "color_primary",
+        "material_primary",
+        "season",
+        "fit",
+        "condition"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "gender_cut",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence"
+      ]
+    },
+    {
+      "profileCode": "FASH_MEN_CHILD_OVERRIDE",
+      "categoryPrefixes": [
+        "FASH.MEN"
+      ],
+      "hiddenTypedFacetKeys": [
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "gender_cut",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence",
+        "age_group",
+        "bra_cup"
+      ],
+      "mainTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "condition",
+        "material_primary",
+        "season"
+      ],
+      "additionalTypedFacetKeys": [
+        "fit",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "pack_type",
+        "target_gender",
+        "sleeve_length",
+        "neckline",
+        "closure_type",
+        "length_type",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "pack_type",
+        "activity"
+      ],
+      "orderedTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "condition",
+        "material_primary",
+        "season",
+        "fit",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "pack_type",
+        "target_gender",
+        "sleeve_length",
+        "neckline",
+        "closure_type",
+        "length_type",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "activity"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "condition",
+        "material_primary",
+        "season",
+        "fit",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "pack_type",
+        "target_gender",
+        "sleeve_length",
+        "neckline",
+        "closure_type",
+        "length_type",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "activity"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "material_primary",
+        "fit",
+        "season",
+        "condition"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "age_group",
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence",
+        "bra_cup"
+      ]
+    },
+    {
+      "profileCode": "FASH_KIDS_CHILD_OVERRIDE",
+      "categoryPrefixes": [
+        "FASH.KIDS"
+      ],
+      "hiddenTypedFacetKeys": [
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "gender_cut",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence",
+        "bra_cup"
+      ],
+      "mainTypedFacetKeys": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size_label",
+        "condition",
+        "brand",
+        "season"
+      ],
+      "additionalTypedFacetKeys": [
+        "color_primary",
+        "material_primary",
+        "fit",
+        "size_system",
+        "color_secondary",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "closure_type",
+        "pack_type",
+        "sleeve_length",
+        "length_type",
+        "waist_type",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "pockets",
+        "activity"
+      ],
+      "orderedTypedFacetKeys": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size_label",
+        "condition",
+        "brand",
+        "season",
+        "color_primary",
+        "material_primary",
+        "fit",
+        "size_system",
+        "color_secondary",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "closure_type",
+        "pack_type",
+        "sleeve_length",
+        "length_type",
+        "waist_type",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "pockets",
+        "activity"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size_label",
+        "condition",
+        "brand",
+        "season",
+        "color_primary",
+        "material_primary",
+        "fit"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size_label",
+        "condition",
+        "season"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence",
+        "bra_cup"
+      ]
+    },
+    {
+      "profileCode": "FOOD_CORE",
+      "categoryPrefixes": [
+        "FOOD"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price"
+      ],
+      "hiddenSystemFacetKeys": [
+        "condition"
+      ],
+      "mainTypedFacetKeys": [
+        "flavor",
+        "volume_ml",
+        "allergen_profile",
+        "storage_regime"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "flavor",
+        "volume_ml",
+        "allergen_profile",
+        "storage_regime",
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days",
+        "is_gluten_free"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "flavor",
+        "volume_ml",
+        "allergen_profile",
+        "storage_regime",
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days",
+        "is_gluten_free"
+      ],
+      "additionalTypedFacetKeys": [
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days",
+        "is_gluten_free"
+      ],
+      "orderedTypedFacetKeys": [
+        "flavor",
+        "volume_ml",
+        "allergen_profile",
+        "storage_regime",
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days",
+        "is_gluten_free"
+      ]
+    },
+    {
+      "profileCode": "FOOD_READY_MEALS_CORE",
+      "categoryPrefixes": [
+        "FOOD.READY_MEALS"
+      ],
+      "hiddenSystemFacetKeys": [
+        "brand"
+      ],
+      "mainTypedFacetKeys": [
+        "cuisine_type",
+        "spiciness_level",
+        "allergen_profile"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "cuisine_type",
+        "spiciness_level",
+        "allergen_profile",
+        "storage_regime",
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "cuisine_type",
+        "spiciness_level",
+        "allergen_profile",
+        "storage_regime",
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days"
+      ],
+      "orderedTypedFacetKeys": [
+        "cuisine_type",
+        "spiciness_level",
+        "allergen_profile",
+        "storage_regime",
+        "calories_kcal_per_serving",
+        "protein_per_serving_gram",
+        "fat_per_serving_gram",
+        "carbs_per_serving_gram",
+        "shelf_life_days"
+      ]
+    },
+    {
+      "profileCode": "BEAUTY_CONSUMABLES_CORE",
+      "categoryPrefixes": [
+        "BEAUTY.SKINCARE",
+        "BEAUTY.HAIRCARE",
+        "BEAUTY.BODYCARE",
+        "BEAUTY.MAKEUP",
+        "BEAUTY.FRAGRANCE",
+        "BEAUTY.HEALTH"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price"
+      ],
+      "hiddenSystemFacetKeys": [
+        "condition"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "color",
+        "volume_ml",
+        "gender",
+        "flavor"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "color",
+        "volume_ml",
+        "gender",
+        "flavor"
+      ],
+      "mainTypedFacetKeys": [
+        "color",
+        "volume_ml",
+        "gender"
+      ],
+      "additionalTypedFacetKeys": [
+        "flavor"
+      ],
+      "orderedTypedFacetKeys": [
+        "color",
+        "volume_ml",
+        "gender",
+        "flavor"
+      ]
+    },
+    {
+      "profileCode": "BEAUTY_HEALTH_CORE",
+      "categoryPrefixes": [
+        "BEAUTY.HEALTH"
+      ],
+      "hiddenSystemFacetKeys": [
+        "brand"
+      ],
+      "pinnedSystemFacetKeys": [
+        "price"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "flavor"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "flavor"
+      ],
+      "mainTypedFacetKeys": [
+        "flavor"
+      ],
+      "orderedTypedFacetKeys": [
+        "flavor"
+      ]
+    },
+    {
+      "profileCode": "BEAUTY_DEVICES_CORE",
+      "categoryPrefixes": [
+        "BEAUTY.DEVICES"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price",
+        "condition"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "color"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "model",
+        "color"
+      ],
+      "mainTypedFacetKeys": [
+        "model",
+        "color"
+      ],
+      "orderedTypedFacetKeys": [
+        "model",
+        "color"
+      ]
+    },
+    {
+      "profileCode": "AUTO_CORE",
+      "categoryPrefixes": [
+        "AUTO"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price",
+        "condition"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "material",
+        "used_for",
+        "diameter_cm",
+        "color"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "model",
+        "material",
+        "used_for",
+        "diameter_cm",
+        "color"
+      ],
+      "mainTypedFacetKeys": [
+        "model",
+        "material",
+        "used_for",
+        "diameter_cm"
+      ],
+      "additionalTypedFacetKeys": [
+        "color"
+      ],
+      "orderedTypedFacetKeys": [
+        "model",
+        "material",
+        "used_for",
+        "diameter_cm",
+        "color"
+      ]
+    },
+    {
+      "profileCode": "BOOKS_CORE",
+      "categoryPrefixes": [
+        "BOOKS"
+      ],
+      "hiddenSystemFacetKeys": [
+        "brand",
+        "condition"
+      ],
+      "pinnedSystemFacetKeys": [
+        "price"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "author",
+        "genre",
+        "language"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "author",
+        "genre",
+        "language"
+      ],
+      "mainTypedFacetKeys": [
+        "author",
+        "genre",
+        "language"
+      ],
+      "orderedTypedFacetKeys": [
+        "author",
+        "genre",
+        "language"
+      ]
+    },
+    {
+      "profileCode": "FASH_WOMEN_CHILD_OVERRIDE",
+      "categoryPrefixes": [
+        "FASH.WOMEN"
+      ],
+      "hiddenTypedFacetKeys": [
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "gender_cut",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence",
+        "age_group"
+      ],
+      "mainTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "condition",
+        "material_primary",
+        "season"
+      ],
+      "additionalTypedFacetKeys": [
+        "fit",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "pack_type",
+        "target_gender",
+        "length_type",
+        "sleeve_length",
+        "neckline",
+        "silhouette",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "skirt_length",
+        "bra_cup",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "activity",
+        "compression_level",
+        "breathable",
+        "stretch",
+        "closure_type"
+      ],
+      "orderedTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "condition",
+        "material_primary",
+        "season",
+        "fit",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "pack_type",
+        "target_gender",
+        "length_type",
+        "sleeve_length",
+        "neckline",
+        "silhouette",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "skirt_length",
+        "bra_cup",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "activity",
+        "compression_level",
+        "breathable",
+        "stretch",
+        "closure_type"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "brand",
+        "condition",
+        "material_primary",
+        "season",
+        "fit",
+        "pattern",
+        "style_aesthetic",
+        "occasion",
+        "pack_type",
+        "target_gender",
+        "length_type",
+        "sleeve_length",
+        "neckline",
+        "silhouette",
+        "waist_rise",
+        "leg_fit",
+        "waist_type",
+        "skirt_length",
+        "bra_cup",
+        "outerwear_weight",
+        "water_resistance",
+        "hood",
+        "activity",
+        "compression_level",
+        "breathable",
+        "stretch",
+        "closure_type"
+      ],
+      "liveOnlyTypedFacetKeys": [
+        "apparel_type",
+        "size_label",
+        "color_primary",
+        "material_primary",
+        "fit",
+        "season",
+        "condition"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "age_group",
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "visual_evidence_flags",
+        "normalization_confidence",
+        "source_text_evidence"
+      ]
+    }
+  ]
+}

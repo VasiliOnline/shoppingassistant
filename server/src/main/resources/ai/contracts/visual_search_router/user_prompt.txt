@@ -1,0 +1,18 @@
+Route this product photo for first search results.
+
+Steps:
+1. Select the primary sale item.
+2. Choose category_code.
+3. Fill item_type/item_type_label if visible.
+4. Set identity_mode to RICH_IDENTITY only if a later identity pass should refine brand/family/model.
+5. Return JSON only.
+
+Rules:
+- Do not identify brand, family, or model here.
+- TYPE_OTHER is only for taxonomy gaps; put the visible type in free_text_type.
+- If the product type is visible, choose the closest safe broad category from candidateCategories instead of UNRESOLVED.
+- Routing hints: food/tea/seafood/candy/gift sets => FOOD.*; herbs/supplements/cosmetics => BEAUTY.HEALTH; apparel/shoes => FASH.*; vehicle parts/add-ons => AUTO.*; bouquets/plants => HOME.GARDEN; phone parts/accessories => TECH.PHONE_ACCESSORIES.
+- If route_status=UNRESOLVED, category_code, item_type, item_type_label, and free_text_type must be null.
+
+Catalog grounding:
+{{grounding_packet}}

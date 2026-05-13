@@ -11,12 +11,19 @@ data class ProfileUpdatePayload(
     val city: String? = null,
     val phone: String? = null,
     val avatarUrl: String? = null,
+    val bio: String? = null,
+    val website: String? = null,
+)
+
+data class DeleteAccountReceipt(
+    val deleteAfter: Long? = null,
+    val restoreToken: String? = null,
 )
 
 interface ProfileRepository {
     suspend fun updateProfile(payload: ProfileUpdatePayload): AuthUser
     suspend fun updatePhotos(photos: List<String>): AuthUser
-    suspend fun requestEmailChange(newEmail: String)
+    suspend fun requestEmailChange(newEmail: String, currentPassword: String)
     suspend fun confirmEmailChange(token: String): AuthResult
-    suspend fun deleteAccount(): Boolean
+    suspend fun deleteAccount(currentPassword: String): DeleteAccountReceipt?
 }

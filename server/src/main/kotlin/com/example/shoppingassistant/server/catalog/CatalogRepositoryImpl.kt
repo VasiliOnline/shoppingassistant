@@ -5,15 +5,20 @@ import com.example.shoppingassistant.domain.catalog.AttributeDef
 import com.example.shoppingassistant.domain.catalog.AttributeCondition
 import com.example.shoppingassistant.domain.catalog.AttributeValueDict
 import com.example.shoppingassistant.domain.catalog.AttributeValueDictEntry
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryWriteSpec
+import com.example.shoppingassistant.domain.catalog.CatalogWriteRepository
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
+import com.example.shoppingassistant.domain.catalog.CategoryReplacementResolver
 import com.example.shoppingassistant.domain.catalog.Category
 import com.example.shoppingassistant.domain.catalog.CategoryAttribute
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
 import com.example.shoppingassistant.domain.catalog.CategorySegment
 import com.example.shoppingassistant.domain.catalog.CategoryStatus
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
 import com.example.shoppingassistant.domain.catalog.Stage40RequiredIfCondition
 import com.example.shoppingassistant.domain.catalog.Stage40RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.toCategoryEffectiveSpec
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
 import com.example.shoppingassistant.server.db.DatabaseFactory
@@ -32,13 +37,16 @@ import java.util.Locale
 /**
  * Каталог категорий/атрибутов в Postgres (Exposed).
  */
-class CatalogRepositoryImpl : CatalogRepository {
+class CatalogRepositoryImpl :
+    CatalogReadRepository,
+    CatalogTaxonomyRepository,
+    CatalogWriteRepository {
 
     override suspend fun listCategories(): List<Category> = DatabaseFactory.dbQuery {
         CategoriesTable.selectAll().map { it.toCategory() }
     }
 
-    override suspend fun getCategoryProfile(categoryCode: String): CategoryProfile? = DatabaseFactory.dbQuery {
+    internal suspend fun loadCategoryWriteSpec(categoryCode: String): CatalogCategoryWriteSpec? = DatabaseFactory.dbQuery {
         val categoryQuery = CategoriesTable.selectAll()
         categoryQuery.andWhere { CategoriesTable.code eq categoryCode }
         val categoryRow = categoryQuery.singleOrNull()
@@ -62,7 +70,7 @@ class CatalogRepositoryImpl : CatalogRepository {
             attributeCodes = attrCodes,
         )
 
-        CategoryProfile(
+        CatalogCategoryWriteSpec(
             category = categoryRow.toCategory(),
             attributes = attrDefs,
             categoryAttributes = catAttrsRows.map { it.toCategoryAttribute() },
@@ -71,12 +79,34 @@ class CatalogRepositoryImpl : CatalogRepository {
         )
     }
 
-    override suspend fun listAttributeValueDict(attributeCode: String): AttributeValueDict? =
-        DatabaseFactory.dbQuery {
-            loadDicts(listOf(attributeCode)).firstOrNull()
-        }
+    override suspend fun getCategoryEffectiveSpec(
+        categoryCode: String,
+        brand: String?,
+        model: String?,
+    ): CatalogCategoryEffectiveSpec? {
+        val spec = loadCategoryWriteSpec(categoryCode) ?: return null
+        val constraints = loadConstraints(
+            categoryCode = categoryCode,
+            brand = brand,
+            model = model,
+        )
+        val effectiveSpec = spec.toCategoryEffectiveSpec(constraints = constraints)
+        return applyOperationalReadiness(
+            spec = effectiveSpec,
+            report = loadOperationalReadinessReport(categoryCode = effectiveSpec.category.code),
+        )
+    }
 
-    override suspend fun listConstraints(
+    override suspend fun resolveCategoryCode(
+        categoryCode: String,
+        maxHops: Int,
+    ) = CategoryReplacementResolver.resolve(
+        requestedCode = categoryCode,
+        categories = listCategories(),
+        maxHops = maxHops,
+    )
+
+    internal suspend fun loadConstraints(
         categoryCode: String,
         brand: String?,
         model: String?,
@@ -96,24 +126,24 @@ class CatalogRepositoryImpl : CatalogRepository {
         )
     }
 
-    override suspend fun upsertProfile(profile: CategoryProfile): Unit = DatabaseFactory.dbQuery {
-        upsertCategory(profile.category)
-        profile.attributes.forEach { upsertAttributeDef(it) }
+    override suspend fun upsertCategorySpec(spec: CatalogCategoryWriteSpec): Unit = DatabaseFactory.dbQuery {
+        upsertCategory(spec.category)
+        spec.attributes.forEach { upsertAttributeDef(it) }
 
-        CategoryAttributesTable.deleteWhere { CategoryAttributesTable.categoryCode eq profile.category.code }
-        CategoryAttributesTable.batchInsert(profile.categoryAttributes) { attr ->
+        CategoryAttributesTable.deleteWhere { CategoryAttributesTable.categoryCode eq spec.category.code }
+        CategoryAttributesTable.batchInsert(spec.categoryAttributes) { attr ->
             this[CategoryAttributesTable.categoryCode] = attr.categoryCode
             this[CategoryAttributesTable.attributeCode] = attr.attributeCode
             this[CategoryAttributesTable.uiOrder] = attr.uiOrder
             this[CategoryAttributesTable.isRequired] = attr.isRequiredForCategory
         }
 
-        val dictAttrCodes = profile.valueDictionaries.map { it.attributeCode }.distinct()
+        val dictAttrCodes = spec.valueDictionaries.map { it.attributeCode }.distinct()
         if (dictAttrCodes.isNotEmpty()) {
             AttributeValueDictTable.deleteWhere { AttributeValueDictTable.attributeCode inList dictAttrCodes }
         }
         AttributeValueDictTable.batchInsert(
-            profile.valueDictionaries.flatMap { dict ->
+            spec.valueDictionaries.flatMap { dict ->
                 dict.entries.map { entry -> dict.attributeCode to entry }
             },
         ) { (attrCode, entry) ->
@@ -122,7 +152,7 @@ class CatalogRepositoryImpl : CatalogRepository {
             this[AttributeValueDictTable.canonicalValue] = entry.canonicalValue
             this[AttributeValueDictTable.synonyms] = entry.synonyms
         }
-        upsertRequiredIfRules(profile)
+        upsertRequiredIfRules(spec)
 
         Unit
     }
@@ -131,18 +161,24 @@ class CatalogRepositoryImpl : CatalogRepository {
         val updated = CategoriesTable.update({ CategoriesTable.code eq category.code }) { stmt ->
             stmt[segment] = category.segment.name
             stmt[status] = category.status.name
-            stmt[title] = category.title
+            stmt[titleLocalized] = category.title
+            stmt[titleRu] = category.title.resolve(locale = "ru", fallback = category.code)
+            stmt[titleEn] = category.title["en"]
             stmt[parentCode] = category.parentCode
             stmt[description] = category.description
+            stmt[replacementCode] = category.replacementCode
         }
         if (updated == 0) {
             CategoriesTable.insert { stmt ->
                 stmt[code] = category.code
                 stmt[segment] = category.segment.name
                 stmt[status] = category.status.name
-                stmt[title] = category.title
+                stmt[titleLocalized] = category.title
+                stmt[titleRu] = category.title.resolve(locale = "ru", fallback = category.code)
+                stmt[titleEn] = category.title["en"]
                 stmt[parentCode] = category.parentCode
                 stmt[description] = category.description
+                stmt[replacementCode] = category.replacementCode
             }
         }
     }
@@ -269,12 +305,12 @@ class CatalogRepositoryImpl : CatalogRepository {
             )
     }
 
-    private fun upsertRequiredIfRules(profile: CategoryProfile) {
-        val normalizedCategoryCode = profile.category.code.trim().uppercase(Locale.ROOT)
+    private fun upsertRequiredIfRules(spec: CatalogCategoryWriteSpec) {
+        val normalizedCategoryCode = spec.category.code.trim().uppercase(Locale.ROOT)
         if (normalizedCategoryCode.isEmpty()) return
 
         val pendingByAttributeKey = LinkedHashMap<String, PendingRequiredIfRules>()
-        profile.requiredIfRules.forEach { rule ->
+        spec.requiredIfRules.forEach { rule ->
             val requiredAttributeCode = rule.requiredAttributeCode.trim()
             if (requiredAttributeCode.isEmpty()) return@forEach
             val stageRule = toStage40RequiredIfRule(
@@ -455,9 +491,14 @@ private fun ResultRow.toCategory(): Category = Category(
     code = this[CategoriesTable.code],
     segment = runCatching { CategorySegment.valueOf(this[CategoriesTable.segment]) }.getOrDefault(CategorySegment.OTHER),
     status = runCatching { CategoryStatus.valueOf(this[CategoriesTable.status]) }.getOrDefault(CategoryStatus.ACTIVE),
-    title = this[CategoriesTable.title],
+    title = localizedTextFromStorage(
+        localized = this[CategoriesTable.titleLocalized],
+        titleRu = this[CategoriesTable.titleRu],
+        titleEn = this[CategoriesTable.titleEn],
+    ),
     parentCode = this[CategoriesTable.parentCode],
     description = this[CategoriesTable.description],
+    replacementCode = this[CategoriesTable.replacementCode],
 )
 
 private fun ResultRow.toAttributeDef(): AttributeDef = AttributeDef(
@@ -490,3 +531,4 @@ private fun ResultRow.toCatalogConstraints(): CatalogConstraints = CatalogConstr
     attributeConstraints = this[CatalogConstraintsTable.attributeConstraints],
     compatibilityRules = this[CatalogConstraintsTable.compatibilityRules],
 )
+

@@ -41,7 +41,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории KIDS.BABY_GEAR по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -87,7 +112,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории KIDS.NURSERY_FURNITURE по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -143,7 +193,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'folding_type'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории KIDS.STROLLERS_CARSEATS по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -189,7 +264,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории KIDS.TOYS_GAMES по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

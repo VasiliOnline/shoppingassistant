@@ -1,8 +1,8 @@
 package com.example.shoppingassistant.feature.pages.draft.create
 
 import com.example.shoppingassistant.domain.catalog.Category
-import com.example.shoppingassistant.domain.catalog.AttributeDef
 import com.example.shoppingassistant.domain.ugc.draft.DraftOffer
+import com.example.shoppingassistant.feature.pages.model.AttributeDef
 
 enum class DraftStep {
     ENTRY,

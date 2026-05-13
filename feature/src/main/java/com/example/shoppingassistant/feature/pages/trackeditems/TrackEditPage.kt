@@ -48,7 +48,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
 import com.example.shoppingassistant.domain.tracks.Track
 import com.example.shoppingassistant.domain.tracks.TrackFilterKey
@@ -80,9 +81,10 @@ fun TrackEditPage(
     val scope = rememberCoroutineScope()
     val trackRepository: TrackRepository = remember { koinGet(TrackRepository::class.java) }
     val updateTrackTarget: UpdateTrackTargetTask = remember { koinGet(UpdateTrackTargetTask::class.java) }
-    val catalogRepository: CatalogRepository = remember { koinGet(CatalogRepository::class.java) }
+    val catalogRepository: CatalogReadRepository = remember { koinGet(CatalogReadRepository::class.java) }
+    val catalogTaxonomyRepository: CatalogTaxonomyRepository = remember { koinGet(CatalogTaxonomyRepository::class.java) }
     val getProfileCache: GetProfileCacheTask = remember { koinGet(GetProfileCacheTask::class.java) }
-    val leafCategories = rememberLeafCategories(catalogRepository)
+    val leafCategories = rememberLeafCategories(catalogTaxonomyRepository)
     var targetDraft by remember { mutableStateOf<TrackTargetDraft?>(null) }
     var showTargetEditor by remember { mutableStateOf(false) }
     var targetDedupConflictTrackId by remember { mutableStateOf<String?>(null) }
@@ -765,3 +767,4 @@ private fun TrackTargetDraft?.toTargetLabel(): String {
         else -> "Цель"
     }
 }
+

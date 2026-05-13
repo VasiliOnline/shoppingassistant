@@ -114,32 +114,30 @@ data class Stage40TypedConstraintsDocument(
 )
 
 internal object Stage40ContractLoader {
-    private const val STAGE40_BASE = "taxonomy/stage4/4.0"
-
     private val immutableSchemaCache: Stage40ImmutableSchemaDocument by lazy {
         CatalogSeedResourceReader.readJson(
-            resourcePath = "$STAGE40_BASE/immutable_attribute_schema.json",
+            resourcePath = "${CatalogContractPaths.stage40Base}/immutable_attribute_schema.json",
             deserializer = Stage40ImmutableSchemaDocument.serializer(),
         )
     }
 
     private val normalizationContractCache: Stage40NormalizationContractDocument by lazy {
         CatalogSeedResourceReader.readJson(
-            resourcePath = "$STAGE40_BASE/normalization_contract.json",
+            resourcePath = "${CatalogContractPaths.stage40Base}/normalization_contract.json",
             deserializer = Stage40NormalizationContractDocument.serializer(),
         )
     }
 
     private val dedupKeysCache: Stage40DedupKeysDocument by lazy {
         CatalogSeedResourceReader.readJson(
-            resourcePath = "$STAGE40_BASE/dedup_keys.json",
+            resourcePath = "${CatalogContractPaths.stage40Base}/dedup_keys.json",
             deserializer = Stage40DedupKeysDocument.serializer(),
         )
     }
 
     private val typedConstraintsCache: Stage40TypedConstraintsDocument by lazy {
         CatalogSeedResourceReader.readJson(
-            resourcePath = "$STAGE40_BASE/typed_constraints.json",
+            resourcePath = "${CatalogContractPaths.stage40Base}/typed_constraints.json",
             deserializer = Stage40TypedConstraintsDocument.serializer(),
         )
     }

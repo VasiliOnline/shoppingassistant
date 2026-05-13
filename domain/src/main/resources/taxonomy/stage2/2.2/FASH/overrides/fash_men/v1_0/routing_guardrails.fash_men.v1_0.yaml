@@ -1,0 +1,83 @@
+version: '1.0'
+categoryCode: FASH.MEN
+extends: FASH.APPAREL_COMMON
+positive_route_signals:
+  strong:
+  - мужской
+  - мужская
+  - мужские
+  - для мужчин
+  - на мужчину
+  - men
+  - menswear
+  type_terms:
+  - TSHIRT
+  - SHIRT
+  - HOODIE
+  - SWEATSHIRT
+  - SWEATER
+  - JEANS
+  - TROUSERS
+  - JACKET
+  - COAT
+  - DOWN_JACKET
+  - POLO
+  - LONGSLEEVE
+  - SHORTS
+  - SUIT
+  - BLAZER
+  - TRACKSUIT
+  - UNDERWEAR
+  - TURTLENECK
+  - SOCKS
+  - VEST
+  - CARDIGAN
+  - CHINOS
+  - CARGO_PANTS
+  - BOMBER
+  - DENIM_JACKET
+  - LEATHER_JACKET
+  - WINDBREAKER
+  - PARKA
+  - THERMAL_UNDERWEAR
+  - ACTIVE_TOP
+  - ACTIVE_BOTTOM
+  - RAINCOAT
+  - ROBE
+  - PAJAMAS
+  - SWIMWEAR
+  - UNIFORM
+  category_terms:
+  - одежда
+  - вещи
+  - гардероб
+negative_route_guards:
+- pattern: мужские кроссовки|мужская обувь|мужские ботинки|лоферы мужские|туфли мужские
+  target: FASH.SHOES
+  severity: FORCE_OTHER_ROUTE
+- pattern: мужская сумка|мужской рюкзак|портфель мужской
+  target: FASH.BAGS
+  severity: FORCE_OTHER_ROUTE
+- pattern: мужской ремень|мужские часы|мужской кошелек|галстук мужской|кепка мужская|шапка мужская
+  target: FASH.ACCESSORIES
+  severity: FORCE_OTHER_ROUTE
+- pattern: мужской парфюм|мужской шампунь|гель для душа мужской
+  target: BEAUTY
+  severity: FORCE_OTHER_ROUTE
+- pattern: детская|для мальчика|подростковая для мальчика|мальчику
+  target: FASH.KIDS
+  severity: ROUTE_OTHER_OR_AMBIGUOUS
+- pattern: женская|женские|для женщин|девушке
+  target: FASH.WOMEN
+  severity: ROUTE_OTHER_OR_AMBIGUOUS
+ambiguity_policy:
+  generic_type_without_gender: return_route_candidates_FASH.MEN_FASH.WOMEN_FASH.KIDS_or_common_context_not_final
+  unisex_keyword: allow_FASH.MEN_if_listing_context_or_user_filter_is_men_else_UNISEX_candidate
+  blocked_type_with_male_gender: do_not_auto_accept; send_to_review_or_other_category_candidate
+must_keep_queries:
+- мужская футболка
+- мужские джинсы
+- мужская рубашка
+- мужской костюм
+- мужская куртка
+- мужской пуховик

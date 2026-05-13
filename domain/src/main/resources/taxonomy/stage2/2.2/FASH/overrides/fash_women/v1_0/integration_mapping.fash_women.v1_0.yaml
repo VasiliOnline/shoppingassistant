@@ -1,0 +1,32 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+pack_type: child_override_pack
+extends: FASH.APPAREL_COMMON
+target_runtime:
+  category_profile: FASH.WOMEN effective profile = FASH.APPAREL_COMMON + this child override
+  do_not_create_public_category_for_common: FASH.APPAREL_COMMON is a shared standard only
+  do_not_duplicate_common_attributes: true
+file_mapping:
+  child_defaults: Stage22 child profile defaults / category metadata
+  type_priorities: allowed/blocked value overrides for apparel_type
+  value_overrides: value dictionaries child override layer
+  size_overrides: size policy child override layer
+  aliases: alias_entries child layer with inherited common aliases
+  routing_guardrails: routing negative/positive guard rules
+  vision_rules: Vision normalize contract for FASH.WOMEN
+  user_surface: UI form/presentation child override layer
+  facet_overrides: facet schema child override layer
+  golden_queries: route/effective-spec smoke tests
+  sample_offers: normalization fixture tests
+  effective_spec_snapshot: expected effective spec after inheritance
+required_validators:
+- Stage22SeedValidator
+- FacetSchemaValidator
+- FashWomenChildOverrideGate
+- FashRouteConflictGate
+- FashApparelInheritanceGate
+merge_order:
+- Ensure FASH.APPAREL_COMMON v1.1 hardening or apply common dependency patch
+- Install FASH.WOMEN child override
+- Rebuild effective spec
+- Run golden + sample fixture tests

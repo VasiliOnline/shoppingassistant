@@ -38,6 +38,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.example.shoppingassistant.domain.i18n.displayTitle
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +53,7 @@ import com.example.shoppingassistant.feature.pages.main.state.MainPageViewModel
 import com.example.shoppingassistant.feature.ui.layout.AppTopBar
 import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
 import com.example.shoppingassistant.feature.ui.layout.ScreenRoot
+import java.util.Locale
 import org.koin.java.KoinJavaComponent.get as koinGet
 
 @Composable
@@ -103,15 +105,16 @@ fun FeedCategoriesPage(
     val currentParent = pathBrowseCodes.lastOrNull()
     val normalizedQuery = searchQuery.trim().lowercase()
     val searchActive = normalizedQuery.isNotBlank()
+    val localeTag = Locale.getDefault().toLanguageTag()
     val list = if (searchActive) {
         browseNodes
-            .filter { node -> node.matchesSearch(normalizedQuery) }
-            .sortedWith(compareBy<BrowseNode> { it.order }.thenBy { it.titleRu })
+            .filter { node -> node.matchesSearch(normalizedQuery, locale = localeTag) }
+            .sortedWith(compareBy<BrowseNode> { it.order }.thenBy { it.displayTitle(locale = localeTag) })
     } else {
         childrenByParent[currentParent].orEmpty()
-            .sortedWith(compareBy<BrowseNode> { it.order }.thenBy { it.titleRu })
+            .sortedWith(compareBy<BrowseNode> { it.order }.thenBy { it.displayTitle(locale = localeTag) })
     }
-    val sections = remember(list, searchActive) { buildBrowseSections(list, searchActive) }
+    val sections = remember(list, searchActive, localeTag) { buildBrowseSections(list, searchActive, localeTag) }
 
     val selectedCount = selectedCodes.size
     val canNavigateUp = pathBrowseCodes.isNotEmpty()
@@ -311,7 +314,7 @@ private fun FeedBrowseRow(
             )
 
             Text(
-                text = node.titleRu.ifBlank { node.browseCode },
+                text = node.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()),
                 style = MaterialTheme.typography.bodyLarge,
                 color = contentColor,
                 maxLines = 1,
@@ -375,11 +378,12 @@ private fun buildBrowseCategoryTargetsIndex(
 private fun buildBrowseSections(
     list: List<BrowseNode>,
     searchActive: Boolean,
+    locale: String,
 ): List<BrowseSection> {
     if (list.isEmpty()) return emptyList()
     if (searchActive || list.size <= 10) return listOf(BrowseSection(title = null, nodes = list))
 
-    val sorted = list.sortedWith(compareBy<BrowseNode> { it.order }.thenBy { it.titleRu })
+    val sorted = list.sortedWith(compareBy<BrowseNode> { it.order }.thenBy { it.displayTitle(locale = locale) })
     val popularSize = minOf(6, sorted.size)
     val popular = sorted.take(popularSize)
     val rest = sorted.drop(popularSize)
@@ -389,7 +393,7 @@ private fun buildBrowseSections(
         sections += BrowseSection(title = "Популярное", nodes = popular)
     }
     val grouped = rest.groupBy { node ->
-        val first = node.titleRu.trim().firstOrNull()?.uppercaseChar()
+        val first = node.displayTitle(locale = locale).trim().firstOrNull()?.uppercaseChar()
         when {
             first == null -> "#"
             first in 'A'..'Z' -> first.toString()
@@ -399,16 +403,17 @@ private fun buildBrowseSections(
     }.toSortedMap()
 
     grouped.forEach { (bucket, nodes) ->
-        sections += BrowseSection(title = bucket, nodes = nodes.sortedBy { it.titleRu })
+        sections += BrowseSection(title = bucket, nodes = nodes.sortedBy { it.displayTitle(locale = locale) })
     }
 
     return sections
 }
 
-private fun BrowseNode.matchesSearch(query: String): Boolean {
+private fun BrowseNode.matchesSearch(query: String, locale: String): Boolean {
     if (query.isBlank()) return true
-    val title = titleRu.lowercase()
-    if (title.contains(query)) return true
+    if (title.values.any { label -> label.lowercase().contains(query) }) return true
+    val displayTitleNormalized = displayTitle(locale = locale).lowercase()
+    if (displayTitleNormalized.contains(query)) return true
     if (browseCode.lowercase().contains(query)) return true
     if (targetCategoryCode?.lowercase()?.contains(query) == true) return true
     return searchKeywordsRu.any { keyword -> keyword.lowercase().contains(query) }

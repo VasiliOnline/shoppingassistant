@@ -1,6 +1,6 @@
 package com.example.shoppingassistant.core.data.catalog
 
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
 import com.example.shoppingassistant.domain.catalog.AliasEntryRepository
 import com.example.shoppingassistant.domain.catalog.BrowseNodeRepository
@@ -9,7 +9,7 @@ import com.example.shoppingassistant.domain.catalog.TaxonomyValidationReport
 import com.example.shoppingassistant.domain.catalog.TaxonomyValidator
 
 class TaxonomyGate(
-    private val catalogRepository: CatalogRepository,
+    private val catalogRepository: CatalogTaxonomyRepository,
     private val categoryAliasRepository: CategoryAliasRepository,
     private val browseNodeRepository: BrowseNodeRepository,
     private val aliasEntryRepository: AliasEntryRepository,
@@ -42,3 +42,4 @@ class TaxonomyGate(
         private const val DEFAULT_MAX_ISSUES = 20
     }
 }
+

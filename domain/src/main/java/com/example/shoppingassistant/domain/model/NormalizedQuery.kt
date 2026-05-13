@@ -20,14 +20,32 @@ fun NormalizedQuery.rawAttributes(): Map<String, String> =
 /** Единые правила нормализации ключей/атрибутов. */
 object Normalization {
     private val nonAlnum = Regex("[^\\p{Alnum}]+")
+    private val attrSeparator = Regex("[\\s\\-]+")
+    private val invalidAttrChars = Regex("[^\\p{Alnum}_]+")
+    private val duplicateUnderscore = Regex("_+")
+
     fun key(raw: String): String = raw.trim()
         .lowercase()
         .replace(nonAlnum, "-")
         .trim('-')
 
     fun normalizeAttrs(attrs: Map<String, String>): Map<String, String> =
-        attrs.map { (k, v) -> key(k) to v.trim() }.toMap()
+        attrs.mapNotNull { (k, v) ->
+            val normalizedKey = attributeKey(k)
+            if (normalizedKey.isEmpty()) {
+                null
+            } else {
+                normalizedKey to v.trim()
+            }
+        }.toMap(LinkedHashMap())
 
     fun normalizeTypedAttrs(attrs: Map<String, String>): Map<String, TypedAttributeValue> =
         normalizeAttrs(attrs).toTypedAttributesGuess()
+
+    fun attributeKey(raw: String): String = raw.trim()
+        .lowercase()
+        .replace(attrSeparator, "_")
+        .replace(invalidAttrChars, "")
+        .replace(duplicateUnderscore, "_")
+        .trim('_')
 }

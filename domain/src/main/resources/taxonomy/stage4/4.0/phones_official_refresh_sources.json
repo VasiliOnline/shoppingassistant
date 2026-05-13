@@ -1,0 +1,1159 @@
+{
+  "schemaVersion": "1.0.0",
+  "sources": [
+    {
+      "sourceCode": "APPLE_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Apple Official Phones Refresh",
+      "brandCode": "APPLE",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "US",
+      "sourceUri": "https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "APPLE_IPHONE_16",
+          "parserType": "APPLE_BUY_IPHONE_METRICS",
+          "sourceUri": "https://www.apple.com/shop/buy-iphone/iphone-16",
+          "familyCode": "APPLE_IPHONE",
+          "modelCode": "IPHONE_16",
+          "modelLabel": "iPhone 16",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["iphone16"]
+          },
+          "metadata": {
+            "modelLine": "iPhone"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "iOS" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "A18" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "60" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.1" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "APPLE_IPHONE_16_PLUS",
+          "parserType": "APPLE_BUY_IPHONE_METRICS",
+          "sourceUri": "https://www.apple.com/shop/buy-iphone/iphone-16",
+          "familyCode": "APPLE_IPHONE",
+          "modelCode": "IPHONE_16_PLUS",
+          "modelLabel": "iPhone 16 Plus",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["iphone16plus", "iphone 16 plus"]
+          },
+          "metadata": {
+            "modelLine": "iPhone"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "iOS" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "A18" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "60" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.7" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "APPLE_IPHONE_17_PRO",
+          "parserType": "APPLE_BUY_IPHONE_METRICS",
+          "sourceUri": "https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+          "familyCode": "APPLE_IPHONE",
+          "modelCode": "IPHONE_17_PRO",
+          "modelLabel": "iPhone 17 Pro",
+          "releaseYear": 2026,
+          "aliases": {
+            "en": ["iphone17pro", "iphone 17pro"]
+          },
+          "metadata": {
+            "modelLine": "iPhone"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "iOS" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.3" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "APPLE_IPHONE_17_PRO_MAX",
+          "parserType": "APPLE_BUY_IPHONE_METRICS",
+          "sourceUri": "https://www.apple.com/shop/buy-iphone/iphone-17-pro",
+          "familyCode": "APPLE_IPHONE",
+          "modelCode": "IPHONE_17_PRO_MAX",
+          "modelLabel": "iPhone 17 Pro Max",
+          "releaseYear": 2026,
+          "aliases": {
+            "en": ["iphone17promax", "iphone 17pro max", "iphone 17 pm"]
+          },
+          "metadata": {
+            "modelLine": "iPhone"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "iOS" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.9" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "SAMSUNG_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Samsung Official Phones Refresh",
+      "brandCode": "SAMSUNG",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "US",
+      "sourceUri": "https://www.samsung.com/us/smartphones/galaxy-s24/buy/",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "SAMSUNG_GALAXY_S24",
+          "parserType": "SAMSUNG_DEVICE_BUY_PAGE",
+          "sourceUri": "https://www.samsung.com/us/smartphones/galaxy-s24/buy/",
+          "familyCode": "SAMSUNG_GALAXY",
+          "modelCode": "GALAXY_S24",
+          "modelLabel": "Galaxy S24",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["galaxys24", "s24"]
+          },
+          "metadata": {
+            "modelLine": "Galaxy S"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.2" },
+            { "attributeCode": "battery_mah", "rawValue": "4000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "25" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "SAMSUNG_GALAXY_S24_PLUS",
+          "parserType": "SAMSUNG_DEVICE_BUY_PAGE",
+          "sourceUri": "https://www.samsung.com/us/smartphones/galaxy-s24/buy/",
+          "familyCode": "SAMSUNG_GALAXY",
+          "modelCode": "GALAXY_S24_PLUS",
+          "modelLabel": "Galaxy S24+",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["galaxys24plus", "s24plus", "s24+"]
+          },
+          "metadata": {
+            "modelLine": "Galaxy S"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.7" },
+            { "attributeCode": "battery_mah", "rawValue": "4900" },
+            { "attributeCode": "wired_charging_w", "rawValue": "45" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "SAMSUNG_GALAXY_S24_ULTRA",
+          "parserType": "SAMSUNG_DEVICE_BUY_PAGE",
+          "sourceUri": "https://www.samsung.com/us/smartphones/galaxy-s24-ultra/buy/",
+          "familyCode": "SAMSUNG_GALAXY",
+          "modelCode": "GALAXY_S24_ULTRA",
+          "modelLabel": "Galaxy S24 Ultra",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["galaxys24ultra", "s24ultra", "s24u"]
+          },
+          "metadata": {
+            "modelLine": "Galaxy S"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.8" },
+            { "attributeCode": "battery_mah", "rawValue": "5000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "45" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "GOOGLE_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Google Official Phones Refresh",
+      "brandCode": "GOOGLE",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "US",
+      "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "GOOGLE_PIXEL_7A",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_7A",
+          "modelLabel": "Pixel 7a",
+          "releaseYear": 2023,
+          "aliases": {
+            "en": ["pixel7a"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.1" },
+            { "attributeCode": "battery_mah", "rawValue": "4385" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP67" }
+          ]
+        },
+        {
+          "endpointCode": "GOOGLE_PIXEL_8",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_8",
+          "modelLabel": "Pixel 8",
+          "releaseYear": 2023,
+          "aliases": {
+            "en": ["pixel8"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.2" },
+            { "attributeCode": "battery_mah", "rawValue": "4575" },
+            { "attributeCode": "wired_charging_w", "rawValue": "27" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "GOOGLE_PIXEL_8_PRO",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_8_PRO",
+          "modelLabel": "Pixel 8 Pro",
+          "releaseYear": 2023,
+          "aliases": {
+            "en": ["pixel8pro"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.7" },
+            { "attributeCode": "battery_mah", "rawValue": "5050" },
+            { "attributeCode": "wired_charging_w", "rawValue": "30" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "GOOGLE_PIXEL_8A",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_8A",
+          "modelLabel": "Pixel 8a",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["pixel8a"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.1" },
+            { "attributeCode": "battery_mah", "rawValue": "4492" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP67" }
+          ]
+        },
+        {
+          "endpointCode": "GOOGLE_PIXEL_9",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_9",
+          "modelLabel": "Pixel 9",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["pixel9"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.3" },
+            { "attributeCode": "battery_mah", "rawValue": "4700" },
+            { "attributeCode": "wired_charging_w", "rawValue": "27" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "GOOGLE_PIXEL_9_PRO",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_9_PRO",
+          "modelLabel": "Pixel 9 Pro",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["pixel9pro"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.3" },
+            { "attributeCode": "battery_mah", "rawValue": "4700" },
+            { "attributeCode": "wired_charging_w", "rawValue": "27" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "GOOGLE_PIXEL_9_PRO_XL",
+          "parserType": "GOOGLE_PIXEL_SUPPORT_SPECS",
+          "sourceUri": "https://support.google.com/pixelphone/answer/7158570?hl=en",
+          "familyCode": "GOOGLE_PIXEL",
+          "modelCode": "PIXEL_9_PRO_XL",
+          "modelLabel": "Pixel 9 Pro XL",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["pixel9proxl", "pixel9xl"]
+          },
+          "metadata": {
+            "modelLine": "Pixel"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.8" },
+            { "attributeCode": "battery_mah", "rawValue": "5060" },
+            { "attributeCode": "wired_charging_w", "rawValue": "37" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "XIAOMI_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Xiaomi Official Phones Refresh",
+      "brandCode": "XIAOMI",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "GLOBAL",
+      "sourceUri": "https://www.mi.com/global/product/xiaomi-14/specs/",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "XIAOMI_14",
+          "parserType": "XIAOMI_GLOBAL_SPECS_PAGE",
+          "sourceUri": "https://www.mi.com/global/product/xiaomi-14/specs/",
+          "familyCode": "XIAOMI_PHONE",
+          "modelCode": "XIAOMI_14",
+          "modelLabel": "Xiaomi 14",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["xiaomi14"]
+          },
+          "metadata": {
+            "colorHints": "Black,White,Jade Green",
+            "modelLine": "Xiaomi"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.36" },
+            { "attributeCode": "battery_mah", "rawValue": "4610" },
+            { "attributeCode": "wired_charging_w", "rawValue": "90" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "POCO_X7_PRO",
+          "parserType": "XIAOMI_GLOBAL_SPECS_PAGE",
+          "sourceUri": "https://www.mi.com/global/product/poco-x7-pro/specs/",
+          "familyCode": "XIAOMI_POCO",
+          "modelCode": "POCO_X7_PRO",
+          "modelLabel": "POCO X7 Pro",
+          "releaseYear": 2025,
+          "aliases": {
+            "en": ["pocox7pro", "x7pro"]
+          },
+          "metadata": {
+            "colorHints": "Black,Green,Yellow",
+            "modelLine": "POCO X"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "chipset_family", "rawValue": "Dimensity 8400 Ultra" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.67" },
+            { "attributeCode": "battery_mah", "rawValue": "6000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "90" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "REDMI_NOTE_14_PRO_PLUS",
+          "parserType": "XIAOMI_GLOBAL_SPECS_PAGE",
+          "sourceUri": "https://www.mi.com/global/product/redmi-note-14-pro-plus-5g/specs/",
+          "familyCode": "XIAOMI_REDMI_NOTE",
+          "modelCode": "REDMI_NOTE_14_PRO_PLUS",
+          "modelLabel": "Redmi Note 14 Pro+ 5G",
+          "releaseYear": 2025,
+          "aliases": {
+            "en": ["redminote14proplus", "note14proplus", "redmi note 14 pro plus"]
+          },
+          "metadata": {
+            "colorHints": "Black,Purple,Blue",
+            "modelLine": "Redmi Note"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7s Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.67" },
+            { "attributeCode": "battery_mah", "rawValue": "5110" },
+            { "attributeCode": "wired_charging_w", "rawValue": "120" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "ONEPLUS_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "OnePlus Official Phones Refresh",
+      "brandCode": "ONEPLUS",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "GLOBAL",
+      "sourceUri": "https://www.oneplus.com/us/13/specs",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "ONEPLUS_13",
+          "parserType": "ONEPLUS_SPECS_PAGE",
+          "sourceUri": "https://www.oneplus.com/us/13/specs",
+          "familyCode": "ONEPLUS_PHONE",
+          "modelCode": "ONEPLUS_13",
+          "modelLabel": "OnePlus 13",
+          "releaseYear": 2025,
+          "aliases": {
+            "en": ["oneplus13"]
+          },
+          "metadata": {
+            "colorHints": "Midnight Ocean,Arctic Dawn,Black Eclipse",
+            "modelLine": "OnePlus"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Elite" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.82" },
+            { "attributeCode": "battery_mah", "rawValue": "6000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "80" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68", "aliases": { "en": ["ip69", "ip69/ip68"] } }
+          ]
+        },
+        {
+          "endpointCode": "ONEPLUS_12",
+          "parserType": "ONEPLUS_SPECS_PAGE",
+          "sourceUri": "https://www.oneplus.com/us/12/specs",
+          "familyCode": "ONEPLUS_PHONE",
+          "modelCode": "ONEPLUS_12",
+          "modelLabel": "OnePlus 12",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["oneplus12"]
+          },
+          "metadata": {
+            "modelLine": "OnePlus"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.82" },
+            { "attributeCode": "battery_mah", "rawValue": "5400" },
+            { "attributeCode": "wired_charging_w", "rawValue": "80" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" }
+          ]
+        },
+        {
+          "endpointCode": "ONEPLUS_NORD_4",
+          "parserType": "ONEPLUS_SPECS_PAGE",
+          "sourceUri": "https://www.oneplus.com/global/nord-4/specs",
+          "familyCode": "ONEPLUS_PHONE",
+          "modelCode": "ONEPLUS_NORD_4",
+          "modelLabel": "OnePlus Nord 4",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["oneplusnord4", "nord4"]
+          },
+          "metadata": {
+            "colorHints": "Mercurial Silver,Oasis Green,Obsidian Midnight",
+            "modelLine": "Nord"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7 Plus Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.74" },
+            { "attributeCode": "battery_mah", "rawValue": "5500" },
+            { "attributeCode": "wired_charging_w", "rawValue": "100" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "NOTHING_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Nothing Official Phones Refresh",
+      "brandCode": "NOTHING",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "GLOBAL",
+      "sourceUri": "https://nothing.tech/products/phone-2",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "NOTHING_PHONE_2",
+          "parserType": "NOTHING_PRODUCT_PAGE",
+          "sourceUri": "https://nothing.tech/products/phone-2",
+          "familyCode": "NOTHING_PHONE",
+          "modelCode": "NOTHING_PHONE_2",
+          "modelLabel": "Nothing Phone (2)",
+          "releaseYear": 2023,
+          "aliases": {
+            "en": ["nothingphone2", "nothing2"]
+          },
+          "metadata": {
+            "colorHints": "White,Dark Grey",
+            "modelLine": "Phone"
+          },
+          "fixedValues": []
+        },
+        {
+          "endpointCode": "NOTHING_PHONE_2A",
+          "parserType": "NOTHING_PRODUCT_PAGE",
+          "sourceUri": "https://checkout.nothing.tech/pages/phone-2a",
+          "familyCode": "NOTHING_PHONE",
+          "modelCode": "NOTHING_PHONE_2A",
+          "modelLabel": "Nothing Phone (2a)",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["nothingphone2a", "nothing2a"]
+          },
+          "metadata": {
+            "colorHints": "Black,Milk",
+            "modelLine": "Phone"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "chipset_family", "rawValue": "Dimensity 7200 Pro" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.55" },
+            { "attributeCode": "battery_mah", "rawValue": "5000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "45" },
+            { "attributeCode": "ip_rating", "rawValue": "IP54" }
+          ]
+        },
+        {
+          "endpointCode": "NOTHING_PHONE_1",
+          "parserType": "NOTHING_PRODUCT_PAGE",
+          "sourceUri": "https://intl.nothing.tech/products/phone-1",
+          "familyCode": "NOTHING_PHONE",
+          "modelCode": "NOTHING_PHONE_1",
+          "modelLabel": "Nothing Phone (1)",
+          "releaseYear": 2022,
+          "aliases": {
+            "en": ["nothingphone1", "nothing1"]
+          },
+          "metadata": {
+            "colorHints": "Black,White",
+            "modelLine": "Phone"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 778G+" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "HUAWEI_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Huawei Official Phones Refresh",
+      "brandCode": "HUAWEI",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "sk-SK",
+      "marketCode": "SK",
+      "sourceUri": "https://consumer.huawei.com/sk/phones/pura70/specs/",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "HUAWEI_PURA70",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://consumer.huawei.com/sk/phones/pura70/specs/",
+          "familyCode": "HUAWEI_PHONE",
+          "modelCode": "HUAWEI_PURA70",
+          "modelLabel": "HUAWEI Pura 70",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["huaweipura70", "pura70"]
+          },
+          "metadata": {
+            "colorHints": "Pink,White,Black,Blue",
+            "modelLine": "Pura"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "4G" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "battery_mah", "rawValue": "4900" },
+            { "attributeCode": "wired_charging_w", "rawValue": "66" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "HUAWEI_PURA70_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://consumer.huawei.com/sk/phones/pura70-pro/specs/",
+          "familyCode": "HUAWEI_PHONE",
+          "modelCode": "HUAWEI_PURA70_PRO",
+          "modelLabel": "HUAWEI Pura 70 Pro",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["huaweipura70pro", "pura70pro", "pura 70 pro"]
+          },
+          "metadata": {
+            "colorHints": "White,Black",
+            "modelLine": "Pura"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "4G" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "battery_mah", "rawValue": "5050" },
+            { "attributeCode": "wired_charging_w", "rawValue": "100" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "HUAWEI_P60",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://consumer.huawei.com/en/phones/p60/specs/",
+          "familyCode": "HUAWEI_PHONE",
+          "modelCode": "HUAWEI_P60",
+          "modelLabel": "HUAWEI P60",
+          "releaseYear": 2023,
+          "aliases": {
+            "en": ["huaweip60", "p60"]
+          },
+          "metadata": {
+            "colorHints": "Black,White,Blue",
+            "modelLine": "P"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "4G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8+ Gen 1" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.67" },
+            { "attributeCode": "battery_mah", "rawValue": "4815" },
+            { "attributeCode": "wired_charging_w", "rawValue": "66" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "HUAWEI_P60_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://consumer.huawei.com/en/phones/p60-pro/specs/",
+          "familyCode": "HUAWEI_PHONE",
+          "modelCode": "HUAWEI_P60_PRO",
+          "modelLabel": "HUAWEI P60 Pro",
+          "releaseYear": 2023,
+          "aliases": {
+            "en": ["huaweip60pro", "p60pro", "p60 pro"]
+          },
+          "metadata": {
+            "colorHints": "Black,White,Rococo Pearl",
+            "modelLine": "P"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "4G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8+ Gen 1" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.67" },
+            { "attributeCode": "battery_mah", "rawValue": "4815" },
+            { "attributeCode": "wired_charging_w", "rawValue": "88" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "HONOR_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "Honor Official Phones Refresh",
+      "brandCode": "HONOR",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "GLOBAL",
+      "sourceUri": "https://www.honor.com/global/phones/honor-200/spec/",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "HONOR_200",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.honor.com/global/phones/honor-200/spec/",
+          "familyCode": "HONOR_PHONE",
+          "modelCode": "HONOR_200",
+          "modelLabel": "HONOR 200",
+          "releaseYear": 2024,
+          "releaseDate": "2024-06-12",
+          "aliases": {
+            "en": ["honor200", "honor 200"]
+          },
+          "metadata": {
+            "colorHints": "Moonlight White,Emerald Green,Coral Pink,Black",
+            "modelLine": "200"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7 Gen 3" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.7" },
+            { "attributeCode": "battery_mah", "rawValue": "5200" },
+            { "attributeCode": "wired_charging_w", "rawValue": "100" },
+            { "attributeCode": "esim_support", "rawValue": "true" }
+          ]
+        },
+        {
+          "endpointCode": "HONOR_200_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.honor.com/global/phones/honor-200-pro/spec/",
+          "familyCode": "HONOR_PHONE",
+          "modelCode": "HONOR_200_PRO",
+          "modelLabel": "HONOR 200 Pro",
+          "releaseYear": 2024,
+          "releaseDate": "2024-06-12",
+          "aliases": {
+            "en": ["honor200pro", "honor 200 pro"]
+          },
+          "metadata": {
+            "colorHints": "Ocean Cyan,Moonlight White,Black",
+            "modelLine": "200"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8s Gen 3" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.78" },
+            { "attributeCode": "battery_mah", "rawValue": "5200" },
+            { "attributeCode": "wired_charging_w", "rawValue": "100" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" }
+          ]
+        },
+        {
+          "endpointCode": "HONOR_MAGIC6_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.honor.com/global/phones/honor-magic6-pro/spec/",
+          "familyCode": "HONOR_PHONE",
+          "modelCode": "HONOR_MAGIC6_PRO",
+          "modelLabel": "HONOR Magic6 Pro",
+          "releaseYear": 2024,
+          "releaseDate": "2024-02-25",
+          "aliases": {
+            "en": ["honormagic6pro", "magic6pro", "magic 6 pro"]
+          },
+          "metadata": {
+            "colorHints": "Epi Green,Black,Cloud Purple",
+            "modelLine": "Magic6"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Gen 3" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.8" },
+            { "attributeCode": "battery_mah", "rawValue": "5600" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            { "attributeCode": "ip_rating", "rawValue": "IP68" }
+          ]
+        },
+        {
+          "endpointCode": "HONOR_400",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.honor.com/global/phones/honor-400/",
+          "familyCode": "HONOR_PHONE",
+          "modelCode": "HONOR_400",
+          "modelLabel": "HONOR 400",
+          "releaseYear": 2025,
+          "releaseDate": "2025-05-22",
+          "aliases": {
+            "en": ["honor400", "honor 400"]
+          },
+          "metadata": {
+            "colorHints": "Midnight Black,Desert Gold,Meteor Silver,Tidal Blue",
+            "modelLine": "400"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7 Gen 3" },
+            { "attributeCode": "battery_mah", "rawValue": "6000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "80" }
+          ]
+        },
+        {
+          "endpointCode": "HONOR_400_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.honor.com/global/phones/honor-400-pro/",
+          "familyCode": "HONOR_PHONE",
+          "modelCode": "HONOR_400_PRO",
+          "modelLabel": "HONOR 400 Pro",
+          "releaseYear": 2025,
+          "releaseDate": "2025-05-22",
+          "aliases": {
+            "en": ["honor400pro", "honor 400 pro"]
+          },
+          "metadata": {
+            "colorHints": "Lunar Grey,Midnight Black,Tidal Blue",
+            "modelLine": "400"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.7" },
+            { "attributeCode": "battery_mah", "rawValue": "6000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "100" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            {
+              "attributeCode": "ip_rating",
+              "rawValue": "IP68",
+              "aliases": {
+                "en": ["ip69", "ip68/ip69"]
+              }
+            }
+          ]
+        },
+        {
+          "endpointCode": "HONOR_MAGIC7_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.honor.com/global/phones/honor-magic7-pro/spec/",
+          "familyCode": "HONOR_PHONE",
+          "modelCode": "HONOR_MAGIC7_PRO",
+          "modelLabel": "HONOR Magic7 Pro",
+          "releaseYear": 2025,
+          "releaseDate": "2025-01-15",
+          "aliases": {
+            "en": ["honormagic7pro", "magic7pro", "magic 7 pro"]
+          },
+          "metadata": {
+            "colorHints": "Lunar Shadow Grey,Breeze Blue,Black",
+            "modelLine": "Magic7"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Elite" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.8" },
+            { "attributeCode": "battery_mah", "rawValue": "5850" },
+            { "attributeCode": "wired_charging_w", "rawValue": "100" },
+            { "attributeCode": "wireless_charging", "rawValue": "true" },
+            { "attributeCode": "esim_support", "rawValue": "true" },
+            {
+              "attributeCode": "ip_rating",
+              "rawValue": "IP68",
+              "aliases": {
+                "en": ["ip69", "ip68/ip69"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sourceCode": "REALME_OFFICIAL_PHONES",
+      "categoryCode": "TECH.PHONES",
+      "displayName": "realme Official Phones Refresh",
+      "brandCode": "REALME",
+      "tier": "AUTHORITATIVE",
+      "defaultLocale": "en-US",
+      "marketCode": "GLOBAL",
+      "sourceUri": "https://www.realme.com/global/realme-gt-6/specs",
+      "metadata": {
+        "connector": "official_phone_web",
+        "refreshRole": "authoritative"
+      },
+      "endpoints": [
+        {
+          "endpointCode": "REALME_GT6",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.realme.com/global/realme-gt-6/specs",
+          "familyCode": "REALME_PHONE",
+          "modelCode": "REALME_GT6",
+          "modelLabel": "realme GT 6",
+          "releaseYear": 2024,
+          "releaseDate": "2024-06-20",
+          "aliases": {
+            "en": ["realmegt6", "gt6", "realme gt 6"]
+          },
+          "metadata": {
+            "colorHints": "Fluid Silver,Razor Green",
+            "modelLine": "GT"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8s Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.78" },
+            { "attributeCode": "battery_mah", "rawValue": "5500" },
+            { "attributeCode": "wired_charging_w", "rawValue": "120" },
+            { "attributeCode": "ip_rating", "rawValue": "IP65" }
+          ]
+        },
+        {
+          "endpointCode": "REALME_GT7_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.realme.com/global/realme-gt-7-pro/specs",
+          "familyCode": "REALME_PHONE",
+          "modelCode": "REALME_GT7_PRO",
+          "modelLabel": "realme GT 7 Pro",
+          "releaseYear": 2024,
+          "aliases": {
+            "en": ["realmegt7pro", "gt7pro", "realme gt 7 pro"]
+          },
+          "metadata": {
+            "colorHints": "Mars Orange,Galaxy Grey",
+            "modelLine": "GT"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 8 Elite" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.78" },
+            { "attributeCode": "battery_mah", "rawValue": "6500" },
+            { "attributeCode": "wired_charging_w", "rawValue": "120" },
+            { "attributeCode": "ip_rating", "rawValue": "IP69" }
+          ]
+        },
+        {
+          "endpointCode": "REALME_12_PRO_PLUS",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.realme.com/br/realme-12-pro-plus/specs",
+          "familyCode": "REALME_PHONE",
+          "modelCode": "REALME_12_PRO_PLUS",
+          "modelLabel": "realme 12 Pro+",
+          "releaseYear": 2024,
+          "releaseDate": "2024-02-29",
+          "aliases": {
+            "en": ["realme12proplus", "12proplus", "realme 12 pro plus"]
+          },
+          "metadata": {
+            "colorHints": "Submarine Blue,Navigator Beige,Explorer Red",
+            "modelLine": "12 Pro+"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7s Gen 2" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.7" },
+            { "attributeCode": "battery_mah", "rawValue": "5000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "67" }
+          ]
+        },
+        {
+          "endpointCode": "REALME_14_PRO_PLUS",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.realme.com/global/realme-14-pro-plus-5g/specs",
+          "familyCode": "REALME_PHONE",
+          "modelCode": "REALME_14_PRO_PLUS",
+          "modelLabel": "realme 14 Pro+ 5G",
+          "releaseYear": 2025,
+          "releaseDate": "2024-12-19",
+          "aliases": {
+            "en": ["realme14proplus", "14proplus", "realme 14 pro plus"]
+          },
+          "metadata": {
+            "colorHints": "Pearl White,Suede Grey,Bikaner Purple",
+            "modelLine": "14 Pro+"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7s Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.83" },
+            { "attributeCode": "battery_mah", "rawValue": "6000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "80" },
+            {
+              "attributeCode": "ip_rating",
+              "rawValue": "IP68",
+              "aliases": {
+                "en": ["ip69", "ip68/ip69"]
+              }
+            }
+          ]
+        },
+        {
+          "endpointCode": "REALME_14_PRO",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.realme.com/global/realme-14-pro-5g/specs",
+          "familyCode": "REALME_PHONE",
+          "modelCode": "REALME_14_PRO",
+          "modelLabel": "realme 14 Pro 5G",
+          "releaseYear": 2025,
+          "releaseDate": "2024-12-19",
+          "aliases": {
+            "en": ["realme14pro", "14pro", "realme 14 pro"]
+          },
+          "metadata": {
+            "colorHints": "Pearl White,Jaipur Pink,Suede Grey",
+            "modelLine": "14 Pro"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Dimensity 7300" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.77" },
+            { "attributeCode": "battery_mah", "rawValue": "6000" },
+            { "attributeCode": "wired_charging_w", "rawValue": "45" },
+            {
+              "attributeCode": "ip_rating",
+              "rawValue": "IP68",
+              "aliases": {
+                "en": ["ip69", "ip68/ip69"]
+              }
+            }
+          ]
+        },
+        {
+          "endpointCode": "REALME_GT6T",
+          "parserType": "GENERIC_PHONE_SPECS_PAGE",
+          "sourceUri": "https://www.realme.com/global/realme-gt-6t/specs",
+          "familyCode": "REALME_PHONE",
+          "modelCode": "REALME_GT6T",
+          "modelLabel": "realme GT 6T",
+          "releaseYear": 2024,
+          "releaseDate": "2024-06-20",
+          "aliases": {
+            "en": ["realmegt6t", "gt6t", "realme gt 6t"]
+          },
+          "metadata": {
+            "colorHints": "Fluid Silver,Razor Green",
+            "modelLine": "GT"
+          },
+          "fixedValues": [
+            { "attributeCode": "os_family", "rawValue": "Android" },
+            { "attributeCode": "network_type", "rawValue": "5G" },
+            { "attributeCode": "chipset_family", "rawValue": "Snapdragon 7+ Gen 3" },
+            { "attributeCode": "refresh_rate_hz", "rawValue": "120" },
+            { "attributeCode": "screen_size_inch", "rawValue": "6.78" },
+            { "attributeCode": "battery_mah", "rawValue": "5500" },
+            { "attributeCode": "wired_charging_w", "rawValue": "120" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,8 +44,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.shoppingassistant.core.data.suggest.ProductSuggestCandidate
 import com.example.shoppingassistant.core.data.suggest.ProductSuggestRepository
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
+import com.example.shoppingassistant.domain.i18n.displayTitle
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
 import com.example.shoppingassistant.domain.ugc.MirrorByUrlUseCase
 import com.example.shoppingassistant.domain.ugc.UgcMirrorResult
@@ -67,12 +70,15 @@ fun CreateTrackWizardSheet(
 ) {
     val createTrackTask: CreateTrackTask = remember { koinGet(CreateTrackTask::class.java) }
     val suggestRepository: ProductSuggestRepository = remember { koinGet(ProductSuggestRepository::class.java) }
-    val catalogRepository: CatalogRepository = remember { koinGet(CatalogRepository::class.java) }
+    val catalogRepository: CatalogReadRepository = remember { koinGet(CatalogReadRepository::class.java) }
+    val catalogTaxonomyRepository: CatalogTaxonomyRepository = remember {
+        koinGet(CatalogTaxonomyRepository::class.java)
+    }
     val mirrorByUrl: MirrorByUrlUseCase = remember { koinGet(MirrorByUrlUseCase::class.java) }
     val normalizeImage: NormalizeImageUseCase = remember { koinGet(NormalizeImageUseCase::class.java) }
     val getProfileCache: GetProfileCacheTask = remember { koinGet(GetProfileCacheTask::class.java) }
 
-    val leafCategories = rememberLeafCategories(catalogRepository)
+    val leafCategories = rememberLeafCategories(catalogTaxonomyRepository)
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -89,7 +95,7 @@ fun CreateTrackWizardSheet(
     var showCategoryPicker by remember { mutableStateOf(false) }
     var showTargetEditor by remember { mutableStateOf(false) }
     var countryCode by remember { mutableStateOf("") }
-    var validationProfile by remember { mutableStateOf<CategoryProfile?>(null) }
+    var validationSpec by remember { mutableStateOf<CatalogCategoryEffectiveSpec?>(null) }
     var validationProfileLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(getProfileCache) {
@@ -134,7 +140,11 @@ fun CreateTrackWizardSheet(
         delay(180)
         suggestions = runCatching { suggestRepository.search(q, limit = 8) }.getOrElse { emptyList() }
         categoryHints = leafCategories.filter { category ->
-            val haystack = listOfNotNull(category.title, category.code).joinToString(" ").lowercase()
+            val haystack = buildList {
+                add(category.code)
+                addAll(category.title.values)
+                add(category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()))
+            }.joinToString(" ").lowercase()
             haystack.contains(q.lowercase())
         }.take(6)
     }
@@ -142,12 +152,12 @@ fun CreateTrackWizardSheet(
     LaunchedEffect(targetDraft.type, targetDraft.categoryCode, catalogRepository) {
         val categoryCode = targetDraft.categoryCode?.trim().orEmpty()
         if (categoryCode.isBlank()) {
-            validationProfile = null
+            validationSpec = null
             validationProfileLoading = false
             return@LaunchedEffect
         }
         validationProfileLoading = true
-        validationProfile = runCatching { catalogRepository.getCategoryProfile(categoryCode) }.getOrNull()
+        validationSpec = runCatching { catalogRepository.getCategoryEffectiveSpec(categoryCode) }.getOrNull()
         validationProfileLoading = false
     }
 
@@ -218,7 +228,7 @@ fun CreateTrackWizardSheet(
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     items(categoryHints) { category ->
                         SuggestionRow(
-                            title = category.title ?: category.code,
+                            title = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()),
                             subtitle = category.code,
                             onClick = {
                                 targetDraft = targetDraft.copy(
@@ -226,7 +236,7 @@ fun CreateTrackWizardSheet(
                                     categoryCode = category.code,
                                     sourceLabel = "из подсказки",
                                 )
-                                query = category.title ?: category.code
+                                query = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag())
                             },
                         )
                     }
@@ -248,10 +258,10 @@ fun CreateTrackWizardSheet(
                 )
             }
 
-            val missingRequiredCodes = targetDraft.missingRequiredAttributeCodes(validationProfile)
+            val missingRequiredCodes = targetDraft.missingRequiredAttributeCodes(validationSpec)
             val missingRequiredMessage = buildMissingRequiredMessage(
                 missingCodes = missingRequiredCodes,
-                profile = validationProfile,
+                spec = validationSpec,
             )
             if (validationProfileLoading) {
                 Text(
@@ -336,7 +346,7 @@ fun CreateTrackWizardSheet(
                     categoryCode = category.code,
                     sourceLabel = null,
                 )
-                query = category.title ?: category.code
+                query = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag())
                 showCategoryPicker = false
             },
         )
@@ -406,10 +416,10 @@ fun CreateTrackWizardSheet(
 
 private fun buildMissingRequiredMessage(
     missingCodes: Set<String>,
-    profile: CategoryProfile?,
+    spec: CatalogCategoryEffectiveSpec?,
 ): String {
     if (missingCodes.isEmpty()) return ""
-    val titleByCode = profile?.attributes
+    val titleByCode = spec?.allAttributes()
         .orEmpty()
         .associate { def -> def.code.trim().lowercase() to def.title }
     val labels = missingCodes
@@ -508,7 +518,11 @@ private fun CategoryPickerSheet(
         val q = query.trim().lowercase()
         if (q.isBlank()) categories
         else categories.filter {
-            listOfNotNull(it.title, it.code).joinToString(" ").lowercase().contains(q)
+            buildList {
+                add(it.code)
+                addAll(it.title.values)
+                add(it.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()))
+            }.joinToString(" ").lowercase().contains(q)
         }
     }
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
@@ -529,7 +543,7 @@ private fun CategoryPickerSheet(
             LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 items(filtered) { category ->
                     SuggestionRow(
-                        title = category.title ?: category.code,
+                        title = category.displayTitle(locale = java.util.Locale.getDefault().toLanguageTag()),
                         subtitle = category.code,
                         onClick = { onSelect(category) },
                     )
@@ -611,3 +625,5 @@ private fun applyMirrorResult(result: UgcMirrorResult): TrackTargetDraft? {
     }
     return null
 }
+
+

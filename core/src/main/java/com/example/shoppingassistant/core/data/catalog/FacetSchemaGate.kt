@@ -1,6 +1,6 @@
 package com.example.shoppingassistant.core.data.catalog
 
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.catalog.CatalogSeed
 import com.example.shoppingassistant.domain.facet.FacetCollection
 import com.example.shoppingassistant.domain.facet.FacetCollectionRepository
@@ -74,7 +74,7 @@ class FacetCollectionRepositoryImpl(
 }
 
 class FacetSchemaGate(
-    private val catalogRepository: CatalogRepository,
+    private val catalogRepository: CatalogTaxonomyRepository,
     private val facetDefinitionRepository: FacetDefinitionRepository,
     private val facetPresetRepository: FacetPresetRepository,
     private val facetCollectionRepository: FacetCollectionRepository,
@@ -104,3 +104,4 @@ class FacetSchemaGate(
         private const val DEFAULT_MAX_ISSUES = 20
     }
 }
+

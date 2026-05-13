@@ -39,7 +39,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "UNISEX"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "gender",
+            "allowedValues": [
+              "UNISEX",
+              "MALE",
+              "FEMALE",
+              "KIDS"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории FASH.ACCESSORIES по атрибуту gender."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -83,7 +108,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "UNISEX"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "gender",
+            "allowedValues": [
+              "UNISEX",
+              "MALE",
+              "FEMALE",
+              "KIDS"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории FASH.BAGS по атрибуту gender."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -94,40 +144,148 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "gender",
+        "attributeCode": "apparel_type",
         "allowedValues": [
-          "UNISEX",
-          "MALE",
-          "FEMALE",
-          "KIDS"
+          "BLOUSE",
+          "BODYSUIT",
+          "BABY_SET",
+          "CARDIGAN",
+          "COAT",
+          "COSTUME",
+          "DOWN_JACKET",
+          "DRESS",
+          "FORMALWEAR",
+          "HAT_SCARF_SET",
+          "HOMEWEAR",
+          "HOODIE",
+          "JACKET",
+          "JEANS",
+          "JUMPSUIT",
+          "LEGGINGS",
+          "LONGSLEEVE",
+          "OVERALLS",
+          "PAJAMAS",
+          "POLO",
+          "RAINCOAT",
+          "ROMPER",
+          "SCHOOL_UNIFORM",
+          "SHIRT",
+          "SHORTS",
+          "SKIRT",
+          "SOCKS",
+          "SPORTSWEAR",
+          "SWEATER",
+          "SWEATSHIRT",
+          "SWIMWEAR",
+          "THERMAL_UNDERWEAR",
+          "TRACKSUIT",
+          "TROUSERS",
+          "TSHIRT",
+          "UNDERWEAR",
+          "VEST"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
+        "reason": "FASH.KIDS child override v1.0: allowed children apparel types; shoes, bags, toys, strollers and baby gear are guarded to sibling routes."
+      },
+      {
+        "attributeCode": "target_gender",
+        "allowedValues": [
+          "BOYS",
+          "GIRLS",
+          "KIDS",
+          "UNISEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.KIDS child override v1.0: default target_gender KIDS, allowed BOYS/GIRLS/KIDS/UNISEX."
+      },
+      {
+        "attributeCode": "age_group",
+        "allowedValues": [
+          "NEWBORN",
+          "BABY",
+          "TODDLER",
+          "KIDS",
+          "TEEN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.KIDS child override v1.0: default age_group KIDS, supports NEWBORN/BABY/TODDLER/KIDS/TEEN."
       },
       {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "FAIR",
+          "GOOD",
           "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "NEW",
+          "UNKNOWN",
+          "USED"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "FASH.KIDS child override v1.0: public seller condition surface."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "material_primary",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "ACRYLIC",
+          "CASHMERE",
+          "CHIFFON",
+          "CORDUROY",
+          "COTTON",
+          "DENIM",
+          "DOWN",
+          "ELASTANE",
+          "FAUX_LEATHER",
+          "FLEECE",
+          "JERSEY",
+          "LACE",
+          "LEATHER",
+          "LINEN",
+          "MERINO_WOOL",
+          "MIXED",
+          "MODAL",
+          "ORGANIC_COTTON",
+          "POLYAMIDE",
+          "POLYESTER",
+          "POLYURETHANE",
+          "SATIN",
+          "SILK",
+          "SUEDE",
+          "SYNTHETIC_INSULATION",
+          "TWEED",
+          "VELVET",
+          "VISCOSE",
+          "WOOL"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "FASH.APPAREL_COMMON textile material dictionary values."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "target_gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "KIDS"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "target_gender",
+            "allowedValues": [
+              "BOYS",
+              "GIRLS",
+              "KIDS",
+              "UNISEX"
+            ],
+            "forbiddenValues": [],
+            "reason": "FASH.KIDS child override v1.0 compatibility surface."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -138,40 +296,143 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "gender",
+        "attributeCode": "apparel_type",
         "allowedValues": [
-          "UNISEX",
-          "MALE",
-          "FEMALE",
-          "KIDS"
+          "ACTIVE_BOTTOM",
+          "ACTIVE_TOP",
+          "BLAZER",
+          "BOMBER",
+          "CARDIGAN",
+          "CARGO_PANTS",
+          "CHINOS",
+          "COAT",
+          "DENIM_JACKET",
+          "DOWN_JACKET",
+          "HOODIE",
+          "JACKET",
+          "JEANS",
+          "LEATHER_JACKET",
+          "LONGSLEEVE",
+          "PAJAMAS",
+          "PARKA",
+          "POLO",
+          "RAINCOAT",
+          "ROBE",
+          "SHIRT",
+          "SHORTS",
+          "SOCKS",
+          "SUIT",
+          "SWEATER",
+          "SWEATSHIRT",
+          "SWIMWEAR",
+          "THERMAL_UNDERWEAR",
+          "TRACKSUIT",
+          "TROUSERS",
+          "TSHIRT",
+          "TURTLENECK",
+          "UNDERWEAR",
+          "UNIFORM",
+          "VEST",
+          "WINDBREAKER"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
+        "reason": "FASH.MEN child override v1.0: allowed men apparel types; blocked cross-route values stay in common dictionary."
+      },
+      {
+        "attributeCode": "target_gender",
+        "allowedValues": [
+          "MEN",
+          "UNISEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.MEN child override v1.0: default target_gender MEN, allowed MEN/UNISEX."
+      },
+      {
+        "attributeCode": "age_group",
+        "allowedValues": [
+          "ADULT",
+          "TEEN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.MEN child override v1.0: default age_group ADULT, allowed ADULT/TEEN."
       },
       {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "DEFECTS",
+          "FAIR",
+          "FOR_PARTS",
+          "GOOD",
           "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "NEW",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "USED"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "FASH.APPAREL_COMMON condition dictionary values."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "material_primary",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "ACRYLIC",
+          "CASHMERE",
+          "CHIFFON",
+          "CORDUROY",
+          "COTTON",
+          "DENIM",
+          "DOWN",
+          "ELASTANE",
+          "FAUX_LEATHER",
+          "FLEECE",
+          "JERSEY",
+          "LACE",
+          "LEATHER",
+          "LINEN",
+          "MERINO_WOOL",
+          "MIXED",
+          "MODAL",
+          "ORGANIC_COTTON",
+          "POLYAMIDE",
+          "POLYESTER",
+          "POLYURETHANE",
+          "SATIN",
+          "SILK",
+          "SUEDE",
+          "SYNTHETIC_INSULATION",
+          "TWEED",
+          "VELVET",
+          "VISCOSE",
+          "WOOL"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "FASH.APPAREL_COMMON textile material dictionary values."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "target_gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MEN"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "target_gender",
+            "allowedValues": [
+              "MEN",
+              "UNISEX"
+            ],
+            "forbiddenValues": [],
+            "reason": "FASH.MEN child override v1.0 compatibility surface."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -204,7 +465,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "UNISEX"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "gender",
+            "allowedValues": [
+              "UNISEX",
+              "MALE",
+              "FEMALE",
+              "KIDS"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории FASH.SHOES по атрибуту gender."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -215,40 +501,153 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "gender",
+        "attributeCode": "apparel_type",
         "allowedValues": [
-          "UNISEX",
-          "MALE",
-          "FEMALE",
-          "KIDS"
+          "DRESS",
+          "BLOUSE",
+          "TOP",
+          "TSHIRT",
+          "SHIRT",
+          "SKIRT",
+          "JEANS",
+          "TROUSERS",
+          "LEGGINGS",
+          "JACKET",
+          "COAT",
+          "DOWN_JACKET",
+          "CARDIGAN",
+          "SWEATER",
+          "HOODIE",
+          "JUMPSUIT",
+          "LONGSLEEVE",
+          "TANK_TOP",
+          "POLO",
+          "SWEATSHIRT",
+          "SHORTS",
+          "SUIT",
+          "BLAZER",
+          "TRACKSUIT",
+          "UNDERWEAR",
+          "BRA",
+          "TIGHTS",
+          "SOCKS",
+          "VEST",
+          "CHINOS",
+          "CARGO_PANTS",
+          "BOMBER",
+          "DENIM_JACKET",
+          "LEATHER_JACKET",
+          "WINDBREAKER",
+          "PARKA",
+          "THERMAL_UNDERWEAR",
+          "ACTIVE_TOP",
+          "ACTIVE_BOTTOM",
+          "ROMPER",
+          "TURTLENECK",
+          "RAINCOAT",
+          "ROBE",
+          "PAJAMAS",
+          "SWIMWEAR",
+          "UNIFORM"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
+        "reason": "FASH.WOMEN child override v1.0: allowed women apparel types; male-only pseudo-types stay guarded outside the common dictionary."
+      },
+      {
+        "attributeCode": "target_gender",
+        "allowedValues": [
+          "WOMEN",
+          "UNISEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.WOMEN child override v1.0: default target_gender WOMEN, allowed WOMEN/UNISEX."
+      },
+      {
+        "attributeCode": "age_group",
+        "allowedValues": [
+          "ADULT",
+          "TEEN"
+        ],
+        "forbiddenValues": [],
+        "reason": "FASH.WOMEN child override v1.0: default age_group ADULT, allowed ADULT/TEEN."
       },
       {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "DEFECTS",
+          "FAIR",
+          "FOR_PARTS",
+          "GOOD",
           "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "NEW",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "USED"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "FASH.APPAREL_COMMON condition dictionary values."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "material_primary",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "ACRYLIC",
+          "CASHMERE",
+          "CHIFFON",
+          "CORDUROY",
+          "COTTON",
+          "DENIM",
+          "DOWN",
+          "ELASTANE",
+          "FAUX_LEATHER",
+          "FLEECE",
+          "JERSEY",
+          "LACE",
+          "LEATHER",
+          "LINEN",
+          "MERINO_WOOL",
+          "MIXED",
+          "MODAL",
+          "ORGANIC_COTTON",
+          "POLYAMIDE",
+          "POLYESTER",
+          "POLYURETHANE",
+          "SATIN",
+          "SILK",
+          "SUEDE",
+          "SYNTHETIC_INSULATION",
+          "TWEED",
+          "VELVET",
+          "VISCOSE",
+          "WOOL"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "FASH.APPAREL_COMMON textile material dictionary values."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "target_gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "WOMEN"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "target_gender",
+            "allowedValues": [
+              "WOMEN",
+              "UNISEX"
+            ],
+            "forbiddenValues": [],
+            "reason": "FASH.WOMEN child override v1.0 compatibility surface."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

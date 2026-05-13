@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "attributes": [
+    {
+      "code": "price",
+      "title": "Цена",
+      "labels": {
+        "ru": "Цена",
+        "en": "Price"
+      },
+      "dataType": "DECIMAL",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "uiOrderOffset": 0,
+      "requiredForOffer": true,
+      "requiredForExpress": true,
+      "widgetHint": "INPUT",
+      "ignoreForOfferSignal": true
+    },
+    {
+      "code": "currency",
+      "title": "Валюта",
+      "labels": {
+        "ru": "Валюта",
+        "en": "Currency"
+      },
+      "dataType": "ENUM",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "uiOrderOffset": 1,
+      "requiredForOffer": true,
+      "requiredForExpress": true,
+      "valueDictCode": "currency",
+      "dictionaryRequired": true,
+      "enumOnly": true,
+      "widgetHint": "DROPDOWN",
+      "options": [
+        {
+          "valueCode": "RUB",
+          "labels": {
+            "und": "RUB"
+          },
+          "rank": 100
+        },
+        {
+          "valueCode": "USD",
+          "labels": {
+            "und": "USD"
+          },
+          "rank": 90
+        },
+        {
+          "valueCode": "EUR",
+          "labels": {
+            "und": "EUR"
+          },
+          "rank": 80
+        }
+      ],
+      "ignoreForOfferSignal": true
+    },
+    {
+      "code": "condition",
+      "title": "Состояние",
+      "labels": {
+        "ru": "Состояние",
+        "en": "Condition"
+      },
+      "dataType": "ENUM",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "uiOrderOffset": 2,
+      "requiredForOffer": true,
+      "requiredForExpress": true,
+      "facetEnabled": true,
+      "valueDictCode": "condition",
+      "isFacet": true,
+      "dictionaryRequired": true,
+      "enumOnly": true,
+      "widgetHint": "DROPDOWN"
+    }
+  ]
+}

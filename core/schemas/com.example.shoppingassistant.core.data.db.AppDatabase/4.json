@@ -1,0 +1,245 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "63b87bc49851831dc8c0e2f2ae086a6e",
+    "entities": [
+      {
+        "tableName": "products",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `brand` TEXT, `model` TEXT, `categoryCode` TEXT, `priceCents` INTEGER, `deliveryDays` INTEGER, `sellerRating` REAL, `currency` TEXT NOT NULL, `sourceUrl` TEXT NOT NULL, `brandKey` TEXT, `modelKey` TEXT, `imageUrls` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brand",
+            "columnName": "brand",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "model",
+            "columnName": "model",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "categoryCode",
+            "columnName": "categoryCode",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "priceCents",
+            "columnName": "priceCents",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "deliveryDays",
+            "columnName": "deliveryDays",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "sellerRating",
+            "columnName": "sellerRating",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "currency",
+            "columnName": "currency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceUrl",
+            "columnName": "sourceUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brandKey",
+            "columnName": "brandKey",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "modelKey",
+            "columnName": "modelKey",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "imageUrls",
+            "columnName": "imageUrls",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_products_brand",
+            "unique": false,
+            "columnNames": [
+              "brand"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_products_brand` ON `${TABLE_NAME}` (`brand`)"
+          },
+          {
+            "name": "index_products_brand_model",
+            "unique": false,
+            "columnNames": [
+              "brand",
+              "model"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_products_brand_model` ON `${TABLE_NAME}` (`brand`, `model`)"
+          },
+          {
+            "name": "index_products_title",
+            "unique": false,
+            "columnNames": [
+              "title"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_products_title` ON `${TABLE_NAME}` (`title`)"
+          },
+          {
+            "name": "index_products_brandKey_modelKey",
+            "unique": false,
+            "columnNames": [
+              "brandKey",
+              "modelKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_products_brandKey_modelKey` ON `${TABLE_NAME}` (`brandKey`, `modelKey`)"
+          }
+        ]
+      },
+      {
+        "tableName": "product_attributes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `productId` INTEGER NOT NULL, `key` TEXT NOT NULL, `value` TEXT NOT NULL, FOREIGN KEY(`productId`) REFERENCES `products`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "productId",
+            "columnName": "productId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_product_attributes_productId",
+            "unique": false,
+            "columnNames": [
+              "productId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_attributes_productId` ON `${TABLE_NAME}` (`productId`)"
+          },
+          {
+            "name": "index_product_attributes_productId_key",
+            "unique": false,
+            "columnNames": [
+              "productId",
+              "key"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_product_attributes_productId_key` ON `${TABLE_NAME}` (`productId`, `key`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "products",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "productId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "category_offer_counts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`categoryCode` TEXT NOT NULL, `offersCount` INTEGER NOT NULL, `updatedAtMillis` INTEGER NOT NULL, PRIMARY KEY(`categoryCode`))",
+        "fields": [
+          {
+            "fieldPath": "categoryCode",
+            "columnName": "categoryCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "offersCount",
+            "columnName": "offersCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtMillis",
+            "columnName": "updatedAtMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "categoryCode"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_category_offer_counts_categoryCode",
+            "unique": false,
+            "columnNames": [
+              "categoryCode"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_category_offer_counts_categoryCode` ON `${TABLE_NAME}` (`categoryCode`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63b87bc49851831dc8c0e2f2ae086a6e')"
+    ]
+  }
+}

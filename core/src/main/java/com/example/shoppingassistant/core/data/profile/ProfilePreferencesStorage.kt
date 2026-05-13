@@ -9,6 +9,8 @@ import com.example.shoppingassistant.domain.profile.ProfileCacheRepository
 import com.example.shoppingassistant.domain.profile.ProfileSettings
 import com.example.shoppingassistant.domain.profile.ProfileSettingsRepository
 import com.example.shoppingassistant.domain.profile.ProfileSnapshot
+import com.example.shoppingassistant.domain.profile.ProfileView
+import com.example.shoppingassistant.domain.profile.ProfileViewCacheRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.ListSerializer
@@ -16,7 +18,7 @@ import kotlinx.serialization.json.Json
 
 class ProfilePreferencesStorage(
     context: Context,
-) : ProfileSettingsRepository, ExternalLinksRepository, ProfileCacheRepository {
+) : ProfileSettingsRepository, ExternalLinksRepository, ProfileCacheRepository, ProfileViewCacheRepository {
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -99,6 +101,24 @@ class ProfilePreferencesStorage(
         prefs.edit().remove(profileCacheKey(userId)).apply()
     }
 
+    override suspend fun getProfileView(key: String): ProfileView? = withContext(Dispatchers.IO) {
+        val raw = prefs.getString(profileViewCacheKey(key), null)
+        if (raw.isNullOrBlank()) return@withContext null
+        runCatching { json.decodeFromString(ProfileView.serializer(), raw) }
+            .getOrNull()
+    }
+
+    override suspend fun saveProfileView(key: String, value: ProfileView) = withContext(Dispatchers.IO) {
+        val payload = json.encodeToString(ProfileView.serializer(), value)
+        prefs.edit()
+            .putString(profileViewCacheKey(key), payload)
+            .apply()
+    }
+
+    override suspend fun clearProfileView(key: String) = withContext(Dispatchers.IO) {
+        prefs.edit().remove(profileViewCacheKey(key)).apply()
+    }
+
     private fun settingsKey(userId: String?): String =
         if (userId.isNullOrBlank()) KEY_SETTINGS_GLOBAL else "$KEY_SETTINGS_PREFIX$userId"
 
@@ -108,6 +128,9 @@ class ProfilePreferencesStorage(
     private fun profileCacheKey(userId: String): String =
         "$KEY_PROFILE_PREFIX$userId"
 
+    private fun profileViewCacheKey(key: String): String =
+        "$KEY_PROFILE_VIEW_PREFIX$key"
+
     private companion object {
         private const val PREFS_NAME = "profile.secure.prefs"
         private const val KEY_SETTINGS_GLOBAL = "settings.global"
@@ -115,6 +138,7 @@ class ProfilePreferencesStorage(
         private const val KEY_LAST_SETTINGS = "settings.last"
         private const val KEY_LINKS_PREFIX = "links.user."
         private const val KEY_PROFILE_PREFIX = "profile.cache."
+        private const val KEY_PROFILE_VIEW_PREFIX = "profile.view.cache."
         private const val KEY_LAST_PROFILE_ID = "profile.cache.last_id"
     }
 }

@@ -1,0 +1,300 @@
+{
+  "type": "object",
+  "properties": {
+    "needs_retake": {
+      "type": "boolean",
+      "description": "True only when no reliable broad product category can be determined from the image."
+    },
+    "needs_more_photos": {
+      "type": "boolean",
+      "description": "True when another view would materially improve brand, family, exact model, label, or barcode."
+    },
+    "retake_reason": {
+      "type": ["string", "null"],
+      "description": "Short reason for retake, or null."
+    },
+    "missing_evidence": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "type": "string" },
+      "description": "Compact uppercase evidence codes for the next useful proof."
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "description": "Overall confidence from 0 to 1, or null."
+    },
+    "primary_object": {
+      "type": ["string", "null"],
+      "description": "Foreground/centered/framed sale item, not the scene or background."
+    },
+    "primary_object_confidence": {
+      "type": ["number", "null"],
+      "description": "Primary object confidence from 0 to 1, or null."
+    },
+    "item_type": {
+      "type": ["string", "null"],
+      "description": "Specific product type for the primary object. This is the product-type identity/facet inside broad catalog branches and the main identity anchor for type-only goods."
+    },
+    "item_type_label": {
+      "type": ["string", "null"],
+      "description": "Human-facing product type label for the primary object. It must name the visible item, not the scene or category branch."
+    },
+    "item_type_confidence": {
+      "type": ["number", "null"],
+      "description": "Product type confidence from 0 to 1, or null."
+    },
+    "title": {
+      "type": ["string", "null"],
+      "description": "Short product-facing title for the primary object only."
+    },
+    "category_code": {
+      "type": ["string", "null"],
+      "description": "Catalog category code or broad category hint that can contain the primary object's item_type."
+    },
+    "category_confidence": {
+      "type": ["number", "null"],
+      "description": "Category confidence from 0 to 1, or null. If item_type clearly determines the marketplace branch, keep this high even when brand/model are unknown."
+    },
+    "family": {
+      "type": ["string", "null"],
+      "description": "Product family or line when supported for rich-identity products, otherwise null. Do not force for generic type-only goods."
+    },
+    "family_confidence": {
+      "type": ["number", "null"],
+      "description": "Family confidence from 0 to 1, or null."
+    },
+    "family_source": { "$ref": "#/$defs/identity_source" },
+    "brand": {
+      "type": ["string", "null"],
+      "description": "Product brand for the primary object only. Do not force for generic type-only goods without visible or distinctive brand evidence."
+    },
+    "brand_confidence": {
+      "type": ["number", "null"],
+      "description": "Brand confidence from 0 to 1, or null."
+    },
+    "brand_source": { "$ref": "#/$defs/identity_source" },
+    "model": {
+      "type": ["string", "null"],
+      "description": "Exact model only when strongly supported, otherwise null."
+    },
+    "model_confidence": {
+      "type": ["number", "null"],
+      "description": "Exact model confidence from 0 to 1, or null."
+    },
+    "model_source": { "$ref": "#/$defs/identity_source" },
+    "model_candidates": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/model_candidate" },
+      "description": "Plausible exact models for rich-identity products when exact model is uncertain. Keep empty for generic type-only goods without model-level evidence."
+    },
+    "color": {
+      "type": ["string", "null"],
+      "description": "Dominant product color when retrieval-relevant and certain."
+    },
+    "color_confidence": {
+      "type": ["number", "null"],
+      "description": "Color confidence from 0 to 1, or null."
+    },
+    "condition": {
+      "type": ["string", "null"],
+      "description": "Condition only when visible and certain."
+    },
+    "condition_confidence": {
+      "type": ["number", "null"],
+      "description": "Condition confidence from 0 to 1, or null."
+    },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 4,
+      "items": { "type": "string" },
+      "description": "Compact uppercase reason codes."
+    },
+    "attributes": {
+      "type": "array",
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/attribute" },
+      "description": "Highly certain retrieval-relevant attributes only. Use only attributes supported by the selected category grounding; type-of-item belongs here only when the grounding exposes a compatible category attribute/value."
+    },
+    "hypotheses": {
+      "type": "array",
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/hypothesis" },
+      "description": "Alternative ranked hypotheses only for real ambiguity."
+    }
+  },
+  "required": [
+    "needs_retake",
+    "needs_more_photos",
+    "retake_reason",
+    "missing_evidence",
+    "confidence",
+    "primary_object",
+    "primary_object_confidence",
+    "item_type",
+    "item_type_label",
+    "item_type_confidence",
+    "title",
+    "category_code",
+    "category_confidence",
+    "family",
+    "family_confidence",
+    "family_source",
+    "brand",
+    "brand_confidence",
+    "brand_source",
+    "model",
+    "model_confidence",
+    "model_source",
+    "model_candidates",
+    "color",
+    "color_confidence",
+    "condition",
+    "condition_confidence",
+    "reason_codes",
+    "attributes",
+    "hypotheses"
+  ],
+  "$defs": {
+    "identity_source": {
+      "type": ["string", "null"],
+      "enum": [
+        null,
+        "TEXT_EXACT",
+        "LOGO_EXACT",
+        "BARCODE_EXACT",
+        "USER_HINT",
+        "CATALOG_SHORTLIST",
+        "VISUAL_DISTINCTIVE",
+        "VISUAL_PATTERN",
+        "VISUAL_WEAK"
+      ]
+    },
+    "model_candidate": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "Plausible exact model candidate."
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "description": "Candidate confidence from 0 to 1, or null."
+        },
+        "source": { "$ref": "#/$defs/identity_source" }
+      },
+      "required": ["model", "confidence", "source"],
+      "additionalProperties": false
+    },
+    "attribute": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Catalog attribute code."
+        },
+        "kind": {
+          "type": ["string", "null"],
+          "description": "Attribute value kind, or null."
+        },
+        "text": {
+          "type": ["string", "null"],
+          "description": "Text value, or null."
+        },
+        "number": {
+          "type": ["number", "null"],
+          "description": "Numeric value, or null."
+        },
+        "bool": {
+          "type": ["boolean", "null"],
+          "description": "Boolean value, or null."
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "description": "Attribute confidence from 0 to 1, or null."
+        }
+      },
+      "required": ["code", "kind", "text", "number", "bool", "confidence"],
+      "additionalProperties": false
+    },
+    "hypothesis": {
+      "type": "object",
+      "properties": {
+        "rank": { "type": ["integer", "null"] },
+        "confidence": { "type": ["number", "null"] },
+        "primary_object": { "type": ["string", "null"] },
+        "primary_object_confidence": { "type": ["number", "null"] },
+        "item_type": { "type": ["string", "null"] },
+        "item_type_label": { "type": ["string", "null"] },
+        "item_type_confidence": { "type": ["number", "null"] },
+        "title": { "type": ["string", "null"] },
+        "category_code": { "type": ["string", "null"] },
+        "category_confidence": { "type": ["number", "null"] },
+        "family": { "type": ["string", "null"] },
+        "family_confidence": { "type": ["number", "null"] },
+        "family_source": { "$ref": "#/$defs/identity_source" },
+        "brand": { "type": ["string", "null"] },
+        "brand_confidence": { "type": ["number", "null"] },
+        "brand_source": { "$ref": "#/$defs/identity_source" },
+        "model": { "type": ["string", "null"] },
+        "model_confidence": { "type": ["number", "null"] },
+        "model_source": { "$ref": "#/$defs/identity_source" },
+        "model_candidates": {
+          "type": "array",
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/model_candidate" }
+        },
+        "color": { "type": ["string", "null"] },
+        "color_confidence": { "type": ["number", "null"] },
+        "condition": { "type": ["string", "null"] },
+        "condition_confidence": { "type": ["number", "null"] },
+        "reason_codes": {
+          "type": "array",
+          "maxItems": 4,
+          "items": { "type": "string" }
+        },
+        "missing_evidence": {
+          "type": "array",
+          "maxItems": 2,
+          "items": { "type": "string" }
+        },
+        "attributes": {
+          "type": "array",
+          "maxItems": 6,
+          "items": { "$ref": "#/$defs/attribute" }
+        }
+      },
+      "required": [
+        "rank",
+        "confidence",
+        "primary_object",
+        "primary_object_confidence",
+        "item_type",
+        "item_type_label",
+        "item_type_confidence",
+        "title",
+        "category_code",
+        "category_confidence",
+        "family",
+        "family_confidence",
+        "family_source",
+        "brand",
+        "brand_confidence",
+        "brand_source",
+        "model",
+        "model_confidence",
+        "model_source",
+        "model_candidates",
+        "color",
+        "color_confidence",
+        "condition",
+        "condition_confidence",
+        "reason_codes",
+        "missing_evidence",
+        "attributes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

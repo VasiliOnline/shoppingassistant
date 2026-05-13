@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 internal object Stage21TechPackageLoader {
     private val descriptor = Stage21PackageDescriptor(
         l0Code = "TECH",
-        basePath = "taxonomy/stage2/2.1/TECH",
+        basePath = "${CatalogContractPaths.stage21Base}/TECH",
         browseNodesFile = "browse_nodes.tech.tsv",
         aliasesFile = "aliases.tech.tsv",
         goldenQueriesFile = "queries_golden.tech.tsv",

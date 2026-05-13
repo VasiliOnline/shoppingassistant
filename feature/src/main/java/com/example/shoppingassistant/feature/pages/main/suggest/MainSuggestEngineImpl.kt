@@ -4,20 +4,24 @@ package com.example.shoppingassistant.feature.pages.main.suggest
 import com.example.shoppingassistant.core.data.BrandModelRules
 import com.example.shoppingassistant.core.data.suggest.ProductSuggestRepository
 import com.example.shoppingassistant.core.data.suggest.ProductSuggestCandidate
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.catalog.Category
 import com.example.shoppingassistant.domain.catalog.CategoryAlias
 import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
+import com.example.shoppingassistant.domain.i18n.displayTitle
 import com.example.shoppingassistant.domain.template.TemplateHistoryRepository
 import com.example.shoppingassistant.domain.template.presets.TemplatePresetSource
 import com.example.shoppingassistant.domain.template.presets.TemplatePresetsRepository
+import com.example.shoppingassistant.domain.search.SearchTextNormalizer
 import com.example.shoppingassistant.domain.template.status.TemplateStatusContext
 import com.example.shoppingassistant.domain.template.status.TemplateStatus
 import com.example.shoppingassistant.domain.template.status.TemplateStatusResolver
 import java.util.Locale
 
 class MainSuggestEngineImpl(
-    private val catalogRepository: CatalogRepository,
+    private val catalogRepository: CatalogReadRepository,
+    private val catalogTaxonomyRepository: CatalogTaxonomyRepository,
     private val categoryAliasRepository: CategoryAliasRepository,
     private val productSuggestRepository: ProductSuggestRepository,
     private val historyRepository: TemplateHistoryRepository,
@@ -30,11 +34,12 @@ class MainSuggestEngineImpl(
     private val breadcrumbSeparator = " → "
 
     override suspend fun suggest(queryText: String): List<MainSuggestItem> {
-        val normalized = queryText.replace("\\s+".toRegex(), " ").trim()
-        val qLower = normalized.lowercase(Locale.getDefault())
+        val normalized = SearchTextNormalizer.normalize(queryText)
+        val qLower = SearchTextNormalizer.normalizeKey(normalized, Locale.getDefault())
+        val localeTag = Locale.getDefault().toLanguageTag()
 
         val categories = cachedCategories
-            ?: runCatching { catalogRepository.listCategories() }.getOrElse { emptyList() }
+            ?: runCatching { catalogTaxonomyRepository.listCategories() }.getOrElse { emptyList() }
                 .also { cachedCategories = it }
 
         val aliases = cachedAliases
@@ -45,9 +50,7 @@ class MainSuggestEngineImpl(
 
         // Чтобы не было "рандомных" подсказок на 1 букву (как на твоём скрине с "e").
         if (normalized.isNotBlank() && normalized.length < 2) {
-            return listOf(
-                InfoSuggest(text = "Введите ещё пару букв, чтобы появились подсказки.")
-            )
+            return emptyList()
         }
 
         if (normalized.isBlank()) {
@@ -63,21 +66,16 @@ class MainSuggestEngineImpl(
                 val brand = attrsByKey["brand"]
                 val model = attrsByKey["model"]
 
-                val profile = categoryCode?.let {
-                    runCatching { catalogRepository.getCategoryProfile(it) }.getOrNull()
-                }
-                val constraints = if (categoryCode == null) {
-                    emptyList()
-                } else {
-                    runCatching { catalogRepository.listConstraints(categoryCode, brand, model) }
-                        .getOrElse { emptyList() }
+                val spec = categoryCode?.let {
+                    runCatching { catalogRepository.getCategoryEffectiveSpec(it, brand, model) }.getOrNull()
                 }
 
                 val status = statusResolver.resolve(
                     TemplateStatusContext(
                         template = snapshot.data,
-                        profile = profile,
-                        constraints = constraints,
+                        effectiveSpec = spec,
+                        constraints = spec?.constraints.orEmpty(),
+                        requiredIfRules = spec?.requiredIfRules.orEmpty(),
                         hasPhotos = false,
                     )
                 )
@@ -114,9 +112,9 @@ class MainSuggestEngineImpl(
                 .filter { it.snapshot.categoryCode?.isNotBlank() == true }
 
             val categoryItems = categories
-                .sortedBy { (it.title ?: it.code).lowercase(Locale.getDefault()) }
+                .sortedBy { it.displayTitle(locale = localeTag).lowercase(Locale.getDefault()) }
                 .map { category ->
-                    val breadcrumb = breadcrumbByCode[category.code] ?: category.title ?: category.code
+                    val breadcrumb = breadcrumbByCode[category.code] ?: category.displayTitle(locale = localeTag)
                     CategoryAnchorSuggest(
                         categoryCode = category.code,
                         breadcrumb = breadcrumb,
@@ -192,12 +190,13 @@ class MainSuggestEngineImpl(
         val distinctCandidates = productCandidates.distinctBy { c ->
             val brand = c.brand?.trim()
                 ?.takeIf { it.isNotBlank() }
-                ?.lowercase(Locale.getDefault())
+                ?.let { value -> SearchTextNormalizer.normalizeKey(value, Locale.getDefault()) }
             val model = c.model?.trim()
                 ?.takeIf { it.isNotBlank() }
-                ?.lowercase(Locale.getDefault())
+                ?.let { value -> SearchTextNormalizer.normalizeKey(value, Locale.getDefault()) }
             val key = listOfNotNull(brand, model).joinToString("|").trim()
-            if (key.isNotBlank()) key else c.title.trim().lowercase(Locale.getDefault())
+            if (key.isNotBlank()) key
+            else SearchTextNormalizer.normalizeKey(c.title, Locale.getDefault())
         }
 
         // 4) "Confident" - если точное совпадение по title или по brand+model
@@ -250,9 +249,6 @@ class MainSuggestEngineImpl(
         }
 
         if (!confident) {
-            out += InfoSuggest(
-                text = "Не нашли товар по названию? Выберите категорию ниже — откроется шаблон с атрибутами.",
-            )
             val categoryAnchors = suggestCategories(
                 queryLower = qLower,
                 categories = categories,
@@ -269,10 +265,9 @@ class MainSuggestEngineImpl(
     private fun textFix(raw: String): String? {
         if (raw.isBlank()) return null
         val q = BrandModelRules.fromRaw(raw)
-        val suggested = listOf(q.brand, q.model)
-            .joinToString(" ")
-            .replace("\\s+".toRegex(), " ")
-            .trim()
+        val suggested = SearchTextNormalizer.normalize(
+            listOf(q.brand, q.model).joinToString(" "),
+        )
         return suggested.takeIf { it.isNotBlank() && !it.equals(raw, ignoreCase = true) }
     }
 
@@ -290,11 +285,11 @@ class MainSuggestEngineImpl(
         aliases: List<CategoryAlias>,
         confident: Boolean,
     ): AutoTemplateSuggest? {
-        val normalized = raw.trim().replace("\\s+".toRegex(), " ")
+        val normalized = SearchTextNormalizer.normalize(raw)
         if (normalized.isBlank()) return null
         if (confident) return null
 
-        val tokens = normalized.split(" ").filter { it.isNotBlank() }
+        val tokens = SearchTextNormalizer.tokens(normalized)
         val hasPrefix = normalized.startsWith("iphone", ignoreCase = true) ||
             normalized.startsWith("galaxy", ignoreCase = true)
         if (tokens.size < 2 && !hasPrefix) return null
@@ -316,10 +311,9 @@ class MainSuggestEngineImpl(
             categoryBreadcrumb = hint?.breadcrumb,
         )
 
-        val display = listOf(brand, model)
-            .joinToString(" ")
-            .replace("\\s+".toRegex(), " ")
-            .trim()
+        val display = SearchTextNormalizer.normalize(
+            listOf(brand, model).joinToString(" "),
+        )
 
         return AutoTemplateSuggest(
             text = display,
@@ -363,28 +357,35 @@ class MainSuggestEngineImpl(
     ): CategoryHint? {
         if (queryLower.isBlank()) return null
         val byCode = categories.associateBy { it.code }
+        val localeTag = Locale.getDefault().toLanguageTag()
 
         val aliasMatch = aliases
-            .filter { a -> a.alias.trim().isNotBlank() && queryLower.contains(a.alias.trim().lowercase()) }
-            .maxByOrNull { it.alias.trim().length }
+            .mapNotNull { alias ->
+                val normalizedAlias = SearchTextNormalizer.normalize(alias.alias)
+                if (normalizedAlias.isBlank()) null else alias to normalizedAlias
+            }
+            .filter { (_, aliasValue) -> queryLower.contains(aliasValue.lowercase()) }
+            .maxByOrNull { (_, aliasValue) -> aliasValue.length }
 
         if (aliasMatch != null) {
-            val breadcrumb = breadcrumbByCode[aliasMatch.categoryCode]
-                ?: byCode[aliasMatch.categoryCode]?.title
-                ?: aliasMatch.categoryCode
+            val alias = aliasMatch.first
+            val matchedAlias = aliasMatch.second
+            val breadcrumb = breadcrumbByCode[alias.categoryCode]
+                ?: byCode[alias.categoryCode]?.displayTitle(locale = localeTag)
+                ?: alias.categoryCode
             return CategoryHint(
-                categoryCode = aliasMatch.categoryCode,
+                categoryCode = alias.categoryCode,
                 breadcrumb = breadcrumb,
-                matchedAlias = aliasMatch.alias.trim(),
+                matchedAlias = matchedAlias,
             )
         }
 
         val exact = categories.firstOrNull { category ->
-            val title = (category.title ?: category.code).trim().lowercase()
+            val title = SearchTextNormalizer.normalizeKey(category.displayTitle(locale = localeTag), Locale.getDefault())
             title == queryLower
         } ?: return null
 
-        val breadcrumb = breadcrumbByCode[exact.code] ?: exact.title ?: exact.code
+        val breadcrumb = breadcrumbByCode[exact.code] ?: exact.displayTitle(locale = localeTag)
         return CategoryHint(
             categoryCode = exact.code,
             breadcrumb = breadcrumb,
@@ -401,7 +402,7 @@ class MainSuggestEngineImpl(
         categoryBreadcrumb: String?,
     ): List<String> {
         val reasons = mutableListOf<String>()
-        val firstToken = raw.split(" ").firstOrNull()?.trim().orEmpty()
+        val firstToken = SearchTextNormalizer.tokens(raw).firstOrNull().orEmpty()
         when {
             firstToken.equals(brand, ignoreCase = true) -> reasons += "$firstToken -> бренд"
             raw.startsWith("iphone", ignoreCase = true) && brand.equals("Apple", ignoreCase = true) ->
@@ -450,10 +451,9 @@ class MainSuggestEngineImpl(
         val newModel = model.replace(m.value, "iPhone $truncated", ignoreCase = true)
 
         val brand = q.brand ?: "Apple" // iPhone -> Apple (в рамках UX-подсказок)
-        val suggested = listOfNotNull(brand, newModel)
-            .joinToString(" ")
-            .replace("\\s+".toRegex(), " ")
-            .trim()
+        val suggested = SearchTextNormalizer.normalize(
+            listOfNotNull(brand, newModel).joinToString(" "),
+        )
 
         return suggested.takeIf { it.isNotBlank() && !it.equals(raw, ignoreCase = true) }
     }
@@ -470,8 +470,11 @@ class MainSuggestEngineImpl(
         val allCodes = categories.map { it.code }
 
         val aliasMatches = aliases
-            .filter { a -> a.alias.trim().isNotBlank() && queryLower.contains(a.alias.trim().lowercase()) }
-            .map { a -> a.categoryCode to a.alias }
+            .mapNotNull { alias ->
+                val normalizedAlias = SearchTextNormalizer.normalize(alias.alias)
+                if (normalizedAlias.isBlank()) null else alias.categoryCode to normalizedAlias
+            }
+            .filter { (_, aliasValue) -> queryLower.contains(aliasValue.lowercase()) }
             .distinctBy { it.first }
             .toMap()
 
@@ -482,10 +485,10 @@ class MainSuggestEngineImpl(
         data class Scored(val code: String, val score: Int, val matchedAlias: String?)
 
         fun titleOf(code: String): String =
-            byCode[code]?.title ?: code
+            byCode[code]?.displayTitle(locale = Locale.getDefault().toLanguageTag()) ?: code
 
         fun scoreCategory(code: String): Scored? {
-            val title = titleOf(code).lowercase()
+            val title = SearchTextNormalizer.normalizeKey(titleOf(code), Locale.getDefault())
             val matchedAlias = aliasMatches[code]
             val score = when {
                 matchedAlias != null -> 100
@@ -518,14 +521,15 @@ class MainSuggestEngineImpl(
 
     private fun buildBreadcrumbIndex(categories: List<Category>): Map<String, String> {
         val byCode = categories.associateBy { it.code }
-        fun titleOf(code: String): String = byCode[code]?.title ?: code
+        val localeTag = Locale.getDefault().toLanguageTag()
+        fun titleOf(code: String): String = byCode[code]?.displayTitle(locale = localeTag) ?: code
 
         fun breadcrumb(code: String): String {
             val path = ArrayList<String>()
             var cur: Category? = byCode[code]
             val seen = HashSet<String>()
             while (cur != null && seen.add(cur.code)) {
-                val t = cur.title?.takeIf { it.isNotBlank() } ?: cur.code
+                val t = cur.displayTitle(locale = localeTag)
                 path.add(t)
                 cur = cur.parentCode?.let { byCode[it] }
             }
@@ -559,10 +563,12 @@ class MainSuggestEngineImpl(
     }
 
     private fun displayTitleFor(c: ProductSuggestCandidate): String {
-        return listOfNotNull(
-            c.brand?.takeIf { it.isNotBlank() },
-            c.model?.takeIf { it.isNotBlank() },
-        ).joinToString(" ").replace("\\s+".toRegex(), " ").trim()
+        return SearchTextNormalizer.normalize(
+            listOfNotNull(
+                c.brand?.takeIf { it.isNotBlank() },
+                c.model?.takeIf { it.isNotBlank() },
+            ).joinToString(" "),
+        )
     }
 
     private fun dedupeByLabel(items: List<MainSuggestItem>): List<MainSuggestItem> {
@@ -579,7 +585,7 @@ class MainSuggestEngineImpl(
                 else -> null
             }?.trim().orEmpty()
             if (label.isNotBlank()) {
-                val key = label.lowercase(Locale.getDefault())
+                val key = SearchTextNormalizer.normalizeKey(label, Locale.getDefault())
                 if (!seen.add(key)) return@forEach
             }
             out.add(item)
@@ -604,4 +610,6 @@ class MainSuggestEngineImpl(
         return out
     }
 }
+
+
 

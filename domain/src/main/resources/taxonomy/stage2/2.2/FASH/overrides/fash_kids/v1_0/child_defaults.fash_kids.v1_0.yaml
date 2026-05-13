@@ -1,0 +1,40 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "defaults": {
+    "target_gender": "KIDS",
+    "age_group": "KIDS",
+    "condition": "UNKNOWN",
+    "seller_input_policy": "short_form_by_apparel_type"
+  },
+  "allowed_values": {
+    "target_gender": [
+      "BOYS",
+      "GIRLS",
+      "KIDS",
+      "UNISEX"
+    ],
+    "age_group": [
+      "NEWBORN",
+      "BABY",
+      "TODDLER",
+      "KIDS",
+      "TEEN"
+    ],
+    "condition": [
+      "NEW",
+      "LIKE_NEW",
+      "GOOD",
+      "FAIR",
+      "USED",
+      "UNKNOWN"
+    ]
+  },
+  "routing_defaults": {
+    "generic_kids_apparel_query_target": "FASH.KIDS",
+    "generic_baby_care_query_target": "KIDS.BABY_GEAR",
+    "shoes_query_target": "FASH.SHOES",
+    "bags_query_target": "FASH.BAGS",
+    "accessories_query_target": "FASH.ACCESSORIES"
+  }
+}

@@ -6,6 +6,7 @@ import com.example.shoppingassistant.domain.useroffers.UserOffersPage
 import com.example.shoppingassistant.domain.useroffers.UserOffersQuery
 import com.example.shoppingassistant.domain.useroffers.UserOfferSummary
 import com.example.shoppingassistant.domain.model.Money
+import com.example.shoppingassistant.server.offers.OFFER_PUBLICATION_STATE_PENDING_REVIEW
 import com.example.shoppingassistant.server.db.DatabaseFactory
 import com.example.shoppingassistant.server.offers.OfferPriceHistoryTable
 import com.example.shoppingassistant.server.offers.OfferSourcesTable
@@ -132,7 +133,7 @@ class UserOffersRepositoryImpl : UserOffersBackendRepository {
             priceMajor = priceMajor,
             currency = currency,
             status = status,
-            publicationStatus = UserOfferPublicationStatus.PUBLISHED,
+            publicationStatus = this[OffersTable.publicationState].toUserOfferPublicationStatus(),
             coverUrl = imageUrls.firstOrNull(),
             publishedAtMillis = updatedAt,
             updatedAtMillis = updatedAt,
@@ -146,6 +147,13 @@ class UserOffersRepositoryImpl : UserOffersBackendRepository {
 
     private fun String.toUserOfferStatus(): UserOfferStatus =
         runCatching { UserOfferStatus.valueOf(this) }.getOrDefault(UserOfferStatus.ACTIVE)
+
+    private fun String.toUserOfferPublicationStatus(): UserOfferPublicationStatus =
+        if (equals(OFFER_PUBLICATION_STATE_PENDING_REVIEW, ignoreCase = true)) {
+            UserOfferPublicationStatus.ON_MODERATION
+        } else {
+            UserOfferPublicationStatus.PUBLISHED
+        }
 
     private fun ResultRow.toSourceMeta(): SourceMeta {
         val domainName = this[OfferSourcesTable.domainName]

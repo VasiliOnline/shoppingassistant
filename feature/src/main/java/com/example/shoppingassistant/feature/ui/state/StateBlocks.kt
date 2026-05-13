@@ -111,45 +111,16 @@ fun OfflineBanner(
         stringResource(R.string.state_last_updated, formatted)
     }
 
-    Surface(
+    SystemNoticeCard(
         modifier = modifier,
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.92f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                if (updatedLabel != null) {
-                    Text(
-                        text = updatedLabel,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            }
-            if (action != null) {
-                Spacer(modifier = Modifier.width(12.dp))
-                TextButton(onClick = action.onAction) {
-                    Text(action.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-            }
-        }
-    }
+        title = "Работаем без сети",
+        body = message,
+        tone = SystemNoticeTone.Warning,
+        actionLabel = action?.label,
+        onAction = action?.onAction,
+        footer = updatedLabel,
+        compact = true,
+    )
 }
 
 @Composable

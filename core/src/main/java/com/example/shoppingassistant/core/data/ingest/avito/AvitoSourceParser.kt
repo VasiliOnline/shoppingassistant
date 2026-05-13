@@ -13,6 +13,9 @@ import com.example.shoppingassistant.core.data.ingest.util.HtmlExtractors.extrac
 import com.example.shoppingassistant.core.data.ingest.util.HtmlExtractors.parseJsonObject
 import com.example.shoppingassistant.core.data.ingest.util.HtmlExtractors.resolveUrl
 import com.example.shoppingassistant.core.data.ingest.util.HtmlExtractors.stripHtml
+import com.example.shoppingassistant.domain.catalog.CatalogSeed
+import com.example.shoppingassistant.domain.catalog.QueryRouteType
+import com.example.shoppingassistant.domain.catalog.QueryRouter
 import com.example.shoppingassistant.domain.ingest.IngestStatus
 import com.example.shoppingassistant.domain.ingest.RawLocation
 import com.example.shoppingassistant.domain.ingest.RawOffer
@@ -35,6 +38,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.net.URI
+import java.util.Locale
 
 /**
  * Простой HTTP-парсер Avito без браузера/JS.
@@ -43,6 +47,7 @@ import java.net.URI
 class AvitoSourceParser(
     private val httpClient: HttpClient,
     private val replayStore: IngestReplayStore,
+    private val queryRouter: QueryRouter,
     private val json: Json = Json { ignoreUnknownKeys = true; isLenient = true },
 ) : SourceParser {
 
@@ -91,6 +96,12 @@ class AvitoSourceParser(
         val attributes = extractAttributes(html)
         val createdAtText = extractCreatedAt(html)
         val title = ogTitle ?: jsonLdObject?.get("name")?.jsonPrimitive?.contentOrNull
+        val categoryClassification = classifyCategory(
+            urlMeta = urlMeta,
+            title = title,
+            attributes = attributes,
+            description = description,
+        )
 
         val offer = RawOffer(
             source = source,
@@ -100,6 +111,9 @@ class AvitoSourceParser(
             sourceIconUrl = iconUrl,
             citySlug = urlMeta.citySlug,
             categorySlug = urlMeta.categorySlug,
+            categoryCode = categoryClassification.categoryCode,
+            categoryConfidence = categoryClassification.confidence,
+            parserVersion = parserVersion,
             title = cleanText(title),
             rawTitle = cleanText(ogTitle ?: title),
             description = cleanText(description),
@@ -120,6 +134,104 @@ class AvitoSourceParser(
             bytes = fetch.bytes,
         )
     }
+
+    private suspend fun classifyCategory(
+        urlMeta: UrlMeta,
+        title: String?,
+        attributes: List<Pair<String, String>>,
+        description: String?,
+    ): CategoryClassification {
+        val slugBased = classifyBySlug(urlMeta.categorySlug)
+        val query = buildRoutingQuery(
+            slug = urlMeta.categorySlug,
+            title = title,
+            description = description,
+            attributes = attributes,
+        )
+        val routed = runCatching { queryRouter.route(query = query, locale = "ru-RU") }.getOrNull()
+        val routedLeaf = normalizeRoutedTargetToLeaf(routed?.primaryTargetCode)
+        val routedScore = routed?.confidence?.coerceIn(0.0, 1.0) ?: 0.0
+
+        if (routedLeaf != null && routed?.routeType == QueryRouteType.OPEN_CATEGORY && routedScore >= 0.55) {
+            if (slugBased == null || routedScore >= slugBased.confidence) {
+                return CategoryClassification(
+                    categoryCode = routedLeaf,
+                    confidence = routedScore,
+                )
+            }
+        }
+
+        if (slugBased != null) {
+            return slugBased
+        }
+
+        if (routedLeaf != null) {
+            return CategoryClassification(
+                categoryCode = routedLeaf,
+                confidence = routedScore.coerceAtLeast(0.35),
+            )
+        }
+
+        return CategoryClassification(
+            categoryCode = DEFAULT_CATEGORY_CODE,
+            confidence = DEFAULT_CATEGORY_CONFIDENCE,
+        )
+    }
+
+    private fun classifyBySlug(slug: String?): CategoryClassification? {
+        val normalizedSlug = normalizeSlug(slug)
+        if (normalizedSlug.isEmpty()) return null
+        val mappedCategory = SLUG_TO_LEAF.entries.firstOrNull { (token, _) ->
+            normalizedSlug.contains(token)
+        }?.value
+        if (mappedCategory != null) {
+            return CategoryClassification(
+                categoryCode = mappedCategory,
+                confidence = 0.82,
+            )
+        }
+        return null
+    }
+
+    private fun buildRoutingQuery(
+        slug: String?,
+        title: String?,
+        description: String?,
+        attributes: List<Pair<String, String>>,
+    ): String {
+        val slugHint = normalizeSlug(slug).replace('_', ' ').trim()
+        val attrsHint = attributes
+            .take(4)
+            .joinToString(" ") { (_, value) -> value }
+        return listOfNotNull(
+            slugHint.takeIf { it.isNotBlank() },
+            cleanText(title),
+            cleanText(attrsHint),
+            cleanText(description)?.take(120),
+        ).joinToString(" ").trim()
+    }
+
+    private fun normalizeRoutedTargetToLeaf(rawTargetCode: String?): String? {
+        val normalized = rawTargetCode
+            ?.trim()
+            ?.uppercase(Locale.ROOT)
+            ?.takeIf { it.isNotEmpty() }
+            ?: return null
+        val withoutBrowse = normalized.removePrefix("B.")
+        if (withoutBrowse in LEAF_CATEGORY_CODES) {
+            return withoutBrowse
+        }
+        return ROOT_DEFAULT_LEAF[withoutBrowse]
+    }
+
+    private fun normalizeSlug(slug: String?): String =
+        slug.orEmpty()
+            .trim()
+            .lowercase(Locale.ROOT)
+            .replace('-', '_')
+            .replace('/', '_')
+            .replace(Regex("_+"), "_")
+            .trim('_')
 
     private suspend fun fetchHtml(url: String): HtmlFetchResult {
         return runCatching {
@@ -429,4 +541,95 @@ class AvitoSourceParser(
         val categorySlug: String? = null,
         val listingId: String? = null,
     )
+
+    private data class CategoryClassification(
+        val categoryCode: String,
+        val confidence: Double,
+    )
+
+    private companion object {
+        private const val DEFAULT_CATEGORY_CODE = ""
+        private const val DEFAULT_CATEGORY_CONFIDENCE = 0.0
+
+        private val LEAF_CATEGORY_CODES: Set<String> by lazy {
+            val allCodes = CatalogSeed.categories.map { it.code.trim().uppercase(Locale.ROOT) }.toSet()
+            val parentCodes = CatalogSeed.categories
+                .mapNotNull { it.parentCode?.trim()?.uppercase(Locale.ROOT)?.takeIf { parent -> parent.isNotEmpty() } }
+                .toSet()
+            allCodes - parentCodes
+        }
+
+        private val ROOT_DEFAULT_LEAF = mapOf(
+            "TECH" to "TECH.PHONES",
+            "APPL" to "APPL.SMALL",
+            "AUTO" to "AUTO.PARTS",
+            "FOOD" to "FOOD.GROCERIES",
+            "HOME" to "HOME.KITCHEN_DINING",
+            "FASH" to "FASH.WOMEN",
+            "BEAUTY" to "BEAUTY.SKINCARE",
+            "KIDS" to "KIDS.TOYS_GAMES",
+            "PETS" to "PETS.FOOD",
+            "SPORT" to "SPORT.FITNESS",
+        )
+
+        private val SLUG_TO_LEAF = linkedMapOf(
+            "telefony" to "TECH.PHONES",
+            "aksessuary_dlya_telefonov" to "TECH.PHONE_ACCESSORIES",
+            "noutbuki" to "TECH.LAPTOPS",
+            "planshety_i_elektronnye_knigi" to "TECH.TABLETS_EBOOKS",
+            "komplektuyuschie" to "TECH.PC_COMPONENTS",
+            "komplektuyushchie" to "TECH.PC_COMPONENTS",
+            "tv_i_videotekhnika" to "TECH.TV_VIDEO",
+            "audio_i_video" to "TECH.AUDIO",
+            "igry_pristavki_i_programmy" to "TECH.GAMING",
+            "fototehnika" to "TECH.CAMERAS",
+            "umnyy_dom" to "TECH.SMART_HOME",
+            "krupnaya_bytovaya_tekhnika" to "APPL.MAJOR",
+            "melkaya_bytovaya_tekhnika" to "APPL.SMALL",
+            "klimaticheskoe_oborudovanie" to "APPL.CLIMATE",
+            "avtozapchasti" to "AUTO.PARTS",
+            "shiny_diski_i_kolesa" to "AUTO.TIRES_WHEELS",
+            "instrumenty_i_oborudovanie" to "AUTO.TOOLS_GARAGE",
+            "aksessuary_dlya_avto" to "AUTO.ACCESSORIES",
+            "gotovaya_eda" to "FOOD.READY_MEALS",
+            "bakaleya" to "FOOD.GROCERIES",
+            "napitki" to "FOOD.DRINKS",
+            "sneki" to "FOOD.SNACKS",
+            "tekstil" to "HOME.TEXTILES",
+            "osveschenie" to "HOME.LIGHTING",
+            "hranenie_i_poryadok" to "HOME.STORAGE",
+            "uborka" to "HOME.CLEANING",
+            "remont_i_instrumenty" to "HOME.REPAIR_TOOLS",
+            "santehnika" to "HOME.PLUMBING",
+            "sad_i_ogorod" to "HOME.GARDEN",
+            "kuhnya_i_stolovaya" to "HOME.KITCHEN_DINING",
+            "mebel" to "HOME.FURNITURE",
+            "zhenskaya_odezhda" to "FASH.WOMEN",
+            "muzhskaya_odezhda" to "FASH.MEN",
+            "detskaya_odezhda" to "FASH.KIDS",
+            "obuv" to "FASH.SHOES",
+            "sumki_i_ryukzaki" to "FASH.BAGS",
+            "aksessuary" to "FASH.ACCESSORIES",
+            "uhod_za_kozhey" to "BEAUTY.SKINCARE",
+            "uhod_za_volosami" to "BEAUTY.HAIRCARE",
+            "uhod_za_telom" to "BEAUTY.BODYCARE",
+            "dekorativnaya_kosmetika" to "BEAUTY.MAKEUP",
+            "parfyumeriya" to "BEAUTY.FRAGRANCE",
+            "beauty_gadzhety" to "BEAUTY.DEVICES",
+            "zdorove_i_vitaminy" to "BEAUTY.HEALTH",
+            "igrushki_i_igry" to "KIDS.TOYS_GAMES",
+            "kolyaski_i_avtokresla" to "KIDS.STROLLERS_CARSEATS",
+            "detskaya_mebel_i_bezopasnost" to "KIDS.NURSERY_FURNITURE",
+            "tovary_dlya_malyshey" to "KIDS.BABY_GEAR",
+            "korm_i_lakomstva" to "PETS.FOOD",
+            "gigiena_i_uhod" to "PETS.HYGIENE",
+            "aksessuary_dlya_pitomtsev" to "PETS.ACCESSORIES",
+            "veterinariya_i_zdorove" to "PETS.HEALTH",
+            "fitnes" to "SPORT.FITNESS",
+            "turizm_i_outdoor" to "SPORT.OUTDOOR",
+            "velosipedy_i_samokaty" to "SPORT.BIKES_SCOOTERS",
+            "sportinventar" to "SPORT.EQUIPMENT",
+            "hobbi_i_aktivnyj_otdyh" to "SPORT.HOBBY",
+        )
+    }
 }

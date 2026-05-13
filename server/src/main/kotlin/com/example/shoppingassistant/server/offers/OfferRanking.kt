@@ -16,6 +16,10 @@ object OfferRanking {
         OfferSort.RATING_DESC -> offers.sortedByDescending { it.seller.rating?.value ?: 0.0 }
         OfferSort.DELIVERY_ASC, OfferSort.DISTANCE_ASC -> offers.sortedBy { it.distanceKmOrNull() ?: Double.MAX_VALUE }
         OfferSort.NEWEST -> offers.sortedByDescending { it.updatedAt ?: 0L }
+        OfferSort.MODEL_FRESHNESS_DESC -> offers.sortedWith(
+            compareByDescending<OfferFull> { it.product.specs["release_year"]?.asDoubleOrNull() ?: Double.NEGATIVE_INFINITY }
+                .thenByDescending { it.updatedAt ?: 0L },
+        )
     }
 
     private fun OfferFull.distanceKmOrNull(): Double? {

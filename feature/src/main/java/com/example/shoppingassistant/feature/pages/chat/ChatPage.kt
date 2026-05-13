@@ -63,6 +63,8 @@ import coil.compose.AsyncImage
 import com.example.shoppingassistant.feature.metrics.FlowMetrics
 import com.example.shoppingassistant.feature.ui.layout.LayoutDefaults
 import com.example.shoppingassistant.feature.ui.layout.ScreenRoot
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeCard
+import com.example.shoppingassistant.feature.ui.state.SystemNoticeTone
 import kotlinx.coroutines.launch
 
 private const val OFFER_OPEN_COOLDOWN_MS = 800L
@@ -510,63 +512,42 @@ private fun OfferOpenFallbackCard(
     onCopyLink: (() -> Unit)?,
     onReport: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.35f))
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.ErrorOutline,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
-            )
-            Text(
-                text = "Не удалось открыть оффер",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        }
-        Text(
-            text = openErrorText(reason),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Button(
-            onClick = onRetry,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Повторить")
-        }
-        if (hasUrl && onOpenBrowser != null) {
-            OutlinedButton(
-                onClick = onOpenBrowser,
+    SystemNoticeCard(
+        title = "Не удалось открыть оффер",
+        body = openErrorText(reason),
+        tone = SystemNoticeTone.Error,
+        modifier = Modifier.fillMaxWidth(),
+        bottomContent = {
+            Button(
+                onClick = onRetry,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Открыть в браузере")
+                Text("Повторить")
             }
-        }
-        if (hasUrl && onCopyLink != null) {
-            OutlinedButton(
-                onClick = onCopyLink,
-                modifier = Modifier.fillMaxWidth(),
+            if (hasUrl && onOpenBrowser != null) {
+                OutlinedButton(
+                    onClick = onOpenBrowser,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text("Открыть в браузере")
+                }
+            }
+            if (hasUrl && onCopyLink != null) {
+                OutlinedButton(
+                    onClick = onCopyLink,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text("Скопировать ссылку")
+                }
+            }
+            TextButton(
+                onClick = onReport,
+                modifier = Modifier.align(Alignment.End),
             ) {
-                Text("Скопировать ссылку")
+                Text("Сообщить о проблеме")
             }
-        }
-        TextButton(
-            onClick = onReport,
-            modifier = Modifier.align(Alignment.End),
-        ) {
-            Text("Сообщить о проблеме")
-        }
-    }
+        },
+    )
 }
 
 @Composable

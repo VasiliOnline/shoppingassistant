@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.model
 
+import com.example.shoppingassistant.domain.profile.SellerDeliveryZone
 import kotlinx.serialization.Serializable
 
 /**
@@ -30,6 +31,7 @@ data class UserRating(
 data class UserPreferences(
     val badges: List<UserBadge> = emptyList(),
     val shippingCountries: List<String> = emptyList(),
+    val deliveryZones: List<SellerDeliveryZone> = emptyList(),
 )
 
 @Serializable

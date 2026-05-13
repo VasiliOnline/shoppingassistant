@@ -4,8 +4,9 @@ import com.example.shoppingassistant.core.data.nearby.NearbyCondition
 import com.example.shoppingassistant.core.data.nearby.NearbyDelivery
 import com.example.shoppingassistant.core.data.nearby.NearbyFiltersStorage
 import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import com.example.shoppingassistant.domain.facet.FacetCountMode
 import com.example.shoppingassistant.domain.facet.FacetCountsQuery
 import com.example.shoppingassistant.domain.facet.FacetCountsRepository
@@ -23,7 +24,7 @@ class TrackFilterOptionsRepositoryImpl(
     private val trackRepository: TrackRepository,
     private val nearbyFiltersStorage: NearbyFiltersStorage,
     private val facetCountsRepository: FacetCountsRepository,
-    private val catalogRepository: CatalogRepository,
+    private val catalogRepository: CatalogReadRepository,
     private val categoryAliasRepository: CategoryAliasRepository,
     private val historyStore: TrackFilterOptionsHistoryStore,
     private val clock: () -> Long = { System.currentTimeMillis() },
@@ -61,8 +62,8 @@ class TrackFilterOptionsRepositoryImpl(
                 recordTrackFilters(track)
             }
             val categoryCode = resolveCategoryCode(track)
-            val categoryProfile = loadCategoryProfile(categoryCode)
-            buildBundle(trackId, key, query, extraKey, categoryCode, categoryProfile)
+            val categorySpec = loadCategorySpec(categoryCode)
+            buildBundle(trackId, key, query, extraKey, categoryCode, categorySpec)
         } catch (_: Throwable) {
             buildFallbackBundle(trackId, key, query, extraKey, now, null)
         }
@@ -78,19 +79,19 @@ class TrackFilterOptionsRepositoryImpl(
         query: String?,
         extraKey: String?,
         categoryCode: String?,
-        categoryProfile: CategoryProfile?,
+        categorySpec: CatalogCategoryEffectiveSpec?,
     ): TrackFilterOptionsBundle {
         val now = clock()
         val normalizedQuery = query?.trim().orEmpty().lowercase().takeIf { it.isNotBlank() }
         val recent = historyStore.getRecent(key, extraKey)
-        val extraDescriptors = buildExtraFacetDescriptors(categoryProfile)
+        val extraDescriptors = buildExtraFacetDescriptors(categorySpec)
         val suggested = suggestedOptionsFor(key)
         val counts = loadFacetCounts(
             trackId = trackId,
             key = key,
             extraKey = extraKey,
             categoryCode = categoryCode,
-            categoryProfile = categoryProfile,
+            categorySpec = categorySpec,
             extraDescriptors = extraDescriptors,
             query = normalizedQuery,
         )
@@ -137,7 +138,7 @@ class TrackFilterOptionsRepositoryImpl(
             key = key,
             extraKey = extraKey,
             categoryCode = categoryCode,
-            categoryProfile = null,
+            categorySpec = null,
             extraDescriptors = emptyList(),
             query = normalizedQuery,
         )
@@ -184,7 +185,7 @@ class TrackFilterOptionsRepositoryImpl(
         key: TrackFilterKey,
         extraKey: String?,
         categoryCode: String?,
-        categoryProfile: CategoryProfile?,
+        categorySpec: CatalogCategoryEffectiveSpec?,
         extraDescriptors: List<ExtraFacetDescriptor>,
         query: String?,
     ): Map<String, Int> {
@@ -200,7 +201,7 @@ class TrackFilterOptionsRepositoryImpl(
                 val descriptors = if (extraDescriptors.isNotEmpty()) {
                     extraDescriptors
                 } else {
-                    buildExtraFacetDescriptors(categoryProfile)
+                    buildExtraFacetDescriptors(categorySpec)
                 }
                 if (descriptors.isEmpty()) return emptyMap()
                 val narrowedByQuery = if (query.isNullOrBlank()) {
@@ -354,13 +355,13 @@ class TrackFilterOptionsRepositoryImpl(
         val explicit = track?.categoryCode?.trim()?.takeIf { it.isNotBlank() }
         if (explicit != null) return explicit
 
-        val candidates = listOf(
-            track?.title,
-            track?.target?.matchKey,
-            track?.target?.query,
-            track?.target?.url,
-        )
-            .mapNotNull { it?.trim()?.takeIf { value -> value.isNotBlank() } }
+        val candidates = buildList {
+            add(track?.title)
+            add(track?.target?.matchKey)
+            add(track?.target?.queryText)
+            add(track?.target?.spec?.queryText)
+            addAll(legacyTargetTextCandidates(track))
+        }.mapNotNull { it?.trim()?.takeIf { value -> value.isNotBlank() } }
 
         if (candidates.isEmpty()) return null
         val haystack = candidates.joinToString(" ").lowercase()
@@ -372,26 +373,33 @@ class TrackFilterOptionsRepositoryImpl(
         return match?.categoryCode?.takeIf { it.isNotBlank() }
     }
 
-    private suspend fun loadCategoryProfile(categoryCode: String?): CategoryProfile? {
+    @Suppress("DEPRECATION")
+    private fun legacyTargetTextCandidates(track: Track?): List<String?> = listOf(
+        track?.target?.query,
+        track?.target?.url,
+    )
+
+    private suspend fun loadCategorySpec(categoryCode: String?): CatalogCategoryEffectiveSpec? {
         if (categoryCode.isNullOrBlank()) return null
-        return runCatching { catalogRepository.getCategoryProfile(categoryCode) }.getOrNull()
+        return runCatching { catalogRepository.getCategoryEffectiveSpec(categoryCode) }.getOrNull()
     }
 
     private fun buildExtraFacetDescriptors(
-        categoryProfile: CategoryProfile?,
+        categorySpec: CatalogCategoryEffectiveSpec?,
     ): List<ExtraFacetDescriptor> {
-        categoryProfile ?: return emptyList()
-        if (categoryProfile.attributes.isEmpty()) return emptyList()
+        categorySpec ?: return emptyList()
+        val attributes = categorySpec.allAttributes()
+        if (attributes.isEmpty()) return emptyList()
 
-        val defsByCode = categoryProfile.attributes.associateBy { def -> def.code }
+        val defsByCode = attributes.associateBy { def -> def.code }
         val orderedCodes = buildList {
-            categoryProfile.categoryAttributes
-                .sortedBy { categoryAttribute -> categoryAttribute.uiOrder }
-                .forEach { categoryAttribute ->
-                    val code = categoryAttribute.attributeCode.trim()
+            attributes
+                .sortedBy { attribute -> attribute.uiOrder }
+                .forEach { attribute ->
+                    val code = attribute.code.trim()
                     if (code.isNotBlank() && !contains(code)) add(code)
                 }
-            categoryProfile.attributes.forEach { def ->
+            attributes.forEach { def ->
                 val code = def.code.trim()
                 if (code.isNotBlank() && !contains(code)) add(code)
             }
@@ -469,3 +477,5 @@ class TrackFilterOptionsRepositoryImpl(
         )
     }
 }
+
+

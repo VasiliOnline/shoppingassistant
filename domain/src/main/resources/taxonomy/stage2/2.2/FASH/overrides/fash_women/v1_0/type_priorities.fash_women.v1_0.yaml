@@ -1,0 +1,118 @@
+version: '1.0'
+categoryCode: FASH.WOMEN
+extends: FASH.APPAREL_COMMON
+type_priority:
+  high:
+  - DRESS
+  - BLOUSE
+  - TOP
+  - TSHIRT
+  - SHIRT
+  - SKIRT
+  - JEANS
+  - TROUSERS
+  - LEGGINGS
+  - JACKET
+  - COAT
+  - DOWN_JACKET
+  - CARDIGAN
+  - SWEATER
+  - HOODIE
+  - JUMPSUIT
+  medium:
+  - LONGSLEEVE
+  - TANK_TOP
+  - POLO
+  - SWEATSHIRT
+  - SHORTS
+  - SUIT
+  - BLAZER
+  - TRACKSUIT
+  - UNDERWEAR
+  - BRA
+  - TIGHTS
+  - SOCKS
+  - VEST
+  - CHINOS
+  - CARGO_PANTS
+  - BOMBER
+  - DENIM_JACKET
+  - LEATHER_JACKET
+  - WINDBREAKER
+  - PARKA
+  - THERMAL_UNDERWEAR
+  - ACTIVE_TOP
+  - ACTIVE_BOTTOM
+  - ROMPER
+  - TURTLENECK
+  low_or_rare:
+  - RAINCOAT
+  - ROBE
+  - PAJAMAS
+  - SWIMWEAR
+  - UNIFORM
+  blocked_or_cross_route: &id001
+  - BOXERS_MALE_ONLY
+  - BOYS_UNIFORM_ONLY
+  - JOCKSTRAP
+allowed_apparel_types:
+- DRESS
+- BLOUSE
+- TOP
+- TSHIRT
+- SHIRT
+- SKIRT
+- JEANS
+- TROUSERS
+- LEGGINGS
+- JACKET
+- COAT
+- DOWN_JACKET
+- CARDIGAN
+- SWEATER
+- HOODIE
+- JUMPSUIT
+- LONGSLEEVE
+- TANK_TOP
+- POLO
+- SWEATSHIRT
+- SHORTS
+- SUIT
+- BLAZER
+- TRACKSUIT
+- UNDERWEAR
+- BRA
+- TIGHTS
+- SOCKS
+- VEST
+- CHINOS
+- CARGO_PANTS
+- BOMBER
+- DENIM_JACKET
+- LEATHER_JACKET
+- WINDBREAKER
+- PARKA
+- THERMAL_UNDERWEAR
+- ACTIVE_TOP
+- ACTIVE_BOTTOM
+- ROMPER
+- TURTLENECK
+- RAINCOAT
+- ROBE
+- PAJAMAS
+- SWIMWEAR
+- UNIFORM
+blocked_apparel_types: *id001
+strong_female_default_types:
+- DRESS
+- SKIRT
+- BRA
+- BLOUSE
+- TOP
+- TANK_TOP
+- TIGHTS
+- SWIMWEAR
+notes:
+- DRESS/SKIRT/BRA are normal FASH.WOMEN types, unlike FASH.MEN where they are cross-route blocked.
+- Do not infer WOMEN from pink/floral/slim/soft style alone; use text/context/type evidence.
+- Generic TSHIRT/HOODIE/JEANS without gender should remain candidate/ambiguous unless user context says women.

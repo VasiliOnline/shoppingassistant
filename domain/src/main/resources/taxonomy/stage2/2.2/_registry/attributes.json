@@ -2,6 +2,58 @@
   "schemaVersion": "1.0.0",
   "attributes": [
     {
+      "attributeCode": "accessory_subtype",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Подтип аксессуара",
+        "en": "accessory subtype"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "accessory_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип аксессуара",
+        "en": "accessory type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "activity",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Вид активности",
+        "en": "activity"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "adhesive_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип клейкой основы",
+        "en": "adhesive type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "age_from_months",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -11,6 +63,19 @@
       "labels": {
         "ru": "Возраст с (мес)",
         "en": "age from months"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "age_group",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Возрастная группа",
+        "en": "age group"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -28,6 +93,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "airline_safe",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Допустимо в самолёт",
+        "en": "airline safe"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "allergen_profile",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -37,6 +115,97 @@
       "labels": {
         "ru": "Аллергены",
         "en": "allergen profile"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "anti_glare",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Антиблик",
+        "en": "anti glare"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "anti_yellowing",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Антижелтизна",
+        "en": "anti yellowing"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "app_performance_class",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Класс приложений",
+        "en": "app performance class"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "apparel_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип одежды",
+        "en": "apparel type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "apparel_type_group",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Группа типа одежды",
+        "en": "apparel type group"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "arm_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Длина штанги/руки, см",
+        "en": "arm length cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "authenticity_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Оригинальность",
+        "en": "authenticity status"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -54,6 +223,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "battery_cell_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип аккумуляторных ячеек",
+        "en": "battery cell type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "battery_health_percent",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -63,6 +245,58 @@
       "labels": {
         "ru": "Состояние батареи (%)",
         "en": "battery health percent"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "battery_mah",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mah",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Батарея (мА·ч)",
+        "en": "battery capacity"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "blue_light_filter",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Фильтр синего света",
+        "en": "blue light filter"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "bluetooth_version",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Bluetooth версия",
+        "en": "bluetooth version"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "bra_cup",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Чашка бюстгальтера",
+        "en": "bra cup"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -80,6 +314,84 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "brand_text_raw",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Бренд как указан продавцом",
+        "en": "brand text raw"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "breathable",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Дышащая ткань",
+        "en": "breathable"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "brightness_levels",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Уровни яркости",
+        "en": "brightness levels"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "built_in_cable",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Встроенный кабель",
+        "en": "built in cable"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cable_length_m",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "m",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Длина кабеля, м",
+        "en": "cable length m"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cable_shape",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Форма кабеля",
+        "en": "cable shape"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "calories_kcal_per_serving",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -89,6 +401,45 @@
       "labels": {
         "ru": "Калории на порцию (ккал)",
         "en": "calories kcal per serving"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "capacity_mah",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mah",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Ёмкость, мА·ч",
+        "en": "capacity mah"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "capacity_wh",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "wh",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Ёмкость, Вт·ч",
+        "en": "capacity wh"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "car_charger_socket",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Автомобильный разъём",
+        "en": "car charger socket"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -106,6 +457,201 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "card_slots_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Количество карманов для карт",
+        "en": "card slots count"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "care_instruction",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уход",
+        "en": "care instruction"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "case_features",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Особенности чехла",
+        "en": "case features"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "case_form_factor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Форм-фактор чехла",
+        "en": "case form factor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "case_friendly",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Совместимо с чехлом",
+        "en": "case friendly"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "case_has_magsafe_ring",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Кольцо MagSafe в чехле",
+        "en": "case has magsafe ring"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "case_thickness_max_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Макс. толщина чехла для зарядки, мм",
+        "en": "case thickness max mm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "certification",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Сертификация/маркировка",
+        "en": "certification"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "charge_indicator_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Индикатор заряда",
+        "en": "charge indicator type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "charger_technology",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Технология зарядного устройства",
+        "en": "charger technology"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "charging_protocol",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Протокол быстрой зарядки",
+        "en": "charging protocol"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "chest_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Обхват груди, см",
+        "en": "chest cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "chipset_family",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Чипсет",
+        "en": "chipset"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cleaning_kit_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип набора для чистки",
+        "en": "cleaning kit type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "closure_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Застёжка",
+        "en": "closure type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "coffee_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -115,6 +661,19 @@
       "labels": {
         "ru": "Тип кофе",
         "en": "coffee type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "collar_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип воротника",
+        "en": "collar type"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -132,6 +691,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "color_primary",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Основной цвет",
+        "en": "color primary"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "color_secondary",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Дополнительный цвет",
+        "en": "color secondary"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "colorway",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -145,6 +730,136 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "compatibility_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уверенность совместимости",
+        "en": "compatibility confidence"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatibility_mode",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тип совместимости",
+        "en": "compatibility mode"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatibility_strictness",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Строгость совместимости",
+        "en": "compatibility strictness"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatible_model_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Совместимость текстом продавца",
+        "en": "compatible model text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatible_phone_brand",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Совместимый бренд телефона",
+        "en": "compatible phone brand"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatible_phone_family",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Совместимая линейка телефона",
+        "en": "compatible phone family"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatible_phone_model",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Совместимая модель телефона",
+        "en": "compatible phone model"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatible_screen_size_max_in",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "in",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Макс. диагональ совместимого телефона, дюймы",
+        "en": "compatible screen size max in"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compatible_screen_size_min_in",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "in",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Мин. диагональ совместимого телефона, дюймы",
+        "en": "compatible screen size min in"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "compression_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Компрессия",
+        "en": "compression level"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "condition",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -154,6 +869,110 @@
       "labels": {
         "ru": "Состояние",
         "en": "condition"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "connector_a",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Разъём A",
+        "en": "connector a"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "connector_a_form_factor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Форм-фактор разъёма A",
+        "en": "connector a form factor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "connector_b",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Разъём B",
+        "en": "connector b"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "connector_b_form_factor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Форм-фактор разъёма B",
+        "en": "connector b form factor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "connector_input",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Входной разъём",
+        "en": "connector input"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "connector_output",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Выходной разъём",
+        "en": "connector output"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cooler_power_watt",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "w",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Мощность кулера, Вт",
+        "en": "cooler power watt"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cooling_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип охлаждения",
+        "en": "cooling type"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -197,6 +1016,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "data_standard",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Стандарт передачи данных",
+        "en": "data standard"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "data_transfer",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Передача данных",
+        "en": "data transfer"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "defect_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тип дефекта",
+        "en": "defect type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "diameter_cm",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -236,6 +1094,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "dress_length",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Длина платья",
+        "en": "dress length"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "drop_protection_m",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "m",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Защита от падения, м",
+        "en": "drop protection m"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "dual_sim",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -245,6 +1129,45 @@
       "labels": {
         "ru": "Dual SIM",
         "en": "dual sim"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "e_marker_chip",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "E-marker чип",
+        "en": "e marker chip"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "esim_support",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "eSIM",
+        "en": "eSIM"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "evidence_policy",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Политика доказательств",
+        "en": "evidence policy"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -288,6 +1211,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "fit",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Посадка / fit",
+        "en": "fit"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "flavor",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -327,6 +1263,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "game_controller_layout",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Раскладка контроллера",
+        "en": "game controller layout"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "gender",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -340,6 +1289,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "gender_cut",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Крой",
+        "en": "gender cut"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "gpu_type",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -349,6 +1311,45 @@
       "labels": {
         "ru": "GPU",
         "en": "gpu type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "graphic_theme",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Тема рисунка",
+        "en": "graphic theme"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "grip_stand_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип держателя/подставки",
+        "en": "grip stand type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "hardness_rating",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Твёрдость",
+        "en": "hardness rating"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -379,6 +1380,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "hips_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Бёдра, см",
+        "en": "hips cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "holder_mechanism",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Механизм держателя",
+        "en": "holder mechanism"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "hood",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Капюшон",
+        "en": "hood"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "included_accessories",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -392,6 +1432,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "included_items",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Что в комплекте",
+        "en": "included items"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "includes_adhesive",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Клей/проклейка в комплекте",
+        "en": "includes adhesive"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "ingredient_list",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -401,6 +1467,58 @@
       "labels": {
         "ru": "Состав (ингредиенты)",
         "en": "ingredient list"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "input_voltage_range",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Входное напряжение",
+        "en": "input voltage range"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "inseam_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Внутренний шов, см",
+        "en": "inseam cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "insulation_material",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Утеплитель",
+        "en": "insulation material"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "ip_rating",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Защита IP",
+        "en": "ip rating"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -496,6 +1614,58 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "leg_fit",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Крой штанины",
+        "en": "leg fit"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "length_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Длина изделия",
+        "en": "length type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "light_color_temperature_k",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "k",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Цветовая температура, K",
+        "en": "light color temperature k"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "light_diameter_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Диаметр кольцевой лампы, см",
+        "en": "light diameter cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "limited_edition",
       "valueType": "BOOLEAN",
       "valueSetType": "OPEN",
@@ -509,6 +1679,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "lining",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Подкладка",
+        "en": "lining"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "magnetic_alignment",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Магнитное позиционирование",
+        "en": "magnetic alignment"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "material",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -518,6 +1714,32 @@
       "labels": {
         "ru": "Материал",
         "en": "material"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "material_composition_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Состав ткани текстом",
+        "en": "material composition text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "material_primary",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Основной материал",
+        "en": "material primary"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -548,6 +1770,58 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "max_current_amp",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "a",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Макс. ток, А",
+        "en": "max current amp"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "max_power_watt",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "w",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Макс. мощность, Вт",
+        "en": "max power watt"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "max_wireless_devices",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Макс. устройств беспроводной зарядки",
+        "en": "max wireless devices"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "memory_card_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип карты памяти",
+        "en": "memory card type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "memory_gb",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -557,6 +1831,32 @@
       "labels": {
         "ru": "Память (ГБ)",
         "en": "memory gb"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "memory_read_speed_mbps",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mbps",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Скорость чтения, МБ/с",
+        "en": "memory read speed mbps"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "memory_write_speed_mbps",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mbps",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Скорость записи, МБ/с",
+        "en": "memory write speed mbps"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -587,6 +1887,58 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "model_or_line_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Линейка/модель текстом",
+        "en": "model or line text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "mount_attachment",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип крепления",
+        "en": "mount attachment"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "mount_location",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Место установки",
+        "en": "mount location"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "neckline",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Вырез",
+        "en": "neckline"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "network_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -596,6 +1948,45 @@
       "labels": {
         "ru": "Сеть",
         "en": "network type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "normalization_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уверенность нормализации",
+        "en": "normalization confidence"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "occasion",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Назначение",
+        "en": "occasion"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "oleophobic_coating",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Олеофобное покрытие",
+        "en": "oleophobic coating"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -613,6 +2004,175 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "otg_support",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "OTG",
+        "en": "otg support"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "outerwear_weight",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Теплота верхней одежды",
+        "en": "outerwear weight"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "output_ports",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Выходные порты",
+        "en": "output ports"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "output_voltage_profiles",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Профили выходного напряжения",
+        "en": "output voltage profiles"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pack_quantity",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Количество в комплекте",
+        "en": "pack quantity"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pack_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Формат продажи",
+        "en": "pack type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "package_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Текст на упаковке",
+        "en": "package text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "part_quality_grade",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Класс/качество запчасти",
+        "en": "part quality grade"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pass_through_charging",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Сквозная зарядка",
+        "en": "pass through charging"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pass_through_power_watt",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "w",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Сквозная зарядка, Вт",
+        "en": "pass through power watt"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pattern",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Рисунок/принт",
+        "en": "pattern"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "phone_width_max_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Макс. ширина телефона, мм",
+        "en": "phone width max mm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "phone_width_min_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Мин. ширина телефона, мм",
+        "en": "phone width min mm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "pieces_count",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -622,6 +2182,19 @@
       "labels": {
         "ru": "Кол-во кусочков",
         "en": "pieces count"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "pockets",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Карманы",
+        "en": "pockets"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -639,6 +2212,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "ports_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Количество портов",
+        "en": "ports count"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "power_class",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Класс мощности",
+        "en": "power class"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "power_watt",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -652,6 +2251,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "primary_color",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Основной цвет",
+        "en": "primary color"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "print_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Текст принта",
+        "en": "print text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "privacy_filter",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Антишпион/приватность",
+        "en": "privacy filter"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "product_name",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -661,6 +2299,58 @@
       "labels": {
         "ru": "Название продукта",
         "en": "product name"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "protection_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Уровень защиты",
+        "en": "protection level"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "protector_coverage",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Покрытие защитного стекла/плёнки",
+        "en": "protector coverage"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "protector_installation_frame",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Рамка для установки",
+        "en": "protector installation frame"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "protector_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип защитного покрытия",
+        "en": "protector type"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -704,6 +2394,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "raised_camera_lip_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Бортик камеры, мм",
+        "en": "raised camera lip mm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "raised_screen_lip_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Бортик экрана, мм",
+        "en": "raised screen lip mm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "ram_gb",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -713,6 +2429,19 @@
       "labels": {
         "ru": "ОЗУ (ГБ)",
         "en": "ram gb"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "refresh_rate_hz",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "hz",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Частота обновления",
+        "en": "refresh rate"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -730,6 +2459,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "release_collection",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Коллекция/сезон бренда",
+        "en": "release collection"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "release_date",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Дата релиза",
+        "en": "release date"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "release_year",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -739,6 +2494,58 @@
       "labels": {
         "ru": "Год релиза",
         "en": "release year"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "remote_shutter_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Пульт в комплекте",
+        "en": "remote shutter included"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "repair_consumable_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип расходника для ремонта",
+        "en": "repair consumable type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "repair_part_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип запчасти",
+        "en": "repair part type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "repair_tool_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип инструмента для ремонта",
+        "en": "repair tool type"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -756,6 +2563,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "rotation_support",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поворот/регулировка",
+        "en": "rotation support"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "safety_protections",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Защиты питания",
+        "en": "safety protections"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "scratch_resistant",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Защита от царапин",
+        "en": "scratch resistant"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "screen_size_inch",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -765,6 +2611,32 @@
       "labels": {
         "ru": "Диагональ",
         "en": "screen size inch"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "season",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Сезон",
+        "en": "season"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "secondary_color",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Дополнительный цвет",
+        "en": "secondary color"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -795,6 +2667,19 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "shape",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Форма",
+        "en": "shape"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "shelf_life_days",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -808,6 +2693,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "shoulder_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Плечи, см",
+        "en": "shoulder cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "silhouette",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Силуэт",
+        "en": "silhouette"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "sim_tool_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип SIM-аксессуара",
+        "en": "sim tool type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "size_eu",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -817,6 +2741,45 @@
       "labels": {
         "ru": "Размер EU",
         "en": "size eu"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "size_label",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Размер",
+        "en": "size label"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "size_system",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Система размеров",
+        "en": "size system"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "size_text_raw",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Размер как указан продавцом",
+        "en": "size text raw"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -847,6 +2810,84 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "skin_finish",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Финиш скина/наклейки",
+        "en": "skin finish"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "skirt_length",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Длина юбки",
+        "en": "skirt length"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "sleeve_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Рукав, см",
+        "en": "sleeve cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "sleeve_length",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Длина рукава",
+        "en": "sleeve length"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "source_text_evidence",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Текстовые признаки",
+        "en": "source text evidence"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "speed_class",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Класс скорости",
+        "en": "speed class"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "spiciness_level",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -856,6 +2897,19 @@
       "labels": {
         "ru": "Острота",
         "en": "spiciness level"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "storage_capacity_gb",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "gb",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Объём памяти, ГБ",
+        "en": "storage capacity gb"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -925,6 +2979,32 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "strap_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Ремешок в комплекте",
+        "en": "strap included"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "stretch",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Эластичность",
+        "en": "stretch"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "stroller_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -934,6 +3014,32 @@
       "labels": {
         "ru": "Тип",
         "en": "stroller type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "style_aesthetic",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Стиль",
+        "en": "style aesthetic"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "stylus_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип стилуса",
+        "en": "stylus type"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -951,6 +3057,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "sustainability_claim",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Эко/устойчивость",
+        "en": "sustainability claim"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "target_ecosystem",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Экосистема/платформа",
+        "en": "target ecosystem"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "target_gender",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Пол/сегмент",
+        "en": "target gender"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "thickness",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -960,6 +3105,32 @@
       "labels": {
         "ru": "Толщина",
         "en": "thickness"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "thickness_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Толщина, мм",
+        "en": "thickness mm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "tip_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип наконечника",
+        "en": "tip type"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -977,6 +3148,45 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "total_length_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Длина изделия, см",
+        "en": "total length cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "tripod_mount_thread",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Резьба штатива",
+        "en": "tripod mount thread"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "type_of_item",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип товара",
+        "en": "type of item"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "used_for",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -986,6 +3196,58 @@
       "labels": {
         "ru": "Назначение",
         "en": "used for"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "video_output_support",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поддержка видео",
+        "en": "video output support"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "visible_label_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Текст на видимой этикетке",
+        "en": "visible label text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "visible_logo_present",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Виден логотип",
+        "en": "visible logo present"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "visual_evidence_flags",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Визуальные признаки",
+        "en": "visual evidence flags"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -1003,6 +3265,84 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
+      "attributeCode": "waist_cm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "cm",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Талия, см",
+        "en": "waist cm"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "waist_rise",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Посадка талии",
+        "en": "waist rise"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "waist_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Пояс/талия",
+        "en": "waist type"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wall_charger_plug",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип вилки",
+        "en": "wall charger plug"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "warranty_months",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "month",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Гарантия, месяцев",
+        "en": "warranty months"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "water_resistance",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Защита от воды",
+        "en": "water resistance"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
       "attributeCode": "water_tank_litre",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -1012,6 +3352,45 @@
       "labels": {
         "ru": "Объём бака (л)",
         "en": "water tank litre"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "waterproof_pouch_size",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Размер водонепроницаемого пакета",
+        "en": "waterproof pouch size"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "waterproof_rating",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Водозащита",
+        "en": "waterproof rating"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "waterproof_seal_included",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Влагозащитная проклейка в комплекте",
+        "en": "waterproof seal included"
       },
       "normalization": "stage22.query_normalizer_v1"
     },
@@ -1038,6 +3417,97 @@
       "labels": {
         "ru": "Вес ребёнка до (кг)",
         "en": "weight limit kg"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "windproof",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Защита от ветра",
+        "en": "windproof"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wired_charging_w",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "w",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Проводная зарядка (Вт)",
+        "en": "wired charging"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wireless_charging",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Беспроводная зарядка",
+        "en": "wireless charging"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wireless_charging_compatible",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Совместим с беспроводной зарядкой",
+        "en": "wireless charging compatible"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wireless_device_targets",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Для каких устройств беспроводная зарядка",
+        "en": "wireless device targets"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wireless_form_factor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Форм-фактор беспроводной зарядки",
+        "en": "wireless form factor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "wireless_standard",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Стандарт беспроводной зарядки",
+        "en": "wireless standard"
       },
       "normalization": "stage22.query_normalizer_v1"
     }

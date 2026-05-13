@@ -313,7 +313,7 @@ class PresetObservabilityRepositoryIntegrationTest {
                 connection.createStatement().use { statement ->
                     statement.execute(
                         """
-                        INSERT INTO categories(code, segment, status, title)
+                        INSERT INTO categories(code, segment, status, title_ru)
                         VALUES ('FOOD.READY_MEALS', 'FOOD', 'ACTIVE', 'Ready meals')
                         ON CONFLICT (code) DO NOTHING
                         """.trimIndent(),

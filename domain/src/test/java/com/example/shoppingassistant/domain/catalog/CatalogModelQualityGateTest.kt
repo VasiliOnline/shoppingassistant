@@ -28,10 +28,10 @@ class CatalogModelQualityGateTest {
 
     @Test
     fun stage2_facet_enabled_must_match_stage3_definitions() {
-        val stage2FacetEnabled = CatalogSeed.profiles
+        val stage2FacetEnabled = CatalogSeed.categoryWriteSpecs
             .asSequence()
-            .flatMap { profile ->
-                profile.attributes
+            .flatMap { spec ->
+                spec.attributes
                     .asSequence()
                     .filter { attribute -> attribute.facetEnabled }
                     .map { attribute -> attribute.code.trim().lowercase() }
@@ -102,7 +102,7 @@ class CatalogModelQualityGateTest {
             }
             .toSet()
 
-        val profilesByCode = CatalogSeed.profiles.associateBy { it.category.code }
+        val specsByCode = CatalogSeed.categoryWriteSpecs.associateBy { it.category.code }
         val requiredForValidation = setOf(
             "allergen_profile",
             "storage_regime",
@@ -128,12 +128,12 @@ class CatalogModelQualityGateTest {
         val notFacetEnabledInProfiles = mutableListOf<String>()
 
         foodLeafCodes.forEach { code ->
-            val profile = profilesByCode[code]
-            if (profile == null) {
+            val spec = specsByCode[code]
+            if (spec == null) {
                 missingInProfiles += "$code:*profile_missing*"
                 return@forEach
             }
-            val defsByCode = profile.attributes.associateBy { it.code }
+            val defsByCode = spec.attributes.associateBy { it.code }
             requiredForValidation.forEach { attributeCode ->
                 val def = defsByCode[attributeCode]
                 if (def == null) {

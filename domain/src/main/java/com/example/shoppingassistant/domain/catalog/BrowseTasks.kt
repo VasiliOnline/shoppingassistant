@@ -1,5 +1,6 @@
 package com.example.shoppingassistant.domain.catalog
 
+import com.example.shoppingassistant.domain.i18n.LocalizedText
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -27,8 +28,7 @@ data class BrowseNode(
     val parentBrowseCode: String? = null,
     val nodeKind: BrowseNodeKind = BrowseNodeKind.GROUP,
     val titleKey: String? = null,
-    val titleRu: String,
-    val titleEn: String? = null,
+    val title: LocalizedText = LocalizedText.Empty,
     val targetCategoryCode: String? = null,
     val targetType: BrowseTargetType? = null,
     val order: Int = 0,

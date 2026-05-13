@@ -2,8 +2,6 @@ package com.example.shoppingassistant.domain.catalog
 
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
-import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
@@ -44,7 +42,6 @@ internal object DefaultStage22AliasNormalizer : Stage22AliasNormalizer {
 
 internal class Stage22SeedValidator(
     private val aliasNormalizer: Stage22AliasNormalizer = DefaultStage22AliasNormalizer,
-    private val leafCategoryEmptyProfileAllowlist: Set<String> = Stage22LeafProfileAllowlist.default,
 ) {
     fun validate(
         categories: List<Category>,
@@ -70,7 +67,6 @@ internal class Stage22SeedValidator(
         validateAttributeDefIntegrity(registry.attributes.values.toList(), issues)
         validateClosedSetIntegrity(registry, issues)
         validateDeterminism(packages, issues)
-        validateLeafProfileAllowlist(categories, issues)
         validateProfileIntegrity(categories, stage22Profiles, issues)
         validateProfileReferential(registry, stage22Profiles, issues)
         validateConstraintsConflictGate(
@@ -310,12 +306,9 @@ internal class Stage22SeedValidator(
         issues: MutableList<Stage22SeedValidationIssue>,
     ) {
         val categoryCodes = categories.map { category -> category.code }.toSet()
-        val parentCodes = categories
-            .mapNotNull { category -> category.parentCode?.trim()?.takeIf { it.isNotEmpty() } }
-            .toSet()
-        val leafCodes = categoryCodes - parentCodes
 
         val seenByL0AndCategory = HashSet<String>()
+        val profiledCategoryCodes = HashSet<String>()
         profiles.forEach { profile ->
             val categoryCode = profile.categoryCode.trim()
             val l0Code = profile.sourceL0?.trim().orEmpty().ifEmpty { categoryCode.substringBefore('.') }
@@ -327,16 +320,13 @@ internal class Stage22SeedValidator(
                     "Duplicate profile for category '$categoryCode' in L0 '$l0Code'.",
                 )
             }
-            if (categoryCode in leafCodes && profile.attributes.isEmpty()) {
-                if (categoryCode !in normalizedLeafEmptyProfileAllowlist) {
-                    issue(
-                        issues,
-                        "PROFILE_LEAF_ATTRIBUTES_EMPTY_NOT_ALLOWED",
-                        "Leaf category '$categoryCode' has empty attributes but is not in " +
-                            "taxonomy/stage2/2.2/_registry/leaf_profile_empty_allowlist.json.",
-                    )
-                }
-                return@forEach
+            profiledCategoryCodes += categoryCode
+            if (profile.attributes.isEmpty()) {
+                issue(
+                    issues,
+                    "PROFILE_ATTRIBUTES_EMPTY_NOT_ALLOWED",
+                    "Category '$categoryCode' has empty attributes.",
+                )
             }
 
             val sorted = profile.attributes
@@ -348,6 +338,19 @@ internal class Stage22SeedValidator(
                     "Profile '$categoryCode' attributes must be ordered by uiOrder then attributeCode.",
                 )
             }
+        }
+
+        val missingProfiles = categoryCodes
+            .asSequence()
+            .filterNot { code -> code in profiledCategoryCodes }
+            .sorted()
+            .toList()
+        if (missingProfiles.isNotEmpty()) {
+            issue(
+                issues,
+                "PROFILE_CATEGORY_MISSING",
+                "Missing Stage 2.2 profile for categories: ${missingProfiles.take(10).joinToString(", ")}.",
+            )
         }
     }
 
@@ -418,7 +421,7 @@ internal class Stage22SeedValidator(
     ) {
         val categoryCodes = categories.map { it.code }.toSet()
         val profiles = packages.flatMap { it.profiles }
-        val profileByCategory = LinkedHashMap<String, CategoryProfile>()
+        val profileByCategory = LinkedHashMap<String, Stage22ResourceProfile>()
 
         profiles.forEach { profile ->
             val categoryCode = profile.category.code
@@ -600,7 +603,7 @@ internal class Stage22SeedValidator(
 
     private fun validateConstraintAttributes(
         constraint: CatalogConstraints,
-        profileByCategory: Map<String, CategoryProfile>,
+        profileByCategory: Map<String, Stage22ResourceProfile>,
         knownAttributeCodes: Set<String>,
         registry: Stage22RegistrySnapshot,
         issues: MutableList<Stage22SeedValidationIssue>,
@@ -728,53 +731,4 @@ internal class Stage22SeedValidator(
         }
     }
 
-    private fun validateLeafProfileAllowlist(
-        categories: List<Category>,
-        issues: MutableList<Stage22SeedValidationIssue>,
-    ) {
-        if (normalizedLeafEmptyProfileAllowlist.isEmpty()) return
-        val categoryCodes = categories.map { it.code.trim() }.toSet()
-        val parentCodes = categories
-            .mapNotNull { category -> category.parentCode?.trim()?.takeIf { it.isNotEmpty() } }
-            .toSet()
-        val leafCodes = categoryCodes - parentCodes
-
-        normalizedLeafEmptyProfileAllowlist.forEach { code ->
-            if (code !in categoryCodes) {
-                issue(
-                    issues,
-                    "PROFILE_EMPTY_ALLOWLIST_UNKNOWN_CATEGORY",
-                    "Leaf empty-profile allowlist contains unknown category '$code'.",
-                )
-            } else if (code !in leafCodes) {
-                issue(
-                    issues,
-                    "PROFILE_EMPTY_ALLOWLIST_NOT_LEAF",
-                    "Leaf empty-profile allowlist category '$code' is not a leaf category.",
-                )
-            }
-        }
-    }
-
-    private val normalizedLeafEmptyProfileAllowlist: Set<String> = leafCategoryEmptyProfileAllowlist
-        .asSequence()
-        .map { it.trim().uppercase() }
-        .filter { it.isNotEmpty() }
-        .toCollection(linkedSetOf())
-}
-
-internal object Stage22LeafProfileAllowlist {
-    private const val RESOURCE_PATH = "taxonomy/stage2/2.2/_registry/leaf_profile_empty_allowlist.json"
-
-    val default: Set<String> by lazy {
-        if (!CatalogSeedResourceReader.resourceExists(RESOURCE_PATH)) return@lazy emptySet()
-        CatalogSeedResourceReader.readJson(
-            resourcePath = RESOURCE_PATH,
-            deserializer = ListSerializer(String.serializer()),
-        )
-            .asSequence()
-            .map { it.trim().uppercase() }
-            .filter { it.isNotEmpty() }
-            .toCollection(linkedSetOf())
-    }
 }

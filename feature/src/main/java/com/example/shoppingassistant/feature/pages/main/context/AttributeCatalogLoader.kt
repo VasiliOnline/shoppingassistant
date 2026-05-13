@@ -1,54 +1,38 @@
 // Last synced: 2025-12-16 17:55:48
 package com.example.shoppingassistant.feature.pages.main.context
 
-import com.example.shoppingassistant.core.data.AttributeService
-import com.example.shoppingassistant.domain.catalog.AttributeDataType
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
-import com.example.shoppingassistant.domain.catalog.CategoryProfile
+import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesRepository
+import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesRequest
+import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesSnapshot
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.allAttributes
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintCheckResult
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.feature.pages.model.AttributeDef
 import com.example.shoppingassistant.feature.pages.model.Product
 import com.example.shoppingassistant.feature.pages.model.ValueDef
-
-// Фолбэк на случай, когда в БД нет ключей/значений для выбранной модели.
-private val fallbackByModel: Map<String, List<AttributeDef>> = mapOf(
-    "iPhone 17" to listOf(
-        AttributeDef("memory", "Память", listOf("128 ГБ", "256 ГБ", "512 ГБ", "1 ТБ")),
-        AttributeDef("color", "Цвет", listOf("Чёрный", "Белый", "Синий", "Титановый")),
-        AttributeDef("condition", "Состояние", listOf("Новый", "Как новый", "Б/У"))
-    ),
-    "iPhone 17 Pro" to listOf(
-        AttributeDef("memory", "Память", listOf("256 ГБ", "512 ГБ", "1 ТБ")),
-        AttributeDef("color", "Цвет", listOf("Титановый", "Синий", "Белый", "Чёрный"))
-    ),
-    "iPhone 16" to listOf(
-        AttributeDef("memory", "Память", listOf("128 ГБ", "256 ГБ", "512 ГБ")),
-        AttributeDef("color", "Цвет", listOf("Чёрный", "Белый", "Розовый"))
-    ),
-    "iPhone 16 Pro" to listOf(
-        AttributeDef("memory", "Память", listOf("256 ГБ", "512 ГБ", "1 ТБ")),
-        AttributeDef("color", "Цвет", listOf("Натуральный титан", "Синий", "Чёрный"))
-    )
-)
+import com.example.shoppingassistant.feature.pages.model.toFeatureAttributeDefs
+import java.util.Locale
 
 data class CategoryUiCatalog(
     val categoryCode: String?,
     val defs: List<AttributeDef>,
+    val liveValuesByKey: Map<String, List<String>> = emptyMap(),
     val requiredIfRules: List<RequiredIfRule> = emptyList(),
     val constraints: List<CatalogConstraints> = emptyList(),
 )
 
 /**
  * Каталог атрибутов для выбранного товара.
- * ВАЖНО: берём профили/порядок/required из CategoryProfile, но значения (options) — из БД, если они есть.
+ * Канонический read-контракт строится только из effective spec категории.
+ * Live/observed values из локальной БД возвращаются отдельно как enrichment и не подменяют сам каталог.
  */
 suspend fun attributeCatalogFor(
     product: Product?,
-    svc: AttributeService,
-    catalog: CatalogRepository,
+    liveValuesRepository: CatalogLiveValuesRepository,
+    catalog: CatalogReadRepository,
     constraintsResolver: CatalogConstraintsResolver,
     categoryCode: String?,
     selectedFilters: Map<String, String> = emptyMap(),
@@ -64,36 +48,51 @@ suspend fun attributeCatalogFor(
         )
     }
 
-    val profile = runCatching { catalog.getCategoryProfile(resolvedCategoryCode) }.getOrNull()
-    val requiredIfRules: List<RequiredIfRule> = profile?.requiredIfRules.orEmpty()
-
     val lookupBrand = product?.brand?.takeIf { it.isNotBlank() } ?: selectedFilters["brand"]?.takeIf { it.isNotBlank() }
     val lookupModel = product?.model?.takeIf { it.isNotBlank() } ?: selectedFilters["model"]?.takeIf { it.isNotBlank() }
-    val profileAttrCodes = profile?.let { p ->
-        (p.attributes.map { it.code } + p.categoryAttributes.map { it.attributeCode })
-            .map { it.lowercase() }
-            .toSet()
-    }.orEmpty()
-    val allowBrand = "brand" in profileAttrCodes || (profile == null && !lookupBrand.isNullOrBlank())
-    val allowModel = "model" in profileAttrCodes || (profile == null && !lookupModel.isNullOrBlank())
+    val effectiveSpec = runCatching {
+        catalog.getCategoryEffectiveSpec(
+            categoryCode = resolvedCategoryCode,
+            brand = lookupBrand,
+            model = lookupModel,
+        )
+    }.getOrNull()
+    if (effectiveSpec == null) {
+        return CategoryUiCatalog(
+            categoryCode = resolvedCategoryCode,
+            defs = emptyList(),
+            requiredIfRules = emptyList(),
+            constraints = emptyList(),
+        )
+    }
+
+    val requiredIfRules: List<RequiredIfRule> = effectiveSpec.requiredIfRules
+    val profileAttrCodes = effectiveSpec.allAttributes()
+        .map { it.code.lowercase() }
+        .toSet()
+    val allowBrand = "brand" in profileAttrCodes
+    val allowModel = "model" in profileAttrCodes
 
     val constraintAttrs = buildMap<String, String> {
         selectedFilters.forEach { (k, v) -> if (v.isNotBlank()) put(k, v) }
         if (!containsKey("brand")) lookupBrand?.let { put("brand", it) }
         if (!containsKey("model")) lookupModel?.let { put("model", it) }
     }
-    val constraints = runCatching {
-        catalog.listConstraints(resolvedCategoryCode, lookupBrand, lookupModel)
-    }.getOrElse { emptyList() }
+    val constraints = effectiveSpec.constraints
     val constraintsResult = constraintsResolver.evaluate(constraints, constraintAttrs)
 
-    val rawDbByKey: Map<String, List<String>> = if (lookupBrand == null && lookupModel == null) {
-        emptyMap()
-    } else {
-        runCatching { svc.defsFor(lookupBrand, lookupModel) }
-            .getOrElse { emptyList() }
-            .associate { it.key to it.values }
-    }
+    val liveSnapshot = runCatching {
+        liveValuesRepository.getLiveValues(
+            CatalogLiveValuesRequest(
+                categoryCode = resolvedCategoryCode,
+                brand = lookupBrand,
+                model = lookupModel,
+                localeTag = Locale.getDefault().toLanguageTag(),
+                attributeCodes = effectiveSpec.allAttributes().map { attribute -> attribute.code },
+            ),
+        )
+    }.getOrDefault(CatalogLiveValuesSnapshot())
+    val rawDbByKey: Map<String, List<String>> = liveSnapshot.valuesByAttributeCode
 
     val filteredDbByKey = rawDbByKey.filterKeys { key ->
         when (key.lowercase()) {
@@ -106,7 +105,7 @@ suspend fun attributeCatalogFor(
     val brandOptions: List<String> = if (allowBrand) {
         when {
             product?.brand?.isNotBlank() == true -> listOf(product.brand)
-            else -> runCatching { svc.brands() }.getOrElse { emptyList() }
+            else -> liveSnapshot.brandOptions
         }
     } else {
         emptyList()
@@ -114,141 +113,58 @@ suspend fun attributeCatalogFor(
     val modelOptions: List<String> = if (allowModel) {
         when {
             product?.model?.isNotBlank() == true -> listOf(product.model)
-            else -> runCatching { svc.models(lookupBrand) }.getOrElse { emptyList() }
+            else -> liveSnapshot.modelOptions
         }
     } else {
         emptyList()
     }
 
-    val dbByKey: Map<String, List<String>> = buildMap {
+    val liveDbByKey: Map<String, List<String>> = buildMap {
         putAll(filteredDbByKey)
         if (brandOptions.isNotEmpty()) put("brand", brandOptions)
         if (modelOptions.isNotEmpty()) put("model", modelOptions)
     }
 
-    // 1) Если профиль есть — строим UI-дефы из профиля (required/uiOrder),
-    //    но подставляем реальные значения из БД в options.
-    if (profile != null) {
-        val base = profile.toUiDefs()
-        val merged = mergeProfileWithDb(base, dbByKey, constraintsResult)
-        if (merged.isNotEmpty()) return CategoryUiCatalog(
-            categoryCode = resolvedCategoryCode,
-            defs = merged,
-            requiredIfRules = requiredIfRules,
-            constraints = constraints,
-        )
-    }
-
-    // 2) Если профиля нет, но БД дала значения — показываем их как есть.
-    if (dbByKey.isNotEmpty()) {
-        return CategoryUiCatalog(
-            categoryCode = resolvedCategoryCode,
-            defs = dbByKey.entries
-            .sortedBy { it.key.lowercase() }
-            .map { (k, values) ->
-                applyConstraints(
-                    def = AttributeDef(
-                        key = k,
-                        title = titleFor(k),
-                        options = values,
-                    ),
-                    observedValues = values,
-                    constraintsResult = constraintsResult,
-                )
-            },
-            requiredIfRules = requiredIfRules,
-            constraints = constraints,
-        )
-    }
-
-    // 3) Последний фолбэк - по названию модели
-    if (product == null) return CategoryUiCatalog(
-        categoryCode = resolvedCategoryCode,
-        defs = emptyList(),
-        requiredIfRules = requiredIfRules,
-        constraints = constraints,
+    val defs = effectiveSpec
+        .toFeatureAttributeDefs()
+        .map { def -> applyConstraints(def, constraintsResult) }
+    val liveValuesByKey = buildLiveValueEnrichment(
+        defs = defs,
+        dbByKey = liveDbByKey,
+        constraintsResult = constraintsResult,
     )
+
     return CategoryUiCatalog(
         categoryCode = resolvedCategoryCode,
-        defs = fallbackByModel[product.model].orEmpty(),
+        defs = defs,
+        liveValuesByKey = liveValuesByKey,
         requiredIfRules = requiredIfRules,
         constraints = constraints,
     )
 }
 
-private fun mergeProfileWithDb(
-    profileDefs: List<AttributeDef>,
+private fun buildLiveValueEnrichment(
+    defs: List<AttributeDef>,
     dbByKey: Map<String, List<String>>,
     constraintsResult: ConstraintCheckResult,
-): List<AttributeDef> {
-    if (profileDefs.isEmpty() && dbByKey.isEmpty()) return emptyList()
-
-    val out = LinkedHashMap<String, AttributeDef>()
-
-    // Сначала — профиль (с порядком), но key/values подгоняем под БД если она что-то знает.
-    for (p in profileDefs) {
-        val dbKey = pickDbKey(p.key, dbByKey)
-        val dbVals = dbByKey[dbKey].orEmpty()
-
-        val fixedTitle =
-            if (p.title.isBlank() || p.title.equals(p.key, ignoreCase = true)) titleFor(dbKey) else p.title
-
-        val mapped = if (dbVals.isNotEmpty()) {
-            p.copy(key = dbKey, title = fixedTitle, options = dbVals, observedValues = dbVals)
-        } else {
-            p.copy(key = dbKey, title = fixedTitle)
-        }
-
-        val prev = out[dbKey]
-        val merged = if (prev == null) mapped else mergeDefs(prev, mapped)
-        out[dbKey] = applyConstraints(merged, dbVals, constraintsResult)
-    }
-
-    // Потом — дополнительные ключи из БД, которых нет в профиле
-    for ((k, vals) in dbByKey) {
-        val already = out.keys.any { it.equals(k, ignoreCase = true) }
-        if (!already) {
-            out[k] = applyConstraints(
-                def = AttributeDef(
-                    key = k,
-                    title = titleFor(k),
-                    options = vals,
-                    observedValues = vals,
-                ),
-                observedValues = vals,
-                constraintsResult = constraintsResult,
-            )
-        }
-    }
-
-    return out.values.toList()
-}
-
-private fun mergeDefs(a: AttributeDef, b: AttributeDef): AttributeDef {
-    val opts = a.options.ifEmpty { b.options }
-    val allowed = a.allowedValues.ifEmpty { b.allowedValues }
-    val observed = a.observedValues.ifEmpty { b.observedValues }
-    val dictComplete = a.isDictionaryComplete && b.isDictionaryComplete
-    val forbidden = (a.forbiddenValues + b.forbiddenValues).distinct()
-
-    return a.copy(
-        title = a.title.ifBlank { b.title },
-        options = opts,
-        allowedValues = allowed,
-        observedValues = observed,
-        requiredForSearch = a.requiredForSearch || b.requiredForSearch,
-        requiredForOffer = a.requiredForOffer || b.requiredForOffer,
-        requiredForExpress = a.requiredForExpress || b.requiredForExpress,
-        facetEnabled = a.facetEnabled || b.facetEnabled,
-        multiValued = a.multiValued || b.multiValued,
-        isDictionaryComplete = dictComplete,
-        forbiddenValues = forbidden,
-    )
-}
+): Map<String, List<String>> =
+    defs.mapNotNull { def ->
+        if (def.allowedValues.isNotEmpty()) return@mapNotNull null
+        val dbKey = pickDbKey(def.key, dbByKey)
+        val allowedConstraint = constraintsResult.allowedValuesByAttribute[def.key].orEmpty()
+        val forbiddenConstraint = constraintsResult.forbiddenValuesByAttribute[def.key].orEmpty()
+        val liveValues = filterValues(
+            values = dbByKey[dbKey].orEmpty(),
+            allowed = allowedConstraint,
+            forbidden = forbiddenConstraint,
+        )
+        liveValues
+            .takeIf { it.isNotEmpty() }
+            ?.let { values -> def.key to values }
+    }.toMap(LinkedHashMap())
 
 private fun applyConstraints(
     def: AttributeDef,
-    observedValues: List<String>,
     constraintsResult: ConstraintCheckResult,
 ): AttributeDef {
     val allowedConstraint = constraintsResult.allowedValuesByAttribute[def.key].orEmpty()
@@ -256,36 +172,40 @@ private fun applyConstraints(
 
     val filteredAllowedValues = when {
         allowedConstraint.isNotEmpty() && def.allowedValues.isNotEmpty() ->
-            def.allowedValues.filter { v -> allowedConstraint.any { it.equals(v.canonical, ignoreCase = true) } }
-        allowedConstraint.isNotEmpty() -> allowedConstraint.map { ValueDef(canonical = it) }
+            def.allowedValues.filter { v -> allowedConstraint.any { it.equals(v.code, ignoreCase = true) } }
+        allowedConstraint.isNotEmpty() -> allowedConstraint.map { valueCode ->
+            ValueDef(code = valueCode, label = valueCode)
+        }
         else -> def.allowedValues
     }
 
     val orderedAllowedValues = if (filteredAllowedValues.any { it.rank != 0 }) {
         filteredAllowedValues.sortedWith(
-            compareByDescending<ValueDef> { it.rank }.thenBy { it.canonical.lowercase() }
+            compareByDescending<ValueDef> { it.rank }.thenBy { it.label.lowercase() }
         )
     } else {
         filteredAllowedValues
     }
 
-    val filteredObserved = filterValues(
-        values = observedValues,
+    val filteredOptions = filterValues(
+        values = def.options,
         allowed = allowedConstraint,
         forbidden = forbiddenConstraint,
     )
 
     val options = if (orderedAllowedValues.isNotEmpty()) {
-        orderedAllowedValues.map(ValueDef::canonical)
+        orderedAllowedValues.map(ValueDef::label)
     } else {
-        filteredObserved
+        filteredOptions
     }
 
     return def.copy(
         options = options,
         allowedValues = orderedAllowedValues,
-        observedValues = filteredObserved,
-        isDictionaryComplete = orderedAllowedValues.isNotEmpty(),
+        isDictionaryComplete = when {
+            allowedConstraint.isNotEmpty() -> orderedAllowedValues.isNotEmpty()
+            else -> def.isDictionaryComplete
+        },
         forbiddenValues = forbiddenConstraint,
     )
 }
@@ -301,6 +221,10 @@ private fun filterValues(
         values
     }
     return filteredAllowed
+        .filterNot { value -> forbidden.any { it.equals(value, ignoreCase = true) } }
+        .map { it.trim() }
+        .filter { it.isNotBlank() }
+        .distinctBy { it.lowercase() }
 }
 
 private fun pickDbKey(profileKey: String, dbByKey: Map<String, List<String>>): String {
@@ -335,66 +259,3 @@ private fun keyAliases(key: String): List<String> = when (key.lowercase()) {
     else -> emptyList()
 }
 
-private fun titleFor(key: String) = when (key) {
-    "color" -> "Цвет"
-    "storage" -> "Память"
-    "memory" -> "Память"
-    "memory_gb" -> "Память"
-    "ram" -> "RAM (ГБ)"
-    "ram_gb" -> "RAM (ГБ)"
-    "state" -> "Состояние"
-    "condition" -> "Состояние"
-    "warranty" -> "Гарантия"
-    else -> key.replaceFirstChar { it.titlecase() }
-}
-
-private fun CategoryProfile.toUiDefs(): List<AttributeDef> {
-    val dictByAttr = valueDictionaries.associateBy { it.attributeCode }
-    val defs = attributes.associateBy { it.code }
-
-    return categoryAttributes
-        .sortedBy { it.uiOrder }
-        .mapNotNull { catAttr ->
-            val def = defs[catAttr.attributeCode] ?: return@mapNotNull null
-            val dict = dictByAttr[def.code]
-
-            val values = dict?.entries
-                ?.sortedWith(
-                    compareByDescending<com.example.shoppingassistant.domain.catalog.AttributeValueDictEntry> { it.rank }
-                        .thenBy { it.canonicalValue.lowercase() }
-                )
-                ?.map {
-                    ValueDef(
-                        canonical = it.canonicalValue,
-                        synonyms = it.synonyms,
-                        rank = it.rank,
-                    )
-                }
-                .orEmpty()
-
-            val opts = if (def.dataType == AttributeDataType.ENUM) {
-                values.map(ValueDef::canonical)
-            } else {
-                emptyList()
-            }
-
-            val selectionOnly =
-                def.dataType == AttributeDataType.ENUM ||
-                    def.dataType == AttributeDataType.BOOL ||
-                    def.code == "brand" ||
-                    def.code == "model"
-
-            AttributeDef(
-                key = def.code,
-                title = def.title,
-                options = opts,
-                allowedValues = values,
-                requiredForSearch = def.requiredForSearch || catAttr.isRequiredForCategory,
-                requiredForOffer = def.requiredForOffer || catAttr.isRequiredForCategory,
-                requiredForExpress = def.requiredForExpress || catAttr.isRequiredForCategory,
-                facetEnabled = def.facetEnabled,
-                multiValued = def.multiValued,
-                selectionOnly = selectionOnly,
-            )
-        }
-}

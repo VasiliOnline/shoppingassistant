@@ -3,6 +3,7 @@ package com.example.shoppingassistant.domain.catalog
 import com.example.shoppingassistant.domain.catalog.constraints.AttributeValueConstraint
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraints
 import com.example.shoppingassistant.domain.catalog.constraints.ConstraintScope
+import com.example.shoppingassistant.domain.i18n.localizedTextOf
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -19,7 +20,7 @@ class Stage22EffectiveSpecEngineTest {
                 basePath = "taxonomy/stage2/2.2/TECH",
             ),
             profiles = listOf(
-                legacyProfile(
+                resourceProfile(
                     categoryCode = "TECH.PHONES",
                     attributes = listOf(
                         AttributeDef(
@@ -85,7 +86,7 @@ class Stage22EffectiveSpecEngineTest {
     }
 
     @Test
-    fun returns_fallback_spec_when_profile_missing() {
+    fun missing_profile_throws() {
         val engine = Stage22EffectiveSpecEngine.fromSeed(
             categories = testCategories(),
             registry = testRegistry(),
@@ -93,11 +94,13 @@ class Stage22EffectiveSpecEngineTest {
             globalConstraints = emptyList(),
         )
 
-        val spec = engine.getEffectiveSpec("TECH.PHONES")
-        assertTrue(spec.meta.isFallback)
-        assertTrue(spec.attributes.any { it.attributeCode == "product_name" && it.required })
-        assertTrue(spec.attributes.any { it.attributeCode == "brand" })
-        assertTrue(spec.attributes.any { it.attributeCode == "model" })
+        var thrown = false
+        try {
+            engine.getEffectiveSpec("TECH.PHONES")
+        } catch (_: IllegalStateException) {
+            thrown = true
+        }
+        assertTrue("Missing category profile must throw", thrown)
     }
 
     @Test
@@ -109,7 +112,23 @@ class Stage22EffectiveSpecEngineTest {
                 l0Code = "TECH",
                 basePath = "taxonomy/stage2/2.2/TECH",
             ),
-            profiles = listOf(legacyProfile("TECH.PHONES", emptyList(), emptyList())),
+            profiles = listOf(
+                resourceProfile(
+                    categoryCode = "TECH.PHONES",
+                    attributes = listOf(
+                        AttributeDef(
+                            code = "color",
+                            title = "Цвет",
+                            dataType = AttributeDataType.ENUM,
+                            facetEnabled = true,
+                            valueDictCode = "color",
+                        ),
+                    ),
+                    categoryAttributes = listOf(
+                        CategoryAttribute("TECH.PHONES", "color", uiOrder = 1, isRequiredForCategory = true),
+                    ),
+                ),
+            ),
             constraints = listOf(
                 CatalogConstraints(
                     scope = ConstraintScope.CATEGORY,
@@ -158,7 +177,7 @@ class Stage22EffectiveSpecEngineTest {
         val techPackage = Stage22PackageData(
             descriptor = Stage22PackageDescriptor("TECH", "taxonomy/stage2/2.2/TECH"),
             profiles = listOf(
-                legacyProfile(
+                resourceProfile(
                     categoryCode = "TECH.PHONES",
                     attributes = listOf(
                         AttributeDef(code = "brand", title = "Бренд", dataType = AttributeDataType.STRING),
@@ -200,10 +219,35 @@ class Stage22EffectiveSpecEngineTest {
 
     @Test
     fun cache_avoids_recomputing_same_category() {
+        val packageData = Stage22PackageData(
+            descriptor = Stage22PackageDescriptor(
+                l0Code = "TECH",
+                basePath = "taxonomy/stage2/2.2/TECH",
+            ),
+            profiles = listOf(
+                resourceProfile(
+                    categoryCode = "TECH.PHONES",
+                    attributes = listOf(
+                        AttributeDef(
+                            code = "brand",
+                            title = "Бренд",
+                            dataType = AttributeDataType.STRING,
+                            requiredForOffer = true,
+                            facetEnabled = true,
+                        ),
+                    ),
+                    categoryAttributes = listOf(
+                        CategoryAttribute("TECH.PHONES", "brand", uiOrder = 1, isRequiredForCategory = true),
+                    ),
+                ),
+            ),
+            constraints = emptyList(),
+            valueDicts = emptyList(),
+        )
         val engine = Stage22EffectiveSpecEngine.fromSeed(
             categories = testCategories(),
             registry = testRegistry(),
-            packages = emptyList(),
+            packages = listOf(packageData),
             globalConstraints = emptyList(),
         )
 
@@ -218,13 +262,13 @@ class Stage22EffectiveSpecEngineTest {
         Category(
             code = "TECH",
             segment = CategorySegment.TECH,
-            title = "Электроника",
+            title = localizedTextOf("ru" to "Электроника"),
             parentCode = null,
         ),
         Category(
             code = "TECH.PHONES",
             segment = CategorySegment.TECH,
-            title = "Смартфоны",
+            title = localizedTextOf("ru" to "Смартфоны"),
             parentCode = "TECH",
         ),
     )
@@ -292,12 +336,12 @@ class Stage22EffectiveSpecEngineTest {
         )
     }
 
-    private fun legacyProfile(
+    private fun resourceProfile(
         categoryCode: String,
         attributes: List<AttributeDef>,
         categoryAttributes: List<CategoryAttribute>,
-    ): CategoryProfile = CategoryProfile(
-        category = Category(
+    ): Stage22ResourceProfile = Stage22ResourceProfile(
+        category = Stage22SeedCategoryRef(
             code = categoryCode,
             segment = CategorySegment.valueOf(categoryCode.substringBefore('.')),
             title = categoryCode,

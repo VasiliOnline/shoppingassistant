@@ -1,0 +1,155 @@
+{
+  "categoryCode": "FASH.KIDS",
+  "extends": "FASH.APPAREL_COMMON",
+  "surface_policy": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7,
+    "hide_system_fields": true,
+    "show_child_friendly_labels": true
+  },
+  "default_initial_fields": [
+    "apparel_type",
+    "target_gender",
+    "age_group",
+    "size",
+    "condition",
+    "brand",
+    "color",
+    "season"
+  ],
+  "default_primary_facets": [
+    "apparel_type",
+    "target_gender",
+    "age_group",
+    "size",
+    "condition",
+    "brand",
+    "price"
+  ],
+  "type_group_overrides": {
+    "tops": {
+      "initial_fields": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand",
+        "color",
+        "material_primary"
+      ],
+      "primary_facets": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "brand",
+        "condition"
+      ]
+    },
+    "bottoms": {
+      "initial_fields": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand",
+        "color",
+        "fit"
+      ],
+      "primary_facets": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "fit",
+        "condition"
+      ]
+    },
+    "outerwear": {
+      "initial_fields": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand",
+        "season",
+        "insulation"
+      ],
+      "primary_facets": [
+        "apparel_type",
+        "age_group",
+        "size",
+        "season",
+        "condition",
+        "brand"
+      ]
+    },
+    "dresses_one_piece": {
+      "initial_fields": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand",
+        "color",
+        "season"
+      ],
+      "primary_facets": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand"
+      ]
+    },
+    "underwear_sleep": {
+      "initial_fields": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "material_primary",
+        "color"
+      ],
+      "primary_facets": [
+        "apparel_type",
+        "age_group",
+        "size",
+        "condition",
+        "material_primary"
+      ]
+    },
+    "sets_suits": {
+      "initial_fields": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "brand",
+        "season",
+        "set_pieces_count"
+      ],
+      "primary_facets": [
+        "apparel_type",
+        "target_gender",
+        "age_group",
+        "size",
+        "condition",
+        "season"
+      ]
+    }
+  },
+  "system_hidden_fields": [
+    "ai_gender_confidence",
+    "vision_evidence_policy",
+    "raw_size_text",
+    "raw_label_text"
+  ]
+}

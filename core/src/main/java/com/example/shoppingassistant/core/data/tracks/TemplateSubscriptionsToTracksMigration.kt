@@ -11,6 +11,7 @@ import com.example.shoppingassistant.domain.tracks.TrackState
 import com.example.shoppingassistant.domain.tracks.TrackTarget
 import com.example.shoppingassistant.domain.tracks.TrackType
 import kotlinx.serialization.json.Json
+import androidx.core.content.edit
 
 /**
  * One-time migration from legacy template subscriptions to tracks.
@@ -131,7 +132,7 @@ class TemplateSubscriptionsToTracksMigration(
     }
 
     private fun markDone() {
-        prefs.edit().putBoolean(KEY_DONE, true).apply()
+        prefs.edit { putBoolean(KEY_DONE, true) }
     }
 
     private companion object {

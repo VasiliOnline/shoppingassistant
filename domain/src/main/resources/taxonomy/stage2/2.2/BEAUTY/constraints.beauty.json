@@ -17,7 +17,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'form_factor'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWDER"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "POWDER",
+              "CAPSULE",
+              "TABLET",
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.BODYCARE по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -52,7 +77,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.DEVICES по атрибуту condition."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -74,7 +124,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'gender'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "gender",
+            "op": "EQUALS_ANY",
+            "values": [
+              "UNISEX"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "gender",
+            "allowedValues": [
+              "UNISEX",
+              "MALE",
+              "FEMALE",
+              "KIDS"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.FRAGRANCE по атрибуту gender."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -109,7 +184,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWDER"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "POWDER",
+              "CAPSULE",
+              "TABLET",
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.HAIRCARE по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -164,7 +264,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'substance_code'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWDER"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "POWDER",
+              "CAPSULE",
+              "TABLET",
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.HEALTH по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -199,7 +324,34 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'form_factor'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "color",
+            "op": "EQUALS_ANY",
+            "values": [
+              "BLACK"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "color",
+            "allowedValues": [
+              "BLACK",
+              "WHITE",
+              "GRAY",
+              "BLUE",
+              "PINK",
+              "NATURAL_TITANIUM"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.MAKEUP по атрибуту color."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -221,7 +373,32 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'form_factor'."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWDER"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "POWDER",
+              "CAPSULE",
+              "TABLET",
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории BEAUTY.SKINCARE по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

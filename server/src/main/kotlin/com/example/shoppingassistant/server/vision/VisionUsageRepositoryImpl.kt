@@ -2,6 +2,7 @@ package com.example.shoppingassistant.server.vision
 
 import com.example.shoppingassistant.domain.vision.VisionConsumeRequest
 import com.example.shoppingassistant.domain.vision.VisionUsage
+import com.example.shoppingassistant.domain.vision.VisionUsageRepository
 import com.example.shoppingassistant.domain.vision.VisionUsageResult
 import com.example.shoppingassistant.domain.vision.VisionUsageStatus
 import com.example.shoppingassistant.server.config.VisionConfig
@@ -14,8 +15,8 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class VisionUsageRepositoryImpl(
     private val config: VisionConfig,
-) {
-    suspend fun getUsage(userKey: String?): VisionUsageResult = DatabaseFactory.dbQuery {
+) : VisionUsageRepository {
+    override suspend fun getUsage(userKey: String?): VisionUsageResult = DatabaseFactory.dbQuery {
         val key = normalizeUserKey(userKey)
         val now = System.currentTimeMillis()
         val row = VisionUsageTable.selectAll().where { VisionUsageTable.userKey eq key }.singleOrNull()
@@ -24,7 +25,7 @@ class VisionUsageRepositoryImpl(
         VisionUsageResult(status = VisionUsageStatus.OK, usage = usage)
     }
 
-    suspend fun consume(request: VisionConsumeRequest): VisionUsageResult = DatabaseFactory.dbQuery {
+    override suspend fun consume(request: VisionConsumeRequest): VisionUsageResult = DatabaseFactory.dbQuery {
         val key = normalizeUserKey(request.userKey)
         val units = request.units.coerceAtLeast(0)
         if (units == 0) {

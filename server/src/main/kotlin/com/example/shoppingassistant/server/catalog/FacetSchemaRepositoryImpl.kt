@@ -92,7 +92,11 @@ class FacetSchemaRepositoryImpl :
 
 private fun ResultRow.toFacetDefinition(): FacetDefinition = FacetDefinition(
     facetKey = this[FacetDefinitionsTable.facetKey],
-    titleRu = this[FacetDefinitionsTable.titleRu],
+    title = localizedTextFromStorage(
+        localized = this[FacetDefinitionsTable.titleLocalized],
+        titleRu = this[FacetDefinitionsTable.titleRu],
+        titleEn = this[FacetDefinitionsTable.titleEn],
+    ),
     valueType = runCatching { FacetDataType.valueOf(this[FacetDefinitionsTable.valueType]) }
         .getOrDefault(FacetDataType.ENUM),
     appliesToCategoryCodes = this[FacetDefinitionsTable.appliesToCategoryCodes],
@@ -111,7 +115,11 @@ private fun ResultRow.toFacetDefinition(): FacetDefinition = FacetDefinition(
 private fun ResultRow.toFacetPreset(): FacetPreset = FacetPreset(
     presetCode = this[FacetPresetsTable.presetCode],
     categoryCode = this[FacetPresetsTable.categoryCode],
-    titleRu = this[FacetPresetsTable.titleRu],
+    title = localizedTextFromStorage(
+        localized = this[FacetPresetsTable.titleLocalized],
+        titleRu = this[FacetPresetsTable.titleRu],
+        titleEn = this[FacetPresetsTable.titleEn],
+    ),
     order = this[FacetPresetsTable.order],
     effectiveFrom = this[FacetPresetsTable.effectiveFrom],
     effectiveTo = this[FacetPresetsTable.effectiveTo],
@@ -122,7 +130,11 @@ private fun ResultRow.toFacetPreset(): FacetPreset = FacetPreset(
 private fun ResultRow.toFacetCollection(): FacetCollection = FacetCollection(
     collectionCode = this[FacetCollectionsTable.collectionCode],
     categoryCode = this[FacetCollectionsTable.categoryCode],
-    titleRu = this[FacetCollectionsTable.titleRu],
+    title = localizedTextFromStorage(
+        localized = this[FacetCollectionsTable.titleLocalized],
+        titleRu = this[FacetCollectionsTable.titleRu],
+        titleEn = this[FacetCollectionsTable.titleEn],
+    ),
     browseCode = this[FacetCollectionsTable.browseCode],
     presetCode = this[FacetCollectionsTable.presetCode],
     order = this[FacetCollectionsTable.order],

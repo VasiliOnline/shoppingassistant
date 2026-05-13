@@ -1,0 +1,83 @@
+query	expected_route	expected_apparel_type	expected_target_gender	should_not_route_to	intent	notes
+мужская футболка	FASH.MEN	TSHIRT	MEN		positive	
+мужские джинсы	FASH.MEN	JEANS	MEN		positive	
+рубашка мужская белая	FASH.MEN	SHIRT	MEN		positive	
+мужское худи xl	FASH.MEN	HOODIE	MEN		positive	
+мужской свитер шерсть	FASH.MEN	SWEATER	MEN		positive	
+мужской пуховик зимний	FASH.MEN	DOWN_JACKET	MEN		positive	
+куртка мужская кожаная	FASH.MEN	LEATHER_JACKET	MEN		positive	
+мужские брюки классические	FASH.MEN	TROUSERS	MEN		positive	
+мужские шорты	FASH.MEN	SHORTS	MEN		positive	
+костюм мужской двойка	FASH.MEN	SUIT	MEN		positive	
+мужской пиджак	FASH.MEN	BLAZER	MEN		positive	
+спортивный костюм мужской	FASH.MEN	TRACKSUIT	MEN		positive	
+мужские носки	FASH.MEN	SOCKS	MEN		positive	
+трусы мужские боксеры	FASH.MEN	UNDERWEAR	MEN		positive	
+мужское термобелье	FASH.MEN	THERMAL_UNDERWEAR	MEN		positive	
+мужская ветровка	FASH.MEN	WINDBREAKER	MEN		positive	
+мужская парка	FASH.MEN	PARKA	MEN		positive	
+мужской бомбер	FASH.MEN	BOMBER	MEN		positive	
+мужская джинсовка	FASH.MEN	DENIM_JACKET	MEN		positive	
+мужской кардиган	FASH.MEN	CARDIGAN	MEN		positive	
+мужская водолазка	FASH.MEN	TURTLENECK	MEN		positive	
+мужское поло	FASH.MEN	POLO	MEN		positive	
+лонгслив мужской	FASH.MEN	LONGSLEEVE	MEN		positive	
+карго мужские	FASH.MEN	CARGO_PANTS	MEN		positive	
+чиносы мужские	FASH.MEN	CHINOS	MEN		positive	
+жилет мужской	FASH.MEN	VEST	MEN		positive	
+мужская пижама	FASH.MEN	PAJAMAS	MEN		positive	
+мужской халат	FASH.MEN	ROBE	MEN		positive	
+мужские плавки	FASH.MEN	SWIMWEAR	MEN		positive	
+форма мужская рабочая	FASH.MEN	UNIFORM	MEN		positive	
+мужская одежда	FASH.MEN		MEN		positive	
+одежда для мужчин	FASH.MEN		MEN		positive	
+унисекс худи	FASH.MEN_CANDIDATE	HOODIE	UNISEX		ambiguous_unisex	Allow only as candidate unless branch context says men
+unisex футболка	FASH.MEN_CANDIDATE	TSHIRT	UNISEX		ambiguous_unisex	Allow only as candidate unless branch context says men
+базовая толстовка унисекс	FASH.MEN_CANDIDATE	SWEATSHIRT	UNISEX		ambiguous_unisex	Allow only as candidate unless branch context says men
+мужские кроссовки	FASH.SHOES			FASH.MEN	negative_guard	
+мужские ботинки	FASH.SHOES			FASH.MEN	negative_guard	
+мужские туфли	FASH.SHOES			FASH.MEN	negative_guard	
+мужская сумка	FASH.BAGS			FASH.MEN	negative_guard	
+мужской рюкзак	FASH.BAGS			FASH.MEN	negative_guard	
+мужской ремень	FASH.ACCESSORIES			FASH.MEN	negative_guard	
+мужские часы	FASH.ACCESSORIES			FASH.MEN	negative_guard	
+мужская кепка	FASH.ACCESSORIES			FASH.MEN	negative_guard	
+мужской кошелек	FASH.ACCESSORIES			FASH.MEN	negative_guard	
+мужской парфюм	BEAUTY.FRAGRANCE			FASH.MEN	negative_guard	
+мужской шампунь	BEAUTY.HAIRCARE			FASH.MEN	negative_guard	
+детская куртка	FASH.KIDS			FASH.MEN	negative_guard	
+джинсы для мальчика	FASH.KIDS			FASH.MEN	negative_guard	
+женское платье	FASH.WOMEN			FASH.MEN	negative_guard	
+женская блузка	FASH.WOMEN			FASH.MEN	negative_guard	
+мужское платье	AMBIGUOUS_REVIEW			FASH.MEN	negative_guard	
+мужская юбка	AMBIGUOUS_REVIEW			FASH.MEN	negative_guard	
+мужская черная футболка размер L	FASH.MEN	TSHIRT	MEN		positive_variant	
+мужская черная рубашка размер L	FASH.MEN	SHIRT	MEN		positive_variant	
+мужская черная худи размер L	FASH.MEN	HOODIE	MEN		positive_variant	
+мужская черная куртка размер L	FASH.MEN	JACKET	MEN		positive_variant	
+мужские черная джинсы размер 50	FASH.MEN	JEANS	MEN		positive_variant	
+мужские черная брюки размер 50	FASH.MEN	TROUSERS	MEN		positive_variant	
+мужская белая футболка размер L	FASH.MEN	TSHIRT	MEN		positive_variant	
+мужская белая рубашка размер L	FASH.MEN	SHIRT	MEN		positive_variant	
+мужская белая худи размер L	FASH.MEN	HOODIE	MEN		positive_variant	
+мужская белая куртка размер L	FASH.MEN	JACKET	MEN		positive_variant	
+мужские белая джинсы размер 50	FASH.MEN	JEANS	MEN		positive_variant	
+мужские белая брюки размер 50	FASH.MEN	TROUSERS	MEN		positive_variant	
+мужская серая футболка размер L	FASH.MEN	TSHIRT	MEN		positive_variant	
+мужская серая рубашка размер L	FASH.MEN	SHIRT	MEN		positive_variant	
+мужская серая худи размер L	FASH.MEN	HOODIE	MEN		positive_variant	
+мужская серая куртка размер L	FASH.MEN	JACKET	MEN		positive_variant	
+мужские серая джинсы размер 50	FASH.MEN	JEANS	MEN		positive_variant	
+мужские серая брюки размер 50	FASH.MEN	TROUSERS	MEN		positive_variant	
+мужская синяя футболка размер L	FASH.MEN	TSHIRT	MEN		positive_variant	
+мужская синяя рубашка размер L	FASH.MEN	SHIRT	MEN		positive_variant	
+мужская синяя худи размер L	FASH.MEN	HOODIE	MEN		positive_variant	
+мужская синяя куртка размер L	FASH.MEN	JACKET	MEN		positive_variant	
+мужские синяя джинсы размер 50	FASH.MEN	JEANS	MEN		positive_variant	
+мужские синяя брюки размер 50	FASH.MEN	TROUSERS	MEN		positive_variant	
+мужская бежевая футболка размер L	FASH.MEN	TSHIRT	MEN		positive_variant	
+мужская бежевая рубашка размер L	FASH.MEN	SHIRT	MEN		positive_variant	
+мужская бежевая худи размер L	FASH.MEN	HOODIE	MEN		positive_variant	
+мужская бежевая куртка размер L	FASH.MEN	JACKET	MEN		positive_variant	
+мужские бежевая джинсы размер 50	FASH.MEN	JEANS	MEN		positive_variant	
+мужские бежевая брюки размер 50	FASH.MEN	TROUSERS	MEN		positive_variant	

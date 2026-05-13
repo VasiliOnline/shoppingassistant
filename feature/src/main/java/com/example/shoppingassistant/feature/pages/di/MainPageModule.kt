@@ -2,7 +2,6 @@
 // GPT: task=MainPage part=di/MainPageModule role=di v=1
 package com.example.shoppingassistant.feature.pages.di
 
-import com.example.shoppingassistant.core.data.AttributeService
 import com.example.shoppingassistant.core.data.ProductRepository
 import com.example.shoppingassistant.core.data.nearby.NearbyFiltersStorage
 import com.example.shoppingassistant.core.data.nearby.NearbyFiltersStorageImpl
@@ -13,7 +12,9 @@ import com.example.shoppingassistant.core.data.link.LinkTemplateMapperTask
 import com.example.shoppingassistant.core.usecase.SearchOffersWithFacetsUseCase
 import com.example.shoppingassistant.domain.auth.GetCurrentUserUseCase
 import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
-import com.example.shoppingassistant.domain.catalog.CatalogRepository
+import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesRepository
+import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
+import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
 import com.example.shoppingassistant.domain.catalog.constraints.CatalogConstraintsResolver
 import com.example.shoppingassistant.domain.facet.GetFacetCountsTask
 import com.example.shoppingassistant.domain.offers.CreateTrackedOfferTask
@@ -22,24 +23,27 @@ import com.example.shoppingassistant.domain.template.TemplateIdTask
 import com.example.shoppingassistant.domain.template.presets.TemplatePresetsRepository
 import com.example.shoppingassistant.domain.template.presets.generate.GenerateTemplatePresetsTask
 import com.example.shoppingassistant.domain.tracks.TrackRepository
-import com.example.shoppingassistant.domain.ugc.MirrorByUrlUseCase
-import com.example.shoppingassistant.domain.vision.NormalizePhotosUseCase
-import com.example.shoppingassistant.domain.vision.GetVisionUsageUseCase
 import com.example.shoppingassistant.domain.template.status.TemplateStatusResolver
-import com.example.shoppingassistant.domain.ugc.draft.CreateDraftOfferTask
-import com.example.shoppingassistant.domain.ugc.draft.DeleteDraftOfferTask
-import com.example.shoppingassistant.domain.ugc.draft.GetDraftOfferTask
-import com.example.shoppingassistant.domain.ugc.draft.ListDraftOffersTask
-import com.example.shoppingassistant.domain.ugc.draft.SaveDraftOfferTask
 import com.example.shoppingassistant.domain.profile.GetProfileCacheTask
+import com.example.shoppingassistant.domain.localoffer.ConfirmLocalOfferGeoSnapshotTask
+import com.example.shoppingassistant.domain.localoffer.CreateLocalOfferDraftTask
+import com.example.shoppingassistant.domain.localoffer.CreateOrResumeLocalOfferSessionTask
+import com.example.shoppingassistant.domain.localoffer.GetLocalOfferDraftTask
+import com.example.shoppingassistant.domain.localoffer.GetLocalOfferPreviewTask
+import com.example.shoppingassistant.domain.localoffer.GetLocalOfferPublishPreflightTask
+import com.example.shoppingassistant.domain.localoffer.PublishLocalOfferDraftTask
+import com.example.shoppingassistant.domain.localoffer.UpdateLocalOfferDraftReviewTask
+import com.example.shoppingassistant.domain.visualsearch.BindVisualSearchQueryUseCase
+import com.example.shoppingassistant.domain.visualsearch.GetVisualSearchRecoveryPlanUseCase
+import com.example.shoppingassistant.domain.visualsearch.NormalizeVisualSearchDraftUseCase
+import com.example.shoppingassistant.domain.visualsearch.ReuseVisualSearchContextUseCase
+import com.example.shoppingassistant.domain.visualsearch.TrackVisualSearchEventsUseCase
 import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestEngine
 import com.example.shoppingassistant.feature.pages.main.suggest.MainSuggestEngineImpl
 import com.example.shoppingassistant.feature.pages.main.state.MainPageViewModel
-import com.example.shoppingassistant.feature.pages.draft.create.CreateDraftViewModel
-import com.example.shoppingassistant.feature.pages.draft.create.DraftCreateModeStore
-import com.example.shoppingassistant.feature.pages.draft.create.DraftCreateModeStoreImpl
-import com.example.shoppingassistant.feature.pages.draft.create.DraftWizardSessionStore
-import com.example.shoppingassistant.feature.pages.draft.create.DraftWizardSessionStoreImpl
+import com.example.shoppingassistant.feature.pages.localoffer.LocalOfferFlowSessionStore
+import com.example.shoppingassistant.feature.pages.localoffer.LocalOfferFlowSessionStoreImpl
+import com.example.shoppingassistant.feature.pages.localoffer.LocalOfferViewModel
 import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersCreatedStore
 import com.example.shoppingassistant.feature.pages.useroffers.tasks.UserOffersCreatedStoreTask
 import com.example.shoppingassistant.feature.pages.useroffers.sync.UserOffersSyncQueueStore
@@ -54,8 +58,7 @@ import org.koin.core.module.dsl.viewModel
 val mainPageModule = module {
     single<UserOffersCreatedStore> { UserOffersCreatedStoreTask(androidContext()) }
     single<UserOffersSyncQueueStore> { UserOffersSyncQueueStoreTask(androidContext()) }
-    single<DraftCreateModeStore> { DraftCreateModeStoreImpl(androidContext()) }
-    single<DraftWizardSessionStore> { DraftWizardSessionStoreImpl(androidContext()) }
+    single<LocalOfferFlowSessionStore> { LocalOfferFlowSessionStoreImpl(androidContext()) }
     single<NearbyFiltersStorage> { NearbyFiltersStorageImpl(androidContext()) }
     single<UserOffersSyncTask> {
         UserOffersSyncTaskImpl(
@@ -67,7 +70,8 @@ val mainPageModule = module {
 
     single<MainSuggestEngine> {
         MainSuggestEngineImpl(
-            catalogRepository = get<CatalogRepository>(),
+            catalogRepository = get<CatalogReadRepository>(),
+            catalogTaxonomyRepository = get<CatalogTaxonomyRepository>(),
             categoryAliasRepository = get<CategoryAliasRepository>(),
             productSuggestRepository = get<ProductSuggestRepository>(),
             historyRepository = get<TemplateHistoryRepository>(),
@@ -80,8 +84,9 @@ val mainPageModule = module {
         MainPageViewModel(
             repository = get<ProductRepository>(),
             rankService = get<RankService>(),
-            attrSvc = get<AttributeService>(),
-            catalogRepository = get<CatalogRepository>(),
+            liveValuesRepository = get<CatalogLiveValuesRepository>(),
+            catalogRepository = get<CatalogReadRepository>(),
+            catalogTaxonomyRepository = get<CatalogTaxonomyRepository>(),
             constraintsResolver = get<CatalogConstraintsResolver>(),
             getFacetCounts = get<GetFacetCountsTask>(),
             getCurrentUser = get<GetCurrentUserUseCase>(),
@@ -96,8 +101,11 @@ val mainPageModule = module {
             trackRepository = get<TrackRepository>(),
             templatePresetsRepository = get<TemplatePresetsRepository>(),
             generateTemplatePresetsTask = get<GenerateTemplatePresetsTask>(),
-            normalizePhotosUseCase = get<NormalizePhotosUseCase>(),
-            getVisionUsageUseCase = get<GetVisionUsageUseCase>(),
+            reuseVisualSearchContext = get<ReuseVisualSearchContextUseCase>(),
+            normalizeVisualSearchDraft = get<NormalizeVisualSearchDraftUseCase>(),
+            bindVisualSearchQuery = get<BindVisualSearchQueryUseCase>(),
+            getVisualSearchRecoveryPlan = get<GetVisualSearchRecoveryPlanUseCase>(),
+            trackVisualSearchEvents = get<TrackVisualSearchEventsUseCase>(),
             searchOffersWithFacets = get<SearchOffersWithFacetsUseCase>(),
             nearbyFiltersStorage = get<NearbyFiltersStorage>(),
             debugAuthStore = get<DebugAuthStore>(),
@@ -105,18 +113,19 @@ val mainPageModule = module {
     }
 
     viewModel {
-        CreateDraftViewModel(
-            createDraftOffer = get<CreateDraftOfferTask>(),
-            saveDraftOffer = get<SaveDraftOfferTask>(),
-            getDraftOffer = get<GetDraftOfferTask>(),
-            deleteDraftOffer = get<DeleteDraftOfferTask>(),
-            listDraftOffers = get<ListDraftOffersTask>(),
-            mirrorByUrl = get<MirrorByUrlUseCase>(),
-            catalogRepository = get<CatalogRepository>(),
+        LocalOfferViewModel(
+            createOrResumeSession = get<CreateOrResumeLocalOfferSessionTask>(),
+            confirmGeoSnapshot = get<ConfirmLocalOfferGeoSnapshotTask>(),
+            createDraft = get<CreateLocalOfferDraftTask>(),
+            getDraft = get<GetLocalOfferDraftTask>(),
+            updateDraftReview = get<UpdateLocalOfferDraftReviewTask>(),
+            getPreview = get<GetLocalOfferPreviewTask>(),
+            getPublishPreflight = get<GetLocalOfferPublishPreflightTask>(),
+            publishDraft = get<PublishLocalOfferDraftTask>(),
             createdStore = get<UserOffersCreatedStore>(),
-            getProfileCache = get<GetProfileCacheTask>(),
-            sessionStore = get<DraftWizardSessionStore>(),
+            sessionStore = get<LocalOfferFlowSessionStore>(),
         )
     }
 }
+
 

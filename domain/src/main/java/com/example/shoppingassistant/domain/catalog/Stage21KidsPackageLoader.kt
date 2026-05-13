@@ -3,7 +3,7 @@ package com.example.shoppingassistant.domain.catalog
 internal object Stage21KidsPackageLoader {
     private val descriptor = Stage21PackageDescriptor(
         l0Code = "KIDS",
-        basePath = "taxonomy/stage2/2.1/KIDS",
+        basePath = "${CatalogContractPaths.stage21Base}/KIDS",
         browseNodesFile = "browse_nodes.kids.tsv",
         aliasesFile = "aliases.kids.tsv",
         goldenQueriesFile = "queries_golden.kids.tsv",

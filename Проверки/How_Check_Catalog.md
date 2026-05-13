@@ -10,6 +10,7 @@
 
 SQL: catalog_model_backlog.sql
 SQL (Stage 4 drift): catalog_stage4_contract_checks.sql
+SQL (required fill-rate): catalog_required_fill_rate_daily.sql
 SLA и процесс: PROD_BACKLOG_LOOP.md
 Миграции и parity: MIGRATION_PARITY_RUNBOOK.md
 Наблюдаемость пресетов: PRESET_OBSERVABILITY_RUNBOOK.md
@@ -22,6 +23,10 @@ psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PAS
 psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PASSWORD sslmode=require" \
   -f server/src/main/resources/db/checks/catalog_stage4_contract_checks.sql \
   -o "catalog_stage4_contract_checks_prod_$(date +%F).txt"
+
+psql "host=$DB_HOST port=$DB_PORT dbname=$DB_NAME user=$DB_USER password=$DB_PASSWORD sslmode=require" \
+  -f server/src/main/resources/db/checks/catalog_required_fill_rate_daily.sql \
+  -o "catalog_required_fill_rate_prod_$(date +%F).txt"
 Как читать отчет
 
 ZERO_RESULTS
@@ -70,6 +75,18 @@ Owner: команда taxonomy/search
 парсит результат,
 делает upsert задач в Jira или Linear по этому ключу.
 
+SLA-gate для backlog-типов `UNKNOWN_ATTRIBUTE` и `STAGE4_UNKNOWN_CLOSED_SET_VALUE` включён по умолчанию:
+
+```powershell
+.\Проверки\catalog_backlog_upsert.ps1 -Provider jira
+```
+
+Отключение только для аварийного прогона:
+
+```powershell
+.\Проверки\catalog_backlog_upsert.ps1 -Provider jira -NoSlaGate
+```
+
 ---
 
 Проверка observability пресетов (prod)
@@ -101,7 +118,9 @@ zero-results guardrail не деградирует
 ```powershell
 .\Проверки\run_preset_observability_release.ps1 `
   -StagingConn "host=<staging-host> port=5432 dbname=<db> user=<user> password=<pwd> sslmode=require" `
-  -ProdConn "host=<prod-host> port=5432 dbname=<db> user=<user> password=<pwd> sslmode=require"
+  -ProdConn "host=<prod-host> port=5432 dbname=<db> user=<user> password=<pwd> sslmode=require" `
+  -RequiredFillRateMinPct 90 `
+  -RequiredFillRateMinOffers 20
 ```
 
 Через секреты окружения (рекомендуется, чтобы не хранить коннекты в файлах):
@@ -143,6 +162,26 @@ $env:STAGE4_RUNTIME_BACKFILL_ON_STARTUP="true"
 $env:STAGE4_RUNTIME_BACKFILL_EXIT_AFTER_RUN="true"
 $env:STAGE4_RUNTIME_BACKFILL_BATCH_SIZE="500"
 ./gradlew :server:run
+```
+
+Live e2e по всем leaf-категориям (строгий режим reasonCodes по умолчанию) на реальном backend:
+
+```powershell
+$env:BACKEND_BASE_URL="https://<staging-backend>"
+$env:BACKEND_BEARER_TOKEN="<token>"
+.\Проверки\run_live_leaf_e2e.ps1
+```
+
+Быстрый прогон только по ключевым leaf-категориям:
+
+```powershell
+.\Проверки\run_live_leaf_e2e.ps1 -CategoryMode key
+```
+
+Разрешить reasonCodes/`ALREADY_EXISTS` (не рекомендуется):
+
+```powershell
+.\Проверки\run_live_leaf_e2e.ps1 -AllowReasonCodes -AllowAlreadyExists
 ```
 
 ---

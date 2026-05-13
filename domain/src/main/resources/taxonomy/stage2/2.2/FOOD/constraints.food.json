@@ -119,7 +119,32 @@
         "reason": "Режимы хранения зависят от подкатегории FOOD."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "POWDER"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "POWDER",
+              "CAPSULE",
+              "TABLET",
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории FOOD.GROCERIES по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -171,7 +196,29 @@
         "reason": "Режимы хранения зависят от подкатегории FOOD."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "form_factor",
+            "op": "EQUALS_ANY",
+            "values": [
+              "LIQUID"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "form_factor",
+            "allowedValues": [
+              "LIQUID"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории FOOD.DRINKS по атрибуту form_factor."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   },
@@ -222,7 +269,30 @@
         "reason": "Режимы хранения зависят от подкатегории FOOD."
       }
     ],
-    "compatibilityRules": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "spiciness_level",
+            "op": "EQUALS_ANY",
+            "values": [
+              "MILD"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "spiciness_level",
+            "allowedValues": [
+              "MILD",
+              "MEDIUM"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории FOOD.SNACKS по атрибуту spiciness_level."
+          }
+        ]
+      }
+    ],
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null
   }

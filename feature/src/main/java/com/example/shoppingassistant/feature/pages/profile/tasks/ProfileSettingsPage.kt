@@ -1,9 +1,15 @@
 package com.example.shoppingassistant.feature.pages.profile.tasks
 
+import com.example.shoppingassistant.feature.BuildConfig
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,8 +23,11 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.LocalShipping
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -64,11 +73,18 @@ import org.koin.java.KoinJavaComponent.get as koinGet
  * @param onSettingsChange Обратный вызов для уведомления об изменении настроек.
  * @param onBackClick Вызывается при нажатии на стрелку «Назад».
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileSettingsPage(
     settings: ProfileSettings,
     onSettingsChange: (ProfileSettings) -> Unit,
     onBackClick: () -> Unit,
+    showEmbeddedHeader: Boolean = true,
+    onOpenCatalogGovernance: (() -> Unit)? = null,
+    onOpenDeliveryAddresses: (() -> Unit)? = null,
+    onOpenSellerDeliveryZones: (() -> Unit)? = null,
+    activeDeliveryAddressSummary: String? = null,
+    sellerDeliveryZonesCount: Int = 0,
 ) {
     // Локальные состояния для каждого параметра
     var language by remember(settings.languageCode) { mutableStateOf(settings.languageCode) }
@@ -142,167 +158,241 @@ fun ProfileSettingsPage(
                 ),
             verticalArrangement = Arrangement.spacedBy(LayoutDefaults.LargeSectionSpacing),
         ) {
-            // Заголовок с кнопкой назад
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                        contentDescription = stringResource(R.string.profile_back),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            if (showEmbeddedHeader) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                            contentDescription = stringResource(R.string.profile_back),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Text(
+                        text = stringResource(R.string.profile_settings_title),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
-                Text(
-                    text = stringResource(R.string.profile_settings_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
-                )
             }
 
-            // Карточка с настройками
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.large,
-                color = MaterialTheme.colorScheme.surface,
+            Text(
+                text = "Изменения применяются сразу. Здесь настраиваются язык, тема, фильтры и быстрые действия на этом устройстве.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            SettingsCard(
+                title = "Внешний вид",
+                subtitle = "Базовые параметры интерфейса для этого устройства.",
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = LayoutDefaults.CardInnerPadding,
-                            vertical = LayoutDefaults.LargeSectionSpacing,
-                        ),
-                    verticalArrangement = Arrangement.spacedBy(LayoutDefaults.LargeSectionSpacing),
-                ) {
-                    SettingsBlock(title = stringResource(R.string.profile_settings_language)) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                            LanguageChip(
-                                label = stringResource(R.string.profile_settings_language_ru),
-                                selected = language.equals("RU", ignoreCase = true),
-                                onClick = { language = "RU" },
-                            )
-                            LanguageChip(
-                                label = stringResource(R.string.profile_settings_language_en),
-                                selected = language.equals("EN", ignoreCase = true),
-                                onClick = { language = "EN" },
-                            )
-                            LanguageChip(
-                                label = stringResource(R.string.profile_settings_language_system),
-                                selected = language.isBlank(),
-                                onClick = { language = "" },
-                            )
-                        }
-                    }
-                    SettingsBlock(title = stringResource(R.string.profile_settings_theme)) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                            ThemeChip(
-                                icon = Icons.Outlined.LightMode,
-                                label = stringResource(R.string.profile_settings_theme_light),
-                                selected = theme == ProfileThemePreference.LIGHT,
-                                onClick = { theme = ProfileThemePreference.LIGHT },
-                            )
-                            ThemeChip(
-                                icon = Icons.Outlined.DarkMode,
-                                label = stringResource(R.string.profile_settings_theme_dark),
-                                selected = theme == ProfileThemePreference.DARK,
-                                onClick = { theme = ProfileThemePreference.DARK },
-                            )
-                            ThemeChip(
-                                icon = Icons.Outlined.Settings,
-                                label = stringResource(R.string.profile_settings_theme_system),
-                                selected = theme == ProfileThemePreference.SYSTEM,
-                                onClick = { theme = ProfileThemePreference.SYSTEM },
-                            )
-                        }
-                    }
-                SettingsBlock(
-                    title = stringResource(R.string.profile_settings_hide_undeliverable_title),
-                    subtitle = stringResource(R.string.profile_settings_hide_undeliverable_subtitle),
-                ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Text(
-                                text = if (hideUndeliverable) {
-                                    stringResource(R.string.profile_settings_filter_on)
-                                } else {
-                                    stringResource(R.string.profile_settings_filter_off)
-                                },
-                                style = MaterialTheme.typography.bodyLarge,
-                            )
-                        Switch(
-                            checked = hideUndeliverable,
-                            onCheckedChange = { hideUndeliverable = it },
+                SettingsBlock(title = stringResource(R.string.profile_settings_language)) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        LanguageChip(
+                            label = stringResource(R.string.profile_settings_language_ru),
+                            selected = language.equals("RU", ignoreCase = true),
+                            onClick = { language = "RU" },
+                        )
+                        LanguageChip(
+                            label = stringResource(R.string.profile_settings_language_en),
+                            selected = language.equals("EN", ignoreCase = true),
+                            onClick = { language = "EN" },
+                        )
+                        LanguageChip(
+                            label = stringResource(R.string.profile_settings_language_system),
+                            selected = language.isBlank(),
+                            onClick = { language = "" },
                         )
                     }
                 }
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f))
+                SettingsBlock(title = stringResource(R.string.profile_settings_theme)) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        ThemeChip(
+                            icon = Icons.Outlined.LightMode,
+                            label = stringResource(R.string.profile_settings_theme_light),
+                            selected = theme == ProfileThemePreference.LIGHT,
+                            onClick = { theme = ProfileThemePreference.LIGHT },
+                        )
+                        ThemeChip(
+                            icon = Icons.Outlined.DarkMode,
+                            label = stringResource(R.string.profile_settings_theme_dark),
+                            selected = theme == ProfileThemePreference.DARK,
+                            onClick = { theme = ProfileThemePreference.DARK },
+                        )
+                        ThemeChip(
+                            icon = Icons.Outlined.Settings,
+                            label = stringResource(R.string.profile_settings_theme_system),
+                            selected = theme == ProfileThemePreference.SYSTEM,
+                            onClick = { theme = ProfileThemePreference.SYSTEM },
+                        )
+                    }
+                }
+            }
 
-                SettingsBlock(
-                    title = "Bottom menu style",
-                    subtitle = "Choose the bottom navigation background.",
+            SettingsCard(
+                title = "Выдача и фильтры",
+                subtitle = stringResource(R.string.profile_settings_hide_undeliverable_subtitle),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.profile_settings_hide_undeliverable_title),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            text = if (hideUndeliverable) {
+                                stringResource(R.string.profile_settings_filter_on)
+                            } else {
+                                stringResource(R.string.profile_settings_filter_off)
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(
+                        checked = hideUndeliverable,
+                        onCheckedChange = { hideUndeliverable = it },
+                    )
+                }
+            }
+
+            if (onOpenDeliveryAddresses != null || onOpenSellerDeliveryZones != null) {
+                SettingsCard(
+                    title = "Адреса и доставка",
+                    subtitle = "Активный адрес покупателя влияет на фильтр доставки, а seller-зоны управляют тем, где продавец реально доставляет.",
+                ) {
+                    onOpenDeliveryAddresses?.let { openAddresses ->
+                        SettingsNavigationRow(
+                            icon = Icons.Outlined.LocationOn,
+                            title = "Адрес получателя",
+                            subtitle = activeDeliveryAddressSummary ?: "Активный адрес пока не выбран",
+                            onClick = openAddresses,
+                        )
+                    }
+                    if (onOpenDeliveryAddresses != null && onOpenSellerDeliveryZones != null) {
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f))
+                    }
+                    onOpenSellerDeliveryZones?.let { openZones ->
+                        val zonesSummary = if (sellerDeliveryZonesCount > 0) {
+                            "$sellerDeliveryZonesCount зон в профиле продавца"
+                        } else {
+                            "Зоны не заданы, доставка считается неограниченной"
+                        }
+                        SettingsNavigationRow(
+                            icon = Icons.Outlined.LocalShipping,
+                            title = "Зоны доставки продавца",
+                            subtitle = zonesSummary,
+                            onClick = openZones,
+                        )
+                    }
+                }
+            }
+
+            SettingsCard(
+                title = "Навигация",
+                subtitle = "Визуальная плотность нижней панели и быстрых действий.",
+            ) {
+                SettingsBlock(
+                    title = "Вид нижней панели",
+                    subtitle = "Выберите, как выглядит нижнее меню приложения на вашем устройстве.",
+                ) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
                         BottomBarChip(
-                            label = "Solid",
+                            label = "Плотный",
                             selected = bottomBarStyle == BottomBarStyle.SOLID,
                             onClick = { bottomBarStyle = BottomBarStyle.SOLID },
                         )
                         BottomBarChip(
-                            label = "Blur",
+                            label = "Стекло",
                             selected = bottomBarStyle == BottomBarStyle.BLUR,
                             onClick = { bottomBarStyle = BottomBarStyle.BLUR },
                         )
                         BottomBarChip(
-                            label = "Transparent",
+                            label = "Лёгкий",
                             selected = bottomBarStyle == BottomBarStyle.TRANSPARENT,
                             onClick = { bottomBarStyle = BottomBarStyle.TRANSPARENT },
                         )
                         BottomBarChip(
-                            label = "Color",
+                            label = "Акцент",
                             selected = bottomBarStyle == BottomBarStyle.PRIMARY,
                             onClick = { bottomBarStyle = BottomBarStyle.PRIMARY },
                         )
                     }
+                    Text(
+                        text = when (bottomBarStyle) {
+                            BottomBarStyle.SOLID -> "Плотный стиль делает нижнюю панель максимально заметной."
+                            BottomBarStyle.BLUR -> "Стеклянный стиль мягче отделяет панель от контента."
+                            BottomBarStyle.TRANSPARENT -> "Лёгкий стиль делает интерфейс менее тяжёлым визуально."
+                            BottomBarStyle.PRIMARY -> "Акцентный стиль подсвечивает нижнюю навигацию фирменным цветом."
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
-
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f))
                 SettingsBlock(
-                    title = "Navigation panel",
-                    subtitle = "Manage quick actions and the side rail position.",
+                    title = "Быстрые действия",
+                    subtitle = "Настройте сторону панели и набор команд, к которым хотите возвращаться чаще всего.",
                 ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Text(
-                                text = "Rail on right",
-                                style = MaterialTheme.typography.bodyLarge,
-                            )
-                            Switch(
-                                checked = userPanel.handedness == Handedness.RIGHT,
-                                onCheckedChange = { enabled ->
-                                    val next = if (enabled) Handedness.RIGHT else Handedness.LEFT
-                                    scope.launch { userPanelStore.update(userPanel.copy(handedness = next)) }
-                                },
-                            )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = "Расположить панель справа",
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Switch(
+                            checked = userPanel.handedness == Handedness.RIGHT,
+                            onCheckedChange = { enabled ->
+                                val next = if (enabled) Handedness.RIGHT else Handedness.LEFT
+                                scope.launch { userPanelStore.update(userPanel.copy(handedness = next)) }
+                            },
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        TextButton(onClick = { openPanelEditor() }) {
+                            Text(text = "Изменить состав панели")
                         }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.End,
-                        ) {
-                            TextButton(onClick = { openPanelEditor() }) {
-                                Text(text = "Настроить панель")
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            TextButton(onClick = { scope.launch { userPanelStore.reset() } }) {
-                                Text(text = "Сбросить панель")
-                            }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        TextButton(onClick = { scope.launch { userPanelStore.reset() } }) {
+                            Text(text = "Вернуть стандартный набор")
                         }
+                    }
+                }
+            }
+
+            if (BuildConfig.DEBUG && onOpenCatalogGovernance != null) {
+                SettingsCard(
+                    title = "Catalog governance debug",
+                    subtitle = "Developer-only surface для TECH.PHONES refresh, review queue и publish log.",
+                ) {
+                    TextButton(onClick = onOpenCatalogGovernance) {
+                        Text(text = "Открыть governance surface")
                     }
                 }
             }
@@ -325,6 +415,48 @@ fun ProfileSettingsPage(
 }
 
 @Composable
+private fun SettingsCard(
+    title: String,
+    subtitle: String? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f),
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = LayoutDefaults.CardInnerPadding,
+                    vertical = LayoutDefaults.LargeSectionSpacing,
+                ),
+            verticalArrangement = Arrangement.spacedBy(LayoutDefaults.LargeSectionSpacing),
+            content = {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                subtitle?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                content()
+            },
+        )
+    }
+}
+
+@Composable
 private fun SettingsBlock(
     title: String,
     subtitle: String? = null,
@@ -336,16 +468,60 @@ private fun SettingsBlock(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Medium,
         )
         if (subtitle != null) {
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        content()
+    }
+}
+
+@Composable
+private fun SettingsNavigationRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+        )
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Medium,
+            )
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        content()
+        Icon(
+            imageVector = Icons.Outlined.ChevronRight,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -366,8 +542,17 @@ private fun LanguageChip(
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
             selectedLabelColor = MaterialTheme.colorScheme.primary,
+            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+        ),
+        border = FilterChipDefaults.filterChipBorder(
+            enabled = true,
+            selected = selected,
+            borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
+            selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.22f),
+            borderWidth = 1.dp,
+            selectedBorderWidth = 1.dp,
         ),
     )
 }
@@ -385,8 +570,17 @@ private fun ThemeChip(
         label = { Text(label) },
         leadingIcon = { Icon(imageVector = icon, contentDescription = null) },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
             selectedLabelColor = MaterialTheme.colorScheme.primary,
+            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+        ),
+        border = FilterChipDefaults.filterChipBorder(
+            enabled = true,
+            selected = selected,
+            borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
+            selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.22f),
+            borderWidth = 1.dp,
+            selectedBorderWidth = 1.dp,
         ),
     )
 }
@@ -402,8 +596,16 @@ private fun BottomBarChip(
         onClick = onClick,
         label = { Text(label) },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
             selectedLabelColor = MaterialTheme.colorScheme.primary,
+        ),
+        border = FilterChipDefaults.filterChipBorder(
+            enabled = true,
+            selected = selected,
+            borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f),
+            selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.22f),
+            borderWidth = 1.dp,
+            selectedBorderWidth = 1.dp,
         ),
     )
 }

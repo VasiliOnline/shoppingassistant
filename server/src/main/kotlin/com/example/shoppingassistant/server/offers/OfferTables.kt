@@ -1,16 +1,21 @@
 package com.example.shoppingassistant.server.offers
 
 import com.example.shoppingassistant.domain.model.TypedAttributeValue
+import com.example.shoppingassistant.domain.profile.SellerDeliveryZone
 import com.example.shoppingassistant.server.db.AuthUsersTable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.ColumnType
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.Op.Companion.build
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 import org.jetbrains.exposed.sql.json.jsonb
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 
 private val json = Json { ignoreUnknownKeys = true }
 
@@ -26,6 +31,10 @@ object UserProfilesTable : Table("user_profiles") {
     val avatarUrl = varchar("avatar_url", 512).nullable()
     val countryCode = varchar("country_code", 8).nullable()
     val city = varchar("city", 255).nullable()
+    val bio = text("bio").nullable()
+    val website = varchar("website", 512).nullable()
+    val publicProfileEnabled = bool("public_profile_enabled").default(true)
+    val cityVisible = bool("city_visible").default(true)
     val lat = double("lat").nullable()
     val lon = double("lon").nullable()
     val geoUpdatedAt = long("geo_updated_at").nullable()
@@ -99,6 +108,7 @@ object OffersTable : Table("offers") {
     val locationUpdatedAt = long("location_updated_at").nullable()
     val locationPrivacy = varchar("location_privacy", 16).default("COARSE")
     val status = varchar("status", 32).default("ACTIVE")
+    val publicationState = varchar("publication_state", 32).default(OFFER_PUBLICATION_STATE_LIVE)
     val updatedAt = long("updated_at").nullable()
     override val primaryKey = PrimaryKey(id)
 
@@ -106,11 +116,24 @@ object OffersTable : Table("offers") {
         index(false, priceCents)
         index(false, updatedAt)
         index(false, status)
+        index(false, publicationState)
         index(false, condition)
         index(false, deliveryChannel)
         index(false, lat, lon)
     }
 }
+
+const val OFFER_STATUS_ACTIVE = "ACTIVE"
+const val OFFER_PUBLICATION_STATE_PENDING_REVIEW = "PENDING_REVIEW"
+const val OFFER_PUBLICATION_STATE_LIVE = "LIVE"
+const val OFFER_PUBLICATION_STATE_REJECTED = "REJECTED"
+const val OFFER_PUBLICATION_STATE_REMOVED = "REMOVED"
+
+fun publicOfferVisibilityOp(): Op<Boolean> =
+    build {
+        (OffersTable.status eq OFFER_STATUS_ACTIVE) and
+            (OffersTable.publicationState eq OFFER_PUBLICATION_STATE_LIVE)
+    }
 
 /**
  * Привязка оффера к исходной ссылке и источнику (уникальна по user_id + source_url).
@@ -140,6 +163,7 @@ object UserPreferencesTable : Table("user_preferences") {
     val userId = long("user_id").references(AuthUsersTable.id, onDelete = ReferenceOption.CASCADE).uniqueIndex()
     val badges = jsonb("badges", json, ListSerializer(String.serializer())).nullable()
     val shippingCountries = jsonb("shipping_countries", json, ListSerializer(String.serializer())).nullable()
+    val deliveryZones = jsonb("delivery_zones", json, ListSerializer(SellerDeliveryZone.serializer())).nullable()
     val ratingValue = double("rating_value").default(0.0)
     val ratingCount = integer("rating_count").default(0)
     override val primaryKey = PrimaryKey(userId)
