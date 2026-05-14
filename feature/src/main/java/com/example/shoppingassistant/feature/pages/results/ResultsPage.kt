@@ -9934,7 +9934,7 @@ internal fun buildFacetUiFilters(
     definitions: List<FacetDefinition>,
     categoryCode: String? = null,
 ): List<ResultsFacetFilter> {
-    val localeTag = Locale.getDefault().toLanguageTag()
+    val localeTag = RESULTS_UI_LOCALE
     val profile = CatalogFacetPresentationProfiles.resolve(categoryCode)
     val hiddenSystemFacetKeys = profile?.hiddenSystemFacetKeys.orEmpty()
     val hiddenTypedFacetKeys = profile?.hiddenTypedFacetKeys.orEmpty()
@@ -10077,7 +10077,7 @@ private fun buildTypedFacetRuntimeKeyMap(definitions: List<FacetDefinition>): Ma
         .toMap(LinkedHashMap())
 
 private fun buildTypedFacetTitlesByRuntimeKey(definitions: List<FacetDefinition>): Map<String, String> {
-    val localeTag = Locale.getDefault().toLanguageTag()
+    val localeTag = RESULTS_UI_LOCALE
     return definitions
         .asSequence()
         .filter { definition -> definition.isActiveForToday() }
@@ -11888,7 +11888,8 @@ internal fun buildSortOptions(
     val trustCoverage = coverage { item -> item.dto.trustScore != null || item.dto.sellerRating != null }
     val distanceCoverage = coverage { item -> item.dto.distanceKm != null }
     val modelFreshnessCoverage = coverage { item ->
-        item.dto.resultsAttributeValue("release_year")?.asDoubleOrNull() != null
+        item.dto.resultsAttributeValue("release_date")?.asRawString()?.trim()?.isNotEmpty() == true ||
+            item.dto.resultsAttributeValue("release_year")?.asDoubleOrNull() != null
     }
     val hasLocationContext = !location.isNullOrBlank() || distanceCoverage > 0.0
     val supportsModelFreshness = supportsResultsModelFreshnessSort(categoryCode)

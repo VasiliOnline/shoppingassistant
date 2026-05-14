@@ -1,0 +1,21 @@
+pack: TECH_PHONES_model_data_hardening_pack_v1_1_RU
+mount:
+  target_categoryCode: TECH.PHONES
+  target_base_pack: TECH_PHONES_public_category_pack_v1_0_RU
+  mode: data_overlay_only
+  schema_breaking_changes: false
+files:
+  brand_family_head_seed.tech_phones.v1_1.tsv: identity.brandFamilyHeadSeed
+  model_head_seed_delta.tech_phones.v1_1.tsv: identity.modelHeadSeed.delta
+  model_aliases_delta.ru.tech_phones.v1_1.tsv: identity.modelAliases.ru.delta
+  model_variant_minimal_matrix.tech_phones.v1_1.tsv: identity.modelVariantHints.delta
+  model_search_priority_seed.tech_phones.v1_1.tsv: identity.modelSearchPriority.delta
+  identity_resolution_min_policy.tech_phones.v1_1.yaml: identity.resolutionPolicy.overlay
+  golden_queries.tech_phones_model_data.v1_1.tsv: tests.identityGoldenQueries
+  sample_offers.tech_phones_model_data.v1_1.jsonl: tests.identitySampleOffers
+non_goals:
+  - presets
+  - collections
+  - landing_pages
+  - merchandising_shelves
+  - TECH.PHONE_ACCESSORIES coverage

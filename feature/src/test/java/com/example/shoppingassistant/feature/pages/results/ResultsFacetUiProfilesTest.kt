@@ -8,6 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.Locale
 
 class ResultsFacetUiProfilesTest {
 
@@ -54,7 +55,7 @@ class ResultsFacetUiProfilesTest {
     }
 
     @Test
-    fun tech_phones_branch_hides_os_typed_facet() {
+    fun tech_phones_branch_exposes_os_typed_facet_in_additional_filters() {
         val filters = buildFacetUiFilters(
             definitions = listOf(
                 definition(
@@ -66,7 +67,7 @@ class ResultsFacetUiProfilesTest {
             categoryCode = "TECH.PHONES",
         )
 
-        assertFalse(filters.any { it.runtimeKey == "os_family" })
+        assertTrue(filters.any { it.runtimeKey == "os_family" })
     }
 
     @Test
@@ -150,6 +151,48 @@ class ResultsFacetUiProfilesTest {
         assertFalse(filters.any { it.runtimeKey == "delivery_channel" })
         assertFalse(filters.any { it.runtimeKey == "seller_trust" })
         assertTrue(filters.any { it.runtimeKey == "memory_gb" })
+    }
+
+    @Test
+    fun tech_phone_filter_titles_use_results_locale_not_device_locale() {
+        val previousLocale = Locale.getDefault()
+        try {
+            Locale.setDefault(Locale.US)
+
+            val filters = buildFacetUiFilters(
+                definitions = listOf(
+                    definition(
+                        facetKey = "brand",
+                        attributeCode = "brand",
+                        appliesTo = listOf("TECH.PHONES"),
+                        titleRu = "Бренд",
+                        titleEn = "Brand",
+                    ),
+                    definition(
+                        facetKey = "color",
+                        attributeCode = "color",
+                        appliesTo = listOf("TECH.PHONES"),
+                        titleRu = "Цвет",
+                        titleEn = "Color",
+                    ),
+                    definition(
+                        facetKey = "water_resistance",
+                        attributeCode = "water_resistance",
+                        appliesTo = listOf("TECH.PHONES"),
+                        titleRu = "Защита от воды",
+                        titleEn = "Water Resistance",
+                    ),
+                ),
+                categoryCode = "TECH.PHONES",
+            )
+
+            val titlesByRuntimeKey = filters.associate { filter -> filter.runtimeKey to filter.title }
+            assertEquals("Бренд", titlesByRuntimeKey["brand"])
+            assertEquals("Цвет", titlesByRuntimeKey["color"])
+            assertEquals("Защита от воды", titlesByRuntimeKey["water_resistance"])
+        } finally {
+            Locale.setDefault(previousLocale)
+        }
     }
 
     @Test
@@ -267,9 +310,11 @@ class ResultsFacetUiProfilesTest {
         facetKey: String,
         attributeCode: String,
         appliesTo: List<String>,
+        titleRu: String = facetKey,
+        titleEn: String? = null,
     ): FacetDefinition = FacetDefinition(
         facetKey = facetKey,
-        title = localizedTextOf("ru" to facetKey),
+        title = localizedTextOf("ru" to titleRu, "en" to titleEn),
         valueType = FacetDataType.ENUM,
         appliesToCategoryCodes = appliesTo,
         attributeCode = attributeCode,

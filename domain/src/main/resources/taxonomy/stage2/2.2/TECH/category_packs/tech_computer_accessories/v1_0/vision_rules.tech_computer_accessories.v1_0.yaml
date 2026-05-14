@@ -1,0 +1,32 @@
+# vision_rules.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+rules:
+  - id: no_exact_model_guess
+    severity: P0
+    text: "Не угадывать точную модель аксессуара по фото без evidence: логотип, текст на корпусе/коробке, OCR, barcode, MPN или title."
+  - id: keyboard_detection
+    text: "Клавиатура определяется по набору клавиш; размер/раскладку можно предположить, но язык клавиш требует OCR/видимых символов."
+  - id: mouse_detection
+    text: "Мышь определяется по форме и кнопкам; DPI/сенсор нельзя угадывать по внешнему виду."
+  - id: dock_hub_detection
+    text: "Dock/USB hub различать по числу портов, host cable/connector и power input; если не видно портов — ставить low confidence."
+  - id: monitor_arm_vs_monitor
+    text: "Кронштейн/arm без экрана относится к COMPUTER_ACCESSORIES; монитор с экраном — MONITORS_DISPLAYS."
+  - id: bag_vs_cover
+    text: "Сумка/рюкзак для ноутбука — FASH.BAGS; hard shell, keyboard cover, privacy filter — COMPUTER_ACCESSORIES."
+  - id: adapter_vs_generic_cable
+    text: "Переходник/донгл с несколькими интерфейсами — COMPUTER_ACCESSORIES; простой кабель/зарядка без computer-specific context — POWER_CHARGING_CABLES."
+confidence_policy:
+  exact_model_requires_evidence: true
+  allowed_visual_only:
+    - computer_accessory_type
+    - color_family
+    - material
+    - rough_condition
+  requires_text_or_port_evidence:
+    - connector_type
+    - power_delivery_watts
+    - max_display_resolution
+    - keyboard_language
+    - model_number
+    - mpn

@@ -1,0 +1,23 @@
+version: 1.0
+categoryCode: TECH.MONITORS_DISPLAYS
+master_key_priority:
+  - gtin_ean
+  - brand + model_number + screen_size_in + resolution_class + refresh_rate_hz
+  - brand + model_name_text + screen_size_in + panel_technology
+  - image_fingerprint + seller_claims_raw + normalized_title
+variant_dimensions:
+  - screen_size_in
+  - resolution_class
+  - refresh_rate_hz
+  - panel_technology
+  - color_body
+do_not_merge_if:
+  - different_screen_size_in
+  - different_resolution_class
+  - different_refresh_rate_hz
+  - different_panel_technology_when_not_unknown
+  - different_display_type
+used_item_listing_dedup:
+  local_offer_duplicates:
+    match: seller_id + normalized_title + image_fingerprint
+    window_days: 30

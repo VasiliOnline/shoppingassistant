@@ -1,0 +1,41 @@
+ruleset_id: generated_alias_rules.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+generation_mode: safe_combinatorial_aliases_without_presets
+rules:
+- id: type_brand_specs_ru
+  template: '{brand_alias} {computer_type_alias} {ram} {storage}'
+  targets:
+  - brand
+  - computer_type
+  - ram_gb
+  - storage_capacity_gb
+  max_combinations_per_brand: 40
+- id: model_specs_ru
+  template: '{model_alias} {ram} {storage}'
+  targets:
+  - model_name_text
+  - ram_gb
+  - storage_capacity_gb
+  max_combinations_per_model: 12
+- id: gaming_laptop_gpu_ru
+  template: игровой ноутбук {brand_alias} {gpu_alias}
+  targets:
+  - computer_type
+  - brand
+  - gpu_model_text
+  requires:
+    computer_type: GAMING_LAPTOP
+  max_combinations: 80
+- id: desktop_cpu_gpu_ru
+  template: системный блок {cpu_alias} {gpu_alias}
+  targets:
+  - computer_type
+  - cpu_model_text
+  - gpu_model_text
+  requires:
+    computer_type: DESKTOP_PC
+  max_combinations: 80
+do_not_generate:
+- brand-only routes as categories
+- model-only microcategories
+- presets/collections/landing pages

@@ -1,0 +1,28 @@
+gateset_id: quality_gates.tech_computers.v1_0
+required_gates:
+- Stage22SeedValidator
+- FacetSchemaValidator
+- EffectiveSpecSnapshotGate
+- RouteConflictGate
+- AliasCollisionGate
+- UserSurfaceGate
+- VisionRulesGate
+- SampleOffersSmokeGate
+- IdentityCandidateGate
+- SpecsCoverageGate
+- DedupKeyGate
+static_gates_expected:
+  initial_fields_lte_8: true
+  primary_facets_lte_7: true
+  no_t3_hidden_in_ui: true
+  no_presets_or_collections: true
+  no_microcategory_codes: true
+  json_yaml_jsonl_valid: true
+runtime_gates_to_run_after_mount:
+- RouteConflictGate against tablets/monitors/accessories/components/storage
+- EffectiveSpecSnapshot actual vs expected
+- SampleOffersSmokeGate
+- GoldenQueriesGate
+known_limits:
+- model head seed is head-only; long-tail models must enter via runtime_candidates/live_values
+- variant matrix is soft validation only; do not reject offers because an unknown variant appears

@@ -1,0 +1,26 @@
+# computer_accessory_dedup_policy.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+dedup_keys:
+  strict:
+    - brand
+    - model_name_text
+    - mpn
+    - gtin
+  fallback:
+    - computer_accessory_type
+    - brand
+    - model_name_text
+    - connector_type
+    - color_family
+  visual_assist:
+    - image_fingerprint
+    - port_layout_signature
+rules:
+  - id: keyboard_color_variant
+    text: "Один и тот же keyboard model в другом цвете — variant, не новый master."
+  - id: mouse_sensor_variant
+    text: "Одинаковая мышь с разной ревизией сенсора — новый variant, если указан MPN/revision."
+  - id: dock_port_set
+    text: "Dock/hub с другим port_set не сливать, даже если title похож."
+  - id: generic_adapter
+    text: "Generic adapter без brand/model дедуплицировать осторожно только по connector pair + image fingerprint."

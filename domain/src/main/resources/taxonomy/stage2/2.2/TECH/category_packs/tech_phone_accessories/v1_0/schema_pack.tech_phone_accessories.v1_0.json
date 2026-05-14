@@ -1,0 +1,206 @@
+{
+  "schema_id": "schema_pack.tech_phone_accessories.v1_0",
+  "category_code": "TECH.PHONE_ACCESSORIES",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "phone_accessory_type",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "identity_mode": "accessory_identity_plus_target_compatibility",
+  "compatibility_mode": "evidence_required_for_model_specific_claims",
+  "t0_core": [
+    "categoryCode",
+    "phone_accessory_type",
+    "brand",
+    "condition",
+    "color_family",
+    "compatible_device_category",
+    "compatible_brand",
+    "compatibility_evidence_level"
+  ],
+  "t1_by_type": {
+    "CASE": [
+      "compatible_family",
+      "compatible_model_text",
+      "case_style",
+      "case_material",
+      "protection_level",
+      "magsafe_compatible"
+    ],
+    "SCREEN_PROTECTOR": [
+      "compatible_family",
+      "compatible_model_text",
+      "protector_material",
+      "protector_coverage",
+      "pack_quantity"
+    ],
+    "CAMERA_LENS_PROTECTOR": [
+      "compatible_family",
+      "compatible_model_text",
+      "protector_material",
+      "pack_quantity"
+    ],
+    "CHARGER": [
+      "connector_type",
+      "port_configuration",
+      "max_output_power_w",
+      "fast_charge_standard"
+    ],
+    "WIRELESS_CHARGER": [
+      "wireless_standard",
+      "max_output_power_w",
+      "magsafe_compatible",
+      "stand_form_factor"
+    ],
+    "CABLE": [
+      "connector_type",
+      "connector_type_2",
+      "cable_length_m",
+      "usb_standard",
+      "max_power_w"
+    ],
+    "POWER_BANK": [
+      "capacity_mah",
+      "max_output_power_w",
+      "port_configuration",
+      "wireless_charging_support"
+    ],
+    "HOLDER": [
+      "mounting_type",
+      "compatible_device_size_range",
+      "mount_location"
+    ],
+    "STAND": [
+      "stand_form_factor",
+      "adjustable_angle",
+      "foldable"
+    ],
+    "CAR_MOUNT": [
+      "mounting_type",
+      "mount_location",
+      "magnetic_mount"
+    ],
+    "ADAPTER": [
+      "connector_type",
+      "connector_type_2",
+      "adapter_direction",
+      "max_power_w"
+    ],
+    "DOCK": [
+      "connector_type",
+      "port_configuration",
+      "max_output_power_w",
+      "data_transfer_support"
+    ],
+    "MAGSAFE_ACCESSORY": [
+      "magsafe_accessory_type",
+      "magsafe_compatible",
+      "magnetic_strength_claim"
+    ],
+    "STYLUS": [
+      "stylus_type",
+      "pressure_sensitivity",
+      "palm_rejection",
+      "compatible_model_text"
+    ],
+    "STRAP_CHARM": [
+      "strap_charm_type",
+      "attachment_type",
+      "material_family"
+    ],
+    "SIM_TOOL": [
+      "sim_tool_type",
+      "pack_quantity"
+    ],
+    "REPLACEMENT_PART": [
+      "replacement_part_type",
+      "part_quality",
+      "compatible_model_text",
+      "repair_skill_level"
+    ],
+    "CLEANING_KIT": [
+      "cleaning_item_type",
+      "safe_for_screen",
+      "liquid_volume_ml"
+    ]
+  },
+  "t2_optional": [
+    "material_family",
+    "finish",
+    "transparency",
+    "water_resistance",
+    "warranty",
+    "original_oem",
+    "seller_bundle",
+    "included_accessories",
+    "model_name_text",
+    "mpn",
+    "gtin",
+    "release_year"
+  ],
+  "t3_system_hidden": [
+    "compatibility_confidence",
+    "compatibility_resolution_status",
+    "route_confidence",
+    "extraction_evidence",
+    "source_trace_id",
+    "normalization_notes"
+  ],
+  "surface_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "publish_policy": {
+    "required_for_all": [
+      "categoryCode",
+      "phone_accessory_type",
+      "brand",
+      "condition",
+      "color_family",
+      "title",
+      "price",
+      "currency",
+      "availability",
+      "images"
+    ],
+    "compatibility_required_when": {
+      "model_specific_or_claimed_fit": [
+        "compatible_brand",
+        "compatible_model_text",
+        "compatibility_evidence_level"
+      ],
+      "universal_accessory": [
+        "compatible_device_category",
+        "compatibility_mode"
+      ]
+    },
+    "type_specific_required": {
+      "CHARGER": [
+        "connector_type",
+        "max_output_power_w"
+      ],
+      "WIRELESS_CHARGER": [
+        "wireless_standard",
+        "max_output_power_w"
+      ],
+      "CABLE": [
+        "connector_type",
+        "connector_type_2",
+        "cable_length_m"
+      ],
+      "POWER_BANK": [
+        "capacity_mah",
+        "max_output_power_w"
+      ],
+      "REPLACEMENT_PART": [
+        "replacement_part_type",
+        "compatible_model_text",
+        "part_quality"
+      ]
+    }
+  }
+}

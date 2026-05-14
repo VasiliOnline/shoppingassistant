@@ -1,0 +1,44 @@
+{
+  "pack_id": "TECH_PHONE_ACCESSORIES_public_category_pack_v1_0_RU",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "static_validation": {
+    "json_syntax": "PASS",
+    "yaml_syntax": "PASS",
+    "jsonl_syntax": "PASS",
+    "tsv_structure": "PASS",
+    "public_category": true,
+    "accepts_offers_directly": true,
+    "new_microcategory_codes": 0,
+    "presets_collections_files": 0,
+    "initial_fields": "8/8",
+    "primary_facets": "7/7",
+    "t3_hidden_leaks": 0,
+    "attributes_count": 67,
+    "values_rows": 249,
+    "aliases_rows": 151,
+    "golden_queries": 88,
+    "sample_offers": 110,
+    "publish_sample_offers": 31,
+    "compatibility_surface_matrix_rows": 18
+  },
+  "runtime_validators_executed_in_sandbox": false,
+  "runtime_validators_required_after_import": [
+    "Stage22SeedValidator",
+    "FacetSchemaValidator",
+    "EffectiveSpecSnapshotGate",
+    "RouteConflictGate",
+    "AliasCollisionGate",
+    "UserSurfaceGate",
+    "VisionRulesGate",
+    "SampleOffersSmokeGate",
+    "CompatibilityGate",
+    "AccessoryVsDeviceRouteGate",
+    "LithiumBatterySafetyGate"
+  ],
+  "release_recommendation": "static production candidate; run project validators before production release",
+  "known_limitations": [
+    "Does not include full phone model registry; uses TECH.PHONES as relation target.",
+    "Generic power/cable cases depend on route guard policy against TECH.POWER_CHARGING_CABLES.",
+    "Compatibility model ref resolution requires mounted TECH.PHONES model data."
+  ]
+}

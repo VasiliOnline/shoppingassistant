@@ -1,0 +1,76 @@
+facet_template_id: facet_templates.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+primary_facets:
+- attribute: computer_type
+  widget: chips
+  sort: tree_order
+- attribute: brand
+  widget: searchable_multi_select
+  sort: popularity
+- attribute: condition
+  widget: chips
+  sort: quality_order
+- attribute: ram_gb
+  widget: range_or_bucket
+  sort: numeric
+- attribute: storage_capacity_gb
+  widget: range_or_bucket
+  sort: numeric
+- attribute: cpu_family
+  widget: searchable_multi_select
+  sort: popularity
+- attribute: price
+  widget: range
+  sort: numeric
+type_specific_facets:
+  LAPTOP:
+  - screen_size_in
+  - screen_resolution
+  - battery_health_percent
+  - keyboard_layout
+  - charger_included
+  ULTRABOOK:
+  - screen_size_in
+  - weight_kg
+  - battery_health_percent
+  - keyboard_layout
+  GAMING_LAPTOP:
+  - gpu_model_text
+  - graphics_memory_gb
+  - refresh_rate_hz
+  - screen_size_in
+  TWO_IN_ONE_LAPTOP:
+  - touchscreen
+  - convertible_mode
+  - stylus_included
+  - screen_size_in
+  CHROMEBOOK:
+  - chromeos_support_status
+  - screen_size_in
+  - touchscreen
+  DESKTOP_PC:
+  - desktop_form_factor
+  - prebuilt_or_custom
+  - gpu_model_text
+  - psu_wattage
+  MINI_PC:
+  - cpu_family
+  - ram_gb
+  - storage_capacity_gb
+  - vesa_mount_support
+  ALL_IN_ONE:
+  - screen_size_in
+  - screen_resolution
+  - touchscreen
+  WORKSTATION:
+  - workstation_class
+  - gpu_model_text
+  - ecc_memory_support
+  THIN_CLIENT:
+  - thin_client_os
+  - enterprise_management_support
+rules:
+  show_facet_when_non_empty_values_min: 2
+  hide_zero_count_values: true
+  do_not_index_combinatorial_facets: true
+  primary_facets_max: 7

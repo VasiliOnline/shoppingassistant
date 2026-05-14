@@ -1,0 +1,14 @@
+category_code: TECH.PHONE_ACCESSORIES
+target_category: TECH.PHONES
+resolution_order:
+- exact model alias from TECH.PHONES
+- brand+family+model_text normalization
+- brand+family fallback
+- connector/size universal mode
+- manual review for ambiguous
+minimum_publish_policy:
+  model_specific_claim: requires compatible_model_text and evidence != NONE
+  universal_claim: requires compatibility_mode=UNIVERSAL_PHONE or CONNECTOR_BASED and compatible_device_category
+  replacement_part: requires compatible_model_text; low evidence blocks publish
+soft_runtime_behavior: If model ref cannot resolve but text evidence is explicit, publish as TEXT_ONLY with warning; do not
+  create new phone model automatically.

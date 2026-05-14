@@ -1,0 +1,44 @@
+facet_template_id: facet_templates.tech_tablets_e_readers.v1_0
+categoryCode: TECH.TABLETS_E_READERS
+primary_facets:
+  tablet_type:
+    widget: chip_multi_select
+    source: values#tablet_type
+  brand:
+    widget: searchable_multi_select
+    source: TECH.ELECTRONICS_COMMON#brand + values#brand_head + runtime_candidates
+  condition:
+    widget: chip_multi_select
+    source: TECH.ELECTRONICS_COMMON#condition
+  screen_size_in:
+    widget: range_or_bucket
+    source: values#screen_size_bucket
+  storage_capacity_gb:
+    widget: chip_multi_select
+    source: values#storage_capacity_gb
+  connectivity:
+    widget: chip_multi_select
+    source: values#connectivity
+  price:
+    widget: range
+secondary_facets:
+  os:
+    widget: chip_multi_select
+  display_technology:
+    widget: chip_multi_select
+  stylus_support:
+    widget: chip_multi_select
+  water_resistance:
+    widget: chip_multi_select
+  compatibility_os:
+    widget: chip_multi_select
+  compatible_brand:
+    widget: searchable_multi_select
+rules:
+- hide storage_capacity_gb for TABLET_STAND and TABLET_DOCK unless seller provided it
+- show compatible_model_text only for TABLET_DOCK and TABLET_STAND
+- show pressure_levels and active_area only for GRAPHICS_TABLET
+- show frontlight/water_resistance/audiobook_support primarily for E_READER
+limits:
+  initial_fields_lte: 8
+  primary_facets_lte: 7

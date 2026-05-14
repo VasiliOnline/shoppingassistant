@@ -1,0 +1,68 @@
+surface_id: user_surface.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+initial_fields_max: 8
+primary_facets_max: 7
+initial_fields:
+- computer_type
+- brand
+- model_name_text
+- condition
+- cpu_model_text
+- ram_gb
+- storage_capacity_gb
+- screen_size_in
+primary_facets:
+- computer_type
+- brand
+- condition
+- ram_gb
+- storage_capacity_gb
+- cpu_family
+- price
+secondary_facets:
+- screen_size_in
+- gpu_type
+- gpu_model_text
+- os
+- storage_type
+- keyboard_layout
+- battery_health_percent
+- desktop_form_factor
+- release_year
+- region_variant
+expanded_fields_by_type:
+  portable:
+  - screen_resolution
+  - touchscreen
+  - battery_health_percent
+  - charger_included
+  - keyboard_layout
+  - weight_kg
+  gaming:
+  - gpu_model_text
+  - graphics_memory_gb
+  - refresh_rate_hz
+  - thermal_profile
+  desktop:
+  - desktop_form_factor
+  - prebuilt_or_custom
+  - gpu_model_text
+  - psu_wattage
+  - ports
+  workstation:
+  - workstation_class
+  - gpu_model_text
+  - ecc_memory_support
+  - certified_workstation_claim
+hidden_fields_never_show:
+- identity_confidence
+- specs_confidence
+- route_confidence
+- source_trace_id
+- extraction_evidence
+- normalization_notes
+excluded_surface_layers:
+- presets
+- collections
+- shelves
+- seo_landing_pages

@@ -1,0 +1,40 @@
+template_id: seo_templates.tech_phones.v1_0
+category_h1_ru: Телефоны
+title_ru: Телефоны и смартфоны — сравнить предложения рядом и онлайн
+description_ru: Смартфоны, кнопочные, складные, защищённые и ретро телефоны. Фильтры по бренду, модели, памяти, состоянию,
+  цене, операторской блокировке и состоянию батареи.
+landing_pages:
+- slug: iphone
+  filter:
+    brand: APPLE
+    family: IPHONE
+  indexable: true
+- slug: samsung-galaxy
+  filter:
+    brand: SAMSUNG
+    family: GALAXY
+  indexable: true
+- slug: google-pixel
+  filter:
+    brand: GOOGLE
+    family: PIXEL
+  indexable: true
+- slug: unlocked-phones
+  filter:
+    network_lock_status: UNLOCKED
+  indexable: true
+- slug: refurbished-phones
+  filter:
+    refurbished_status:
+    - MANUFACTURER_REFURBISHED
+    - CERTIFIED_REFURBISHED
+    - SELLER_REFURBISHED
+  indexable: true
+- slug: foldable-phones
+  filter:
+    phone_type: FOLDABLE_PHONE
+  indexable: true
+do_not_index_rules:
+- deep multi-facet combinations
+- battery health + color + price + local radius pages
+- single seller pages unless profile indexable

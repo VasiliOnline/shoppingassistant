@@ -1,0 +1,28 @@
+mapping_id: integration_mapping.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+mount_after:
+- TECH_FOUNDATION_MANIFEST_v1_0_RU
+- TECH.ELECTRONICS_COMMON
+- TECH.DEVICE_IDENTITY_COMMON
+- TECH.SPECS_COMMON
+runtime_registry: public_category_registry
+files:
+  schema: schema_pack.tech_computers.v1_0.json
+  attributes: attributes.tech_computers.v1_0.tsv
+  values: values.tech_computers.v1_0.tsv
+  aliases: aliases.tech_computers.ru.v1_0.tsv
+  user_surface: user_surface.tech_computers.v1_0.yaml
+  facet_templates: facet_templates.tech_computers.v1_0.yaml
+  route_guards: route_guardrails.tech_computers.v1_0.yaml
+  vision_rules: vision_rules.tech_computers.v1_0.yaml
+  golden_queries: golden_queries.tech_computers.v1_0.tsv
+  sample_offers: sample_offers.tech_computers.v1_0.jsonl
+  publish_sample_offers: publish_sample_offers.tech_computers.v1_0.jsonl
+  effective_snapshot: effective_spec_snapshot.expected.tech_computers.v1_0.json
+does_not_mount:
+- TECH.TABLETS_E_READERS
+- TECH.MONITORS_DISPLAYS
+- TECH.COMPUTER_ACCESSORIES
+- TECH.PC_COMPONENTS
+- TECH.STORAGE_MEMORY
+presets_collections: not_in_this_pack

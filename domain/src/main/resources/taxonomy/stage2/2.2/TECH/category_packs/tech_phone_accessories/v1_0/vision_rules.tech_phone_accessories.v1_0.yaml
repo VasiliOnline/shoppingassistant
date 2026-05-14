@@ -1,0 +1,34 @@
+category_code: TECH.PHONE_ACCESSORIES
+vision_policy: no_guess_for_compatibility_and_power_claims
+allowed_from_image:
+- field: phone_accessory_type
+  condition: visible form factor strongly matches case/cable/charger/protector/holder
+- field: color_family
+  condition: visible item color
+- field: connector_type
+  condition: connector is visually clear; mark confidence
+- field: case_style
+  condition: clear case/wallet/bumper/rugged visible
+- field: screen_protector vs camera_lens_protector
+  condition: packaging/shape clear
+requires_text_or_source_evidence:
+- compatible_model_text
+- compatible_model_ref
+- compatible_brand when not obvious from printed text
+- max_output_power_w
+- max_power_w
+- fast_charge_standard
+- magsafe_compatible unless product is explicitly MagSafe-branded/visible ring with text
+- part_quality
+- original_oem
+- water_resistance
+blocked_inference:
+- Do not infer exact iPhone/Galaxy model from camera cutout alone.
+- Do not infer charger wattage from physical size.
+- Do not infer cable data rate or max wattage from connector shape.
+- Do not infer OEM/original from logo-like appearance without text/source.
+- Do not infer replacement-part compatibility without listing text/OCR/packaging evidence.
+confidence_bands:
+  high: OCR/title/barcode/source explicit
+  medium: clear text but incomplete model
+  low: visual only; publish may require manual check

@@ -1,0 +1,42 @@
+{
+  "pack_name": "TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU",
+  "version": "1.0",
+  "language": "ru",
+  "pack_type": "public_category_pack",
+  "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "main_type_attribute": "computer_accessory_type",
+  "category_archetypes": [
+    "TECH_ACCESSORY",
+    "COMPUTER_PERIPHERAL",
+    "COMPATIBILITY_DRIVEN_PARTIAL",
+    "RESALE_ENABLED"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "does_not_create_categoryCodes": [
+    "TECH.KEYBOARDS",
+    "TECH.MICE",
+    "TECH.WEBCAMS",
+    "TECH.DOCKS",
+    "TECH.USB_HUBS",
+    "TECH.MONITOR_ARMS",
+    "TECH.MACBOOK_ACCESSORIES"
+  ],
+  "contains_presets_collections": false,
+  "created_at_utc": "2026-05-14T12:17:46.493213+00:00",
+  "status": {
+    "static_production_candidate": true,
+    "data_covered_baseline": true,
+    "runtime_validators_executed_in_sandbox": false,
+    "runtime_release_status": "PENDING_PROJECT_VALIDATORS"
+  },
+  "next_expected_branch": "TECH.PC_COMPONENTS",
+  "source_tree_reference": "TECH_category_tree_reference.html",
+  "companion_standard": "CATALOG_PACK_COMPANION_v1_RU.md"
+}

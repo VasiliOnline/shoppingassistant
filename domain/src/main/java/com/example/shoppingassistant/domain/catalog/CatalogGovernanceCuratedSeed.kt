@@ -181,10 +181,40 @@ object CatalogGovernanceCuratedSeed {
                             ?.filter { it.isNotBlank() }
                             ?.distinct()
                             .orEmpty(),
+                        searchWeight = model.metadata["ruEuSearchWeight"]
+                            ?.toIntOrNull()
+                            ?.coerceIn(0, 100)
+                            ?: 0,
                     )
                 }
             }
-            .distinctBy { it.modelCode }
+            .mergeProjectedModelsByIdentity()
+    }
+
+    private fun List<CatalogCanonicalModelEntry>.mergeProjectedModelsByIdentity(): List<CatalogCanonicalModelEntry> {
+        val mergedByIdentity = LinkedHashMap<String, CatalogCanonicalModelEntry>()
+        forEach { model ->
+            val identityKey = model.defaultCategoryCode.trim().uppercase() +
+                "|" + model.canonicalModel.projectedModelIdentityKey()
+            val existing = mergedByIdentity[identityKey]
+            mergedByIdentity[identityKey] = when (existing) {
+                null -> model
+                else -> existing.copy(
+                    modelAliases = (existing.modelAliases + model.modelAliases).distinct().sorted(),
+                    accessoryBlockers = (existing.accessoryBlockers + model.accessoryBlockers).distinct().sorted(),
+                    searchWeight = maxOf(existing.searchWeight, model.searchWeight),
+                )
+            }
+        }
+        return mergedByIdentity.values.toList()
+    }
+
+    private fun String.projectedModelIdentityKey(): String {
+        val expanded = replace("+", " plus ")
+        return Stage21QueryTextNormalizer.normalize(expanded)
+            .replace(Regex("""\b5g\b"""), " ")
+            .replace(Regex("""\s+"""), " ")
+            .trim()
     }
 
     fun projectedValueDictionaries(): List<AttributeValueDict> =

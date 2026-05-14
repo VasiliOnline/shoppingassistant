@@ -1,0 +1,32 @@
+pack: TECH_PHONES_model_data_hardening_pack_v1_1_RU
+categoryCode: TECH.PHONES
+version: 1.1
+purpose: Минимальная политика identity-resolution для поиска популярных телефонов.
+principles:
+  - Не создавать микрокатегории по брендам/моделям.
+  - model_head_seed_delta — head seed, не полный глобальный реестр.
+  - model_variant_minimal_matrix — мягкая подсказка, а не hard reject validator.
+  - source_evidence обязателен только для автоподтверждения модели; без evidence модель остаётся candidate.
+confidence_rules:
+  high:
+    min_conditions:
+      - exact_model_alias_match
+      - brand_match_or_inferred_from_unique_model
+    action: auto_resolve_model_candidate
+  medium:
+    min_conditions:
+      - family_or_line_match
+      - storage_or_region_hint_optional
+    action: show_candidate_chip
+  low:
+    min_conditions:
+      - brand_only_or_ambiguous_model
+    action: ask_refinement_or_keep_model_unknown
+no_guess_rules:
+  photo_only:
+    model_resolution: forbidden_without_text_ocr_barcode_or_listing_evidence
+  visual_similarity:
+    max_status: candidate_only
+  ambiguous_short_alias:
+    examples: ["s24", "note 13", "13 pro", "a55"]
+    action: require_brand_or_context

@@ -1,0 +1,75 @@
+attributeCode	label_ru	role	data_type	required	multi_value	allowed_values_source	usage_scope	description_ru
+categoryCode	Код категории	T0_CORE	enum	true	false	fixed:TECH.COMPUTER_ACCESSORIES	offer,product	Крупный public categoryCode.
+computer_accessory_type	Тип компьютерного аксессуара	T0_CORE	enum	true	false	values.tech_computer_accessories.v1_0.tsv#computer_accessory_type	offer,product	Главный type-атрибут ветки.
+brand	Бренд	T0_CORE	string	false	false	head+runtime_candidates	offer,product	Коммерческий бренд товара.
+condition	Состояние	T0_CORE	enum	true	false	shared:condition	offer,product	Новое/б/у/восстановленное/на запчасти.
+model_name_text	Название модели	T0_CORE	string	false	false		offer,product	Свободный текст модели/серии аксессуара.
+connection_type	Тип подключения	T0_CORE	enum	false	false	values.tech_computer_accessories.v1_0.tsv#connection_type	offer,product	Проводное, беспроводное, Bluetooth и т.д.
+connector_type	Основной разъём	T0_CORE	enum	false	false	shared:connector_type	offer,product	Основной порт подключения.
+compatible_device_type	Совместимый тип устройства	T0_CORE	enum	false	false	values.tech_computer_accessories.v1_0.tsv#compatible_device_type	offer,product	С каким устройством используется.
+color_family	Базовый цвет	T0_CORE	enum	false	false	shared:color_family	offer,product	Нормализованный цвет.
+keyboard_layout	Раскладка клавиатуры	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#keyboard_layout	offer,product	
+keyboard_language	Язык клавиш	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#keyboard_language	offer,product	
+key_switch_type	Тип переключателей	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#key_switch_type	offer,product	
+keyboard_size	Размер клавиатуры	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#keyboard_size	offer,product	
+numpad_present	Цифровой блок	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+backlight_type	Подсветка	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#backlight_type	offer,product	
+mouse_sensor_type	Сенсор мыши	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#mouse_sensor_type	offer,product	
+dpi_max	Максимальный DPI	T1_TYPE_SPECIFIC	number	conditional	false		offer,product	
+buttons_count	Количество кнопок	T1_TYPE_SPECIFIC	integer	conditional	false		offer,product	
+ergonomic_hand	Эргономика под руку	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#ergonomic_hand	offer,product	
+polling_rate_hz	Polling rate, Гц	T1_TYPE_SPECIFIC	integer	conditional	false		offer,product	
+webcam_resolution	Разрешение камеры	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#webcam_resolution	offer,product	
+video_fps	Частота видео, fps	T1_TYPE_SPECIFIC	integer	conditional	false		offer,product	
+microphone_present	Встроенный микрофон	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+privacy_shutter	Шторка приватности	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+autofocus	Автофокус	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+port_set	Набор портов	T1_TYPE_SPECIFIC	string	conditional	true		offer,product	
+downstream_ports_count	Количество downstream-портов	T1_TYPE_SPECIFIC	integer	conditional	false		offer,product	
+power_delivery_watts	Power Delivery, Вт	T1_TYPE_SPECIFIC	number	conditional	false		offer,product	
+max_display_resolution	Максимальное разрешение дисплея	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#max_display_resolution	offer,product	
+ethernet_speed	Скорость Ethernet	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#ethernet_speed	offer,product	
+mount_type	Тип крепления	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#mount_type	offer,product	
+vesa_supported	Поддержка VESA	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+max_load_kg	Максимальная нагрузка, кг	T1_TYPE_SPECIFIC	number	conditional	false		offer,product	
+screen_size_supported	Поддерживаемая диагональ	T1_TYPE_SPECIFIC	string	conditional	false		offer,product	
+height_adjustable	Регулировка высоты	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+pressure_levels	Уровни нажатия стилуса	T1_TYPE_SPECIFIC	integer	conditional	false		offer,product	
+stylus_protocol	Протокол стилуса	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#stylus_protocol	offer,product	
+palm_rejection	Palm rejection	T1_TYPE_SPECIFIC	boolean	conditional	false		offer,product	
+fan_count	Количество вентиляторов	T1_TYPE_SPECIFIC	integer	conditional	false		offer,product	
+laptop_size_supported	Поддерживаемый размер ноутбука	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#laptop_size_supported	offer,product	
+screen_size_inches	Диагональ экрана, дюймы	T1_TYPE_SPECIFIC	number	conditional	false		offer,product	
+privacy_filter_type	Тип privacy-фильтра	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#privacy_filter_type	offer,product	
+cover_form_factor	Форм-фактор защиты/чехла	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#cover_form_factor	offer,product	
+cleaning_item_type	Тип предмета для чистки	T1_TYPE_SPECIFIC	enum	conditional	false	values.tech_computer_accessories.v1_0.tsv#cleaning_item_type	offer,product	
+manufacturer	Производитель	T2_OPTIONAL_ENRICHMENT	string	false	false		offer,product	
+model_number	Номер модели	T2_OPTIONAL_ENRICHMENT	string	false	false		offer,product	
+mpn	MPN	T2_OPTIONAL_ENRICHMENT	string	false	false		offer,product	
+gtin	GTIN/EAN/UPC	T2_OPTIONAL_ENRICHMENT	string	false	false		offer,product	
+release_year	Год выпуска	T2_OPTIONAL_ENRICHMENT	integer	false	false		offer,product	
+region_variant	Региональная версия	T2_OPTIONAL_ENRICHMENT	enum	false	false	shared:region_variant	offer,product	
+warranty	Гарантия	T2_OPTIONAL_ENRICHMENT	enum	false	false	shared:warranty	offer,product	
+included_accessories	Комплект	T2_OPTIONAL_ENRICHMENT	string	false	true		offer,product	
+seller_bundle	Комплект продавца	T2_OPTIONAL_ENRICHMENT	boolean	false	false		offer,product	
+original_box	Оригинальная коробка	T2_OPTIONAL_ENRICHMENT	boolean	false	false		offer,product	
+refurbished_status	Статус восстановления	T2_OPTIONAL_ENRICHMENT	enum	false	false	shared:refurbished_status	offer,product	
+compatible_brand	Совместимый бренд	T2_OPTIONAL_ENRICHMENT	string	false	false	head+runtime_candidates	offer,product	
+compatible_family	Совместимое семейство	T2_OPTIONAL_ENRICHMENT	string	false	false	head+runtime_candidates	offer,product	
+compatible_model_text	Совместимая модель текстом	T2_OPTIONAL_ENRICHMENT	string	false	false		offer,product	
+compatibility_mode	Режим совместимости	T2_OPTIONAL_ENRICHMENT	enum	false	false	shared:compatibility_mode	offer,product	
+compatibility_confidence	Уверенность совместимости	T2_OPTIONAL_ENRICHMENT	number	false	false		offer,product	
+wireless_standard	Беспроводной стандарт	T2_OPTIONAL_ENRICHMENT	enum	false	true	shared:wireless_standard	offer,product	
+battery_type	Тип батареи	T2_OPTIONAL_ENRICHMENT	enum	false	false	values.tech_computer_accessories.v1_0.tsv#battery_type	offer,product	
+battery_life_hours	Время работы, часы	T2_OPTIONAL_ENRICHMENT	number	false	false		offer,product	
+rechargeable	Перезаряжаемый	T2_OPTIONAL_ENRICHMENT	boolean	false	false		offer,product	
+material	Материал	T2_OPTIONAL_ENRICHMENT	enum	false	true	values.tech_computer_accessories.v1_0.tsv#material	offer,product	
+dimensions_mm	Габариты, мм	T2_OPTIONAL_ENRICHMENT	string	false	false		offer,product	
+weight_g	Вес, г	T2_OPTIONAL_ENRICHMENT	number	false	false		offer,product	
+dedup_fingerprint	Системный fingerprint дедупликации	T3_SYSTEM_HIDDEN	string	false	false		system	
+image_fingerprint	Image fingerprint	T3_SYSTEM_HIDDEN	string	false	false		system	
+source_confidence	Уверенность источника	T3_SYSTEM_HIDDEN	string	false	false		system	
+normalization_confidence	Уверенность нормализации	T3_SYSTEM_HIDDEN	string	false	false		system	
+route_confidence	Уверенность маршрутизации	T3_SYSTEM_HIDDEN	string	false	false		system	
+evidence_tokens	Evidence tokens	T3_SYSTEM_HIDDEN	string	false	false		system	
+blocked_route_reason	Причина блокировки маршрута	T3_SYSTEM_HIDDEN	string	false	false		system	

@@ -1,0 +1,80 @@
+surface_id: user_surface.tech_tablets_e_readers.v1_0
+categoryCode: TECH.TABLETS_E_READERS
+initial_fields_max: 8
+primary_facets_max: 7
+initial_fields:
+- tablet_type
+- brand
+- model_name_text
+- condition
+- screen_size_in
+- storage_capacity_gb
+- connectivity
+- color_family
+primary_facets:
+- tablet_type
+- brand
+- condition
+- screen_size_in
+- storage_capacity_gb
+- connectivity
+- price
+secondary_facets:
+- os
+- display_technology
+- stylus_support
+- keyboard_support
+- water_resistance
+- release_year
+- region_variant
+- battery_health_percent
+expanded_fields_by_type:
+  TABLET:
+  - os
+  - ram_gb
+  - chipset_text
+  - stylus_support
+  - keyboard_support
+  - cellular_generation
+  KIDS_TABLET:
+  - parental_controls
+  - rugged_case_included
+  - age_recommendation
+  - case_included
+  E_READER:
+  - display_technology
+  - frontlight
+  - water_resistance
+  - audiobook_support
+  - ad_supported
+  GRAPHICS_TABLET:
+  - active_area
+  - display_present
+  - pressure_levels
+  - stylus_included
+  - compatibility_os
+  TABLET_DOCK:
+  - dock_type
+  - compatible_model_text
+  - connector_type
+  - power_delivery_w
+  - port_summary
+  TABLET_STAND:
+  - stand_type
+  - compatible_screen_size_range
+  - material
+  - foldable
+  - adjustable_angle
+hidden_fields_never_show:
+- identity_confidence
+- specs_confidence
+- compatibility_confidence
+- route_confidence
+- source_trace_id
+- extraction_evidence
+- normalization_notes
+excluded_surface_layers:
+- presets
+- collections
+- shelves
+- seo_landing_pages

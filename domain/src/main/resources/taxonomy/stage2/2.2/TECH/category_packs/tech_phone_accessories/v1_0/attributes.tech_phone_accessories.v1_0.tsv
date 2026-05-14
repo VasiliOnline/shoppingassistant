@@ -1,0 +1,68 @@
+attribute_code	label_ru	data_type	role	required_policy	value_source	usage_scope	inherited_from	notes_ru
+categoryCode	Код категории	enum	T0_CORE	required	TECH.PHONE_ACCESSORIES	all		Стабильный public categoryCode.
+phone_accessory_type	Тип аксессуара телефона	enum	T0_CORE	required	values#phone_accessory_type	all		Главный type-переключатель ветки.
+brand	Бренд аксессуара	string|enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#brand	all	TECH.ELECTRONICS_COMMON	Бренд аксессуара, не обязательно бренд телефона.
+condition	Состояние	enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#condition	all	TECH.ELECTRONICS_COMMON	Новое/б.у./восстановленное/на запчасти.
+color_family	Цвет	enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#color_family	all	TECH.ELECTRONICS_COMMON	Нормализованный цвет.
+compatible_device_category	Совместимая категория устройства	enum	T0_CORE	required_when_model_specific_or_universal	values#compatible_device_category	all	TECH.COMPATIBILITY_COMMON	PHONE по умолчанию для этой ветки; может быть PHONE_OR_TABLET только при явном тексте.
+compatible_brand	Совместимый бренд устройства	enum|string	T0_CORE	required_when_model_specific	values#compatible_brand_head	model_specific	TECH.COMPATIBILITY_COMMON	Например Apple/Samsung/Xiaomi; не путать с brand аксессуара.
+compatibility_evidence_level	Уровень доказательства совместимости	enum	T0_CORE	required	values#compatibility_evidence_level	all	TECH.COMPATIBILITY_COMMON	Нужен, чтобы не угадывать совместимость по фото.
+compatible_family	Совместимое семейство	string|enum	T1_TYPE_SPECIFIC	required_when_family_specific	runtime_candidates/live_values	model_specific	TECH.COMPATIBILITY_COMMON	iPhone, Galaxy S, Redmi Note и т.д.
+compatible_model_text	Текст совместимой модели	string	T1_TYPE_SPECIFIC	required_when_model_specific	extracted_text	model_specific	TECH.COMPATIBILITY_COMMON	Свободный текст модели до resolution в phone identity.
+compatible_model_ref	Ссылка на нормализованную модель	reference	T3_SYSTEM_HIDDEN	optional	TECH.PHONES model identity	model_specific	TECH.COMPATIBILITY_COMMON	Не выводить в UI, рассчитывается runtime.
+compatibility_mode	Режим совместимости	enum	T1_TYPE_SPECIFIC	required	values#compatibility_mode	all	TECH.COMPATIBILITY_COMMON	MODEL_SPECIFIC / FAMILY_SPECIFIC / UNIVERSAL_PHONE / CONNECTOR_BASED.
+compatibility_confidence	Доверие совместимости	number	T3_SYSTEM_HIDDEN	computed	0..1	all	TECH.COMPATIBILITY_COMMON	Системная оценка.
+compatibility_resolution_status	Статус resolution	enum	T3_SYSTEM_HIDDEN	computed	values#compatibility_resolution_status	all	TECH.COMPATIBILITY_COMMON	RESOLVED / TEXT_ONLY / AMBIGUOUS / NOT_REQUIRED.
+case_style	Тип чехла	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#case_style	CASE		Накладка, книжка, bumper, wallet и т.д.
+case_material	Материал чехла	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#case_material	CASE		TPU/силикон/кожа/поликарбонат и т.д.
+protection_level	Уровень защиты	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#protection_level	CASE|SCREEN_PROTECTOR|CAMERA_LENS_PROTECTOR		Slim/basic/rugged/drop-proof claim.
+magsafe_compatible	Совместимость MagSafe/магнитов	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	CASE|WIRELESS_CHARGER|MAGSAFE_ACCESSORY|POWER_BANK|CAR_MOUNT		Только если указано текстом/маркировкой или очевидно по товарному типу MagSafe.
+protector_material	Материал защитного стекла/плёнки	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#protector_material	SCREEN_PROTECTOR|CAMERA_LENS_PROTECTOR		Tempered glass/hydrogel/film/sapphire claim.
+protector_coverage	Покрытие защитного стекла	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#protector_coverage	SCREEN_PROTECTOR		Full cover/edge-to-edge/camera-only/privacy.
+pack_quantity	Количество в комплекте	integer	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	positive_int	SCREEN_PROTECTOR|CAMERA_LENS_PROTECTOR|SIM_TOOL|CLEANING_KIT		Для наборов и мультипаков.
+connector_type	Коннектор / порт A	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	TECH.SPECS_COMMON#connector_type	CHARGER|CABLE|ADAPTER|DOCK	TECH.SPECS_COMMON	USB-C/Lightning/Micro-USB/USB-A и т.д.
+connector_type_2	Коннектор / порт B	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	TECH.SPECS_COMMON#connector_type	CABLE|ADAPTER	TECH.SPECS_COMMON	Второй конец кабеля/адаптера.
+port_configuration	Конфигурация портов	enum|string	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#port_configuration	CHARGER|POWER_BANK|DOCK		1x USB-C, 2x USB-C + USB-A и т.д.
+max_output_power_w	Макс. мощность, Вт	number	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	range_watt	CHARGER|WIRELESS_CHARGER|POWER_BANK|DOCK		Не угадывать по форме.
+max_power_w	Макс. мощность кабеля/адаптера, Вт	number	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	range_watt	CABLE|ADAPTER		Только по маркировке/описанию.
+fast_charge_standard	Стандарт быстрой зарядки	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#fast_charge_standard	CHARGER|POWER_BANK|WIRELESS_CHARGER		PD/QC/PPS/MagSafe/Qi2 и т.д.
+wireless_standard	Беспроводной стандарт зарядки	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	TECH.SPECS_COMMON#wireless_standard	WIRELESS_CHARGER|POWER_BANK|MAGSAFE_ACCESSORY	TECH.SPECS_COMMON	Qi/Qi2/MagSafe.
+capacity_mah	Ёмкость, мА·ч	integer	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	range_mah	POWER_BANK		Для power bank.
+wireless_charging_support	Беспроводная зарядка	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	POWER_BANK		Поддерживает ли power bank wireless output.
+cable_length_m	Длина кабеля, м	number	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	range_meters	CABLE		Нормализовать см/м.
+usb_standard	USB-стандарт	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	TECH.SPECS_COMMON#usb_standard	CABLE|DOCK|ADAPTER	TECH.SPECS_COMMON	USB 2.0/3.2/USB4/Thunderbolt.
+data_transfer_support	Передача данных	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	CABLE|DOCK|ADAPTER		Важно для кабелей charging-only.
+mounting_type	Тип крепления	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#mounting_type	HOLDER|CAR_MOUNT		Vent/dashboard/windshield/desk/bike и т.д.
+mount_location	Место крепления	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#mount_location	CAR_MOUNT|HOLDER		Авто-решётка/панель/лобовое/стол/велосипед.
+compatible_device_size_range	Диапазон размера устройства	string	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	free_text_normalized	HOLDER|STAND|CAR_MOUNT		Например 4.7–7.0 inches.
+stand_form_factor	Форм-фактор подставки/зарядки	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#stand_form_factor	STAND|WIRELESS_CHARGER		flat pad/stand/foldable/desktop.
+adjustable_angle	Регулируемый угол	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	STAND|HOLDER		
+foldable	Складная конструкция	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	STAND|WIRELESS_CHARGER		
+magnetic_mount	Магнитное крепление	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	CAR_MOUNT|HOLDER		
+adapter_direction	Направление адаптера	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#adapter_direction	ADAPTER		USB-C to Lightning, Lightning to 3.5mm и т.д.
+magsafe_accessory_type	Тип MagSafe-аксессуара	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#magsafe_accessory_type	MAGSAFE_ACCESSORY		wallet/ring/battery/stand/car mount.
+magnetic_strength_claim	Заявление о силе магнита	string	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	free_text_claim	MAGSAFE_ACCESSORY|CAR_MOUNT		Маркетинговый claim — не использовать как строгий фильтр.
+stylus_type	Тип стилуса	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#stylus_type	STYLUS		passive/active/capacitive.
+pressure_sensitivity	Чувствительность к нажатию	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	STYLUS		Только если заявлено.
+palm_rejection	Palm rejection	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	STYLUS		Только если заявлено.
+strap_charm_type	Тип ремешка/charm	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#strap_charm_type	STRAP_CHARM		wrist strap/charm/lanyard.
+attachment_type	Тип крепления ремешка	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#attachment_type	STRAP_CHARM		adhesive/loop/case-hole/plug.
+sim_tool_type	Тип SIM-инструмента	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#sim_tool_type	SIM_TOOL		eject pin/tray/adapter.
+replacement_part_type	Тип запчасти	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#replacement_part_type	REPLACEMENT_PART		screen/battery/camera/back cover/charging port.
+part_quality	Качество/происхождение запчасти	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#part_quality	REPLACEMENT_PART		OEM/original/pulled/aftermarket/refurbished.
+repair_skill_level	Сложность ремонта	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#repair_skill_level	REPLACEMENT_PART		basic/intermediate/professional.
+cleaning_item_type	Тип чистящего набора	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#cleaning_item_type	CLEANING_KIT		cloth/spray/brush/kit.
+safe_for_screen	Безопасно для экрана	boolean	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	boolean	CLEANING_KIT		Только если указано.
+liquid_volume_ml	Объём жидкости, мл	number	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	range_ml	CLEANING_KIT		
+material_family	Материал	enum	T2_OPTIONAL_ENRICHMENT	type_required_or_optional_by_policy	values#material_family	all		Общий material facet.
+finish	Финиш/поверхность	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#finish	CASE|SCREEN_PROTECTOR|MAGSAFE_ACCESSORY		matte/glossy/clear/privacy.
+transparency	Прозрачность	enum	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	values#transparency	CASE|SCREEN_PROTECTOR		clear/tinted/opaque/privacy.
+water_resistance	Влагозащита	boolean|string	T1_TYPE_SPECIFIC	type_required_or_optional_by_policy	claim_text	CASE|POWER_BANK|HOLDER		Только по описанию/маркировке.
+original_oem	Оригинальный/OEM	boolean	T2_OPTIONAL_ENRICHMENT	type_required_or_optional_by_policy	boolean	all		Только по подтверждённому claim; не угадывать.
+model_name_text	Модель аксессуара текстом	string	T2_OPTIONAL_ENRICHMENT	type_required_or_optional_by_policy	free_text	all		Модель аксессуара, не телефона.
+mpn	MPN/артикул производителя	string	T2_OPTIONAL_ENRICHMENT	type_required_or_optional_by_policy	free_text	all		Из identity common / производителя.
+gtin	GTIN/EAN/UPC	string	T2_OPTIONAL_ENRICHMENT	type_required_or_optional_by_policy	barcode	all		Если есть.
+route_confidence	Системная уверенность маршрута	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+extraction_evidence	Доказательства извлечения	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+source_trace_id	ID источника	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+normalization_notes	Заметки нормализации	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.

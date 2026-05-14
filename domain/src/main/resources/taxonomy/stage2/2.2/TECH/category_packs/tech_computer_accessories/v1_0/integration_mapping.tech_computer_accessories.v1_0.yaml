@@ -1,0 +1,37 @@
+# integration_mapping.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+mount:
+  public_category: true
+  path: taxonomy/stage2/2.1/TECH/TECH.COMPUTER_ACCESSORIES
+  depends_on:
+    - TECH.ELECTRONICS_COMMON
+    - TECH.DEVICE_IDENTITY_COMMON
+    - TECH.SPECS_COMMON
+    - TECH.COMPATIBILITY_COMMON
+routing:
+  main_type_attribute: computer_accessory_type
+  alias_source: aliases.tech_computer_accessories.ru.v1_0.tsv
+  route_guardrails: route_guardrails.tech_computer_accessories.v1_0.yaml
+normalization:
+  title_parser_rules:
+    - computer_accessory_type
+    - brand
+    - model_name_text
+    - connector_type
+    - compatible_device_type
+    - compatibility_mode
+publish_contract:
+  required_fields:
+    - categoryCode
+    - computer_accessory_type
+    - title
+    - condition
+    - price
+    - currency
+    - availability
+    - image
+  soft_required:
+    - brand
+    - connection_type
+    - connector_type
+    - compatible_device_type

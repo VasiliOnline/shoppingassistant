@@ -1,0 +1,107 @@
+guardrail_set_id: route_guardrails.tech_phones.v1_0
+categoryCode: TECH.PHONES
+evaluation_mode: sort_by_priority_desc_then_first_match
+include_guards:
+- id: phone_device_core
+  priority: 500
+  signals:
+  - смартфон
+  - телефон
+  - iphone
+  - айфон
+  - galaxy s
+  - pixel
+  - redmi
+  - кнопочный телефон
+  target: TECH.PHONES
+  requires_not_accessory: true
+exclusion_guards:
+- id: phone_accessory_precedence
+  priority: 900
+  signals:
+  - чехол
+  - защитное стекло
+  - пленка
+  - плёнка
+  - бампер
+  - case
+  - cover
+  - skin
+  - аккумулятор
+  - дисплей
+  - экран для
+  - камера для
+  - sim tool
+  target: TECH.PHONE_ACCESSORIES
+  reason: accessory_or_replacement_part
+- id: power_cable_precedence
+  priority: 870
+  signals:
+  - зарядка
+  - кабель
+  - usb-c
+  - lightning cable
+  - power bank
+  - адаптер питания
+  - блок питания
+  target: TECH.POWER_CHARGING_CABLES
+  reason: charging_or_cable
+- id: wearable_precedence
+  priority: 860
+  signals:
+  - apple watch
+  - galaxy watch
+  - smart watch
+  - смарт часы
+  - ремешок apple watch
+  target: TECH.WEARABLES
+  reason: wearable
+- id: audio_precedence
+  priority: 850
+  signals:
+  - airpods
+  - наушники
+  - гарнитура
+  - headphones
+  - earbuds
+  target: TECH.AUDIO
+  reason: audio
+- id: tablet_precedence
+  priority: 840
+  signals:
+  - ipad
+  - планшет
+  - tablet
+  - galaxy tab
+  target: TECH.TABLETS_E_READERS
+  reason: tablet
+- id: computer_precedence
+  priority: 830
+  signals:
+  - ноутбук
+  - macbook
+  - laptop
+  - chromebook
+  target: TECH.COMPUTERS
+  reason: computer
+- id: fash_cross_guard
+  priority: 800
+  signals:
+  - ремешок кожаный без модели телефона
+  - сумка
+  - кошелек
+  - одежда
+  target: FASH.ACCESSORIES_OR_BAGS
+  reason: fashion_not_phone
+- id: landline_precedence
+  priority: 780
+  signals:
+  - стационарный телефон
+  - домашний телефон
+  - проводной телефон
+  target: TECH.OTHER_ELECTRONICS
+  reason: landline_not_mobile_phone
+ambiguity_policy:
+  when_model_without_device_noun: allow_if_model_seed_match_high_confidence
+  when_for_word_present: prefer_accessory_route
+  when_parts_only: prefer_PHONE_ACCESSORIES_unless_full_device_for_parts

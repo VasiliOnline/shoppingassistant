@@ -1,0 +1,31 @@
+{
+  "pack_name": "TECH_PHONES_model_data_hardening_pack_v1_1_RU",
+  "version": "1.1",
+  "pack_type": "data_hardening_pack",
+  "category_code": "TECH.PHONES",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "target_base_pack": "TECH_PHONES_public_category_pack_v1_0_RU",
+  "purpose_ru": "Минимально необходимое усиление данных brand/family/model для runtime-поиска популярных телефонов без пресетов и коллекций.",
+  "mount_policy": {
+    "order_after": [
+      "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+      "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+      "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+      "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+      "TECH_PHONES_public_category_pack_v1_0_RU"
+    ],
+    "mode": "data_overlay_only",
+    "schema_breaking_changes": false,
+    "no_new_category_codes": true
+  },
+  "excluded_by_design": [
+    "presets",
+    "collections",
+    "landing_pages",
+    "merchandising_shelves",
+    "compatibility_refs",
+    "phone_accessories"
+  ],
+  "created_at_utc": "2026-05-14T10:10:12+00:00"
+}

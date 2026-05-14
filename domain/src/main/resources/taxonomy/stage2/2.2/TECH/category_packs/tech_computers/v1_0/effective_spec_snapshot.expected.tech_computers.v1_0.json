@@ -1,0 +1,83 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_computers.v1_0",
+  "categoryCode": "TECH.COMPUTERS",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "main_type_attribute": "computer_type",
+  "computer_type_values": [
+    "LAPTOP",
+    "ULTRABOOK",
+    "GAMING_LAPTOP",
+    "TWO_IN_ONE_LAPTOP",
+    "CHROMEBOOK",
+    "DESKTOP_PC",
+    "MINI_PC",
+    "ALL_IN_ONE",
+    "WORKSTATION",
+    "THIN_CLIENT"
+  ],
+  "t0_core": [
+    "categoryCode",
+    "computer_type",
+    "brand",
+    "condition",
+    "model_name_text",
+    "ram_gb",
+    "storage_capacity_gb",
+    "cpu_model_text"
+  ],
+  "initial_fields": [
+    "computer_type",
+    "brand",
+    "model_name_text",
+    "condition",
+    "cpu_model_text",
+    "ram_gb",
+    "storage_capacity_gb",
+    "screen_size_in"
+  ],
+  "primary_facets": [
+    "computer_type",
+    "brand",
+    "condition",
+    "ram_gb",
+    "storage_capacity_gb",
+    "cpu_family",
+    "price"
+  ],
+  "t3_system_hidden": [
+    "identity_confidence",
+    "identity_resolution_status",
+    "specs_confidence",
+    "route_confidence",
+    "extraction_evidence",
+    "source_trace_id",
+    "normalization_notes"
+  ],
+  "blocked_cross_routes": [
+    "TECH.TABLETS_E_READERS",
+    "TECH.MONITORS_DISPLAYS",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.PC_COMPONENTS",
+    "TECH.STORAGE_MEMORY",
+    "TECH.GAMING",
+    "TECH.PHONES",
+    "TECH.POWER_CHARGING_CABLES"
+  ],
+  "forbidden_category_codes": [
+    "TECH.MACBOOK",
+    "TECH.THINKPAD",
+    "TECH.DELL_XPS",
+    "TECH.GAMING_LAPTOPS",
+    "TECH.LAPTOPS",
+    "TECH.DESKTOPS"
+  ],
+  "presets_collections_included": false,
+  "validation_expectation": "actual effective snapshot must match these public surface limits and route boundaries after inheritance"
+}

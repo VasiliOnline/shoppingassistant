@@ -1,0 +1,45 @@
+rule_set_id: generated_alias_rules.tech_phones.v1_0
+categoryCode: TECH.PHONES
+rules:
+- id: brand_model_storage_pattern_ru_en
+  description: brand/model + storage expressions normalize into identity candidates and storage_capacity_gb
+  patterns:
+  - '{brand} {model} {storage}гб'
+  - '{brand} {model} {storage} gb'
+  - '{model} {storage} гб'
+  - айфон {model_number} {storage}гб
+  outputs:
+  - brand
+  - model_name_text
+  - storage_capacity_gb
+  requires_evidence_for_model: true
+- id: carrier_lock_aliases
+  patterns:
+  - unlocked
+  - factory unlocked
+  - разлочен
+  - залочен
+  - locked
+  - под оператора
+  outputs:
+  - network_lock_status
+- id: used_phone_resale_extraction
+  patterns:
+  - акб {percent}%
+  - батарея {percent}%
+  - battery health {percent}%
+  - face id не работает
+  - экран менялся
+  outputs:
+  - battery_health_percent
+  - face_id_touch_id_status
+  - repair_history
+- id: negative_accessory_precedence
+  patterns:
+  - чехол для {model}
+  - стекло на {model}
+  - зарядка для {model}
+  - аккумулятор {model}
+  - дисплей {model}
+  route_target: TECH.PHONE_ACCESSORIES_or_TECH.POWER_CHARGING_CABLES
+  categoryCode: not_TECH.PHONES

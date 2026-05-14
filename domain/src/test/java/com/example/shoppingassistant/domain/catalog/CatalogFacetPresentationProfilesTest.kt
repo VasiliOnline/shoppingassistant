@@ -25,15 +25,22 @@ class CatalogFacetPresentationProfilesTest {
     }
 
     @Test
-    fun tech_phones_profile_hides_phone_os_facet() {
+    fun tech_phones_profile_exposes_professional_additional_facets() {
         val profile = CatalogFacetPresentationProfiles.resolve("TECH.PHONES")
 
         requireNotNull(profile)
-        assertTrue("os_family" in profile.hiddenTypedFacetKeys)
         assertTrue("model" in profile.mainTypedFacetKeys)
         assertTrue("memory_gb" in profile.mainTypedFacetKeys)
         assertTrue("color" in profile.additionalTypedFacetKeys)
         assertTrue("release_year" in profile.additionalTypedFacetKeys)
+        assertFalse("release_date" in profile.additionalTypedFacetKeys)
+        assertTrue("camera_main_mp" in profile.additionalTypedFacetKeys)
+        assertTrue("sim_configuration" in profile.additionalTypedFacetKeys)
+        assertTrue("model_number" in profile.additionalTypedFacetKeys)
+        assertTrue("memory_card_type" in profile.additionalTypedFacetKeys)
+        assertTrue("os_family" in profile.additionalTypedFacetKeys)
+        assertTrue("connectivity" in profile.additionalTypedFacetKeys)
+        assertFalse("os_family" in profile.hiddenTypedFacetKeys)
         assertTrue("screen_size_inch" in profile.additionalTypedFacetKeys)
         assertTrue("wireless_charging" in profile.additionalTypedFacetKeys)
         assertTrue("esim_support" in profile.additionalTypedFacetKeys)

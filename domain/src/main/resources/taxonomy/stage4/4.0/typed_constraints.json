@@ -63,7 +63,67 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "account_lock_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "activation_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "active_area",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "activity",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ad_supported",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "adapter_direction",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "adaptive_sync",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -84,6 +144,16 @@
     },
     {
       "attributeCode": "adjustable",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "adjustable_angle",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -130,6 +200,16 @@
       "attributeCode": "age_label",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "age_recommendation",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -277,9 +357,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "attachment_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "audio_channels",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "audiobook_support",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -308,6 +408,36 @@
     },
     {
       "attributeCode": "authenticity_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "back_glass_condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "back_glass_replaced",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "backlight_uniformity_status",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -377,6 +507,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "battery_cycle_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cycles",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_health_bucket",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "battery_health_percent",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -400,6 +550,16 @@
       ]
     },
     {
+      "attributeCode": "battery_life_claim",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "battery_mah",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -407,6 +567,26 @@
       "regex": null,
       "minValue": 500.0,
       "maxValue": 12000.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_replaced",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_service_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
       "requiredIf": []
     },
     {
@@ -457,6 +637,36 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "biometric_auth_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "biometric_unlock",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "blacklist_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -541,8 +751,8 @@
     },
     {
       "attributeCode": "brand",
-      "valueType": "STRING",
-      "enumOnly": false,
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -640,6 +850,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "built_in_speakers",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "bundle_identity_exclusion",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -650,9 +870,39 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "business_grade",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "button_condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "cabin_size_status",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cable_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -690,10 +940,50 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "camera_condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "camera_main_mp",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mp",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "camera_replaced",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "camera_resolution_mp",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "MP",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "camera_summary",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -806,6 +1096,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "carrier",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "carrier_variant",
       "valueType": "STRING",
       "enumOnly": false,
@@ -879,9 +1179,39 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "case_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "case_material",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "case_size_mm",
       "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "case_style",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -899,9 +1229,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "cellular_generation",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "certification",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "certified_workstation_claim",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -929,7 +1279,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "charger_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "charger_technology",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "charging_connector",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -979,6 +1349,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "chipset",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "chipset_family",
       "valueType": "STRING",
       "enumOnly": false,
@@ -999,7 +1379,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "chromeos_support_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "clasp_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cleaning_item_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1082,6 +1482,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "color_body",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "color_depth",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -1092,7 +1502,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "color_eink",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "color_family",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "color_gamut",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1173,6 +1603,16 @@
     },
     {
       "attributeCode": "compatibility_direction",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compatibility_evidence_level",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1769,6 +2209,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "compatibility_os",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "compatibility_resolution_status",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -1829,6 +2279,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "compatibility_target_id",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "compatibility_warning_flags",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -1840,8 +2300,8 @@
     },
     {
       "attributeCode": "compatible_brand",
-      "valueType": "STRING",
-      "enumOnly": false,
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1859,9 +2319,29 @@
       "requiredIf": []
     },
     {
-      "attributeCode": "compatible_family",
+      "attributeCode": "compatible_device_category",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compatible_device_size_range",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compatible_family",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1920,6 +2400,16 @@
     },
     {
       "attributeCode": "compatible_model_number",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compatible_model_ref",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -2049,9 +2539,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "compatible_screen_size_range",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "compatible_target_category_code",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compliance_flags",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -2069,7 +2579,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "computer_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "connection_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "connectivity",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -2204,6 +2744,16 @@
       ]
     },
     {
+      "attributeCode": "connector_input_primary",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "connector_output",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2252,6 +2802,36 @@
     },
     {
       "attributeCode": "connector_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "connector_type_2",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "contrast_ratio_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "convertible_mode",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -2321,9 +2901,9 @@
       "requiredIf": []
     },
     {
-      "attributeCode": "cpu_cores",
-      "valueType": "NUMBER",
-      "enumOnly": false,
+      "attributeCode": "cpu_brand",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -2331,9 +2911,19 @@
       "requiredIf": []
     },
     {
-      "attributeCode": "cpu_family",
-      "valueType": "STRING",
+      "attributeCode": "cpu_cores",
+      "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cpu_family",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -2345,6 +2935,26 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "GHz",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cpu_generation",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cpu_model_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -2371,8 +2981,28 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "curved",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "cycle_count",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "daisy_chain",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -2421,6 +3051,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "data_transfer_support",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dead_pixel_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "decor_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2432,6 +3082,16 @@
     },
     {
       "attributeCode": "dedup_fingerprint",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dedup_key",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -2828,10 +3488,40 @@
       ]
     },
     {
+      "attributeCode": "delta_e",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "depth_cm",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "depth_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "desktop_form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -2862,6 +3552,86 @@
       "valueType": "STRING",
       "enumOnly": false,
       "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dimensions_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "display_panel_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "display_present",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "display_refresh_rate_hz",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "Hz",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "display_technology",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "display_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "displayport_ports_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "dock_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -2938,6 +3708,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "dual_sim_support",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "dust_bag_included",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -2968,6 +3748,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "ean_gtin",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ecc_memory_support",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "ecosystem",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -2988,10 +3788,30 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "energy_class",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "energy_consumption_w",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "W",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "enterprise_management_support",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3048,8 +3868,48 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "express_keys",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "extraction_evidence",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "extraction_warnings",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "face_id_touch_id_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "factory_calibrated",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -3088,10 +3948,40 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "fast_charge_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "fast_charging_watts",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "w",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "fat_per_serving_gram",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "g",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "finish",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3158,6 +4048,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "flicker_free",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "foldable",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -3188,7 +4088,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "for_parts_only",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "frame_condition",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3221,6 +4141,16 @@
       "attributeCode": "frame_shape",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "frontlight",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -3667,6 +4597,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "gaming_grade",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "gender",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -3732,6 +4672,26 @@
       ]
     },
     {
+      "attributeCode": "gpu_brand",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "gpu_model_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "gpu_text",
       "valueType": "STRING",
       "enumOnly": false,
@@ -3743,8 +4703,8 @@
     },
     {
       "attributeCode": "gpu_type",
-      "valueType": "STRING",
-      "enumOnly": false,
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -3756,6 +4716,16 @@
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "graphics_memory_gb",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "gb",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -3885,7 +4855,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "hdmi_ports_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "hdr_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "hdr_support",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3975,10 +4965,30 @@
       ]
     },
     {
+      "attributeCode": "height_adjustable",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "height_cm",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "cm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "height_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -4036,7 +5046,7 @@
     },
     {
       "attributeCode": "identity_confidence",
-      "valueType": "NUMBER",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -4305,6 +5315,16 @@
     },
     {
       "attributeCode": "identity_debug_trace",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "identity_evidence",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -4841,8 +5861,8 @@
     },
     {
       "attributeCode": "identity_resolution_status",
-      "valueType": "ENUM",
-      "enumOnly": true,
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -5158,9 +6178,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "imei_evidence_hash",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "imei_hash",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "imei_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -5178,9 +6218,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "included_cables",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "included_items",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "included_stand",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -5371,9 +6431,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "keyboard_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "keyboard_layout",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "keyboard_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "kvm_switch",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "laminated_display",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -5531,7 +6631,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "liquid_volume_ml",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "ml",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "listing_completeness_confidence",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "local_dimming_zones",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": null,
@@ -5561,6 +6681,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "lot_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "luggage_shell_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -5572,6 +6702,46 @@
     },
     {
       "attributeCode": "magnetic_alignment",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "magnetic_mount",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "magnetic_strength_claim",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "magsafe_accessory_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "magsafe_compatible",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -5614,6 +6784,16 @@
       "attributeCode": "material_composition_text",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "material_family",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -5698,6 +6878,26 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "a",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "max_output_power_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "w",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "max_power_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "w",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -5830,6 +7030,26 @@
       "attributeCode": "microphone_count",
       "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "microphone_summary",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "mobile_network_generation",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -6145,6 +7365,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "model_normalized",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "model_number",
       "valueType": "STRING",
       "enumOnly": false,
@@ -6165,9 +7395,52 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "model_resolution_candidates",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "model_year_text",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "monitor_accessory_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.MONITORS_DISPLAYS",
+          "whenAll": [
+            {
+              "attributeCode": "display_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "MONITOR_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "motherboard_form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -6280,6 +7553,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "network_lock_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "network_speed",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -6312,6 +7595,16 @@
     {
       "attributeCode": "normalization_confidence",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "normalization_notes",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -6380,7 +7673,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "optical_drive",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "optical_zoom_x",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "x",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "original_box",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "original_oem",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -6410,9 +7733,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "os",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "os_family",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "os_version",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "os_version_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "osd_language_region",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -6616,6 +7979,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "palm_rejection",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "panel_technology",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "panel_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -6626,9 +8009,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "parental_controls",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "part_number",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "part_quality",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -6676,6 +8079,36 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "pen_technology",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "phone_accessory_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "phone_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "phone_width_max_mm",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -6706,8 +8139,48 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "physical_sim_slots",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "slots",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "picture_by_picture",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "picture_in_picture",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "pieces_count",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pivot",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -6776,9 +8249,39 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "port_configuration",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "port_list_text",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "port_summary",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "portable_power_mode",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -6796,8 +8299,28 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "ports",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "ports_count",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "power_adapter_included",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -6820,6 +8343,16 @@
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "power_delivery_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "W",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -6866,7 +8399,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "prebuilt_or_custom",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "prescription_compatible",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pressure_levels",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pressure_sensitivity",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -6926,6 +8489,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "privacy_filter_compatible",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "product_code",
       "valueType": "STRING",
       "enumOnly": false,
@@ -6969,6 +8542,16 @@
       "attributeCode": "protector_installation_frame",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "protector_material",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -7041,6 +8624,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "psu_wattage",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "w",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "pump_pressure_bar",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -7104,7 +8697,7 @@
       "attributeCode": "ram_gb",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": null,
+      "unit": "gb",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -7261,6 +8854,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "refurbished_by",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "refurbished_grade",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "refurbished_status",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7344,10 +8957,20 @@
       "attributeCode": "release_year",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": null,
+      "unit": "year",
       "regex": null,
       "minValue": 1900.0,
       "maxValue": 2100.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "remote_control_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
       "requiredIf": []
     },
     {
@@ -7417,6 +9040,16 @@
       ]
     },
     {
+      "attributeCode": "repair_skill_level",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "repair_tool_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7438,6 +9071,16 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "replacement_part_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "required_connector_type",
@@ -7464,6 +9107,54 @@
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "resolution_class",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.MONITORS_DISPLAYS",
+          "whenAll": [
+            {
+              "attributeCode": "display_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "COMPUTER_MONITOR",
+                "GAMING_MONITOR",
+                "PROFESSIONAL_MONITOR",
+                "PORTABLE_MONITOR",
+                "SMART_MONITOR",
+                "TOUCHSCREEN_MONITOR"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "resolution_height_px",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "px",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "resolution_width_px",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "px",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -7544,7 +9235,7 @@
     },
     {
       "attributeCode": "route_confidence",
-      "valueType": "NUMBER",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": "0..1",
       "regex": null,
@@ -7563,9 +9254,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "rugged_case_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "runtime_candidate_policy",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "safe_for_screen",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -7633,6 +9344,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "screen_condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "screen_replaced",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "screen_resolution",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7653,6 +9384,34 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "screen_size_in",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "in",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.MONITORS_DISPLAYS",
+          "whenAll": [
+            {
+              "attributeCode": "display_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "COMPUTER_MONITOR",
+                "GAMING_MONITOR",
+                "PROFESSIONAL_MONITOR",
+                "PORTABLE_MONITOR",
+                "SMART_MONITOR",
+                "TOUCHSCREEN_MONITOR"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "screen_size_inch",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -7663,8 +9422,38 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "screen_size_inches",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "inch",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "screen_size_range_in",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "screen_surface",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "sd_card_support",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -7706,8 +9495,28 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "secondary_storage_capacity_gb",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "gb",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "seller_bundle",
-      "valueType": "BOOLEAN",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "seller_claims_raw",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -7867,6 +9676,16 @@
     },
     {
       "attributeCode": "silhouette",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "sim_configuration",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -8039,6 +9858,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "smart_os",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "socket_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -8112,6 +9941,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "source_payload_hash",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "source_text_evidence",
       "valueType": "STRING",
       "enumOnly": false,
@@ -8122,7 +9961,27 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "source_trace_id",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "source_url_identity_tokens",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "speaker_summary",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -8262,6 +10121,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "specs_confidence",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "speed_class",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -8339,6 +10208,26 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "stand_form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "stand_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "stone_type",
@@ -8456,6 +10345,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "strap_charm_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "strap_count",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -8556,6 +10455,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "stylus_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "stylus_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "stylus_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -8599,9 +10518,39 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "supported_network_bands_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "sustainability_claim",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "swivel",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "tablet_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -8620,6 +10569,16 @@
     },
     {
       "attributeCode": "target_gender",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "thermal_profile",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -8649,9 +10608,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "thin_client_os",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "thunderbolt_ports_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "tie_width_type",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "tilt",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "tilt_support",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -8709,9 +10708,49 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "touch_interface",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "touch_points",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "touchscreen",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "touchscreen_compatible",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "transparency",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -8731,6 +10770,16 @@
     {
       "attributeCode": "type_of_item",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ultrawide",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -8812,6 +10861,46 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "usb_c_ports_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "usb_c_power_delivery_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "W",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "usb_hub_ports_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "usb_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "used_for",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -8834,6 +10923,26 @@
     {
       "attributeCode": "variant_label",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "vesa_mount",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "vesa_mount_support",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -8884,6 +10993,26 @@
     {
       "attributeCode": "vision_confidence",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "vision_evidence_level",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "vision_no_guess_reason",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -8992,6 +11121,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "warranty",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "warranty_months_remaining",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -9046,6 +11185,16 @@
     },
     {
       "attributeCode": "watch_style",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "water_damage_signs",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -9161,7 +11310,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "webcam_built_in",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "webcam_present",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "weight",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "g",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "weight_g",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "g",
@@ -9174,7 +11353,7 @@
       "attributeCode": "weight_kg",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": null,
+      "unit": "kg",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -9241,6 +11420,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "width_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "windproof",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -9272,6 +11461,16 @@
     },
     {
       "attributeCode": "wireless_charging_compatible",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "wireless_charging_support",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -9322,6 +11521,16 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "workstation_class",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "write_speed_mbps",

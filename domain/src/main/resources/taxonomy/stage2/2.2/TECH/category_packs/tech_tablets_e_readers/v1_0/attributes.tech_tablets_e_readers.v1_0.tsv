@@ -1,0 +1,85 @@
+attribute_code	label_ru	data_type	role	required_policy	value_source	usage_scope	inherited_from	notes_ru
+categoryCode	Код категории	enum	T0_CORE	required	TECH.TABLETS_E_READERS	all		Стабильный public categoryCode.
+tablet_type	Тип планшета/ридера	enum	T0_CORE	required	values#tablet_type	all		Главный type-переключатель ветки.
+brand	Бренд	string|enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#brand	all	TECH.ELECTRONICS_COMMON	Бренд устройства или аксессуара.
+condition	Состояние	enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#condition	all	TECH.ELECTRONICS_COMMON	Новое/б.у./восстановленное/на запчасти.
+model_name_text	Модель текстом	string	T0_CORE	strongly_recommended	TECH.DEVICE_IDENTITY_COMMON#model_name_text	all	TECH.DEVICE_IDENTITY_COMMON	Свободный текст модели до resolution.
+screen_size_in	Диагональ экрана, дюймы	number	T0_CORE	conditional_required_for_screen_devices	TECH.SPECS_COMMON#screen_size	all	TECH.SPECS_COMMON	Для планшетов, ридеров и графических дисплеев.
+storage_capacity_gb	Объём памяти, ГБ	number	T0_CORE	strongly_recommended_for_tablets_and_e_readers	TECH.SPECS_COMMON#storage	all	TECH.SPECS_COMMON	Для обычных планшетов/ридеров; может быть N/A для stands/docks.
+connectivity	Связь / подключение	enum	T0_CORE	strongly_recommended	values#connectivity	all		Wi-Fi, Wi-Fi+Cellular, USB tethered и т.д.
+manufacturer	Производитель	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#manufacturer	all	TECH.DEVICE_IDENTITY_COMMON	Если отличается от commercial brand.
+family	Семейство	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#family	all	TECH.DEVICE_IDENTITY_COMMON	iPad, Galaxy Tab, Kindle, Kobo, Wacom Intuos и т.д.
+line	Линейка	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#line	all	TECH.DEVICE_IDENTITY_COMMON	Air/Pro/Tab S/Paperwhite/Cintiq/Kamvas и т.д.
+model	Нормализованная модель	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#model	all	TECH.DEVICE_IDENTITY_COMMON	Runtime candidate/head seed, не полный registry.
+model_aliases	Алиасы модели	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#model_aliases	all	TECH.DEVICE_IDENTITY_COMMON	Основной массив в model alias file.
+mpn	MPN / номер модели	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#mpn	all	TECH.DEVICE_IDENTITY_COMMON	Если указан производителем/продавцом.
+gtin	GTIN/EAN/UPC	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#gtin	all	TECH.DEVICE_IDENTITY_COMMON	Если есть.
+release_year	Год выпуска	integer	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#release_year	all	TECH.ELECTRONICS_COMMON	Для моделей/поколений.
+region_variant	Региональная версия	enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#region_variant	all	TECH.DEVICE_IDENTITY_COMMON	EU/US/JP/CN/Global и т.д.
+color_family	Цвет	enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#color_family	all	TECH.ELECTRONICS_COMMON	Нормализованный цвет.
+warranty	Гарантия	enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#warranty	all	TECH.ELECTRONICS_COMMON	Гарантия продавца/производителя.
+original_box	Оригинальная коробка	boolean	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#original_box	all	TECH.ELECTRONICS_COMMON	Для resale качества.
+included_accessories	Комплект	list|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#included_accessories	all	TECH.ELECTRONICS_COMMON	Кабель, зарядка, стилус, чехол и т.д.
+seller_bundle	Бандл продавца	boolean|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#seller_bundle	all	TECH.ELECTRONICS_COMMON	Если продаётся комплектом.
+os	Операционная система	enum	T1_TYPE_SPECIFIC	conditional	values#os	TABLET,KIDS_TABLET		
+ram_gb	Оперативная память, ГБ	number	T1_TYPE_SPECIFIC	conditional	TECH.SPECS_COMMON#ram	TABLET,KIDS_TABLET	TECH.SPECS_COMMON	
+chipset_text	Чип / процессор текстом	string	T1_TYPE_SPECIFIC	conditional	TECH.SPECS_COMMON#chipset	TABLET,KIDS_TABLET	TECH.SPECS_COMMON	Не угадывать по фото.
+screen_resolution	Разрешение экрана	enum|string	T1_TYPE_SPECIFIC	conditional	TECH.SPECS_COMMON#screen_resolution	TABLET,KIDS_TABLET,E_READER,GRAPHICS_TABLET	TECH.SPECS_COMMON	
+display_technology	Технология дисплея	enum	T1_TYPE_SPECIFIC	conditional	values#display_technology	E_READER,GRAPHICS_TABLET,TABLET		
+display_refresh_rate_hz	Частота экрана, Гц	number	T2_OPTIONAL_ENRICHMENT	optional	values#refresh_rate_hz	TABLET		
+laminated_display	Ламинированный экран	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	GRAPHICS_TABLET,TABLET		
+battery_capacity_mah	Ёмкость батареи, мА·ч	number	T1_TYPE_SPECIFIC	conditional	TECH.SPECS_COMMON#battery_capacity	TABLET,KIDS_TABLET	TECH.SPECS_COMMON	
+battery_health_percent	Здоровье батареи, %	number	T2_OPTIONAL_ENRICHMENT	optional	seller_disclosure	all		
+battery_life_claim	Заявленная автономность	string	T1_TYPE_SPECIFIC	conditional	seller_text	E_READER		
+cellular_generation	Поколение мобильной сети	enum	T2_OPTIONAL_ENRICHMENT	optional	values#cellular_generation	TABLET		
+sim_support	SIM/eSIM	enum	T2_OPTIONAL_ENRICHMENT	optional	values#sim_support	TABLET		
+sd_card_support	Поддержка карты памяти	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	TABLET,E_READER		
+stylus_support	Поддержка стилуса	enum|boolean	T1_TYPE_SPECIFIC	conditional	values#stylus_support	TABLET,KIDS_TABLET		
+stylus_included	Стилус в комплекте	boolean	T1_TYPE_SPECIFIC	conditional	boolean	TABLET,GRAPHICS_TABLET		
+keyboard_support	Поддержка клавиатуры	enum|boolean	T1_TYPE_SPECIFIC	conditional	values#keyboard_support	TABLET		
+keyboard_included	Клавиатура в комплекте	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	TABLET		
+charger_included	Зарядка в комплекте	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	all		
+case_included	Чехол/защита в комплекте	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	TABLET,KIDS_TABLET		
+camera_summary	Камеры	string	T2_OPTIONAL_ENRICHMENT	optional	extracted_text	TABLET		
+speaker_summary	Динамики	string	T2_OPTIONAL_ENRICHMENT	optional	extracted_text	TABLET		
+microphone_summary	Микрофоны	string	T2_OPTIONAL_ENRICHMENT	optional	extracted_text	TABLET		
+biometric_unlock	Биометрия	enum	T2_OPTIONAL_ENRICHMENT	optional	values#biometric_unlock	TABLET		
+water_resistance	Влагозащита	enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.SPECS_COMMON#water_resistance	E_READER,TABLET	TECH.SPECS_COMMON	
+weight_g	Вес, г	number	T2_OPTIONAL_ENRICHMENT	optional	TECH.SPECS_COMMON#weight	all	TECH.SPECS_COMMON	
+dimensions_text	Размеры текстом	string	T2_OPTIONAL_ENRICHMENT	optional	TECH.SPECS_COMMON#dimensions	all	TECH.SPECS_COMMON	
+parental_controls	Родительский контроль	boolean	T1_TYPE_SPECIFIC	conditional	boolean	KIDS_TABLET		
+rugged_case_included	Ударопрочный чехол в комплекте	boolean	T1_TYPE_SPECIFIC	conditional	boolean	KIDS_TABLET		
+age_recommendation	Возрастная рекомендация	enum|string	T1_TYPE_SPECIFIC	conditional	values#age_recommendation	KIDS_TABLET		
+frontlight	Подсветка	boolean	T1_TYPE_SPECIFIC	conditional	boolean	E_READER		
+color_eink	Цветной E Ink	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	E_READER		
+audiobook_support	Поддержка аудиокниг	boolean	T1_TYPE_SPECIFIC	conditional	boolean	E_READER		
+ad_supported	Версия с рекламой	boolean	T1_TYPE_SPECIFIC	optional	boolean	E_READER		
+active_area	Рабочая область	string	T1_TYPE_SPECIFIC	conditional	values#active_area	GRAPHICS_TABLET		
+display_present	Есть встроенный дисплей	boolean	T1_TYPE_SPECIFIC	conditional	boolean	GRAPHICS_TABLET		
+pressure_levels	Уровни нажатия	enum|integer	T1_TYPE_SPECIFIC	conditional	values#pressure_levels	GRAPHICS_TABLET		
+pen_technology	Технология пера	enum	T1_TYPE_SPECIFIC	conditional	values#pen_technology	GRAPHICS_TABLET		
+connection_type	Тип подключения	enum	T1_TYPE_SPECIFIC	conditional	values#connection_type	GRAPHICS_TABLET,TABLET_DOCK		
+compatibility_os	Совместимые ОС	list|enum	T1_TYPE_SPECIFIC	conditional	values#compatibility_os	GRAPHICS_TABLET		
+express_keys	Горячие клавиши	integer|boolean	T2_OPTIONAL_ENRICHMENT	optional	number|boolean	GRAPHICS_TABLET		
+tilt_support	Поддержка наклона пера	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	GRAPHICS_TABLET		
+dock_type	Тип док-станции	enum	T1_TYPE_SPECIFIC	conditional	values#dock_type	TABLET_DOCK		
+stand_type	Тип подставки	enum	T1_TYPE_SPECIFIC	conditional	values#stand_type	TABLET_STAND		
+compatible_brand	Совместимый бренд	string|enum	T1_TYPE_SPECIFIC	conditional_for_accessory_types	TECH.COMPATIBILITY_COMMON#compatible_brand	TABLET_DOCK,TABLET_STAND	TECH.COMPATIBILITY_COMMON	
+compatible_model_text	Совместимая модель текстом	string	T1_TYPE_SPECIFIC	conditional_for_accessory_types	TECH.COMPATIBILITY_COMMON#compatible_model_text	TABLET_DOCK,TABLET_STAND	TECH.COMPATIBILITY_COMMON	
+compatible_model	Нормализованная совместимая модель	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.COMPATIBILITY_COMMON#compatible_model	TABLET_DOCK,TABLET_STAND	TECH.COMPATIBILITY_COMMON	
+compatibility_confidence	Уверенность совместимости	number	T3_SYSTEM_HIDDEN	system	TECH.COMPATIBILITY_COMMON#compatibility_confidence	TABLET_DOCK,TABLET_STAND	TECH.COMPATIBILITY_COMMON	
+connector_type	Разъём	enum	T1_TYPE_SPECIFIC	conditional	TECH.SPECS_COMMON#connector_type	TABLET,TABLET_DOCK	TECH.SPECS_COMMON	
+power_delivery_w	Power Delivery, Вт	number	T1_TYPE_SPECIFIC	optional	values#power_delivery_w	TABLET_DOCK		
+port_summary	Порты	string	T1_TYPE_SPECIFIC	optional	extracted_text	TABLET_DOCK		
+compatible_screen_size_range	Диапазон диагоналей	enum|string	T1_TYPE_SPECIFIC	conditional	values#screen_size_range	TABLET_STAND		
+material	Материал	enum|string	T1_TYPE_SPECIFIC	optional	values#material	TABLET_STAND		
+foldable	Складная конструкция	boolean	T1_TYPE_SPECIFIC	optional	boolean	TABLET_STAND		
+adjustable_angle	Регулировка угла	boolean	T1_TYPE_SPECIFIC	optional	boolean	TABLET_STAND		
+magnetic_mount	Магнитное крепление	boolean	T1_TYPE_SPECIFIC	optional	boolean	TABLET_STAND,TABLET_DOCK		
+repair_history	История ремонта	enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#repair_history	all	TECH.ELECTRONICS_COMMON	
+identity_confidence	Уверенность identity	number|string	T3_SYSTEM_HIDDEN	system	runtime_generated	all		Служебное поле, не показывать в UI.
+specs_confidence	Уверенность specs	number|string	T3_SYSTEM_HIDDEN	system	runtime_generated	all		Служебное поле, не показывать в UI.
+route_confidence	Уверенность маршрута	number|string	T3_SYSTEM_HIDDEN	system	runtime_generated	all		Служебное поле, не показывать в UI.
+source_trace_id	Trace ID источника	number|string	T3_SYSTEM_HIDDEN	system	runtime_generated	all		Служебное поле, не показывать в UI.
+extraction_evidence	Доказательства извлечения	number|string	T3_SYSTEM_HIDDEN	system	runtime_generated	all		Служебное поле, не показывать в UI.
+normalization_notes	Заметки нормализации	number|string	T3_SYSTEM_HIDDEN	system	runtime_generated	all		Служебное поле, не показывать в UI.

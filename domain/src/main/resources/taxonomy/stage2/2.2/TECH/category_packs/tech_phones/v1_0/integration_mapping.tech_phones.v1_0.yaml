@@ -1,0 +1,72 @@
+mapping_id: integration_mapping.tech_phones.v1_0
+categoryCode: TECH.PHONES
+input_sources:
+  marketplace_feed: structured fields + title + images
+  local_offer: photo + seller title + guided chips
+  url_import: source page structured data + OCR fallback
+  vision: coarse class only, no model guess
+field_mapping:
+  title:
+  - brand
+  - model_name_text
+  - storage_capacity_gb
+  - network_lock_status
+  - condition
+  description:
+  - battery_health_percent
+  - repair_history
+  - account_lock_status
+  - included_accessories
+  structured_specs:
+  - ram_gb
+  - screen_size_inches
+  - mobile_network_generation
+  - sim_configuration
+  - charging_connector
+  image_ocr:
+  - model_number
+  - storage_capacity_gb
+  - color_family
+  barcode:
+  - gtin
+  - model
+publish_preflight:
+  required:
+  - categoryCode
+  - phone_type
+  - brand
+  - model_name_text
+  - condition
+  - price
+  - currency
+  - availability
+  - images
+  blockers:
+  - field: account_lock_status
+    in:
+    - ICLOUD_LOCKED
+    - GOOGLE_FRP_LOCKED
+    - OWNER_ACCOUNT_LOCKED
+    reason: device_account_locked
+  - field: imei_status
+    in:
+    - BLACKLISTED
+    - REPORTED_STOLEN
+    - FINANCE_LOCKED
+    reason: device_reported_or_finance_locked
+  - field: title
+    contains_any:
+    - украден
+    - stolen
+    - lost phone
+    reason: unsafe_or_illegal_listing_signal
+runtime_candidate_policy:
+  new_model_candidate_requires:
+  - brand
+  - model_name_text
+  - source_url_or_title_evidence
+  - identity_confidence>=0.72
+  auto_promote_requires:
+  - seen_count>=25
+  - manual_review_passed
+  - alias_collision_gate_green

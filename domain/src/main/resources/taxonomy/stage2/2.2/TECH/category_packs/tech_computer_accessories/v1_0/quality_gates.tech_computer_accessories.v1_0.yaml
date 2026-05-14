@@ -1,0 +1,30 @@
+# quality_gates.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+  - CompatibilityGate
+  - IdentityCandidateGate
+  - AccessoryRouteBoundaryGate
+static_thresholds:
+  min_sample_offers: 80
+  min_golden_queries: 80
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_hidden_ui_leaks_allowed: 0
+  presets_collections_allowed: false
+  new_microcategory_codes_allowed: false
+runtime_smoke_expectations:
+  - "клавиатура logitech mx keys -> TECH.COMPUTER_ACCESSORIES / KEYBOARD"
+  - "мышь mx master 3s -> TECH.COMPUTER_ACCESSORIES / MOUSE"
+  - "usb c hub hdmi -> TECH.COMPUTER_ACCESSORIES / USB_HUB"
+  - "кронштейн для монитора -> TECH.COMPUTER_ACCESSORIES / MONITOR_ARM"
+  - "ноутбук lenovo -> TECH.COMPUTERS"
+  - "монитор 27 -> TECH.MONITORS_DISPLAYS"
+  - "сумка для ноутбука -> FASH.BAGS"

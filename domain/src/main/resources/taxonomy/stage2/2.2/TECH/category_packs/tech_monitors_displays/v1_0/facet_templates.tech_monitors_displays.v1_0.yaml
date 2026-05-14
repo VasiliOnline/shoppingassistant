@@ -1,0 +1,57 @@
+version: 1.0
+categoryCode: TECH.MONITORS_DISPLAYS
+primary_facets:
+  - display_type
+  - screen_size_in
+  - resolution_class
+  - refresh_rate_hz
+  - brand
+  - condition
+  - price
+secondary_facets:
+  - panel_technology
+  - aspect_ratio
+  - curved
+  - ultrawide
+  - hdr_support
+  - adaptive_sync
+  - connector_input_primary
+  - usb_c_power_delivery_w
+  - vesa_mount
+  - height_adjustable
+  - touchscreen
+  - smart_os
+  - warranty_status
+type_specific_facets:
+  GAMING_MONITOR:
+    - refresh_rate_hz
+    - response_time_ms
+    - adaptive_sync
+    - panel_technology
+    - curved
+  PROFESSIONAL_MONITOR:
+    - color_gamut
+    - factory_calibrated
+    - resolution_class
+    - panel_technology
+    - usb_c_power_delivery_w
+  PORTABLE_MONITOR:
+    - screen_size_in
+    - portable_power_mode
+    - connector_input_primary
+    - weight_g
+  SMART_MONITOR:
+    - smart_os
+    - built_in_speakers
+    - remote_control_included
+  TOUCHSCREEN_MONITOR:
+    - touchscreen
+    - touch_points
+    - touch_interface
+  MONITOR_ACCESSORY:
+    - monitor_accessory_type
+    - compatible_display_size_range
+rules:
+  show_facet_if_distinct_values_at_least: 2
+  hide_zero_count_values: true
+  do_not_index_facet_combinations_in_base_pack: true

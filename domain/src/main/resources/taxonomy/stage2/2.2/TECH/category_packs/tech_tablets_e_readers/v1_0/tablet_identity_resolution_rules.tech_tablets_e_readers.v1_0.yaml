@@ -1,0 +1,17 @@
+ruleset_id: tablet_identity_resolution_rules.tech_tablets_e_readers.v1_0
+categoryCode: TECH.TABLETS_E_READERS
+identity_keys_priority:
+- gtin
+- mpn + brand
+- brand + normalized_model + storage_capacity_gb + connectivity
+- brand + family + model_name_text
+- title_text + visual_evidence + seller_specs
+confidence_thresholds:
+  auto_resolve: 0.86
+  needs_review: 0.62
+  text_only_candidate: 0.48
+policy:
+- model_head_seed is head-only, not a complete model registry
+- unknown models can enter via runtime_candidates/live_values
+- do not create categoryCode for brand/family/model
+- exact generation for iPad/Galaxy Tab/Kindle requires textual or identifier evidence

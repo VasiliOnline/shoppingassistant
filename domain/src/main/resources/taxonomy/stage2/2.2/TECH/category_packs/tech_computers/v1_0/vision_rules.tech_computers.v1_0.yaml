@@ -1,0 +1,39 @@
+ruleset_id: vision_rules.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+principle: No brand/model/spec guessing from image alone. Use image only for coarse type and visible evidence.
+allowed_from_image_only:
+- 'computer_type coarse: laptop/desktop/all-in-one/mini-pc'
+- color_family
+- visible condition hints
+- presence of built-in screen
+- visible keyboard layout only if legible
+requires_text_or_metadata_evidence:
+- brand
+- family
+- model
+- cpu_model_text
+- gpu_model_text
+- ram_gb
+- storage_capacity_gb
+- screen_resolution
+- battery_health_percent
+- release_year
+- mpn
+- gtin
+ocr_targets:
+- bottom label
+- screen About page
+- box label
+- invoice/spec sticker
+- keyboard layout
+- port markings
+do_not_infer:
+- MacBook generation by body alone
+- GPU model from gaming design
+- RAM/storage from exterior
+- battery health from appearance
+- workstation certification from chassis
+fallback_behavior:
+  model_unknown: store model_name_text if extracted else UNKNOWN_MODEL_TEXT
+  spec_unknown: leave null and lower listing_completeness_confidence
+  ambiguous_tablet_vs_2in1: route to review if keyboard/detachable context unclear

@@ -1,0 +1,29 @@
+{
+  "pack": "TECH_PHONES_model_data_hardening_pack_v1_1_RU",
+  "created_at_utc": "2026-05-14T10:10:12+00:00",
+  "status": "STATIC_SELF_CHECK_PASS",
+  "scope": "minimal runtime model-data hardening for TECH.PHONES",
+  "not_prod_runtime_executed": true,
+  "summary": {
+    "brand_family_head_seed_rows": 46,
+    "model_head_seed_delta_rows": 121,
+    "model_aliases_delta_rows": 1128,
+    "model_variant_minimal_matrix_rows": 121,
+    "model_search_priority_seed_rows": 121,
+    "golden_queries": 313,
+    "sample_offers": 126
+  },
+  "hardening_policy": "one compact overlay package; no presets/collections; no additional public category; no full registry attempt",
+  "required_external_validators_after_import": [
+    "ModelSeedUniqueKeyGate",
+    "AliasResolutionSmokeGate",
+    "NoPresetCollectionLeakGate",
+    "NoNewCategoryCodeGate",
+    "SampleOffersIdentitySmokeGate"
+  ],
+  "known_limitations": [
+    "Seed covers head/popular models only, not a complete global phone catalog.",
+    "Variant matrix is soft_suggest_only and must not reject offers by itself.",
+    "Market priority is a search-suggestion weight, not merchandising collection logic."
+  ]
+}

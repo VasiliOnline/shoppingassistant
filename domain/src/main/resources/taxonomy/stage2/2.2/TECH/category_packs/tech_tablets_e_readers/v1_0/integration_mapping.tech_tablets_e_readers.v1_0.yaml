@@ -1,0 +1,37 @@
+mapping_id: integration_mapping.tech_tablets_e_readers.v1_0
+categoryCode: TECH.TABLETS_E_READERS
+mount:
+  registry: public_category_registry
+  depends_on:
+  - TECH.ELECTRONICS_COMMON
+  - TECH.DEVICE_IDENTITY_COMMON
+  - TECH.SPECS_COMMON
+  optional_relation:
+  - TECH.COMPATIBILITY_COMMON
+input_bindings:
+  title: title
+  description: description
+  photos: images
+  seller_specs: attributes
+  price: price
+  currency: currency
+  availability: availability
+publish_blockers:
+- missing_categoryCode
+- missing_tablet_type
+- missing_brand
+- missing_condition
+- missing_price
+- missing_currency
+- missing_availability
+soft_warnings:
+- missing_model_name_text
+- missing_screen_size_for_device_types
+- missing_storage_for_tablets_e_readers
+- missing_compatibility_for_tablet_dock_or_stand
+runtime_candidate_sources:
+- model_head_seed
+- model_aliases
+- extracted_title_tokens
+- seller_specs
+- live_values

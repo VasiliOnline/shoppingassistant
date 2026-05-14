@@ -1,0 +1,122 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_tablets_e_readers.v1_0",
+  "categoryCode": "TECH.TABLETS_E_READERS",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "optional_relation_layers": [
+    "TECH.COMPATIBILITY_COMMON for TABLET_DOCK and TABLET_STAND"
+  ],
+  "main_type_attribute": "tablet_type",
+  "allowed_tablet_type_values": [
+    "TABLET",
+    "KIDS_TABLET",
+    "E_READER",
+    "GRAPHICS_TABLET",
+    "TABLET_DOCK",
+    "TABLET_STAND"
+  ],
+  "t0_core": [
+    "categoryCode",
+    "tablet_type",
+    "brand",
+    "condition",
+    "model_name_text",
+    "screen_size_in",
+    "storage_capacity_gb",
+    "connectivity"
+  ],
+  "t1_by_type": {
+    "TABLET": [
+      "os",
+      "ram_gb",
+      "chipset_text",
+      "screen_resolution",
+      "stylus_support",
+      "keyboard_support",
+      "battery_capacity_mah"
+    ],
+    "KIDS_TABLET": [
+      "os",
+      "parental_controls",
+      "rugged_case_included",
+      "age_recommendation",
+      "screen_size_in",
+      "storage_capacity_gb"
+    ],
+    "E_READER": [
+      "display_technology",
+      "frontlight",
+      "water_resistance",
+      "audiobook_support",
+      "ad_supported",
+      "battery_life_claim"
+    ],
+    "GRAPHICS_TABLET": [
+      "active_area",
+      "display_present",
+      "pressure_levels",
+      "stylus_included",
+      "pen_technology",
+      "connection_type",
+      "compatibility_os"
+    ],
+    "TABLET_DOCK": [
+      "dock_type",
+      "compatible_brand",
+      "compatible_model_text",
+      "connector_type",
+      "power_delivery_w",
+      "port_summary"
+    ],
+    "TABLET_STAND": [
+      "stand_type",
+      "compatible_screen_size_range",
+      "material",
+      "foldable",
+      "adjustable_angle",
+      "magnetic_mount"
+    ]
+  },
+  "initial_fields": [
+    "tablet_type",
+    "brand",
+    "model_name_text",
+    "condition",
+    "screen_size_in",
+    "storage_capacity_gb",
+    "connectivity",
+    "color_family"
+  ],
+  "primary_facets": [
+    "tablet_type",
+    "brand",
+    "condition",
+    "screen_size_in",
+    "storage_capacity_gb",
+    "connectivity",
+    "price"
+  ],
+  "hidden_system_fields": [
+    "identity_confidence",
+    "specs_confidence",
+    "compatibility_confidence",
+    "route_confidence",
+    "source_trace_id",
+    "extraction_evidence",
+    "normalization_notes"
+  ],
+  "blocked_cross_route_targets": [
+    "TECH.PHONES",
+    "TECH.COMPUTERS",
+    "TECH.MONITORS_DISPLAYS",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.PHONE_ACCESSORIES",
+    "KIDS.TOYS_OR_OTHER",
+    "BOOKS_OR_MEDIA"
+  ],
+  "no_presets_or_collections": true,
+  "validation_notes": "Expected snapshot for static package; actual snapshot must be compared after runtime mount."
+}

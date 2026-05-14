@@ -64,6 +64,28 @@ class ResultsProductPresentationTest {
     }
 
     @Test
+    fun buildSortOptions_uses_release_date_as_model_freshness_signal() {
+        val items = listOf(
+            explainedItem(
+                id = "1",
+                attributes = mapOf("release_date" to TypedAttributeValue.Text("2026-09-20")),
+            ),
+            explainedItem(
+                id = "2",
+                attributes = mapOf("release_date" to TypedAttributeValue.Text("2025-09-19")),
+            ),
+        )
+
+        val sortOption = buildSortOptions(
+            items = items,
+            location = null,
+            categoryCode = "TECH.PHONES",
+        ).first { it.sort == OfferSort.MODEL_FRESHNESS_DESC }
+
+        assertTrue(sortOption.enabled)
+    }
+
+    @Test
     fun buildResultsProductBadges_prioritizes_new_and_esim_for_phones() {
         val badges = buildResultsProductBadges(
             dto = productDto(

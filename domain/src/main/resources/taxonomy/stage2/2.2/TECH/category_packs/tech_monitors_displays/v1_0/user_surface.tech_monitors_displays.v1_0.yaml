@@ -1,0 +1,38 @@
+version: 1.0
+categoryCode: TECH.MONITORS_DISPLAYS
+initial_fields:
+  - display_type
+  - brand
+  - condition
+  - screen_size_in
+  - resolution_class
+  - refresh_rate_hz
+  - panel_technology
+  - connector_input_primary
+expanded_fields:
+  - aspect_ratio
+  - curved
+  - ultrawide
+  - hdr_support
+  - adaptive_sync
+  - response_time_ms
+  - brightness_nits
+  - vesa_mount
+  - height_adjustable
+  - usb_c_power_delivery_w
+  - smart_os
+  - touchscreen
+  - monitor_accessory_type
+  - dead_pixel_status
+  - backlight_uniformity_status
+hidden_fields:
+  - listing_completeness_confidence
+  - spec_confidence
+  - route_confidence
+  - vision_evidence_level
+  - dedup_fingerprint
+  - seller_claims_raw
+limits:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_system_hidden_visible_in_ui: false

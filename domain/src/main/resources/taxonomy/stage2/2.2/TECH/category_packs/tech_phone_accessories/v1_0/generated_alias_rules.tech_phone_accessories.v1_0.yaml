@@ -1,0 +1,39 @@
+category_code: TECH.PHONE_ACCESSORIES
+rules:
+- id: phone_model_fit_phrase
+  pattern_ru: (для|на|под) <phone_model_or_family>
+  emit:
+  - compatible_model_text
+  - compatible_brand if resolvable
+  requires: accessory type term
+- id: case_for_model
+  pattern_ru: чехол (для|на) <phone_model>
+  emit:
+    phone_accessory_type: CASE
+    compatibility_mode: MODEL_SPECIFIC
+- id: glass_for_model
+  pattern_ru: (стекло|пленка|плёнка) (для|на) <phone_model>
+  emit:
+    phone_accessory_type: SCREEN_PROTECTOR
+    compatibility_mode: MODEL_SPECIFIC
+- id: cable_connector_pair
+  pattern_ru: кабель <connector_a> (to|на|-) <connector_b>
+  emit:
+  - connector_type
+  - connector_type_2
+  - phone_accessory_type=CABLE
+- id: wattage_extraction
+  pattern: <number> w|<number> вт|<number>w
+  emit: max_output_power_w or max_power_w by type
+- id: capacity_extraction
+  pattern: <number> mah|<number> мач|<number> мАч
+  emit: capacity_mah for POWER_BANK
+- id: magsafe_terms
+  pattern: magsafe|магсейф|магнитный для iphone
+  emit:
+  - magsafe_compatible=true
+  - phone_accessory_type by nearest noun
+blocked_generation:
+- reason: Do not generate TECH.IPHONE_CASES or brand/model categoryCode; emit compatibility fields instead.
+- reason: Do not infer exact compatible_model from image cutout only.
+- reason: Do not treat generic USB-C/HDMI cable as phone accessory unless phone/mobile context exists.

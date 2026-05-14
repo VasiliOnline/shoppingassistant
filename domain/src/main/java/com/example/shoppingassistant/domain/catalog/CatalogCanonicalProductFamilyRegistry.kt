@@ -324,7 +324,23 @@ private fun mergeFamilies(
             )
         }
     }
-    return normalizeFamilies(merged.values.toList())
+    val mergedByFamilyIdentity = LinkedHashMap<String, CatalogCanonicalProductFamilyEntry>()
+    normalizeFamilies(merged.values.toList()).forEach { family ->
+        val identityKey = family.defaultCategoryCode +
+            "|" + Stage21QueryTextNormalizer.normalize(family.familyCanonical)
+        val existing = mergedByFamilyIdentity[identityKey]
+        mergedByFamilyIdentity[identityKey] = if (existing == null) {
+            family
+        } else {
+            existing.copy(
+                brandAliases = (existing.brandAliases + family.brandAliases).distinct(),
+                familyAliases = (existing.familyAliases + family.familyAliases).distinct(),
+                variantTokens = (existing.variantTokens + family.variantTokens).distinct(),
+                accessoryBlockers = (existing.accessoryBlockers + family.accessoryBlockers).distinct(),
+            )
+        }
+    }
+    return normalizeFamilies(mergedByFamilyIdentity.values.toList())
 }
 
 private fun normalizeFamilies(

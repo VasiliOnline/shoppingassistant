@@ -1,0 +1,75 @@
+attribute_code	label_ru	data_type	role	required_policy	value_source	usage_scope	inherited_from	notes_ru
+categoryCode	Код категории	enum	T0_CORE	required	TECH.COMPUTERS	all		Стабильный public categoryCode.
+computer_type	Тип компьютера	enum	T0_CORE	required	values#computer_type	all		Главный type-переключатель ветки.
+brand	Бренд	string|enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#brand	all	TECH.ELECTRONICS_COMMON	Бренд устройства.
+condition	Состояние	enum	T0_CORE	required	TECH.ELECTRONICS_COMMON#condition	all	TECH.ELECTRONICS_COMMON	Новое/б.у./восстановленное/на запчасти.
+model_name_text	Модель текстом	string	T0_CORE	strongly_recommended	TECH.DEVICE_IDENTITY_COMMON#model_name_text	all	TECH.DEVICE_IDENTITY_COMMON	Свободный текст модели до resolution.
+ram_gb	Оперативная память, ГБ	number	T0_CORE	strongly_recommended	TECH.SPECS_COMMON#ram	all	TECH.SPECS_COMMON	Нормализовать GB/ГБ.
+storage_capacity_gb	Объём накопителя, ГБ	number	T0_CORE	strongly_recommended	TECH.SPECS_COMMON#storage	all	TECH.SPECS_COMMON	Суммарный основной storage; multi-drive можно уточнять в notes.
+cpu_model_text	Процессор текстом	string	T0_CORE	strongly_recommended	extracted_text + runtime_candidates	all	TECH.SPECS_COMMON	Не угадывать по фото; извлекать из текста/маркировки/spec source.
+manufacturer	Производитель	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#manufacturer	all	TECH.DEVICE_IDENTITY_COMMON	Если отличается от brand.
+family	Семейство	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#family	all	TECH.DEVICE_IDENTITY_COMMON	MacBook, ThinkPad, XPS, ROG, Surface и т.д.
+line	Линейка	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#line	all	TECH.DEVICE_IDENTITY_COMMON	Pro/Air/Legion/Latitude/EliteBook и т.д.
+model	Нормализованная модель	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#model	all	TECH.DEVICE_IDENTITY_COMMON	Runtime candidate/reference, не полный registry.
+model_aliases	Алиасы модели	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#model_aliases	all	TECH.DEVICE_IDENTITY_COMMON	В основном в отдельном alias file.
+mpn	MPN / номер модели производителя	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#mpn	all	TECH.DEVICE_IDENTITY_COMMON	Например Axxxx, 20xx, SKU-подобный код.
+gtin	GTIN/EAN/UPC	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#gtin	all	TECH.DEVICE_IDENTITY_COMMON	Если есть.
+release_year	Год выпуска	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#release_year	all	TECH.DEVICE_IDENTITY_COMMON	Только если известен.
+region_variant	Региональная версия	string|enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.DEVICE_IDENTITY_COMMON#region_variant	all	TECH.DEVICE_IDENTITY_COMMON	US/EU/CN/JP/Global/Keyboard region и т.д.
+screen_size_in	Диагональ экрана, дюймы	number	T1_TYPE_SPECIFIC	required_when_portable_or_aio	range: 7..40	portable|ALL_IN_ONE	TECH.SPECS_COMMON	Для мониторов отдельно TECH.MONITORS_DISPLAYS; здесь экран встроенный.
+screen_resolution	Разрешение экрана	enum|string	T1_TYPE_SPECIFIC	recommended_when_has_builtin_screen	values#screen_resolution	portable|ALL_IN_ONE	TECH.SPECS_COMMON	Full HD/QHD/UHD/Retina-like text.
+display_panel_type	Тип матрицы	enum	T2_OPTIONAL_ENRICHMENT	optional	values#display_panel_type	portable|ALL_IN_ONE	TECH.SPECS_COMMON	IPS/OLED/miniLED/TN/VA.
+refresh_rate_hz	Частота обновления, Гц	number	T1_TYPE_SPECIFIC	recommended_for_gaming_laptop	values#refresh_rate_hz	portable|ALL_IN_ONE	TECH.SPECS_COMMON	Особенно для gaming laptop.
+touchscreen	Сенсорный экран	boolean	T1_TYPE_SPECIFIC	recommended_for_2in1_chromebook_aio	boolean	portable|ALL_IN_ONE	TECH.SPECS_COMMON	
+convertible_mode	Режим трансформера	enum	T1_TYPE_SPECIFIC	required_when_two_in_one	values#convertible_mode	TWO_IN_ONE_LAPTOP		360 hinge/detachable/tablet mode.
+stylus_included	Стилус в комплекте	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	TWO_IN_ONE_LAPTOP		Не путать со stylus как аксессуаром.
+os	Операционная система	enum|string	T1_TYPE_SPECIFIC	recommended	values#os	all	TECH.SPECS_COMMON	Windows/macOS/ChromeOS/Linux/no OS.
+os_version_text	Версия ОС текстом	string	T2_OPTIONAL_ENRICHMENT	optional	free_text	all	TECH.SPECS_COMMON	
+cpu_brand	Бренд CPU	enum	T1_TYPE_SPECIFIC	recommended	values#cpu_brand	all	TECH.SPECS_COMMON	Intel/AMD/Apple/Qualcomm/ARM и т.д.
+cpu_family	Семейство CPU	enum|string	T1_TYPE_SPECIFIC	recommended	values#cpu_family	all	TECH.SPECS_COMMON	Core/Ryzen/M/EPYC/Xeon и т.д.
+cpu_generation	Поколение CPU	string	T2_OPTIONAL_ENRICHMENT	optional	free_text_normalized	all	TECH.SPECS_COMMON	
+cpu_cores	Ядра CPU	integer	T2_OPTIONAL_ENRICHMENT	optional	positive_int	all	TECH.SPECS_COMMON	
+gpu_type	Тип графики	enum	T1_TYPE_SPECIFIC	recommended	values#gpu_type	all	TECH.SPECS_COMMON	Integrated/dedicated/hybrid/none.
+gpu_brand	Бренд GPU	enum	T2_OPTIONAL_ENRICHMENT	optional	values#gpu_brand	all	TECH.SPECS_COMMON	NVIDIA/AMD/Intel/Apple.
+gpu_model_text	Модель GPU текстом	string	T1_TYPE_SPECIFIC	recommended_for_gaming_workstation	extracted_text	GAMING_LAPTOP|DESKTOP_PC|WORKSTATION	TECH.SPECS_COMMON	Не угадывать по корпусу/серии.
+graphics_memory_gb	Видеопамять, ГБ	number	T1_TYPE_SPECIFIC	recommended_for_dedicated_gpu	range_gb	GAMING_LAPTOP|DESKTOP_PC|WORKSTATION	TECH.SPECS_COMMON	
+storage_type	Тип накопителя	enum	T1_TYPE_SPECIFIC	recommended	values#storage_type	all	TECH.SPECS_COMMON	SSD/HDD/eMMC/NVMe/mixed.
+secondary_storage_capacity_gb	Доп. накопитель, ГБ	number	T2_OPTIONAL_ENRICHMENT	optional	range_gb	DESKTOP_PC|WORKSTATION|LAPTOP	TECH.SPECS_COMMON	Если явно указан второй диск.
+battery_health_percent	Здоровье батареи, %	number	T1_TYPE_SPECIFIC	recommended_for_used_portable	range:0..100	portable	TECH.ELECTRONICS_COMMON	Для б/у ноутбуков; не угадывать.
+battery_cycle_count	Циклы батареи	integer	T2_OPTIONAL_ENRICHMENT	optional	positive_int	portable	TECH.ELECTRONICS_COMMON	Если есть в описании/скриншоте.
+charger_included	Зарядное устройство в комплекте	boolean	T1_TYPE_SPECIFIC	recommended_for_portable	boolean	portable	TECH.ELECTRONICS_COMMON	
+keyboard_layout	Раскладка клавиатуры	enum|string	T1_TYPE_SPECIFIC	recommended_for_laptop	values#keyboard_layout	portable	TECH.ELECTRONICS_COMMON	RU/US/UK/DE/CH/FR и т.д.
+desktop_form_factor	Форм-фактор desktop	enum	T1_TYPE_SPECIFIC	required_when_desktop	values#desktop_form_factor	DESKTOP_PC|MINI_PC|WORKSTATION|THIN_CLIENT		Tower/SFF/mini/micro/rack/workstation tower.
+prebuilt_or_custom	Сборка	enum	T1_TYPE_SPECIFIC	recommended_for_desktop	values#prebuilt_or_custom	DESKTOP_PC|WORKSTATION		prebuilt/custom/barebone.
+psu_wattage	Мощность БП, Вт	number	T2_OPTIONAL_ENRICHMENT	optional	range_watt	DESKTOP_PC|WORKSTATION	TECH.SPECS_COMMON	Не путать с зарядкой ноутбука.
+motherboard_form_factor	Форм-фактор материнской платы	enum	T2_OPTIONAL_ENRICHMENT	optional	values#motherboard_form_factor	DESKTOP_PC|WORKSTATION	TECH.SPECS_COMMON	Не выводить как главный facet.
+vesa_mount_support	Поддержка VESA	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	MINI_PC|ALL_IN_ONE		
+port_summary	Порты кратко	string	T2_OPTIONAL_ENRICHMENT	optional	free_text_normalized	all	TECH.SPECS_COMMON	UI summary; подробные ports могут жить в specs common.
+ports	Порты	multi_enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.SPECS_COMMON#connector_type	all	TECH.SPECS_COMMON	
+wireless_standard	Беспроводные стандарты	multi_enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.SPECS_COMMON#wireless_standard	all	TECH.SPECS_COMMON	Wi-Fi/Bluetooth.
+webcam_present	Веб-камера	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	portable|ALL_IN_ONE	TECH.SPECS_COMMON	
+optical_drive	Оптический привод	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	all	TECH.SPECS_COMMON	Для старых устройств.
+weight_kg	Вес, кг	number	T2_OPTIONAL_ENRICHMENT	optional	range_kg	portable	TECH.SPECS_COMMON	
+dimensions_text	Габариты текстом	string	T2_OPTIONAL_ENRICHMENT	optional	free_text	all	TECH.SPECS_COMMON	
+thermal_profile	Тепловой/игровой профиль	enum	T2_OPTIONAL_ENRICHMENT	optional	values#thermal_profile	GAMING_LAPTOP|WORKSTATION|DESKTOP_PC		Маркетинговый/обобщённый field, не строгий.
+workstation_class	Класс рабочей станции	enum	T1_TYPE_SPECIFIC	recommended_for_workstation	values#workstation_class	WORKSTATION		mobile/desktop/professional workstation.
+ecc_memory_support	ECC память	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	WORKSTATION	TECH.SPECS_COMMON	
+certified_workstation_claim	Сертификация workstation	string	T2_OPTIONAL_ENRICHMENT	optional	free_text_claim	WORKSTATION		ISV/certification claim, не валидировать жёстко.
+business_grade	Бизнес-класс	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	LAPTOP|ULTRABOOK|DESKTOP_PC|MINI_PC|WORKSTATION		Для корпоративных серий: ThinkPad/Latitude/EliteBook/ProBook и т.д.
+gaming_grade	Игровой класс	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	GAMING_LAPTOP|DESKTOP_PC		По типу или явному gaming claim.
+chromeos_support_status	Поддержка ChromeOS	enum|string	T1_TYPE_SPECIFIC	recommended_for_chromebook	values#chromeos_support_status	CHROMEBOOK		AUE можно хранить текстом, если известно.
+thin_client_os	ОС тонкого клиента	enum|string	T1_TYPE_SPECIFIC	recommended_for_thin_client	values#thin_client_os	THIN_CLIENT		
+enterprise_management_support	Корпоративное управление	boolean|string	T2_OPTIONAL_ENRICHMENT	optional	claim_text	THIN_CLIENT|WORKSTATION|LAPTOP		
+color_family	Цвет	enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#color_family	all	TECH.ELECTRONICS_COMMON	
+warranty	Гарантия	enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#warranty	all	TECH.ELECTRONICS_COMMON	
+repair_history	История ремонта	enum|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#repair_history	all	TECH.ELECTRONICS_COMMON	
+original_box	Оригинальная коробка	boolean	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#original_box	all	TECH.ELECTRONICS_COMMON	
+included_accessories	Комплект	string|multi_enum	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#included_accessories	all	TECH.ELECTRONICS_COMMON	
+seller_bundle	Бандл продавца	boolean|string	T2_OPTIONAL_ENRICHMENT	optional	TECH.ELECTRONICS_COMMON#seller_bundle	all	TECH.ELECTRONICS_COMMON	
+identity_confidence	Уверенность identity	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+identity_resolution_status	Статус identity resolution	system	T3_SYSTEM_HIDDEN	computed	values#identity_resolution_status	all		Не выводить в UI.
+specs_confidence	Уверенность specs extraction	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+route_confidence	Уверенность маршрута	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+extraction_evidence	Доказательства извлечения	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+source_trace_id	ID источника	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.
+normalization_notes	Заметки нормализации	system	T3_SYSTEM_HIDDEN	computed	system	all		Не выводить в UI.

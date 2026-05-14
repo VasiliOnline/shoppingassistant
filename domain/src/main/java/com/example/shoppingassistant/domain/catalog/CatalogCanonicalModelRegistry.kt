@@ -11,6 +11,7 @@ data class CatalogCanonicalModelEntry(
     val canonicalModel: String,
     val modelAliases: List<String> = emptyList(),
     val accessoryBlockers: List<String> = emptyList(),
+    val searchWeight: Int = 0,
 )
 
 data class CatalogCanonicalModelMatch(
@@ -22,6 +23,7 @@ data class CatalogCanonicalModelMatch(
     val modelText: String,
     val matchedAliasLength: Int,
     val confidence: Double,
+    val searchWeight: Int = 0,
 )
 
 interface CatalogCanonicalModelRegistryProvider {
@@ -79,6 +81,7 @@ object CatalogCanonicalModelRegistry {
             .sortedWith(
                 compareByDescending<CatalogCanonicalModelMatch> { it.confidence }
                     .thenByDescending { it.matchedAliasLength }
+                    .thenByDescending { it.searchWeight }
                     .thenByDescending { it.modelText.length }
                     .thenBy { it.modelCode },
             )
@@ -159,6 +162,7 @@ object CatalogCanonicalModelRegistry {
             modelText = modelText,
             matchedAliasLength = match.aliasLength,
             confidence = confidence,
+            searchWeight = model.searchWeight,
         )
     }
 
@@ -224,6 +228,7 @@ private fun normalizeModels(
                 .filter { it.isNotBlank() }
                 .distinct()
                 .sorted(),
+            searchWeight = model.searchWeight.coerceIn(0, 100),
         )
     }.sortedWith(
         compareBy<CatalogCanonicalModelEntry> { it.defaultCategoryCode }

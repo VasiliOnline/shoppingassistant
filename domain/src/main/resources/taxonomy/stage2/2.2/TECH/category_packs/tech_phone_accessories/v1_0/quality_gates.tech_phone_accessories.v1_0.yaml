@@ -1,0 +1,35 @@
+category_code: TECH.PHONE_ACCESSORIES
+required_gates:
+- gate: Stage22SeedValidator
+  status: required
+- gate: FacetSchemaValidator
+  status: required
+- gate: EffectiveSpecSnapshotGate
+  status: required
+- gate: RouteConflictGate
+  status: required
+- gate: AliasCollisionGate
+  status: required
+- gate: UserSurfaceGate
+  status: required
+  constraints:
+    initial_fields_max: 8
+    primary_facets_max: 7
+    t3_hidden_leak: 0
+- gate: VisionRulesGate
+  status: required
+- gate: SampleOffersSmokeGate
+  status: required
+- gate: CompatibilityGate
+  status: required
+- gate: AccessoryVsDeviceRouteGate
+  status: required
+- gate: LithiumBatterySafetyGate
+  status: required_for_POWER_BANK
+minimum_static_thresholds:
+  golden_queries_min: 80
+  sample_offers_min: 100
+  publish_sample_offers_min: 24
+  positive_type_coverage: all phone_accessory_type values >= 2 samples
+runtime_release_rule: Do not release to production until gates are green in project registry; static PASS is not a substitute
+  for runtime validators.

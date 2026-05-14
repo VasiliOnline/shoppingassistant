@@ -1,0 +1,35 @@
+version: 1.0
+categoryCode: TECH.MONITORS_DISPLAYS
+no_guess_rules:
+  - exact_model_must_not_be_guessed_from_front_photo_only
+  - screen_size_must_not_be_estimated_as_exact_from_photo_without_label_or_text
+  - resolution_refresh_panel_must_not_be_inferred_without_text_label_ocr_or_spec_evidence
+  - tv_vs_monitor_requires_context_when_image_shows_only_flat_screen
+allowed_visual_inferences:
+  - monitor_vs_laptop_when standalone display with stand is visible
+  - curved_screen_possible_when curvature visible
+  - portable_monitor_possible_when thin tablet-like display with USB-C/case stand visible
+  - touchscreen_possible_only_as low_confidence unless touch UI/POS context visible
+evidence_levels:
+  PHOTO_ONLY:
+    may_set:
+      - category_candidate
+      - display_type_candidate
+    must_not_set:
+      - model_normalized
+      - screen_size_in_exact
+      - refresh_rate_hz
+      - resolution_class
+  LABEL_OCR:
+    may_set:
+      - model_number
+      - screen_size_in
+      - resolution_class
+      - refresh_rate_hz
+  SPEC_SHEET:
+    may_set:
+      - all_spec_fields
+confidence_thresholds:
+  route_accept: 0.70
+  model_accept: 0.86
+  specs_accept: 0.82

@@ -1,0 +1,250 @@
+value_set	value_code	label_ru	aliases_ru	usage_scope	sort_priority	status	notes_ru
+phone_accessory_type	CASE	Чехол	чехол|накладка|кейс|бампер|обложка для телефона	protective_shell	1	active	
+phone_accessory_type	SCREEN_PROTECTOR	Защитное стекло / плёнка	защитное стекло|пленка|плёнка|гидрогелевая пленка|privacy glass	screen_protection	2	active	
+phone_accessory_type	CAMERA_LENS_PROTECTOR	Защита камеры	защита камеры|стекло камеры|защитное стекло на камеру|линзы камеры	camera_protection	3	active	
+phone_accessory_type	CHARGER	Сетевое зарядное устройство	зарядка|зарядное устройство|блок питания|адаптер питания|сетевой адаптер	power	4	active	
+phone_accessory_type	WIRELESS_CHARGER	Беспроводная зарядка	беспроводная зарядка|qi зарядка|магнитная зарядка|magsafe charger	power	5	active	
+phone_accessory_type	CABLE	Кабель для телефона	кабель|провод|шнур|зарядный кабель|usb c кабель|lightning кабель	cable	6	active	
+phone_accessory_type	POWER_BANK	Внешний аккумулятор	пауэрбанк|power bank|внешний аккумулятор|портативный аккумулятор	power_bank	7	active	
+phone_accessory_type	HOLDER	Держатель	держатель|крепление|холдер	mount	8	active	
+phone_accessory_type	STAND	Подставка	подставка|стойка|настольная подставка	mount	9	active	
+phone_accessory_type	CAR_MOUNT	Автомобильный держатель	автодержатель|держатель в машину|крепление в авто|car mount	mount	10	active	
+phone_accessory_type	ADAPTER	Адаптер / переходник	переходник|адаптер|донгл|adapter	adapter	11	active	
+phone_accessory_type	DOCK	Док-станция	док|док станция|док-станция|dock	dock	12	active	
+phone_accessory_type	MAGSAFE_ACCESSORY	MagSafe / магнитный аксессуар	magsafe|магсейф|магнитный кошелек|магнитное кольцо	magnetic	13	active	
+phone_accessory_type	STYLUS	Стилус для телефона	стилус|сенсорная ручка|touch pen	input	14	active	
+phone_accessory_type	STRAP_CHARM	Ремешок / charm для телефона	ремешок на телефон|шнурок на телефон|подвеска на телефон|phone charm	decorative	15	active	
+phone_accessory_type	SIM_TOOL	SIM-инструмент / лоток	скрепка sim|sim ejector|лоток sim|сим инструмент	service_tool	16	active	
+phone_accessory_type	REPLACEMENT_PART	Запчасть для телефона	запчасть|дисплей|аккумулятор|шлейф|порт зарядки|камера	repair_part	17	active	
+phone_accessory_type	CLEANING_KIT	Чистящий набор для телефона	чистящий набор|салфетка|спрей для экрана|щетка для телефона	care	18	active	
+compatible_device_category	PHONE	Телефоны	смартфон|мобильный телефон|iphone|samsung galaxy	all	100	active	
+compatible_device_category	PHONE_OR_TABLET	Телефоны и планшеты	телефон планшет|phone tablet	all	100	active	
+compatible_device_category	UNIVERSAL_MOBILE	Универсальные мобильные устройства	universal mobile|для всех смартфонов	all	100	active	
+compatible_brand_head	APPLE	Apple		all	10	active	
+compatible_brand_head	SAMSUNG	Samsung		all	10	active	
+compatible_brand_head	XIAOMI	Xiaomi		all	10	active	
+compatible_brand_head	REDMI	Redmi		all	10	active	
+compatible_brand_head	POCO	POCO		all	50	active	
+compatible_brand_head	HUAWEI	Huawei		all	50	active	
+compatible_brand_head	HONOR	Honor		all	50	active	
+compatible_brand_head	GOOGLE	Google		all	10	active	
+compatible_brand_head	ONEPLUS	OnePlus		all	50	active	
+compatible_brand_head	OPPO	OPPO		all	50	active	
+compatible_brand_head	VIVO	Vivo		all	50	active	
+compatible_brand_head	REALME	Realme		all	50	active	
+compatible_brand_head	NOTHING	Nothing		all	50	active	
+compatible_brand_head	MOTOROLA	Motorola		all	50	active	
+compatible_brand_head	NOKIA	Nokia		all	50	active	
+compatible_brand_head	SONY	Sony		all	50	active	
+compatible_brand_head	TECNO	Tecno		all	50	active	
+compatible_brand_head	INFINIX	Infinix		all	50	active	
+compatible_brand_head	UNIVERSAL	Универсальный		all	50	active	
+compatibility_mode	MODEL_SPECIFIC	Под конкретную модель	для iphone 13|for galaxy s24	all	100	active	
+compatibility_mode	FAMILY_SPECIFIC	Под семейство/линейку	для iphone|для galaxy s	all	100	active	
+compatibility_mode	BRAND_SPECIFIC	Под бренд	для samsung|для apple	all	100	active	
+compatibility_mode	UNIVERSAL_PHONE	Универсально для телефонов	универсальный|для всех телефонов	all	100	active	
+compatibility_mode	CONNECTOR_BASED	По коннектору	usb-c|lightning|micro usb	all	100	active	
+compatibility_mode	SIZE_BASED	По размеру устройства	4.7-6.7|до 7 дюймов	all	100	active	
+compatibility_evidence_level	OCR_PACKAGE	OCR/упаковка		all	100	active	
+compatibility_evidence_level	TITLE_EXPLICIT	Явно в названии		all	100	active	
+compatibility_evidence_level	DESCRIPTION_EXPLICIT	Явно в описании		all	100	active	
+compatibility_evidence_level	BARCODE_VENDOR	Штрихкод/вендор		all	100	active	
+compatibility_evidence_level	URL_SOURCE	URL/страница источника		all	100	active	
+compatibility_evidence_level	VISUAL_WEAK	Слабое визуальное предположение		all	100	active	
+compatibility_evidence_level	NONE	Нет evidence		all	100	active	
+compatibility_resolution_status	RESOLVED	Resolved		all	100	active	
+compatibility_resolution_status	TEXT_ONLY	Текст без нормализации		all	100	active	
+compatibility_resolution_status	AMBIGUOUS	Неоднозначно		all	100	active	
+compatibility_resolution_status	NOT_REQUIRED	Не требуется		all	100	active	
+compatibility_resolution_status	BLOCKED_LOW_EVIDENCE	Заблокировано: мало evidence		all	100	active	
+case_style	SILICONE	Силиконовый	silicone|силикон	all	20	active	
+case_style	TPU	TPU	тпу|гель	all	20	active	
+case_style	HARD_PLASTIC	Жёсткий пластик	pc|polycarbonate|поликарбонат	all	20	active	
+case_style	LEATHER	Кожа	кожаный|натуральная кожа	all	20	active	
+case_style	ECO_LEATHER	Экокожа	искусственная кожа|pu leather	all	20	active	
+case_style	BUMPER	Бампер	рамка	all	20	active	
+case_style	WALLET	Книжка/кошелёк	book case|wallet	all	20	active	
+case_style	RUGGED	Противоударный	защищенный|armor	all	20	active	
+case_style	CLEAR	Прозрачный	clear|transparent	all	20	active	
+case_style	BATTERY_CASE	Чехол-аккумулятор	battery case	all	20	active	
+case_material	SILICONE	Силикон	silicone	all	100	active	
+case_material	TPU	TPU	гель|тпу	all	100	active	
+case_material	POLYCARBONATE	Поликарбонат	pc	all	100	active	
+case_material	LEATHER	Кожа	leather	all	100	active	
+case_material	PU_LEATHER	PU/экокожа	экокожа	all	100	active	
+case_material	ALUMINUM	Алюминий	aluminum	all	100	active	
+case_material	ARAMID	Арамид	kevlar	all	100	active	
+case_material	FABRIC	Ткань	fabric	all	100	active	
+case_material	WOOD	Дерево	wood	all	100	active	
+protection_level	BASIC	Базовая защита	basic	all	100	active	
+protection_level	SLIM	Тонкая защита	slim	all	100	active	
+protection_level	RUGGED	Противоударная	rugged|armor	all	100	active	
+protection_level	DROP_TESTED	С заявлением drop-tested	drop tested	all	100	active	
+protection_level	WATERPROOF_CLAIM	С заявлением влагозащиты	waterproof	all	100	active	
+protector_material	TEMPERED_GLASS	Закалённое стекло	tempered glass|9h	all	100	active	
+protector_material	HYDROGEL	Гидрогелевая плёнка	hydrogel	all	100	active	
+protector_material	PET_FILM	PET-плёнка	film	all	100	active	
+protector_material	TPU_FILM	TPU-плёнка	soft film	all	100	active	
+protector_material	PRIVACY_GLASS	Privacy стекло	антишпион|privacy	all	100	active	
+protector_material	CERAMIC_FILM	Керамическая плёнка	ceramic	all	100	active	
+protector_coverage	FLAT	Плоское	flat	all	100	active	
+protector_coverage	EDGE_TO_EDGE	Полное покрытие	edge to edge|full cover	all	100	active	
+protector_coverage	CASE_FRIENDLY	Case-friendly	compatible case	all	100	active	
+protector_coverage	PRIVACY	Privacy	антишпион	all	100	active	
+protector_coverage	CAMERA_ONLY	Только камера	camera lens	all	100	active	
+connector_type	USB_C	USB-C	type c|тайп си|usb c	all	100	active	
+connector_type	LIGHTNING	Lightning	лайтнинг|iphone cable	all	100	active	
+connector_type	MICRO_USB	Micro-USB	micro usb	all	100	active	
+connector_type	USB_A	USB-A	usb a	all	100	active	
+connector_type	USB_C_AND_LIGHTNING	USB-C + Lightning	type c lightning	all	100	active	
+connector_type	USB_C_AND_USB_C	USB-C + USB-C	c to c	all	100	active	
+connector_type	USB_A_AND_LIGHTNING	USB-A + Lightning	usb lightning	all	100	active	
+connector_type	USB_A_AND_USB_C	USB-A + USB-C	usb a to c	all	100	active	
+connector_type	THREE_IN_ONE	3-в-1	3 in 1|multi cable	all	100	active	
+connector_type	AUX_3_5MM	3.5 мм аудио	aux|jack	all	100	active	
+connector_type	HDMI	HDMI	hdmi	all	100	active	
+fast_charge_standard	PD	USB Power Delivery	power delivery|pd	all	100	active	
+fast_charge_standard	PD_PPS	USB PD PPS	pps	all	100	active	
+fast_charge_standard	QC	Qualcomm Quick Charge	quick charge|qc3	all	100	active	
+fast_charge_standard	MAGSAFE	MagSafe	магсейф	all	100	active	
+fast_charge_standard	QI	Qi	qi wireless	all	100	active	
+fast_charge_standard	QI2	Qi2	qi2	all	100	active	
+fast_charge_standard	SUPER_FAST_CHARGE	Samsung Super Fast Charging	sfc	all	100	active	
+fast_charge_standard	VOOC	OPPO VOOC	vooc	all	100	active	
+fast_charge_standard	SUPERVOOC	SuperVOOC	supervooc	all	100	active	
+fast_charge_standard	HYPERCHARGE	Xiaomi HyperCharge	hypercharge	all	100	active	
+fast_charge_standard	UNKNOWN_FAST_CHARGE	Неуточнённая быстрая зарядка	fast charge	all	100	active	
+port_configuration	ONE_USB_C	1x USB-C		all	100	active	
+port_configuration	TWO_USB_C	2x USB-C		all	100	active	
+port_configuration	USB_C_USB_A	USB-C + USB-A		all	100	active	
+port_configuration	TWO_USB_C_USB_A	2x USB-C + USB-A		all	100	active	
+port_configuration	MULTI_PORT	Multi-port		all	100	active	
+port_configuration	WIRELESS_PLUS_USB_C	Wireless + USB-C		all	100	active	
+usb_standard	USB_2_0	USB 2.0		all	100	active	
+usb_standard	USB_3_0	USB 3.0		all	100	active	
+usb_standard	USB_3_1	USB 3.1		all	100	active	
+usb_standard	USB_3_2	USB 3.2		all	100	active	
+usb_standard	USB4	USB4		all	100	active	
+usb_standard	THUNDERBOLT_3	Thunderbolt 3		all	100	active	
+usb_standard	THUNDERBOLT_4	Thunderbolt 4		all	100	active	
+usb_standard	CHARGE_ONLY	Только зарядка		all	100	active	
+wireless_standard	QI	Qi		all	100	active	
+wireless_standard	QI2	Qi2		all	100	active	
+wireless_standard	MAGSAFE	MagSafe		all	100	active	
+wireless_standard	MAGNETIC_QI	Magnetic Qi		all	100	active	
+wireless_standard	PROPRIETARY_MAGNETIC	Фирменная магнитная		all	100	active	
+mounting_type	VENT	Решётка вентиляции		all	100	active	
+mounting_type	DASHBOARD	Панель		all	100	active	
+mounting_type	WINDSHIELD	Лобовое стекло		all	100	active	
+mounting_type	DESK	Стол		all	100	active	
+mounting_type	BIKE_BAR	Велосипед/самокат		all	100	active	
+mounting_type	TRIPOD	Штатив		all	100	active	
+mounting_type	CLAMP	Зажим		all	100	active	
+mounting_type	MAGNETIC	Магнит		all	100	active	
+mount_location	CAR_VENT	Решётка авто		all	100	active	
+mount_location	CAR_DASHBOARD	Панель авто		all	100	active	
+mount_location	CAR_WINDSHIELD	Стекло авто		all	100	active	
+mount_location	DESKTOP	Рабочий стол		all	100	active	
+mount_location	BICYCLE	Велосипед		all	100	active	
+mount_location	MOTORCYCLE	Мотоцикл		all	100	active	
+mount_location	BED_HEADBOARD	Кровать/изголовье		all	100	active	
+stand_form_factor	FLAT_PAD	Плоская площадка		all	100	active	
+stand_form_factor	VERTICAL_STAND	Вертикальная подставка		all	100	active	
+stand_form_factor	FOLDABLE_STAND	Складная		all	100	active	
+stand_form_factor	DESKTOP_STAND	Настольная		all	100	active	
+stand_form_factor	CAR_STAND	Авто		all	100	active	
+stand_form_factor	RING_STAND	Кольцо-подставка		all	100	active	
+adapter_direction	USB_C_TO_LIGHTNING	USB-C → Lightning		all	100	active	
+adapter_direction	USB_C_TO_USB_A	USB-C → USB-A		all	100	active	
+adapter_direction	LIGHTNING_TO_3_5MM	Lightning → 3.5 мм		all	100	active	
+adapter_direction	USB_C_TO_3_5MM	USB-C → 3.5 мм		all	100	active	
+adapter_direction	USB_C_TO_HDMI	USB-C → HDMI		all	100	active	
+adapter_direction	USB_C_TO_SD	USB-C → SD		all	100	active	
+adapter_direction	MULTIPORT_DONGLE	Мультипорт		all	100	active	
+magsafe_accessory_type	WALLET	Кошелёк		all	100	active	
+magsafe_accessory_type	BATTERY	Аккумулятор		all	100	active	
+magsafe_accessory_type	RING	Кольцо		all	100	active	
+magsafe_accessory_type	STAND	Подставка		all	100	active	
+magsafe_accessory_type	CAR_MOUNT	Автодержатель		all	100	active	
+magsafe_accessory_type	POP_GRIP	Попсокет/держатель		all	100	active	
+magsafe_accessory_type	CHARGER	Зарядка		all	100	active	
+stylus_type	PASSIVE_CAPACITIVE	Пассивный ёмкостный		all	100	active	
+stylus_type	ACTIVE	Активный		all	100	active	
+stylus_type	DISC_TIP	С дисковым наконечником		all	100	active	
+stylus_type	FINE_TIP	Тонкий наконечник		all	100	active	
+strap_charm_type	WRIST_STRAP	Кистевой ремешок		all	100	active	
+strap_charm_type	LANYARD	Шнурок на шею		all	100	active	
+strap_charm_type	CHARM	Подвеска		all	100	active	
+strap_charm_type	BEADED_STRAP	Бисерный ремешок		all	100	active	
+strap_charm_type	CROSSBODY_STRAP	Ремень через плечо		all	100	active	
+attachment_type	CASE_HOLE	Через отверстие чехла		all	100	active	
+attachment_type	ADHESIVE_PATCH	Клеевая площадка		all	100	active	
+attachment_type	PLUG	В порт/заглушку		all	100	active	
+attachment_type	LOOP	Петля		all	100	active	
+attachment_type	RING	Кольцо		all	100	active	
+sim_tool_type	EJECT_PIN	Скрепка SIM		all	100	active	
+sim_tool_type	SIM_TRAY	Лоток SIM		all	100	active	
+sim_tool_type	SIM_ADAPTER	SIM-адаптер		all	100	active	
+sim_tool_type	SIM_TOOL_KIT	Набор SIM-инструментов		all	100	active	
+replacement_part_type	SCREEN_ASSEMBLY	Дисплейный модуль		all	100	active	
+replacement_part_type	BATTERY	Аккумулятор		all	100	active	
+replacement_part_type	BACK_COVER	Задняя крышка		all	100	active	
+replacement_part_type	CAMERA_MODULE	Камера		all	100	active	
+replacement_part_type	CHARGING_PORT	Порт зарядки		all	100	active	
+replacement_part_type	SPEAKER	Динамик		all	100	active	
+replacement_part_type	MICROPHONE	Микрофон		all	100	active	
+replacement_part_type	BUTTON_FLEX	Шлейф кнопок		all	100	active	
+replacement_part_type	SIM_TRAY	SIM-лоток		all	100	active	
+replacement_part_type	VIBRATION_MOTOR	Вибромотор		all	100	active	
+replacement_part_type	ADHESIVE_SEAL	Клей/проклейка		all	100	active	
+part_quality	OEM	OEM		all	100	active	
+part_quality	ORIGINAL	Оригинал		all	100	active	
+part_quality	PULLED_ORIGINAL	Снято с оригинала		all	100	active	
+part_quality	AFTERMARKET	Aftermarket		all	100	active	
+part_quality	REFURBISHED	Восстановленная		all	100	active	
+part_quality	COPY	Копия/аналог		all	100	active	
+repair_skill_level	BASIC	Базовый		all	100	active	
+repair_skill_level	INTERMEDIATE	Средний		all	100	active	
+repair_skill_level	PROFESSIONAL	Профессиональный		all	100	active	
+repair_skill_level	SERVICE_ONLY	Только сервис		all	100	active	
+cleaning_item_type	MICROFIBER	Микрофибра		all	100	active	
+cleaning_item_type	SCREEN_SPRAY	Спрей		all	100	active	
+cleaning_item_type	BRUSH	Щётка		all	100	active	
+cleaning_item_type	PORT_CLEANING_TOOL	Инструмент для порта		all	100	active	
+cleaning_item_type	FULL_KIT	Набор		all	100	active	
+material_family	SILICONE	Силикон		all	100	active	
+material_family	TPU	TPU		all	100	active	
+material_family	PLASTIC	Пластик		all	100	active	
+material_family	GLASS	Стекло		all	100	active	
+material_family	METAL	Металл		all	100	active	
+material_family	LEATHER	Кожа		all	100	active	
+material_family	FABRIC	Ткань		all	100	active	
+material_family	CARBON_ARAMID	Карбон/арамид		all	100	active	
+material_family	RUBBER	Резина		all	100	active	
+finish	MATTE	Матовый		all	100	active	
+finish	GLOSSY	Глянцевый		all	100	active	
+finish	CLEAR	Прозрачный		all	100	active	
+finish	TEXTURED	Текстурный		all	100	active	
+finish	PRIVACY	Privacy		all	100	active	
+finish	METALLIC	Металлик		all	100	active	
+transparency	CLEAR	Прозрачный		all	100	active	
+transparency	TINTED	Тонированный		all	100	active	
+transparency	OPAQUE	Непрозрачный		all	100	active	
+transparency	PRIVACY	Антишпион		all	100	active	
+color_family_head	BLACK	Чёрный		all	100	active	
+color_family_head	WHITE	Белый		all	100	active	
+color_family_head	CLEAR	Прозрачный		all	100	active	
+color_family_head	BLUE	Синий		all	100	active	
+color_family_head	PINK	Розовый		all	100	active	
+color_family_head	RED	Красный		all	100	active	
+color_family_head	GREEN	Зелёный		all	100	active	
+color_family_head	PURPLE	Фиолетовый		all	100	active	
+color_family_head	GRAY	Серый		all	100	active	
+color_family_head	SILVER	Серебристый		all	100	active	
+color_family_head	GOLD	Золотой		all	100	active	
+color_family_head	MULTICOLOR	Многоцветный		all	100	active	
+condition_head	NEW	Новое		all	100	active	
+condition_head	OPEN_BOX	Открытая коробка		all	100	active	
+condition_head	USED	Б/у		all	100	active	
+condition_head	REFURBISHED	Восстановленное		all	100	active	
+condition_head	FOR_PARTS	На запчасти		all	100	active	

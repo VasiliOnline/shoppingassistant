@@ -1,0 +1,40 @@
+policy_id: phone_identity_resolution_rules.tech_phones.v1_0
+resolution_priority:
+- gtin/ean/upc
+- mpn/model_number
+- brand+model seed exact
+- brand+family+model alias fuzzy
+- OCR box/settings
+- seller title
+- vision coarse only
+model_normalization:
+  do_not_create_categoryCode_for_brand_or_model: true
+  brand_shelves_are_saved_filters: true
+  full_model_registry_boundary: model_head_seed is head only; long tail enters runtime_candidates/live_values after IdentityCandidateGate
+ambiguity_examples:
+- input: iphone 13
+  result:
+    categoryCode: TECH.PHONES
+    brand: APPLE
+    family: IPHONE
+    model_name_text: iPhone 13
+- input: чехол iphone 13
+  result:
+    categoryCode: TECH.PHONE_ACCESSORIES
+    compatible_model_text: iPhone 13
+- input: samsung s23
+  result:
+    categoryCode: TECH.PHONES
+    brand: SAMSUNG
+    family: GALAXY
+    model_candidates:
+    - Galaxy S23
+    - Galaxy S23+
+    - Galaxy S23 Ultra
+privacy:
+  raw_imei_storage: forbidden
+  allowed_fields:
+  - imei_status
+  - blacklist_status
+  - imei_evidence_hash
+  hashing: sha256_with_server_salt

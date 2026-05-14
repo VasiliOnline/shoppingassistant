@@ -1,0 +1,61 @@
+{
+  "pack_id": "TECH_COMPUTERS_public_category_pack_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "category_code": "TECH.COMPUTERS",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "runtime_mount": "public_category_registry",
+  "status": "production_ready_static_candidate",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "source_tree_contract": "TECH_category_tree_reference.html",
+  "companion_standard": "CATALOG_PACK_COMPANION_v1_RU.md",
+  "main_type_attribute": "computer_type",
+  "category_archetypes": [
+    "public_category",
+    "identity_critical",
+    "specs_heavy",
+    "resale_sensitive",
+    "no_guess_evidence_required"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "uses_relation_target": [
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.MONITORS_DISPLAYS",
+    "TECH.PC_COMPONENTS",
+    "TECH.STORAGE_MEMORY",
+    "TECH.POWER_CHARGING_CABLES"
+  ],
+  "purpose_ru": "Production-grade public category pack для TECH.COMPUTERS: ноутбуки, ультрабуки, игровые ноутбуки, 2-в-1, Chromebook, desktop PC, mini PC, моноблоки, рабочие станции и тонкие клиенты.",
+  "included": [
+    "computer_type and computer-specific attributes",
+    "type-specific user surface and facet templates without presets/collections",
+    "computer identity seed for head families/models, not a full model registry",
+    "route guards against tablets/e-readers, monitors, computer accessories, PC components, storage, gaming consoles and phones",
+    "vision no-guess rules for brand/model/CPU/GPU/specs",
+    "golden queries, sample offers, publish fixtures, effective snapshot, quality gates and checksums"
+  ],
+  "excluded": [
+    "TECH.TABLETS_E_READERS implementation",
+    "TECH.MONITORS_DISPLAYS implementation",
+    "TECH.COMPUTER_ACCESSORIES implementation",
+    "TECH.PC_COMPONENTS implementation",
+    "TECH.STORAGE_MEMORY implementation",
+    "presets, collections, shelves, merchandising landing pages",
+    "full global laptop/desktop model registry",
+    "TECH.MACBOOK / TECH.THINKPAD / TECH.GAMING_LAPTOPS microcategory mounts"
+  ],
+  "forbidden_category_codes": [
+    "TECH.MACBOOK",
+    "TECH.THINKPAD",
+    "TECH.DELL_XPS",
+    "TECH.GAMING_LAPTOPS",
+    "TECH.LAPTOPS",
+    "TECH.DESKTOPS"
+  ]
+}

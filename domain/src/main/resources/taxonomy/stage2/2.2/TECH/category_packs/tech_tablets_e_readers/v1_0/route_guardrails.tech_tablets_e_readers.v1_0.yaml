@@ -1,0 +1,49 @@
+guardrails_id: route_guardrails.tech_tablets_e_readers.v1_0
+categoryCode: TECH.TABLETS_E_READERS
+evaluation_mode: priority_desc_then_first_match
+positive_guards:
+- id: include_tablet_device
+  priority: 700
+  tokens_any: [планшет, ipad, айпад, galaxy tab, xiaomi pad, lenovo tab, matepad]
+  route_to: TECH.TABLETS_E_READERS
+- id: include_e_reader
+  priority: 720
+  tokens_any: [электронная книга, читалка, ридер, kindle, kobo, pocketbook, onyx boox]
+  route_to: TECH.TABLETS_E_READERS
+- id: include_graphics_tablet
+  priority: 730
+  tokens_any: [графический планшет, планшет для рисования, wacom, huion, xp-pen, cintiq, kamvas]
+  route_to: TECH.TABLETS_E_READERS
+- id: include_tablet_dock_stand
+  priority: 650
+  tokens_any: [док для планшета, подставка для планшета, держатель планшета, tablet dock, tablet stand]
+  route_to: TECH.TABLETS_E_READERS
+negative_guards:
+- id: phones_precedence
+  priority: 900
+  tokens_any: [iphone, айфон, смартфон, телефон, galaxy s, pixel, redmi note]
+  route_to: TECH.PHONES
+- id: computers_precedence
+  priority: 880
+  tokens_any: [ноутбук, macbook, макбук, laptop, chromebook, системный блок, mini pc]
+  route_to: TECH.COMPUTERS
+- id: monitors_precedence
+  priority: 850
+  tokens_any: [монитор, portable monitor, дисплей для компьютера]
+  route_to: TECH.MONITORS_DISPLAYS
+- id: computer_accessories_precedence
+  priority: 830
+  tokens_any: [клавиатура, мышь, webcam, док станция для ноутбука, usb hub для ноутбука]
+  route_to: TECH.COMPUTER_ACCESSORIES
+- id: phone_accessories_precedence
+  priority: 820
+  tokens_any: [чехол iphone, стекло iphone, зарядка iphone, кабель iphone]
+  route_to: TECH.PHONE_ACCESSORIES
+- id: toy_tablet_exclusion
+  priority: 810
+  tokens_any: [игрушечный планшет, планшет игрушка, развивающая игрушка планшет]
+  route_to: KIDS.TOYS_OR_OTHER
+- id: books_exclusion
+  priority: 790
+  tokens_any: [бумажная книга, книга роман, учебник]
+  route_to: BOOKS_OR_MEDIA

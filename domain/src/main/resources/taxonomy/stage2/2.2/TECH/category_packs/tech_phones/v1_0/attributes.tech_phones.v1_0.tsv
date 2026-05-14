@@ -1,0 +1,82 @@
+attribute_code	label_ru	data_type	role	required	usage_scope	allowed_values_source	unit	validation	notes
+categoryCode	Код категории	enum	T0_CORE	true	routing	fixed:TECH.PHONES		must_equal_TECH.PHONES	Крупная public-ветка; не микрокатегория бренда.
+phone_type	Тип телефона	enum	T0_CORE	true	routing|facet|ui	values#phone_type		enum	Главный type-переключатель внутри TECH.PHONES.
+brand	Бренд	string|enum	T0_CORE	true	identity|facet|ui	inherited:TECH.DEVICE_IDENTITY_COMMON + runtime_candidates		normalized_brand	Head brands + runtime candidates.
+family	Семейство	string|enum	T1_TYPE_SPECIFIC	false	identity|facet	model_head_seed#family + runtime_candidates		normalized_family	Например iPhone, Galaxy S, Pixel.
+line	Линейка	string|enum	T1_TYPE_SPECIFIC	false	identity	model_head_seed#line + runtime_candidates		normalized_line	Например Pro, Ultra, A-series.
+model	Нормализованная модель	string|enum	T1_TYPE_SPECIFIC	false	identity|facet	model_head_seed#model + runtime_candidates		evidence_required	Не угадывать по фото без evidence.
+model_name_text	Название модели текстом	string	T0_CORE	true	identity|ui|search	free_text		min_len:2	Фолбэк, когда модель не нормализована.
+model_aliases	Алиасы модели	array<string>	T1_TYPE_SPECIFIC	false	identity|search	phone_model_aliases			Не выводить как отдельный фасет.
+model_number	Номер модели	string	T1_TYPE_SPECIFIC	false	identity|dedup	runtime_candidates		regex_vendor_model_number	A2890, SM-S918B, G9S9B и т.п.
+mpn	MPN / vendor part number	string	T1_TYPE_SPECIFIC	false	identity|dedup	inherited			Приоритетнее title aliases.
+gtin	GTIN/EAN/UPC	string	T1_TYPE_SPECIFIC	false	identity|dedup	inherited		barcode_validation	Сильный ключ идентичности.
+release_year	Год релиза	integer	T1_TYPE_SPECIFIC	false	identity|facet	range:1995..2030	year	int_range	Из identity layer, можно уточнять из model seed.
+region_variant	Региональная версия	enum	T1_TYPE_SPECIFIC	false	identity|facet	values#region_variant		enum	US/EU/CN/HK/JP/Global и т.п.
+country_version	Версия для страны	enum	T1_TYPE_SPECIFIC	false	identity|facet	values#country_version		enum	Для импорта/локализации.
+storage_capacity_gb	Память, ГБ	integer	T0_CORE	true	specs|facet|ui	values#storage_capacity_gb	GB	allowed_values_or_range	Важный commerce-фасет.
+ram_gb	ОЗУ, ГБ	integer	T1_TYPE_SPECIFIC	false	specs|facet	values#ram_gb	GB	allowed_values_or_range	Для Android/feature phones чаще полезно; для iPhone может быть скрыто.
+screen_size_inches	Диагональ экрана	decimal	T1_TYPE_SPECIFIC	false	specs|facet	range:1..9	inch	range	Фасет для смартфонов/складных.
+screen_resolution	Разрешение экрана	string	T2_OPTIONAL_ENRICHMENT	false	specs	runtime_candidates		regex_resolution	Например 1179x2556.
+refresh_rate_hz	Частота экрана	integer	T2_OPTIONAL_ENRICHMENT	false	specs|facet	values#refresh_rate_hz	Hz	allowed_values	60/90/120/144.
+chipset	Чипсет	string|enum	T2_OPTIONAL_ENRICHMENT	false	specs	runtime_candidates		evidence_required	Не угадывать по фото.
+os_family	ОС	enum	T1_TYPE_SPECIFIC	false	specs|facet	values#os_family		enum	iOS/Android/HarmonyOS/KaiOS.
+os_version	Версия ОС	string	T2_OPTIONAL_ENRICHMENT	false	specs	runtime_candidates		semantic_version_or_text	Только если явно указано.
+mobile_network_generation	Поколение сети	enum	T1_TYPE_SPECIFIC	false	specs|facet	values#mobile_network_generation		enum	2G/3G/4G/5G.
+supported_network_bands_text	Поддерживаемые диапазоны	string	T2_OPTIONAL_ENRICHMENT	false	specs	free_text		evidence_required	Только из спецификаций/карточки.
+network_lock_status	Статус блокировки оператора	enum	T1_TYPE_SPECIFIC	false	resale|facet|ui	values#network_lock_status		enum	Unlocked/locked/carrier unknown.
+carrier	Оператор	enum|string	T1_TYPE_SPECIFIC	false	resale|facet	values#carrier + runtime_candidates		enum_or_text	Может быть региональным.
+activation_status	Статус активации	enum	T2_OPTIONAL_ENRICHMENT	false	resale|safety	values#activation_status		enum	Активирован/не активирован/неизвестно.
+account_lock_status	Блокировка аккаунта	enum	T1_TYPE_SPECIFIC	false	resale|safety|ui	values#account_lock_status		enum	iCloud/FRP/account lock.
+imei_status	Статус IMEI	enum	T2_OPTIONAL_ENRICHMENT	false	resale|safety	values#imei_status		enum	Не хранить raw IMEI.
+blacklist_status	Статус blacklist	enum	T2_OPTIONAL_ENRICHMENT	false	resale|safety	values#blacklist_status		enum	Отдельно от raw IMEI.
+sim_configuration	SIM-конфигурация	enum	T1_TYPE_SPECIFIC	false	specs|facet	values#sim_configuration		enum	Nano/eSIM/dual.
+physical_sim_slots	Физические SIM-слоты	integer	T2_OPTIONAL_ENRICHMENT	false	specs	range:0..4	slots	int_range	Для региональных вариантов.
+esim_support	Поддержка eSIM	boolean	T1_TYPE_SPECIFIC	false	specs|facet	boolean		bool	Важный phone-фасет.
+dual_sim_support	Dual SIM	boolean	T2_OPTIONAL_ENRICHMENT	false	specs|facet	boolean		bool	Физическая/eSIM может различаться по региону.
+charging_connector	Разъём зарядки	enum	T2_OPTIONAL_ENRICHMENT	false	specs|facet	values#charging_connector		enum	USB-C/Lightning/Micro-USB.
+wireless_charging_support	Беспроводная зарядка	boolean	T2_OPTIONAL_ENRICHMENT	false	specs|facet	boolean		bool	Только если есть evidence.
+fast_charging_watts	Быстрая зарядка, Вт	integer	T2_OPTIONAL_ENRICHMENT	false	specs|facet	range:0..250	W	int_range	Зарядное устройство не входит по умолчанию.
+battery_health_percent	Здоровье батареи, %	integer	T1_TYPE_SPECIFIC	false	resale|facet|ui	range:0..100	%	int_range	Критично для б/у iPhone и дорогих смартфонов.
+battery_health_bucket	Состояние батареи	enum	T2_OPTIONAL_ENRICHMENT	false	resale|facet	values#battery_health_bucket		enum	Нормализованный bucket.
+battery_cycle_count	Циклы батареи	integer	T2_OPTIONAL_ENRICHMENT	false	resale	range:0..5000	cycles	int_range	Только если явно указано.
+battery_service_status	Сервис батареи	enum	T2_OPTIONAL_ENRICHMENT	false	resale	values#battery_service_status		enum	Normal/service/replaced/unknown.
+screen_condition	Состояние экрана	enum	T2_OPTIONAL_ENRICHMENT	false	resale|facet	values#part_condition		enum	Особенно для local offers.
+back_glass_condition	Состояние задней крышки	enum	T2_OPTIONAL_ENRICHMENT	false	resale	values#part_condition		enum	Для стеклянных корпусов.
+frame_condition	Состояние рамки	enum	T2_OPTIONAL_ENRICHMENT	false	resale	values#part_condition		enum	Царапины/вмятины.
+camera_condition	Состояние камеры	enum	T2_OPTIONAL_ENRICHMENT	false	resale	values#part_condition		enum	Не подменяет camera specs.
+button_condition	Состояние кнопок	enum	T2_OPTIONAL_ENRICHMENT	false	resale	values#part_condition		enum	Для ретро/кнопочных особенно.
+biometric_auth_type	Биометрия	enum	T2_OPTIONAL_ENRICHMENT	false	specs|resale	values#biometric_auth_type		enum	Face ID/Touch ID/fingerprint.
+face_id_touch_id_status	Face ID / Touch ID статус	enum	T2_OPTIONAL_ENRICHMENT	false	resale|safety	values#biometric_status		enum	Поломка влияет на цену.
+repair_history	История ремонта	enum	T2_OPTIONAL_ENRICHMENT	false	resale|facet|ui	values#repair_history		enum	No repair/repaired/unknown.
+screen_replaced	Экран менялся	boolean	T2_OPTIONAL_ENRICHMENT	false	resale	boolean		bool	Только по заявлению/документу.
+battery_replaced	Батарея менялась	boolean	T2_OPTIONAL_ENRICHMENT	false	resale	boolean		bool	Только по заявлению/документу.
+back_glass_replaced	Заднее стекло менялось	boolean	T2_OPTIONAL_ENRICHMENT	false	resale	boolean		bool	Только по заявлению/документу.
+camera_replaced	Камера менялась	boolean	T2_OPTIONAL_ENRICHMENT	false	resale	boolean		bool	Только по заявлению/документу.
+water_damage_signs	Признаки влаги	enum	T2_OPTIONAL_ENRICHMENT	false	resale|safety	values#evidence_status		enum	Не диагностика; только заявленная информация.
+refurbished_status	Refurbished статус	enum	T1_TYPE_SPECIFIC	false	resale|facet	values#refurbished_status		enum	Manufacturer/seller/refurbished/unknown.
+refurbished_grade	Refurbished grade	enum	T2_OPTIONAL_ENRICHMENT	false	resale|facet	values#refurbished_grade		enum	A/B/C/Certified.
+refurbished_by	Кем восстановлен	enum|string	T2_OPTIONAL_ENRICHMENT	false	resale	values#refurbished_by		enum_or_text	Manufacturer/seller/third-party.
+warranty_status	Гарантия	enum	T2_OPTIONAL_ENRICHMENT	false	commerce|facet	values#warranty_status		enum	Inherited override.
+original_box	Оригинальная коробка	boolean	T2_OPTIONAL_ENRICHMENT	false	commerce|resale|facet	boolean		bool	Важно для resale.
+included_accessories	Комплект	array<string>	T2_OPTIONAL_ENRICHMENT	false	commerce|resale	inherited + values#included_accessory			Кабель/зарядка/документы/чехол.
+charger_included	Зарядка в комплекте	boolean	T2_OPTIONAL_ENRICHMENT	false	commerce|resale|facet	boolean		bool	Отдельно от cable_included.
+cable_included	Кабель в комплекте	boolean	T2_OPTIONAL_ENRICHMENT	false	commerce|resale|facet	boolean		bool	Отдельно от charger_included.
+receipt_available	Есть чек/документы	boolean	T2_OPTIONAL_ENRICHMENT	false	commerce|resale	boolean		bool	Доверительный сигнал.
+seller_bundle	Набор продавца	array<string>	T2_OPTIONAL_ENRICHMENT	false	commerce|resale	inherited			Не должен менять categoryCode.
+for_parts_only	Только на запчасти	boolean	T2_OPTIONAL_ENRICHMENT	false	routing|resale|safety	boolean		bool	Если экран/плата как деталь — route to PHONE_ACCESSORIES.
+lot_type	Тип лота	enum	T2_OPTIONAL_ENRICHMENT	false	commerce	values#lot_type		enum	Single/lot/mixed lot.
+camera_main_mp	Основная камера, Мп	decimal	T2_OPTIONAL_ENRICHMENT	false	specs|facet	range:0..250	MP	range	Не primary для routing.
+optical_zoom_x	Оптический зум	decimal	T2_OPTIONAL_ENRICHMENT	false	specs|facet	range:0..20	x	range	Если явно указано.
+water_resistance	Защита от воды	enum	T2_OPTIONAL_ENRICHMENT	false	specs|facet	values#water_resistance		enum	Inherited from specs.
+identity_confidence	Уверенность identity	decimal	T3_SYSTEM_HIDDEN	false	system	0..1		range	Не показывать пользователю.
+identity_evidence	Доказательства identity	array<object>	T3_SYSTEM_HIDDEN	false	system	evidence_schema			OCR/barcode/title/model seed.
+identity_resolution_status	Статус identity	enum	T3_SYSTEM_HIDDEN	false	system	values#identity_resolution_status		enum	resolved/ambiguous/manual_needed.
+model_resolution_candidates	Кандидаты модели	array<object>	T3_SYSTEM_HIDDEN	false	system	runtime_candidates			Для explain/debug.
+listing_completeness_confidence	Полнота объявления	decimal	T3_SYSTEM_HIDDEN	false	system	0..1		range	Для preflight.
+dedup_key	Ключ дедупликации	string	T3_SYSTEM_HIDDEN	false	system	computed		hash	Не показывать.
+route_confidence	Уверенность routing	decimal	T3_SYSTEM_HIDDEN	false	system	0..1		range	Для маршрутизатора.
+source_payload_hash	Hash source payload	string	T3_SYSTEM_HIDDEN	false	system	computed		sha256	Для воспроизводимости.
+vision_no_guess_reason	Причина no-guess	string	T3_SYSTEM_HIDDEN	false	system	computed			Если фото не даёт модель.
+imei_evidence_hash	Hash IMEI evidence	string	T3_SYSTEM_HIDDEN	false	system	computed		sha256	Raw IMEI запрещён.
+compliance_flags	Compliance flags	array<string>	T3_SYSTEM_HIDDEN	false	system	computed			stolen_signal/account_locked/etc.
+compatibility_target_id	ID target для аксессуаров	string	T3_SYSTEM_HIDDEN	false	system	computed			Используется PHONE_ACCESSORIES.

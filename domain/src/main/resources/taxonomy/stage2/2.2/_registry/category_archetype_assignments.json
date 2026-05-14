@@ -634,6 +634,22 @@
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "computer_type",
+        "brand",
+        "model_name_text",
+        "ram_gb",
+        "storage_capacity_gb",
+        "cpu_model_text"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "mpn",
+        "cpu_model_text",
+        "gpu_model_text"
       ]
     },
     {
@@ -684,6 +700,21 @@
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "display_type",
+        "brand",
+        "model_name_text",
+        "screen_size_in",
+        "resolution_class",
+        "refresh_rate_hz"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "model_number",
+        "mpn"
       ]
     },
     {
@@ -731,6 +762,19 @@
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "phone_type",
+        "brand",
+        "model_name_text",
+        "storage_capacity_gb"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "model_number",
+        "carrier"
       ]
     },
     {
@@ -828,7 +872,8 @@
       "categoryCode": "TECH.TABLETS_E_READERS",
       "archetypes": [
         "IDENTITY_CRITICAL",
-        "SPEC_HEAVY"
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
       "identityMode": "BRAND_MODEL",
@@ -837,6 +882,21 @@
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "tablet_type",
+        "brand",
+        "model_name_text",
+        "screen_size_in",
+        "storage_capacity_gb",
+        "connectivity"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "mpn",
+        "compatible_model_text"
       ]
     },
     {

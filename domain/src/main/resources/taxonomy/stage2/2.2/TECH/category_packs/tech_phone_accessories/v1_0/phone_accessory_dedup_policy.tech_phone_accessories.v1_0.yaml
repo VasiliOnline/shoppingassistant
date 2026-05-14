@@ -1,0 +1,40 @@
+category_code: TECH.PHONE_ACCESSORIES
+dedup_keys:
+- scope: model_specific_accessory
+  key:
+  - brand
+  - phone_accessory_type
+  - compatible_model_text_normalized
+  - model_name_text
+  - mpn
+  - color_family
+  - material_family
+- scope: generic_power_accessory
+  key:
+  - brand
+  - phone_accessory_type
+  - connector_type
+  - connector_type_2
+  - max_output_power_w
+  - port_configuration
+  - model_name_text
+  - mpn
+- scope: replacement_part
+  key:
+  - replacement_part_type
+  - compatible_model_text_normalized
+  - part_quality
+  - mpn
+  - gtin
+do_not_merge_when:
+- different compatible_model_text unless resolved equivalent
+- different connector pair
+- different max_output_power_w for chargers
+- OEM vs aftermarket parts
+- different pack_quantity for protectors
+variant_keys:
+- color_family
+- pack_quantity
+- cable_length_m
+- material_family
+- finish

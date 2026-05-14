@@ -1,0 +1,110 @@
+surface_id: user_surface.tech_phones.v1_0
+categoryCode: TECH.PHONES
+initial_fields:
+- phone_type
+- brand
+- model_name_text
+- storage_capacity_gb
+- condition
+- color_family
+- network_lock_status
+- price
+initial_fields_limit: 8
+primary_facets:
+- brand
+- model
+- storage_capacity_gb
+- network_lock_status
+- condition
+- price
+- phone_type
+primary_facets_limit: 7
+secondary_facets:
+- carrier
+- battery_health_bucket
+- ram_gb
+- region_variant
+- mobile_network_generation
+- screen_size_inches
+- refurbished_status
+- account_lock_status
+- repair_history
+- original_box
+- warranty_status
+- esim_support
+- dual_sim_support
+- charging_connector
+hidden_fields:
+- identity_confidence
+- identity_evidence
+- identity_resolution_status
+- model_resolution_candidates
+- listing_completeness_confidence
+- dedup_key
+- route_confidence
+- source_payload_hash
+- vision_no_guess_reason
+- imei_evidence_hash
+- compliance_flags
+- compatibility_target_id
+plp_shelves:
+- shelf_id: shop_iphone
+  label_ru: iPhone
+  type: saved_filter
+  filter:
+    brand: APPLE
+    family: IPHONE
+  not_categoryCode: true
+- shelf_id: shop_galaxy
+  label_ru: Samsung Galaxy
+  type: saved_filter
+  filter:
+    brand: SAMSUNG
+    family: GALAXY
+  not_categoryCode: true
+- shelf_id: shop_pixel
+  label_ru: Google Pixel
+  type: saved_filter
+  filter:
+    brand: GOOGLE
+    family: PIXEL
+  not_categoryCode: true
+- shelf_id: unlocked_phones
+  label_ru: Разлоченные телефоны
+  type: saved_filter
+  filter:
+    network_lock_status: UNLOCKED
+  not_categoryCode: true
+- shelf_id: refurbished_phones
+  label_ru: Восстановленные телефоны
+  type: saved_filter
+  filter:
+    refurbished_status:
+    - MANUFACTURER_REFURBISHED
+    - CERTIFIED_REFURBISHED
+    - SELLER_REFURBISHED
+  not_categoryCode: true
+- shelf_id: foldable_phones
+  label_ru: Складные телефоны
+  type: saved_filter
+  filter:
+    phone_type: FOLDABLE_PHONE
+  not_categoryCode: true
+- shelf_id: local_below_market
+  label_ru: Рядом ниже рынка
+  type: dynamic
+  filter:
+    local_only: true
+    below_market: true
+  not_categoryCode: true
+compare_mode:
+  enabled: true
+  compare_axes:
+  - normalized_model
+  - storage_capacity_gb
+  - condition
+  - battery_health_percent
+  - network_lock_status
+  - warranty_status
+  - distance
+  - price

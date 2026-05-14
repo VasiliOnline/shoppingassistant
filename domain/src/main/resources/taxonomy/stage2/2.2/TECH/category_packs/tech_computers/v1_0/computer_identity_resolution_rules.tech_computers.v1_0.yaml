@@ -1,0 +1,26 @@
+ruleset_id: computer_identity_resolution_rules.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+identity_priority_order:
+- gtin
+- mpn
+- brand+model_exact
+- brand+family+line+model_text
+- brand+model_alias
+- title_weak_match
+minimum_evidence_for_model_resolution:
+- title_model_text
+- box_label
+- spec_sticker
+- system_about_screen
+- seller_structured_field
+weak_evidence_allowed_for_family_only:
+- visual series design
+- partial title alias
+do_not_resolve_model_from:
+- chassis color only
+- keyboard layout only
+- generic laptop shape
+- gaming aesthetic
+fallback:
+  brand_known_model_unknown: keep model_name_text and identity_resolution_status=TEXT_ONLY
+  ambiguous_model: identity_resolution_status=AMBIGUOUS and require user/reviewer selection

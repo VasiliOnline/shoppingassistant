@@ -1,0 +1,25 @@
+policy_id: computer_dedup_policy.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+master_product_key_priority:
+- gtin
+- mpn
+- brand+model+cpu_family+ram_gb+storage_capacity_gb+screen_size_in
+- brand+model_name_text+normalized_specs
+offer_distinguishers:
+- condition
+- ram_gb
+- storage_capacity_gb
+- gpu_model_text
+- keyboard_layout
+- region_variant
+- battery_health_percent
+- included_accessories
+- seller_id
+do_not_merge_when:
+- different computer_type
+- different GPU tier for gaming/workstation
+- different RAM/storage if variant-specific
+- desktop custom build with materially different CPU/GPU
+soft_merge_candidates:
+- same model_name_text with missing specs
+- alias-only model matches with low identity confidence

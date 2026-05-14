@@ -1,0 +1,54 @@
+{
+  "pack_id": "TECH_PHONE_ACCESSORIES_public_category_pack_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "category_code": "TECH.PHONE_ACCESSORIES",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "runtime_mount": "public_category_registry",
+  "status": "production_ready_static_candidate",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "source_tree_contract": "TECH_category_tree_reference.html",
+  "companion_standard": "CATALOG_PACK_COMPANION_v1_RU.md",
+  "main_type_attribute": "phone_accessory_type",
+  "category_archetypes": [
+    "public_category",
+    "compatibility_driven",
+    "accessory_category",
+    "no_guess_evidence_required"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "uses_relation_target": [
+    "TECH.PHONES"
+  ],
+  "purpose_ru": "Production-grade public category pack для аксессуаров телефонов: чехлы, защитные стёкла/плёнки, зарядки, кабели, power banks, держатели, доки, MagSafe, SIM tools и запчасти.",
+  "included": [
+    "phone_accessory_type and accessory-specific attributes",
+    "compatibility requirements and evidence policy for target phone/device",
+    "type-specific user surface and facets without presets/collections",
+    "route guards against phones, wearables, audio, generic power/cables, computer/tablet accessories and FASH accessories",
+    "vision no-guess policy for compatibility/model/wattage",
+    "golden queries, sample offers, publish fixtures, effective snapshot, quality gates and checksums"
+  ],
+  "excluded": [
+    "TECH.PHONES implementation",
+    "model head seed for phones",
+    "full compatible model registry",
+    "presets, collections, shelves, merchandising landing pages",
+    "TECH.CASES / TECH.CHARGERS / TECH.CABLES microcategory mounts",
+    "generic TECH.POWER_CHARGING_CABLES public pack implementation"
+  ],
+  "forbidden_category_codes": [
+    "TECH.CASES",
+    "TECH.CHARGERS",
+    "TECH.CABLES",
+    "TECH.IPHONE_CASES",
+    "TECH.MAGSAFE",
+    "TECH.SCREEN_PROTECTORS"
+  ]
+}

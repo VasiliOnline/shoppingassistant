@@ -1,0 +1,79 @@
+attribute_code	data_type	role	required_policy	allowed_values_source	description_ru
+display_type	enum	T0_CORE	required	values.head.json#display_type	Main type inside TECH.MONITORS_DISPLAYS
+brand	enum_or_text	T0_CORE	required	values.head.json#brand + runtime_candidates	Brand/manufacturer display name
+condition	enum	T0_CORE	required	inherits TECH.ELECTRONICS_COMMON.condition	Listing condition
+screen_size_in	decimal	T0_CORE	required_for_monitor_types_optional_for_accessory	values.head.json#screen_size_in + numeric_range 5..120	Diagonal size in inches; supports 27, 27.0, 27-inch
+resolution_class	enum	T0_CORE	required_for_monitor_types_optional_for_accessory	values.head.json#resolution_class	Normalized resolution bucket
+refresh_rate_hz	integer	T0_CORE	required_for_monitor_types_optional_for_accessory	values.head.json#refresh_rate_hz + numeric_range 30..1000	Native refresh rate in Hz
+panel_technology	enum	T0_CORE	required_for_monitor_types_optional_for_accessory	values.head.json#panel_technology	LCD/OLED panel technology
+connector_input_primary	enum	T0_CORE	required_for_monitor_types_optional_for_accessory	values.head.json#connector_input_primary	Primary video input
+aspect_ratio	enum	T1_TYPE_SPECIFIC	recommended	values.head.json#aspect_ratio	Normalized aspect ratio
+curved	boolean	T1_TYPE_SPECIFIC	recommended	boolean	Curved screen flag
+ultrawide	boolean	T1_TYPE_SPECIFIC	recommended	boolean	Ultrawide/super-ultrawide flag
+hdr_support	enum	T1_TYPE_SPECIFIC	recommended	values.head.json#hdr_support	HDR support/standard
+brightness_nits	integer	T1_TYPE_SPECIFIC	recommended	numeric_range 100..3000	Typical or peak brightness if known
+response_time_ms	decimal	T1_TYPE_SPECIFIC	recommended_for_gaming	numeric_range 0.01..50	Advertised response time
+adaptive_sync	enum	T1_TYPE_SPECIFIC	recommended_for_gaming	values.head.json#adaptive_sync	Adaptive sync mode
+vesa_mount	enum	T1_TYPE_SPECIFIC	recommended	values.head.json#vesa_mount	VESA mount standard
+height_adjustable	boolean	T1_TYPE_SPECIFIC	recommended	boolean	Stand height adjustment
+pivot	boolean	T1_TYPE_SPECIFIC	recommended	boolean	Portrait pivot support
+tilt	boolean	T1_TYPE_SPECIFIC	optional	boolean	Tilt adjustment
+swivel	boolean	T1_TYPE_SPECIFIC	optional	boolean	Swivel adjustment
+built_in_speakers	boolean	T1_TYPE_SPECIFIC	optional	boolean	Integrated speakers
+webcam_built_in	boolean	T1_TYPE_SPECIFIC	optional	boolean	Integrated webcam
+usb_c_power_delivery_w	integer	T1_TYPE_SPECIFIC	recommended_when_usb_c	numeric_range 0..240	USB-C PD wattage
+kvm_switch	boolean	T1_TYPE_SPECIFIC	optional	boolean	Built-in KVM
+smart_os	enum	T1_TYPE_SPECIFIC	required_for_SMART_MONITOR_optional_otherwise	values.head.json#smart_os	Smart OS/app platform
+touchscreen	boolean	T1_TYPE_SPECIFIC	required_for_TOUCHSCREEN_MONITOR_optional_otherwise	boolean	Touch support
+touch_points	integer	T1_TYPE_SPECIFIC	recommended_for_TOUCHSCREEN_MONITOR	numeric_range 1..40	Number of simultaneous touch points
+portable_power_mode	enum	T1_TYPE_SPECIFIC	recommended_for_PORTABLE_MONITOR	values.head.json#portable_power_mode	Power mode for portable monitor
+monitor_accessory_type	enum	T1_TYPE_SPECIFIC	required_for_MONITOR_ACCESSORY	values.head.json#monitor_accessory_type	Accessory type inside monitor branch
+color_gamut	enum	T1_TYPE_SPECIFIC	recommended_for_professional	values.head.json#color_gamut	Color coverage bucket
+factory_calibrated	boolean	T1_TYPE_SPECIFIC	recommended_for_professional	boolean	Factory calibration flag
+delta_e	decimal	T1_TYPE_SPECIFIC	optional_for_professional	numeric_range 0..10	Advertised color accuracy if known
+model_name_text	text	T2_OPTIONAL_ENRICHMENT	recommended	text	Raw model string as seller provided
+model_normalized	text	T2_OPTIONAL_ENRICHMENT	optional	runtime_candidate_identity	Normalized model head/live candidate
+model_number	text	T2_OPTIONAL_ENRICHMENT	optional	text	Manufacturer model number e.g. U2723QE
+mpn	text	T2_OPTIONAL_ENRICHMENT	optional	text	Manufacturer part number
+ean_gtin	text	T2_OPTIONAL_ENRICHMENT	optional	regex_gtin	GTIN/EAN/UPC if provided
+release_year	integer	T2_OPTIONAL_ENRICHMENT	optional	inherits TECH.ELECTRONICS_COMMON.release_year	Release year
+warranty_status	enum	T2_OPTIONAL_ENRICHMENT	optional	values.head.json#warranty_status	Warranty status
+region_variant	enum_or_text	T2_OPTIONAL_ENRICHMENT	optional	inherits TECH.DEVICE_IDENTITY_COMMON.region_variant	Regional version
+included_cables	multi_enum	T2_OPTIONAL_ENRICHMENT	optional	values.head.json#connector_input_primary	Included cable types
+included_stand	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Original stand included
+power_adapter_included	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	External power adapter included
+dead_pixel_status	enum	T2_OPTIONAL_ENRICHMENT	recommended_for_used	values.head.json#dead_pixel_status	Dead pixel disclosure
+backlight_uniformity_status	enum	T2_OPTIONAL_ENRICHMENT	recommended_for_used	values.head.json#backlight_uniformity_status	Backlight/uniformity disclosure
+screen_surface	enum	T2_OPTIONAL_ENRICHMENT	optional	values.head.json#screen_surface	Matte/glossy/anti-glare
+color_body	enum_or_text	T2_OPTIONAL_ENRICHMENT	optional	inherits TECH.ELECTRONICS_COMMON.color	Body color
+energy_class	enum_or_text	T2_OPTIONAL_ENRICHMENT	optional	text	Energy efficiency label where available
+width_mm	integer	T2_OPTIONAL_ENRICHMENT	optional	numeric	Physical width
+height_mm	integer	T2_OPTIONAL_ENRICHMENT	optional	numeric	Physical height
+depth_mm	integer	T2_OPTIONAL_ENRICHMENT	optional	numeric	Physical depth
+weight_g	integer	T2_OPTIONAL_ENRICHMENT	optional	numeric	Weight in grams
+listing_completeness_confidence	decimal	T3_SYSTEM_HIDDEN	system	0..1	Completeness score
+spec_confidence	decimal	T3_SYSTEM_HIDDEN	system	0..1	Specs extraction confidence
+route_confidence	decimal	T3_SYSTEM_HIDDEN	system	0..1	Route confidence
+vision_evidence_level	enum	T3_SYSTEM_HIDDEN	system	values.head.json#vision_evidence_level	Evidence level for AI/photo extraction
+dedup_fingerprint	text	T3_SYSTEM_HIDDEN	system	hash	Internal dedup fingerprint
+seller_claims_raw	json	T3_SYSTEM_HIDDEN	system	json	Raw seller claims payload
+resolution_width_px	integer	T2_OPTIONAL_ENRICHMENT	optional	numeric	Native resolution width
+resolution_height_px	integer	T2_OPTIONAL_ENRICHMENT	optional	numeric	Native resolution height
+hdmi_ports_count	integer	T2_OPTIONAL_ENRICHMENT	optional	0..8	HDMI ports count
+displayport_ports_count	integer	T2_OPTIONAL_ENRICHMENT	optional	0..8	DisplayPort ports count
+usb_c_ports_count	integer	T2_OPTIONAL_ENRICHMENT	optional	0..8	USB-C ports count
+thunderbolt_ports_count	integer	T2_OPTIONAL_ENRICHMENT	optional	0..8	Thunderbolt ports count
+usb_hub_ports_count	integer	T2_OPTIONAL_ENRICHMENT	optional	0..12	USB hub ports count
+local_dimming_zones	integer	T2_OPTIONAL_ENRICHMENT	optional	0..10000	Local dimming zones
+contrast_ratio_text	text	T2_OPTIONAL_ENRICHMENT	optional	text	Advertised contrast ratio
+anti_glare	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Anti-glare coating
+blue_light_filter	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Blue-light reduction
+flicker_free	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Flicker-free technology
+daisy_chain	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	DisplayPort/Thunderbolt daisy chaining
+picture_by_picture	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	PBP support
+picture_in_picture	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	PIP support
+remote_control_included	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Remote control included
+osd_language_region	text	T2_OPTIONAL_ENRICHMENT	optional	text	OSD language/region info
+touch_interface	enum	T2_OPTIONAL_ENRICHMENT	optional	values.head.json#touch_interface	USB/serial touch interface
+stylus_support	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Stylus support for touch displays
+privacy_filter_compatible	boolean	T2_OPTIONAL_ENRICHMENT	optional	boolean	Privacy filter compatible

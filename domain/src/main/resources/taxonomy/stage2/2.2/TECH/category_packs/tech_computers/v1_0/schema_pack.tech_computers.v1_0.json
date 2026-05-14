@@ -1,0 +1,166 @@
+{
+  "schema_id": "schema_pack.tech_computers.v1_0",
+  "category_code": "TECH.COMPUTERS",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "main_type_attribute": "computer_type",
+  "identity_mode": "identity_critical_with_model_text_fallback",
+  "specs_mode": "specs_heavy_soft_validation",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "t0_core": [
+    "categoryCode",
+    "computer_type",
+    "brand",
+    "condition",
+    "model_name_text",
+    "ram_gb",
+    "storage_capacity_gb",
+    "cpu_model_text"
+  ],
+  "t1_by_type": {
+    "LAPTOP": [
+      "screen_size_in",
+      "screen_resolution",
+      "storage_type",
+      "os",
+      "gpu_type",
+      "battery_health_percent",
+      "charger_included"
+    ],
+    "ULTRABOOK": [
+      "screen_size_in",
+      "screen_resolution",
+      "storage_type",
+      "os",
+      "weight_kg",
+      "battery_health_percent",
+      "charger_included"
+    ],
+    "GAMING_LAPTOP": [
+      "screen_size_in",
+      "screen_resolution",
+      "refresh_rate_hz",
+      "gpu_model_text",
+      "graphics_memory_gb",
+      "storage_type",
+      "thermal_profile"
+    ],
+    "TWO_IN_ONE_LAPTOP": [
+      "screen_size_in",
+      "screen_resolution",
+      "touchscreen",
+      "convertible_mode",
+      "stylus_included",
+      "os"
+    ],
+    "CHROMEBOOK": [
+      "screen_size_in",
+      "screen_resolution",
+      "chromeos_support_status",
+      "storage_type",
+      "touchscreen"
+    ],
+    "DESKTOP_PC": [
+      "desktop_form_factor",
+      "gpu_type",
+      "gpu_model_text",
+      "storage_type",
+      "psu_wattage",
+      "prebuilt_or_custom"
+    ],
+    "MINI_PC": [
+      "desktop_form_factor",
+      "cpu_model_text",
+      "ram_gb",
+      "storage_capacity_gb",
+      "port_summary",
+      "vesa_mount_support"
+    ],
+    "ALL_IN_ONE": [
+      "screen_size_in",
+      "screen_resolution",
+      "touchscreen",
+      "cpu_model_text",
+      "gpu_type",
+      "included_accessories"
+    ],
+    "WORKSTATION": [
+      "workstation_class",
+      "cpu_model_text",
+      "gpu_model_text",
+      "ecc_memory_support",
+      "certified_workstation_claim"
+    ],
+    "THIN_CLIENT": [
+      "thin_client_os",
+      "cpu_model_text",
+      "ram_gb",
+      "storage_capacity_gb",
+      "enterprise_management_support"
+    ]
+  },
+  "t2_optional": [
+    "family",
+    "line",
+    "model",
+    "mpn",
+    "gtin",
+    "release_year",
+    "region_variant",
+    "color_family",
+    "warranty",
+    "keyboard_layout",
+    "ports",
+    "wireless_standard",
+    "webcam_present",
+    "optical_drive",
+    "repair_history",
+    "original_box",
+    "included_accessories",
+    "seller_bundle"
+  ],
+  "t3_system_hidden": [
+    "identity_confidence",
+    "identity_resolution_status",
+    "specs_confidence",
+    "route_confidence",
+    "extraction_evidence",
+    "source_trace_id",
+    "normalization_notes"
+  ],
+  "surface_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "publish_policy": {
+    "required_for_all": [
+      "categoryCode",
+      "computer_type",
+      "brand",
+      "condition",
+      "title",
+      "price",
+      "currency",
+      "availability",
+      "images"
+    ],
+    "strongly_recommended_for_all": [
+      "model_name_text",
+      "cpu_model_text",
+      "ram_gb",
+      "storage_capacity_gb"
+    ],
+    "required_when_portable": [
+      "screen_size_in"
+    ],
+    "required_when_desktop": [
+      "desktop_form_factor"
+    ],
+    "soft_validation": "Do not reject offers for missing detailed specs; downgrade completeness/confidence instead."
+  }
+}

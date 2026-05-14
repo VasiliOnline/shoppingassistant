@@ -1,0 +1,47 @@
+version: 1.0
+categoryCode: TECH.MONITORS_DISPLAYS
+input_fields:
+  title:
+    parsers:
+      - alias_router
+      - generated_alias_rules
+      - size_resolution_refresh_parser
+      - model_identity_candidate_parser
+  description:
+    parsers:
+      - specs_extractor
+      - condition_disclosure_extractor
+      - included_accessories_extractor
+  images:
+    parsers:
+      - vision_monitor_category_candidate
+      - label_ocr_model_specs_candidate
+  seller_fields:
+    map:
+      condition: condition
+      price: price
+      currency: currency
+      availability: availability
+output_contract:
+  required_for_publish:
+    - categoryCode
+    - display_type
+    - brand
+    - condition
+    - price
+    - currency
+    - availability
+  required_for_monitor_publish:
+    - screen_size_in
+    - resolution_class
+  soft_required_for_quality:
+    - refresh_rate_hz
+    - panel_technology
+    - connector_input_primary
+runtime_candidates:
+  allowed_for:
+    - brand
+    - model_normalized
+    - model_name_text
+    - screen_size_in
+  must_not_create_categoryCode: true

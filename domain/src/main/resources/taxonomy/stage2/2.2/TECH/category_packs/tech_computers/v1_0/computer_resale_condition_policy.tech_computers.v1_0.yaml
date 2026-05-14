@@ -1,0 +1,27 @@
+policy_id: computer_resale_condition_policy.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+important_resale_fields:
+- condition
+- battery_health_percent
+- battery_cycle_count
+- charger_included
+- keyboard_layout
+- repair_history
+- warranty
+- original_box
+- included_accessories
+publish_warnings:
+- missing_charger_for_laptop
+- missing_battery_health_for_used_laptop
+- missing_cpu_or_ram_or_storage
+- no_real_photos
+- ambiguous_custom_desktop_specs
+hard_blockers:
+- no_categoryCode
+- no_computer_type
+- no_title
+- no_price
+- no_currency
+- no_availability
+- no_images
+- device_is_not_computer_branch

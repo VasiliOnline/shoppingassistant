@@ -1,0 +1,197 @@
+value_set	value_code	label_ru	aliases_ru	sort_order	usage_scope	status	notes_ru
+computer_type	LAPTOP	Ноутбук		1	all	active	portable_general
+computer_type	ULTRABOOK	Ультрабук		2	all	active	portable_thin_light
+computer_type	GAMING_LAPTOP	Игровой ноутбук		3	all	active	portable_gaming
+computer_type	TWO_IN_ONE_LAPTOP	Ноутбук 2-в-1 / трансформер		4	all	active	portable_convertible
+computer_type	CHROMEBOOK	Chromebook		5	all	active	portable_chromeos
+computer_type	DESKTOP_PC	Настольный ПК		6	all	active	desktop_general
+computer_type	MINI_PC	Mini PC		7	all	active	desktop_compact
+computer_type	ALL_IN_ONE	Моноблок		8	all	active	desktop_aio
+computer_type	WORKSTATION	Рабочая станция		9	all	active	desktop_or_mobile_workstation
+computer_type	THIN_CLIENT	Тонкий клиент		10	all	active	enterprise_terminal
+condition	NEW	Новое	новый;запечатанный	1	all	active	
+condition	OPEN_BOX	Открытая коробка	open box;как новый	2	all	active	
+condition	USED	Б/у	бу;used	3	all	active	
+condition	REFURBISHED	Восстановленное	ref;refurbished	4	all	active	
+condition	FOR_PARTS	На запчасти	нерабочий;на детали	5	all	active	
+os	WINDOWS	Windows	виндовс;win	1	all	active	
+os	MACOS	macOS	мак ос;mac	2	all	active	
+os	CHROMEOS	ChromeOS	хромбук;chrome os	3	all	active	
+os	LINUX	Linux	линукс	4	all	active	
+os	NO_OS	Без ОС	no os;free dos;freedos	5	all	active	
+os	OTHER_OS	Другая ОС	other	6	all	active	
+cpu_brand	INTEL	Intel	интел	1	all	active	
+cpu_brand	AMD	AMD	амд	2	all	active	
+cpu_brand	APPLE	Apple	m1;m2;m3;m4;apple silicon	3	all	active	
+cpu_brand	QUALCOMM	Qualcomm	snapdragon	4	all	active	
+cpu_brand	ARM	ARM	arm	5	all	active	
+cpu_brand	OTHER_CPU	Другой	other	6	all	active	
+cpu_family	INTEL_CORE_I3	Intel Core i3	i3	1	all	active	
+cpu_family	INTEL_CORE_I5	Intel Core i5	i5	2	all	active	
+cpu_family	INTEL_CORE_I7	Intel Core i7	i7	3	all	active	
+cpu_family	INTEL_CORE_I9	Intel Core i9	i9	4	all	active	
+cpu_family	INTEL_CORE_ULTRA	Intel Core Ultra	core ultra	5	all	active	
+cpu_family	INTEL_XEON	Intel Xeon	xeon	6	all	active	
+cpu_family	AMD_RYZEN_3	AMD Ryzen 3	райзен 3	7	all	active	
+cpu_family	AMD_RYZEN_5	AMD Ryzen 5	райзен 5	8	all	active	
+cpu_family	AMD_RYZEN_7	AMD Ryzen 7	райзен 7	9	all	active	
+cpu_family	AMD_RYZEN_9	AMD Ryzen 9	райзен 9	10	all	active	
+cpu_family	AMD_THREADRIPPER	AMD Threadripper	threadripper	11	all	active	
+cpu_family	APPLE_M	Apple M-series	m1;m2;m3;m4	12	all	active	
+cpu_family	QUALCOMM_SNAPDRAGON_X	Snapdragon X	snapdragon x	13	all	active	
+gpu_type	INTEGRATED	Интегрированная	встроенная	1	all	active	
+gpu_type	DEDICATED	Дискретная	dedicated;видеокарта	2	all	active	
+gpu_type	HYBRID	Гибридная	hybrid	3	all	active	
+gpu_type	NONE	Нет/не указано	no gpu	4	all	active	
+gpu_brand	NVIDIA	NVIDIA	geforce;rtx;gtx;quadro;rtx ada	1	all	active	
+gpu_brand	AMD	AMD	radeon;rx	2	all	active	
+gpu_brand	INTEL	Intel	iris;arc;uhd	3	all	active	
+gpu_brand	APPLE	Apple	m-series gpu	4	all	active	
+gpu_brand	OTHER_GPU	Другая	other	5	all	active	
+storage_type	NVME_SSD	NVMe SSD	nvme;m2;m.2	1	all	active	
+storage_type	SATA_SSD	SATA SSD	ssd sata	2	all	active	
+storage_type	HDD	HDD	жесткий диск;винчестер	3	all	active	
+storage_type	EMMC	eMMC	emmc	4	all	active	
+storage_type	MIXED	Смешанный	ssd+hdd	5	all	active	
+storage_type	NO_STORAGE	Без накопителя	no disk	6	all	active	
+screen_resolution	HD	HD	1366x768	1	all	active	
+screen_resolution	FULL_HD	Full HD	1920x1080;1080p	2	all	active	
+screen_resolution	WUXGA	WUXGA	1920x1200	3	all	active	
+screen_resolution	QHD	QHD	2560x1440;2k	4	all	active	
+screen_resolution	WQXGA	WQXGA	2560x1600	5	all	active	
+screen_resolution	UHD_4K	4K UHD	3840x2160;4k	6	all	active	
+screen_resolution	RETINA_TEXT	Retina / vendor-specific	ретина	7	all	active	
+screen_resolution	OTHER_RESOLUTION	Другое	other	8	all	active	
+display_panel_type	IPS	IPS	ips	1	all	active	
+display_panel_type	OLED	OLED	oled	2	all	active	
+display_panel_type	MINI_LED	miniLED	mini led	3	all	active	
+display_panel_type	TN	TN	tn	4	all	active	
+display_panel_type	VA	VA	va	5	all	active	
+display_panel_type	RETINA_VENDOR	Retina/vendor-specific	retina	6	all	active	
+refresh_rate_hz	60	60 Гц	60hz	1	all	active	
+refresh_rate_hz	90	90 Гц	90hz	2	all	active	
+refresh_rate_hz	120	120 Гц	120hz	3	all	active	
+refresh_rate_hz	144	144 Гц	144hz	4	all	active	
+refresh_rate_hz	165	165 Гц	165hz	5	all	active	
+refresh_rate_hz	240	240 Гц	240hz	6	all	active	
+refresh_rate_hz	300_PLUS	300+ Гц	300hz;360hz	7	all	active	
+convertible_mode	HINGE_360	360° hinge	360;трансформер	1	all	active	
+convertible_mode	DETACHABLE	Съёмная клавиатура	detachable	2	all	active	
+convertible_mode	TABLET_MODE	Планшетный режим	tablet mode	3	all	active	
+desktop_form_factor	TOWER	Tower	башня	1	all	active	
+desktop_form_factor	MID_TOWER	Mid tower	средняя башня	2	all	active	
+desktop_form_factor	SFF	Small Form Factor	sff	3	all	active	
+desktop_form_factor	MICRO	Micro	micro	4	all	active	
+desktop_form_factor	MINI	Mini	mini pc	5	all	active	
+desktop_form_factor	AIO	All-in-one	моноблок	6	all	active	
+desktop_form_factor	RACK	Rack	rack	7	all	active	
+desktop_form_factor	WORKSTATION_TOWER	Workstation tower	рабочая станция	8	all	active	
+prebuilt_or_custom	PREBUILT	Готовая сборка	prebuilt;брендовый пк	1	all	active	
+prebuilt_or_custom	CUSTOM_BUILD	Кастомная сборка	сборка;custom	2	all	active	
+prebuilt_or_custom	BAREBONE	Barebone	barebone	3	all	active	
+keyboard_layout	RU	Русская	русская;ru	1	all	active	
+keyboard_layout	US	US	ansi;американская	2	all	active	
+keyboard_layout	UK	UK	британская	3	all	active	
+keyboard_layout	DE	Немецкая	de;qwertz	4	all	active	
+keyboard_layout	CH	Швейцарская	swiss;ch	5	all	active	
+keyboard_layout	FR	Французская	azerty;fr	6	all	active	
+keyboard_layout	OTHER_LAYOUT	Другая	other	7	all	active	
+workstation_class	MOBILE_WORKSTATION	Мобильная рабочая станция	mobile workstation	1	all	active	
+workstation_class	DESKTOP_WORKSTATION	Настольная рабочая станция	desktop workstation	2	all	active	
+workstation_class	ENTRY_WORKSTATION	Начальная рабочая станция	entry	3	all	active	
+workstation_class	PRO_WORKSTATION	Профессиональная рабочая станция	pro	4	all	active	
+chromeos_support_status	SUPPORTED	Поддерживается	supported	1	all	active	
+chromeos_support_status	AUE_KNOWN	AUE указан	aue	2	all	active	
+chromeos_support_status	UNKNOWN	Неизвестно	unknown	3	all	active	
+chromeos_support_status	EXPIRED	Поддержка истекла	expired	4	all	active	
+thin_client_os	THINOS	ThinOS	thin os	1	all	active	
+thin_client_os	WINDOWS_IOT	Windows IoT	iot	2	all	active	
+thin_client_os	LINUX_THIN	Linux thin client	linux	3	all	active	
+thin_client_os	CHROMEOS_FLEX	ChromeOS Flex	flex	4	all	active	
+thin_client_os	OTHER_THIN_OS	Другая	other	5	all	active	
+thermal_profile	STANDARD	Обычный	standard	1	all	active	
+thermal_profile	GAMING_COOLING	Игровое охлаждение	gaming cooling	2	all	active	
+thermal_profile	QUIET	Тихий	silent	3	all	active	
+thermal_profile	HIGH_PERFORMANCE	Высокая производительность	performance	4	all	active	
+identity_resolution_status	RESOLVED	Resolved		1	all	active	
+identity_resolution_status	TEXT_ONLY	Только текст		2	all	active	
+identity_resolution_status	AMBIGUOUS	Неоднозначно		3	all	active	
+identity_resolution_status	UNRESOLVED	Не распознано		4	all	active	
+ram_gb_head	4	4 ГБ	4gb;4 гб	1	all	active	
+ram_gb_head	8	8 ГБ	8gb;8 гб	2	all	active	
+ram_gb_head	12	12 ГБ	12gb;12 гб	3	all	active	
+ram_gb_head	16	16 ГБ	16gb;16 гб	4	all	active	
+ram_gb_head	24	24 ГБ	24gb;24 гб	5	all	active	
+ram_gb_head	32	32 ГБ	32gb;32 гб	6	all	active	
+ram_gb_head	48	48 ГБ	48gb;48 гб	7	all	active	
+ram_gb_head	64	64 ГБ	64gb;64 гб	8	all	active	
+ram_gb_head	96	96 ГБ	96gb;96 гб	9	all	active	
+ram_gb_head	128	128 ГБ	128gb;128 гб	10	all	active	
+ram_gb_head	256	256 ГБ	256gb;256 гб	11	all	active	
+storage_capacity_gb_head	64	64 ГБ	64gb;64 гб	1	all	active	
+storage_capacity_gb_head	128	128 ГБ	128gb;128 гб	2	all	active	
+storage_capacity_gb_head	256	256 ГБ	256gb;256 гб	3	all	active	
+storage_capacity_gb_head	512	512 ГБ	512gb;512 гб	4	all	active	
+storage_capacity_gb_head	1024	1 ТБ	1024gb;1024 гб;1tb;1 тб	5	all	active	
+storage_capacity_gb_head	2048	2 ТБ	2048gb;2048 гб;2tb;2 тб	6	all	active	
+storage_capacity_gb_head	4096	4 ТБ	4096gb;4096 гб;4tb;4 тб	7	all	active	
+storage_capacity_gb_head	8192	8 ТБ	8192gb;8192 гб;8tb;8 тб	8	all	active	
+screen_size_in_head	11_6	"11.6"""	11.6;11.6 дюйм	1	all	active	
+screen_size_in_head	12_3	"12.3"""	12.3;12.3 дюйм	2	all	active	
+screen_size_in_head	13_0	"13.0"""	13.0;13.0 дюйм	3	all	active	
+screen_size_in_head	13_3	"13.3"""	13.3;13.3 дюйм	4	all	active	
+screen_size_in_head	13_6	"13.6"""	13.6;13.6 дюйм	5	all	active	
+screen_size_in_head	14_0	"14.0"""	14.0;14.0 дюйм	6	all	active	
+screen_size_in_head	15_0	"15.0"""	15.0;15.0 дюйм	7	all	active	
+screen_size_in_head	15_6	"15.6"""	15.6;15.6 дюйм	8	all	active	
+screen_size_in_head	16_0	"16.0"""	16.0;16.0 дюйм	9	all	active	
+screen_size_in_head	17_3	"17.3"""	17.3;17.3 дюйм	10	all	active	
+screen_size_in_head	18_0	"18.0"""	18.0;18.0 дюйм	11	all	active	
+screen_size_in_head	21_5	"21.5"""	21.5;21.5 дюйм	12	all	active	
+screen_size_in_head	23_8	"23.8"""	23.8;23.8 дюйм	13	all	active	
+screen_size_in_head	24_0	"24.0"""	24.0;24.0 дюйм	14	all	active	
+screen_size_in_head	27_0	"27.0"""	27.0;27.0 дюйм	15	all	active	
+power_watt_head	45	45 Вт	45w;45 ватт	1	all	active	
+power_watt_head	60	60 Вт	60w;60 ватт	2	all	active	
+power_watt_head	65	65 Вт	65w;65 ватт	3	all	active	
+power_watt_head	90	90 Вт	90w;90 ватт	4	all	active	
+power_watt_head	100	100 Вт	100w;100 ватт	5	all	active	
+power_watt_head	120	120 Вт	120w;120 ватт	6	all	active	
+power_watt_head	135	135 Вт	135w;135 ватт	7	all	active	
+power_watt_head	180	180 Вт	180w;180 ватт	8	all	active	
+power_watt_head	230	230 Вт	230w;230 ватт	9	all	active	
+power_watt_head	280	280 Вт	280w;280 ватт	10	all	active	
+power_watt_head	450	450 Вт	450w;450 ватт	11	all	active	
+power_watt_head	550	550 Вт	550w;550 ватт	12	all	active	
+power_watt_head	650	650 Вт	650w;650 ватт	13	all	active	
+power_watt_head	750	750 Вт	750w;750 ватт	14	all	active	
+power_watt_head	850	850 Вт	850w;850 ватт	15	all	active	
+power_watt_head	1000	1000 Вт	1000w;1000 ватт	16	all	active	
+power_watt_head	1200	1200 Вт	1200w;1200 ватт	17	all	active	
+computer_brand_head	APPLE	Apple		1	all	active	
+computer_brand_head	LENOVO	Lenovo		2	all	active	
+computer_brand_head	HP	Hp		3	all	active	
+computer_brand_head	DELL	Dell		4	all	active	
+computer_brand_head	ASUS	Asus		5	all	active	
+computer_brand_head	ACER	Acer		6	all	active	
+computer_brand_head	MSI	Msi		7	all	active	
+computer_brand_head	MICROSOFT	Microsoft		8	all	active	
+computer_brand_head	SAMSUNG	Samsung		9	all	active	
+computer_brand_head	GIGABYTE	Gigabyte		10	all	active	
+computer_brand_head	ALIENWARE	Alienware		11	all	active	
+computer_brand_head	RAZER	Razer		12	all	active	
+computer_brand_head	HUAWEI	Huawei		13	all	active	
+computer_brand_head	HONOR	Honor		14	all	active	
+computer_brand_head	XIAOMI	Xiaomi		15	all	active	
+computer_brand_head	LG	Lg		16	all	active	
+computer_brand_head	FUJITSU	Fujitsu		17	all	active	
+computer_brand_head	TOSHIBA	Toshiba		18	all	active	
+computer_brand_head	PANASONIC	Panasonic		19	all	active	
+computer_brand_head	FRAMEWORK	Framework		20	all	active	
+computer_brand_head	INTEL	Intel		21	all	active	
+computer_brand_head	ZOTAC	Zotac		22	all	active	
+computer_brand_head	BEELINK	Beelink		23	all	active	
+computer_brand_head	MINISFORUM	Minisforum		24	all	active	
+computer_brand_head	CHUWI	Chuwi		25	all	active	
+computer_brand_head	HASEE	Hasee		26	all	active	
+computer_brand_head	OTHER_BRAND	Other Brand		27	all	active	

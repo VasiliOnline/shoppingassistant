@@ -1,5 +1,8 @@
 package com.example.shoppingassistant.core.data.catalog
 
+import com.example.shoppingassistant.domain.catalog.AliasEntry
+import com.example.shoppingassistant.domain.catalog.AliasEntryRepository
+import com.example.shoppingassistant.domain.catalog.AliasKind
 import com.example.shoppingassistant.domain.catalog.CategoryAlias
 import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
 import com.example.shoppingassistant.domain.catalog.TaxonomyValidator
@@ -60,5 +63,42 @@ class TaxonomyGateTest {
         val report = gate.validate()
 
         assertFalse(report.summary(), report.failIssues.any { it.code == "ALIAS_AMBIGUOUS" })
+    }
+
+    @Test
+    fun validate_normalizesLegacyTypedAliasTargetsBeforeCollisionChecks() = runBlocking {
+        val staleRemoteAliasEntries = object : AliasEntryRepository {
+            override suspend fun listAliasEntries(locale: String?): List<AliasEntry> = listOf(
+                AliasEntry(
+                    locale = "en-US",
+                    term = "camera",
+                    normalizedTerm = "camera",
+                    kind = AliasKind.CATEGORY,
+                    targetCode = "TECH.CAMERAS",
+                    weight = 90,
+                ),
+                AliasEntry(
+                    locale = "en-US",
+                    term = "camera",
+                    normalizedTerm = "camera",
+                    kind = AliasKind.CATEGORY,
+                    targetCode = "TECH.CAMERAS_DRONES",
+                    weight = 90,
+                ),
+            )
+        }
+        val gate = TaxonomyGate(
+            catalogRepository = CatalogRepositoryImpl(SeededCatalogDataSource()),
+            categoryAliasRepository = CategoryAliasRepositoryImpl(),
+            browseNodeRepository = BrowseNodeRepositoryImpl(),
+            aliasEntryRepository = staleRemoteAliasEntries,
+            googleTaxonomyMappingRepository = GoogleTaxonomyMappingRepositoryImpl(),
+            validator = TaxonomyValidator(),
+        )
+
+        val report = gate.validate()
+
+        assertFalse(report.summary(), report.failIssues.any { it.code == "ALIAS_ENTRY_COLLISION" })
+        assertFalse(report.summary(), report.failIssues.any { it.message.contains("TECH.CAMERAS") })
     }
 }

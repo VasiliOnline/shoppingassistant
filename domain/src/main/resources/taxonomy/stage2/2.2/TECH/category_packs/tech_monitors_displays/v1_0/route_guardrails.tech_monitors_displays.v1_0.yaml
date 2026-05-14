@@ -1,0 +1,48 @@
+version: 1.0
+categoryCode: TECH.MONITORS_DISPLAYS
+evaluation_mode: priority_desc_first_match
+guards:
+  - id: tv_home_theater_precedence
+    priority: 100
+    if_any_terms: ['телевизор', 'smart tv', 'oled tv', 'qled tv', 'проектор', 'projector']
+    route_to: TECH.TV_HOME_THEATER
+    reason: TV/projector is not a PC monitor.
+  - id: laptop_computer_precedence
+    priority: 95
+    if_any_terms: ['ноутбук', 'laptop', 'macbook', 'thinkpad', 'экран ноутбука', 'матрица ноутбука']
+    route_to: TECH.COMPUTERS
+    reason: Whole laptop or laptop display part is not monitor category.
+  - id: graphics_tablet_precedence
+    priority: 94
+    if_any_terms: ['графический планшет', 'wacom cintiq', 'huion kamvas', 'xp-pen artist', 'pen display']
+    route_to: TECH.TABLETS_E_READERS
+    reason: Drawing tablet/pen display follows tablets/e-readers branch policy.
+  - id: monitor_arm_stand_precedence
+    priority: 92
+    if_any_terms: ['кронштейн для монитора', 'monitor arm', 'настольное крепление монитора', 'газлифт для монитора', 'dual monitor arm']
+    route_to: TECH.COMPUTER_ACCESSORIES
+    reason: Monitor arms/stands are owned by COMPUTER_ACCESSORIES unless sold as original monitor part.
+  - id: cable_only_precedence
+    priority: 90
+    if_all_terms: ['кабель']
+    if_not_any_terms: ['монитор', 'display', 'экран']
+    route_to: TECH.POWER_CHARGING_CABLES
+    reason: Generic cable is not monitor display.
+  - id: pc_component_precedence
+    priority: 88
+    if_any_terms: ['видеокарта', 'gpu', 'материнская плата', 'ram', 'блок питания', 'процессор']
+    route_to: TECH.PC_COMPONENTS
+    reason: PC component not monitor.
+  - id: include_monitor
+    priority: 50
+    if_any_terms: ['монитор', 'computer monitor', 'display monitor', 'gaming monitor', 'portable monitor', 'сенсорный монитор']
+    route_to: TECH.MONITORS_DISPLAYS
+    reason: Explicit monitor/display product.
+ambiguity_policy:
+  display_word_without_context: require_secondary_signal
+  secondary_signals:
+    - screen_size_in
+    - refresh_rate_hz
+    - resolution_class
+    - panel_technology
+    - known_monitor_brand_or_model

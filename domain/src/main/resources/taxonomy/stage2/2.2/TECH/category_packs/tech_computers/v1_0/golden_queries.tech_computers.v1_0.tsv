@@ -1,0 +1,98 @@
+query	expected_category_code	expected_computer_type	expected_attributes_json	negative_route	notes_ru
+ноутбук lenovo thinkpad t14 i5 16 512	TECH.COMPUTERS	LAPTOP	{}		positive type query
+macbook air 13 m2 8 256	TECH.COMPUTERS	LAPTOP	{}		positive type query
+игровой ноутбук asus rog g14 rtx 4060	TECH.COMPUTERS	GAMING_LAPTOP	{}		positive type query
+ноутбук трансформер hp envy x360	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	{}		positive type query
+chromebook acer 14	TECH.COMPUTERS	CHROMEBOOK	{}		positive type query
+системный блок ryzen 5 rtx 3060	TECH.COMPUTERS	DESKTOP_PC	{}		positive type query
+мини пк beelink ser 16gb 512	TECH.COMPUTERS	MINI_PC	{}		positive type query
+моноблок imac 24 m1	TECH.COMPUTERS	ALL_IN_ONE	{}		positive type query
+рабочая станция dell precision xeon quadro	TECH.COMPUTERS	WORKSTATION	{}		positive type query
+тонкий клиент hp t630	TECH.COMPUTERS	THIN_CLIENT	{}		positive type query
+MacBook Air 13 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""APPLE"",""family"":""MACBOOK"",""model_name_text"":""MacBook Air 13""}"		head model query
+MacBook Air 15 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""APPLE"",""family"":""MACBOOK"",""model_name_text"":""MacBook Air 15""}"		head model query
+MacBook Pro 14 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""APPLE"",""family"":""MACBOOK"",""model_name_text"":""MacBook Pro 14""}"		head model query
+MacBook Pro 16 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""APPLE"",""family"":""MACBOOK"",""model_name_text"":""MacBook Pro 16""}"		head model query
+iMac 24 16 512	TECH.COMPUTERS	ALL_IN_ONE	"{""brand"":""APPLE"",""family"":""IMAC"",""model_name_text"":""iMac 24""}"		head model query
+Mac mini 16 512	TECH.COMPUTERS	MINI_PC	"{""brand"":""APPLE"",""family"":""MAC"",""model_name_text"":""Mac mini""}"		head model query
+Mac Studio 16 512	TECH.COMPUTERS	WORKSTATION	"{""brand"":""APPLE"",""family"":""MAC"",""model_name_text"":""Mac Studio""}"		head model query
+ThinkPad X1 Carbon 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""LENOVO"",""family"":""THINKPAD"",""model_name_text"":""ThinkPad X1 Carbon""}"		head model query
+ThinkPad T14 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""LENOVO"",""family"":""THINKPAD"",""model_name_text"":""ThinkPad T14""}"		head model query
+ThinkPad P1 16 512	TECH.COMPUTERS	WORKSTATION	"{""brand"":""LENOVO"",""family"":""THINKPAD"",""model_name_text"":""ThinkPad P1""}"		head model query
+IdeaPad 3 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""LENOVO"",""family"":""IDEAPAD"",""model_name_text"":""IdeaPad 3""}"		head model query
+IdeaPad 5 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""LENOVO"",""family"":""IDEAPAD"",""model_name_text"":""IdeaPad 5""}"		head model query
+Yoga 7 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""LENOVO"",""family"":""YOGA"",""model_name_text"":""Yoga 7""}"		head model query
+Yoga 9 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""LENOVO"",""family"":""YOGA"",""model_name_text"":""Yoga 9""}"		head model query
+Legion 5 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""LENOVO"",""family"":""LEGION"",""model_name_text"":""Legion 5""}"		head model query
+Legion 7 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""LENOVO"",""family"":""LEGION"",""model_name_text"":""Legion 7""}"		head model query
+XPS 13 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""DELL"",""family"":""XPS"",""model_name_text"":""XPS 13""}"		head model query
+XPS 15 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""DELL"",""family"":""XPS"",""model_name_text"":""XPS 15""}"		head model query
+Latitude 5420 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""DELL"",""family"":""LATITUDE"",""model_name_text"":""Latitude 5420""}"		head model query
+Latitude 7420 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""DELL"",""family"":""LATITUDE"",""model_name_text"":""Latitude 7420""}"		head model query
+Precision 5550 16 512	TECH.COMPUTERS	WORKSTATION	"{""brand"":""DELL"",""family"":""PRECISION"",""model_name_text"":""Precision 5550""}"		head model query
+OptiPlex 3080 32 1000	TECH.COMPUTERS	DESKTOP_PC	"{""brand"":""DELL"",""family"":""OPTIPLEX"",""model_name_text"":""OptiPlex 3080""}"		head model query
+Alienware m15 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""ALIENWARE"",""family"":""ALIENWARE"",""model_name_text"":""Alienware m15""}"		head model query
+Pavilion 15 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""HP"",""family"":""PAVILION"",""model_name_text"":""Pavilion 15""}"		head model query
+Envy x360 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""HP"",""family"":""ENVY"",""model_name_text"":""Envy x360""}"		head model query
+Spectre x360 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""HP"",""family"":""SPECTRE"",""model_name_text"":""Spectre x360""}"		head model query
+EliteBook 840 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""HP"",""family"":""ELITEBOOK"",""model_name_text"":""EliteBook 840""}"		head model query
+ProBook 450 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""HP"",""family"":""PROBOOK"",""model_name_text"":""ProBook 450""}"		head model query
+Omen 16 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""HP"",""family"":""OMEN"",""model_name_text"":""Omen 16""}"		head model query
+ZBook Studio 16 512	TECH.COMPUTERS	WORKSTATION	"{""brand"":""HP"",""family"":""ZBOOK"",""model_name_text"":""ZBook Studio""}"		head model query
+Zenbook 14 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""ASUS"",""family"":""ZENBOOK"",""model_name_text"":""Zenbook 14""}"		head model query
+Vivobook 15 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""ASUS"",""family"":""VIVOBOOK"",""model_name_text"":""Vivobook 15""}"		head model query
+ROG Zephyrus G14 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""ASUS"",""family"":""ROG"",""model_name_text"":""ROG Zephyrus G14""}"		head model query
+ROG Strix G15 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""ASUS"",""family"":""ROG"",""model_name_text"":""ROG Strix G15""}"		head model query
+TUF Gaming A15 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""ASUS"",""family"":""TUF"",""model_name_text"":""TUF Gaming A15""}"		head model query
+ExpertBook B9 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""ASUS"",""family"":""EXPERTBOOK"",""model_name_text"":""ExpertBook B9""}"		head model query
+Aspire 5 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""ACER"",""family"":""ASPIRE"",""model_name_text"":""Aspire 5""}"		head model query
+Swift 3 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""ACER"",""family"":""SWIFT"",""model_name_text"":""Swift 3""}"		head model query
+Predator Helios 300 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""ACER"",""family"":""PREDATOR"",""model_name_text"":""Predator Helios 300""}"		head model query
+Nitro 5 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""ACER"",""family"":""NITRO"",""model_name_text"":""Nitro 5""}"		head model query
+Modern 14 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""MSI"",""family"":""MODERN"",""model_name_text"":""Modern 14""}"		head model query
+Prestige 14 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""MSI"",""family"":""PRESTIGE"",""model_name_text"":""Prestige 14""}"		head model query
+GF63 Thin 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""MSI"",""family"":""GF"",""model_name_text"":""GF63 Thin""}"		head model query
+Stealth 15 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""MSI"",""family"":""STEALTH"",""model_name_text"":""Stealth 15""}"		head model query
+Surface Laptop 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""MICROSOFT"",""family"":""SURFACE"",""model_name_text"":""Surface Laptop""}"		head model query
+Surface Pro 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""MICROSOFT"",""family"":""SURFACE"",""model_name_text"":""Surface Pro""}"		head model query
+Surface Book 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""MICROSOFT"",""family"":""SURFACE"",""model_name_text"":""Surface Book""}"		head model query
+Galaxy Book Pro 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""SAMSUNG"",""family"":""GALAXY_BOOK"",""model_name_text"":""Galaxy Book Pro""}"		head model query
+Galaxy Book 360 16 512	TECH.COMPUTERS	TWO_IN_ONE_LAPTOP	"{""brand"":""SAMSUNG"",""family"":""GALAXY_BOOK"",""model_name_text"":""Galaxy Book 360""}"		head model query
+MateBook D 15 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""HUAWEI"",""family"":""MATEBOOK"",""model_name_text"":""MateBook D 15""}"		head model query
+MateBook X Pro 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""HUAWEI"",""family"":""MATEBOOK"",""model_name_text"":""MateBook X Pro""}"		head model query
+MagicBook 14 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""HONOR"",""family"":""MAGICBOOK"",""model_name_text"":""MagicBook 14""}"		head model query
+Mi Notebook Pro 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""XIAOMI"",""family"":""MI_NOTEBOOK"",""model_name_text"":""Mi Notebook Pro""}"		head model query
+LG Gram 14 16 512	TECH.COMPUTERS	ULTRABOOK	"{""brand"":""LG"",""family"":""GRAM"",""model_name_text"":""LG Gram 14""}"		head model query
+Razer Blade 15 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""RAZER"",""family"":""BLADE"",""model_name_text"":""Razer Blade 15""}"		head model query
+Aorus 15 16 512	TECH.COMPUTERS	GAMING_LAPTOP	"{""brand"":""GIGABYTE"",""family"":""AORUS"",""model_name_text"":""Aorus 15""}"		head model query
+Aero 15 16 512	TECH.COMPUTERS	WORKSTATION	"{""brand"":""GIGABYTE"",""family"":""AERO"",""model_name_text"":""Aero 15""}"		head model query
+Framework Laptop 13 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""FRAMEWORK"",""family"":""FRAMEWORK_LAPTOP"",""model_name_text"":""Framework Laptop 13""}"		head model query
+Toughbook CF 16 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""PANASONIC"",""family"":""TOUGHBOOK"",""model_name_text"":""Toughbook CF""}"		head model query
+Beelink SER 16 512	TECH.COMPUTERS	MINI_PC	"{""brand"":""BEELINK"",""family"":""MINI_PC"",""model_name_text"":""Beelink SER""}"		head model query
+Minisforum UM 16 512	TECH.COMPUTERS	MINI_PC	"{""brand"":""MINISFORUM"",""family"":""MINI_PC"",""model_name_text"":""Minisforum UM""}"		head model query
+Intel NUC 16 512	TECH.COMPUTERS	MINI_PC	"{""brand"":""INTEL"",""family"":""NUC"",""model_name_text"":""Intel NUC""}"		head model query
+Zotac ZBOX 16 512	TECH.COMPUTERS	MINI_PC	"{""brand"":""ZOTAC"",""family"":""ZBOX"",""model_name_text"":""Zotac ZBOX""}"		head model query
+EliteDesk 800 32 1000	TECH.COMPUTERS	DESKTOP_PC	"{""brand"":""HP"",""family"":""ELITEDESK"",""model_name_text"":""EliteDesk 800""}"		head model query
+HP t630 16 512	TECH.COMPUTERS	THIN_CLIENT	"{""brand"":""HP"",""family"":""THIN_CLIENT"",""model_name_text"":""HP t630""}"		head model query
+Dell Wyse 5070 16 512	TECH.COMPUTERS	THIN_CLIENT	"{""brand"":""DELL"",""family"":""WYSE"",""model_name_text"":""Dell Wyse 5070""}"		head model query
+ThinkCentre M720 32 1000	TECH.COMPUTERS	DESKTOP_PC	"{""brand"":""LENOVO"",""family"":""THINKCENTRE"",""model_name_text"":""ThinkCentre M720""}"		head model query
+ThinkStation P Series 16 512	TECH.COMPUTERS	WORKSTATION	"{""brand"":""LENOVO"",""family"":""THINKSTATION"",""model_name_text"":""ThinkStation P Series""}"		head model query
+Inspiron Desktop 32 1000	TECH.COMPUTERS	DESKTOP_PC	"{""brand"":""DELL"",""family"":""INSPIRON"",""model_name_text"":""Inspiron Desktop""}"		head model query
+Acer Veriton 32 1000	TECH.COMPUTERS	DESKTOP_PC	"{""brand"":""ACER"",""family"":""VERITON"",""model_name_text"":""Acer Veriton""}"		head model query
+ноутбук i7 16гб 1тб ssd	TECH.COMPUTERS	LAPTOP	"{""cpu_family"":""INTEL_CORE_I7"",""ram_gb"":16,""storage_capacity_gb"":1024}"		spec extraction query
+игровой ноутбук rtx 4070 32gb 1tb 165hz	TECH.COMPUTERS	GAMING_LAPTOP	"{""gpu_brand"":""NVIDIA"",""ram_gb"":32,""storage_capacity_gb"":1024,""refresh_rate_hz"":165}"		spec extraction query
+desktop pc ryzen 7 rtx 3070 32gb	TECH.COMPUTERS	DESKTOP_PC	"{""cpu_family"":""AMD_RYZEN_7"",""gpu_brand"":""NVIDIA"",""ram_gb"":32}"		spec extraction query
+mini pc n100 16gb 512gb	TECH.COMPUTERS	MINI_PC	"{""ram_gb"":16,""storage_capacity_gb"":512}"		spec extraction query
+macbook pro 14 m3 pro 18gb 512	TECH.COMPUTERS	LAPTOP	"{""brand"":""APPLE"",""family"":""MACBOOK""}"		spec extraction query
+ноутбук без зарядки бу	TECH.COMPUTERS	LAPTOP	"{""condition"":""USED"",""charger_included"":false}"		spec extraction query
+ноутбук батарея 86 процентов	TECH.COMPUTERS	LAPTOP	"{""battery_health_percent"":86}"		spec extraction query
+монитор samsung 27 144hz	TECH.MONITORS_DISPLAYS		{}	TECH.MONITORS_DISPLAYS	negative route query
+клавиатура logitech mx keys	TECH.COMPUTER_ACCESSORIES		{}	TECH.COMPUTER_ACCESSORIES	negative route query
+мышь razer deathadder	TECH.COMPUTER_ACCESSORIES		{}	TECH.COMPUTER_ACCESSORIES	negative route query
+ssd samsung 980 pro 1tb	TECH.STORAGE_MEMORY		{}	TECH.STORAGE_MEMORY	negative route query
+видеокарта rtx 4070	TECH.PC_COMPONENTS		{}	TECH.PC_COMPONENTS	negative route query
+процессор i7 12700k	TECH.PC_COMPONENTS		{}	TECH.PC_COMPONENTS	negative route query
+ipad pro 12.9 keyboard	TECH.TABLETS_E_READERS		{}	TECH.TABLETS_E_READERS	negative route query
+playstation 5 slim	TECH.GAMING		{}	TECH.GAMING	negative route query
+iphone 15 pro 256	TECH.PHONES		{}	TECH.PHONES	negative route query
+зарядка для ноутбука usb c 65w	TECH.POWER_CHARGING_CABLES		{}	TECH.POWER_CHARGING_CABLES	negative route query

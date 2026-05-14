@@ -1,0 +1,45 @@
+{
+  "pack_id": "TECH_PHONES_public_category_pack_v1_0_RU",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "static_status": "PASS",
+  "errors": [],
+  "runtime_validators_executed_in_sandbox": false,
+  "runtime_mount_ready": "YES",
+  "counts": {
+    "files_without_checksums": 30,
+    "attributes": 81,
+    "values": 271,
+    "aliases": 390,
+    "model_head_seed_rows": 125,
+    "phone_model_alias_rows": 234,
+    "golden_queries": 320,
+    "sample_offers": 164,
+    "positive_sample_offers": 125,
+    "negative_sample_offers": 39,
+    "publish_sample_offers": 60,
+    "facet_coverage_rows": 69,
+    "initial_fields": 8,
+    "primary_facets": 7,
+    "t3_hidden_leaks": 0
+  },
+  "required_external_gates": [
+    "Stage22SeedValidator",
+    "FacetSchemaValidator",
+    "EffectiveSpecSnapshotGate",
+    "RouteConflictGate",
+    "UserSurfaceGate",
+    "AliasCollisionGate",
+    "VisionRulesGate",
+    "SampleOffersSmokeGate",
+    "IdentityCandidateGate",
+    "PhoneModelSeedGate",
+    "NoModelGuessGate",
+    "PhoneResaleSafetyGate",
+    "IMEIPrivacyGate",
+    "DedupKeyGate"
+  ],
+  "known_limitations": [
+    "External project runtime validators are not executed inside this sandbox.",
+    "model_head_seed is not a full global registry; runtime candidates must pass gates before promotion."
+  ]
+}

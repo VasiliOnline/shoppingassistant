@@ -1,0 +1,42 @@
+rule_set_id: vision_rules.tech_phones.v1_0
+categoryCode: TECH.PHONES
+principles:
+- Фотография может подтвердить coarse class phone_type, но не точную модель без evidence.
+- Модель, storage, lock status, IMEI status и battery health не угадываются по визуалу.
+- 'Raw IMEI не хранить: только статус проверки и hash evidence.'
+allowed_from_image_only:
+- phone_type
+- phone_form_factor
+- color_family
+- visible_damage_candidates
+- screen_condition_candidate
+requires_text_or_structured_evidence:
+- brand
+- model
+- model_number
+- storage_capacity_gb
+- ram_gb
+- network_lock_status
+- carrier
+- battery_health_percent
+- account_lock_status
+- imei_status
+- release_year
+- region_variant
+evidence_sources_priority:
+- barcode/GTIN
+- model_number_on_box_or_settings_OCR
+- seller_title
+- seller_declared_specs
+- marketplace_structured_fields
+- vision_coarse_class
+low_confidence_behavior:
+  model: write_to_model_name_text_only
+  identity_resolution_status: MANUAL_REVIEW
+  block_publish: false
+  show_review_chip: true
+publish_blockers:
+- explicit_stolen_signal
+- account_lock_status_locked
+- imei_status_blacklisted_or_stolen
+- raw_imei_detected_in_public_description

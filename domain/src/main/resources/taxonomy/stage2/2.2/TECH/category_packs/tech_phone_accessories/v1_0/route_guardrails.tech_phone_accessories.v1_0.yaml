@@ -1,0 +1,118 @@
+category_code: TECH.PHONE_ACCESSORIES
+evaluation_mode: priority_desc_first_match
+default_include_rule: requires phone accessory type term OR phone/mobile context + accessory term
+guards:
+- id: actual_phone_device_exclusion
+  priority: 1000
+  when_all:
+  - phone model/brand term
+  - no accessory noun
+  route_to: TECH.PHONES
+  examples:
+  - iphone 13 128gb
+  - samsung galaxy s24 ultra
+- id: wearable_watch_band_exclusion
+  priority: 950
+  when_any:
+  - apple watch ремешок
+  - ремешок для смарт часов
+  - watch band
+  route_to: TECH.WEARABLES
+  notes: Phone strap/charm remains STRAP_CHARM only with phone/mobile term.
+- id: audio_case_exclusion
+  priority: 940
+  when_any:
+  - чехол airpods
+  - case for earbuds
+  - наушники чехол
+  route_to: TECH.AUDIO
+- id: tablet_accessory_exclusion
+  priority: 930
+  when_any:
+  - чехол ipad
+  - пленка планшет
+  - tablet case
+  route_to: TECH.TABLETS_E_READERS
+- id: computer_accessory_exclusion
+  priority: 920
+  when_any:
+  - чехол ноутбук
+  - laptop sleeve
+  - кабель для монитора
+  - клавиатура usb-c
+  route_to: TECH.COMPUTER_ACCESSORIES
+- id: generic_power_cable_exclusion
+  priority: 910
+  when_all:
+  - generic cable/charger term
+  - no phone/mobile/model context
+  route_to: TECH.POWER_CHARGING_CABLES
+  examples:
+  - кабель hdmi 2м
+  - зарядка для ноутбука 65w
+  - удлинитель
+- id: fashion_bag_exclusion
+  priority: 900
+  when_any:
+  - сумка для телефона
+  - кроссбоди для телефона
+  - кошелек для телефона
+  route_to: FASH.BAGS
+  notes: Unless item is clearly MagSafe wallet/phone grip, not wearable bag.
+- id: toy_case_exclusion
+  priority: 890
+  when_any:
+  - чехол для кукольного телефона
+  - игрушечный телефон аксессуары
+  route_to: KIDS_OR_TOYS
+- id: hazardous_battery_safety
+  priority: 880
+  when_any:
+  - вздутый аккумулятор
+  - поврежденный powerbank
+  - самодельный аккумулятор
+  route_to: BLOCKED_REVIEW
+  notes: Safety review for damaged lithium batteries.
+- id: include_phone_case
+  priority: 600
+  when_any:
+  - чехол iphone
+  - чехол samsung
+  - phone case
+  - чехол для телефона
+  route_to: TECH.PHONE_ACCESSORIES
+  set:
+    phone_accessory_type: CASE
+- id: include_phone_screen_protection
+  priority: 590
+  when_any:
+  - защитное стекло iphone
+  - пленка на телефон
+  - screen protector phone
+  route_to: TECH.PHONE_ACCESSORIES
+  set:
+    phone_accessory_type: SCREEN_PROTECTOR
+- id: include_phone_power_accessory
+  priority: 580
+  when_any:
+  - зарядка для телефона
+  - кабель iphone
+  - power bank для телефона
+  - magsafe charger
+  route_to: TECH.PHONE_ACCESSORIES
+- id: include_phone_mount
+  priority: 570
+  when_any:
+  - держатель телефона
+  - автодержатель смартфона
+  - подставка для телефона
+  route_to: TECH.PHONE_ACCESSORIES
+- id: include_phone_replacement_part
+  priority: 560
+  when_any:
+  - дисплей iphone
+  - аккумулятор samsung
+  - порт зарядки телефона
+  route_to: TECH.PHONE_ACCESSORIES
+  set:
+    phone_accessory_type: REPLACEMENT_PART

@@ -1,0 +1,64 @@
+category_code: TECH.PHONE_ACCESSORIES
+primary_facets_max: 7
+primary_facets:
+- attribute: phone_accessory_type
+  label_ru: Тип
+  show_always: true
+- attribute: compatible_brand
+  label_ru: Для бренда
+  show_when: model_or_family_specific
+- attribute: compatible_model_text
+  label_ru: Для модели
+  show_when: sufficient_inventory
+- attribute: brand
+  label_ru: Бренд аксессуара
+  show_always: true
+- attribute: condition
+  label_ru: Состояние
+  show_always: true
+- attribute: color_family
+  label_ru: Цвет
+  show_always: true
+- attribute: price
+  label_ru: Цена
+  show_always: true
+secondary_facets_by_type:
+  CASE:
+  - case_style
+  - case_material
+  - protection_level
+  - magsafe_compatible
+  - transparency
+  - finish
+  SCREEN_PROTECTOR:
+  - protector_material
+  - protector_coverage
+  - pack_quantity
+  - finish
+  CHARGER:
+  - connector_type
+  - port_configuration
+  - max_output_power_w
+  - fast_charge_standard
+  WIRELESS_CHARGER:
+  - wireless_standard
+  - max_output_power_w
+  - magsafe_compatible
+  - stand_form_factor
+  CABLE:
+  - connector_type
+  - connector_type_2
+  - cable_length_m
+  - usb_standard
+  - max_power_w
+  POWER_BANK:
+  - capacity_mah
+  - max_output_power_w
+  - wireless_charging_support
+  - port_configuration
+  REPLACEMENT_PART:
+  - replacement_part_type
+  - part_quality
+  - repair_skill_level
+  - original_oem
+indexing_policy: Facet templates are category filters only; no preset/collection/landing-page generation here.

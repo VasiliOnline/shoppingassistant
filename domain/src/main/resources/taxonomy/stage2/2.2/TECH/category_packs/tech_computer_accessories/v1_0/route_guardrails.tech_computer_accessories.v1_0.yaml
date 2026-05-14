@@ -1,0 +1,161 @@
+# route_guardrails.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+evaluation_mode: priority_desc_first_match
+positive_route_tokens:
+  - клавиатура
+  - мышь
+  - вебкамера
+  - веб-камера
+  - док-станция
+  - usb hub
+  - usb хаб
+  - подставка для ноутбука
+  - кронштейн для монитора
+  - коврик для мыши
+  - стилус
+  - переходник
+  - донгл
+  - cooling pad
+  - фильтр приватности
+  - набор для чистки
+rules:
+  - id: primary_computer_exclusion
+    priority: 1000
+    when_any:
+      - ноутбук
+      - macbook
+      - ultrabook
+      - desktop pc
+      - системный блок
+      - mini pc
+    unless_any:
+      - клавиатура
+      - мышь
+      - док
+      - hub
+      - хаб
+      - подставка
+      - чехол
+      - фильтр
+      - адаптер
+    route_to: TECH.COMPUTERS
+  - id: display_exclusion
+    priority: 950
+    when_any:
+      - монитор
+      - display
+      - дисплей
+    unless_any:
+      - кронштейн
+      - arm
+      - рука
+      - подставка
+      - фильтр
+      - privacy
+      - кабель
+    route_to: TECH.MONITORS_DISPLAYS
+  - id: pc_components_exclusion
+    priority: 930
+    when_any:
+      - видеокарта
+      - rtx
+      - cpu
+      - процессор
+      - материнская плата
+      - ram
+      - ddr
+      - блок питания
+      - корпус пк
+    route_to: TECH.PC_COMPONENTS
+  - id: storage_exclusion
+    priority: 920
+    when_any:
+      - ssd
+      - hdd
+      - флешка
+      - microsd
+      - карта памяти
+      - внешний диск
+    unless_any:
+      - hub
+      - хаб
+      - картридер
+      - reader
+    route_to: TECH.STORAGE_MEMORY
+  - id: audio_exclusion
+    priority: 900
+    when_any:
+      - наушники
+      - headset
+      - гарнитура
+      - микрофон
+      - колонки
+      - speaker
+    unless_any:
+      - веб
+      - webcam
+      - веб-камера
+    route_to: TECH.AUDIO
+  - id: gaming_controller_exclusion
+    priority: 880
+    when_any:
+      - геймпад
+      - gamepad
+      - контроллер ps5
+      - xbox controller
+      - vr headset
+    route_to: TECH.GAMING
+  - id: power_generic_exclusion
+    priority: 860
+    when_any:
+      - зарядка
+      - кабель
+      - power bank
+      - повербанк
+      - блок питания
+    unless_any:
+      - keyboard
+      - клавиатура
+      - mouse
+      - мышь
+      - dock
+      - док
+      - hub
+      - хаб
+      - adapter
+      - адаптер
+      - переходник
+    route_to: TECH.POWER_CHARGING_CABLES
+  - id: fashion_laptop_bag_exclusion
+    priority: 850
+    when_any:
+      - сумка для ноутбука
+      - рюкзак для ноутбука
+      - laptop bag
+      - laptop backpack
+    route_to: FASH.BAGS
+  - id: include_computer_accessories
+    priority: 500
+    when_any:
+      - клавиатура
+      - мышь
+      - веб камера
+      - веб-камера
+      - webcam
+      - док-станция
+      - docking station
+      - usb hub
+      - usb хаб
+      - подставка для ноутбука
+      - кронштейн для монитора
+      - monitor arm
+      - коврик для мыши
+      - stylus
+      - стилус
+      - адаптер
+      - переходник
+      - донгл
+      - cooling pad
+      - фильтр приватности
+      - cleaning kit
+    route_to: TECH.COMPUTER_ACCESSORIES

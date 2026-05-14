@@ -1,0 +1,164 @@
+ruleset_id: route_guardrails.tech_computers.v1_0
+categoryCode: TECH.COMPUTERS
+evaluation_mode: sort_by_priority_desc_then_first_match
+guards:
+- id: tablet_exclusion
+  priority: 120
+  if_any:
+  - планшет
+  - tablet
+  - ipad
+  - galaxy tab
+  - e-reader
+  - электронная книга
+  - графический планшет
+  unless_any:
+  - ноутбук
+  - laptop
+  - 2 in 1 laptop
+  - surface laptop
+  route_to: TECH.TABLETS_E_READERS
+  reason: tablet/e-reader is separate branch
+- id: monitor_exclusion
+  priority: 118
+  if_any:
+  - монитор
+  - computer monitor
+  - gaming monitor
+  - display 27
+  - экран для пк
+  unless_any:
+  - моноблок
+  - all in one
+  - aio
+  - ноутбук
+  - laptop
+  route_to: TECH.MONITORS_DISPLAYS
+  reason: standalone monitor is not computer
+- id: computer_accessory_exclusion
+  priority: 116
+  if_any:
+  - клавиатура
+  - мышь
+  - webcam
+  - вебкамера
+  - док станция
+  - usb hub
+  - подставка для ноутбука
+  - коврик для мыши
+  - stylus pen
+  unless_any:
+  - ноутбук с
+  - компьютер с
+  - моноблок с
+  route_to: TECH.COMPUTER_ACCESSORIES
+  reason: accessory-only listing
+- id: pc_component_exclusion
+  priority: 114
+  if_any:
+  - видеокарта
+  - gpu rtx
+  - процессор
+  - cpu intel
+  - материнская плата
+  - motherboard
+  - ram module
+  - блок питания
+  - pc case
+  - корпус пк
+  - кулер cpu
+  unless_any:
+  - системный блок
+  - desktop pc
+  - готовая сборка
+  - компьютер в сборе
+  route_to: TECH.PC_COMPONENTS
+  reason: component-only listing
+- id: storage_exclusion
+  priority: 112
+  if_any:
+  - ssd
+  - hdd
+  - флешка
+  - карта памяти
+  - external ssd
+  - external hdd
+  - nas
+  unless_any:
+  - ноутбук
+  - laptop
+  - пк
+  - системный блок
+  - компьютер
+  - macbook
+  route_to: TECH.STORAGE_MEMORY
+  reason: storage-only listing
+- id: gaming_console_exclusion
+  priority: 110
+  if_any:
+  - playstation
+  - ps5
+  - xbox
+  - nintendo switch
+  - игровая приставка
+  - steam deck
+  unless_any:
+  - ноутбук
+  - laptop
+  - пк
+  - desktop
+  route_to: TECH.GAMING
+  reason: console is gaming branch, not computer
+- id: phone_exclusion
+  priority: 108
+  if_any:
+  - iphone
+  - смартфон
+  - телефон
+  - galaxy s
+  - pixel phone
+  - redmi note
+  unless_any:
+  - ноутбук
+  - laptop
+  - macbook
+  - computer
+  - пк
+  route_to: TECH.PHONES
+  reason: phone branch
+- id: include_computers
+  priority: 80
+  if_any:
+  - ноутбук
+  - laptop
+  - ультрабук
+  - chromebook
+  - хромбук
+  - системный блок
+  - desktop pc
+  - компьютер в сборе
+  - mini pc
+  - мини пк
+  - моноблок
+  - all in one
+  - workstation
+  - рабочая станция
+  - thin client
+  - тонкий клиент
+  - macbook
+  - thinkpad
+  - xps
+  - elitebook
+  - zenbook
+  - legion
+  route_to: TECH.COMPUTERS
+  reason: positive computer terms
+- id: fallback_ambiguous_computer_terms
+  priority: 30
+  if_any:
+  - компьютер
+  - pc
+  - пк
+  route_to: TECH.COMPUTERS
+  confidence: low_to_medium
+  reason: generic computer term

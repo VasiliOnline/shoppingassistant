@@ -1,0 +1,61 @@
+{
+  "pack_id": "TECH_TABLETS_E_READERS_public_category_pack_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "category_code": "TECH.TABLETS_E_READERS",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "runtime_mount": "public_category_registry",
+  "status": "production_ready_static_candidate",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "source_tree_contract": "TECH_category_tree_reference.html",
+  "companion_standard": "CATALOG_PACK_COMPANION_v1_RU.md",
+  "main_type_attribute": "tablet_type",
+  "category_archetypes": [
+    "public_category",
+    "identity_critical",
+    "specs_heavy",
+    "compatibility_light_for_tablet_accessories",
+    "resale_sensitive",
+    "no_guess_evidence_required"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "uses_relation_target": [
+    "TECH.COMPATIBILITY_COMMON",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.POWER_CHARGING_CABLES"
+  ],
+  "purpose_ru": "Production-grade public category pack для TECH.TABLETS_E_READERS: планшеты, детские планшеты, электронные книги, графические планшеты, tablet docks и tablet stands.",
+  "included": [
+    "tablet_type and tablet/e-reader/graphics-tablet attributes",
+    "type-specific user surface and facet templates without presets/collections",
+    "head model seed for popular tablet/e-reader/graphics-tablet families, not a full global registry",
+    "route guards against phones, computers, monitors, computer accessories, phone accessories, toys and books",
+    "vision no-guess rules for brand/model/storage/connectivity/specs",
+    "golden queries, sample offers, publish fixtures, effective snapshot, quality gates and checksums"
+  ],
+  "excluded": [
+    "TECH.PHONES implementation",
+    "TECH.COMPUTERS implementation",
+    "TECH.MONITORS_DISPLAYS implementation",
+    "TECH.COMPUTER_ACCESSORIES implementation",
+    "TECH.PHONE_ACCESSORIES implementation",
+    "presets, collections, shelves, merchandising landing pages",
+    "full global tablet/e-reader model registry",
+    "TECH.IPAD / TECH.KINDLE / TECH.WACOM microcategory mounts"
+  ],
+  "forbidden_category_codes": [
+    "TECH.IPAD",
+    "TECH.KINDLE",
+    "TECH.GALAXY_TAB",
+    "TECH.WACOM",
+    "TECH.E_READER",
+    "TECH.GRAPHICS_TABLETS",
+    "TECH.TABLET_STANDS"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "pack_id": "TECH_PHONES_public_category_pack_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "category_code": "TECH.PHONES",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "runtime_mount": "public_category_registry",
+  "status": "production_ready_static_candidate",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "scope": {
+    "purpose": "Полноценный production-grade public category pack для телефонов: смартфоны, кнопочные, складные, защищённые, ретро/коллекционные и спутниковые телефоны.",
+    "included": [
+      "phone_type and phone-specific attributes",
+      "phone model head seed and model alias surface",
+      "resale/used-phone checks: lock status, battery health, repair history, account lock, IMEI status policy",
+      "PLP/user surface shelves and facets inspired by mature marketplaces but implemented as facets/shelves, not categoryCode",
+      "route guards against phone accessories, wearables, audio, tablets, computers and FASH accessories",
+      "vision no-guess policy for model identity",
+      "golden queries, sample offers and publish fixtures",
+      "effective spec snapshot, quality gates, validation report and checksums"
+    ],
+    "excluded": [
+      "TECH.PHONE_ACCESSORIES public category implementation",
+      "accessory compatibility pack implementation",
+      "TECH.IPHONE / TECH.SAMSUNG_PHONES / TECH.GALAXY / TECH.PIXEL microcategory mounts",
+      "raw IMEI storage",
+      "full global phone model registry"
+    ]
+  },
+  "depends_on": [
+    "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_FOUNDATION_MANIFEST_v1_0_RU"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "uses_as_relation_target_for": [
+    "TECH.PHONE_ACCESSORIES",
+    "TECH.WEARABLES",
+    "TECH.POWER_CHARGING_CABLES"
+  ],
+  "main_type_attribute": "phone_type",
+  "category_archetypes": [
+    "identity_critical_device",
+    "resale_device",
+    "specs_filterable",
+    "vision_sensitive",
+    "price_comparison_heavy",
+    "local_offer_enabled"
+  ],
+  "forbidden_category_codes": [
+    "TECH.IPHONE",
+    "TECH.SAMSUNG_PHONES",
+    "TECH.GALAXY",
+    "TECH.PIXEL",
+    "TECH.CASES",
+    "TECH.CHARGERS",
+    "TECH.CABLES"
+  ],
+  "next_packs": [
+    "TECH_PHONE_ACCESSORIES_public_category_pack_v1_0_RU"
+  ],
+  "files": [
+    "CHANGELOG.md",
+    "README_TECH_PHONES_v1_0_RU.md",
+    "aliases.tech_phones.ru.v1_0.tsv",
+    "attributes.tech_phones.v1_0.tsv",
+    "docs/ROUTE_POLICY_RU.md",
+    "docs/SOURCES_AND_EVIDENCE_POLICY_RU.md",
+    "docs/USED_PHONE_RESALE_POLICY_RU.md",
+    "docs/VISION_NO_GUESS_POLICY_RU.md",
+    "effective_spec_snapshot.expected.tech_phones.v1_0.json",
+    "facet_templates.tech_phones.v1_0.yaml",
+    "generated_alias_rules.tech_phones.v1_0.yaml",
+    "golden_queries.tech_phones.v1_0.tsv",
+    "integration_mapping.tech_phones.v1_0.yaml",
+    "manifest.json",
+    "model_head_seed.tech_phones.v1_0.tsv",
+    "package_inventory.json",
+    "phone_dedup_policy.tech_phones.v1_0.yaml",
+    "phone_facet_coverage_matrix.tech_phones.v1_0.tsv",
+    "phone_identity_resolution_rules.tech_phones.v1_0.yaml",
+    "phone_model_aliases.tech_phones.ru.v1_0.tsv",
+    "phone_resale_condition_policy.tech_phones.v1_0.yaml",
+    "publish_sample_offers.tech_phones.v1_0.jsonl",
+    "quality_gates.tech_phones.v1_0.yaml",
+    "referenced_artifact_checksums.tech_phones.v1_0.tsv",
+    "route_guardrails.tech_phones.v1_0.yaml",
+    "sample_offers.tech_phones.v1_0.jsonl",
+    "schema_pack.tech_phones.v1_0.json",
+    "seo_templates.tech_phones.v1_0.yaml",
+    "user_surface.tech_phones.v1_0.yaml",
+    "validation_report.tech_phones.v1_0.json",
+    "values.tech_phones.v1_0.tsv",
+    "vision_rules.tech_phones.v1_0.yaml"
+  ]
+}

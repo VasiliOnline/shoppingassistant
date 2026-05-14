@@ -1,0 +1,38 @@
+{
+  "package": "TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+  "created_at_utc": "2026-05-14T12:17:46.493213+00:00",
+  "static_checks": {
+    "json_syntax": "PASS",
+    "yaml_files_present": "PASS",
+    "tsv_structure": "PASS",
+    "jsonl_structure": "PASS",
+    "required_files_present": "PASS",
+    "initial_fields_lte_8": "PASS",
+    "primary_facets_lte_7": "PASS",
+    "t3_hidden_ui_leaks": 0,
+    "presets_collections_files": 0,
+    "new_microcategory_codes": 0
+  },
+  "counts": {
+    "attributes": 74,
+    "values": 140,
+    "aliases": 184,
+    "model_head_seed": 61,
+    "model_aliases": 160,
+    "golden_queries": 120,
+    "sample_offers": 122,
+    "publish_sample_offers": 45,
+    "facet_coverage_rows": 75
+  },
+  "data_coverage_verdict": "PASS_BASELINE_PRODUCTION_DATA",
+  "runtime_validators_executed_in_sandbox": false,
+  "runtime_release_status": "PENDING_PROJECT_VALIDATORS",
+  "known_limitations": [
+    "Accessory model seed is head-only; long-tail accessories must come from runtime candidates/live values.",
+    "Generic cable/charger conflicts are intentionally routed to TECH.POWER_CHARGING_CABLES unless accessory-specific context exists.",
+    "Laptop bags/backpacks are routed to FASH.BAGS; hard-shell covers and screen filters stay here.",
+    "Exact model recognition from image requires evidence per vision rules."
+  ],
+  "recommended_next_branch": "TECH.PC_COMPONENTS"
+}

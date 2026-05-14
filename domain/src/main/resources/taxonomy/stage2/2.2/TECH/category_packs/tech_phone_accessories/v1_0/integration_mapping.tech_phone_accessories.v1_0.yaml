@@ -1,0 +1,43 @@
+category_code: TECH.PHONE_ACCESSORIES
+mount_after:
+- TECH.ELECTRONICS_COMMON
+- TECH.SPECS_COMMON
+- TECH.COMPATIBILITY_COMMON
+- TECH.PHONES
+mount_point: public_category_registry.TECH.PHONE_ACCESSORIES
+input_sources:
+- manual_listing
+- url_import
+- ocr_package
+- vision_normalization
+- partner_feed
+field_mapping:
+  title: Offer.title
+  description: Offer.description
+  phone_accessory_type: Offer.normalized.type
+  compatible_model_text: Offer.compatibility.targetModelText
+  compatible_model_ref: Offer.compatibility.targetModelRef
+  connector_type: Offer.specs.connectorA
+  connector_type_2: Offer.specs.connectorB
+  max_output_power_w: Offer.specs.maxOutputPowerW
+  capacity_mah: Offer.specs.capacityMah
+  price: Offer.price.amount
+  currency: Offer.price.currency
+  images: Offer.media.images
+publish_blockers:
+- missing_phone_accessory_type
+- missing_brand
+- missing_condition
+- missing_color_family
+- missing_price
+- missing_currency
+- missing_availability
+- missing_images
+- model_specific_without_compatibility_evidence
+- replacement_part_without_compatible_model_text
+- charger_without_output_power
+- cable_without_connector_pair
+non_blocking_warnings:
+- compatible_model_text_unresolved
+- visual_only_compatibility_low_confidence
+- generic_power_accessory_may_route_to_power_charging_cables

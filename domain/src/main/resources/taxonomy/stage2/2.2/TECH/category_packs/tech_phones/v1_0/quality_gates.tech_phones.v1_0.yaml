@@ -1,0 +1,32 @@
+gate_set_id: quality_gates.tech_phones.v1_0
+required_gates:
+- Stage22SeedValidator
+- FacetSchemaValidator
+- EffectiveSpecSnapshotGate
+- RouteConflictGate
+- UserSurfaceGate
+- AliasCollisionGate
+- VisionRulesGate
+- SampleOffersSmokeGate
+- IdentityCandidateGate
+- PhoneModelSeedGate
+- NoModelGuessGate
+- PhoneResaleSafetyGate
+- IMEIPrivacyGate
+- DedupKeyGate
+thresholds:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  sample_offers_min: 160
+  golden_queries_min: 180
+  model_head_seed_min: 120
+  negative_route_cases_min: 30
+  t3_hidden_leaks: 0
+must_pass_examples:
+- iphone 13 -> TECH.PHONES
+- чехол iphone 13 -> TECH.PHONE_ACCESSORIES
+- airpods -> TECH.AUDIO
+- apple watch -> TECH.WEARABLES
+- ipad -> TECH.TABLETS_E_READERS
+- зарядка iphone -> TECH.POWER_CHARGING_CABLES or TECH.PHONE_ACCESSORIES per route policy
+runtime_validators_executed_in_sandbox: false

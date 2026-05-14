@@ -1,0 +1,38 @@
+# computer_accessory_resale_condition_policy.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+condition_notes:
+  KEYBOARD:
+    inspect:
+      - key wear
+      - missing keycaps
+      - switch defects
+      - layout/language
+  MOUSE:
+    inspect:
+      - double click issue
+      - wheel condition
+      - feet/skates wear
+      - battery
+  DOCKING_STATION:
+    inspect:
+      - port damage
+      - power supply included
+      - firmware/driver compatibility
+  USB_HUB:
+    inspect:
+      - port damage
+      - power pass-through
+      - overheating
+  MONITOR_ARM:
+    inspect:
+      - gas spring condition
+      - clamp/grommet included
+      - VESA screws included
+  SCREEN_FILTER:
+    inspect:
+      - scratches
+      - adhesive condition
+      - screen size match
+publish_warnings:
+  - "Если аксессуар требует совместимости, но compatible_device_type пустой — показывать warning, не блокировать."
+  - "Если power supply для док-станции отсутствует — отметить в included_accessories."

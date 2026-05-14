@@ -1,0 +1,58 @@
+# facet_templates.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+primary_facets:
+  - computer_accessory_type
+  - brand
+  - connection_type
+  - connector_type
+  - compatible_device_type
+  - condition
+  - price
+secondary_facets:
+  - color_family
+  - compatibility_mode
+  - wireless_standard
+  - keyboard_layout
+  - key_switch_type
+  - keyboard_size
+  - ergonomic_hand
+  - webcam_resolution
+  - power_delivery_watts
+  - max_display_resolution
+  - ethernet_speed
+  - vesa_supported
+  - material
+  - warranty
+facet_display_rules:
+  show_facet_when_distinct_values_gte: 2
+  hide_zero_count_values: true
+  never_show_roles:
+    - T3_SYSTEM_HIDDEN
+type_overrides:
+  KEYBOARD:
+    priority_facets:
+      - keyboard_layout
+      - keyboard_language
+      - key_switch_type
+      - keyboard_size
+  MOUSE:
+    priority_facets:
+      - dpi_max
+      - ergonomic_hand
+      - connection_type
+  WEBCAM:
+    priority_facets:
+      - webcam_resolution
+      - video_fps
+      - microphone_present
+  DOCKING_STATION:
+    priority_facets:
+      - connector_type
+      - power_delivery_watts
+      - max_display_resolution
+      - ethernet_speed
+  MONITOR_ARM:
+    priority_facets:
+      - vesa_supported
+      - max_load_kg
+      - screen_size_supported

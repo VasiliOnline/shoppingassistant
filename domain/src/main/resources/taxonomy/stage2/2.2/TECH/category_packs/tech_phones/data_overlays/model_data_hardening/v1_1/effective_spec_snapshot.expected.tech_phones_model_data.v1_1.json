@@ -1,0 +1,22 @@
+{
+  "snapshot_name": "effective_spec_snapshot.expected.tech_phones_model_data.v1_1",
+  "categoryCode": "TECH.PHONES",
+  "pack_type": "data_hardening_pack",
+  "base_pack": "TECH_PHONES_public_category_pack_v1_0_RU",
+  "schema_breaking_changes": false,
+  "new_public_category_codes": [],
+  "new_offer_required_fields": [],
+  "data_overlays": {
+    "brand_family_head_seed_rows": 46,
+    "model_head_seed_delta_rows": 121,
+    "model_aliases_delta_rows": 1128,
+    "model_variant_minimal_matrix_rows": 121,
+    "model_search_priority_seed_rows": 121
+  },
+  "runtime_contract": {
+    "model_resolution": "candidate_or_auto_resolve_with_evidence",
+    "variant_matrix": "soft_suggest_only",
+    "search_priority": "identity_suggestion_weight_only_not_collection",
+    "presets_collections": "forbidden_in_this_pack"
+  }
+}

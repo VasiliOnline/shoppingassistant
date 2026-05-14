@@ -1,0 +1,24 @@
+# generated_alias_rules.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+rules:
+  - id: type_brand_model_ru
+    pattern: "{brand} {computer_accessory_type} {model_name_text}"
+    locale: ru
+    target: alias
+  - id: brand_model_type_en
+    pattern: "{brand} {model_name_text} {computer_accessory_type_en}"
+    locale: en
+    target: alias
+  - id: connector_type_alias
+    pattern: "{connector_type} {computer_accessory_type}"
+    locale: ru
+    target: alias
+  - id: compatibility_alias
+    pattern: "{computer_accessory_type} для {compatible_brand} {compatible_model_text}"
+    locale: ru
+    target: alias
+guardrails:
+  do_not_generate_category_codes: true
+  do_not_generate_presets_or_collections: true
+  require_categoryCode: TECH.COMPUTER_ACCESSORIES
+  block_when_query_contains_primary_device_without_accessory_token: true

@@ -1,0 +1,70 @@
+attribute_code	TECH.PHONES_usage	filterable	shown_initial	shown_primary_facet	source_layer	notes
+categoryCode	core	false	false	false	TECH.PHONES override	Крупная public-ветка; не микрокатегория бренда.
+phone_type	core	true	true	true	TECH.PHONES override	Главный type-переключатель внутри TECH.PHONES.
+brand	core	true	true	true	inherited_or_override	Head brands + runtime candidates.
+family	type_specific	true	false	false	inherited_or_override	Например iPhone, Galaxy S, Pixel.
+line	type_specific	false	false	false	inherited_or_override	Например Pro, Ultra, A-series.
+model	type_specific	true	false	true	inherited_or_override	Не угадывать по фото без evidence.
+model_name_text	core	false	true	false	TECH.PHONES override	Фолбэк, когда модель не нормализована.
+model_aliases	type_specific	false	false	false	TECH.PHONES override	Не выводить как отдельный фасет.
+model_number	type_specific	false	false	false	TECH.PHONES override	A2890, SM-S918B, G9S9B и т.п.
+mpn	type_specific	false	false	false	inherited_or_override	Приоритетнее title aliases.
+gtin	type_specific	false	false	false	inherited_or_override	Сильный ключ идентичности.
+release_year	type_specific	true	false	false	inherited_or_override	Из identity layer, можно уточнять из model seed.
+region_variant	type_specific	true	false	false	TECH.PHONES override	US/EU/CN/HK/JP/Global и т.п.
+country_version	type_specific	true	false	false	TECH.PHONES override	Для импорта/локализации.
+storage_capacity_gb	core	true	true	true	inherited_or_override	Важный commerce-фасет.
+ram_gb	type_specific	true	false	false	inherited_or_override	Для Android/feature phones чаще полезно; для iPhone может быть скрыто.
+screen_size_inches	type_specific	true	false	false	inherited_or_override	Фасет для смартфонов/складных.
+screen_resolution	optional	false	false	false	TECH.PHONES override	Например 1179x2556.
+refresh_rate_hz	optional	true	false	false	TECH.PHONES override	60/90/120/144.
+chipset	optional	false	false	false	TECH.PHONES override	Не угадывать по фото.
+os_family	type_specific	true	false	false	inherited_or_override	iOS/Android/HarmonyOS/KaiOS.
+os_version	optional	false	false	false	TECH.PHONES override	Только если явно указано.
+mobile_network_generation	type_specific	true	false	false	TECH.PHONES override	2G/3G/4G/5G.
+supported_network_bands_text	optional	false	false	false	TECH.PHONES override	Только из спецификаций/карточки.
+network_lock_status	type_specific	true	true	true	TECH.PHONES override	Unlocked/locked/carrier unknown.
+carrier	type_specific	true	false	false	TECH.PHONES override	Может быть региональным.
+activation_status	optional	false	false	false	TECH.PHONES override	Активирован/не активирован/неизвестно.
+account_lock_status	type_specific	false	false	false	TECH.PHONES override	iCloud/FRP/account lock.
+imei_status	optional	false	false	false	TECH.PHONES override	Не хранить raw IMEI.
+blacklist_status	optional	false	false	false	TECH.PHONES override	Отдельно от raw IMEI.
+sim_configuration	type_specific	true	false	false	TECH.PHONES override	Nano/eSIM/dual.
+physical_sim_slots	optional	false	false	false	TECH.PHONES override	Для региональных вариантов.
+esim_support	type_specific	true	false	false	TECH.PHONES override	Важный phone-фасет.
+dual_sim_support	optional	true	false	false	TECH.PHONES override	Физическая/eSIM может различаться по региону.
+charging_connector	optional	true	false	false	TECH.PHONES override	USB-C/Lightning/Micro-USB.
+wireless_charging_support	optional	true	false	false	TECH.PHONES override	Только если есть evidence.
+fast_charging_watts	optional	true	false	false	TECH.PHONES override	Зарядное устройство не входит по умолчанию.
+battery_health_percent	type_specific	true	false	false	TECH.PHONES override	Критично для б/у iPhone и дорогих смартфонов.
+battery_health_bucket	optional	true	false	false	TECH.PHONES override	Нормализованный bucket.
+battery_cycle_count	optional	false	false	false	TECH.PHONES override	Только если явно указано.
+battery_service_status	optional	false	false	false	TECH.PHONES override	Normal/service/replaced/unknown.
+screen_condition	optional	true	false	false	TECH.PHONES override	Особенно для local offers.
+back_glass_condition	optional	false	false	false	TECH.PHONES override	Для стеклянных корпусов.
+frame_condition	optional	false	false	false	TECH.PHONES override	Царапины/вмятины.
+camera_condition	optional	false	false	false	TECH.PHONES override	Не подменяет camera specs.
+button_condition	optional	false	false	false	TECH.PHONES override	Для ретро/кнопочных особенно.
+biometric_auth_type	optional	false	false	false	TECH.PHONES override	Face ID/Touch ID/fingerprint.
+face_id_touch_id_status	optional	false	false	false	TECH.PHONES override	Поломка влияет на цену.
+repair_history	optional	true	false	false	TECH.PHONES override	No repair/repaired/unknown.
+screen_replaced	optional	false	false	false	TECH.PHONES override	Только по заявлению/документу.
+battery_replaced	optional	false	false	false	TECH.PHONES override	Только по заявлению/документу.
+back_glass_replaced	optional	false	false	false	TECH.PHONES override	Только по заявлению/документу.
+camera_replaced	optional	false	false	false	TECH.PHONES override	Только по заявлению/документу.
+water_damage_signs	optional	false	false	false	TECH.PHONES override	Не диагностика; только заявленная информация.
+refurbished_status	type_specific	true	false	false	TECH.PHONES override	Manufacturer/seller/refurbished/unknown.
+refurbished_grade	optional	true	false	false	TECH.PHONES override	A/B/C/Certified.
+refurbished_by	optional	false	false	false	TECH.PHONES override	Manufacturer/seller/third-party.
+warranty_status	optional	true	false	false	TECH.PHONES override	Inherited override.
+original_box	optional	true	false	false	TECH.PHONES override	Важно для resale.
+included_accessories	optional	false	false	false	TECH.PHONES override	Кабель/зарядка/документы/чехол.
+charger_included	optional	true	false	false	TECH.PHONES override	Отдельно от cable_included.
+cable_included	optional	true	false	false	TECH.PHONES override	Отдельно от charger_included.
+receipt_available	optional	false	false	false	TECH.PHONES override	Доверительный сигнал.
+seller_bundle	optional	false	false	false	TECH.PHONES override	Не должен менять categoryCode.
+for_parts_only	optional	false	false	false	TECH.PHONES override	Если экран/плата как деталь — route to PHONE_ACCESSORIES.
+lot_type	optional	false	false	false	TECH.PHONES override	Single/lot/mixed lot.
+camera_main_mp	optional	true	false	false	TECH.PHONES override	Не primary для routing.
+optical_zoom_x	optional	true	false	false	TECH.PHONES override	Если явно указано.
+water_resistance	optional	true	false	false	inherited_or_override	Inherited from specs.

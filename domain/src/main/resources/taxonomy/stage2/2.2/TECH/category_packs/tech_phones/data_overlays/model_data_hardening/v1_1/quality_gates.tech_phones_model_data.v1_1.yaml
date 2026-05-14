@@ -1,0 +1,26 @@
+pack: TECH_PHONES_model_data_hardening_pack_v1_1_RU
+minimal_runtime_gates:
+  - name: ModelSeedUniqueKeyGate
+    requirement: model_code unique; brand+model not duplicated with conflicting family/line
+    severity: P0
+  - name: AliasResolutionSmokeGate
+    requirement: >= 95% golden identity queries resolve to expected brand/model or expected ambiguous-candidate status
+    severity: P0
+  - name: VariantHintShapeGate
+    requirement: variant matrix rows must be soft_suggest_only and must not introduce hard offer rejection
+    severity: P1
+  - name: NoPresetCollectionLeakGate
+    requirement: package must not define presets, shelves, collections, landing pages or merchandising rules
+    severity: P0
+  - name: NoNewCategoryCodeGate
+    requirement: no new categoryCode other than target TECH.PHONES reference
+    severity: P0
+  - name: SampleOffersIdentitySmokeGate
+    requirement: sample offers parse brand/family/model/head storage without changing route rules
+    severity: P0
+not_included_by_design:
+  - full_model_registry_validation
+  - full_market_popularity_scoring
+  - country-specific inventory modeling
+  - SEO landing validation
+  - compatibility validation

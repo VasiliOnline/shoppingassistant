@@ -68,6 +68,89 @@
       "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON"
     },
     {
+      "packId": "FASH_ACCESSORIES_PRODUCTION_v1_0",
+      "categoryCode": "FASH.ACCESSORIES",
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_accessories/v1_0",
+      "requiredFiles": [
+        "manifest.fash_accessories.v1_0.json",
+        "schema_pack.fash_accessories.v1_0.json",
+        "attributes.fash_accessories.v1_0.tsv",
+        "values.fash_accessories.v1_0.tsv",
+        "aliases.fash_accessories.ru.v1_0.tsv",
+        "routing_guardrails.fash_accessories.v1_0.yaml",
+        "route_conflict_layer.fash_common.v1_0.yaml",
+        "vision_rules.fash_accessories.v1_0.yaml",
+        "user_surface.fash_accessories.v1_0.yaml",
+        "facet_schema.fash_accessories.v1_0.yaml",
+        "quality_gates.fash_accessories.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_accessories.v1_0.json",
+        "validation_report.fash_accessories.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_accessories.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_APPAREL_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH",
+      "requiredFiles": [
+        "shared_standard.fash_apparel_common.v1_0.yaml",
+        "shared_profiles.fash.json",
+        "ai_vision_contract.fash_apparel_common.v1_0.json"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_BAGS_PRODUCTION_v1_0",
+      "categoryCode": "FASH.BAGS",
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_bags/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_bags.v1_0.json",
+        "attributes.fash_bags.v1_0.tsv",
+        "values.fash_bags.v1_0.tsv",
+        "aliases.fash_bags.ru.v1_0.tsv",
+        "routing_guardrails.fash_bags.v1_0.yaml",
+        "route_conflict_layer.fash_bags.v1_0.yaml",
+        "vision_rules.fash_bags.v1_0.yaml",
+        "user_surface.fash_bags.v1_0.yaml",
+        "facet_schema.fash_bags.v1_0.yaml",
+        "quality_gates.fash_bags.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_bags.v1_0.json",
+        "validation_report.fash_bags.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_bags.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
       "packId": "FASH_CATALOG_ROOT_v2",
       "categoryCodes": [
         "FASH"
@@ -89,6 +172,112 @@
         "shared_standard.fash_apparel_common.v1_0.yaml",
         "shared_profiles.fash.json"
       ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_KIDS_CHILD_OVERRIDE_v1_0",
+      "categoryCode": "FASH.KIDS",
+      "packSections": [
+        "child_override_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN",
+        "LIFE_STAGE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_kids/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_kids.v1_0.json",
+        "child_defaults.fash_kids.v1_0.yaml",
+        "size_overrides.fash_kids.v1_0.yaml",
+        "type_priorities.fash_kids.v1_0.yaml",
+        "user_surface.fash_kids.v1_0.yaml",
+        "vision_rules.fash_kids.v1_0.yaml",
+        "routing_guardrails.fash_kids.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_kids.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_kids.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_MEN_CHILD_OVERRIDE_v1_0",
+      "categoryCode": "FASH.MEN",
+      "packSections": [
+        "child_override_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_men/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_men.v1_0.json",
+        "child_defaults.fash_men.v1_0.yaml",
+        "size_overrides.fash_men.v1_0.yaml",
+        "type_priorities.fash_men.v1_0.yaml",
+        "user_surface.fash_men.v1_0.yaml",
+        "vision_rules.fash_men.v1_0.yaml",
+        "routing_guardrails.fash_men.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_men.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_men.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_SHOES_PRODUCTION_v1_0",
+      "categoryCode": "FASH.SHOES",
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/category_packs/fash_shoes/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_shoes.v1_0.json",
+        "attributes.fash_shoes.v1_0.tsv",
+        "values.fash_shoes.v1_0.tsv",
+        "aliases.fash_shoes.ru.v1_0.tsv",
+        "routing_guardrails.fash_shoes.v1_0.yaml",
+        "route_conflict_layer.fash.v1_0.yaml",
+        "vision_rules.fash_shoes.v1_0.yaml",
+        "user_surface.fash_shoes.v1_0.yaml",
+        "facet_schema.fash_shoes.v1_0.yaml",
+        "quality_gates.fash_shoes.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_shoes.v1_0.json",
+        "validation_report.fash_shoes.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_shoes.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_WOMEN_CHILD_OVERRIDE_v1_0",
+      "categoryCode": "FASH.WOMEN",
+      "packSections": [
+        "child_override_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_women/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_women.v1_0.json",
+        "child_defaults.fash_women.v1_0.yaml",
+        "size_overrides.fash_women.v1_0.yaml",
+        "type_priorities.fash_women.v1_0.yaml",
+        "user_surface.fash_women.v1_0.yaml",
+        "vision_rules.fash_women.v1_0.yaml",
+        "routing_guardrails.fash_women.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_women.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_women.v1_0.yaml",
       "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
     },
     {
@@ -242,251 +431,93 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
-      "packId": "FASH_APPAREL_COMMON_SHARED_STANDARD_v1_0",
+      "packId": "TECH_COMPATIBILITY_COMMON_SHARED_STANDARD_v1_0",
       "categoryCode": null,
       "packSections": [
         "shared_standard",
-        "route_guard_pack"
-      ],
-      "archetypes": [
-        "TYPE_DRIVEN",
-        "SIZE_DRIVEN",
-        "VISUAL_SIMPLE"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH",
-      "requiredFiles": [
-        "shared_standard.fash_apparel_common.v1_0.yaml",
-        "shared_profiles.fash.json",
-        "ai_vision_contract.fash_apparel_common.v1_0.json"
-      ],
-      "userSurfaceFile": null,
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "FASH_SHOES_PRODUCTION_v1_0",
-      "categoryCode": "FASH.SHOES",
-      "packSections": [
-        "category_schema_pack",
-        "route_guard_pack",
-        "identity_pack"
-      ],
-      "archetypes": [
-        "SIZE_DRIVEN",
-        "TYPE_DRIVEN"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH/category_packs/fash_shoes/v1_0",
-      "requiredFiles": [
-        "schema_pack.fash_shoes.v1_0.json",
-        "attributes.fash_shoes.v1_0.tsv",
-        "values.fash_shoes.v1_0.tsv",
-        "aliases.fash_shoes.ru.v1_0.tsv",
-        "routing_guardrails.fash_shoes.v1_0.yaml",
-        "route_conflict_layer.fash.v1_0.yaml",
-        "vision_rules.fash_shoes.v1_0.yaml",
-        "user_surface.fash_shoes.v1_0.yaml",
-        "facet_schema.fash_shoes.v1_0.yaml",
-        "quality_gates.fash_shoes.v1_0.yaml",
-        "effective_spec_snapshot.expected.fash_shoes.v1_0.json",
-        "validation_report.fash_shoes.v1_0.json"
-      ],
-      "userSurfaceFile": "user_surface.fash_shoes.v1_0.yaml",
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "FASH_ACCESSORIES_PRODUCTION_v1_0",
-      "categoryCode": "FASH.ACCESSORIES",
-      "packSections": [
-        "category_schema_pack",
-        "route_guard_pack",
-        "identity_pack"
-      ],
-      "archetypes": [
-        "TYPE_DRIVEN",
-        "VISUAL_SIMPLE"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_accessories/v1_0",
-      "requiredFiles": [
-        "manifest.fash_accessories.v1_0.json",
-        "schema_pack.fash_accessories.v1_0.json",
-        "attributes.fash_accessories.v1_0.tsv",
-        "values.fash_accessories.v1_0.tsv",
-        "aliases.fash_accessories.ru.v1_0.tsv",
-        "routing_guardrails.fash_accessories.v1_0.yaml",
-        "route_conflict_layer.fash_common.v1_0.yaml",
-        "vision_rules.fash_accessories.v1_0.yaml",
-        "user_surface.fash_accessories.v1_0.yaml",
-        "facet_schema.fash_accessories.v1_0.yaml",
-        "quality_gates.fash_accessories.v1_0.yaml",
-        "effective_spec_snapshot.expected.fash_accessories.v1_0.json",
-        "validation_report.fash_accessories.v1_0.json"
-      ],
-      "userSurfaceFile": "user_surface.fash_accessories.v1_0.yaml",
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "FASH_BAGS_PRODUCTION_v1_0",
-      "categoryCode": "FASH.BAGS",
-      "packSections": [
-        "category_schema_pack",
-        "route_guard_pack",
-        "identity_pack"
-      ],
-      "archetypes": [
-        "TYPE_DRIVEN",
-        "SIZE_DRIVEN",
-        "VISUAL_SIMPLE"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_bags/v1_0",
-      "requiredFiles": [
-        "schema_pack.fash_bags.v1_0.json",
-        "attributes.fash_bags.v1_0.tsv",
-        "values.fash_bags.v1_0.tsv",
-        "aliases.fash_bags.ru.v1_0.tsv",
-        "routing_guardrails.fash_bags.v1_0.yaml",
-        "route_conflict_layer.fash_bags.v1_0.yaml",
-        "vision_rules.fash_bags.v1_0.yaml",
-        "user_surface.fash_bags.v1_0.yaml",
-        "facet_schema.fash_bags.v1_0.yaml",
-        "quality_gates.fash_bags.v1_0.yaml",
-        "effective_spec_snapshot.expected.fash_bags.v1_0.json",
-        "validation_report.fash_bags.v1_0.json"
-      ],
-      "userSurfaceFile": "user_surface.fash_bags.v1_0.yaml",
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "FASH_MEN_CHILD_OVERRIDE_v1_0",
-      "categoryCode": "FASH.MEN",
-      "packSections": [
-        "child_override_pack",
-        "route_guard_pack"
-      ],
-      "archetypes": [
-        "SIZE_DRIVEN",
-        "TYPE_DRIVEN"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_men/v1_0",
-      "requiredFiles": [
-        "schema_pack.fash_men.v1_0.json",
-        "child_defaults.fash_men.v1_0.yaml",
-        "size_overrides.fash_men.v1_0.yaml",
-        "type_priorities.fash_men.v1_0.yaml",
-        "user_surface.fash_men.v1_0.yaml",
-        "vision_rules.fash_men.v1_0.yaml",
-        "routing_guardrails.fash_men.v1_0.yaml",
-        "effective_spec_snapshot.expected.fash_men.v1_0.json"
-      ],
-      "userSurfaceFile": "user_surface.fash_men.v1_0.yaml",
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "FASH_WOMEN_CHILD_OVERRIDE_v1_0",
-      "categoryCode": "FASH.WOMEN",
-      "packSections": [
-        "child_override_pack",
-        "route_guard_pack"
-      ],
-      "archetypes": [
-        "SIZE_DRIVEN",
-        "TYPE_DRIVEN"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_women/v1_0",
-      "requiredFiles": [
-        "schema_pack.fash_women.v1_0.json",
-        "child_defaults.fash_women.v1_0.yaml",
-        "size_overrides.fash_women.v1_0.yaml",
-        "type_priorities.fash_women.v1_0.yaml",
-        "user_surface.fash_women.v1_0.yaml",
-        "vision_rules.fash_women.v1_0.yaml",
-        "routing_guardrails.fash_women.v1_0.yaml",
-        "effective_spec_snapshot.expected.fash_women.v1_0.json"
-      ],
-      "userSurfaceFile": "user_surface.fash_women.v1_0.yaml",
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "FASH_KIDS_CHILD_OVERRIDE_v1_0",
-      "categoryCode": "FASH.KIDS",
-      "packSections": [
-        "child_override_pack",
-        "route_guard_pack"
-      ],
-      "archetypes": [
-        "SIZE_DRIVEN",
-        "TYPE_DRIVEN",
-        "LIFE_STAGE_DRIVEN"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_kids/v1_0",
-      "requiredFiles": [
-        "schema_pack.fash_kids.v1_0.json",
-        "child_defaults.fash_kids.v1_0.yaml",
-        "size_overrides.fash_kids.v1_0.yaml",
-        "type_priorities.fash_kids.v1_0.yaml",
-        "user_surface.fash_kids.v1_0.yaml",
-        "vision_rules.fash_kids.v1_0.yaml",
-        "routing_guardrails.fash_kids.v1_0.yaml",
-        "effective_spec_snapshot.expected.fash_kids.v1_0.json"
-      ],
-      "userSurfaceFile": "user_surface.fash_kids.v1_0.yaml",
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_PHONE_ACCESSORIES_v1_2",
-      "categoryCode": "TECH.PHONE_ACCESSORIES",
-      "packSections": [
-        "category_schema_pack",
         "compatibility_pack",
         "route_guard_pack"
       ],
-      "archetypes": [
-        "COMPATIBILITY_DRIVEN",
-        "TYPE_DRIVEN"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH",
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_compatibility_common/v1_0",
       "requiredFiles": [
-        "profiles.tech.json",
-        "constraints.tech.json",
-        "ai_vision_contract.tech_phone_accessories.v1_2.json",
-        "integration_mapping.tech_phone_accessories.v1_2.yaml",
-        "sample_offers.tech_phone_accessories.v1_2.jsonl",
-        "branch_done_checklist.tech_phone_accessories.v1_2.md"
-      ],
-      "userSurfaceFile": null,
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_ELECTRONICS_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
-      "packSections": [
-        "shared_standard",
-        "route_guard_pack"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_electronics_common/v1_0",
-      "requiredFiles": [
-        "aliases.tech_electronics_common.ru.v1_0.tsv",
-        "attributes.tech_electronics_common.v1_0.tsv",
+        "aliases.tech_compatibility_common.ru.v1_0.tsv",
+        "attributes.tech_compatibility_common.v1_0.tsv",
         "CHANGELOG.md",
         "checksums.sha256.json",
         "checksums.sha256.txt",
-        "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
-        "facet_templates.tech_electronics_common.v1_0.yaml",
-        "generated_alias_rules.tech_electronics_common.v1_0.yaml",
-        "golden_queries.tech_electronics_common.v1_0.tsv",
-        "integration_mapping.tech_electronics_common.v1_0.yaml",
+        "compatibility_evidence_policy.tech_compatibility_common.v1_0.yaml",
+        "compatibility_resolution_policy.tech_compatibility_common.v1_0.yaml",
+        "compatibility_surface_matrix.tech_compatibility_common.v1_0.tsv",
+        "docs/COMPATIBILITY_POLICY_RU.md",
+        "docs/COMPATIBILITY_RUNTIME_NOTES_RU.md",
+        "docs/NO_PUBLIC_CATEGORY_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_compatibility_common.v1_0.json",
+        "facet_templates.tech_compatibility_common.v1_0.yaml",
+        "generated_alias_rules.tech_compatibility_common.v1_0.yaml",
+        "golden_queries.tech_compatibility_common.v1_0.tsv",
+        "integration_mapping.tech_compatibility_common.v1_0.yaml",
         "manifest.json",
         "package_inventory.json",
-        "quality_gates.tech_electronics_common.v1_0.yaml",
-        "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md",
-        "route_guardrails.tech_electronics_common.v1_0.yaml",
-        "sample_offers.tech_electronics_common.v1_0.jsonl",
-        "schema_pack.tech_electronics_common.v1_0.json",
-        "shared_standard.tech_electronics_common.v1_0.yaml",
-        "user_surface.tech_electronics_common.v1_0.yaml",
-        "validation_report.tech_electronics_common.v1_0.json",
-        "values.tech_electronics_common.v1_0.tsv",
-        "vision_rules.tech_electronics_common.v1_0.yaml"
+        "quality_gates.tech_compatibility_common.v1_0.yaml",
+        "README_TECH_COMPATIBILITY_COMMON_v1_0_RU.md",
+        "route_guardrails.tech_compatibility_common.v1_0.yaml",
+        "sample_offers.tech_compatibility_common.v1_0.jsonl",
+        "schema_pack.tech_compatibility_common.v1_0.json",
+        "user_surface.tech_compatibility_common.v1_0.yaml",
+        "validation_report.tech_compatibility_common.v1_0.json",
+        "values.tech_compatibility_common.v1_0.tsv",
+        "vision_rules.tech_compatibility_common.v1_0.yaml"
       ],
-      "userSurfaceFile": "user_surface.tech_electronics_common.v1_0.yaml",
+      "userSurfaceFile": "user_surface.tech_compatibility_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_COMPUTERS_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.COMPUTERS",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_computers/v1_0",
+      "requiredFiles": [
+        "aliases.tech_computers.ru.v1_0.tsv",
+        "attributes.tech_computers.v1_0.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "computer_dedup_policy.tech_computers.v1_0.yaml",
+        "computer_facet_coverage_matrix.tech_computers.v1_0.tsv",
+        "computer_identity_resolution_rules.tech_computers.v1_0.yaml",
+        "computer_model_aliases.tech_computers.ru.v1_0.tsv",
+        "computer_model_head_seed.tech_computers.v1_0.tsv",
+        "computer_resale_condition_policy.tech_computers.v1_0.yaml",
+        "docs/COMPUTERS_SCOPE_POLICY_RU.md",
+        "docs/DISCOVERY_PRESETS_BOUNDARY_RU.md",
+        "docs/MODEL_SEED_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_computers.v1_0.json",
+        "facet_templates.tech_computers.v1_0.yaml",
+        "generated_alias_rules.tech_computers.v1_0.yaml",
+        "golden_queries.tech_computers.v1_0.tsv",
+        "integration_mapping.tech_computers.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers.tech_computers.v1_0.jsonl",
+        "quality_gates.tech_computers.v1_0.yaml",
+        "README_TECH_COMPUTERS_v1_0_RU.md",
+        "route_guardrails.tech_computers.v1_0.yaml",
+        "sample_offers.tech_computers.v1_0.jsonl",
+        "schema_pack.tech_computers.v1_0.json",
+        "user_surface.tech_computers.v1_0.yaml",
+        "validation_report.tech_computers.v1_0.json",
+        "values.tech_computers.v1_0.tsv",
+        "vision_rules.tech_computers.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_computers.v1_0.yaml",
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
@@ -531,6 +562,278 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
+      "packId": "TECH_ELECTRONICS_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_electronics_common/v1_0",
+      "requiredFiles": [
+        "aliases.tech_electronics_common.ru.v1_0.tsv",
+        "attributes.tech_electronics_common.v1_0.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
+        "facet_templates.tech_electronics_common.v1_0.yaml",
+        "generated_alias_rules.tech_electronics_common.v1_0.yaml",
+        "golden_queries.tech_electronics_common.v1_0.tsv",
+        "integration_mapping.tech_electronics_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_electronics_common.v1_0.yaml",
+        "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md",
+        "route_guardrails.tech_electronics_common.v1_0.yaml",
+        "sample_offers.tech_electronics_common.v1_0.jsonl",
+        "schema_pack.tech_electronics_common.v1_0.json",
+        "shared_standard.tech_electronics_common.v1_0.yaml",
+        "user_surface.tech_electronics_common.v1_0.yaml",
+        "validation_report.tech_electronics_common.v1_0.json",
+        "values.tech_electronics_common.v1_0.tsv",
+        "vision_rules.tech_electronics_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_electronics_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+      "categoryCode": null,
+      "packSections": [
+        "foundation_manifest"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/foundation/manifest/TECH_FOUNDATION_MANIFEST_v1_0_RU",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_FOUNDATION_MANIFEST_v1_0_RU.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "dependency_graph.tech_foundation.v1_0.yaml",
+        "docs/FOUNDATION_MANIFEST_POLICY_RU.md",
+        "docs/NEXT_PACKS_SEQUENCE_RU.md",
+        "docs/RUNTIME_MOUNT_CHECKLIST_RU.md",
+        "effective_spec_snapshot.expected.tech_foundation.v1_0.json",
+        "foundation_manifest.tech.v1_0.json",
+        "integration_mapping.tech_foundation.v1_0.yaml",
+        "manifest.json",
+        "package_index.tech_foundation.v1_0.tsv",
+        "package_inventory.json",
+        "qa/self_check.tech_foundation_manifest.v1_0.json",
+        "quality_gates.tech_foundation.v1_0.yaml",
+        "referenced_artifact_checksums.tech_foundation.v1_0.tsv",
+        "runtime_mount_order.tech_foundation.v1_0.yaml",
+        "validation_report.tech_foundation.v1_0.json",
+        "validator_matrix.tech_foundation.v1_0.tsv"
+      ],
+      "userSurfaceFile": null
+    },
+    {
+      "packId": "TECH_MONITORS_DISPLAYS_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.MONITORS_DISPLAYS",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_monitors_displays/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_MONITORS_DISPLAYS_v1_0_RU.md",
+        "aliases.tech_monitors_displays.ru.v1_0.tsv",
+        "attributes.tech_monitors_displays.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "display_dedup_policy.tech_monitors_displays.v1_0.yaml",
+        "display_facet_coverage_matrix.tech_monitors_displays.v1_0.tsv",
+        "display_model_aliases.tech_monitors_displays.ru.v1_0.tsv",
+        "display_model_head_seed.tech_monitors_displays.v1_0.tsv",
+        "display_resale_condition_policy.tech_monitors_displays.v1_0.yaml",
+        "docs/BRANCH_BOUNDARY_RU.md",
+        "docs/DATA_COVERAGE_NOTES_RU.md",
+        "effective_spec_snapshot.expected.tech_monitors_displays.v1_0.json",
+        "facet_templates.tech_monitors_displays.v1_0.yaml",
+        "generated_alias_rules.tech_monitors_displays.v1_0.yaml",
+        "golden_queries.tech_monitors_displays.v1_0.tsv",
+        "integration_mapping.tech_monitors_displays.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers.tech_monitors_displays.v1_0.jsonl",
+        "quality_gates.tech_monitors_displays.v1_0.yaml",
+        "route_guardrails.tech_monitors_displays.v1_0.yaml",
+        "sample_offers.tech_monitors_displays.v1_0.jsonl",
+        "schema_pack.tech_monitors_displays.v1_0.json",
+        "user_surface.tech_monitors_displays.v1_0.yaml",
+        "validation_report.tech_monitors_displays.v1_0.json",
+        "values.tech_monitors_displays.v1_0.tsv",
+        "vision_rules.tech_monitors_displays.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_monitors_displays.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_PHONES_model_data_hardening_pack_v1_1_RU",
+      "categoryCode": "TECH.PHONES",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_phones/data_overlays/model_data_hardening/v1_1",
+      "requiredFiles": [
+        "brand_family_head_seed.tech_phones.v1_1.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "effective_spec_snapshot.expected.tech_phones_model_data.v1_1.json",
+        "golden_queries.tech_phones_model_data.v1_1.tsv",
+        "identity_resolution_min_policy.tech_phones.v1_1.yaml",
+        "integration_mapping.tech_phones_model_data.v1_1.yaml",
+        "manifest.json",
+        "model_aliases_delta.ru.tech_phones.v1_1.tsv",
+        "model_head_seed_delta.tech_phones.v1_1.tsv",
+        "model_search_priority_seed.tech_phones.v1_1.tsv",
+        "model_variant_minimal_matrix.tech_phones.v1_1.tsv",
+        "package_inventory.json",
+        "quality_gates.tech_phones_model_data.v1_1.yaml",
+        "README_TECH_PHONES_model_data_hardening_v1_1_RU.md",
+        "sample_offers.tech_phones_model_data.v1_1.jsonl",
+        "validation_report.tech_phones_model_data.v1_1.json",
+        "docs/BOUNDARY_NO_PRESETS_COLLECTIONS_RU.md",
+        "docs/SOURCE_POLICY_RU.md"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": null
+    },
+    {
+      "packId": "TECH_PHONES_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.PHONES",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_phones/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_PHONES_v1_0_RU.md",
+        "aliases.tech_phones.ru.v1_0.tsv",
+        "attributes.tech_phones.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/ROUTE_POLICY_RU.md",
+        "docs/SOURCES_AND_EVIDENCE_POLICY_RU.md",
+        "docs/USED_PHONE_RESALE_POLICY_RU.md",
+        "docs/VISION_NO_GUESS_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_phones.v1_0.json",
+        "facet_templates.tech_phones.v1_0.yaml",
+        "generated_alias_rules.tech_phones.v1_0.yaml",
+        "golden_queries.tech_phones.v1_0.tsv",
+        "integration_mapping.tech_phones.v1_0.yaml",
+        "manifest.json",
+        "model_head_seed.tech_phones.v1_0.tsv",
+        "package_inventory.json",
+        "phone_dedup_policy.tech_phones.v1_0.yaml",
+        "phone_facet_coverage_matrix.tech_phones.v1_0.tsv",
+        "phone_identity_resolution_rules.tech_phones.v1_0.yaml",
+        "phone_model_aliases.tech_phones.ru.v1_0.tsv",
+        "phone_resale_condition_policy.tech_phones.v1_0.yaml",
+        "publish_sample_offers.tech_phones.v1_0.jsonl",
+        "quality_gates.tech_phones.v1_0.yaml",
+        "referenced_artifact_checksums.tech_phones.v1_0.tsv",
+        "route_guardrails.tech_phones.v1_0.yaml",
+        "sample_offers.tech_phones.v1_0.jsonl",
+        "schema_pack.tech_phones.v1_0.json",
+        "seo_templates.tech_phones.v1_0.yaml",
+        "user_surface.tech_phones.v1_0.yaml",
+        "validation_report.tech_phones.v1_0.json",
+        "values.tech_phones.v1_0.tsv",
+        "vision_rules.tech_phones.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_phones.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_PHONE_ACCESSORIES_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.PHONE_ACCESSORIES",
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_phone_accessories/v1_0",
+      "requiredFiles": [
+        "aliases.tech_phone_accessories.ru.v1_0.tsv",
+        "attributes.tech_phone_accessories.v1_0.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "compatibility_resolution_policy.tech_phone_accessories.v1_0.yaml",
+        "compatibility_surface_matrix.tech_phone_accessories.v1_0.tsv",
+        "docs/COMPATIBILITY_EVIDENCE_POLICY_RU.md",
+        "docs/PHONE_ACCESSORIES_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_phone_accessories.v1_0.json",
+        "facet_templates.tech_phone_accessories.v1_0.yaml",
+        "generated_alias_rules.tech_phone_accessories.v1_0.yaml",
+        "golden_queries.tech_phone_accessories.v1_0.tsv",
+        "integration_mapping.tech_phone_accessories.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "phone_accessory_dedup_policy.tech_phone_accessories.v1_0.yaml",
+        "publish_sample_offers.tech_phone_accessories.v1_0.jsonl",
+        "quality_gates.tech_phone_accessories.v1_0.yaml",
+        "README_TECH_PHONE_ACCESSORIES_v1_0_RU.md",
+        "referenced_artifact_checksums.tech_phone_accessories.v1_0.tsv",
+        "route_guardrails.tech_phone_accessories.v1_0.yaml",
+        "sample_offers.tech_phone_accessories.v1_0.jsonl",
+        "schema_pack.tech_phone_accessories.v1_0.json",
+        "user_surface.tech_phone_accessories.v1_0.yaml",
+        "validation_report.tech_phone_accessories.v1_0.json",
+        "values.tech_phone_accessories.v1_0.tsv",
+        "vision_rules.tech_phone_accessories.v1_0.yaml"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_PHONE_ACCESSORIES_v1_2",
+      "categoryCode": "TECH.PHONE_ACCESSORIES",
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH",
+      "requiredFiles": [
+        "profiles.tech.json",
+        "constraints.tech.json",
+        "ai_vision_contract.tech_phone_accessories.v1_2.json",
+        "integration_mapping.tech_phone_accessories.v1_2.yaml",
+        "sample_offers.tech_phone_accessories.v1_2.jsonl",
+        "branch_done_checklist.tech_phone_accessories.v1_2.md"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
       "packId": "TECH_SPECS_COMMON_SHARED_STANDARD_v1_0",
       "categoryCode": null,
       "packSections": [
@@ -571,76 +874,55 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
-      "packId": "TECH_COMPATIBILITY_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
+      "packId": "TECH_TABLETS_E_READERS_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.TABLETS_E_READERS",
       "packSections": [
-        "shared_standard",
+        "category_schema_pack",
+        "identity_pack",
         "compatibility_pack",
         "route_guard_pack"
       ],
-      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_compatibility_common/v1_0",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_tablets_e_readers/v1_0",
       "requiredFiles": [
-        "aliases.tech_compatibility_common.ru.v1_0.tsv",
-        "attributes.tech_compatibility_common.v1_0.tsv",
         "CHANGELOG.md",
+        "README_TECH_TABLETS_E_READERS_v1_0_RU.md",
+        "aliases.tech_tablets_e_readers.ru.v1_0.tsv",
+        "attributes.tech_tablets_e_readers.v1_0.tsv",
         "checksums.sha256.json",
         "checksums.sha256.txt",
-        "compatibility_evidence_policy.tech_compatibility_common.v1_0.yaml",
-        "compatibility_resolution_policy.tech_compatibility_common.v1_0.yaml",
-        "compatibility_surface_matrix.tech_compatibility_common.v1_0.tsv",
-        "docs/COMPATIBILITY_POLICY_RU.md",
-        "docs/COMPATIBILITY_RUNTIME_NOTES_RU.md",
-        "docs/NO_PUBLIC_CATEGORY_BOUNDARY_RU.md",
-        "effective_spec_snapshot.expected.tech_compatibility_common.v1_0.json",
-        "facet_templates.tech_compatibility_common.v1_0.yaml",
-        "generated_alias_rules.tech_compatibility_common.v1_0.yaml",
-        "golden_queries.tech_compatibility_common.v1_0.tsv",
-        "integration_mapping.tech_compatibility_common.v1_0.yaml",
+        "docs/DISCOVERY_PRESETS_BOUNDARY_RU.md",
+        "docs/MODEL_SEED_BOUNDARY_RU.md",
+        "docs/TABLETS_E_READERS_SCOPE_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_tablets_e_readers.v1_0.json",
+        "facet_templates.tech_tablets_e_readers.v1_0.yaml",
+        "generated_alias_rules.tech_tablets_e_readers.v1_0.yaml",
+        "golden_queries.tech_tablets_e_readers.v1_0.tsv",
+        "integration_mapping.tech_tablets_e_readers.v1_0.yaml",
         "manifest.json",
         "package_inventory.json",
-        "quality_gates.tech_compatibility_common.v1_0.yaml",
-        "README_TECH_COMPATIBILITY_COMMON_v1_0_RU.md",
-        "route_guardrails.tech_compatibility_common.v1_0.yaml",
-        "sample_offers.tech_compatibility_common.v1_0.jsonl",
-        "schema_pack.tech_compatibility_common.v1_0.json",
-        "user_surface.tech_compatibility_common.v1_0.yaml",
-        "validation_report.tech_compatibility_common.v1_0.json",
-        "values.tech_compatibility_common.v1_0.tsv",
-        "vision_rules.tech_compatibility_common.v1_0.yaml"
+        "publish_sample_offers.tech_tablets_e_readers.v1_0.jsonl",
+        "quality_gates.tech_tablets_e_readers.v1_0.yaml",
+        "route_guardrails.tech_tablets_e_readers.v1_0.yaml",
+        "sample_offers.tech_tablets_e_readers.v1_0.jsonl",
+        "schema_pack.tech_tablets_e_readers.v1_0.json",
+        "tablet_dedup_policy.tech_tablets_e_readers.v1_0.yaml",
+        "tablet_facet_coverage_matrix.tech_tablets_e_readers.v1_0.tsv",
+        "tablet_identity_resolution_rules.tech_tablets_e_readers.v1_0.yaml",
+        "tablet_model_aliases.tech_tablets_e_readers.ru.v1_0.tsv",
+        "tablet_model_head_seed.tech_tablets_e_readers.v1_0.tsv",
+        "tablet_resale_condition_policy.tech_tablets_e_readers.v1_0.yaml",
+        "user_surface.tech_tablets_e_readers.v1_0.yaml",
+        "validation_report.tech_tablets_e_readers.v1_0.json",
+        "values.tech_tablets_e_readers.v1_0.tsv",
+        "vision_rules.tech_tablets_e_readers.v1_0.yaml"
       ],
-      "userSurfaceFile": "user_surface.tech_compatibility_common.v1_0.yaml",
+      "userSurfaceFile": "user_surface.tech_tablets_e_readers.v1_0.yaml",
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
-      "categoryCode": null,
-      "packSections": [
-        "foundation_manifest"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/foundation/manifest/TECH_FOUNDATION_MANIFEST_v1_0_RU",
-      "requiredFiles": [
-        "CHANGELOG.md",
-        "README_TECH_FOUNDATION_MANIFEST_v1_0_RU.md",
-        "checksums.sha256.json",
-        "checksums.sha256.txt",
-        "dependency_graph.tech_foundation.v1_0.yaml",
-        "docs/FOUNDATION_MANIFEST_POLICY_RU.md",
-        "docs/NEXT_PACKS_SEQUENCE_RU.md",
-        "docs/RUNTIME_MOUNT_CHECKLIST_RU.md",
-        "effective_spec_snapshot.expected.tech_foundation.v1_0.json",
-        "foundation_manifest.tech.v1_0.json",
-        "integration_mapping.tech_foundation.v1_0.yaml",
-        "manifest.json",
-        "package_index.tech_foundation.v1_0.tsv",
-        "package_inventory.json",
-        "qa/self_check.tech_foundation_manifest.v1_0.json",
-        "quality_gates.tech_foundation.v1_0.yaml",
-        "referenced_artifact_checksums.tech_foundation.v1_0.tsv",
-        "runtime_mount_order.tech_foundation.v1_0.yaml",
-        "validation_report.tech_foundation.v1_0.json",
-        "validator_matrix.tech_foundation.v1_0.tsv"
-      ],
-      "userSurfaceFile": null
     }
   ]
 }

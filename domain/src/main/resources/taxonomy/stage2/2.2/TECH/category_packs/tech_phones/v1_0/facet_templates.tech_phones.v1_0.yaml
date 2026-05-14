@@ -1,0 +1,50 @@
+template_id: facet_templates.tech_phones.v1_0
+categoryCode: TECH.PHONES
+plp_order:
+- brand
+- model
+- storage_capacity_gb
+- network_lock_status
+- condition
+- price
+- phone_type
+- carrier
+- battery_health_bucket
+- ram_gb
+- region_variant
+- mobile_network_generation
+- screen_size_inches
+- refurbished_status
+- repair_history
+- original_box
+- esim_support
+- dual_sim_support
+rules:
+- facet: model
+  show_when: brand_selected OR inventory_model_count <= 40
+  searchable: true
+  source: model_head_seed + runtime_candidates
+- facet: battery_health_bucket
+  show_when: condition != NEW AND inventory_has_used_phones
+  source: battery_health_percent
+- facet: carrier
+  show_when: network_lock_status in [LOCKED_TO_CARRIER,UNKNOWN] OR locale_carrier_market=true
+- facet: ram_gb
+  show_when: android_or_non_apple_inventory_share > 0.25
+- facet: account_lock_status
+  show_when: resale_mode=true
+  visibility: expanded_or_safety_panel
+seo_landing_whitelist:
+- iphone
+- samsung-galaxy
+- google-pixel
+- unlocked-phones
+- refurbished-phones
+- foldable-phones
+- 5g-phones
+- phones-under-budget
+- used-iphone
+- used-samsung-galaxy
+not_indexable_combinations:
+- brand+model+storage+color+condition+price
+- battery_health_bucket+repair_history+local_distance

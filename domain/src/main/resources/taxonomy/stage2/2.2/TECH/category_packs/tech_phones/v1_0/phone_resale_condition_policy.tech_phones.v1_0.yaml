@@ -1,0 +1,30 @@
+policy_id: phone_resale_condition_policy.tech_phones.v1_0
+required_review_chips_for_used:
+- battery_health_percent
+- network_lock_status
+- account_lock_status
+- repair_history
+- screen_condition
+price_quality_features:
+- battery_health_percent
+- condition
+- repair_history
+- warranty_status
+- original_box
+- included_accessories
+- distance
+- seller_trust_score
+blocked_or_warn:
+- field: account_lock_status
+  values:
+  - ICLOUD_LOCKED
+  - GOOGLE_FRP_LOCKED
+  severity: block_publish
+- field: imei_status
+  values:
+  - BLACKLISTED
+  - REPORTED_STOLEN
+  severity: block_publish
+- field: battery_health_percent
+  condition: < 75
+  severity: price_quality_warning

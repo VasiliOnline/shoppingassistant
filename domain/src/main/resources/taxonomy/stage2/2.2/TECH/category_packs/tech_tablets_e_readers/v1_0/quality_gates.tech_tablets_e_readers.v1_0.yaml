@@ -1,0 +1,30 @@
+gateset_id: quality_gates.tech_tablets_e_readers.v1_0
+required_gates:
+- Stage22SeedValidator
+- FacetSchemaValidator
+- EffectiveSpecSnapshotGate
+- RouteConflictGate
+- AliasCollisionGate
+- UserSurfaceGate
+- VisionRulesGate
+- SampleOffersSmokeGate
+- IdentityCandidateGate
+- SpecsCoverageGate
+- CompatibilityGateForAccessoryTypes
+- DedupKeyGate
+static_gates_expected:
+  initial_fields_lte_8: true
+  primary_facets_lte_7: true
+  no_t3_hidden_in_ui: true
+  no_presets_or_collections: true
+  no_microcategory_codes: true
+  json_yaml_jsonl_valid: true
+runtime_gates_to_run_after_mount:
+- RouteConflictGate against phones/computers/monitors/accessories/toys/books
+- EffectiveSpecSnapshot actual vs expected
+- SampleOffersSmokeGate
+- GoldenQueriesGate
+known_limits:
+- model head seed is head-only; long-tail models must enter via runtime_candidates/live_values
+- exact iPad/Galaxy/Kindle generation is not guessed from image only
+- tablet docks/stands use compatibility-light; full accessory merchandising is out of scope

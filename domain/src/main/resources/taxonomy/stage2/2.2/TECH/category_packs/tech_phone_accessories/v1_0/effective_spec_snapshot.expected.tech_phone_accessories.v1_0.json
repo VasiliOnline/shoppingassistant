@@ -1,0 +1,147 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_phone_accessories.v1_0",
+  "categoryCode": "TECH.PHONE_ACCESSORIES",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "relation_target_categories": [
+    "TECH.PHONES"
+  ],
+  "main_type_attribute": "phone_accessory_type",
+  "attribute_roles": {
+    "T0_CORE": [
+      "categoryCode",
+      "phone_accessory_type",
+      "brand",
+      "condition",
+      "color_family",
+      "compatible_device_category",
+      "compatible_brand",
+      "compatibility_evidence_level"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "adapter_direction",
+      "adjustable_angle",
+      "attachment_type",
+      "cable_length_m",
+      "capacity_mah",
+      "case_material",
+      "case_style",
+      "cleaning_item_type",
+      "compatible_device_size_range",
+      "compatible_family",
+      "compatible_model_text",
+      "connector_type",
+      "connector_type_2",
+      "data_transfer_support",
+      "fast_charge_standard",
+      "foldable",
+      "liquid_volume_ml",
+      "magnetic_mount",
+      "magnetic_strength_claim",
+      "magsafe_accessory_type",
+      "magsafe_compatible",
+      "material_family",
+      "max_output_power_w",
+      "max_power_w",
+      "mount_location",
+      "mounting_type",
+      "pack_quantity",
+      "palm_rejection",
+      "part_quality",
+      "port_configuration",
+      "pressure_sensitivity",
+      "protection_level",
+      "protector_coverage",
+      "protector_material",
+      "repair_skill_level",
+      "replacement_part_type",
+      "safe_for_screen",
+      "sim_tool_type",
+      "stand_form_factor",
+      "strap_charm_type",
+      "stylus_type",
+      "usb_standard",
+      "wireless_charging_support",
+      "wireless_standard"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "material_family",
+      "finish",
+      "transparency",
+      "water_resistance",
+      "warranty",
+      "original_oem",
+      "seller_bundle",
+      "included_accessories",
+      "model_name_text",
+      "mpn",
+      "gtin",
+      "release_year"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "compatibility_confidence",
+      "compatibility_resolution_status",
+      "route_confidence",
+      "extraction_evidence",
+      "source_trace_id",
+      "normalization_notes"
+    ]
+  },
+  "allowed_head_values": {
+    "phone_accessory_type": [
+      "CASE",
+      "SCREEN_PROTECTOR",
+      "CAMERA_LENS_PROTECTOR",
+      "CHARGER",
+      "WIRELESS_CHARGER",
+      "CABLE",
+      "POWER_BANK",
+      "HOLDER",
+      "STAND",
+      "CAR_MOUNT",
+      "ADAPTER",
+      "DOCK",
+      "MAGSAFE_ACCESSORY",
+      "STYLUS",
+      "STRAP_CHARM",
+      "SIM_TOOL",
+      "REPLACEMENT_PART",
+      "CLEANING_KIT"
+    ],
+    "compatible_device_category": [
+      "PHONE",
+      "PHONE_OR_TABLET",
+      "UNIVERSAL_MOBILE"
+    ]
+  },
+  "surface_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "route_targets_allowed": [
+    "TECH.PHONE_ACCESSORIES",
+    "TECH.PHONES",
+    "TECH.WEARABLES",
+    "TECH.AUDIO",
+    "TECH.TABLETS_E_READERS",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.POWER_CHARGING_CABLES",
+    "FASH.BAGS",
+    "BLOCKED_REVIEW"
+  ],
+  "blocked_public_microcategories": [
+    "TECH.CASES",
+    "TECH.CHARGERS",
+    "TECH.CABLES",
+    "TECH.IPHONE_CASES",
+    "TECH.MAGSAFE",
+    "TECH.SCREEN_PROTECTORS"
+  ],
+  "no_preset_collection_payload": true
+}

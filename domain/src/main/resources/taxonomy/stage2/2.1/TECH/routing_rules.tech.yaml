@@ -54,9 +54,9 @@ triggers:
       add: 10
   TECH.TABLETS_E_READERS:
     bonus:
-    - pattern: \b(планшет|tablet|ipad)\b
+    - pattern: \b(планшет|tablet|ipad|графический\s?планшет|планшет\s?для\s?рисования)\b
       add: 15
-    - pattern: \b(ридер|электронная\s?книга|kindle|kobo|boox|ebook|e\s?reader)\b
+    - pattern: \b(ридер|электронная\s?книга|kindle|kobo|boox|ebook|e\s?reader|wacom|huion|xp-?pen|cintiq|kamvas|pen\s?display)\b
       add: 10
   TECH.MONITORS_DISPLAYS:
     bonus:
@@ -66,9 +66,9 @@ triggers:
       add: 10
   TECH.COMPUTER_ACCESSORIES:
     bonus:
-    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|вебкамера)\b
+    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|вебкамера|матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm)\b
       add: 15
-    - pattern: \b(док\s?станц|docking|usb\s?hub|коврик\s?для\s?мыши|mouse\s?pad|laptop\s?stand)\b
+    - pattern: \b(док\s?станц|docking|usb\s?hub|коврик\s?для\s?мыши|mouse\s?pad|laptop\s?stand|настольное\s?крепление\s?монитора|газлифт\s?для\s?монитора)\b
       add: 10
   TECH.PC_COMPONENTS:
     bonus:
@@ -155,6 +155,12 @@ conflicts:
 - pattern: \b(мышь|mouse|keyboard|клавиатур[\p{L}\p{N}_]*)\b
   prefer: TECH.COMPUTER_ACCESSORIES
   penalty_other: 8
+- pattern: \b(матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm|настольное\s?крепление\s?монитора|газлифт\s?для\s?монитора)\b
+  prefer: TECH.COMPUTER_ACCESSORIES
+  penalty_other: 10
+- pattern: \b(wacom|huion|xp-?pen|cintiq|kamvas|pen\s?display)\b
+  prefer: TECH.TABLETS_E_READERS
+  penalty_other: 10
 - pattern: \b(ssd|hdd|nvme|флешк[\p{L}\p{N}_]*|карта\s?памяти|memory\s?card)\b
   prefer: TECH.STORAGE_MEMORY
   penalty_other: 8

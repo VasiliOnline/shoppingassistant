@@ -1,0 +1,32 @@
+policy_id: phone_dedup_policy.tech_phones.v1_0
+master_product_key_priority:
+- gtin
+- mpn/model_number
+- brand+normalized_model+region_variant
+- brand+model_name_text+storage_capacity_gb+release_year
+offer_dedup_key:
+- source_id
+- seller_id
+- normalized_model
+- storage_capacity_gb
+- color_family
+- condition
+- price
+- image_fingerprint
+variant_axes:
+- storage_capacity_gb
+- color_family
+- region_variant
+- ram_gb
+- network_lock_status
+not_same_master_when:
+- different_model
+- different_generation
+- different_phone_type
+- part_or_accessory_vs_full_phone
+same_master_but_different_offer_when:
+- different_condition
+- different_battery_health
+- different_seller
+- different_location
+- different_accessory_bundle

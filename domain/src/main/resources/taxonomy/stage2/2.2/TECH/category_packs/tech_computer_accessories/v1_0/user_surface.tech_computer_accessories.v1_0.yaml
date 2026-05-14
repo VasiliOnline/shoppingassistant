@@ -1,0 +1,83 @@
+# user_surface.tech_computer_accessories.v1_0.yaml
+categoryCode: TECH.COMPUTER_ACCESSORIES
+surface_policy:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  hide_roles:
+    - T3_SYSTEM_HIDDEN
+initial_fields:
+  - computer_accessory_type
+  - brand
+  - model_name_text
+  - condition
+  - connection_type
+  - connector_type
+  - compatible_device_type
+  - color_family
+expanded_fields:
+  - manufacturer
+  - model_number
+  - mpn
+  - warranty
+  - compatible_brand
+  - compatible_model_text
+  - compatibility_mode
+  - material
+  - dimensions_mm
+  - weight_g
+type_specific_field_groups:
+  KEYBOARD:
+    - keyboard_layout
+    - keyboard_language
+    - key_switch_type
+    - keyboard_size
+    - numpad_present
+    - backlight_type
+  MOUSE:
+    - mouse_sensor_type
+    - dpi_max
+    - buttons_count
+    - ergonomic_hand
+    - polling_rate_hz
+  WEBCAM:
+    - webcam_resolution
+    - video_fps
+    - microphone_present
+    - privacy_shutter
+    - autofocus
+  DOCKING_STATION:
+    - port_set
+    - downstream_ports_count
+    - power_delivery_watts
+    - max_display_resolution
+    - ethernet_speed
+  USB_HUB:
+    - port_set
+    - downstream_ports_count
+    - power_delivery_watts
+    - max_display_resolution
+  LAPTOP_STAND:
+    - laptop_size_supported
+    - material
+    - foldable
+    - height_adjustable
+  MONITOR_ARM:
+    - mount_type
+    - vesa_supported
+    - max_load_kg
+    - screen_size_supported
+  STYLUS_PEN:
+    - stylus_protocol
+    - pressure_levels
+    - palm_rejection
+  COOLING_PAD:
+    - fan_count
+    - laptop_size_supported
+  SCREEN_FILTER:
+    - screen_size_inches
+    - privacy_filter_type
+  COMPUTER_COVER:
+    - cover_form_factor
+    - compatible_model_text
+  CLEANING_KIT:
+    - cleaning_item_type

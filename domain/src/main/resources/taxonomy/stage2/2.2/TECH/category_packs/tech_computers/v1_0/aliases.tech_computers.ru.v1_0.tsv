@@ -1,0 +1,59 @@
+alias	target_category_code	target_attribute	target_value	locale	match_type	priority	negative_guards	notes_ru
+ноутбук	TECH.COMPUTERS	computer_type	LAPTOP	ru,en	phrase_or_token	95		type alias
+ноут	TECH.COMPUTERS	computer_type	LAPTOP	ru,en	phrase_or_token	90		type alias
+лаптоп	TECH.COMPUTERS	computer_type	LAPTOP	ru,en	phrase_or_token	86		type alias
+laptop	TECH.COMPUTERS	computer_type	LAPTOP	ru,en	phrase_or_token	86		type alias
+ультрабук	TECH.COMPUTERS	computer_type	ULTRABOOK	ru,en	phrase_or_token	90		type alias
+тонкий ноутбук	TECH.COMPUTERS	computer_type	ULTRABOOK	ru,en	phrase_or_token	80		type alias
+игровой ноутбук	TECH.COMPUTERS	computer_type	GAMING_LAPTOP	ru,en	phrase_or_token	94		type alias
+ноутбук для игр	TECH.COMPUTERS	computer_type	GAMING_LAPTOP	ru,en	phrase_or_token	88		type alias
+геймерский ноутбук	TECH.COMPUTERS	computer_type	GAMING_LAPTOP	ru,en	phrase_or_token	88		type alias
+ноутбук трансформер	TECH.COMPUTERS	computer_type	TWO_IN_ONE_LAPTOP	ru,en	phrase_or_token	90		type alias
+2 in 1 laptop	TECH.COMPUTERS	computer_type	TWO_IN_ONE_LAPTOP	ru,en	phrase_or_token	86		type alias
+ноутбук 2в1	TECH.COMPUTERS	computer_type	TWO_IN_ONE_LAPTOP	ru,en	phrase_or_token	86		type alias
+chromebook	TECH.COMPUTERS	computer_type	CHROMEBOOK	ru,en	phrase_or_token	88		type alias
+хромбук	TECH.COMPUTERS	computer_type	CHROMEBOOK	ru,en	phrase_or_token	88		type alias
+компьютер	TECH.COMPUTERS	computer_type	DESKTOP_PC	ru,en	phrase_or_token	78		type alias
+пк	TECH.COMPUTERS	computer_type	DESKTOP_PC	ru,en	phrase_or_token	80		type alias
+системный блок	TECH.COMPUTERS	computer_type	DESKTOP_PC	ru,en	phrase_or_token	94		type alias
+desktop	TECH.COMPUTERS	computer_type	DESKTOP_PC	ru,en	phrase_or_token	78		type alias
+mini pc	TECH.COMPUTERS	computer_type	MINI_PC	ru,en	phrase_or_token	90		type alias
+мини пк	TECH.COMPUTERS	computer_type	MINI_PC	ru,en	phrase_or_token	90		type alias
+мини компьютер	TECH.COMPUTERS	computer_type	MINI_PC	ru,en	phrase_or_token	86		type alias
+моноблок	TECH.COMPUTERS	computer_type	ALL_IN_ONE	ru,en	phrase_or_token	92		type alias
+all-in-one	TECH.COMPUTERS	computer_type	ALL_IN_ONE	ru,en	phrase_or_token	86		type alias
+aio	TECH.COMPUTERS	computer_type	ALL_IN_ONE	ru,en	phrase_or_token	80		type alias
+рабочая станция	TECH.COMPUTERS	computer_type	WORKSTATION	ru,en	phrase_or_token	90		type alias
+workstation	TECH.COMPUTERS	computer_type	WORKSTATION	ru,en	phrase_or_token	88		type alias
+тонкий клиент	TECH.COMPUTERS	computer_type	THIN_CLIENT	ru,en	phrase_or_token	88		type alias
+thin client	TECH.COMPUTERS	computer_type	THIN_CLIENT	ru,en	phrase_or_token	86		type alias
+i3	TECH.COMPUTERS	cpu_family	INTEL_CORE_I3	ru,en	phrase_or_token	60		spec alias
+i5	TECH.COMPUTERS	cpu_family	INTEL_CORE_I5	ru,en	phrase_or_token	60		spec alias
+i7	TECH.COMPUTERS	cpu_family	INTEL_CORE_I7	ru,en	phrase_or_token	60		spec alias
+i9	TECH.COMPUTERS	cpu_family	INTEL_CORE_I9	ru,en	phrase_or_token	60		spec alias
+core ultra	TECH.COMPUTERS	cpu_family	INTEL_CORE_ULTRA	ru,en	phrase_or_token	60		spec alias
+ryzen 5	TECH.COMPUTERS	cpu_family	AMD_RYZEN_5	ru,en	phrase_or_token	60		spec alias
+ryzen 7	TECH.COMPUTERS	cpu_family	AMD_RYZEN_7	ru,en	phrase_or_token	60		spec alias
+m1	TECH.COMPUTERS	cpu_family	APPLE_M	ru,en	phrase_or_token	60		spec alias
+m2	TECH.COMPUTERS	cpu_family	APPLE_M	ru,en	phrase_or_token	60		spec alias
+m3	TECH.COMPUTERS	cpu_family	APPLE_M	ru,en	phrase_or_token	60		spec alias
+m4	TECH.COMPUTERS	cpu_family	APPLE_M	ru,en	phrase_or_token	60		spec alias
+rtx	TECH.COMPUTERS	gpu_brand	NVIDIA	ru,en	phrase_or_token	60		spec alias
+geforce	TECH.COMPUTERS	gpu_brand	NVIDIA	ru,en	phrase_or_token	60		spec alias
+radeon	TECH.COMPUTERS	gpu_brand	AMD	ru,en	phrase_or_token	60		spec alias
+iris xe	TECH.COMPUTERS	gpu_brand	INTEL	ru,en	phrase_or_token	60		spec alias
+ssd	TECH.COMPUTERS	storage_type	NVME_SSD	ru,en	phrase_or_token	60		spec alias
+hdd	TECH.COMPUTERS	storage_type	HDD	ru,en	phrase_or_token	60		spec alias
+16 гб	TECH.COMPUTERS	ram_gb	16	ru,en	phrase_or_token	60		spec alias
+32 гб	TECH.COMPUTERS	ram_gb	32	ru,en	phrase_or_token	60		spec alias
+512 гб	TECH.COMPUTERS	storage_capacity_gb	512	ru,en	phrase_or_token	60		spec alias
+1 тб	TECH.COMPUTERS	storage_capacity_gb	1024	ru,en	phrase_or_token	60		spec alias
+монитор	TECH.MONITORS_DISPLAYS	route_guard	negative	ru,en	phrase_or_token	95	screen_without_computer_terms	cross-route guard alias
+клавиатура	TECH.COMPUTER_ACCESSORIES	route_guard	negative	ru,en	phrase_or_token	95	accessory_only	cross-route guard alias
+мышь	TECH.COMPUTER_ACCESSORIES	route_guard	negative	ru,en	phrase_or_token	95	accessory_only	cross-route guard alias
+видеокарта	TECH.PC_COMPONENTS	route_guard	negative	ru,en	phrase_or_token	95	component_only	cross-route guard alias
+процессор	TECH.PC_COMPONENTS	route_guard	negative	ru,en	phrase_or_token	95	component_only	cross-route guard alias
+ssd	TECH.STORAGE_MEMORY	route_guard	negative	ru,en	phrase_or_token	95	storage_only_when_no_computer_context	cross-route guard alias
+ipad	TECH.TABLETS_E_READERS	route_guard	negative	ru,en	phrase_or_token	95	tablet_brand_context	cross-route guard alias
+планшет	TECH.TABLETS_E_READERS	route_guard	negative	ru,en	phrase_or_token	95	tablet_only	cross-route guard alias
+игровая приставка	TECH.GAMING	route_guard	negative	ru,en	phrase_or_token	95	console_only	cross-route guard alias
