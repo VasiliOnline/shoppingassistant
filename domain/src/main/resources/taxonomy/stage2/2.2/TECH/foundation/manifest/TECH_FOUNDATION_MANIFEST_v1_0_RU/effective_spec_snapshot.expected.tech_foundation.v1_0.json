@@ -1,0 +1,90 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_foundation.v1_0",
+  "pack_id": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+  "created_at": "2026-05-14T12:10:00+03:00",
+  "expected_registry_state_after_mount": {
+    "catalog_root": "TECH",
+    "foundation_manifest_registered": true,
+    "shared_standards_registered": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
+    ],
+    "public_categories_mounted_by_manifest": [],
+    "offer_routes_added_by_manifest": [],
+    "forbidden_microcategories_mounted": [],
+    "shared_dependency_order": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
+    ]
+  },
+  "referenced_artifacts": [
+    {
+      "category_code": "TECH.ELECTRONICS_COMMON",
+      "pack_id": "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+      "sha256": "f2881095f29c29ba15e38c13cc22c3fac81298e5b75f32d8b616e8c7a9a047c1",
+      "size_bytes": 42413,
+      "zip_test": "PASS",
+      "static_validation_status": "PASS",
+      "attribute_count": 38,
+      "values_count": 180,
+      "aliases_count": 382,
+      "golden_queries_count": 103,
+      "sample_offers_count": 120
+    },
+    {
+      "category_code": "TECH.DEVICE_IDENTITY_COMMON",
+      "pack_id": "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+      "sha256": "ed8d07eb9d91578355b53385f549e5fe645817f9bd288792f4fbf973df826f25",
+      "size_bytes": 51514,
+      "zip_test": "PASS",
+      "static_validation_status": "PASS",
+      "attribute_count": 64,
+      "values_count": 277,
+      "aliases_count": 406,
+      "golden_queries_count": 155,
+      "sample_offers_count": 130
+    },
+    {
+      "category_code": "TECH.SPECS_COMMON",
+      "pack_id": "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+      "sha256": "d2111459f04a1596cad14ce3647ea9aad3c849ab9beb26258d91d072e051da88",
+      "size_bytes": 55057,
+      "zip_test": "PASS",
+      "static_validation_status": "PASS",
+      "attribute_count": 85,
+      "values_count": 401,
+      "aliases_count": 1163,
+      "golden_queries_count": 123,
+      "sample_offers_count": 128
+    },
+    {
+      "category_code": "TECH.COMPATIBILITY_COMMON",
+      "pack_id": "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+      "sha256": "8317ca065ce505da5ae4a8c9c2acaf873ef05b638813764c9ce4cd07ab30fab8",
+      "size_bytes": 45671,
+      "zip_test": "PASS",
+      "static_validation_status": "PASS",
+      "attribute_count": 63,
+      "values_count": 331,
+      "aliases_count": 628,
+      "golden_queries_count": 129,
+      "sample_offers_count": 136
+    }
+  ],
+  "must_remain_false": {
+    "is_public_category": false,
+    "accepts_offers_directly": false,
+    "contains_shared_payload_copy": false,
+    "contains_model_head_seed": false,
+    "contains_phone_public_pack": false,
+    "contains_phone_accessories_public_pack": false
+  },
+  "unlock_condition_for_next_public_pack": {
+    "next_pack": "TECH_PHONES_public_category_pack_v1_0_RU",
+    "condition": "all project runtime validators green for foundation manifest and four shared standards"
+  }
+}

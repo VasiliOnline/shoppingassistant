@@ -172,9 +172,6 @@
         "condition"
       ],
       "hiddenTypedFacetKeys": [
-        "compatibility_mode",
-        "compatible_model_text",
-        "compatibility_confidence",
         "evidence_policy",
         "compatibility_strictness",
         "output_voltage_profiles"
@@ -278,9 +275,6 @@
         "mount_attachment"
       ],
       "suppressedAutoAppliedTypedFacetKeys": [
-        "compatibility_mode",
-        "compatible_model_text",
-        "compatibility_confidence",
         "evidence_policy"
       ],
       "requiresBrandContextTypedFacetKeys": [
@@ -1559,6 +1553,122 @@
         "spec_runtime_version",
         "unit_parser_version",
         "spec_last_verified_at"
+      ]
+    },
+    {
+      "profileCode": "TECH_COMPATIBILITY_COMMON_CORE",
+      "categoryPrefixes": [
+        "TECH"
+      ],
+      "hiddenTypedFacetKeys": [
+        "compatibility_evidence_text",
+        "compatibility_evidence_source",
+        "compatibility_rule_id",
+        "compatibility_candidate_hash",
+        "compatibility_normalized_key",
+        "compatibility_review_status",
+        "compatibility_last_verified_at",
+        "compatibility_source_priority"
+      ],
+      "mainTypedFacetKeys": [
+        "compatible_target_category_code",
+        "compatible_brand",
+        "compatibility_mode",
+        "compatibility_scope",
+        "compatible_connector_type",
+        "protocol_standard",
+        "compatibility_confidence"
+      ],
+      "additionalTypedFacetKeys": [
+        "physical_interface",
+        "form_factor",
+        "mount_type",
+        "case_size_mm",
+        "screen_size_range_in",
+        "band_width_mm",
+        "lens_mount",
+        "memory_form_factor",
+        "storage_interface",
+        "ram_type",
+        "socket_type",
+        "power_delivery_profile",
+        "compatible_os",
+        "ecosystem",
+        "certification"
+      ],
+      "orderedTypedFacetKeys": [
+        "compatible_target_category_code",
+        "compatible_brand",
+        "compatibility_mode",
+        "compatibility_scope",
+        "compatible_connector_type",
+        "protocol_standard",
+        "compatibility_confidence",
+        "physical_interface",
+        "form_factor",
+        "mount_type",
+        "case_size_mm",
+        "screen_size_range_in",
+        "band_width_mm",
+        "lens_mount",
+        "memory_form_factor",
+        "storage_interface",
+        "ram_type",
+        "socket_type",
+        "power_delivery_profile",
+        "compatible_os",
+        "ecosystem",
+        "certification"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "compatibility_mode",
+        "compatible_target_category_code",
+        "compatible_brand",
+        "compatible_model_text",
+        "compatibility_scope",
+        "compatibility_confidence",
+        "compatibility_evidence_type",
+        "compatibility_resolution_status",
+        "compatible_family",
+        "compatible_line",
+        "compatible_model",
+        "compatible_generation",
+        "compatible_connector_type",
+        "required_connector_type",
+        "protocol_standard",
+        "physical_interface",
+        "form_factor",
+        "mount_type",
+        "case_size_mm",
+        "screen_size_range_in",
+        "band_width_mm",
+        "lens_mount",
+        "memory_form_factor",
+        "storage_interface",
+        "ram_type",
+        "socket_type",
+        "power_delivery_profile",
+        "region_variant_compatibility",
+        "compatible_os",
+        "ecosystem",
+        "certification",
+        "compatibility_warning_flags"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "compatibility_evidence_text",
+        "compatibility_evidence_source",
+        "compatibility_rule_id",
+        "compatibility_candidate_hash",
+        "compatibility_normalized_key",
+        "compatibility_review_status",
+        "compatibility_last_verified_at",
+        "compatibility_source_priority"
+      ],
+      "requiresBrandContextTypedFacetKeys": [
+        "compatible_model",
+        "compatible_model_text",
+        "compatible_family",
+        "compatible_line"
       ]
     }
   ]

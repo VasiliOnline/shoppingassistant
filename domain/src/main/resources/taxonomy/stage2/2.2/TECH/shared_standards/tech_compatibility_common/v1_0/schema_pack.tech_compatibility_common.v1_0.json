@@ -1,0 +1,95 @@
+{
+  "schema_id": "schema_pack.tech_compatibility_common.v1_0",
+  "categoryCode": "TECH.COMPATIBILITY_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "compatibility_mode",
+      "compatibility_scope",
+      "compatible_target_category_code",
+      "compatible_brand",
+      "compatible_model_text",
+      "compatibility_confidence",
+      "compatibility_evidence_type",
+      "compatibility_resolution_status"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "compatible_family",
+      "compatible_line",
+      "compatible_model",
+      "compatible_generation",
+      "compatible_model_number",
+      "compatible_mpn",
+      "compatible_gtin",
+      "compatible_connector_type",
+      "required_connector_type",
+      "protocol_standard",
+      "physical_interface",
+      "form_factor",
+      "mount_type",
+      "case_size_mm",
+      "screen_size_range_in",
+      "band_width_mm",
+      "lens_mount",
+      "memory_form_factor",
+      "storage_interface",
+      "ram_type",
+      "socket_type",
+      "power_delivery_profile",
+      "voltage_min_v",
+      "voltage_max_v",
+      "wattage_max_w",
+      "amperage_max_a",
+      "region_variant_compatibility",
+      "compatible_os",
+      "compatible_os_min_version",
+      "compatible_os_max_version"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "ecosystem",
+      "certification",
+      "compatible_release_year_min",
+      "compatible_release_year_max",
+      "compatibility_direction",
+      "compatible_manufacturer",
+      "compatibility_notes",
+      "compatibility_warning_flags",
+      "not_compatible_with",
+      "universal_claim_allowed",
+      "runtime_candidate_policy",
+      "cross_sell_eligible",
+      "fitment_precision",
+      "requires_adapter",
+      "requires_driver",
+      "driver_platform",
+      "firmware_requirement"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "compatibility_evidence_text",
+      "compatibility_evidence_source",
+      "compatibility_rule_id",
+      "compatibility_candidate_hash",
+      "compatibility_normalized_key",
+      "compatibility_review_status",
+      "compatibility_last_verified_at",
+      "compatibility_source_priority"
+    ]
+  },
+  "field_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "identity_policy": {
+    "no_exact_model_without_evidence": true,
+    "free_text_target_field": "compatible_model_text",
+    "canonical_target_field": "compatible_model",
+    "model_registry_boundary": "Full model registry lives in device/public identity packs, not here."
+  }
+}

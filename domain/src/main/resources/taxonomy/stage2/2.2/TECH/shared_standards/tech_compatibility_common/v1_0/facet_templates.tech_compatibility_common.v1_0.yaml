@@ -1,0 +1,30 @@
+facet_template_id: facet_templates.tech_compatibility_common.v1_0
+category_code: TECH.COMPATIBILITY_COMMON
+primary_facets:
+  - compatible_target_category_code
+  - compatible_brand
+  - compatibility_mode
+  - compatibility_scope
+  - compatible_connector_type
+  - protocol_standard
+  - compatibility_confidence
+secondary_facets:
+  - physical_interface
+  - form_factor
+  - mount_type
+  - case_size_mm
+  - screen_size_range_in
+  - band_width_mm
+  - lens_mount
+  - memory_form_factor
+  - storage_interface
+  - ram_type
+  - socket_type
+  - power_delivery_profile
+  - compatible_os
+  - ecosystem
+  - certification
+rules:
+  hide_zero_count_values: true
+  expose_t3_system_hidden: false
+  model_search_uses_identity_runtime: true

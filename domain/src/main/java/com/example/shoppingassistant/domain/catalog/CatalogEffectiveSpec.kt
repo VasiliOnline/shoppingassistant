@@ -449,8 +449,14 @@ private val adminOnlyAttributeCodes = setOf(
     "authenticity_state",
     "cabin_size_status",
     "canonical_product_key",
-    "compatible_model_text",
-    "compatibility_confidence",
+    "compatibility_candidate_hash",
+    "compatibility_evidence_source",
+    "compatibility_evidence_text",
+    "compatibility_last_verified_at",
+    "compatibility_normalized_key",
+    "compatibility_review_status",
+    "compatibility_rule_id",
+    "compatibility_source_priority",
     "data_quality_score",
     "defect_notes",
     "dedup_fingerprint",
@@ -514,6 +520,17 @@ private val specsCoreAttributeCodes = setOf(
     "spec_profile_status",
     "spec_source",
     "unit_normalization_status",
+)
+
+private val compatibilityCoreAttributeCodes = setOf(
+    "compatibility_confidence",
+    "compatibility_evidence_type",
+    "compatibility_mode",
+    "compatibility_resolution_status",
+    "compatibility_scope",
+    "compatible_brand",
+    "compatible_model_text",
+    "compatible_target_category_code",
 )
 
 private fun stage40ImmutableByCode(): Map<String, Stage40ImmutableAttribute> =
@@ -589,6 +606,7 @@ private fun inferAttributeRole(
     normalizedCode in defaultSystemAttributeCodeSet -> CatalogAttributeRole.T0_CORE
     normalizedCode in identityCoreAttributeCodes -> CatalogAttributeRole.T0_CORE
     normalizedCode in specsCoreAttributeCodes -> CatalogAttributeRole.T0_CORE
+    normalizedCode in compatibilityCoreAttributeCodes -> CatalogAttributeRole.T0_CORE
     normalizedCode in typeCriticalAttributeCodes -> CatalogAttributeRole.T1_TYPE_CRITICAL
     isIdentity -> CatalogAttributeRole.T0_CORE
     requiredForCategory || requiredForSearch || requiredForOffer || requiredForExpress -> CatalogAttributeRole.T1_TYPE_CRITICAL
@@ -637,7 +655,7 @@ private fun inferFacetTemplateCode(
     isFacet: Boolean,
     requiredForCategory: Boolean,
 ): String? = when {
-    normalizedCode in setOf("brand", "compatible_phone_brand") -> "brand_optional"
+    normalizedCode in setOf("brand", "compatible_brand", "compatible_phone_brand") -> "brand_optional"
     normalizedCode in setOf("price", "condition") -> "condition_price_base"
     normalizedCode.contains("compatib") || normalizedCode == "used_for" -> "compatibility_widget"
     normalizedCode.contains("allergen") || normalizedCode.contains("ingredient") -> "ingredient/allergen_warning"
@@ -655,12 +673,26 @@ private fun inferFacetTemplateCode(
 
 private val typeCriticalAttributeCodes = setOf(
     "accessory_type",
+    "amperage_max_a",
     "apparel_type",
     "bag_type",
     "battery_capacity_mah",
     "battery_capacity_wh",
+    "band_width_mm",
     "bluetooth_version",
+    "case_size_mm",
     "chipset_text",
+    "compatible_connector_type",
+    "compatible_family",
+    "compatible_generation",
+    "compatible_gtin",
+    "compatible_line",
+    "compatible_model",
+    "compatible_model_number",
+    "compatible_mpn",
+    "compatible_os",
+    "compatible_os_max_version",
+    "compatible_os_min_version",
     "connector_type",
     "dimensions",
     "ean",
@@ -676,22 +708,37 @@ private val typeCriticalAttributeCodes = setOf(
     "model_granularity",
     "model_number",
     "mpn",
+    "lens_mount",
+    "memory_form_factor",
+    "mount_type",
     "network_generation",
     "os_family",
+    "physical_interface",
+    "power_delivery_profile",
     "power_source",
     "power_watts",
+    "protocol_standard",
     "ram_capacity",
+    "ram_type",
     "refresh_rate_hz",
+    "region_variant_compatibility",
     "region_variant",
+    "required_connector_type",
     "screen_resolution",
     "screen_size",
+    "screen_size_range_in",
     "series",
     "shoe_type",
+    "socket_type",
     "storage_capacity",
+    "storage_interface",
     "type_of_item",
     "upc",
     "variant_label",
+    "voltage_max_v",
+    "voltage_min_v",
     "water_resistance",
+    "wattage_max_w",
     "weight",
     "wi_fi_standard",
     "wireless_standard",

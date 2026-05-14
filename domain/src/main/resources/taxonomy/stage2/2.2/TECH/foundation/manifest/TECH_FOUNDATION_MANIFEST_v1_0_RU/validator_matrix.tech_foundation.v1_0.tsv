@@ -1,0 +1,17 @@
+gate	scope	severity	assertion	execution_context	status
+ManifestRequiredFilesGate	manifest	P0	All manifest files present and parseable	local_static	PASS
+ReferencedArtifactChecksumGate	artifact	P0	Four referenced shared pack ZIP SHA-256 values match package_index	local_static	PASS
+ReferencedZipIntegrityGate	artifact	P0	zipfile testzip passes for all four referenced artifacts	local_static	PASS
+SharedPackStaticStatusGate	artifact	P0	Referenced packs have static PASS status	local_static	PASS
+DependencyOrderGate	manifest/runtime	P0	Mount order is Electronics -> Identity -> Specs -> Compatibility	local_static_and_runtime	PASS
+NoPublicCategoryMountGate	manifest/runtime	P0	Manifest does not mount TECH.PHONES or TECH.PHONE_ACCESSORIES	local_static_and_runtime	PASS
+NoMicrocategoryGate	manifest/runtime	P0	No TECH.IPHONE/CASES/CHARGERS/CABLES microcategory codes appear as mounted categories	local_static_and_runtime	PASS
+NoPayloadDuplicationGate	manifest	P0	Manifest does not contain copied attributes/values/aliases data from shared packs	local_static	PASS
+Stage22SeedValidator	project_runtime	P0	Registry seed loads all four shared standards after import	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+FacetSchemaValidator	project_runtime	P0	Shared standard facets remain valid after inheritance	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+EffectiveSpecSnapshotGate	project_runtime	P0	Actual foundation effective snapshot equals expected snapshot	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+RouteConflictGate	project_runtime	P0	Foundation does not break TECH/FASH route conflicts	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+AliasCollisionGate	project_runtime	P0	No new cross-shared alias collisions	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+VisionRulesGate	project_runtime	P0	No-guess rules are preserved across shared layers	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+UserSurfaceGate	project_runtime	P0	Shared surfaces keep initial_fields<=8 and primary_facets<=7	project_runtime_required	NOT_EXECUTED_IN_SANDBOX
+T3HiddenLeakGate	project_runtime	P0	Hidden/system fields do not leak into UI	project_runtime_required	NOT_EXECUTED_IN_SANDBOX

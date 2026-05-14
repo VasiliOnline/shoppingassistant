@@ -1,0 +1,19 @@
+ruleset_id: vision_rules.tech_compatibility_common.v1_0
+category_code: TECH.COMPATIBILITY_COMMON
+no_guess_rules:
+  - id: no_exact_model_from_visual_shape_only
+    severity: P0
+    rule: "Нельзя ставить compatible_model по внешнему виду товара без title/OCR/barcode/manual evidence."
+  - id: ocr_can_extract_target_model_text
+    severity: P0
+    rule: "OCR упаковки/лейбла может заполнить compatible_model_text и evidence_type=PACKAGING_TEXT_OCR."
+  - id: connector_can_be_detected_but_not_exact_device
+    severity: P0
+    rule: "Фото может дать connector_type/protocol hints, но не exact target model."
+  - id: universal_claim_requires_warning
+    severity: P1
+    rule: "Универсальная совместимость получает warning FAKE_UNIVERSAL_CLAIM без manufacturer evidence."
+blocked_visual_inferences:
+  - exact compatible_model without evidence
+  - exact model year from visual shape only
+  - official certification without visible logo/text/source

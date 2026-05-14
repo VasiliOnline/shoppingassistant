@@ -1,0 +1,18 @@
+policy_id: compatibility_resolution_policy.tech_compatibility_common.v1_0
+resolution_order:
+  - official_manufacturer_compatibility_list
+  - gtin_or_oem_mpn
+  - explicit_title_or_description_target
+  - packaging_ocr_target_text
+  - user_or_seller_confirmed_target
+  - connector_protocol_or_form_factor_match
+  - marketplace_category_hint
+  - weak_inference
+blocking_conditions:
+  - contradiction_between_title_and_ocr
+  - exact_model_claim_without_evidence
+  - universal_claim_with_exact_fit_words_without_target
+  - region_locked_item_missing_region
+  - power_item_missing_voltage_or_wattage_when_claimed
+dedup_key:
+  formula: "source_category|target_category|compatible_brand|compatible_family|compatible_model_text|mode|connector_or_protocol|mpn_or_gtin"

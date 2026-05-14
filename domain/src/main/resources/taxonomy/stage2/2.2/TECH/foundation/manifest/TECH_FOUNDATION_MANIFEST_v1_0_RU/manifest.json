@@ -1,0 +1,59 @@
+{
+  "pack_id": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "pack_type": "foundation_manifest_pack",
+  "category_code": "TECH.FOUNDATION_MANIFEST",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "runtime_mount": "catalog_foundation_manifest_registry",
+  "status": "production_ready_static_manifest_candidate",
+  "created_at": "2026-05-14T12:10:00+03:00",
+  "source_tree_contract": "TECH_category_tree_reference.html",
+  "companion_standard": "CATALOG_PACK_COMPANION_v1_RU.md",
+  "scope": {
+    "purpose": "Маленький индекс/контракт для подключения четырёх TECH shared-standard пакетов без упаковки их данных в один foundation-bundle.",
+    "included": [
+      "package index with artifact checksums",
+      "dependency graph and runtime mount order",
+      "foundation quality gates and validator matrix",
+      "aggregate expected foundation snapshot",
+      "integration mapping and release checklist"
+    ],
+    "excluded": [
+      "attributes/values/aliases data from the four shared packs",
+      "TECH.PHONES public category pack",
+      "TECH.PHONE_ACCESSORIES public category pack",
+      "model head seed",
+      "public microcategories such as TECH.IPHONE, TECH.CASES, TECH.CHARGERS, TECH.CABLES"
+    ]
+  },
+  "foundation_shared_packs": [
+    "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU"
+  ],
+  "must_not_include_public_category_packs": [
+    "TECH.PHONES",
+    "TECH.PHONE_ACCESSORIES"
+  ],
+  "next_allowed_pack": "TECH_PHONES_public_category_pack_v1_0_RU",
+  "files": [
+    "foundation_manifest.tech.v1_0.json",
+    "package_index.tech_foundation.v1_0.tsv",
+    "referenced_artifact_checksums.tech_foundation.v1_0.tsv",
+    "dependency_graph.tech_foundation.v1_0.yaml",
+    "runtime_mount_order.tech_foundation.v1_0.yaml",
+    "validator_matrix.tech_foundation.v1_0.tsv",
+    "integration_mapping.tech_foundation.v1_0.yaml",
+    "quality_gates.tech_foundation.v1_0.yaml",
+    "effective_spec_snapshot.expected.tech_foundation.v1_0.json",
+    "validation_report.tech_foundation.v1_0.json",
+    "README_TECH_FOUNDATION_MANIFEST_v1_0_RU.md",
+    "CHANGELOG.md",
+    "docs/FOUNDATION_MANIFEST_POLICY_RU.md",
+    "docs/RUNTIME_MOUNT_CHECKLIST_RU.md",
+    "docs/NEXT_PACKS_SEQUENCE_RU.md"
+  ]
+}

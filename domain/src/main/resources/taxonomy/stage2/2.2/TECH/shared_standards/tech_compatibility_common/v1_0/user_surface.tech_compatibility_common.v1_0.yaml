@@ -1,0 +1,53 @@
+surface_id: user_surface.tech_compatibility_common.v1_0
+category_code: TECH.COMPATIBILITY_COMMON
+public_category: false
+accepts_offers_directly: false
+initial_fields_max: 8
+primary_facets_max: 7
+initial_fields:
+  - compatibility_mode
+  - compatible_target_category_code
+  - compatible_brand
+  - compatible_model_text
+  - compatibility_scope
+  - compatibility_confidence
+  - compatibility_evidence_type
+  - compatibility_resolution_status
+expanded_fields:
+  - compatible_family
+  - compatible_line
+  - compatible_model
+  - compatible_generation
+  - compatible_connector_type
+  - required_connector_type
+  - protocol_standard
+  - physical_interface
+  - form_factor
+  - mount_type
+  - case_size_mm
+  - screen_size_range_in
+  - band_width_mm
+  - lens_mount
+  - memory_form_factor
+  - storage_interface
+  - ram_type
+  - socket_type
+  - power_delivery_profile
+  - region_variant_compatibility
+  - compatible_os
+  - ecosystem
+  - certification
+  - compatibility_warning_flags
+hidden_fields:
+  - compatibility_evidence_text
+  - compatibility_evidence_source
+  - compatibility_rule_id
+  - compatibility_candidate_hash
+  - compatibility_normalized_key
+  - compatibility_review_status
+  - compatibility_last_verified_at
+  - compatibility_source_priority
+ui_policy:
+  shared_standard_visible_as_section: false
+  direct_offer_form_enabled: false
+  show_compatibility_chip_when_confidence: [EXACT, HIGH, MEDIUM]

@@ -34,7 +34,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -460,7 +461,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -502,7 +504,7 @@
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "compatibility_mode"
       },
@@ -542,12 +544,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       },
       {
@@ -1125,13 +1127,13 @@
       {
         "code": "compatibility_confidence",
         "title": "Уверенность совместимости",
-        "dataType": "DECIMAL",
+        "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
-        "facetEnabled": false,
+        "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": null
+        "valueDictCode": "compatibility_confidence"
       },
       {
         "code": "compatibility_strictness",
@@ -3330,7 +3332,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -3516,7 +3519,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -3651,7 +3655,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -3799,12 +3804,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -3911,7 +3916,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -4059,12 +4065,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -4171,7 +4177,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -4306,7 +4313,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -4454,12 +4462,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -4566,7 +4574,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -4752,7 +4761,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -4853,7 +4863,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -5001,12 +5012,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -5113,7 +5124,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -5203,7 +5215,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -5372,7 +5385,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -5541,7 +5555,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -5689,12 +5704,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -5801,7 +5816,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -5949,12 +5965,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -6061,7 +6077,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -6209,12 +6226,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -6321,7 +6338,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   },
   {
@@ -6469,12 +6487,12 @@
       {
         "code": "compatible_model_text",
         "title": "Совместимость текстом продавца",
-        "dataType": "STRING_LIST",
+        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": false,
-        "multiValued": true,
+        "multiValued": false,
         "valueDictCode": null
       }
     ],
@@ -6581,7 +6599,8 @@
     "extendsProfiles": [
       "TECH.ELECTRONICS_COMMON",
       "TECH.DEVICE_IDENTITY_COMMON",
-      "TECH.SPECS_COMMON"
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
     ]
   }
 ]

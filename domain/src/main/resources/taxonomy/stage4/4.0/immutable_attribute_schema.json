@@ -2,7 +2,7 @@
   "stage": "4.0",
   "schemaVersion": "1.0.0",
   "generatedFrom": {
-    "stage22DataVersion": "2.2.16",
+    "stage22DataVersion": "2.2.17",
     "stage22SchemaVersion": "1.0.0",
     "stage22GeneratedAt": "2026-05-14T00:00:00Z",
     "stage3Version": "3.0"
@@ -174,6 +174,17 @@
       "immutableFingerprint": "sha256:1ea65f627fa955c3935e33370ce3f11991cc775b6e39a75737b91959912368ba"
     },
     {
+      "attributeCode": "amperage_max_a",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:20d9b59dcef3c134929da665e0da150cf383aefcdd767254152602cb0e4251ab"
+    },
+    {
       "attributeCode": "analog_digital",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -337,6 +348,17 @@
       "normalization": "canonical_enum",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:2127ff7fa665d1845994ab25c1b381250855d288820d8cd0cd0030ee14593fca"
+    },
+    {
+      "attributeCode": "band_width_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:bf0e28f9dd98cc2e20e9b69e4549944bf57fe0265f25b9072558ae83230b3abe"
     },
     {
       "attributeCode": "base_type",
@@ -823,6 +845,17 @@
       "immutableFingerprint": "sha256:1c349713eecc06e8fbec377ffbded97bc2a78b7e4dd6ae773fdbd2d6abf52dba"
     },
     {
+      "attributeCode": "case_size_mm",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:6efee80e2a7b47485a1948be47048f3a510f2fed7eaba00e96b4bcdfff3f841e"
+    },
+    {
       "attributeCode": "case_thickness_max_mm",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -1098,18 +1131,29 @@
       "immutableFingerprint": "sha256:d953a9a15b13875a8d6909ed7745e400c81aa20c89d3bc37dd4a91f9bbf46726"
     },
     {
-      "attributeCode": "compatibility_confidence",
-      "valueType": "NUMBER",
+      "attributeCode": "compatibility_candidate_hash",
+      "valueType": "STRING",
       "valueSetType": "OPEN",
       "unit": null,
       "isIdentity": false,
       "isFacet": false,
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
-      "immutableFingerprint": "sha256:8f27ee9fb88dd856910832b05227a20cc2718add9024dc3278660c130848f711"
+      "immutableFingerprint": "sha256:7ffdea8b32e8c29b8ca10c6b8e0ff9d96a24cc48f7fc60d6fb8da7e7968763ba"
     },
     {
-      "attributeCode": "compatibility_mode",
+      "attributeCode": "compatibility_confidence",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:080e6a494d0e3b1e075c6badab79f222d6208a2e5e6a23113f58562484f6b54e"
+    },
+    {
+      "attributeCode": "compatibility_direction",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
       "unit": null,
@@ -1117,7 +1161,139 @@
       "isFacet": false,
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
-      "immutableFingerprint": "sha256:3383a5a8f473096198d4e69cab6801fe25c0722c27f74d75b5fa73e494b0ada9"
+      "immutableFingerprint": "sha256:2fa106a821eb2f878d25413ad2e0374afd0ea8ca122aed21707b0ccab2a0197e"
+    },
+    {
+      "attributeCode": "compatibility_evidence_source",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:c0344c286d5e280ce846ca18da4a8940efb3cc6f4b24cafc5da6620b8d851d4a"
+    },
+    {
+      "attributeCode": "compatibility_evidence_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:a8452d8ce35fed849ff95795604010d36bb2b34af6e6b82238f52290f96d15f1"
+    },
+    {
+      "attributeCode": "compatibility_evidence_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:98b42807bf18340f382dd87a30e467cec461f23443aa13d16c8147daf0dc7de2"
+    },
+    {
+      "attributeCode": "compatibility_last_verified_at",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:a7c29c8dea3d1cfccc54623d5d4020b64f6dbafb94173ea5d56d9398e4c7da65"
+    },
+    {
+      "attributeCode": "compatibility_mode",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:940ff7a206f25e6ebfe959e68c3b925429fba98d3237f5e1011b938e407c9679"
+    },
+    {
+      "attributeCode": "compatibility_normalized_key",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:dfe8e00af4e4c5f32df8cba46aee451c098324378ad738cefdffabb4d757f170"
+    },
+    {
+      "attributeCode": "compatibility_notes",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:6493c25c2028d67ea91bb28a999bcf45c4efffbc72e2fca129a2eae398d509f1"
+    },
+    {
+      "attributeCode": "compatibility_resolution_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:cf7216e029fbe32bcf114e052454e92e5f3e1c59586484b4f6881ec0b80b28ce"
+    },
+    {
+      "attributeCode": "compatibility_review_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:10aa8b5554a6ca39e359836a1389aabc572f2076c19e487ccd611f0e174957c6"
+    },
+    {
+      "attributeCode": "compatibility_rule_id",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d1892f23cea856c6cdce4378551e20d84576785524aacc317061f8ca64c59f9a"
+    },
+    {
+      "attributeCode": "compatibility_scope",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:340734be1ec580476a18e391b9adbaf2d73464043dbacd711cf22065a8fd71dc"
+    },
+    {
+      "attributeCode": "compatibility_source_priority",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:3429da96b21fb9b4f8c71cc801dc2fd874a0fe01255d26fe6e7eb8942e595b11"
     },
     {
       "attributeCode": "compatibility_strictness",
@@ -1131,6 +1307,116 @@
       "immutableFingerprint": "sha256:052b717a062f75a101dd1ca68d7294fb60a530a781342245e103f229111a60e7"
     },
     {
+      "attributeCode": "compatibility_warning_flags",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:4db12d9d7c4790c86daf50ce4465613ed99fd75d45a913985e70f6ddb37ac8af"
+    },
+    {
+      "attributeCode": "compatible_brand",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:ec930810159784d0fc705bd5969dccc503f339aad8f8545b0af3b847e630e90a"
+    },
+    {
+      "attributeCode": "compatible_connector_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:5503151d3dc8d987ad98b7aa75c6555bf2e98a6b46286931eaa02e1e8889d23f"
+    },
+    {
+      "attributeCode": "compatible_family",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:a59543065b76b6e16ac2ffb4c7683306a0eaf6eccf567b7298d8a9196a3be270"
+    },
+    {
+      "attributeCode": "compatible_generation",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d73df875e64957748b1b159c07049d380140847966fe9d6358de3ab3a6c3daee"
+    },
+    {
+      "attributeCode": "compatible_gtin",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:38c1e5915599da73205c4d6a23453f143ed4aab114dc64382b23170a74130437"
+    },
+    {
+      "attributeCode": "compatible_line",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:27bbbecf6e77de2ec809f252a3df7201459db9ab788d313813e2f70bcfe76dd6"
+    },
+    {
+      "attributeCode": "compatible_manufacturer",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:ec216a2e6cd9b9bf996a393114249b16c2ffd7dfba19bea454e4441c2f6a9311"
+    },
+    {
+      "attributeCode": "compatible_model",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:b129d7cdaf67f8beb9430828cda35f9ff1cffec16bf6d6718723bd904486ffa6"
+    },
+    {
+      "attributeCode": "compatible_model_number",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:08c321933e8281a43295b76e847b897457460dfc6316f9f00b33b4fb45fdf91d"
+    },
+    {
       "attributeCode": "compatible_model_text",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -1140,6 +1426,50 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:1bfe97779509d56cd74fdc3ae17bc98b50dc31c7e4386f03e2021a5cec66ecd0"
+    },
+    {
+      "attributeCode": "compatible_mpn",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:38abdedabe067a1174cd6511bd8cad238b428aa5f60dae0dd87b2c5699f9ff65"
+    },
+    {
+      "attributeCode": "compatible_os",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:ee52ee6f26af7cb20c0a44a716e9ef3cb6b2ab6103dc393be1e6ad14c3717690"
+    },
+    {
+      "attributeCode": "compatible_os_max_version",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:6f9afdfbcfa9e9b987530f9cb7c637837cb7f0115d8a2f1bcb2c213fec0d95c4"
+    },
+    {
+      "attributeCode": "compatible_os_min_version",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:d5ce66dcf48261b7996d1ba99c9564df944c78d0561f7601429d5b3f4276838d"
     },
     {
       "attributeCode": "compatible_phone_brand",
@@ -1175,6 +1505,28 @@
       "immutableFingerprint": "sha256:5a2f998f98045e2bbbcf1424e5e3284689c018fb6f20cf6c5be855dab717e83b"
     },
     {
+      "attributeCode": "compatible_release_year_max",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:62a6766969bedf11d1e89f90019df3d9426e606aeedec9bcfa47b9deaf0b5ad2"
+    },
+    {
+      "attributeCode": "compatible_release_year_min",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:7a3e5b37359adb7a47a55def09e2d846afddae787b89536838142884b9ac7f89"
+    },
+    {
       "attributeCode": "compatible_screen_size_max_in",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -1195,6 +1547,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:e6c5e712bb736e91b530355c07c3355314754e238c7155b351ea2220b07a6669"
+    },
+    {
+      "attributeCode": "compatible_target_category_code",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:7603716f17cd1f2ae550beb6d7679770fcafbf5bbacc0847a2daa4e67ef8b96c"
     },
     {
       "attributeCode": "compression_level",
@@ -1395,6 +1758,17 @@
       "immutableFingerprint": "sha256:130f261dccc69e2dae65ace064ab3a51d01752122571cad4a02e742bd086a91b"
     },
     {
+      "attributeCode": "cross_sell_eligible",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:9da84b7ed73080350ca1ef0db7a658b01a17e4e688fd13a2aa4bc83d27485563"
+    },
+    {
       "attributeCode": "cuisine_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1593,6 +1967,17 @@
       "immutableFingerprint": "sha256:67419ded915a3f82416c8dd51bbc5b0c5417a2495834139b66b8dfc84056a036"
     },
     {
+      "attributeCode": "driver_platform",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:034964bc9c16947b133eb26d3138584ed17489247b32c85c59b06c969ce2829c"
+    },
+    {
       "attributeCode": "drop_protection_m",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -1646,6 +2031,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:9ac1c65ef36adbf976b87265a565fbaf0d96ebefdbf3051dc6daa7440f85c45c"
+    },
+    {
+      "attributeCode": "ecosystem",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:ba3d7c84bbe6e9549b8c503ed3f3429e1d559884d206fbdf47bd97fb87a39604"
     },
     {
       "attributeCode": "edition",
@@ -1780,6 +2176,17 @@
       "immutableFingerprint": "sha256:c8d8b0ab746b1e5ba7ee38068b89afe4b0ed1ec9a05f529ed612c7e28f7a5bde"
     },
     {
+      "attributeCode": "firmware_requirement",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:da5e5f0a5026ce1cb8c7680b23287c07a8b12d1b293a245029c5087d535269a1"
+    },
+    {
       "attributeCode": "fish_type_primary",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -1800,6 +2207,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:679f5b15e333345aacf56f71bbd98fc076091d35ca5d29a41ed8e1e2d8f57b42"
+    },
+    {
+      "attributeCode": "fitment_precision",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:22c23b3df2e4ea4e321123cdc417167ba29a6bd2e6db540d90b45d7d8a5b1989"
     },
     {
       "attributeCode": "fits_laptop_inch",
@@ -2715,6 +3133,17 @@
       "immutableFingerprint": "sha256:bbd46a2e5b3b9bca9259bf5d9bd371bff52271d1aa3d8b9f1e4542d0d5265a0e"
     },
     {
+      "attributeCode": "lens_mount",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:397b5d3e58b918baae965ca0d1e8ab51a92545ce17ca94679d83d2e9b6a802b1"
+    },
+    {
       "attributeCode": "light_color_temperature_k",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -3012,6 +3441,17 @@
       "immutableFingerprint": "sha256:9c619bb5b700312f4b5657e3dd9e42f0321573de7fe4626c8ac7cb9ad078361c"
     },
     {
+      "attributeCode": "memory_form_factor",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:bbd44ce08f9e51691825bb37651ac103a585af7bbf68c3cbe593c432880b0027"
+    },
+    {
       "attributeCode": "memory_gb",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -3210,6 +3650,17 @@
       "immutableFingerprint": "sha256:2cc98e217f686267bfe6072bf0c61cfb0859ed3fab69e15f3fe169af61c038c9"
     },
     {
+      "attributeCode": "mount_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:4e8a911e5aea3dbe7408b2269a1ff89e681fccb4feb46af15040f6d7a1ca44aa"
+    },
+    {
       "attributeCode": "mounting_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -3329,6 +3780,17 @@
       "normalization": "tech_specs_common.unit_normalization.v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:5a1d65deda44a5c0656eaf6f66e26cb50fc0ec5797340cce0f92d582c99b7071"
+    },
+    {
+      "attributeCode": "not_compatible_with",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:8cda6c73a127ce43a2104fa1ca5105ba21537860faafb1d18716ec9f9fe23328"
     },
     {
       "attributeCode": "occasion",
@@ -3617,6 +4079,17 @@
       "immutableFingerprint": "sha256:5835e37e67e342b984fef6255c6490a5d864becaaf6780c9588bd8364f0e0e5b"
     },
     {
+      "attributeCode": "physical_interface",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:fd193c8253b7f525aa313981b9a332caaa0d010616cd1bc3d098f85373b3fa25"
+    },
+    {
       "attributeCode": "pieces_count",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -3736,6 +4209,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": true,
       "immutableFingerprint": "sha256:936e0fc8c5ef4546994dbd344942b931039edd896d7d8014aca2dcbe6082e2fe"
+    },
+    {
+      "attributeCode": "power_delivery_profile",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:15534efc6d211276d6db0488921054a1195c3a893cfbfbdd1441319b7330283b"
     },
     {
       "attributeCode": "power_source",
@@ -3936,6 +4420,17 @@
       "immutableFingerprint": "sha256:92e602b310e1fc84f99941c972f6f43e221dfa8450db3cce9f4a7fb9fac77ca3"
     },
     {
+      "attributeCode": "protocol_standard",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:c4d4456f032d6ced3348227cd811d0d2f94f8619a8ccfff85c0f1dde797605d3"
+    },
+    {
       "attributeCode": "pump_pressure_bar",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -4011,6 +4506,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:b6c6ce0ebabe74455e8bf490c165cdc07fcd52c4635445edd466f41676ecdb12"
+    },
+    {
+      "attributeCode": "ram_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:36e57bee789f7d7dacdc5bad0d32b2f3e3ab76d16b1ae55abfea5e4b21e5f9fb"
     },
     {
       "attributeCode": "raw_barcode_payload",
@@ -4222,6 +4728,17 @@
       "immutableFingerprint": "sha256:7d5ed32485463fc0e287624e12e67a9a709049186230d6e2202a5ba932af2a6d"
     },
     {
+      "attributeCode": "region_variant_compatibility",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:d577b396eadf5f25a2d1e9694ffcf006fd30e5a2a8b766f7dba68e01e8812cb9"
+    },
+    {
       "attributeCode": "release_collection",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -4310,6 +4827,39 @@
       "immutableFingerprint": "sha256:ad2e9cf1c4a3cef04b8e7f6b2814aecca47ec2456d8496f6eff5f5541205a564"
     },
     {
+      "attributeCode": "required_connector_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:d26a15de41bad9c34f0a2b158d26832627c2cc4395398c707dcc2080c1cc5227"
+    },
+    {
+      "attributeCode": "requires_adapter",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:e515e72aed898d4cdd2395a82008108b19439f3579e8474e29f54cadad3738fe"
+    },
+    {
+      "attributeCode": "requires_driver",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:1cbf99bb810fbf89a21cde4538d6dd032e7955e03c43eefc8298ef95e28cb1d1"
+    },
+    {
       "attributeCode": "response_time_ms",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -4396,6 +4946,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:017e58cfdf051cf45a8bad9417f70e5c8fab63b8056aa3784afe3d3890ad7956"
+    },
+    {
+      "attributeCode": "runtime_candidate_policy",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:1d17465e06160d709bb15389e91a09f037d422a09443691f61a1e4eee724932c"
     },
     {
       "attributeCode": "safety_protections",
@@ -4495,6 +5056,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:6178d6606a127bc0f7d91519f7f4ba92ffa6db7facc7d804edb276e055dbc8dc"
+    },
+    {
+      "attributeCode": "screen_size_range_in",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:43628538ec73784d2dc526c3add7791a114c2ec9fc8fd3d6c010b5aee70f02a2"
     },
     {
       "attributeCode": "season",
@@ -4871,6 +5443,17 @@
       "immutableFingerprint": "sha256:ff7c9f5ca42944b1ddc1c14ad2b7cdf9b58955b2e1ed844098e19429f7f33255"
     },
     {
+      "attributeCode": "socket_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:fa71a4be786ea3af347026b0a6b2dfc269df77466cd12446e9ed0e95273c57b3"
+    },
+    {
       "attributeCode": "sole_type",
       "valueType": "ENUM",
       "valueSetType": "CLOSED",
@@ -5166,6 +5749,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:99a2030caee9bb493abe68ff2e0a2091806822fdfbc2a46ef7cf94a7971c39b8"
+    },
+    {
+      "attributeCode": "storage_interface",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": true,
+      "immutableFingerprint": "sha256:3e52118342cf22c3d2ea20a87d42baa140b2a0a358b1349411a5491102b16110"
     },
     {
       "attributeCode": "storage_regime",
@@ -5542,6 +6136,17 @@
       "immutableFingerprint": "sha256:58d1c44bec66bab122a9f6367ddff163dfb976530a52b586e4428d3f1d4d2c10"
     },
     {
+      "attributeCode": "universal_claim_allowed",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:3d8d9bb72aa9254a47a8c0b020b489feac8cb4531a557d445687e28bd2ca1282"
+    },
+    {
       "attributeCode": "upc",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -5661,6 +6266,28 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:fb9f3acb1e8ee6d9c377b5c31c89b618e71e28094ab5c6e588987459d09ff0bd"
+    },
+    {
+      "attributeCode": "voltage_max_v",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:8c22f8faec9c9dfb8c761ad70387a12be0007e28a4828399a0dc7bcbb1e920d0"
+    },
+    {
+      "attributeCode": "voltage_min_v",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:15106caa3c3c16dcead4d0467ac458b429d74e65889af7e1519d1277d91a8158"
     },
     {
       "attributeCode": "volume_liter",
@@ -5870,6 +6497,17 @@
       "normalization": "stage22.query_normalizer_v1",
       "dictionaryRequired": false,
       "immutableFingerprint": "sha256:7924840b9357f13f5f05072f16807b3031db420b3d6617e8f5a947e1006e0b53"
+    },
+    {
+      "attributeCode": "wattage_max_w",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "normalization": "stage22.query_normalizer_v1",
+      "dictionaryRequired": false,
+      "immutableFingerprint": "sha256:1c180a6b2117a7ec30f2e72df90ae63c8adf849cc7ef4a89042a7853f5b0602e"
     },
     {
       "attributeCode": "weight",

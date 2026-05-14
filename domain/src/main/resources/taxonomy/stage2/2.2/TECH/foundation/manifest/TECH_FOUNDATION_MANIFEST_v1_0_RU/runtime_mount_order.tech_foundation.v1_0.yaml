@@ -1,0 +1,43 @@
+mount_plan_id: runtime_mount_order.tech_foundation.v1_0
+execution_mode: strict_order_fail_fast
+dry_run_first: true
+steps:
+- step: 0
+  action: register_tree_contract_pointer
+  artifact: TECH_category_tree_reference.html
+  required: true
+- step: 1
+  action: mount_shared_standard
+  category_code: TECH.ELECTRONICS_COMMON
+  pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+  registry: shared_standard_registry
+- step: 2
+  action: mount_shared_standard
+  category_code: TECH.DEVICE_IDENTITY_COMMON
+  pack_id: TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU
+  registry: shared_standard_registry
+- step: 3
+  action: mount_shared_standard
+  category_code: TECH.SPECS_COMMON
+  pack_id: TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU
+  registry: shared_standard_registry
+- step: 4
+  action: mount_shared_standard
+  category_code: TECH.COMPATIBILITY_COMMON
+  pack_id: TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU
+  registry: shared_standard_registry
+- step: 5
+  action: recompute_effective_foundation_snapshot
+  expected_snapshot: effective_spec_snapshot.expected.tech_foundation.v1_0.json
+- step: 6
+  action: run_quality_gates
+  gates: quality_gates.tech_foundation.v1_0.yaml
+- step: 7
+  action: freeze_foundation_manifest
+  condition: all_gates_green
+rollback_policy:
+  on_checksum_mismatch: abort_before_mount
+  on_dependency_order_violation: abort_before_mount
+  on_effective_snapshot_mismatch: rollback_to_previous_foundation_registry_version
+  on_public_category_leak: abort_and_mark_manifest_invalid
+post_mount_unlocks_next_pack: TECH_PHONES_public_category_pack_v1_0_RU

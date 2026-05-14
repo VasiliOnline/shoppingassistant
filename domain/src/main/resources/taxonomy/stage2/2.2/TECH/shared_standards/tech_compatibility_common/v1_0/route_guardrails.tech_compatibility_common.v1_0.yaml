@@ -1,0 +1,35 @@
+ruleset_id: route_guardrails.tech_compatibility_common.v1_0
+category_code: TECH.COMPATIBILITY_COMMON
+evaluation_mode: sort_by_priority_desc_then_first_match
+guardrails:
+  - id: target_device_without_accessory_goes_to_device_category
+    priority: 1000
+    action: route_to_target_public_category
+  - id: accessory_with_target_uses_accessory_category_and_compatibility_fields
+    priority: 980
+    action: route_to_accessory_or_component_public_category_and_emit_compatibility_fields
+  - id: phone_case_not_phone
+    priority: 960
+    examples: ["чехол iphone 13", "стекло samsung s24", "case for pixel 9"]
+    category_hint: TECH.PHONE_ACCESSORIES
+    target_category_hint: TECH.PHONES
+  - id: generic_cable_or_charger_goes_power_branch
+    priority: 940
+    examples: ["кабель usb-c 100w", "зарядка type c 65w", "hdmi кабель 2.1"]
+    category_hint: TECH.POWER_CHARGING_CABLES
+  - id: smartwatch_band_not_fashion_accessory
+    priority: 920
+    examples: ["ремешок apple watch 45 мм", "strap for galaxy watch"]
+    category_hint: TECH.WEARABLES
+    block_category_codes: [FASH.ACCESSORIES]
+  - id: laptop_bag_policy
+    priority: 900
+    if_protective_sleeve_or_shell: TECH.COMPUTER_ACCESSORIES
+    if_carry_bag_fashion_luggage: FASH.BAGS
+  - id: printer_consumable_not_printer_device
+    priority: 880
+    category_hint: TECH.PRINTERS_SCANNERS
+    compatibility_mode: CONSUMABLE_FIT
+  - id: no_microcategory_creation
+    priority: 800
+    forbidden_category_codes: [TECH.IPHONE, TECH.CASES, TECH.CHARGERS, TECH.CABLES, TECH.MACBOOK, TECH.AIRPODS]

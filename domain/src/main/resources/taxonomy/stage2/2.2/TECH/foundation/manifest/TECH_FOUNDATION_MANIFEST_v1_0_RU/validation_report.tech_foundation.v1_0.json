@@ -1,0 +1,163 @@
+{
+  "validation_report_id": "validation_report.tech_foundation.v1_0",
+  "pack_id": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+  "created_at": "2026-05-14T12:10:00+03:00",
+  "validation_scope": "manifest_static_self_check_plus_referenced_zip_integrity; project runtime validators not executed in sandbox",
+  "static_self_check": {
+    "required_files": "PASS",
+    "json_syntax": "PASS",
+    "yaml_syntax": "PASS",
+    "tsv_structure": "PASS",
+    "referenced_artifacts_present": "PASS",
+    "referenced_zip_integrity": "PASS",
+    "referenced_static_validation_status": "PASS",
+    "no_public_category_mounts": true,
+    "no_offers_direct_route": true,
+    "no_attribute_value_alias_payload_duplication": true,
+    "no_forbidden_microcategory_mounts": true
+  },
+  "counts": {
+    "manifest_files": 19,
+    "referenced_shared_packs": 4,
+    "referenced_total_inner_files": 101,
+    "referenced_attribute_total": 250,
+    "referenced_values_total": 1189,
+    "referenced_aliases_total": 2579,
+    "referenced_golden_queries_total": 510,
+    "referenced_sample_offers_total": 514
+  },
+  "referenced_artifact_results": [
+    {
+      "order": 1,
+      "pack_id": "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+      "category_code": "TECH.ELECTRONICS_COMMON",
+      "zip_name": "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU.zip",
+      "registry_target": "shared_standard_registry",
+      "must_mount_before": "TECH.DEVICE_IDENTITY_COMMON",
+      "direct_dependencies": [
+        "TECH_CATEGORY_TREE_CONTRACT_v1_0"
+      ],
+      "scope_note_ru": "Общий слой электроники: brand/manufacturer, condition, color, warranty, region, included_accessories, seller_bundle, refurbished/repair/listing evidence.",
+      "artifact_present": true,
+      "size_bytes": 42413,
+      "artifact_sha256": "f2881095f29c29ba15e38c13cc22c3fac81298e5b75f32d8b616e8c7a9a047c1",
+      "zip_test": "PASS",
+      "inner_file_count": 21,
+      "inner_manifest_status": "production_ready_static_candidate",
+      "static_validation_status": "PASS",
+      "attribute_count": 38,
+      "values_count": 180,
+      "aliases_count": 382,
+      "golden_queries_count": 103,
+      "sample_offers_count": 120,
+      "release_policy": "GO after project validators green"
+    },
+    {
+      "order": 2,
+      "pack_id": "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+      "category_code": "TECH.DEVICE_IDENTITY_COMMON",
+      "zip_name": "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU.zip",
+      "registry_target": "shared_standard_registry",
+      "must_mount_before": "TECH.SPECS_COMMON",
+      "direct_dependencies": [
+        "TECH_CATEGORY_TREE_CONTRACT_v1_0",
+        "TECH.ELECTRONICS_COMMON"
+      ],
+      "scope_note_ru": "Общий слой идентичности устройств: brand, manufacturer, family, line, model text, aliases, mpn, gtin/ean/upc, region_variant, generation, evidence/confidence.",
+      "artifact_present": true,
+      "size_bytes": 51514,
+      "artifact_sha256": "ed8d07eb9d91578355b53385f549e5fe645817f9bd288792f4fbf973df826f25",
+      "zip_test": "PASS",
+      "inner_file_count": 26,
+      "inner_manifest_status": "production_ready_static_candidate",
+      "static_validation_status": "PASS",
+      "attribute_count": 64,
+      "values_count": 277,
+      "aliases_count": 406,
+      "golden_queries_count": 155,
+      "sample_offers_count": 130,
+      "release_policy": "GO after project validators are green against actual registry effective spec."
+    },
+    {
+      "order": 3,
+      "pack_id": "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+      "category_code": "TECH.SPECS_COMMON",
+      "zip_name": "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU.zip",
+      "registry_target": "shared_standard_registry",
+      "must_mount_before": "TECH.COMPATIBILITY_COMMON",
+      "direct_dependencies": [
+        "TECH_CATEGORY_TREE_CONTRACT_v1_0",
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON"
+      ],
+      "scope_note_ru": "Общий слой технических характеристик: storage, RAM, screen_size, battery, connector_type, wireless_standard, OS, chipset, dimensions, weight, water_resistance и unit normalization.",
+      "artifact_present": true,
+      "size_bytes": 55057,
+      "artifact_sha256": "d2111459f04a1596cad14ce3647ea9aad3c849ab9beb26258d91d072e051da88",
+      "zip_test": "PASS",
+      "inner_file_count": 27,
+      "inner_manifest_status": "production_ready_static_candidate",
+      "static_validation_status": "PASS",
+      "attribute_count": 85,
+      "values_count": 401,
+      "aliases_count": 1163,
+      "golden_queries_count": 123,
+      "sample_offers_count": 128,
+      "release_policy": "GO after project validators are green against actual registry effective spec."
+    },
+    {
+      "order": 4,
+      "pack_id": "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+      "category_code": "TECH.COMPATIBILITY_COMMON",
+      "zip_name": "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU.zip",
+      "registry_target": "shared_standard_registry",
+      "must_mount_before": "TECH.PHONE_ACCESSORIES and all accessory packs",
+      "direct_dependencies": [
+        "TECH_CATEGORY_TREE_CONTRACT_v1_0",
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ],
+      "scope_note_ru": "Общий слой совместимости: compatible target refs, compatibility mode/evidence/confidence, source-vs-target disambiguation, no-own-model-graph policy.",
+      "artifact_present": true,
+      "size_bytes": 45671,
+      "artifact_sha256": "8317ca065ce505da5ae4a8c9c2acaf873ef05b638813764c9ce4cd07ab30fab8",
+      "zip_test": "PASS",
+      "inner_file_count": 27,
+      "inner_manifest_status": "v1_0",
+      "static_validation_status": "PASS",
+      "attribute_count": 63,
+      "values_count": 331,
+      "aliases_count": 628,
+      "golden_queries_count": 129,
+      "sample_offers_count": 136,
+      "release_policy": "NO"
+    }
+  ],
+  "runtime_validators": {
+    "executed_in_this_sandbox": false,
+    "reason": "Project registry/runtime validators are not mounted in this environment.",
+    "must_run_after_import": [
+      "Stage22SeedValidator",
+      "FacetSchemaValidator",
+      "EffectiveSpecSnapshotGate",
+      "RouteConflictGate",
+      "AliasCollisionGate",
+      "VisionRulesGate",
+      "UserSurfaceGate",
+      "T3HiddenLeakGate"
+    ]
+  },
+  "release_assessment": {
+    "static_manifest_ready": true,
+    "ready_for_runtime_mount": true,
+    "public_category_release_allowed_by_manifest": false,
+    "production_enablement_policy": "GO only after project runtime validators are green against actual registry/effective spec.",
+    "next_allowed_pack": "TECH_PHONES_public_category_pack_v1_0_RU"
+  },
+  "known_limitations": [
+    "This manifest does not contain shared pack payload data by design.",
+    "Runtime validators were not executed in sandbox.",
+    "No public category is enabled by this manifest; TECH.PHONES must be a separate public category pack."
+  ]
+}

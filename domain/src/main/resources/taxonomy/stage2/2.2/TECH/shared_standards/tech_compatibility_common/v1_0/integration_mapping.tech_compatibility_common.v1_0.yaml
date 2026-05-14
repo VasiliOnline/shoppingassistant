@@ -1,0 +1,22 @@
+mapping_id: integration_mapping.tech_compatibility_common.v1_0
+category_code: TECH.COMPATIBILITY_COMMON
+pack_type: shared_standard_pack
+public_category: false
+mount:
+  registry_path: taxonomy/stage2/2.1/TECH/shared/TECH.COMPATIBILITY_COMMON
+  direct_public_route: false
+  order_after: [TECH.ELECTRONICS_COMMON, TECH.DEVICE_IDENTITY_COMMON, TECH.SPECS_COMMON]
+  required_by: [TECH.PHONE_ACCESSORIES, TECH.COMPUTER_ACCESSORIES, TECH.PC_COMPONENTS, TECH.STORAGE_MEMORY, TECH.WEARABLES, TECH.CAMERAS_DRONES, TECH.GAMING, TECH.SMART_HOME_SECURITY, TECH.POWER_CHARGING_CABLES, TECH.PRINTERS_SCANNERS]
+file_map:
+  schema_pack: schema_pack.tech_compatibility_common.v1_0.json
+  attributes: attributes.tech_compatibility_common.v1_0.tsv
+  values: values.tech_compatibility_common.v1_0.tsv
+  aliases: aliases.tech_compatibility_common.ru.v1_0.tsv
+  user_surface: user_surface.tech_compatibility_common.v1_0.yaml
+  facet_templates: facet_templates.tech_compatibility_common.v1_0.yaml
+  generated_alias_rules: generated_alias_rules.tech_compatibility_common.v1_0.yaml
+  route_guardrails: route_guardrails.tech_compatibility_common.v1_0.yaml
+  vision_rules: vision_rules.tech_compatibility_common.v1_0.yaml
+  golden_queries: golden_queries.tech_compatibility_common.v1_0.tsv
+  sample_offers: sample_offers.tech_compatibility_common.v1_0.jsonl
+  effective_spec_snapshot_expected: effective_spec_snapshot.expected.tech_compatibility_common.v1_0.json

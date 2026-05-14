@@ -1,0 +1,44 @@
+{
+  "pack_name": "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+  "category_code": "TECH.COMPATIBILITY_COMMON",
+  "created_at": "2026-05-14T08:50:10Z",
+  "static_checks": {
+    "json_syntax": "PASS",
+    "jsonl_syntax": "PASS",
+    "tsv_columns": "PASS",
+    "required_files_present": "PASS",
+    "public_category_false": true,
+    "accepts_offers_directly_false": true,
+    "forbidden_microcategory_files_present": false,
+    "model_registry_files_present": false,
+    "t3_hidden_in_initial_ui": 0,
+    "initial_fields_count": 8,
+    "primary_facets_count": 7
+  },
+  "counts": {
+    "attributes": 63,
+    "values": 331,
+    "aliases": 628,
+    "golden_queries": 129,
+    "sample_offers": 136,
+    "compatibility_surface_matrix_rows": 18
+  },
+  "runtime_validators_not_executed_in_sandbox": [
+    "Stage22SeedValidator",
+    "FacetSchemaValidator",
+    "EffectiveSpecSnapshotGate",
+    "RouteConflictGate",
+    "UserSurfaceGate",
+    "AliasCollisionGate",
+    "VisionRulesGate",
+    "SampleOffersSmokeGate",
+    "CompatibilityGate",
+    "IdentityCandidateGate",
+    "SafetyRegulatedGate"
+  ],
+  "release_status": {
+    "static_production_artifact": "PASS",
+    "ready_for_runtime_mount": "YES_AFTER_PREVIOUS_SHARED_PACKS_MOUNTED",
+    "prod_release_without_project_validators": "NO"
+  }
+}

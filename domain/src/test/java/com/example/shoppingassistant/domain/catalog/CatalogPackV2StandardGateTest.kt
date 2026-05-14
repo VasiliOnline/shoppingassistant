@@ -18,6 +18,7 @@ class CatalogPackV2StandardGateTest {
             contract.sections.containsAll(
                 listOf(
                     "shared_standard",
+                    "foundation_manifest",
                     "category_schema_pack",
                     "child_override_pack",
                     "route_guard_pack",

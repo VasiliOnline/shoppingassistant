@@ -1,0 +1,40 @@
+quality_gates_id: quality_gates.tech_foundation.v1_0
+severity_policy:
+  P0: block_release
+  P1: block_prod_enablement_until_review
+  P2: warn
+static_gates:
+- ManifestRequiredFilesGate
+- ReferencedArtifactChecksumGate
+- ReferencedZipIntegrityGate
+- SharedPackStaticStatusGate
+- DependencyOrderGate
+- NoPublicCategoryMountGate
+- NoMicrocategoryGate
+- NoPayloadDuplicationGate
+runtime_gates_required_after_import:
+- Stage22SeedValidator
+- FacetSchemaValidator
+- EffectiveSpecSnapshotGate
+- RouteConflictGate
+- AliasCollisionGate
+- VisionRulesGate
+- UserSurfaceGate
+- T3HiddenLeakGate
+thresholds:
+  referenced_shared_packs_required: 4
+  referenced_zip_integrity: PASS_FOR_ALL
+  public_category_packs_in_manifest: 0
+  forbidden_microcategory_mounts: 0
+  shared_mount_order:
+  - TECH.ELECTRONICS_COMMON
+  - TECH.DEVICE_IDENTITY_COMMON
+  - TECH.SPECS_COMMON
+  - TECH.COMPATIBILITY_COMMON
+  max_initial_fields_per_shared_pack: 8
+  max_primary_facets_per_shared_pack: 7
+release_decision:
+  static_manifest_status: PASS
+  runtime_mount_allowed: true
+  public_tech_release_allowed_by_this_manifest_alone: false
+  requires_project_runtime_validator_green_before_prod_flag: true

@@ -1,0 +1,29 @@
+gateset_id: quality_gates.tech_compatibility_common.v1_0
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+  - CompatibilityGate
+  - IdentityCandidateGate
+  - SafetyRegulatedGate
+gate_assertions:
+  public_category_false: true
+  accepts_offers_directly_false: true
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_system_hidden_not_in_ui: true
+  no_public_category_mounts_inside_pack: true
+  no_model_registry_inside_pack: true
+  exact_compatible_model_requires_evidence: true
+  universal_claim_requires_review_or_warning: true
+  connector_only_does_not_resolve_exact_model: true
+sample_thresholds:
+  golden_queries_min: 120
+  sample_offers_min: 120
+  negative_route_conflicts_min: 20
+  compatibility_surface_matrix_rows_min: 18

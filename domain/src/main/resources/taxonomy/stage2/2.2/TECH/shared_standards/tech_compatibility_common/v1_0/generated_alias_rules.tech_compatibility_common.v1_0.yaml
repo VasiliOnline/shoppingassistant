@@ -1,0 +1,27 @@
+ruleset_id: generated_alias_rules.tech_compatibility_common.v1_0
+category_code: TECH.COMPATIBILITY_COMMON
+rules:
+  - id: compat_phrase_for_target_model
+    priority: 1000
+    pattern_ru: "(чехол|стекло|пленка|кабель|зарядка|ремешок|док|картридж|тонер|объектив|аккумулятор|пульт)\s+(для|на|под)\s+(.+)"
+    emit:
+      compatibility_evidence_type: TITLE_EXPLICIT
+      compatible_model_text: "$3"
+      compatibility_confidence: HIGH
+      compatibility_resolution_status: RESOLVED_PARTIAL
+  - id: universal_claim_requires_review
+    priority: 900
+    contains_any: ["универсальный", "подходит ко всем", "universal", "for all"]
+    emit:
+      compatibility_mode: UNIVERSAL
+      compatibility_confidence: MEDIUM
+      compatibility_resolution_status: NEEDS_USER_CONFIRMATION
+      compatibility_warning_flags: [FAKE_UNIVERSAL_CLAIM]
+  - id: connector_only_does_not_resolve_exact_model
+    priority: 700
+    condition: "compatible_connector_type exists and compatible_model_text empty"
+    emit:
+      compatibility_mode: CONNECTOR
+      compatibility_scope: CONNECTOR_OR_PROTOCOL
+      compatibility_resolution_status: RESOLVED_PARTIAL
+      compatibility_confidence: MEDIUM

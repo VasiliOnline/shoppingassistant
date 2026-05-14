@@ -1,0 +1,56 @@
+graph_id: dependency_graph.tech_foundation.v1_0
+root: TECH
+manifest_pack: TECH_FOUNDATION_MANIFEST_v1_0_RU
+nodes:
+- code: TECH_CATEGORY_TREE_CONTRACT_v1_0
+  kind: tree_contract
+  public_category: false
+- code: TECH.ELECTRONICS_COMMON
+  kind: shared_standard
+  pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+  mount_order: 1
+  public_category: false
+- code: TECH.DEVICE_IDENTITY_COMMON
+  kind: shared_standard
+  pack_id: TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU
+  mount_order: 2
+  public_category: false
+- code: TECH.SPECS_COMMON
+  kind: shared_standard
+  pack_id: TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU
+  mount_order: 3
+  public_category: false
+- code: TECH.COMPATIBILITY_COMMON
+  kind: shared_standard
+  pack_id: TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU
+  mount_order: 4
+  public_category: false
+edges:
+- from: TECH_CATEGORY_TREE_CONTRACT_v1_0
+  to: TECH.ELECTRONICS_COMMON
+  type: declares
+- from: TECH.ELECTRONICS_COMMON
+  to: TECH.DEVICE_IDENTITY_COMMON
+  type: base_for
+- from: TECH.DEVICE_IDENTITY_COMMON
+  to: TECH.SPECS_COMMON
+  type: base_for
+- from: TECH.SPECS_COMMON
+  to: TECH.COMPATIBILITY_COMMON
+  type: base_for
+forbidden_edges:
+- from: TECH_FOUNDATION_MANIFEST_v1_0_RU
+  to: TECH.PHONES
+  reason: manifest does not mount public category packs
+- from: TECH_FOUNDATION_MANIFEST_v1_0_RU
+  to: TECH.PHONE_ACCESSORIES
+  reason: manifest does not mount public category packs
+- from: TECH_FOUNDATION_MANIFEST_v1_0_RU
+  to: TECH.IPHONE
+  reason: microcategory forbidden by TECH tree policy
+- from: TECH_FOUNDATION_MANIFEST_v1_0_RU
+  to: TECH.CASES
+  reason: microcategory forbidden by TECH tree policy
+- from: TECH_FOUNDATION_MANIFEST_v1_0_RU
+  to: TECH.CHARGERS
+  reason: microcategory forbidden by TECH tree policy

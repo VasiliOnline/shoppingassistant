@@ -3257,5 +3257,1085 @@
     ],
     "valueDictionaries": [],
     "requiredIfRules": []
+  },
+  {
+    "profileCode": "TECH.COMPATIBILITY_COMMON",
+    "attributes": [
+      {
+        "code": "compatibility_mode",
+        "title": "Способ совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatibility_scope",
+        "title": "Гранулярность target",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_scope"
+      },
+      {
+        "code": "compatible_target_category_code",
+        "title": "Целевая public TECH-ветка, к которой относится совместимость",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatible_target_category_code"
+      },
+      {
+        "code": "compatible_brand",
+        "title": "Бренд целевого устройства/экосистемы; не обязательно равен бренду аксессуара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Сырой текст целевой модели/линейки из title/OCR/spec/user input",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_confidence",
+        "title": "Уровень уверенности relation по evidence",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_confidence"
+      },
+      {
+        "code": "compatibility_evidence_type",
+        "title": "Тип доказательства совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_evidence_type"
+      },
+      {
+        "code": "compatibility_resolution_status",
+        "title": "Статус разрешения target/relation",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_resolution_status"
+      },
+      {
+        "code": "compatible_family",
+        "title": "Семейство target",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_line",
+        "title": "Линейка target внутри family",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_model",
+        "title": "Canonical target model, только при strong evidence",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_generation",
+        "title": "Поколение target",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_model_number",
+        "title": "Номер модели target",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_mpn",
+        "title": "MPN целевого устройства или совместимого SKU",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_gtin",
+        "title": "GTIN/EAN/UPC target или verified compatibility key",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_connector_type",
+        "title": "Коннектор, с которым совместим товар",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatible_connector_type"
+      },
+      {
+        "code": "required_connector_type",
+        "title": "Коннектор, который требуется у target",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "required_connector_type"
+      },
+      {
+        "code": "protocol_standard",
+        "title": "Протокол/стандарт",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "protocol_standard"
+      },
+      {
+        "code": "physical_interface",
+        "title": "Физический интерфейс/порт/слот/крепление",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "physical_interface"
+      },
+      {
+        "code": "form_factor",
+        "title": "Форм-фактор компонента/аксессуара/расходника",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "mount_type",
+        "title": "Тип крепления/байонета/монтажа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "mount_type"
+      },
+      {
+        "code": "case_size_mm",
+        "title": "Размер корпуса target в мм, например Apple Watch 41/45/49",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "screen_size_range_in",
+        "title": "Диапазон размера экрана target в дюймах",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "band_width_mm",
+        "title": "Ширина ремешка/крепления в мм",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "lens_mount",
+        "title": "Байонет объектива/камеры",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "lens_mount"
+      },
+      {
+        "code": "memory_form_factor",
+        "title": "Форм-фактор RAM/накопителя/карты памяти",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "memory_form_factor"
+      },
+      {
+        "code": "storage_interface",
+        "title": "Интерфейс накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_interface"
+      },
+      {
+        "code": "ram_type",
+        "title": "Тип оперативной памяти",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "ram_type"
+      },
+      {
+        "code": "socket_type",
+        "title": "Сокет CPU/материнской платы/кулера",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "socket_type"
+      },
+      {
+        "code": "power_delivery_profile",
+        "title": "Профиль питания/зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "power_delivery_profile"
+      },
+      {
+        "code": "voltage_min_v",
+        "title": "Минимальное совместимое напряжение",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "voltage_max_v",
+        "title": "Максимальное совместимое напряжение",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wattage_max_w",
+        "title": "Максимальная поддерживаемая мощность",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "amperage_max_a",
+        "title": "Максимальный ток",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "region_variant_compatibility",
+        "title": "Региональная совместимость",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "region_variant_compatibility"
+      },
+      {
+        "code": "compatible_os",
+        "title": "Совместимая ОС/платформа",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatible_os"
+      },
+      {
+        "code": "compatible_os_min_version",
+        "title": "Минимальная версия ОС/прошивки",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_os_max_version",
+        "title": "Максимальная версия ОС/прошивки, если ограничена",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ecosystem",
+        "title": "Экосистема",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "ecosystem"
+      },
+      {
+        "code": "certification",
+        "title": "Сертификации совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "certification"
+      },
+      {
+        "code": "compatible_release_year_min",
+        "title": "Минимальный год выпуска target",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatible_release_year_max",
+        "title": "Максимальный год выпуска target",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_direction",
+        "title": "Направление relation",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_direction"
+      },
+      {
+        "code": "compatible_manufacturer",
+        "title": "Производитель target, если отличается от бренда",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_notes",
+        "title": "Человекочитаемое пояснение совместимости",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_warning_flags",
+        "title": "Предупреждения по совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "compatibility_warning_flags"
+      },
+      {
+        "code": "not_compatible_with",
+        "title": "Явно несовместимые модели/версии/платформы",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "universal_claim_allowed",
+        "title": "Можно ли считать товар универсальным после проверок",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "runtime_candidate_policy",
+        "title": "Как обрабатывать long-tail compatibility candidates",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "runtime_candidate_policy"
+      },
+      {
+        "code": "cross_sell_eligible",
+        "title": "Можно ли использовать relation для рекомендаций",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "fitment_precision",
+        "title": "Точность посадки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "fitment_precision"
+      },
+      {
+        "code": "requires_adapter",
+        "title": "Нужен ли переходник",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "requires_driver",
+        "title": "Нужен ли драйвер",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "driver_platform",
+        "title": "Платформа драйвера",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "driver_platform"
+      },
+      {
+        "code": "firmware_requirement",
+        "title": "Требования к firmware/прошивке",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_evidence_text",
+        "title": "Сырой evidence-фрагмент",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_evidence_source",
+        "title": "Источник evidence",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_evidence_source"
+      },
+      {
+        "code": "compatibility_rule_id",
+        "title": "ID правила compatibility resolution",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_candidate_hash",
+        "title": "Hash сырого candidate для дедупа",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_normalized_key",
+        "title": "Нормализованный ключ relation",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_review_status",
+        "title": "Статус ревью candidate",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "compatibility_review_status"
+      },
+      {
+        "code": "compatibility_last_verified_at",
+        "title": "Дата последней проверки",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "compatibility_source_priority",
+        "title": "Приоритет evidence source",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_scope",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_target_category_code",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_brand",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_confidence",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_evidence_type",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_resolution_status",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_family",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_line",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_model",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_generation",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_model_number",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_mpn",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_gtin",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_connector_type",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "required_connector_type",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "protocol_standard",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "physical_interface",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "form_factor",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "mount_type",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "case_size_mm",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "screen_size_range_in",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "band_width_mm",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "lens_mount",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "memory_form_factor",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "storage_interface",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "ram_type",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "socket_type",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "power_delivery_profile",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "voltage_min_v",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "voltage_max_v",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "wattage_max_w",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "amperage_max_a",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "region_variant_compatibility",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_os",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_os_min_version",
+        "uiOrder": 37,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_os_max_version",
+        "uiOrder": 38,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "ecosystem",
+        "uiOrder": 39,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "certification",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_release_year_min",
+        "uiOrder": 41,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_release_year_max",
+        "uiOrder": 42,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_direction",
+        "uiOrder": 43,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatible_manufacturer",
+        "uiOrder": 44,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_notes",
+        "uiOrder": 45,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_warning_flags",
+        "uiOrder": 46,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "not_compatible_with",
+        "uiOrder": 47,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "universal_claim_allowed",
+        "uiOrder": 48,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "runtime_candidate_policy",
+        "uiOrder": 49,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "cross_sell_eligible",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "fitment_precision",
+        "uiOrder": 51,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "requires_adapter",
+        "uiOrder": 52,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "requires_driver",
+        "uiOrder": 53,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "driver_platform",
+        "uiOrder": 54,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "firmware_requirement",
+        "uiOrder": 55,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_evidence_text",
+        "uiOrder": 56,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_evidence_source",
+        "uiOrder": 57,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_rule_id",
+        "uiOrder": 58,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_candidate_hash",
+        "uiOrder": 59,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_normalized_key",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_review_status",
+        "uiOrder": 61,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_last_verified_at",
+        "uiOrder": 62,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPATIBILITY_COMMON",
+        "attributeCode": "compatibility_source_priority",
+        "uiOrder": 63,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
   }
 ]

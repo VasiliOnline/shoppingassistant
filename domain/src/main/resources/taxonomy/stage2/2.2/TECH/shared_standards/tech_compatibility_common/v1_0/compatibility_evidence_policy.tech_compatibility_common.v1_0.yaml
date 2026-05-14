@@ -1,0 +1,21 @@
+policy_id: compatibility_evidence_policy.tech_compatibility_common.v1_0
+evidence_priority:
+  MANUFACTURER_COMPATIBILITY_LIST: 100
+  OEM_MPN: 95
+  BARCODE_GTIN: 90
+  USER_CONFIRMED: 85
+  SELLER_CONFIRMED: 80
+  TITLE_EXPLICIT: 75
+  DESCRIPTION_EXPLICIT: 70
+  PACKAGING_TEXT_OCR: 70
+  CONNECTOR_MATCH: 55
+  PROTOCOL_MATCH: 55
+  FORM_FACTOR_MATCH: 50
+  POWER_SPEC_MATCH: 50
+  MARKETPLACE_CATEGORY: 35
+  INFERRED_WEAK: 10
+evidence_storage:
+  store_raw_text_in: compatibility_evidence_text
+  store_source_in: compatibility_evidence_source
+  hash_candidate_in: compatibility_candidate_hash
+  expose_raw_text_to_ui: false

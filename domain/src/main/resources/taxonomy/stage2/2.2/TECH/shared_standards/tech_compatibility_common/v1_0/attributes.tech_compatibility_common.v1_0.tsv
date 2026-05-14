@@ -1,0 +1,64 @@
+attribute_code	data_type	role	required_policy	description_ru	allowed_values_source	usage_scope	system_hidden
+compatibility_mode	enum	T0_CORE	required	Способ совместимости: модель, семейство, коннектор, протокол, размер, mount, питание, ОС или universal.	values#compatibility_mode	all_tech_compatibility	false
+compatibility_scope	enum	T0_CORE	required	Гранулярность target: single model, model range, family, line, brand, platform, universal.	values#compatibility_scope	all_tech_compatibility	false
+compatible_target_category_code	enum	T0_CORE	required	Целевая public TECH-ветка, к которой относится совместимость.	values#compatible_target_category_code	all_tech_compatibility	false
+compatible_brand	string_or_code	T0_CORE	required_if_known	Бренд целевого устройства/экосистемы; не обязательно равен бренду аксессуара.	runtime_brand_candidate	all_tech_compatibility	false
+compatible_model_text	string	T0_CORE	required_if_model_mentioned	Сырой текст целевой модели/линейки из title/OCR/spec/user input.	free_text	all_tech_compatibility	false
+compatibility_confidence	enum	T0_CORE	required	Уровень уверенности relation по evidence.	values#compatibility_confidence	all_tech_compatibility	false
+compatibility_evidence_type	enum	T0_CORE	required	Тип доказательства совместимости.	values#compatibility_evidence_type	all_tech_compatibility	false
+compatibility_resolution_status	enum	T0_CORE	required	Статус разрешения target/relation.	values#compatibility_resolution_status	all_tech_compatibility	false
+compatible_family	string_or_code	T1_TYPE_SPECIFIC	optional	Семейство target: iPhone, Galaxy S, MacBook, ThinkPad, Apple Watch.	runtime_identity_candidate	all_tech_compatibility	false
+compatible_line	string_or_code	T1_TYPE_SPECIFIC	optional	Линейка target внутри family: Pro, Ultra, Air, SE, Series.	runtime_identity_candidate	all_tech_compatibility	false
+compatible_model	string_or_code	T1_TYPE_SPECIFIC	optional_requires_evidence	Canonical target model, только при strong evidence.	runtime_model_candidate	all_tech_compatibility	false
+compatible_generation	string	T1_TYPE_SPECIFIC	optional	Поколение target: Series 9, M2, PS5 Slim.	free_text	all_tech_compatibility	false
+compatible_model_number	string	T1_TYPE_SPECIFIC	optional	Номер модели target: Axxxx, SM-xxxx, CFI-xxxx.	regex/model_number	all_tech_compatibility	false
+compatible_mpn	string	T1_TYPE_SPECIFIC	optional	MPN целевого устройства или совместимого SKU.	regex/mpn	all_tech_compatibility	false
+compatible_gtin	string	T1_TYPE_SPECIFIC	optional	GTIN/EAN/UPC target или verified compatibility key.	regex/gtin	all_tech_compatibility	false
+compatible_connector_type	enum	T1_TYPE_SPECIFIC	conditional	Коннектор, с которым совместим товар.	values#connector_type	all_tech_compatibility	false
+required_connector_type	enum	T1_TYPE_SPECIFIC	conditional	Коннектор, который требуется у target.	values#connector_type	all_tech_compatibility	false
+protocol_standard	enum	T1_TYPE_SPECIFIC	conditional	Протокол/стандарт: USB, HDMI, Bluetooth, Wi-Fi, Matter, Zigbee, Qi.	values#protocol_standard	all_tech_compatibility	false
+physical_interface	enum	T1_TYPE_SPECIFIC	conditional	Физический интерфейс/порт/слот/крепление.	values#physical_interface	all_tech_compatibility	false
+form_factor	enum	T1_TYPE_SPECIFIC	conditional	Форм-фактор компонента/аксессуара/расходника.	values#form_factor	all_tech_compatibility	false
+mount_type	enum	T1_TYPE_SPECIFIC	conditional	Тип крепления/байонета/монтажа.	values#mount_type	all_tech_compatibility	false
+case_size_mm	integer	T1_TYPE_SPECIFIC	conditional	Размер корпуса target в мм, например Apple Watch 41/45/49.	range/10..100	all_tech_compatibility	false
+screen_size_range_in	range_decimal	T1_TYPE_SPECIFIC	conditional	Диапазон размера экрана target в дюймах.	range/1..120	all_tech_compatibility	false
+band_width_mm	integer	T1_TYPE_SPECIFIC	conditional	Ширина ремешка/крепления в мм.	range/6..40	all_tech_compatibility	false
+lens_mount	enum	T1_TYPE_SPECIFIC	conditional	Байонет объектива/камеры.	values#lens_mount	all_tech_compatibility	false
+memory_form_factor	enum	T1_TYPE_SPECIFIC	conditional	Форм-фактор RAM/накопителя/карты памяти.	values#memory_form_factor	all_tech_compatibility	false
+storage_interface	enum	T1_TYPE_SPECIFIC	conditional	Интерфейс накопителя.	values#storage_interface	all_tech_compatibility	false
+ram_type	enum	T1_TYPE_SPECIFIC	conditional	Тип оперативной памяти.	values#ram_type	all_tech_compatibility	false
+socket_type	enum	T1_TYPE_SPECIFIC	conditional	Сокет CPU/материнской платы/кулера.	values#socket_type	all_tech_compatibility	false
+power_delivery_profile	enum	T1_TYPE_SPECIFIC	conditional	Профиль питания/зарядки.	values#power_delivery_profile	all_tech_compatibility	false
+voltage_min_v	decimal	T1_TYPE_SPECIFIC	conditional	Минимальное совместимое напряжение.	range/0..1000	all_tech_compatibility	false
+voltage_max_v	decimal	T1_TYPE_SPECIFIC	conditional	Максимальное совместимое напряжение.	range/0..1000	all_tech_compatibility	false
+wattage_max_w	decimal	T1_TYPE_SPECIFIC	conditional	Максимальная поддерживаемая мощность.	range/0..5000	all_tech_compatibility	false
+amperage_max_a	decimal	T1_TYPE_SPECIFIC	conditional	Максимальный ток.	range/0..200	all_tech_compatibility	false
+region_variant_compatibility	enum	T1_TYPE_SPECIFIC	conditional	Региональная совместимость.	values#region_variant_compatibility	all_tech_compatibility	false
+compatible_os	enum	T1_TYPE_SPECIFIC	conditional	Совместимая ОС/платформа.	values#compatible_os	all_tech_compatibility	false
+compatible_os_min_version	string	T1_TYPE_SPECIFIC	conditional	Минимальная версия ОС/прошивки.	semver_or_text	all_tech_compatibility	false
+compatible_os_max_version	string	T1_TYPE_SPECIFIC	optional	Максимальная версия ОС/прошивки, если ограничена.	semver_or_text	all_tech_compatibility	false
+ecosystem	enum	T2_OPTIONAL_ENRICHMENT	optional	Экосистема: MagSafe, Find My, Fast Pair, Matter, SmartThings.	values#ecosystem	all_tech_compatibility	false
+certification	multi_enum	T2_OPTIONAL_ENRICHMENT	optional	Сертификации совместимости: MFi, USB-IF, Qi2, Matter, Bluetooth.	values#certification	all_tech_compatibility	false
+compatible_release_year_min	integer	T2_OPTIONAL_ENRICHMENT	optional	Минимальный год выпуска target.	range/1990..current	all_tech_compatibility	false
+compatible_release_year_max	integer	T2_OPTIONAL_ENRICHMENT	optional	Максимальный год выпуска target.	range/1990..current	all_tech_compatibility	false
+compatibility_direction	enum	T2_OPTIONAL_ENRICHMENT	optional	Направление relation: accessory-to-device, component-to-device и т.д.	values#compatibility_direction	all_tech_compatibility	false
+compatible_manufacturer	string_or_code	T2_OPTIONAL_ENRICHMENT	optional	Производитель target, если отличается от бренда.	runtime_brand_candidate	all_tech_compatibility	false
+compatibility_notes	string	T2_OPTIONAL_ENRICHMENT	optional	Человекочитаемое пояснение совместимости.	free_text	all_tech_compatibility	false
+compatibility_warning_flags	multi_enum	T2_OPTIONAL_ENRICHMENT	optional	Предупреждения по совместимости.	values#compatibility_warning_flags	all_tech_compatibility	false
+not_compatible_with	list_string	T2_OPTIONAL_ENRICHMENT	optional	Явно несовместимые модели/версии/платформы.	free_text_list	all_tech_compatibility	false
+universal_claim_allowed	boolean	T2_OPTIONAL_ENRICHMENT	optional	Можно ли считать товар универсальным после проверок.	boolean	all_tech_compatibility	false
+runtime_candidate_policy	enum	T2_OPTIONAL_ENRICHMENT	optional	Как обрабатывать long-tail compatibility candidates.	values#runtime_candidate_policy	all_tech_compatibility	false
+cross_sell_eligible	boolean	T2_OPTIONAL_ENRICHMENT	optional	Можно ли использовать relation для рекомендаций.	boolean	all_tech_compatibility	false
+fitment_precision	enum	T2_OPTIONAL_ENRICHMENT	optional	Точность посадки: exact/generic/spec only.	values#fitment_precision	all_tech_compatibility	false
+requires_adapter	boolean	T2_OPTIONAL_ENRICHMENT	optional	Нужен ли переходник.	boolean	all_tech_compatibility	false
+requires_driver	boolean	T2_OPTIONAL_ENRICHMENT	optional	Нужен ли драйвер.	boolean	all_tech_compatibility	false
+driver_platform	enum	T2_OPTIONAL_ENRICHMENT	optional	Платформа драйвера.	values#compatible_os	all_tech_compatibility	false
+firmware_requirement	string	T2_OPTIONAL_ENRICHMENT	optional	Требования к firmware/прошивке.	free_text	all_tech_compatibility	false
+compatibility_evidence_text	string	T3_SYSTEM_HIDDEN	optional	Сырой evidence-фрагмент.	free_text	system_hidden	true
+compatibility_evidence_source	enum	T3_SYSTEM_HIDDEN	optional	Источник evidence.	values#compatibility_evidence_source	system_hidden	true
+compatibility_rule_id	string	T3_SYSTEM_HIDDEN	optional	ID правила compatibility resolution.	rule_id	system_hidden	true
+compatibility_candidate_hash	string	T3_SYSTEM_HIDDEN	optional	Hash сырого candidate для дедупа.	sha256	system_hidden	true
+compatibility_normalized_key	string	T3_SYSTEM_HIDDEN	optional	Нормализованный ключ relation.	computed_key	system_hidden	true
+compatibility_review_status	enum	T3_SYSTEM_HIDDEN	optional	Статус ревью candidate.	values#review_status	system_hidden	true
+compatibility_last_verified_at	datetime	T3_SYSTEM_HIDDEN	optional	Дата последней проверки.	iso8601	system_hidden	true
+compatibility_source_priority	integer	T3_SYSTEM_HIDDEN	optional	Приоритет evidence source.	range/0..100	system_hidden	true

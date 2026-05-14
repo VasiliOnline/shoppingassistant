@@ -22,8 +22,9 @@ class PhoneAccessoriesBranchPackGateTest {
         assertTrue("compatible_phone_model" in spec.identityAttributes)
         assertTrue("accessory_type" in spec.facetAttributes)
 
-        assertFalse("System field must not be a runtime facet.", "compatibility_mode" in spec.facetAttributes)
-        assertFalse("Raw compatibility evidence must stay hidden from facets.", "compatible_model_text" in spec.facetAttributes)
+        assertTrue("compatibility_mode" in spec.facetAttributes)
+        assertTrue("compatibility_confidence" in spec.facetAttributes)
+        assertFalse("compatible_model_text is an initial compatibility field, not a runtime facet.", "compatible_model_text" in spec.facetAttributes)
     }
 
     @Test
@@ -54,9 +55,9 @@ class PhoneAccessoriesBranchPackGateTest {
         requireNotNull(profile)
         assertTrue("accessory_type" in profile.mainTypedFacetKeys)
         assertTrue("compatible_phone_model" in profile.requiresBrandContextTypedFacetKeys)
-        assertTrue("compatibility_mode" in profile.hiddenTypedFacetKeys)
-        assertTrue("compatible_model_text" in profile.hiddenTypedFacetKeys)
-        assertTrue("compatibility_confidence" in profile.hiddenTypedFacetKeys)
+        assertTrue("compatibility_mode" in profile.mainTypedFacetKeys)
+        assertTrue("compatibility_confidence" in profile.mainTypedFacetKeys)
+        assertTrue("compatible_model_text" in profile.noticePriorityTypedFacetKeys)
         assertTrue("evidence_policy" in profile.hiddenTypedFacetKeys)
     }
 

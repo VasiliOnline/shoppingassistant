@@ -1,0 +1,88 @@
+{
+  "manifest_id": "foundation_manifest.tech.v1_0",
+  "pack_id": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+  "created_at": "2026-05-14T12:10:00+03:00",
+  "catalog_root": "TECH",
+  "manifest_type": "shared_foundation_index_contract",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "tree_contract_version": "TECH_CATEGORY_TREE_CONTRACT_v1_0",
+  "shared_foundation_order": [
+    {
+      "order": 1,
+      "category_code": "TECH.ELECTRONICS_COMMON",
+      "pack_id": "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+      "artifact_sha256": "f2881095f29c29ba15e38c13cc22c3fac81298e5b75f32d8b616e8c7a9a047c1"
+    },
+    {
+      "order": 2,
+      "category_code": "TECH.DEVICE_IDENTITY_COMMON",
+      "pack_id": "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+      "artifact_sha256": "ed8d07eb9d91578355b53385f549e5fe645817f9bd288792f4fbf973df826f25"
+    },
+    {
+      "order": 3,
+      "category_code": "TECH.SPECS_COMMON",
+      "pack_id": "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+      "artifact_sha256": "d2111459f04a1596cad14ce3647ea9aad3c849ab9beb26258d91d072e051da88"
+    },
+    {
+      "order": 4,
+      "category_code": "TECH.COMPATIBILITY_COMMON",
+      "pack_id": "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+      "artifact_sha256": "8317ca065ce505da5ae4a8c9c2acaf873ef05b638813764c9ce4cd07ab30fab8"
+    }
+  ],
+  "runtime_contract": {
+    "mount_mode": "manifest_only_then_shared_standard_registry_mount",
+    "manifest_mount_target": "catalog_foundation_manifest_registry",
+    "shared_pack_mount_target": "shared_standard_registry",
+    "no_public_category_mounts_in_this_pack": true,
+    "no_offer_routing_target": true,
+    "no_attribute_data_duplication": true,
+    "hard_rule": "Manifest links to the four shared packs; it must not contain their attributes/values/aliases payload."
+  },
+  "forbidden_category_codes": [
+    "TECH.IPHONE",
+    "TECH.SAMSUNG_PHONES",
+    "TECH.CASES",
+    "TECH.CHARGERS",
+    "TECH.CABLES",
+    "TECH.MACBOOK",
+    "TECH.AIRPODS"
+  ],
+  "public_categories_declared_in_tree_but_not_mounted_here": [
+    "TECH.PHONES",
+    "TECH.PHONE_ACCESSORIES",
+    "TECH.COMPUTERS",
+    "TECH.TABLETS_E_READERS",
+    "TECH.MONITORS_DISPLAYS",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.PC_COMPONENTS",
+    "TECH.STORAGE_MEMORY",
+    "TECH.AUDIO",
+    "TECH.TV_HOME_THEATER",
+    "TECH.WEARABLES",
+    "TECH.CAMERAS_DRONES",
+    "TECH.GAMING",
+    "TECH.SMART_HOME_SECURITY",
+    "TECH.NETWORKING",
+    "TECH.POWER_CHARGING_CABLES",
+    "TECH.PRINTERS_SCANNERS",
+    "TECH.CAR_ELECTRONICS_GPS"
+  ],
+  "reserved_categories_declared_but_not_mounted_here": [
+    "TECH.ELECTRIC_TRANSPORTATION",
+    "TECH.AI_ROBOTICS",
+    "TECH.SOFTWARE_DIGITAL",
+    "TECH.ENTERPRISE_SERVERS",
+    "TECH.OTHER_ELECTRONICS"
+  ],
+  "next_sequence": [
+    "TECH_PHONES_public_category_pack_v1_0_RU",
+    "TECH_PHONE_ACCESSORIES_public_category_pack_v1_0_RU",
+    "TECH_COMPUTERS_public_category_pack_v1_0_RU",
+    "TECH_TABLETS_E_READERS_public_category_pack_v1_0_RU",
+    "TECH_MONITORS_DISPLAYS_public_category_pack_v1_0_RU"
+  ]
+}

@@ -1,0 +1,27 @@
+integration_mapping_id: integration_mapping.tech_foundation.v1_0
+pack_id: TECH_FOUNDATION_MANIFEST_v1_0_RU
+source_artifacts:
+  tree_contract: TECH_category_tree_reference.html
+  companion_standard: CATALOG_PACK_COMPANION_v1_RU.md
+  shared_pack_zips:
+  - TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU.zip
+  - TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU.zip
+  - TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU.zip
+  - TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU.zip
+target_registry_paths:
+  foundation_manifest: taxonomy/stage2/2.2/tech/foundation/manifest/TECH_FOUNDATION_MANIFEST_v1_0_RU
+  shared_standard_registry: taxonomy/stage2/2.2/tech/shared_standards/
+  effective_snapshots: taxonomy/stage2/2.2/tech/_snapshots/
+  validation_reports: taxonomy/stage2/2.2/tech/_validation_reports/
+loader_contract:
+  load_manifest_first: true
+  verify_referenced_artifact_checksums_before_mount: true
+  mount_referenced_shared_packs_in_order: true
+  do_not_route_offers_to_manifest: true
+  do_not_create_public_category_from_manifest: true
+expected_runtime_effects:
+- four shared standards registered
+- no public category mounted by this manifest
+- no offer routing target added
+- TECH public category packs can now inherit shared foundation
+next_pack_after_manifest: TECH_PHONES_public_category_pack_v1_0_RU

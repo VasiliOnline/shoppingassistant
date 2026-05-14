@@ -93,7 +93,12 @@ class TechElectronicsCommonSharedStandardGateTest {
         val assignments = CatalogPackV2RegistryLoader.archetypeAssignments.assignments.associateBy { it.categoryCode }
         listOf("TECH", "TECH.PHONES", "TECH.PHONE_ACCESSORIES", "TECH.COMPUTERS", "TECH.WEARABLES").forEach { categoryCode ->
             assertEquals(
-                listOf("TECH.ELECTRONICS_COMMON", "TECH.DEVICE_IDENTITY_COMMON", "TECH.SPECS_COMMON"),
+                listOf(
+                    "TECH.ELECTRONICS_COMMON",
+                    "TECH.DEVICE_IDENTITY_COMMON",
+                    "TECH.SPECS_COMMON",
+                    "TECH.COMPATIBILITY_COMMON",
+                ),
                 assignments.getValue(categoryCode).sharedStandards,
             )
         }
