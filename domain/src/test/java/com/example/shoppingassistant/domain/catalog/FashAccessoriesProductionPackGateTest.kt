@@ -145,8 +145,8 @@ class FashAccessoriesProductionPackGateTest {
             "женское платье zara" to "FASH.WOMEN",
             "мужская футболка nike" to "FASH.MEN",
             "детская куртка зимняя" to "FASH.KIDS",
-            "apple watch series 9" to "TECH.SMART_HOME",
-            "ремешок для apple watch 44 мм" to "TECH.SMART_HOME",
+            "apple watch series 9" to "TECH.WEARABLES",
+            "ремешок для apple watch 44 мм" to "TECH.WEARABLES",
             "чехол для телефона с ремешком" to "TECH.PHONE_ACCESSORIES",
         )
 

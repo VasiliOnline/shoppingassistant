@@ -144,6 +144,42 @@
         "RANGE_INPUT"
       ]
     },
+    "categoryArchetype": {
+      "type": "string",
+      "enum": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN",
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "CONSUMABLE",
+        "LIFE_STAGE_DRIVEN",
+        "SAFETY_REGULATED",
+        "VISUAL_SIMPLE"
+      ]
+    },
+    "attributeRole": {
+      "type": "string",
+      "enum": [
+        "T0_CORE",
+        "T1_TYPE_CRITICAL",
+        "T2_ADVANCED",
+        "T3_SYSTEM_HIDDEN"
+      ]
+    },
+    "usageScope": {
+      "type": "string",
+      "enum": [
+        "USER_VISIBLE_REQUIRED",
+        "USER_VISIBLE_OPTIONAL",
+        "PRIMARY_FACET",
+        "SECONDARY_FACET",
+        "MATCHING_ONLY",
+        "AI_EXTRACTION_ONLY",
+        "ADMIN_REVIEW_ONLY",
+        "RESERVED"
+      ]
+    },
     "catalogValueOption": {
       "type": "object",
       "additionalProperties": false,
@@ -170,6 +206,8 @@
         "code",
         "title",
         "labels",
+        "role",
+        "usageScopes",
         "dataType",
         "valueType",
         "valueSetType",
@@ -191,6 +229,12 @@
         "code": { "type": "string" },
         "title": { "type": "string" },
         "labels": { "$ref": "#/$defs/localizedText" },
+        "role": { "$ref": "#/$defs/attributeRole" },
+        "usageScopes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/usageScope" }
+        },
+        "facetTemplateCode": { "type": ["string", "null"] },
         "dataType": { "$ref": "#/$defs/attributeDataType" },
         "valueType": { "$ref": "#/$defs/valueType" },
         "valueSetType": { "$ref": "#/$defs/valueSetType" },
@@ -336,6 +380,7 @@
       "additionalProperties": false,
       "required": [
         "source",
+        "archetypes",
         "identityAttributeCodes",
         "facetAttributeCodes",
         "hasTypedConstraints",
@@ -354,6 +399,10 @@
       ],
       "properties": {
         "source": { "type": "string" },
+        "archetypes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/categoryArchetype" }
+        },
         "identityAttributeCodes": {
           "type": "array",
           "items": { "type": "string" }

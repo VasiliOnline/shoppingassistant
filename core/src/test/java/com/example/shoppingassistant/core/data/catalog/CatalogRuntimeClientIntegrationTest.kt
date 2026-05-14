@@ -143,7 +143,7 @@ class CatalogRuntimeClientIntegrationTest {
         val dataSource = CatalogApiDataSource(
             backendClient = backendClient,
             fallback = object : CatalogDataSource {
-                override suspend fun listCategories(): List<Category> = error("fallback should not be used")
+                override suspend fun listCategories(): List<Category> = emptyList()
                 override suspend fun getEffectiveSpec(
                     code: String,
                     brand: String?,

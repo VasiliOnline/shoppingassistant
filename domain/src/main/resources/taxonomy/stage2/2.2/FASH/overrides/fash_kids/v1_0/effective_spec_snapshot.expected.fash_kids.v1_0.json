@@ -126,5 +126,42 @@
     "allowed target_gender includes BOYS,GIRLS,KIDS,UNISEX",
     "age_group supports NEWBORN,BABY,TODDLER,KIDS,TEEN",
     "FASH.SHOES/FASH.BAGS/FASH.ACCESSORIES/KIDS.* guards remain active"
-  ]
+  ],
+  "production_gate": {
+    "archetypes": ["SIZE_DRIVEN", "TYPE_DRIVEN", "LIFE_STAGE_DRIVEN"],
+    "required_present": [
+      "apparel_type",
+      "condition",
+      "size_label",
+      "color_primary",
+      "brand",
+      "material_primary",
+      "target_gender",
+      "age_group"
+    ],
+    "required_fields": ["apparel_type", "condition", "size_label", "color_primary"],
+    "primary_facets": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "season"],
+    "hidden_from_primary_ui": [
+      "apparel_type_group",
+      "size_text_raw",
+      "brand_text_raw",
+      "visual_evidence_flags",
+      "normalization_confidence",
+      "source_text_evidence",
+      "bra_cup"
+    ],
+    "initial_fields": [
+      "apparel_type",
+      "target_gender",
+      "age_group",
+      "size_label",
+      "condition",
+      "brand",
+      "color_primary",
+      "season"
+    ],
+    "type_specific": {
+      "SCHOOL_UNIFORM": ["size_label", "target_gender", "age_group", "brand", "condition", "color_primary"]
+    }
+  }
 }

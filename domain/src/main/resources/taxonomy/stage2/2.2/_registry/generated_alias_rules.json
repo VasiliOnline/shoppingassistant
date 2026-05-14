@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "rules": [
+    {
+      "code": "type_gender_size_aliases",
+      "sourceFields": ["type", "target_gender", "size", "age_group"],
+      "appliesToArchetypes": ["TYPE_DRIVEN", "SIZE_DRIVEN"],
+      "generatedAliasKinds": ["type_only", "type_gender", "type_size", "type_gender_size"],
+      "manualOnlyKinds": ["slang", "misspelling", "regional_synonym"],
+      "negativeGuardKinds": ["cross_branch_type", "ambiguous_gender", "non_product_noise"]
+    },
+    {
+      "code": "brand_model_aliases",
+      "sourceFields": ["brand", "model", "model_line", "product_name"],
+      "appliesToArchetypes": ["IDENTITY_CRITICAL", "SPEC_HEAVY"],
+      "generatedAliasKinds": ["brand_model", "brand_line", "model_storage_variant"],
+      "manualOnlyKinds": ["compact_model_slang", "marketplace_typo", "cyrillic_transliteration"],
+      "negativeGuardKinds": ["model_only_route_steal", "wrong_brand_family", "cross_category_model"]
+    },
+    {
+      "code": "material_color_visual_aliases",
+      "sourceFields": ["material", "color", "color_primary", "shape"],
+      "appliesToArchetypes": ["VISUAL_SIMPLE", "TYPE_DRIVEN"],
+      "generatedAliasKinds": ["type_color", "type_material", "material_color"],
+      "manualOnlyKinds": ["style_slang", "rare_material_synonym"],
+      "negativeGuardKinds": ["color_only_route", "brand_from_color", "style_without_type"]
+    },
+    {
+      "code": "compatibility_aliases",
+      "sourceFields": ["compatibility_mode", "compatible_brand", "compatible_family", "compatible_model", "used_for"],
+      "appliesToArchetypes": ["COMPATIBILITY_DRIVEN"],
+      "generatedAliasKinds": ["host_type", "host_brand_family", "host_model_accessory_type"],
+      "manualOnlyKinds": ["oem_slang", "connector_slang", "fitment_typo"],
+      "negativeGuardKinds": ["host_product_query_without_accessory", "wrong_generation", "ambiguous_fitment"]
+    },
+    {
+      "code": "consumable_safety_aliases",
+      "sourceFields": ["product_name", "brand", "ingredient", "allergen", "life_stage"],
+      "appliesToArchetypes": ["CONSUMABLE", "SAFETY_REGULATED", "LIFE_STAGE_DRIVEN"],
+      "generatedAliasKinds": ["product_brand", "form_factor_flavor", "life_stage_product"],
+      "manualOnlyKinds": ["ingredient_synonym", "allergen_synonym", "regulated_claim_phrase"],
+      "negativeGuardKinds": ["medical_claim_route", "allergen_free_without_label", "age_claim_without_text"]
+    }
+  ]
+}

@@ -22,9 +22,10 @@ class TaxonomyGate(
         val browseNodes = browseNodeRepository.listBrowseNodes()
         val aliasEntries = aliasEntryRepository.listAliasEntries()
         val mappings = googleTaxonomyMappingRepository.listMappings()
+        val legacyAliasesForValidation = if (aliasEntries.isEmpty()) aliases else emptyList()
         return validator.validate(
             categories = categories,
-            aliases = aliases,
+            aliases = legacyAliasesForValidation,
             mappings = mappings,
             browseNodes = browseNodes,
             aliasEntries = aliasEntries,

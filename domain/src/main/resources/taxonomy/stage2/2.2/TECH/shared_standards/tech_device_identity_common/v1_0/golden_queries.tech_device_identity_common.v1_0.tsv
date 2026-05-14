@@ -1,0 +1,156 @@
+query	expected_route_target	applies_shared_standard	expected_identity_level	expected_identity_json	must_not_create_category	notes
+iphone 13 128gb	TECH.PHONES	true	FULL	"{""brand"": ""APPLE"", ""family"": ""IPHONE"", ""model_name_text"": ""iPhone 13""}"	TECH.IPHONE	exact model text in query
+чехол iphone 13 silicone case	TECH.PHONE_ACCESSORIES	true	PARTIAL	"{""family"": ""IPHONE"", ""identity_context_role"": ""ACCESSORY_COMPATIBILITY_HINT""}"	TECH.IPHONE	compatibility context
+macbook pro a2338 m1	TECH.COMPUTERS	true	FULL	"{""brand"": ""APPLE"", ""family"": ""MACBOOK_PRO"", ""model_number"": ""A2338""}"	TECH.MACBOOK	model number evidence
+airpods pro 2 оригинал	TECH.AUDIO	true	PARTIAL	"{""brand"": ""APPLE"", ""family"": ""AIRPODS"", ""generation"": ""2""}"	TECH.AIRPODS	audio route, no microcategory
+ремешок apple watch 45mm	TECH.WEARABLES	true	PARTIAL	"{""family"": ""APPLE_WATCH"", ""identity_context_role"": ""ACCESSORY_COMPATIBILITY_HINT""}"	FASH.ACCESSORIES	wearable accessory route conflict
+playstation 5 digital edition	TECH.GAMING	true	FULL	"{""brand"": ""PLAYSTATION"", ""family"": ""PLAYSTATION"", ""edition"": ""DIGITAL_EDITION""}"	TECH.PLAYSTATION	console identity
+sony wh-1000xm5 headphones	TECH.AUDIO	true	FULL	"{""brand"": ""SONY"", ""family"": ""WH_1000X"", ""model_name_text"": ""WH-1000XM5""}"	TECH.HEADPHONES	audio identity
+nvidia rtx 4070 asus dual	TECH.PC_COMPONENTS	true	FULL	"{""brand"": ""NVIDIA"", ""family"": ""GEFORCE_RTX"", ""model_name_text"": ""RTX 4070""}"	TECH.RTX	component identity
+canon eos r6 body	TECH.CAMERAS_DRONES	true	FULL	"{""brand"": ""CANON"", ""family"": ""EOS"", ""model_name_text"": ""EOS R6""}"	TECH.CANON_CAMERAS	camera identity
+tp-link archer ax73 router	TECH.NETWORKING	true	FULL	"{""brand"": ""TP_LINK"", ""family"": ""ARCHER"", ""model_name_text"": ""AX73""}"	TECH.ROUTERS	network identity
+apple iphone	TECH.PHONES	true	PARTIAL	"{""family"": ""IPHONE""}"	TECH.IPHONE	family head hint, no microcategory
+apple ipad	TECH.TABLETS_E_READERS	true	PARTIAL	"{""family"": ""IPAD""}"	TECH.IPAD	family head hint, no microcategory
+apple macbook	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""MACBOOK""}"	TECH.MACBOOK	family head hint, no microcategory
+apple macbook air	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""MACBOOK_AIR""}"	TECH.MACBOOK_AIR	family head hint, no microcategory
+apple macbook pro	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""MACBOOK_PRO""}"	TECH.MACBOOK_PRO	family head hint, no microcategory
+apple apple watch	TECH.WEARABLES	true	PARTIAL	"{""family"": ""APPLE_WATCH""}"	TECH.APPLE_WATCH	family head hint, no microcategory
+apple airpods	TECH.AUDIO	true	PARTIAL	"{""family"": ""AIRPODS""}"	TECH.AIRPODS	family head hint, no microcategory
+samsung galaxy s	TECH.PHONES	true	PARTIAL	"{""family"": ""GALAXY_S""}"	TECH.GALAXY_S	family head hint, no microcategory
+samsung galaxy z	TECH.PHONES	true	PARTIAL	"{""family"": ""GALAXY_Z""}"	TECH.GALAXY_Z	family head hint, no microcategory
+samsung galaxy tab	TECH.TABLETS_E_READERS	true	PARTIAL	"{""family"": ""GALAXY_TAB""}"	TECH.GALAXY_TAB	family head hint, no microcategory
+samsung galaxy watch	TECH.WEARABLES	true	PARTIAL	"{""family"": ""GALAXY_WATCH""}"	TECH.GALAXY_WATCH	family head hint, no microcategory
+google pixel	TECH.PHONES	true	PARTIAL	"{""family"": ""PIXEL""}"	TECH.PIXEL	family head hint, no microcategory
+xiaomi redmi note	TECH.PHONES	true	PARTIAL	"{""family"": ""REDMI_NOTE""}"	TECH.REDMI_NOTE	family head hint, no microcategory
+xiaomi poco x	TECH.PHONES	true	PARTIAL	"{""family"": ""POCO_X""}"	TECH.POCO_X	family head hint, no microcategory
+xiaomi poco f	TECH.PHONES	true	PARTIAL	"{""family"": ""POCO_F""}"	TECH.POCO_F	family head hint, no microcategory
+xiaomi mi band	TECH.WEARABLES	true	PARTIAL	"{""family"": ""MI_BAND""}"	TECH.MI_BAND	family head hint, no microcategory
+thinkpad	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""THINKPAD""}"	TECH.THINKPAD	family head hint, no microcategory
+ideapad	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""IDEAPAD""}"	TECH.IDEAPAD	family head hint, no microcategory
+legion	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""LEGION""}"	TECH.LEGION	family head hint, no microcategory
+yoga	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""YOGA""}"	TECH.YOGA	family head hint, no microcategory
+xps	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""XPS""}"	TECH.XPS	family head hint, no microcategory
+inspiron	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""INSPIRON""}"	TECH.INSPIRON	family head hint, no microcategory
+latitude	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""LATITUDE""}"	TECH.LATITUDE	family head hint, no microcategory
+elitebook	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""ELITEBOOK""}"	TECH.ELITEBOOK	family head hint, no microcategory
+pavilion	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""PAVILION""}"	TECH.PAVILION	family head hint, no microcategory
+rog	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""ROG""}"	TECH.ROG	family head hint, no microcategory
+tuf	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""TUF""}"	TECH.TUF	family head hint, no microcategory
+surface	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""SURFACE""}"	TECH.SURFACE	family head hint, no microcategory
+surface pro	TECH.COMPUTERS	true	PARTIAL	"{""family"": ""SURFACE_PRO""}"	TECH.SURFACE_PRO	family head hint, no microcategory
+kindle	TECH.TABLETS_E_READERS	true	PARTIAL	"{""family"": ""KINDLE""}"	TECH.KINDLE	family head hint, no microcategory
+kindle paperwhite	TECH.TABLETS_E_READERS	true	PARTIAL	"{""family"": ""KINDLE_PAPERWHITE""}"	TECH.KINDLE_PAPERWHITE	family head hint, no microcategory
+ultrasharp	TECH.MONITORS_DISPLAYS	true	PARTIAL	"{""family"": ""ULTRASHARP""}"	TECH.ULTRASHARP	family head hint, no microcategory
+odyssey	TECH.MONITORS_DISPLAYS	true	PARTIAL	"{""family"": ""ODYSSEY""}"	TECH.ODYSSEY	family head hint, no microcategory
+ultragear	TECH.MONITORS_DISPLAYS	true	PARTIAL	"{""family"": ""ULTRAGEAR""}"	TECH.ULTRAGEAR	family head hint, no microcategory
+geforce rtx	TECH.PC_COMPONENTS	true	PARTIAL	"{""family"": ""GEFORCE_RTX""}"	TECH.GEFORCE_RTX	family head hint, no microcategory
+geforce gtx	TECH.PC_COMPONENTS	true	PARTIAL	"{""family"": ""GEFORCE_GTX""}"	TECH.GEFORCE_GTX	family head hint, no microcategory
+radeon rx	TECH.PC_COMPONENTS	true	PARTIAL	"{""family"": ""RADEON_RX""}"	TECH.RADEON_RX	family head hint, no microcategory
+ryzen	TECH.PC_COMPONENTS	true	PARTIAL	"{""family"": ""RYZEN""}"	TECH.RYZEN	family head hint, no microcategory
+core i	TECH.PC_COMPONENTS	true	PARTIAL	"{""family"": ""CORE_I""}"	TECH.CORE_I	family head hint, no microcategory
+sony playstation	TECH.GAMING	true	PARTIAL	"{""family"": ""PLAYSTATION""}"	TECH.PLAYSTATION	family head hint, no microcategory
+microsoft xbox series	TECH.GAMING	true	PARTIAL	"{""family"": ""XBOX_SERIES""}"	TECH.XBOX_SERIES	family head hint, no microcategory
+nintendo switch	TECH.GAMING	true	PARTIAL	"{""family"": ""NINTENDO_SWITCH""}"	TECH.NINTENDO_SWITCH	family head hint, no microcategory
+quest	TECH.GAMING	true	PARTIAL	"{""family"": ""QUEST""}"	TECH.QUEST	family head hint, no microcategory
+alpha	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""ALPHA""}"	TECH.ALPHA	family head hint, no microcategory
+eos	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""EOS""}"	TECH.EOS	family head hint, no microcategory
+nikon z	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""NIKON_Z""}"	TECH.NIKON_Z	family head hint, no microcategory
+lumix	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""LUMIX""}"	TECH.LUMIX	family head hint, no microcategory
+mavic	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""MAVIC""}"	TECH.MAVIC	family head hint, no microcategory
+dji mini	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""MINI_DRONE""}"	TECH.MINI_DRONE	family head hint, no microcategory
+osmo	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""OSMO""}"	TECH.OSMO	family head hint, no microcategory
+hero	TECH.CAMERAS_DRONES	true	PARTIAL	"{""family"": ""HERO""}"	TECH.HERO	family head hint, no microcategory
+wh-1000x	TECH.AUDIO	true	PARTIAL	"{""family"": ""WH_1000X""}"	TECH.WH_1000X	family head hint, no microcategory
+wf-1000x	TECH.AUDIO	true	PARTIAL	"{""family"": ""WF_1000X""}"	TECH.WF_1000X	family head hint, no microcategory
+quietcomfort	TECH.AUDIO	true	PARTIAL	"{""family"": ""QUIETCOMFORT""}"	TECH.QUIETCOMFORT	family head hint, no microcategory
+jbl flip	TECH.AUDIO	true	PARTIAL	"{""family"": ""FLIP""}"	TECH.FLIP	family head hint, no microcategory
+jbl charge	TECH.AUDIO	true	PARTIAL	"{""family"": ""CHARGE_SPEAKER""}"	TECH.CHARGE_SPEAKER	family head hint, no microcategory
+echo	TECH.SMART_HOME_SECURITY	true	PARTIAL	"{""family"": ""ECHO""}"	TECH.ECHO	family head hint, no microcategory
+google nest	TECH.SMART_HOME_SECURITY	true	PARTIAL	"{""family"": ""NEST""}"	TECH.NEST	family head hint, no microcategory
+archer	TECH.NETWORKING	true	PARTIAL	"{""family"": ""ARCHER""}"	TECH.ARCHER	family head hint, no microcategory
+deco	TECH.NETWORKING	true	PARTIAL	"{""family"": ""DECO""}"	TECH.DECO	family head hint, no microcategory
+unifi	TECH.NETWORKING	true	PARTIAL	"{""family"": ""UNIFI""}"	TECH.UNIFI	family head hint, no microcategory
+laserjet	TECH.PRINTERS_SCANNERS	true	PARTIAL	"{""family"": ""LASERJET""}"	TECH.LASERJET	family head hint, no microcategory
+pixma	TECH.PRINTERS_SCANNERS	true	PARTIAL	"{""family"": ""PIXMA""}"	TECH.PIXMA	family head hint, no microcategory
+ecotank	TECH.PRINTERS_SCANNERS	true	PARTIAL	"{""family"": ""ECOTANK""}"	TECH.ECOTANK	family head hint, no microcategory
+drivesmart	TECH.CAR_ELECTRONICS_GPS	true	PARTIAL	"{""family"": ""DRIVESMART""}"	TECH.DRIVESMART	family head hint, no microcategory
+blackvue dr	TECH.CAR_ELECTRONICS_GPS	true	PARTIAL	"{""family"": ""DASHCAM_BLACKVUE""}"	TECH.DASHCAM_BLACKVUE	family head hint, no microcategory
+my passport	TECH.STORAGE_MEMORY	true	PARTIAL	"{""family"": ""MYPASSPORT""}"	TECH.MYPASSPORT	family head hint, no microcategory
+extreme pro	TECH.STORAGE_MEMORY	true	PARTIAL	"{""family"": ""EXTREME_PRO""}"	TECH.EXTREME_PRO	family head hint, no microcategory
+diskstation	TECH.STORAGE_MEMORY	true	PARTIAL	"{""family"": ""DS_NAS""}"	TECH.DS_NAS	family head hint, no microcategory
+футболка с принтом iphone	FASH.MEN	true	NONE	{}	TECH.IPHONE	decorative print is apparel
+женская сумка playstation logo	FASH.BAGS	true	NONE	{}	TECH.PLAYSTATION	decorative brand/logo only
+игрушечный телефон iphone для ребенка	KIDS_OR_TOYS	true	CANDIDATE_ONLY	"{""family"": ""IPHONE"", ""identity_review_required"": true}"	TECH.IPHONE	toy context blocks device route
+ремень apple watch style без электроники	FASH.ACCESSORIES	true	NONE	{}	TECH.WEARABLES	fashion belt context
+наклейка samsung galaxy	TECH.PHONE_ACCESSORIES	true	PARTIAL	"{""family"": ""GALAXY_S"", ""identity_context_role"": ""ACCESSORY_COMPATIBILITY_HINT""}"	TECH.SAMSUNG_PHONES	accessory/decor context
+коробка от macbook pro пустая	TECH.COMPUTER_ACCESSORIES	true	CANDIDATE_ONLY	"{""family"": ""MACBOOK_PRO"", ""bundle_identity_exclusion"": true}"	TECH.MACBOOK	empty box not device
+iphone 15 pro max natural titanium	TECH.PHONES	true	FULL	"{""brand"": ""APPLE"", ""family"": ""IPHONE"", ""variant_label"": ""PRO_MAX""}"	TECH.IPHONE	exact text
+samsung galaxy z fold 5	TECH.PHONES	true	FULL	"{""brand"": ""SAMSUNG"", ""family"": ""GALAXY_Z""}"	TECH.SAMSUNG_PHONES	foldable
+google pixel 8 pro	TECH.PHONES	true	FULL	"{""brand"": ""GOOGLE"", ""family"": ""PIXEL""}"	TECH.PIXEL	phone
+lenovo thinkpad x1 carbon gen 9	TECH.COMPUTERS	true	FULL	"{""brand"": ""LENOVO"", ""family"": ""THINKPAD"", ""generation"": ""Gen 9""}"	TECH.THINKPAD	laptop
+dell ultrasharp u2720q	TECH.MONITORS_DISPLAYS	true	FULL	"{""brand"": ""DELL"", ""family"": ""ULTRASHARP"", ""model_name_text"": ""U2720Q""}"	TECH.MONITORS	monitor
+garmin fenix 7 sapphire	TECH.WEARABLES	true	FULL	"{""brand"": ""GARMIN"", ""family"": ""FENIX"", ""model_name_text"": ""Fenix 7""}"	TECH.GARMIN	wearable
+gopro hero 12 black	TECH.CAMERAS_DRONES	true	FULL	"{""brand"": ""GOPRO"", ""family"": ""HERO"", ""model_name_text"": ""HERO 12""}"	TECH.GOPRO	action camera
+anker powercore 20000	TECH.POWER_CHARGING_CABLES	true	FULL	"{""brand"": ""ANKER"", ""family"": ""POWERCORE"", ""model_name_text"": ""20000""}"	TECH.POWERBANK	power
+hp laserjet pro m404dn	TECH.PRINTERS_SCANNERS	true	FULL	"{""brand"": ""HP"", ""family"": ""LASERJET"", ""model_name_text"": ""M404dn""}"	TECH.PRINTERS	printer
+synology ds220+ nas	TECH.STORAGE_MEMORY	true	FULL	"{""brand"": ""SYNOLOGY"", ""family"": ""DS_NAS"", ""model_name_text"": ""DS220+""}"	TECH.NAS	storage
+купить iphone бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""IPHONE""}"	TECH.IPHONE	generic identity query; downstream route resolves category
+новый iphone оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""IPHONE""}"	TECH.IPHONE	generic identity query; downstream route resolves category
+iphone номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""IPHONE""}"	TECH.IPHONE	generic identity query; downstream route resolves category
+купить ipad бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""IPAD""}"	TECH.IPAD	generic identity query; downstream route resolves category
+новый ipad оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""IPAD""}"	TECH.IPAD	generic identity query; downstream route resolves category
+ipad номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""IPAD""}"	TECH.IPAD	generic identity query; downstream route resolves category
+купить macbook бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MACBOOK""}"	TECH.MACBOOK	generic identity query; downstream route resolves category
+новый macbook оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MACBOOK""}"	TECH.MACBOOK	generic identity query; downstream route resolves category
+macbook номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""MACBOOK""}"	TECH.MACBOOK	generic identity query; downstream route resolves category
+купить macbook air бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MACBOOK_AIR""}"	TECH.MACBOOK_AIR	generic identity query; downstream route resolves category
+новый macbook air оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MACBOOK_AIR""}"	TECH.MACBOOK_AIR	generic identity query; downstream route resolves category
+macbook air номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""MACBOOK_AIR""}"	TECH.MACBOOK_AIR	generic identity query; downstream route resolves category
+купить macbook pro бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MACBOOK_PRO""}"	TECH.MACBOOK_PRO	generic identity query; downstream route resolves category
+новый macbook pro оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MACBOOK_PRO""}"	TECH.MACBOOK_PRO	generic identity query; downstream route resolves category
+macbook pro номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""MACBOOK_PRO""}"	TECH.MACBOOK_PRO	generic identity query; downstream route resolves category
+купить apple watch бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""APPLE_WATCH""}"	TECH.APPLE_WATCH	generic identity query; downstream route resolves category
+новый apple watch оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""APPLE_WATCH""}"	TECH.APPLE_WATCH	generic identity query; downstream route resolves category
+apple watch номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""APPLE_WATCH""}"	TECH.APPLE_WATCH	generic identity query; downstream route resolves category
+купить airpods бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""AIRPODS""}"	TECH.AIRPODS	generic identity query; downstream route resolves category
+новый airpods оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""AIRPODS""}"	TECH.AIRPODS	generic identity query; downstream route resolves category
+airpods номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""AIRPODS""}"	TECH.AIRPODS	generic identity query; downstream route resolves category
+купить galaxy s бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_S""}"	TECH.GALAXY_S	generic identity query; downstream route resolves category
+новый galaxy s оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_S""}"	TECH.GALAXY_S	generic identity query; downstream route resolves category
+galaxy s номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""GALAXY_S""}"	TECH.GALAXY_S	generic identity query; downstream route resolves category
+купить galaxy z бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_Z""}"	TECH.GALAXY_Z	generic identity query; downstream route resolves category
+новый galaxy z оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_Z""}"	TECH.GALAXY_Z	generic identity query; downstream route resolves category
+galaxy z номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""GALAXY_Z""}"	TECH.GALAXY_Z	generic identity query; downstream route resolves category
+купить galaxy tab бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_TAB""}"	TECH.GALAXY_TAB	generic identity query; downstream route resolves category
+новый galaxy tab оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_TAB""}"	TECH.GALAXY_TAB	generic identity query; downstream route resolves category
+galaxy tab номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""GALAXY_TAB""}"	TECH.GALAXY_TAB	generic identity query; downstream route resolves category
+купить galaxy watch бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_WATCH""}"	TECH.GALAXY_WATCH	generic identity query; downstream route resolves category
+новый galaxy watch оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""GALAXY_WATCH""}"	TECH.GALAXY_WATCH	generic identity query; downstream route resolves category
+galaxy watch номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""GALAXY_WATCH""}"	TECH.GALAXY_WATCH	generic identity query; downstream route resolves category
+купить pixel бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""PIXEL""}"	TECH.PIXEL	generic identity query; downstream route resolves category
+новый pixel оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""PIXEL""}"	TECH.PIXEL	generic identity query; downstream route resolves category
+pixel номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""PIXEL""}"	TECH.PIXEL	generic identity query; downstream route resolves category
+купить redmi note бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""REDMI_NOTE""}"	TECH.REDMI_NOTE	generic identity query; downstream route resolves category
+новый redmi note оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""REDMI_NOTE""}"	TECH.REDMI_NOTE	generic identity query; downstream route resolves category
+redmi note номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""REDMI_NOTE""}"	TECH.REDMI_NOTE	generic identity query; downstream route resolves category
+купить poco x бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""POCO_X""}"	TECH.POCO_X	generic identity query; downstream route resolves category
+новый poco x оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""POCO_X""}"	TECH.POCO_X	generic identity query; downstream route resolves category
+poco x номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""POCO_X""}"	TECH.POCO_X	generic identity query; downstream route resolves category
+купить poco f бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""POCO_F""}"	TECH.POCO_F	generic identity query; downstream route resolves category
+новый poco f оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""POCO_F""}"	TECH.POCO_F	generic identity query; downstream route resolves category
+poco f номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""POCO_F""}"	TECH.POCO_F	generic identity query; downstream route resolves category
+купить mi band бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MI_BAND""}"	TECH.MI_BAND	generic identity query; downstream route resolves category
+новый mi band оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""MI_BAND""}"	TECH.MI_BAND	generic identity query; downstream route resolves category
+mi band номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""MI_BAND""}"	TECH.MI_BAND	generic identity query; downstream route resolves category
+купить thinkpad бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""THINKPAD""}"	TECH.THINKPAD	generic identity query; downstream route resolves category
+новый thinkpad оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""THINKPAD""}"	TECH.THINKPAD	generic identity query; downstream route resolves category
+thinkpad номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""THINKPAD""}"	TECH.THINKPAD	generic identity query; downstream route resolves category
+купить ideapad бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""IDEAPAD""}"	TECH.IDEAPAD	generic identity query; downstream route resolves category
+новый ideapad оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""IDEAPAD""}"	TECH.IDEAPAD	generic identity query; downstream route resolves category
+ideapad номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""IDEAPAD""}"	TECH.IDEAPAD	generic identity query; downstream route resolves category
+купить legion бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""LEGION""}"	TECH.LEGION	generic identity query; downstream route resolves category
+новый legion оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""LEGION""}"	TECH.LEGION	generic identity query; downstream route resolves category
+legion номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""LEGION""}"	TECH.LEGION	generic identity query; downstream route resolves category
+купить yoga бу	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""YOGA""}"	TECH.YOGA	generic identity query; downstream route resolves category
+новый yoga оригинал	TECH.OTHER_ELECTRONICS	true	PARTIAL	"{""family"": ""YOGA""}"	TECH.YOGA	generic identity query; downstream route resolves category
+yoga номер модели	TECH.OTHER_ELECTRONICS	true	CANDIDATE_ONLY	"{""family"": ""YOGA""}"	TECH.YOGA	generic identity query; downstream route resolves category

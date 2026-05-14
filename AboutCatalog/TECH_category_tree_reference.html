@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>TECH Category Tree — Goody Goods Catalog</title>
+<style>
+body{margin:0;padding:36px;background:#f6f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.55}
+.page{max-width:1120px;margin:0 auto}
+.card{background:#fff;border:1px solid #dbe2ef;border-radius:18px;padding:24px 28px;margin-bottom:22px;box-shadow:0 8px 24px rgba(28,48,96,.06)}
+h1{margin:0 0 8px;font-size:30px}
+h2{margin-top:0;font-size:21px}
+.muted{color:#647084}
+pre{background:#101828;color:#edf3ff;border-radius:14px;padding:22px;overflow-x:auto;font-family:Menlo,Consolas,monospace;font-size:13.2px;line-height:1.45}
+.principle{border-top:1px solid #dbe2ef;padding:14px 0}
+.principle:first-child{border-top:0}
+.principle b{display:block;margin-bottom:4px}
+.note{background:#edf1ff;color:#3854c8;border-radius:14px;padding:16px 18px;font-weight:600}
+.warning{background:#fff7e6;color:#8a5600;border-radius:14px;padding:16px 18px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="card">
+<h1>TECH Category Tree</h1>
+<p class="muted">Production-grade структура категории TECH для каталога Goody Goods. Версия v1.1 с future-proof правками: MONITORS_DISPLAYS, TABLETS_E_READERS, POWER_CHARGING_CABLES, SMART_HOME_SECURITY и reserved-ветками.</p>
+</div>
+
+<div class="card">
+<h2>Дерево категории</h2>
+<pre>TECH
+Электроника, устройства, аксессуары и цифровая техника
+
+├─ TECH.ELECTRONICS_COMMON              [shared, не публичная]
+│  └─ Общий стандарт электроники:
+│     brand, condition, color, release_year, warranty, region,
+│     model_name_text, included_accessories, seller_bundle
+│
+├─ TECH.DEVICE_IDENTITY_COMMON          [shared, не публичная]
+│  └─ Стандарт идентичности устройств:
+│     brand, family, line, model, model_aliases, mpn, gtin/ean,
+│     release_year, region_variant
+│
+├─ TECH.SPECS_COMMON                    [shared, не публичная]
+│  └─ Общие технические характеристики:
+│     storage, ram, screen_size, battery_capacity, connector_type,
+│     wireless_standard, os, chipset, dimensions, weight, water_resistance
+│
+├─ TECH.COMPATIBILITY_COMMON            [shared, не публичная]
+│  └─ Стандарт совместимости:
+│     compatible_brand, compatible_family, compatible_model,
+│     compatibility_mode, compatibility_confidence, compatible_model_text
+│
+├─ TECH.PHONES                          [public]
+│  ├─ Смартфоны
+│  ├─ Кнопочные телефоны
+│  ├─ Складные телефоны
+│  ├─ Защищённые телефоны
+│  └─ Ретро / коллекционные телефоны
+│
+├─ TECH.PHONE_ACCESSORIES               [public]
+│  ├─ Чехлы
+│  ├─ Защитные стёкла и плёнки
+│  ├─ Зарядки
+│  ├─ Кабели
+│  ├─ Power banks
+│  ├─ Держатели и подставки
+│  ├─ Адаптеры / доки
+│  ├─ MagSafe / magnetic accessories
+│  ├─ Защита камеры / lens protectors
+│  ├─ Ремешки / charms / straps
+│  └─ Запчасти и SIM tools
+│
+├─ TECH.COMPUTERS                       [public]
+│  ├─ Ноутбуки
+│  ├─ Ультрабуки
+│  ├─ Игровые ноутбуки
+│  ├─ 2-in-1 / трансформеры
+│  ├─ Chromebook
+│  ├─ Desktop PC
+│  ├─ Mini PC
+│  ├─ All-in-one
+│  └─ Workstation
+│
+├─ TECH.TABLETS_E_READERS               [public]
+│  ├─ Планшеты
+│  ├─ Детские планшеты
+│  ├─ E-readers
+│  ├─ Графические планшеты
+│  └─ Tablet docks / tablet stands
+│
+├─ TECH.MONITORS_DISPLAYS               [public]
+│  ├─ Компьютерные мониторы
+│  ├─ Игровые мониторы
+│  ├─ Профессиональные мониторы
+│  ├─ Portable monitors
+│  ├─ Smart monitors
+│  ├─ Touchscreen monitors
+│  └─ Monitor accessories
+│
+├─ TECH.COMPUTER_ACCESSORIES            [public]
+│  ├─ Клавиатуры
+│  ├─ Мыши
+│  ├─ Webcams
+│  ├─ Док-станции
+│  ├─ USB hubs
+│  ├─ Laptop stands
+│  ├─ Monitor arms / stands
+│  ├─ Mouse pads
+│  ├─ Stylus pens
+│  ├─ Adapters / dongles
+│  └─ Cleaning / covers / screen filters
+│
+├─ TECH.PC_COMPONENTS                   [public]
+│  ├─ CPU
+│  ├─ GPU / видеокарты
+│  ├─ Motherboards
+│  ├─ RAM modules
+│  ├─ Power supplies
+│  ├─ PC cases
+│  ├─ Cooling
+│  ├─ Fans
+│  ├─ Thermal paste
+│  ├─ Capture cards
+│  ├─ Sound cards
+│  └─ Network / expansion cards
+│
+├─ TECH.STORAGE_MEMORY                  [public]
+│  ├─ SSD
+│  ├─ HDD
+│  ├─ External SSD / HDD
+│  ├─ USB flash drives
+│  ├─ Memory cards
+│  ├─ Card readers
+│  ├─ NAS
+│  └─ Storage accessories
+│
+├─ TECH.AUDIO                           [public]
+│  ├─ Headphones
+│  ├─ Earbuds
+│  ├─ Headsets
+│  ├─ Speakers
+│  ├─ Smart speakers
+│  ├─ Soundbars
+│  ├─ Microphones
+│  ├─ Audio interfaces
+│  ├─ DAC / AMP
+│  ├─ Turntables
+│  ├─ Receivers / amplifiers
+│  ├─ Studio monitors
+│  └─ Audio accessories
+│
+├─ TECH.TV_HOME_THEATER                 [public]
+│  ├─ TVs
+│  ├─ Projectors
+│  ├─ Streaming devices
+│  ├─ TV boxes
+│  ├─ Home theater systems
+│  ├─ AV receivers
+│  ├─ DVD / Blu-ray players
+│  ├─ Set-top boxes
+│  ├─ Remote controls
+│  ├─ TV mounts
+│  └─ Projector screens
+│
+├─ TECH.WEARABLES                       [public]
+│  ├─ Smartwatches
+│  ├─ Fitness trackers
+│  ├─ Smart rings
+│  ├─ AR glasses
+│  ├─ Wearable accessories
+│  └─ Watch bands / straps
+│
+├─ TECH.CAMERAS_DRONES                  [public]
+│  ├─ Digital cameras
+│  ├─ Mirrorless cameras
+│  ├─ DSLR cameras
+│  ├─ Action cameras
+│  ├─ Instant cameras
+│  ├─ Camcorders
+│  ├─ Drones
+│  ├─ Lenses
+│  ├─ Tripods / supports
+│  ├─ Gimbals / stabilizers
+│  ├─ Lighting / studio
+│  ├─ Binoculars / telescopes
+│  └─ Camera accessories
+│
+├─ TECH.GAMING                          [public]
+│  ├─ Game consoles
+│  ├─ Handheld consoles
+│  ├─ VR headsets
+│  ├─ Game controllers
+│  ├─ Gaming keyboards
+│  ├─ Gaming mice
+│  ├─ Gaming headsets
+│  ├─ Console accessories
+│  ├─ Physical games
+│  └─ Arcade equipment
+│
+├─ TECH.SMART_HOME_SECURITY             [public]
+│  ├─ Smart speakers / displays
+│  ├─ Smart lights
+│  ├─ Smart plugs / switches
+│  ├─ Smart sensors
+│  ├─ Security cameras
+│  ├─ Video doorbells
+│  ├─ Smart locks
+│  ├─ Thermostats
+│  ├─ Home hubs
+│  ├─ Alarms / sirens
+│  └─ Automation kits
+│
+├─ TECH.NETWORKING                      [public]
+│  ├─ Routers
+│  ├─ Mesh Wi-Fi
+│  ├─ Modems
+│  ├─ Access points
+│  ├─ Switches
+│  ├─ Wi-Fi extenders
+│  ├─ Network adapters
+│  ├─ Antennas
+│  ├─ PoE injectors
+│  └─ Network accessories
+│
+├─ TECH.POWER_CHARGING_CABLES           [public]
+│  ├─ Wall chargers
+│  ├─ Wireless chargers
+│  ├─ Car chargers
+│  ├─ USB cables
+│  ├─ HDMI / audio / video cables
+│  ├─ Adapters
+│  ├─ Power banks
+│  ├─ Portable power stations
+│  ├─ UPS
+│  ├─ Batteries
+│  ├─ Surge protectors
+│  └─ Cable management
+│
+├─ TECH.PRINTERS_SCANNERS               [public]
+│  ├─ Printers
+│  ├─ Multifunction printers
+│  ├─ Scanners
+│  ├─ Label printers
+│  ├─ Ink cartridges
+│  ├─ Toner cartridges
+│  └─ Printer accessories
+│
+├─ TECH.CAR_ELECTRONICS_GPS             [public]
+│  ├─ Dash cams
+│  ├─ Car head units
+│  ├─ Car speakers
+│  ├─ Car amplifiers
+│  ├─ Car subwoofers
+│  ├─ GPS navigators
+│  ├─ GPS trackers
+│  ├─ OBD scanners
+│  ├─ Backup cameras
+│  ├─ Parking sensors
+│  └─ Car security / alarms
+│
+├─ TECH.ELECTRIC_TRANSPORTATION         [reserved/public by inventory]
+├─ TECH.AI_ROBOTICS                     [reserved]
+├─ TECH.SOFTWARE_DIGITAL                [reserved or disabled]
+├─ TECH.ENTERPRISE_SERVERS              [reserved]
+└─ TECH.OTHER_ELECTRONICS               [internal fallback, not public]</pre>
+</div>
+
+<div class="card">
+<h2>Type-атрибуты по публичным веткам</h2>
+<pre>TECH.PHONES → phone_type:
+SMARTPHONE, FEATURE_PHONE, FOLDABLE_PHONE, RUGGED_PHONE, RETRO_PHONE, SATELLITE_PHONE
+
+TECH.PHONE_ACCESSORIES → phone_accessory_type:
+CASE, SCREEN_PROTECTOR, CAMERA_LENS_PROTECTOR, CHARGER, WIRELESS_CHARGER, CABLE, POWER_BANK, HOLDER, STAND, CAR_MOUNT, ADAPTER, DOCK, MAGSAFE_ACCESSORY, STYLUS, STRAP_CHARM, SIM_TOOL, REPLACEMENT_PART, CLEANING_KIT
+
+TECH.COMPUTERS → computer_type:
+LAPTOP, ULTRABOOK, GAMING_LAPTOP, TWO_IN_ONE_LAPTOP, CHROMEBOOK, DESKTOP_PC, MINI_PC, ALL_IN_ONE, WORKSTATION, THIN_CLIENT
+
+TECH.TABLETS_E_READERS → tablet_type:
+TABLET, KIDS_TABLET, E_READER, GRAPHICS_TABLET, TABLET_DOCK, TABLET_STAND
+
+TECH.MONITORS_DISPLAYS → display_type:
+COMPUTER_MONITOR, GAMING_MONITOR, PROFESSIONAL_MONITOR, PORTABLE_MONITOR, SMART_MONITOR, TOUCHSCREEN_MONITOR, MONITOR_ACCESSORY
+
+TECH.COMPUTER_ACCESSORIES → computer_accessory_type:
+KEYBOARD, MOUSE, KEYBOARD_MOUSE_SET, WEBCAM, DOCKING_STATION, USB_HUB, LAPTOP_STAND, MONITOR_ARM, MOUSE_PAD, STYLUS_PEN, ADAPTER_DONGLE, COOLING_PAD, COMPUTER_COVER, SCREEN_FILTER, CLEANING_KIT
+
+TECH.PC_COMPONENTS → pc_component_type:
+CPU, GPU, MOTHERBOARD, RAM_MODULE, POWER_SUPPLY, PC_CASE, CPU_COOLER, CASE_FAN, THERMAL_PASTE, CAPTURE_CARD, SOUND_CARD, NETWORK_CARD, EXPANSION_CARD
+
+TECH.STORAGE_MEMORY → storage_type:
+INTERNAL_SSD, INTERNAL_HDD, EXTERNAL_SSD, EXTERNAL_HDD, USB_FLASH_DRIVE, MEMORY_CARD, CARD_READER, NAS, STORAGE_ACCESSORY
+
+TECH.AUDIO → audio_type:
+HEADPHONES, EARBUDS, HEADSET, SPEAKER, SMART_SPEAKER, SOUNDBAR, MICROPHONE, AUDIO_INTERFACE, DAC_AMP, TURNTABLE, RECEIVER_AMPLIFIER, STUDIO_MONITOR, MP3_PLAYER, RADIO, AUDIO_ACCESSORY
+
+TECH.TV_HOME_THEATER → av_type:
+TV, PROJECTOR, STREAMING_DEVICE, TV_BOX, HOME_THEATER_SYSTEM, AV_RECEIVER, DVD_BLU_RAY_PLAYER, SET_TOP_BOX, REMOTE_CONTROL, TV_MOUNT, PROJECTOR_SCREEN
+
+TECH.WEARABLES → wearable_type:
+SMARTWATCH, FITNESS_TRACKER, SMART_RING, AR_GLASSES, WEARABLE_ACCESSORY, WATCH_BAND
+
+TECH.CAMERAS_DRONES → camera_type:
+DIGITAL_CAMERA, MIRRORLESS_CAMERA, DSLR_CAMERA, ACTION_CAMERA, INSTANT_CAMERA, CAMCORDER, DRONE, LENS, TRIPOD, GIMBAL, PHOTO_LIGHTING, BINOCULARS_TELESCOPE, CAMERA_ACCESSORY
+
+TECH.GAMING → gaming_type:
+GAME_CONSOLE, HANDHELD_CONSOLE, VR_HEADSET, GAME_CONTROLLER, GAMING_KEYBOARD, GAMING_MOUSE, GAMING_HEADSET, CONSOLE_ACCESSORY, PHYSICAL_GAME, ARCADE_EQUIPMENT
+
+TECH.SMART_HOME_SECURITY → smart_home_type:
+SMART_SPEAKER, SMART_DISPLAY, SMART_LIGHT, SMART_PLUG, SMART_SWITCH, SMART_SENSOR, SECURITY_CAMERA, VIDEO_DOORBELL, SMART_LOCK, SMART_THERMOSTAT, HOME_HUB, ALARM_SIREN, AUTOMATION_KIT
+
+TECH.NETWORKING → networking_type:
+ROUTER, MESH_WIFI_SYSTEM, MODEM, ACCESS_POINT, SWITCH, WIFI_EXTENDER, NETWORK_ADAPTER, ANTENNA, POE_INJECTOR, NETWORK_ACCESSORY
+
+TECH.POWER_CHARGING_CABLES → power_cable_type:
+WALL_CHARGER, WIRELESS_CHARGER, CAR_CHARGER, USB_CABLE, HDMI_CABLE, AUDIO_VIDEO_CABLE, ADAPTER, POWER_BANK, PORTABLE_POWER_STATION, UPS, BATTERY, SURGE_PROTECTOR, CABLE_MANAGEMENT
+
+TECH.PRINTERS_SCANNERS → printer_scanner_type:
+PRINTER, MULTIFUNCTION_PRINTER, SCANNER, LABEL_PRINTER, INK_CARTRIDGE, TONER_CARTRIDGE, PRINTER_ACCESSORY
+
+TECH.CAR_ELECTRONICS_GPS → car_electronics_type:
+DASH_CAM, CAR_HEAD_UNIT, CAR_SPEAKER, CAR_AMPLIFIER, CAR_SUBWOOFER, GPS_NAVIGATOR, GPS_TRACKER, OBD_SCANNER, BACKUP_CAMERA, PARKING_SENSOR, CAR_SECURITY_ALARM</pre>
+</div>
+
+<div class="card">
+<h2>UI-группировка для пользователя</h2>
+<pre>Мобильные устройства:
+- TECH.PHONES
+- TECH.PHONE_ACCESSORIES
+- TECH.WEARABLES
+
+Компьютеры и рабочее место:
+- TECH.COMPUTERS
+- TECH.TABLETS_E_READERS
+- TECH.MONITORS_DISPLAYS
+- TECH.COMPUTER_ACCESSORIES
+- TECH.PC_COMPONENTS
+- TECH.STORAGE_MEMORY
+
+Аудио, видео, фото и игры:
+- TECH.AUDIO
+- TECH.TV_HOME_THEATER
+- TECH.CAMERAS_DRONES
+- TECH.GAMING
+
+Дом, сеть, питание и авто:
+- TECH.SMART_HOME_SECURITY
+- TECH.NETWORKING
+- TECH.POWER_CHARGING_CABLES
+- TECH.PRINTERS_SCANNERS
+- TECH.CAR_ELECTRONICS_GPS</pre>
+</div>
+
+<div class="card">
+<h2>Принцип работы TECH</h2>
+
+<div class="principle"><b>1. TECH начинается со shared foundation.</b>ELECTRONICS_COMMON, DEVICE_IDENTITY_COMMON, SPECS_COMMON и COMPATIBILITY_COMMON уменьшают дубли между устройствами, аксессуарами и спецификациями.</div>
+
+<div class="principle"><b>2. Public categoryCode остаются крупными.</b>Не создаём TECH.IPHONE, TECH.SAMSUNG_PHONES, TECH.CASES, TECH.CHARGERS или TECH.HEADPHONES. Детализация идёт через brand/family/model, type, specs и compatibility.</div>
+
+<div class="principle"><b>3. TECH.PHONES — identity-critical ветка.</b>Для телефонов важны brand, family, line, model, storage, RAM, region, release year. Модель нельзя угадывать по фото без evidence.</div>
+
+<div class="principle"><b>4. TECH.PHONE_ACCESSORIES — compatibility-driven ветка.</b>Аксессуары ссылаются на TECH.PHONES через compatibility refs, а не создают собственный граф моделей.</div>
+
+<div class="principle"><b>5. Type управляет UI и фасетами.</b>Например, CASE показывает совместимость, материал, цвет, MagSafe; CHARGER показывает мощность, fast charge, порты и connector_type.</div>
+
+<div class="principle"><b>6. MONITORS_DISPLAYS — отдельная ветка.</b>Мониторы не теряются в COMPUTER_ACCESSORIES: у них свои фасеты — размер, разрешение, частота, матрица, curved, aspect ratio и порты.</div>
+
+<div class="principle"><b>7. Reserved-ветки — задел на будущее.</b>ELECTRIC_TRANSPORTATION, AI_ROBOTICS, SOFTWARE_DIGITAL и ENTERPRISE_SERVERS фиксируют будущие направления, но не требуют немедленного покрытия.</div>
+
+<div class="principle"><b>8. Route guards критичны.</b>iphone 13 → TECH.PHONES; чехол iphone 13 → TECH.PHONE_ACCESSORIES; airpods → TECH.AUDIO; apple watch → TECH.WEARABLES; ремешок apple watch → TECH.WEARABLES/WATCH_BAND, не FASH.ACCESSORIES.</div>
+</div>
+
+<div class="card">
+<h2>Рекомендуемый порядок покрытия</h2>
+<pre>1. TECH_CATEGORY_TREE_CONTRACT v1.0
+
+2. Shared foundation:
+   TECH.ELECTRONICS_COMMON
+   TECH.DEVICE_IDENTITY_COMMON
+   TECH.SPECS_COMMON
+   TECH.COMPATIBILITY_COMMON
+
+3. Первый production-contour:
+   TECH.PHONES
+   TECH.PHONE_ACCESSORIES
+
+4. Runtime/gates:
+   TECH_TYPED_ATTRIBUTE_COVERAGE_MATRIX
+   TECH_COMPATIBILITY_SURFACE_MATRIX
+   TECH route conflict golden tests
+   TECH/FASH route conflict tests
+   effective spec snapshots
+   UI surface gates
+   AI/vision no-guess rules
+   TECH_LAUNCH_READINESS_REPORT.md
+
+5. Дальше расширять:
+   TECH.COMPUTERS
+   TECH.TABLETS_E_READERS
+   TECH.MONITORS_DISPLAYS
+   TECH.COMPUTER_ACCESSORIES
+   TECH.AUDIO
+   TECH.WEARABLES
+   TECH.CAMERAS_DRONES
+   TECH.GAMING
+   TECH.SMART_HOME_SECURITY
+   TECH.NETWORKING
+   TECH.POWER_CHARGING_CABLES
+   TECH.PC_COMPONENTS
+   TECH.STORAGE_MEMORY
+   TECH.PRINTERS_SCANNERS
+   TECH.TV_HOME_THEATER
+   TECH.CAR_ELECTRONICS_GPS</pre>
+</div>
+
+<div class="card">
+<div class="warning">
+Важно: это production-grade дерево TECH, но не команда “сразу покрыть весь TECH”. Правильный старт — shared foundation + TECH.PHONES + TECH.PHONE_ACCESSORIES.
+</div>
+</div>
+
+<div class="card">
+<div class="note">
+Короткое правило: TECH не должен становиться деревом брендов и микрокатегорий. Бренды, модели, спецификации и совместимость живут в identity/spec/compatibility слоях, а не в новых public categoryCode.
+</div>
+</div>
+
+</div>
+</body>
+</html>

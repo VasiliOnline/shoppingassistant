@@ -176,7 +176,7 @@ class FashBagsCategoryPackGateTest {
             "чехол для телефона iphone 15" to "TECH.PHONE_ACCESSORIES",
             "сумка переноска для кошки" to "PETS.ACCESSORIES",
             "сумка для инструментов bosch" to "HOME.REPAIR_TOOLS",
-            "фоторюкзак canon" to "TECH.CAMERAS",
+            "фоторюкзак canon" to "TECH.CAMERAS_DRONES",
             "реплика gucci сумка" to "POLICY_REVIEW",
             "мешок для обуви школьный" to "FASH.BAGS",
         )

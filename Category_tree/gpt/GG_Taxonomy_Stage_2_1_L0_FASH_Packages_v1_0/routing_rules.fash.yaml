@@ -81,9 +81,9 @@ disambiguation_ordered_rules:
   - часы
   - браслет
   - трекер
-  then_route_canonical: TECH.SMART_HOME
+  then_route_canonical: TECH.WEARABLES
   confidence: 0.9
-  notes: Wearables -> TECH.SMART_HOME
+  notes: Wearables -> TECH.WEARABLES
 - id: R.HOME_HOUSEHOLD_GLOVES
   if_any_tokens:
   - перчатк
@@ -119,15 +119,15 @@ disambiguation_ordered_rules:
   then_route_canonical: SPORT.OUTDOOR
   confidence: 0.8
   notes: Camping/outdoor gear -> SPORT.OUTDOOR
-- id: R.TECH_SEWING_MACHINE
+- id: R.APPL_SEWING_MACHINE
   if_any_tokens:
   - швейная машинка
   - швейн
   and_any_tokens:
   - машин
-  then_route_canonical: TECH.SMART_HOME
+  then_route_canonical: APPL.SMALL
   confidence: 0.72
-  notes: Sewing machine is treated as TECH in this package
+  notes: Sewing machine is treated as APPL.SMALL in this package
 - id: R.BAG_VS_LAPTOP
   if_any_tokens:
   - ноутбук
@@ -143,9 +143,9 @@ disambiguation_ordered_rules:
   - чехол
   - портфель
   - кейс
-  then_route_canonical: TECH.LAPTOPS
+  then_route_canonical: TECH.COMPUTERS
   confidence: 0.74
-  notes: If it's laptop without bag tokens -> TECH.LAPTOPS
+  notes: If it's laptop without bag tokens -> TECH.COMPUTERS
 scoring:
   alias_match_weight: 1.0
   token_overlap_weight: 0.7

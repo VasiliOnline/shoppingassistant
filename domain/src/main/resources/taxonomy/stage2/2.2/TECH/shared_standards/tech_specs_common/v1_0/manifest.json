@@ -1,0 +1,64 @@
+{
+  "pack_id": "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "category_code": "TECH.SPECS_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "runtime_mount": "shared_standard_registry",
+  "status": "production_ready_static_candidate",
+  "created_at": "2026-05-14T00:00:00+03:00",
+  "scope": {
+    "purpose": "Единый shared-standard технических характеристик для всех TECH public category packs.",
+    "included": [
+      "common specs attributes and units",
+      "head values and aliases",
+      "unit normalization",
+      "spec evidence/confidence policy",
+      "coverage matrix by public TECH categories",
+      "route and vision no-guess guardrails"
+    ],
+    "excluded": [
+      "brand/family/model registry",
+      "compatibility refs",
+      "public TECH category packs",
+      "microcategory mounts"
+    ]
+  },
+  "depends_on": [
+    "TECH_CATEGORY_TREE_CONTRACT_v1_0",
+    "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU"
+  ],
+  "next_packs": [
+    "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+    "TECH_PHONES_IDENTITY_PACK_v1_0_RU"
+  ],
+  "files": [
+    "CHANGELOG.md",
+    "README_TECH_SPECS_COMMON_v1_0_RU.md",
+    "aliases.tech_specs_common.ru.v1_0.tsv",
+    "attributes.tech_specs_common.v1_0.tsv",
+    "docs/BOUNDARY_WITH_IDENTITY_AND_COMPATIBILITY_RU.md",
+    "docs/NO_GUESS_AND_UNIT_POLICY_RU.md",
+    "docs/SPECS_POLICY_RU.md",
+    "effective_spec_snapshot.expected.tech_specs_common.v1_0.json",
+    "facet_templates.tech_specs_common.v1_0.yaml",
+    "generated_alias_rules.tech_specs_common.v1_0.yaml",
+    "golden_queries.tech_specs_common.v1_0.tsv",
+    "integration_mapping.tech_specs_common.v1_0.yaml",
+    "manifest.json",
+    "quality_gates.tech_specs_common.v1_0.yaml",
+    "route_guardrails.tech_specs_common.v1_0.yaml",
+    "sample_offers.tech_specs_common.v1_0.jsonl",
+    "schema_pack.tech_specs_common.v1_0.json",
+    "spec_confidence_policy.tech_specs_common.v1_0.yaml",
+    "spec_coverage_matrix.tech_specs_common.v1_0.tsv",
+    "unit_normalization_rules.tech_specs_common.v1_0.yaml",
+    "user_surface.tech_specs_common.v1_0.yaml",
+    "values.tech_specs_common.v1_0.tsv",
+    "vision_rules.tech_specs_common.v1_0.yaml"
+  ]
+}

@@ -1,0 +1,402 @@
+attribute_code	value_code	label_ru	label_en	aliases_ru	priority	status
+spec_profile_status	UNKNOWN	неизвестно	Unknown	не указано;неизвестные характеристики	100	head
+spec_profile_status	PARTIAL	частично заполнено	Partial	частично;неполные характеристики	99	head
+spec_profile_status	NORMALIZED	нормализовано	Normalized	распознано;приведено	98	head
+spec_profile_status	VERIFIED	проверено	Verified	подтверждено;верифицировано	97	head
+spec_profile_status	CONFLICT	конфликт характеристик	Conflict	противоречие;спорные характеристики	96	head
+spec_profile_status	REVIEW_REQUIRED	требует проверки	Review Required	нужна проверка;проверить характеристики	95	head
+spec_confidence_bucket	LOW	низкая	Low		100	head
+spec_confidence_bucket	MEDIUM	средняя	Medium		100	head
+spec_confidence_bucket	HIGH	высокая	High		100	head
+spec_confidence_bucket	VERIFIED	проверенная	Verified		100	head
+spec_evidence_level	NONE	нет evidence	None		100	head
+spec_evidence_level	TITLE	из названия	Title		100	head
+spec_evidence_level	OCR	из OCR	Ocr		100	head
+spec_evidence_level	SOURCE_ATTR	из атрибутов источника	Source Attr		100	head
+spec_evidence_level	BARCODE_OR_MPN	из barcode/MPN	Barcode Or Mpn		100	head
+spec_evidence_level	MANUAL_CONFIRMATION	подтверждено пользователем	Manual Confirmation		100	head
+spec_evidence_level	OFFICIAL_SPEC	официальная спецификация	Official Spec		100	head
+spec_source	USER_TITLE	название пользователя	User Title		100	head
+spec_source	SELLER_ATTRIBUTES	атрибуты продавца	Seller Attributes		100	head
+spec_source	SOURCE_PAGE	страница источника	Source Page		100	head
+spec_source	IMAGE_OCR	OCR изображения	Image Ocr		100	head
+spec_source	BARCODE	штрихкод	Barcode		100	head
+spec_source	MANUAL	ручное подтверждение	Manual		100	head
+spec_source	OFFICIAL_DATABASE	официальная база	Official Database		100	head
+measurement_system	METRIC	метрическая	Metric		100	head
+measurement_system	IMPERIAL	имперская	Imperial		100	head
+measurement_system	MIXED	смешанная	Mixed		100	head
+unit_normalization_status	NOT_PARSED	не распознано	Not Parsed		100	head
+unit_normalization_status	PARSED	распознано	Parsed		100	head
+unit_normalization_status	NORMALIZED	нормализовано	Normalized		100	head
+unit_normalization_status	CONFLICT	конфликт единиц	Conflict		100	head
+unit_normalization_status	AMBIGUOUS	неоднозначно	Ambiguous		100	head
+storage_capacity	8GB	8 ГБ	8Gb	8gb;8 гб;8 гб	199	head
+storage_capacity	16GB	16 ГБ	16Gb	16gb;16 гб;16 гб	198	head
+storage_capacity	32GB	32 ГБ	32Gb	32gb;32 гб;32 гб	196	head
+storage_capacity	64GB	64 ГБ	64Gb	64gb;64 гб;64 гб	192	head
+storage_capacity	128GB	128 ГБ	128Gb	128gb;128 гб;128 гб	184	head
+storage_capacity	256GB	256 ГБ	256Gb	256gb;256 гб;256 гб	168	head
+storage_capacity	512GB	512 ГБ	512Gb	512gb;512 гб;512 гб	136	head
+storage_capacity	1TB	1 ТБ	1Tb	1024gb;1024 гб;1 тб	72	head
+storage_capacity	2TB	2 ТБ	2Tb	2048gb;2048 гб;2 тб	1	head
+storage_capacity	4TB	4 ТБ	4Tb	4096gb;4096 гб;4 тб	1	head
+storage_capacity	8TB	8 ТБ	8Tb	8192gb;8192 гб;8 тб	1	head
+storage_capacity	12TB	12 ТБ	12Tb	12288gb;12288 гб;12 тб	1	head
+storage_capacity	16TB	16 ТБ	16Tb	16384gb;16384 гб;16 тб	1	head
+ram_capacity	1GB	1 ГБ	1Gb	1gb ram;1 гб озу;озу 1;оперативка 1	179	head
+ram_capacity	2GB	2 ГБ	2Gb	2gb ram;2 гб озу;озу 2;оперативка 2	178	head
+ram_capacity	3GB	3 ГБ	3Gb	3gb ram;3 гб озу;озу 3;оперативка 3	177	head
+ram_capacity	4GB	4 ГБ	4Gb	4gb ram;4 гб озу;озу 4;оперативка 4	176	head
+ram_capacity	6GB	6 ГБ	6Gb	6gb ram;6 гб озу;озу 6;оперативка 6	174	head
+ram_capacity	8GB	8 ГБ	8Gb	8gb ram;8 гб озу;озу 8;оперативка 8	172	head
+ram_capacity	12GB	12 ГБ	12Gb	12gb ram;12 гб озу;озу 12;оперативка 12	168	head
+ram_capacity	16GB	16 ГБ	16Gb	16gb ram;16 гб озу;озу 16;оперативка 16	164	head
+ram_capacity	24GB	24 ГБ	24Gb	24gb ram;24 гб озу;озу 24;оперативка 24	156	head
+ram_capacity	32GB	32 ГБ	32Gb	32gb ram;32 гб озу;озу 32;оперативка 32	148	head
+ram_capacity	48GB	48 ГБ	48Gb	48gb ram;48 гб озу;озу 48;оперативка 48	132	head
+ram_capacity	64GB	64 ГБ	64Gb	64gb ram;64 гб озу;озу 64;оперативка 64	116	head
+ram_capacity	96GB	96 ГБ	96Gb	96gb ram;96 гб озу;озу 96;оперативка 96	84	head
+ram_capacity	128GB	128 ГБ	128Gb	128gb ram;128 гб озу;озу 128;оперативка 128	52	head
+ram_capacity	192GB	192 ГБ	192Gb	192gb ram;192 гб озу;озу 192;оперативка 192	1	head
+ram_capacity	256GB	256 ГБ	256Gb	256gb ram;256 гб озу;озу 256;оперативка 256	1	head
+ram_capacity	512GB	512 ГБ	512Gb	512gb ram;512 гб озу;озу 512;оперативка 512	1	head
+screen_size	IN_1_2	"1.2"""	In 1 2	"1.2 дюйм;1.2"";экран 1.2"	100	head
+screen_size	IN_1_4	"1.4"""	In 1 4	"1.4 дюйм;1.4"";экран 1.4"	100	head
+screen_size	IN_1_6	"1.6"""	In 1 6	"1.6 дюйм;1.6"";экран 1.6"	100	head
+screen_size	IN_5_4	"5.4"""	In 5 4	"5.4 дюйм;5.4"";экран 5.4"	100	head
+screen_size	IN_5_8	"5.8"""	In 5 8	"5.8 дюйм;5.8"";экран 5.8"	100	head
+screen_size	IN_6_1	"6.1"""	In 6 1	"6.1 дюйм;6.1"";экран 6.1"	100	head
+screen_size	IN_6_3	"6.3"""	In 6 3	"6.3 дюйм;6.3"";экран 6.3"	100	head
+screen_size	IN_6_5	"6.5"""	In 6 5	"6.5 дюйм;6.5"";экран 6.5"	100	head
+screen_size	IN_6_7	"6.7"""	In 6 7	"6.7 дюйм;6.7"";экран 6.7"	100	head
+screen_size	IN_6_9	"6.9"""	In 6 9	"6.9 дюйм;6.9"";экран 6.9"	100	head
+screen_size	IN_7_9	"7.9"""	In 7 9	"7.9 дюйм;7.9"";экран 7.9"	100	head
+screen_size	IN_8_3	"8.3"""	In 8 3	"8.3 дюйм;8.3"";экран 8.3"	100	head
+screen_size	IN_10_2	"10.2"""	In 10 2	"10.2 дюйм;10.2"";экран 10.2"	100	head
+screen_size	IN_10_9	"10.9"""	In 10 9	"10.9 дюйм;10.9"";экран 10.9"	100	head
+screen_size	IN_11	"11"""	In 11	"11 дюйм;11"";экран 11"	100	head
+screen_size	IN_12_9	"12.9"""	In 12 9	"12.9 дюйм;12.9"";экран 12.9"	100	head
+screen_size	IN_13_3	"13.3"""	In 13 3	"13.3 дюйм;13.3"";экран 13.3"	100	head
+screen_size	IN_14	"14"""	In 14	"14 дюйм;14"";экран 14"	100	head
+screen_size	IN_15_6	"15.6"""	In 15 6	"15.6 дюйм;15.6"";экран 15.6"	100	head
+screen_size	IN_16	"16"""	In 16	"16 дюйм;16"";экран 16"	100	head
+screen_size	IN_17_3	"17.3"""	In 17 3	"17.3 дюйм;17.3"";экран 17.3"	100	head
+screen_size	IN_24	"24"""	In 24	"24 дюйм;24"";экран 24"	100	head
+screen_size	IN_27	"27"""	In 27	"27 дюйм;27"";экран 27"	100	head
+screen_size	IN_32	"32"""	In 32	"32 дюйм;32"";экран 32"	100	head
+screen_size	IN_34	"34"""	In 34	"34 дюйм;34"";экран 34"	100	head
+screen_size	IN_43	"43"""	In 43	"43 дюйм;43"";экран 43"	100	head
+screen_size	IN_55	"55"""	In 55	"55 дюйм;55"";экран 55"	100	head
+screen_size	IN_65	"65"""	In 65	"65 дюйм;65"";экран 65"	100	head
+screen_size	IN_75	"75"""	In 75	"75 дюйм;75"";экран 75"	100	head
+screen_size	IN_85	"85"""	In 85	"85 дюйм;85"";экран 85"	100	head
+screen_resolution	HD	HD	Hd	720p	100	head
+screen_resolution	FHD	Full HD	Fhd	1080p;1920x1080	100	head
+screen_resolution	WUXGA	WUXGA	Wuxga	1920x1200	100	head
+screen_resolution	QHD	QHD	Qhd	2k;2560x1440	100	head
+screen_resolution	UHD_4K	4K UHD	Uhd 4K	4к;3840x2160	100	head
+screen_resolution	UHD_5K	5K	Uhd 5K	5к	100	head
+screen_resolution	UHD_8K	8K	Uhd 8K	8к	100	head
+screen_resolution	RETINA	Retina	Retina	ретина	100	head
+screen_resolution	ULTRAWIDE_QHD	UltraWide QHD	Ultrawide Qhd	3440x1440;uwqhd	100	head
+refresh_rate_hz	30HZ	30 Гц	30Hz	30hz;30 гц;30 герц	100	head
+refresh_rate_hz	50HZ	50 Гц	50Hz	50hz;50 гц;50 герц	100	head
+refresh_rate_hz	60HZ	60 Гц	60Hz	60hz;60 гц;60 герц	100	head
+refresh_rate_hz	75HZ	75 Гц	75Hz	75hz;75 гц;75 герц	100	head
+refresh_rate_hz	90HZ	90 Гц	90Hz	90hz;90 гц;90 герц	100	head
+refresh_rate_hz	100HZ	100 Гц	100Hz	100hz;100 гц;100 герц	100	head
+refresh_rate_hz	120HZ	120 Гц	120Hz	120hz;120 гц;120 герц	100	head
+refresh_rate_hz	144HZ	144 Гц	144Hz	144hz;144 гц;144 герц	100	head
+refresh_rate_hz	165HZ	165 Гц	165Hz	165hz;165 гц;165 герц	100	head
+refresh_rate_hz	175HZ	175 Гц	175Hz	175hz;175 гц;175 герц	100	head
+refresh_rate_hz	180HZ	180 Гц	180Hz	180hz;180 гц;180 герц	100	head
+refresh_rate_hz	200HZ	200 Гц	200Hz	200hz;200 гц;200 герц	100	head
+refresh_rate_hz	240HZ	240 Гц	240Hz	240hz;240 гц;240 герц	100	head
+refresh_rate_hz	300HZ	300 Гц	300Hz	300hz;300 гц;300 герц	100	head
+refresh_rate_hz	360HZ	360 Гц	360Hz	360hz;360 гц;360 герц	100	head
+refresh_rate_hz	500HZ	500 Гц	500Hz	500hz;500 гц;500 герц	100	head
+power_watts	5W	5 Вт	5W	5w;5 ватт;мощность 5	100	head
+power_watts	10W	10 Вт	10W	10w;10 ватт;мощность 10	100	head
+power_watts	12W	12 Вт	12W	12w;12 ватт;мощность 12	100	head
+power_watts	15W	15 Вт	15W	15w;15 ватт;мощность 15	100	head
+power_watts	18W	18 Вт	18W	18w;18 ватт;мощность 18	100	head
+power_watts	20W	20 Вт	20W	20w;20 ватт;мощность 20	100	head
+power_watts	25W	25 Вт	25W	25w;25 ватт;мощность 25	100	head
+power_watts	30W	30 Вт	30W	30w;30 ватт;мощность 30	100	head
+power_watts	33W	33 Вт	33W	33w;33 ватт;мощность 33	100	head
+power_watts	45W	45 Вт	45W	45w;45 ватт;мощность 45	100	head
+power_watts	60W	60 Вт	60W	60w;60 ватт;мощность 60	100	head
+power_watts	65W	65 Вт	65W	65w;65 ватт;мощность 65	100	head
+power_watts	67W	67 Вт	67W	67w;67 ватт;мощность 67	100	head
+power_watts	90W	90 Вт	90W	90w;90 ватт;мощность 90	100	head
+power_watts	100W	100 Вт	100W	100w;100 ватт;мощность 100	100	head
+power_watts	120W	120 Вт	120W	120w;120 ватт;мощность 120	100	head
+power_watts	140W	140 Вт	140W	140w;140 ватт;мощность 140	100	head
+power_watts	200W	200 Вт	200W	200w;200 ватт;мощность 200	100	head
+power_watts	240W	240 Вт	240W	240w;240 ватт;мощность 240	100	head
+power_watts	330W	330 Вт	330W	330w;330 ватт;мощность 330	100	head
+power_watts	500W	500 Вт	500W	500w;500 ватт;мощность 500	100	head
+power_watts	600W	600 Вт	600W	600w;600 ватт;мощность 600	100	head
+power_watts	750W	750 Вт	750W	750w;750 ватт;мощность 750	100	head
+power_watts	850W	850 Вт	850W	850w;850 ватт;мощность 850	100	head
+power_watts	1000W	1000 Вт	1000W	1000w;1000 ватт;мощность 1000	100	head
+power_watts	1200W	1200 Вт	1200W	1200w;1200 ватт;мощность 1200	100	head
+power_watts	1500W	1500 Вт	1500W	1500w;1500 ватт;мощность 1500	100	head
+power_watts	2000W	2000 Вт	2000W	2000w;2000 ватт;мощность 2000	100	head
+power_watts	3000W	3000 Вт	3000W	3000w;3000 ватт;мощность 3000	100	head
+connector_type	USB_C	USB-C	Usb C	type-c;type c;тайп си;юсб си	100	head
+connector_type	LIGHTNING	Lightning	Lightning	лайтнинг;iphone зарядка	100	head
+connector_type	MICRO_USB	Micro-USB	Micro Usb	микро usb;micro usb	100	head
+connector_type	USB_A	USB-A	Usb A	usb a;обычный usb	100	head
+connector_type	USB_B	USB-B	Usb B	usb b	100	head
+connector_type	MINI_USB	Mini-USB	Mini Usb	mini usb	100	head
+connector_type	THUNDERBOLT_3	Thunderbolt 3	Thunderbolt 3	tb3;thunderbolt3	100	head
+connector_type	THUNDERBOLT_4	Thunderbolt 4	Thunderbolt 4	tb4;thunderbolt4	100	head
+connector_type	HDMI	HDMI	Hdmi	ашдимиай;hdmi	100	head
+connector_type	DISPLAYPORT	DisplayPort	Displayport	dp;display port	100	head
+connector_type	MINI_DISPLAYPORT	Mini DisplayPort	Mini Displayport	mini dp	100	head
+connector_type	VGA	VGA	Vga	вга	100	head
+connector_type	DVI	DVI	Dvi	дви	100	head
+connector_type	ETHERNET_RJ45	Ethernet RJ-45	Ethernet Rj45	rj45;lan;ethernet	100	head
+connector_type	AUDIO_3_5MM	3.5 мм audio	Audio 3 5Mm	миниджек;aux;jack 3.5	100	head
+connector_type	SD_CARD	SD card	Sd Card	sd карта	100	head
+connector_type	MICROSD	microSD	Microsd	микросд	100	head
+connector_type	SIM_SLOT	SIM slot	Sim Slot	сим слот	100	head
+connector_type	ESIM	eSIM	Esim	е сим;есим	100	head
+connector_type	MAGSAFE	MagSafe	Magsafe	магсейф	100	head
+connector_type	BARREL_JACK	Barrel jack	Barrel Jack	круглый разъём;dc jack	100	head
+connector_type	PROPRIETARY	проприетарный	Proprietary	фирменный разъем	100	head
+connector_type	NONE	без разъёма	None	нет разъемов	100	head
+wireless_standard	WIFI	Wi-Fi	Wifi	вай фай;wifi	100	head
+wireless_standard	WIFI_4	Wi-Fi 4	Wifi 4	802.11n	100	head
+wireless_standard	WIFI_5	Wi-Fi 5	Wifi 5	802.11ac	100	head
+wireless_standard	WIFI_6	Wi-Fi 6	Wifi 6	802.11ax	100	head
+wireless_standard	WIFI_6E	Wi-Fi 6E	Wifi 6E	6e	100	head
+wireless_standard	WIFI_7	Wi-Fi 7	Wifi 7	802.11be	100	head
+wireless_standard	BLUETOOTH	Bluetooth	Bluetooth	блютуз;bt	100	head
+wireless_standard	NFC	NFC	Nfc	нфс	100	head
+wireless_standard	UWB	UWB	Uwb	ultra wideband	100	head
+wireless_standard	GPS	GPS	Gps	гпс;glonass	100	head
+wireless_standard	LTE	LTE	Lte	4g	100	head
+wireless_standard	FIVE_G	5G	Five G	5джи;5 g	100	head
+wireless_standard	ZIGBEE	Zigbee	Zigbee	зигби	100	head
+wireless_standard	ZWAVE	Z-Wave	Zwave	z wave	100	head
+wireless_standard	THREAD	Thread	Thread	маттер thread	100	head
+wireless_standard	MATTER	Matter	Matter	matter	100	head
+wireless_standard	IR	IR	Ir	инфракрасный	100	head
+wireless_standard	RF_433	RF 433 MHz	Rf 433	433 мгц	100	head
+wi_fi_standard	WIFI_4	Wi-Fi 4	Wifi 4	802.11n	100	head
+wi_fi_standard	WIFI_5	Wi-Fi 5	Wifi 5	802.11ac	100	head
+wi_fi_standard	WIFI_6	Wi-Fi 6	Wifi 6	802.11ax	100	head
+wi_fi_standard	WIFI_6E	Wi-Fi 6E	Wifi 6E	6e	100	head
+wi_fi_standard	WIFI_7	Wi-Fi 7	Wifi 7	802.11be	100	head
+bluetooth_version	BT_4_0	Bluetooth 4.0	Bt 4 0	bt 4.0	100	head
+bluetooth_version	BT_4_2	Bluetooth 4.2	Bt 4 2	bt 4.2	100	head
+bluetooth_version	BT_5_0	Bluetooth 5.0	Bt 5 0	bt 5.0	100	head
+bluetooth_version	BT_5_1	Bluetooth 5.1	Bt 5 1	bt 5.1	100	head
+bluetooth_version	BT_5_2	Bluetooth 5.2	Bt 5 2	bt 5.2	100	head
+bluetooth_version	BT_5_3	Bluetooth 5.3	Bt 5 3	bt 5.3	100	head
+bluetooth_version	BT_5_4	Bluetooth 5.4	Bt 5 4	bt 5.4	100	head
+network_generation	TWO_G	2G	Two G		100	head
+network_generation	THREE_G	3G	Three G		100	head
+network_generation	FOUR_G	4G	Four G		100	head
+network_generation	LTE	LTE	Lte		100	head
+network_generation	FIVE_G	5G	Five G		100	head
+network_generation	FIVE_G_NR	5G NR	Five G Nr		100	head
+network_generation	ETHERNET	Ethernet	Ethernet		100	head
+network_generation	GIGABIT_ETHERNET	Gigabit Ethernet	Gigabit Ethernet		100	head
+network_generation	TEN_G_ETHERNET	10G Ethernet	Ten G Ethernet		100	head
+os_family	IOS	iOS	Ios	айос	100	head
+os_family	ANDROID	Android	Android	андроид	100	head
+os_family	WINDOWS	Windows	Windows	виндовс	100	head
+os_family	MACOS	macOS	Macos	макос	100	head
+os_family	LINUX	Linux	Linux	линукс	100	head
+os_family	CHROMEOS	ChromeOS	Chromeos	хромбук	100	head
+os_family	WATCHOS	watchOS	Watchos	apple watch os	100	head
+os_family	TVOS	tvOS	Tvos	apple tv	100	head
+os_family	FIREOS	Fire OS	Fireos	amazon fire	100	head
+os_family	HARMONYOS	HarmonyOS	Harmonyos	huawei harmony	100	head
+os_family	PROPRIETARY	проприетарная ОС	Proprietary	фирменная ос	100	head
+os_family	NONE	без ОС	None	нет ос	100	head
+form_factor	PORTABLE	портативный	Portable		100	head
+form_factor	DESKTOP	настольный	Desktop		100	head
+form_factor	HANDHELD	ручной	Handheld		100	head
+form_factor	WEARABLE	носимый	Wearable		100	head
+form_factor	RACKMOUNT	стоечный	Rackmount		100	head
+form_factor	BUILT_IN	встраиваемый	Built In		100	head
+form_factor	ACCESSORY	аксессуар	Accessory		100	head
+form_factor	COMPONENT	компонент	Component		100	head
+form_factor	ALL_IN_ONE	моноблок	All In One		100	head
+form_factor	FOLDABLE	складной	Foldable		100	head
+form_factor	RUGGED	защищённый	Rugged		100	head
+power_source	AC_MAINS	сеть 220В	Ac Mains		100	head
+power_source	BATTERY	аккумулятор	Battery		100	head
+power_source	USB_POWERED	питание USB	Usb Powered		100	head
+power_source	POE	PoE	Poe		100	head
+power_source	SOLAR	солнечная панель	Solar		100	head
+power_source	CAR_12V	12В авто	Car 12V		100	head
+power_source	PASSIVE	пассивное	Passive		100	head
+power_source	REPLACEABLE_BATTERY	сменные батарейки	Replaceable Battery		100	head
+water_resistance	IPX4	IPX4	Ipx4		100	head
+water_resistance	IPX5	IPX5	Ipx5		100	head
+water_resistance	IPX7	IPX7	Ipx7		100	head
+water_resistance	IP67	IP67	Ip67		100	head
+water_resistance	IP68	IP68	Ip68		100	head
+water_resistance	IP69K	IP69K	Ip69K		100	head
+water_resistance	ATM_3	3 ATM	Atm 3		100	head
+water_resistance	ATM_5	5 ATM	Atm 5		100	head
+water_resistance	ATM_10	10 ATM	Atm 10		100	head
+water_resistance	NONE	нет влагозащиты	None		100	head
+storage_type	SSD	SSD	Ssd		100	head
+storage_type	HDD	HDD	Hdd		100	head
+storage_type	NVME_SSD	NVMe SSD	Nvme Ssd		100	head
+storage_type	SATA_SSD	SATA SSD	Sata Ssd		100	head
+storage_type	EMMC	eMMC	Emmc		100	head
+storage_type	UFS	UFS	Ufs		100	head
+storage_type	MICROSD	microSD	Microsd		100	head
+storage_type	SD_CARD	SD card	Sd Card		100	head
+storage_type	USB_FLASH	USB flash	Usb Flash		100	head
+storage_type	CLOUD_ONLY	только облако	Cloud Only		100	head
+memory_type	DDR3	DDR3	Ddr3		100	head
+memory_type	DDR4	DDR4	Ddr4		100	head
+memory_type	DDR5	DDR5	Ddr5		100	head
+memory_type	LPDDR4X	LPDDR4X	Lpddr4X		100	head
+memory_type	LPDDR5	LPDDR5	Lpddr5		100	head
+memory_type	LPDDR5X	LPDDR5X	Lpddr5X		100	head
+memory_type	GDDR6	GDDR6	Gddr6		100	head
+memory_type	GDDR6X	GDDR6X	Gddr6X		100	head
+cpu_cores	1	1 ядер	1		100	head
+cpu_cores	2	2 ядер	2		100	head
+cpu_cores	4	4 ядер	4		100	head
+cpu_cores	6	6 ядер	6		100	head
+cpu_cores	8	8 ядер	8		100	head
+cpu_cores	10	10 ядер	10		100	head
+cpu_cores	12	12 ядер	12		100	head
+cpu_cores	14	14 ядер	14		100	head
+cpu_cores	16	16 ядер	16		100	head
+cpu_cores	24	24 ядер	24		100	head
+cpu_cores	32	32 ядер	32		100	head
+cpu_cores	64	64 ядер	64		100	head
+video_resolution	HD_720P	720p	Hd 720P		100	head
+video_resolution	FHD_1080P	1080p	Fhd 1080P		100	head
+video_resolution	QHD_1440P	1440p	Qhd 1440P		100	head
+video_resolution	UHD_4K	4K	Uhd 4K		100	head
+video_resolution	UHD_6K	6K	Uhd 6K		100	head
+video_resolution	UHD_8K	8K	Uhd 8K		100	head
+panel_type	IPS	IPS	Ips		100	head
+panel_type	VA	VA	Va		100	head
+panel_type	TN	TN	Tn		100	head
+panel_type	OLED	OLED	Oled		100	head
+panel_type	AMOLED	AMOLED	Amoled		100	head
+panel_type	MINI_LED	Mini LED	Mini Led		100	head
+panel_type	MICRO_LED	Micro LED	Micro Led		100	head
+panel_type	LCD	LCD	Lcd		100	head
+panel_type	E_INK	E-Ink	E Ink		100	head
+aspect_ratio	RATIO_16_9	16:9	Ratio 16 9		100	head
+aspect_ratio	RATIO_16_10	16:10	Ratio 16 10		100	head
+aspect_ratio	RATIO_21_9	21:9	Ratio 21 9		100	head
+aspect_ratio	RATIO_32_9	32:9	Ratio 32 9		100	head
+aspect_ratio	RATIO_4_3	4:3	Ratio 4 3		100	head
+aspect_ratio	RATIO_3_2	3:2	Ratio 3 2		100	head
+hdr_standard	HDR10	HDR10	Hdr10		100	head
+hdr_standard	HDR10_PLUS	HDR10+	Hdr10 Plus		100	head
+hdr_standard	DOLBY_VISION	Dolby Vision	Dolby Vision		100	head
+hdr_standard	HLG	HLG	Hlg		100	head
+hdr_standard	DISPLAYHDR_400	DisplayHDR 400	Displayhdr 400		100	head
+hdr_standard	DISPLAYHDR_600	DisplayHDR 600	Displayhdr 600		100	head
+hdr_standard	DISPLAYHDR_1000	DisplayHDR 1000	Displayhdr 1000		100	head
+ports_count	1	1 портов	1		100	head
+ports_count	2	2 портов	2		100	head
+ports_count	3	3 портов	3		100	head
+ports_count	4	4 портов	4		100	head
+ports_count	5	5 портов	5		100	head
+ports_count	6	6 портов	6		100	head
+ports_count	8	8 портов	8		100	head
+ports_count	10	10 портов	10		100	head
+ports_count	12	12 портов	12		100	head
+ports_count	16	16 портов	16		100	head
+charging_standard	USB_PD	USB Power Delivery	Usb Pd		100	head
+charging_standard	QUALCOMM_QC	Qualcomm Quick Charge	Qualcomm Qc		100	head
+charging_standard	MAGSAFE	MagSafe	Magsafe		100	head
+charging_standard	QI	Qi wireless	Qi		100	head
+charging_standard	QI2	Qi2	Qi2		100	head
+charging_standard	PPS	PPS	Pps		100	head
+charging_standard	SUPERVOOC	SuperVOOC	Supervooc		100	head
+charging_standard	HYPERCHARGE	HyperCharge	Hypercharge		100	head
+charging_standard	PROPRIETARY_FAST_CHARGE	фирменная быстрая зарядка	Proprietary Fast Charge		100	head
+cable_length_m	0_15M	0.15 м	0 15M		100	head
+cable_length_m	0_25M	0.25 м	0 25M		100	head
+cable_length_m	0_5M	0.5 м	0 5M		100	head
+cable_length_m	1M	1 м	1M		100	head
+cable_length_m	1_2M	1.2 м	1 2M		100	head
+cable_length_m	1_5M	1.5 м	1 5M		100	head
+cable_length_m	1_8M	1.8 м	1 8M		100	head
+cable_length_m	2M	2 м	2M		100	head
+cable_length_m	3M	3 м	3M		100	head
+cable_length_m	5M	5 м	5M		100	head
+cable_length_m	10M	10 м	10M		100	head
+audio_channels	MONO	Mono	Mono		100	head
+audio_channels	STEREO	Stereo	Stereo		100	head
+audio_channels	TWO_ZERO	2.0	Two Zero		100	head
+audio_channels	TWO_ONE	2.1	Two One		100	head
+audio_channels	FIVE_ONE	5.1	Five One		100	head
+audio_channels	SEVEN_ONE	7.1	Seven One		100	head
+audio_channels	ATMOS	Dolby Atmos	Atmos		100	head
+microphone_count	1	1 микрофон(а)	1		100	head
+microphone_count	2	2 микрофон(а)	2		100	head
+microphone_count	3	3 микрофон(а)	3		100	head
+microphone_count	4	4 микрофон(а)	4		100	head
+microphone_count	5	5 микрофон(а)	5		100	head
+microphone_count	6	6 микрофон(а)	6		100	head
+microphone_count	8	8 микрофон(а)	8		100	head
+sensor_set	ACCELEROMETER	акселерометр	Accelerometer		100	head
+sensor_set	GYROSCOPE	гироскоп	Gyroscope		100	head
+sensor_set	GPS	GPS	Gps		100	head
+sensor_set	BAROMETER	барометр	Barometer		100	head
+sensor_set	PIR	PIR датчик	Pir		100	head
+sensor_set	TEMPERATURE	датчик температуры	Temperature		100	head
+sensor_set	HUMIDITY	датчик влажности	Humidity		100	head
+sensor_set	FINGERPRINT	сканер отпечатка	Fingerprint		100	head
+sensor_set	FACE_ID	распознавание лица	Face Id		100	head
+sensor_set	LIDAR	LiDAR	Lidar		100	head
+sensor_set	HEART_RATE	пульсометр	Heart Rate		100	head
+sensor_set	SPO2	SpO2	Spo2		100	head
+mounting_type	VESA_75	VESA 75x75	Vesa 75		100	head
+mounting_type	VESA_100	VESA 100x100	Vesa 100		100	head
+mounting_type	VESA_200	VESA 200x200	Vesa 200		100	head
+mounting_type	WALL	настенное	Wall		100	head
+mounting_type	DESK	настольное	Desk		100	head
+mounting_type	TRIPOD	штатив	Tripod		100	head
+mounting_type	CAR_WINDSHIELD	на лобовое стекло	Car Windshield		100	head
+mounting_type	MAGNETIC	магнитное	Magnetic		100	head
+color_depth	BIT_8	8-bit	Bit 8		100	head
+color_depth	BIT_10	10-bit	Bit 10		100	head
+color_depth	BIT_12	12-bit	Bit 12		100	head
+print_technology	INKJET	струйная	Inkjet		100	head
+print_technology	LASER	лазерная	Laser		100	head
+print_technology	THERMAL	термальная	Thermal		100	head
+print_technology	LED	LED печать	Led		100	head
+print_technology	DYE_SUB	сублимационная	Dye Sub		100	head
+network_speed	FAST_ETHERNET	100 Mbps	Fast Ethernet		100	head
+network_speed	GIGABIT	1 Gbps	Gigabit		100	head
+network_speed	TWO_FIVE_G	2.5 Gbps	Two Five G		100	head
+network_speed	FIVE_G	5 Gbps	Five G		100	head
+network_speed	TEN_G	10 Gbps	Ten G		100	head
+antenna_count	1	1 антенн	1		100	head
+antenna_count	2	2 антенн	2		100	head
+antenna_count	3	3 антенн	3		100	head
+antenna_count	4	4 антенн	4		100	head
+antenna_count	6	6 антенн	6		100	head
+antenna_count	8	8 антенн	8		100	head
+antenna_count	12	12 антенн	12		100	head
+sim_support	SINGLE_SIM	1 SIM	Single Sim		100	head
+sim_support	DUAL_SIM	2 SIM	Dual Sim		100	head
+sim_support	ESIM	eSIM	Esim		100	head
+sim_support	NANO_SIM	nano-SIM	Nano Sim		100	head
+sim_support	MICRO_SIM	micro-SIM	Micro Sim		100	head
+sim_support	NO_SIM	без SIM	No Sim		100	head
+factory_reset_status	RESET_DONE	сброс выполнен	Reset Done		100	head
+factory_reset_status	NOT_RESET	не сброшено	Not Reset		100	head
+factory_reset_status	UNKNOWN	неизвестно	Unknown		100	head
+factory_reset_status	LOCKED	заблокировано	Locked		100	head

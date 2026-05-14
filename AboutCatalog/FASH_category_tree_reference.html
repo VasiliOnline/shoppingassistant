@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>FASH Category Tree — Goody Goods Catalog</title>
+<style>
+  body {
+    margin: 0;
+    padding: 36px;
+    background: #f6f7fb;
+    color: #172033;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .page { max-width: 980px; margin: 0 auto; }
+  .card {
+    background: #fff;
+    border: 1px solid #dbe2ef;
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 24px rgba(28, 48, 96, 0.06);
+  }
+  h1 { margin: 0 0 8px; font-size: 30px; }
+  h2 { margin-top: 0; font-size: 21px; }
+  .muted { color: #647084; }
+  pre {
+    background: #101828;
+    color: #edf3ff;
+    border-radius: 14px;
+    padding: 22px;
+    overflow-x: auto;
+    font-family: Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+  .principle {
+    border-top: 1px solid #dbe2ef;
+    padding: 14px 0;
+  }
+  .principle:first-child { border-top: 0; }
+  .principle b { display: block; margin-bottom: 4px; }
+  .note {
+    background: #edf1ff;
+    color: #3854c8;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="card">
+    <h1>FASH Category Tree</h1>
+    <p class="muted">Production-структура категории FASH для каталога Goody Goods.</p>
+  </div>
+
+  <div class="card">
+    <h2>Дерево категории</h2>
+<pre>FASH
+Одежда, обувь, сумки и аксессуары
+
+├─ FASH.APPAREL_COMMON              [shared, не публичная]
+│  └─ Общий стандарт одежды:
+│     apparel_type, size, color, material, fit, season, condition, brand
+│
+├─ FASH.MEN                         [public]
+│  ├─ Верх: футболки, рубашки, худи, свитеры, поло
+│  ├─ Низ: джинсы, брюки, шорты
+│  ├─ Верхняя одежда: куртки, пальто, пуховики
+│  ├─ Костюмы и комплекты
+│  ├─ Бельё, носки, домашняя одежда
+│  └─ Спорт, workwear, термобельё
+│
+├─ FASH.WOMEN                       [public]
+│  ├─ Верх: топы, блузки, рубашки, худи, свитеры
+│  ├─ Низ: джинсы, брюки, юбки, леггинсы, шорты
+│  ├─ Платья и комбинезоны
+│  ├─ Верхняя одежда
+│  ├─ Костюмы и комплекты
+│  ├─ Бельё, колготки, домашняя одежда
+│  └─ Купальники, maternity, occasion wear
+│
+├─ FASH.KIDS                        [public]
+│  ├─ Для мальчиков
+│  ├─ Для девочек
+│  ├─ Унисекс
+│  ├─ Baby apparel
+│  ├─ Школьная форма
+│  ├─ Верх, низ, платья, верхняя одежда
+│  └─ Размеры по росту и возрасту
+│
+├─ FASH.SHOES                       [public]
+│  ├─ Кроссовки и спортивная обувь
+│  ├─ Ботинки, сапоги, зимняя обувь
+│  ├─ Классическая обувь
+│  ├─ Сандалии, шлёпанцы, открытая обувь
+│  ├─ Домашняя обувь
+│  ├─ Каблуки, туфли
+│  └─ Детская обувь
+│
+├─ FASH.BAGS                        [public]
+│  ├─ Рюкзаки
+│  ├─ Женские сумки
+│  ├─ Crossbody / через плечо
+│  ├─ Tote / шопперы
+│  ├─ Клатчи
+│  ├─ Поясные сумки
+│  ├─ Сумки для ноутбука
+│  ├─ Дорожные сумки / чемоданы
+│  └─ Кошельки / кардхолдеры
+│
+└─ FASH.ACCESSORIES                 [public]
+   ├─ Ремни
+   ├─ Головные уборы
+   ├─ Шарфы / платки
+   ├─ Перчатки
+   ├─ Галстуки / бабочки
+   ├─ Очки
+   ├─ Украшения
+   ├─ Часы обычные
+   ├─ Зонты
+   └─ Аксессуары для волос</pre>
+  </div>
+
+  <div class="card">
+    <h2>Принцип работы</h2>
+
+    <div class="principle">
+      <b>1. Дерево держим стабильным и неглубоким.</b>
+      Не создаём десятки микрокатегорий вроде FASH.SHOES.SNEAKERS. Детализация живёт в type, фасетах и UI-branches.
+    </div>
+
+    <div class="principle">
+      <b>2. APPAREL_COMMON — не категория товара.</b>
+      Это shared-слой для одежды. Он даёт общие атрибуты: размер, цвет, материал, fit, сезон, состояние, бренд.
+    </div>
+
+    <div class="principle">
+      <b>3. MEN / WOMEN / KIDS наследуют APPAREL_COMMON.</b>
+      Они не дублируют базовые атрибуты, а добавляют свои defaults, aliases, route guards, user surface и правила размеров.
+    </div>
+
+    <div class="principle">
+      <b>4. SHOES / BAGS / ACCESSORIES — отдельные production-ветки.</b>
+      У них другая логика: размеры обуви, типы сумок, типы аксессуаров, свои фасеты и свои правила маршрутизации.
+    </div>
+
+    <div class="principle">
+      <b>5. Главный переключатель внутри ветки — type.</b>
+      Для одежды это apparel_type, для обуви shoe_type, для сумок bag_type, для аксессуаров accessory_type.
+    </div>
+
+    <div class="principle">
+      <b>6. Branches внутри ветки — это UI/browse-группы.</b>
+      Например, “Кроссовки”, “Ботинки”, “Каблуки” внутри FASH.SHOES могут быть browse-группами, а не отдельными categoryCode.
+    </div>
+
+    <div class="principle">
+      <b>7. Пользователь видит короткий user surface.</b>
+      Каталог может хранить много служебных данных, но UI показывает только нужное: тип, бренд, размер, состояние, цвет и релевантные поля.
+    </div>
+
+    <div class="principle">
+      <b>8. Route guards защищают ветки от смешивания.</b>
+      “мужские кроссовки” → FASH.SHOES, “детский рюкзак” → FASH.BAGS, “женское платье” → FASH.WOMEN.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="note">
+      Короткое правило: categoryCode остаётся крупным и стабильным, а детализация переносится в type, фасеты, aliases, user surface и route guards.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

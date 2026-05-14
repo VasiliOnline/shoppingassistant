@@ -114,7 +114,9 @@ internal object Stage21HomeFamilySchemaAdapter : Stage21SchemaAdapter<Stage21Hom
                 parentBrowseCode = parentCode,
                 nodeKind = nodeKind,
                 titleKey = row.optional("slug")?.let { "catalog.${descriptor.l0Code.lowercase()}.$it" },
-                title = localizedTextOf("ru" to row.required("title_ru")),
+                title = row.required("title_ru").let { titleRu ->
+                    localizedTextOf("ru" to titleRu, "en" to titleRu)
+                },
                 targetCategoryCode = targetCategoryCode,
                 targetType = targetCategoryCode?.let { BrowseTargetType.CATEGORY },
                 order = row.optional("sort_order")?.toIntOrNull() ?: 0,
@@ -247,7 +249,9 @@ internal object Stage21ApplSchemaAdapter : Stage21SchemaAdapter<Stage21ApplPacka
                 parentBrowseCode = row.optional("parent_id")?.let { mapBrowseCode(it, descriptor) },
                 nodeKind = nodeKind,
                 titleKey = null,
-                title = localizedTextOf("ru" to row.required("title_ru")),
+                title = row.required("title_ru").let { titleRu ->
+                    localizedTextOf("ru" to titleRu, "en" to titleRu)
+                },
                 targetCategoryCode = targetCanonicalCode,
                 targetType = targetCanonicalCode?.let { BrowseTargetType.CATEGORY },
                 order = row.optional("rank")?.toIntOrNull() ?: 0,

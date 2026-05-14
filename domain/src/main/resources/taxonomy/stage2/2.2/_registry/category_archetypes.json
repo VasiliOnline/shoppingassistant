@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1.0.0",
+  "archetypes": [
+    {
+      "archetype": "TYPE_DRIVEN",
+      "mandatoryFields": ["type_or_subtype"],
+      "requiredAnyAttributeCodes": [
+        ["type_of_item", "apparel_type", "shoe_type", "accessory_type", "bag_type", "form_factor", "used_for", "stroller_type", "coffee_type", "material", "product_name"]
+      ],
+      "typicalFacetTemplates": ["enum_primary", "enum_secondary", "brand_optional", "condition_price_base"],
+      "validators": ["type_dictionary_present", "type_required_or_primary", "type_route_guarded"],
+      "runtimeSignals": ["type_confidence", "type_alias_hit", "typed_facet_selection"],
+      "aiVisionDoNotGuess": ["brand_without_logo_or_text", "precise_subtype_without_visual_or_text_evidence"],
+      "seedData": ["canonical type dictionary", "primary type aliases", "negative route guards"],
+      "liveValues": ["rare subtypes", "seller-specific naming variants"]
+    },
+    {
+      "archetype": "SIZE_DRIVEN",
+      "mandatoryFields": ["normalized_size_or_measurement", "raw_size_evidence"],
+      "requiredAnyAttributeCodes": [
+        ["size_label", "size_eu", "size_ru", "raw_size_text", "weight_kg", "volume_ml", "diameter_cm", "screen_size_inch", "age_from_months", "age_to_months"]
+      ],
+      "typicalFacetTemplates": ["size_selector", "numeric_range", "enum_secondary"],
+      "validators": ["raw_size_preserved", "normalized_size_not_vision_only", "range_bounds_valid"],
+      "runtimeSignals": ["size_system_detected", "raw_size_present", "normalization_confidence"],
+      "aiVisionDoNotGuess": ["numeric_size_without_text", "child_age_from_appearance", "body_measurements_from_photo"],
+      "seedData": ["size systems", "common size aliases", "measurement units"],
+      "liveValues": ["seller raw sizes", "local brand size variants"]
+    },
+    {
+      "archetype": "COMPATIBILITY_DRIVEN",
+      "mandatoryFields": ["host_or_target_compatibility", "compatibility_evidence"],
+      "requiredAnyAttributeCodes": [
+        ["compatibility_mode", "compatible_phone_brand", "compatible_phone_model", "compatible_model_text", "used_for", "diameter_cm", "brand", "model"]
+      ],
+      "typicalFacetTemplates": ["compatibility_widget", "enum_primary", "brand_optional"],
+      "validators": ["compatibility_evidence_required", "host_model_not_guessed", "route_conflict_golden"],
+      "runtimeSignals": ["compatibility_confidence", "host_model_match", "negative_guard_hit"],
+      "aiVisionDoNotGuess": ["compatible_model_without_text", "vehicle_fitment_without_oem_or_text", "connector_standard_without_visible_marking"],
+      "seedData": ["stable host families", "compatibility modes", "negative guards"],
+      "liveValues": ["model candidates", "vehicle/phone fitment candidates", "seller compatibility text"]
+    },
+    {
+      "archetype": "IDENTITY_CRITICAL",
+      "mandatoryFields": ["brand_or_product_name", "model_or_line_when_applicable"],
+      "requiredAnyAttributeCodes": [
+        ["brand", "product_name"],
+        ["model", "model_line", "model_name_text", "product_name"]
+      ],
+      "typicalFacetTemplates": ["brand_optional", "enum_primary", "condition_price_base"],
+      "validators": ["identity_code_stability", "brand_model_alias_collision", "model_family_not_guessed"],
+      "runtimeSignals": ["brand_match_confidence", "model_match_confidence", "canonical_model_hit"],
+      "aiVisionDoNotGuess": ["model_from_generic_appearance", "brand_without_logo_or_text", "storage_or_variant_without_text"],
+      "seedData": ["top brands", "canonical families", "stable model aliases"],
+      "liveValues": ["long-tail models", "new model candidates", "brand candidates"]
+    },
+    {
+      "archetype": "SPEC_HEAVY",
+      "mandatoryFields": ["at_least_one_core_spec", "typed_spec_units"],
+      "requiredAnyAttributeCodes": [
+        ["memory_gb", "storage_gb", "ram_gb", "screen_size_inch", "power_watt", "weight_kg", "release_year", "diameter_cm", "dosage_per_serving", "material"]
+      ],
+      "typicalFacetTemplates": ["spec_range", "numeric_range", "enum_secondary"],
+      "validators": ["numeric_unit_bounds", "typed_constraints_present", "spec_value_not_free_text_when_closed"],
+      "runtimeSignals": ["spec_extraction_confidence", "typed_constraint_hit", "unit_normalized"],
+      "aiVisionDoNotGuess": ["internal_specs_from_photo", "release_year_without_text_or_identity", "battery_or_power_without_source"],
+      "seedData": ["stable units", "bounded ranges", "top spec dictionaries"],
+      "liveValues": ["new spec candidates", "unmapped units", "seller free-text specs"]
+    },
+    {
+      "archetype": "CONSUMABLE",
+      "mandatoryFields": ["product_name", "composition_or_quantity_signal"],
+      "requiredAnyAttributeCodes": [
+        ["product_name", "brand"],
+        ["ingredient_list", "allergen_profile", "volume_ml", "weight_kg", "servings_count", "form_factor", "country_of_origin"]
+      ],
+      "typicalFacetTemplates": ["ingredient/allergen_warning", "enum_primary", "numeric_range", "brand_optional"],
+      "validators": ["ingredient_allergen_warning_present", "quantity_unit_valid", "safety_claim_reviewable"],
+      "runtimeSignals": ["ingredient_text_present", "allergen_flag_present", "expiry_or_freshness_signal"],
+      "aiVisionDoNotGuess": ["ingredients_from_front_photo_only", "allergen_free_claim_without_label", "health_claim_without_text"],
+      "seedData": ["form factors", "allergen dictionary", "dietary flags", "quantity units"],
+      "liveValues": ["ingredients", "brand candidates", "flavor candidates", "allergen candidates"]
+    },
+    {
+      "archetype": "LIFE_STAGE_DRIVEN",
+      "mandatoryFields": ["age_or_life_stage_signal"],
+      "requiredAnyAttributeCodes": [],
+      "typicalFacetTemplates": ["life_stage_selector", "enum_primary", "size_selector"],
+      "validators": ["life_stage_not_inferred_from_appearance", "age_range_bounds_valid", "eligibility_signal_reviewable"],
+      "runtimeSignals": ["age_range_present", "life_stage_candidate_present", "age_guard_hit"],
+      "aiVisionDoNotGuess": ["child_age_from_face_or_body", "pet_life_stage_from_image_only", "medical_eligibility_without_text"],
+      "seedData": ["age ranges", "life-stage labels", "grade groups"],
+      "liveValues": ["pet life-stage candidates", "age label candidates", "seller eligibility text"]
+    },
+    {
+      "archetype": "SAFETY_REGULATED",
+      "mandatoryFields": ["safety_or_dosage_signal", "reviewable_claims"],
+      "requiredAnyAttributeCodes": [
+        ["dosage_unit", "dosage_per_serving", "substance_code", "certification", "allergen_profile", "ingredient_list", "form_factor", "country_of_origin", "age_from_months", "age_to_months", "weight_limit_kg"]
+      ],
+      "typicalFacetTemplates": ["ingredient/allergen_warning", "enum_primary", "spec_range"],
+      "validators": ["regulated_claim_admin_review", "dosage_unit_closed_set", "forbidden_ai_health_claims"],
+      "runtimeSignals": ["safety_claim_detected", "dosage_present", "admin_review_required"],
+      "aiVisionDoNotGuess": ["medical_claim", "dosage_without_label_text", "certification_without_marking"],
+      "seedData": ["dosage units", "substances", "safety labels", "review rules"],
+      "liveValues": ["substance candidates", "certification candidates", "label text candidates"]
+    },
+    {
+      "archetype": "VISUAL_SIMPLE",
+      "mandatoryFields": ["visual_description_allowed_but_low_authority"],
+      "requiredAnyAttributeCodes": [],
+      "typicalFacetTemplates": ["enum_secondary", "brand_optional", "condition_price_base"],
+      "validators": ["vision_confidence_threshold", "hidden_evidence_not_user_facet", "route_guard_golden"],
+      "runtimeSignals": ["visual_match_confidence", "color_detected", "shape_detected"],
+      "aiVisionDoNotGuess": ["brand_without_text", "authenticity", "precise_model"],
+      "seedData": ["common visual attributes", "negative route guards"],
+      "liveValues": ["color candidates", "shape candidates", "material candidates"]
+    }
+  ]
+}

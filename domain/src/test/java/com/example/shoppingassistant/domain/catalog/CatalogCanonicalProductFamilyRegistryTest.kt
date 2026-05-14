@@ -88,7 +88,7 @@ class CatalogCanonicalProductFamilyRegistryTest {
         val match = CatalogCanonicalProductFamilyRegistry.matchQuery("макбук air m3 13")
 
         requireNotNull(match)
-        assertEquals("TECH.LAPTOPS", match.defaultCategoryCode)
+        assertEquals("TECH.COMPUTERS", match.defaultCategoryCode)
         assertEquals("Apple", match.brandCanonical)
         assertEquals("MacBook Air m3 13", match.modelText)
     }
@@ -98,7 +98,7 @@ class CatalogCanonicalProductFamilyRegistryTest {
         val match = CatalogCanonicalProductFamilyRegistry.matchQuery("kindle paperwhite 2024")
 
         requireNotNull(match)
-        assertEquals("TECH.TABLETS_EBOOKS", match.defaultCategoryCode)
+        assertEquals("TECH.TABLETS_E_READERS", match.defaultCategoryCode)
         assertEquals("Amazon", match.brandCanonical)
         assertEquals("Kindle paperwhite 2024", match.modelText)
     }

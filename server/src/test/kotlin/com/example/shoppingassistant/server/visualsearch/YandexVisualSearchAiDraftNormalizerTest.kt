@@ -1650,7 +1650,7 @@ private class FakeVisualCatalogRepository : CatalogReadRepository, CatalogTaxono
             status = CategoryStatus.ACTIVE,
         ),
         Category(
-            code = "TECH.LAPTOPS",
+            code = "TECH.COMPUTERS",
             segment = CategorySegment.TECH,
             title = localizedTextOf("ru" to "Ноутбуки", "en" to "Laptops"),
             parentCode = "TECH",

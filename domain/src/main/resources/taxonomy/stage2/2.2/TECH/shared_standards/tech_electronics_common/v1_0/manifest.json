@@ -1,0 +1,62 @@
+{
+  "pack_id": "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+  "pack_version": "1.0.0",
+  "language": "ru",
+  "category_code": "TECH.ELECTRONICS_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "runtime_mount": "shared_standard_registry",
+  "status": "production_ready_static_candidate",
+  "created_at": "2026-05-13T00:00:00+03:00",
+  "scope": {
+    "purpose": "Общий стандарт электроники для всех TECH public category packs.",
+    "included": [
+      "brand/manufacturer surface without model registry",
+      "condition/color/release/warranty/region/common listing evidence",
+      "included accessories and seller bundle declarations",
+      "refurbished/repair/common condition policies",
+      "shared route guardrails and vision/no-guess rules"
+    ],
+    "excluded": [
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON",
+      "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
+      "brand/family/model registry",
+      "detailed technical specs",
+      "compatibility refs",
+      "public microcategories such as TECH.IPHONE, TECH.CASES, TECH.CHARGERS, TECH.CABLES"
+    ]
+  },
+  "depends_on": [
+    "TECH_CATEGORY_TREE_CONTRACT_v1_0"
+  ],
+  "next_packs": [
+    "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+    "TECH_PHONES_IDENTITY_PACK_v1_0_RU"
+  ],
+  "files": [
+    "schema_pack.tech_electronics_common.v1_0.json",
+    "attributes.tech_electronics_common.v1_0.tsv",
+    "values.tech_electronics_common.v1_0.tsv",
+    "aliases.tech_electronics_common.ru.v1_0.tsv",
+    "user_surface.tech_electronics_common.v1_0.yaml",
+    "facet_templates.tech_electronics_common.v1_0.yaml",
+    "generated_alias_rules.tech_electronics_common.v1_0.yaml",
+    "route_guardrails.tech_electronics_common.v1_0.yaml",
+    "vision_rules.tech_electronics_common.v1_0.yaml",
+    "golden_queries.tech_electronics_common.v1_0.tsv",
+    "sample_offers.tech_electronics_common.v1_0.jsonl",
+    "integration_mapping.tech_electronics_common.v1_0.yaml",
+    "quality_gates.tech_electronics_common.v1_0.yaml",
+    "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
+    "validation_report.tech_electronics_common.v1_0.json",
+    "checksums.sha256.json",
+    "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md"
+  ]
+}

@@ -1,0 +1,50 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+generation_policy:
+  locale: ru
+  generate_from_values: true
+  generate_brand_aliases: true
+  generate_condition_aliases: true
+  generate_warranty_aliases: true
+  long_tail_values: runtime_candidates
+rules:
+  - id: brand_translit_ru_en
+    type: brand_alias_generation
+    target_attribute: brand
+    sources: [values.brand.aliases_ru, raw_title_tokens]
+    confidence_default: 0.78
+    review_required_for_new_brand: true
+  - id: condition_phrase_aliases
+    type: phrase_to_value
+    target_attribute: condition
+    examples:
+      "запечатан": NEW
+      "витринный": OPEN_BOX
+      "на запчасти": USED_FOR_PARTS
+      "как новый": USED_LIKE_NEW
+  - id: warranty_phrase_aliases
+    type: phrase_to_value
+    target_attribute: warranty_status
+    examples:
+      "на гарантии": MANUFACTURER_WARRANTY_ACTIVE
+      "без гарантии": NO_WARRANTY
+      "гарантия магазина": SELLER_WARRANTY
+  - id: region_version_aliases
+    type: phrase_to_value
+    target_attribute: country_version
+    examples:
+      "ростест": RU_VERSION
+      "евроверсия": EU_VERSION
+      "китаец": CN_VERSION
+      "глобалка": GLOBAL_VERSION
+  - id: package_aliases
+    type: phrase_to_multi_value
+    target_attribute: included_accessories
+    examples:
+      "полный комплект": [ORIGINAL_BOX, CHARGER, CABLE, MANUAL]
+      "только устройство": [NONE]
+      "с коробкой и чеком": [ORIGINAL_BOX, RECEIPT]
+collision_policy:
+  if_alias_conflicts_with_public_category_type: public_category_route_guard_wins
+  if_alias_conflicts_with_fash: route_guardrails_win
+  if_alias_low_confidence: keep_raw_and_mark_runtime_candidate

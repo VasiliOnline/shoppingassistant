@@ -1,0 +1,138 @@
+{
+  "schema_id": "schema_pack.tech_electronics_common.v1_0",
+  "category_code": "TECH.ELECTRONICS_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "semantic_contract": {
+    "ru": "Общий слой электроники: состояние, бренд как поверхностный признак, цвет, региональность, гарантия, комплектация, продавец-бандл, ремонт/refurbishment и confidence полноты объявления.",
+    "not_identity_registry": true,
+    "not_specs_registry": true,
+    "not_compatibility_registry": true,
+    "no_microcategory_mounts": true
+  },
+  "category_archetypes": [
+    "ELECTRONICS_SHARED",
+    "CONDITION_SENSITIVE",
+    "REGION_VARIANT_AWARE",
+    "WARRANTY_AWARE",
+    "REFURBISHMENT_AWARE",
+    "VISION_NO_GUESS_SHARED"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "brand",
+      "manufacturer",
+      "condition",
+      "color_family",
+      "release_year",
+      "warranty_status",
+      "region",
+      "country_version"
+    ],
+    "T1_TYPE_RELEVANT": [
+      "included_accessories",
+      "seller_bundle",
+      "original_box",
+      "refurbished_status",
+      "repair_history",
+      "cosmetic_condition_grade",
+      "functional_condition"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "color_vendor_text",
+      "warranty_months_remaining",
+      "warranty_provider",
+      "receipt_available",
+      "purchase_channel",
+      "return_policy_status",
+      "refurbishment_grade",
+      "refurbishment_provider",
+      "service_history_text",
+      "defect_notes",
+      "accessory_completeness_grade",
+      "packaging_condition",
+      "seller_notes_quality"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "model_name_text_raw",
+      "listing_completeness_confidence",
+      "evidence_level",
+      "normalization_source",
+      "source_locale",
+      "source_market",
+      "extraction_warnings",
+      "route_guardrail_trace",
+      "vision_confidence",
+      "data_quality_score"
+    ]
+  },
+  "required_policy": {
+    "shared_standard_required_for_runtime_mount": [
+      "brand",
+      "condition",
+      "color_family"
+    ],
+    "required_for_publish_if_known_or_extractable": [
+      "release_year",
+      "warranty_status",
+      "region",
+      "country_version"
+    ],
+    "not_required_at_shared_layer": [
+      "model_name_text_raw"
+    ],
+    "notes": "Shared standard не принимает офферы напрямую; required semantics применяются при наследовании public category packs."
+  },
+  "value_policy": {
+    "seed_scope": "head_values_only",
+    "long_tail_strategy": "runtime_candidates/live_values",
+    "unknown_value_policy": "ALLOW_UNKNOWN_WITH_CONFIDENCE_AND_EVIDENCE",
+    "brand_policy": "head brand values are normalization conveniences, not model registry"
+  },
+  "ui_policy": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7,
+    "t3_hidden_must_not_surface": true,
+    "default_hidden_fields": [
+      "T3_SYSTEM_HIDDEN"
+    ]
+  },
+  "prohibited": {
+    "public_category_codes": [
+      "TECH.IPHONE",
+      "TECH.SAMSUNG_PHONES",
+      "TECH.CASES",
+      "TECH.CHARGERS",
+      "TECH.CABLES"
+    ],
+    "embedded_packs": [
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON",
+      "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "embedded_model_seed": true,
+    "embedded_compatibility_refs": true
+  },
+  "files_contract": [
+    "schema_pack.tech_electronics_common.v1_0.json",
+    "attributes.tech_electronics_common.v1_0.tsv",
+    "values.tech_electronics_common.v1_0.tsv",
+    "aliases.tech_electronics_common.ru.v1_0.tsv",
+    "user_surface.tech_electronics_common.v1_0.yaml",
+    "facet_templates.tech_electronics_common.v1_0.yaml",
+    "generated_alias_rules.tech_electronics_common.v1_0.yaml",
+    "route_guardrails.tech_electronics_common.v1_0.yaml",
+    "vision_rules.tech_electronics_common.v1_0.yaml",
+    "golden_queries.tech_electronics_common.v1_0.tsv",
+    "sample_offers.tech_electronics_common.v1_0.jsonl",
+    "integration_mapping.tech_electronics_common.v1_0.yaml",
+    "quality_gates.tech_electronics_common.v1_0.yaml",
+    "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
+    "validation_report.tech_electronics_common.v1_0.json",
+    "checksums.sha256.json",
+    "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md"
+  ]
+}

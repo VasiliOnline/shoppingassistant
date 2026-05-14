@@ -1,0 +1,36 @@
+ruleset_id: route_guardrails.tech_specs_common.v1_0
+category_code: TECH.SPECS_COMMON
+shared_standard_only: true
+evaluation_mode: sort_by_priority_desc_then_first_match
+guardrails:
+- id: shared_standard_never_routes_directly
+  priority: 1000
+  if: any_query
+  then: do_not_route_to_TECH.SPECS_COMMON_directly
+- id: tech_context_required
+  priority: 900
+  if: spec_token_present AND no_device_or_electronics_context
+  then: extract_spec_as_context_only_do_not_force_TECH
+- id: fashion_context_wins
+  priority: 850
+  if: FASH garment/bag/shoe context present
+  then: block_TECH_specs_route_boost
+- id: toy_context_wins
+  priority: 840
+  if: toy/kids pretend device context present
+  then: block_TECH_specs_route_boost
+- id: book_media_context_wins
+  priority: 830
+  if: book/poster/course/media about device/os
+  then: block_TECH_specs_route_boost
+- id: unit_ambiguity_guard
+  priority: 700
+  if: unit token can mean size/clothing/volume/non-tech
+  then: require additional TECH context
+examples:
+  positive:
+  - ноутбук 16 гб 512 ssd -> TECH.COMPUTERS with specs
+  - монитор 27 144 гц -> TECH.MONITORS_DISPLAYS with specs
+  negative:
+  - куртка waterproof ip67 -> FASH, specs token does not force TECH
+  - постер 4K -> HOME/DECOR, 4K is print quality text

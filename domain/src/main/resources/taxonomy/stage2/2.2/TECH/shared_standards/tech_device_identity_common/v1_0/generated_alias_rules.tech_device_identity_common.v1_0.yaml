@@ -1,0 +1,52 @@
+ruleset_id: generated_alias_rules.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+rules:
+- id: latin_cyrillic_brand_normalization
+  priority: 1000
+  action: normalize equivalent brand spellings
+  examples:
+  - эпл -> APPLE
+  - самсунг -> SAMSUNG
+  - сяоми -> XIAOMI
+- id: preserve_model_case_and_symbols
+  priority: 980
+  action: preserve hyphen, plus, slash, roman numerals, and letter-number model tokens
+  examples:
+  - SM-S918B
+  - WH-1000XM5
+  - DS220+
+  - i7-13700K
+- id: strip_specs_from_identity_candidate
+  priority: 960
+  action: remove storage/RAM/color tokens from model candidate unless vendor model officially includes them
+  examples:
+  - iPhone 13 128GB black -> model=iPhone 13; specs downstream
+- id: compatibility_preposition_context
+  priority: 940
+  action: if model token follows для/совместим/подходит, set identity_context_role=ACCESSORY_COMPATIBILITY_HINT
+  examples:
+  - чехол для iPhone 13 != own device iPhone 13
+- id: bundle_context_split
+  priority: 930
+  action: detect bundle/kit terms and split primary vs secondary identity candidates
+  examples:
+  - PS5 + extra controller -> main device PS5; controller secondary
+- id: model_number_strong_evidence
+  priority: 920
+  action: model_number/mpn/gtin can upgrade identity confidence only with brand/manufacturer consistency
+  examples:
+  - A2338 + Apple/MacBook -> strong; A2338 alone -> candidate
+- id: region_suffix_preservation
+  priority: 900
+  action: preserve regional/carrier suffixes as region_variant or carrier_variant, not as model core
+  examples:
+  - SM-S918B/DS -> model_number + region_variant
+- id: block_exact_model_from_visual_shape
+  priority: 890
+  action: logo/shape/color can support brand/family only; exact model requires textual/identifier evidence
+  examples:
+  - photo of phone with Apple logo -> brand=APPLE, model unresolved
+collision_policy: prefer strongest evidence; if same alias maps to multiple families or brands, set REVIEW_REQUIRED unless
+  downstream category pack resolves.
+long_tail_policy: unknown family/model tokens become runtime_candidates with evidence and confidence; do not add permanent
+  valueCode without review.

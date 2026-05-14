@@ -1,0 +1,19 @@
+category_code	type_attribute	identity_fields	identity_criticality	notes
+TECH.PHONES	phone_type	brand,family,model,model_number,region_variant,release_year	HIGH	Exact model for listings and dedup; specs downstream.
+TECH.PHONE_ACCESSORIES	phone_accessory_type	brand,family,model_name_text,identity_context_role	MEDIUM	Model tokens are often compatibility hints; compatibility pack owns refs.
+TECH.COMPUTERS	computer_type	brand,family,line,model,model_number,generation,release_year	HIGH	Laptop/desktop dedup and variant parsing.
+TECH.TABLETS_E_READERS	tablet_type	brand,family,line,model,generation,region_variant	HIGH	Tablet/e-reader exact model identity.
+TECH.MONITORS_DISPLAYS	display_type	brand,family,model,model_number,release_year	MEDIUM	Monitor model number is often primary identity.
+TECH.COMPUTER_ACCESSORIES	computer_accessory_type	brand,family,model_name_text,mpn	MEDIUM	Keyboards/mice/webcams often exact by model/MPN.
+TECH.PC_COMPONENTS	pc_component_type	brand,family,line,model,part_number,hardware_revision	HIGH	Components require exact model/part number for dedup.
+TECH.STORAGE_MEMORY	storage_type	brand,family,model,part_number,hardware_revision	HIGH	Capacity is specs; model/part number identity.
+TECH.AUDIO	audio_type	brand,family,line,model,model_number,generation	HIGH	Audio SKUs rely on family/model alias handling.
+TECH.TV_HOME_THEATER	av_type	brand,family,model,model_number,release_year	MEDIUM	TV/projector model number often required.
+TECH.WEARABLES	wearable_type	brand,family,line,model,generation,region_variant	HIGH	Wearables conflict with FASH accessories; identity aids route.
+TECH.CAMERAS_DRONES	camera_type	brand,family,line,model,model_number,release_year	HIGH	Camera/lens/drone exact identity critical.
+TECH.GAMING	gaming_type	brand,family,line,model,edition,region_variant	HIGH	Console editions and region variants affect identity.
+TECH.SMART_HOME_SECURITY	smart_home_type	brand,family,model,model_number,generation	MEDIUM	Smart devices often family+generation.
+TECH.NETWORKING	networking_type	brand,family,model,hardware_revision,region_variant	HIGH	Routers/network gear exact model/revision important.
+TECH.POWER_CHARGING_CABLES	power_cable_type	brand,family,model,mpn,identity_context_role	LOW_MEDIUM	Power/cable pack may rely more on specs; identity still helps dedup.
+TECH.PRINTERS_SCANNERS	printer_scanner_type	brand,family,model,model_number,region_variant	HIGH	Printer/cartridge identity critical.
+TECH.CAR_ELECTRONICS_GPS	car_electronics_type	brand,family,model,model_number,region_variant	MEDIUM_HIGH	Dashcams/head units/GPS exact identity.

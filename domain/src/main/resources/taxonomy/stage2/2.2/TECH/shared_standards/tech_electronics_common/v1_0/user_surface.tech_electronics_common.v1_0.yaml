@@ -1,0 +1,53 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+pack_type: shared_standard_pack
+public_category: false
+accepts_offers_directly: false
+surface_policy:
+  max_initial_fields: 8
+  max_primary_facets: 7
+  t3_system_hidden_never_visible: true
+initial_fields:
+  - brand
+  - condition
+  - color_family
+  - warranty_status
+  - region
+  - release_year
+  - included_accessories
+  - original_box
+expanded_fields:
+  - manufacturer
+  - country_version
+  - seller_bundle
+  - refurbished_status
+  - repair_history
+  - cosmetic_condition_grade
+  - functional_condition
+  - receipt_available
+  - warranty_months_remaining
+  - warranty_provider
+  - packaging_condition
+  - accessory_completeness_grade
+hidden_by_default:
+  - color_vendor_text
+  - purchase_channel
+  - return_policy_status
+  - refurbishment_provider
+  - service_history_text
+  - seller_notes_quality
+never_show_in_ui:
+  - model_name_text_raw
+  - listing_completeness_confidence
+  - evidence_level
+  - normalization_source
+  - source_locale
+  - source_market
+  - extraction_warnings
+  - route_guardrail_trace
+  - vision_confidence
+  - data_quality_score
+ui_notes:
+  - "Shared layer gives common fields to public TECH categories but is not a publish destination."
+  - "Brand is shown as a common field; model/family/line is handled only by TECH.DEVICE_IDENTITY_COMMON."
+  - "Specs and compatibility fields are intentionally excluded from this package."

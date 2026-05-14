@@ -17,7 +17,7 @@
 3) Прогони coverage-гейт из `coverage.home.json` и тест `queries_golden.home.tsv`.
 
 ## Нота по дизамбигуации (важное)
-- “умная лампочка/выключатель/датчик” → TECH.SMART_HOME  
+- “умная лампочка/выключатель/датчик” → TECH.SMART_HOME_SECURITY  
 - “пылесос/робот-пылесос” → APPL.SMALL  
 - “электрический чайник/блендер/кофемашина” → APPL.SMALL  
 - “чайник заварочный” → HOME.KITCHEN_DINING

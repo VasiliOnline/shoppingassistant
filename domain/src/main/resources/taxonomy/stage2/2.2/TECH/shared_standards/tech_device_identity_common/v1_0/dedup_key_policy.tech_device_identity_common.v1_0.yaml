@@ -1,0 +1,22 @@
+policy_id: dedup_key_policy.tech_device_identity_common.v1_0
+stable_key_order:
+- gtin/ean/upc
+- brand+mpn
+- brand+model_number
+- brand+family+model+variant_label+region_variant
+- brand+family+model_name_text+release_year
+- weak:title_embedding+image_fingerprint
+merge_allowed_when:
+- same strong identifier and no contradictory brand/family
+- same brand+model_number with compatible region_variant
+- same brand+family+model and only specs/color/condition differ downstream
+merge_blocked_when:
+- identity_resolution_status=CONFLICT
+- model token appears only as compatibility hint
+- bundle contains multiple primary devices
+- brand alias ambiguous without evidence
+- seller title includes "для"/"совместим" before model token
+privacy:
+  serial_number: mask only
+  imei: hash only
+  public_ui: never show serial/imei

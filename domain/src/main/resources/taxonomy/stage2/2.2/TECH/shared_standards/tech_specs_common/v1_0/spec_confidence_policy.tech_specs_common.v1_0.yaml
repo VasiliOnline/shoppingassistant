@@ -1,0 +1,14 @@
+policy_id: spec_confidence_policy.tech_specs_common.v1_0
+confidence_levels:
+  '0.95': official spec/source attribute/barcode+identity match
+  '0.85': seller attribute with consistent title
+  '0.70': clear OCR label/spec sticker
+  '0.55': title token only
+  '0.35': weak context or ambiguous unit
+  '0.0': conflict/blocked/no evidence
+review_required_when:
+- unit_normalization_status in [CONFLICT, AMBIGUOUS]
+- spec_confidence < 0.55 for required child-pack field
+- two sources disagree on exact numeric spec
+- vision-only attempts exact spec extraction
+publish_policy: Shared pack does not block offers directly; child packs use this policy to decide required-field blocking.

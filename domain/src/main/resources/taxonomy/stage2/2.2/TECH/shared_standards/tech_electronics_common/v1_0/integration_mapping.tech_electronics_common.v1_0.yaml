@@ -1,0 +1,38 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+mount:
+  registry: shared_standard_registry
+  public_category: false
+  final_route_allowed: false
+  inheritance_mode: merge_into_public_tech_category_packs
+input_mappings:
+  source_title:
+    maps_to: [brand, condition, color_family, model_name_text_raw, release_year, warranty_status, region, country_version]
+  source_description:
+    maps_to: [condition, included_accessories, original_box, repair_history, refurbished_status, defect_notes, warranty_status, receipt_available]
+  source_images:
+    maps_to: [color_family, cosmetic_condition_grade, original_box, included_accessories, packaging_condition, brand]
+  seller_fields:
+    maps_to: [condition, warranty_status, included_accessories, seller_bundle, original_box, receipt_available]
+  commerce_fields:
+    pass_through: [price, currency, availability, seller_id, listing_id]
+output_contract:
+  shared_attributes_prefix: tech_electronics_common
+  no_public_route_output: true
+  public_router_receives:
+    - route_family_signal
+    - blocked_route_family
+    - candidate_public_category_codes
+    - shared_attribute_candidates
+publish_blockers_when_inherited:
+  - missing_condition
+  - low_confidence_route_family
+  - t3_system_hidden_leaked_to_ui
+  - model_normalized_by_electronics_common
+  - specs_generated_by_electronics_common
+  - compatibility_generated_by_electronics_common
+runtime_candidate_policy:
+  brand: allow_runtime_candidate_with_review
+  color_vendor_text: allow_raw
+  model_name_text_raw: raw_only_defer_to_DEVICE_IDENTITY_COMMON
+  included_accessories: allow_runtime_candidate_with_controlled_merge

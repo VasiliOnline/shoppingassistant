@@ -70,5 +70,42 @@
     "query_muzhskaya_futbolka": "FASH.MEN",
     "query_muzhskie_krossovki": "FASH.SHOES_not_FASH.MEN",
     "vision_generic_black_hoodie": "UNISEX_or_NEED_MORE_CONTEXT_without_text_or_branch_context"
+  },
+  "production_gate": {
+    "archetypes": ["SIZE_DRIVEN", "TYPE_DRIVEN"],
+    "required_present": [
+      "apparel_type",
+      "condition",
+      "size_label",
+      "color_primary",
+      "brand",
+      "material_primary",
+      "target_gender",
+      "age_group"
+    ],
+    "required_fields": ["apparel_type", "condition", "size_label", "color_primary"],
+    "primary_facets": ["apparel_type", "size_label", "color_primary", "brand", "condition", "material_primary", "season"],
+    "hidden_from_primary_ui": [
+      "apparel_type_group",
+      "size_text_raw",
+      "brand_text_raw",
+      "visual_evidence_flags",
+      "normalization_confidence",
+      "source_text_evidence",
+      "bra_cup"
+    ],
+    "initial_fields": [
+      "apparel_type",
+      "condition",
+      "size_label",
+      "color_primary",
+      "brand",
+      "material_primary",
+      "fit",
+      "season"
+    ],
+    "type_specific": {
+      "TSHIRT": ["size_label", "brand", "condition", "color_primary", "material_primary", "fit"]
+    }
   }
 }

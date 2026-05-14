@@ -30,7 +30,7 @@ class ResultsFacetDefinitionScopeTest {
             definitions = listOf(
                 definition(facetKey = "brand", appliesTo = listOf("KIDS.TOYS_GAMES")),
                 definition(facetKey = "material", appliesTo = listOf("kids.toys_games")),
-                definition(facetKey = "storage_gb", appliesTo = listOf("TECH.LAPTOPS")),
+                definition(facetKey = "storage_gb", appliesTo = listOf("TECH.COMPUTERS")),
             ),
             categoryCode = " kids.toys_games ",
         )

@@ -1,0 +1,39 @@
+facet_template_id: facet_templates.tech_specs_common.v1_0
+category_code: TECH.SPECS_COMMON
+primary_facets:
+- storage_capacity
+- ram_capacity
+- screen_size
+- power_watts
+- connector_type
+- wireless_standard
+- condition
+secondary_facets:
+- screen_resolution
+- refresh_rate_hz
+- battery_capacity_mah
+- battery_capacity_wh
+- os_family
+- water_resistance
+- network_generation
+- bluetooth_version
+- wi_fi_standard
+- weight
+- dimensions
+- storage_type
+- panel_type
+- charging_standard
+- cable_length_m
+- data_transfer_rate
+facet_rules:
+- rule: show_only_if_applicable_by_spec_coverage_matrix
+- rule: show_only_if_non_empty_value_count >= 2
+- rule: range_facets_use_normalized_units
+- rule: exact numeric values use buckets where cardinality is high
+bucket_policies:
+  storage_capacity: head_values_then_runtime_candidates
+  ram_capacity: head_values_then_runtime_candidates
+  screen_size: bucket_by_category
+  power_watts: head_values_plus_numeric_range
+  weight: range
+  dimensions: not_primary_unless_child_pack_promotes

@@ -3,6 +3,15 @@
   "schemaVersion": "1.0.0",
   "rules": [
     {
+      "attributeCode": "accessory_completeness_grade",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "accessory_group",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -138,6 +147,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "antenna_count",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "anti_glare",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -192,6 +210,33 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "asin",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "aspect_ratio",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "audio_channels",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "authenticity_documents_included",
       "normalization": "boolean",
       "valueSetType": "OPEN",
@@ -235,6 +280,24 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "battery_capacity_mah",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "battery_capacity_wh",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "battery_cell_type",
@@ -345,6 +408,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "brand_aliases",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "brand_text_raw",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -365,6 +437,15 @@
     {
       "attributeCode": "brightness_levels",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "brightness_nits",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -408,6 +489,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "bundle_identity_exclusion",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "cabin_size_status",
       "normalization": "canonical_enum",
       "valueSetType": "CLOSED",
@@ -436,6 +526,24 @@
     },
     {
       "attributeCode": "calories_kcal_per_serving",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "camera_resolution_mp",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "canonical_product_key",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -505,6 +613,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "carrier_variant",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "case_diameter_mm",
@@ -606,6 +723,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "charging_standard",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "chest_cm",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -626,6 +752,15 @@
     {
       "attributeCode": "chipset_family",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "chipset_text",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -696,6 +831,24 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "color_depth",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "color_family",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "color_primary",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -712,6 +865,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "color_vendor_text",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "colorway",
@@ -885,6 +1047,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "connector_type",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "cooler_power_watt",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -903,8 +1074,44 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "cosmetic_condition_grade",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "country_of_origin",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "country_variant_text",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "country_version",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "cpu_cores",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -921,6 +1128,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "cpu_frequency_ghz",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "cuisine_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -928,6 +1144,24 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "cycle_count",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "data_quality_score",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "data_standard",
@@ -948,6 +1182,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "data_transfer_rate",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "decor_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -955,6 +1198,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "dedup_fingerprint",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "defect_notes",
@@ -984,8 +1236,26 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "device_identity_key",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "diameter_cm",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "dimensions",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -1065,6 +1335,33 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "ean",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "edition",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "energy_consumption_w",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "esim_support",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -1072,6 +1369,15 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "evidence_level",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "evidence_policy",
@@ -1093,6 +1399,42 @@
     },
     {
       "attributeCode": "expiration_date",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "extraction_warnings",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "factory_reset_status",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "family",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "family_aliases",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -1191,7 +1533,25 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "frame_rate_fps",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "frame_shape",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "functional_condition",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
       "dictionaryBacked": true,
@@ -1227,6 +1587,24 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "generation",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "generation_number",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "glove_size",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -1234,6 +1612,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "gpu_text",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "gpu_type",
@@ -1261,6 +1648,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "gtin",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "hair_accessory_size",
@@ -1308,6 +1704,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "hardware_revision",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "has_cheese",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -1328,6 +1733,15 @@
     {
       "attributeCode": "hat_size_label",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "hdr_standard",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "CLOSED",
       "dictionaryBacked": true,
       "acceptsFreeText": false,
@@ -1407,6 +1821,159 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "identity_candidate_count",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_confidence",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_confidence_bucket",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "identity_conflict_notes",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_context_role",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "identity_debug_trace",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_evidence_level",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "identity_evidence_types",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "identity_last_resolved_at",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_resolution_status",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "identity_resolution_version",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_review_reason",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "identity_review_required",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "identity_source",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "image_embedding_id",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "image_model_text_visible",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "imei_hash",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "included_accessories",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -1436,6 +2003,15 @@
     {
       "attributeCode": "ingredient_list",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "input_voltage",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -1668,6 +2244,24 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "line",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "line_aliases",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "lining",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -1686,6 +2280,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "listing_completeness_confidence",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "lock_type",
       "normalization": "canonical_enum",
       "valueSetType": "CLOSED",
@@ -1693,6 +2296,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "logo_brand_visible",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "luggage_shell_type",
@@ -1705,6 +2317,24 @@
     },
     {
       "attributeCode": "magnetic_alignment",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "manufacturer",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "manufacturer_part_number",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -1812,6 +2442,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "measurement_system",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "memory_card_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -1837,6 +2476,15 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "memory_type",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "memory_write_speed_mbps",
@@ -1866,6 +2514,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "microphone_count",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "model",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -1873,6 +2530,24 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "model_aliases",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "model_granularity",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "model_line",
@@ -1893,7 +2568,34 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "model_name_text_raw",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "model_number",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "model_or_line_text",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "model_year_text",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -1920,6 +2622,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "mounting_type",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "movement_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -1927,6 +2638,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "mpn",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "neckline",
@@ -1938,6 +2658,24 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "network_generation",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "network_speed",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "network_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -1947,8 +2685,35 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "noise_level_db",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "normalization_confidence",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "normalization_source",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "normalized_spec_key",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -1967,6 +2732,15 @@
     {
       "attributeCode": "oleophobic_coating",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "operating_temperature",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -2028,6 +2802,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "output_current_a",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "output_ports",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -2035,6 +2818,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "output_voltage",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "output_voltage_profiles",
@@ -2073,6 +2865,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "packaging_condition",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "pair_completeness",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -2080,6 +2881,24 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "panel_type",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "part_number",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "part_quality_grade",
@@ -2181,8 +3000,26 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "poe_support",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "polarized",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "port_list_text",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -2217,8 +3054,26 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "power_source",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "power_watt",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "power_watts",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -2253,6 +3108,24 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "primary_spec_summary",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "print_technology",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "print_text",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -2263,6 +3136,15 @@
     },
     {
       "attributeCode": "privacy_filter",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "product_code",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -2343,6 +3225,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "purchase_channel",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "rain_cover_included",
       "normalization": "boolean",
       "valueSetType": "OPEN",
@@ -2370,8 +3261,53 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "ram_capacity",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "ram_gb",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_barcode_payload",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_model_candidates",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_ocr_identity_tokens",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_ocr_spec_tokens",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -2386,6 +3322,60 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_source_spec_tokens",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_spec_tokens",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_title_identity_tokens",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "raw_title_spec_tokens",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "read_speed_mbps",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "receipt_available",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "receipt_included",
@@ -2415,13 +3405,49 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
-      "attributeCode": "region_code",
+      "attributeCode": "refurbished_status",
       "normalization": "stage22.query_normalizer_v1",
-      "valueSetType": "OPEN",
-      "dictionaryBacked": false,
-      "acceptsFreeText": true,
-      "canonicalSource": "inline",
-      "dedupTokenMode": "NORMALIZED_TEXT"
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "refurbishment_grade",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "refurbishment_provider",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "region",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "region_variant",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "release_collection",
@@ -2469,6 +3495,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "repair_history",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "repair_part_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -2487,6 +3522,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "response_time_ms",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "restaurant_name",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -2494,6 +3538,24 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "retailer_sku",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "return_policy_status",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "ring_size_ru",
@@ -2523,6 +3585,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "route_guardrail_trace",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "safety_protections",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -2530,6 +3601,24 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "satellite_support",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "scan_resolution",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "scarf_shape",
@@ -2559,6 +3648,24 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "screen_resolution",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "SEMI_CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "screen_size",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "screen_size_inch",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -2578,6 +3685,60 @@
     },
     {
       "attributeCode": "secondary_color",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "seller_bundle",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "seller_notes_quality",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "sensor_set",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "serial_number_masked",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "series",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "service_history_text",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -2685,6 +3846,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "sim_support",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
       "attributeCode": "sim_tool_type",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -2784,6 +3954,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "sku_vendor",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "sleeve_cm",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -2811,8 +3990,170 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "source_evidence_fingerprint",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "source_locale",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "source_market",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "source_page_metadata",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "source_text_evidence",
       "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "source_url_identity_tokens",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_candidate_count",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_completeness_score",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_confidence",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_conflict_set",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_evidence_level",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "spec_fingerprint",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_last_verified_at",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_profile_status",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "spec_review_reason",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_review_required",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_runtime_version",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "spec_source",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "spec_unit_parse_notes",
+      "normalization": "tech_specs_common.unit_normalization.v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
@@ -2854,6 +4195,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "storage_capacity",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
       "attributeCode": "storage_capacity_gb",
@@ -3009,6 +4359,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "sub_model",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "substance_code",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -3081,6 +4440,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "title_embedding_id",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "toe_shape",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "CLOSED",
@@ -3144,6 +4512,33 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "unit_normalization_status",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "unit_parser_version",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "upc",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "usage_context",
       "normalization": "canonical_enum_multi",
       "valueSetType": "CLOSED",
@@ -3171,6 +4566,15 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
+      "attributeCode": "variant_label",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "video_output_support",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -3178,6 +4582,15 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "video_resolution",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "visible_label_text",
@@ -3190,6 +4603,15 @@
     },
     {
       "attributeCode": "visible_logo_present",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "vision_confidence",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
@@ -3270,13 +4692,31 @@
       "dedupTokenMode": "VALUE_CODE"
     },
     {
-      "attributeCode": "warranty_months",
+      "attributeCode": "warranty_months_remaining",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
       "dictionaryBacked": false,
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "warranty_provider",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "warranty_status",
+      "normalization": "stage22.query_normalizer_v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "watch_strap_lug_width_mm",
@@ -3360,6 +4800,15 @@
       "dedupTokenMode": "NORMALIZED_TEXT"
     },
     {
+      "attributeCode": "weight",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
       "attributeCode": "weight_kg",
       "normalization": "stage22.query_normalizer_v1",
       "valueSetType": "OPEN",
@@ -3394,6 +4843,15 @@
       "acceptsFreeText": true,
       "canonicalSource": "inline",
       "dedupTokenMode": "NORMALIZED_TEXT"
+    },
+    {
+      "attributeCode": "wi_fi_standard",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "CLOSED",
+      "dictionaryBacked": true,
+      "acceptsFreeText": false,
+      "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
+      "dedupTokenMode": "VALUE_CODE"
     },
     {
       "attributeCode": "width_cm",
@@ -3475,6 +4933,15 @@
       "acceptsFreeText": false,
       "canonicalSource": "taxonomy/stage2/2.2/_registry/value_dictionaries.json",
       "dedupTokenMode": "VALUE_CODE"
+    },
+    {
+      "attributeCode": "write_speed_mbps",
+      "normalization": "tech_specs_common.unit_normalization.v1",
+      "valueSetType": "OPEN",
+      "dictionaryBacked": false,
+      "acceptsFreeText": true,
+      "canonicalSource": "inline",
+      "dedupTokenMode": "NORMALIZED_TEXT"
     }
   ]
 }

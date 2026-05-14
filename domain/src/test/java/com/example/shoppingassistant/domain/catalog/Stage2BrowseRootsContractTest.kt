@@ -110,6 +110,22 @@ class Stage2BrowseRootsContractTest {
         )
     }
 
+    @Test
+    fun browseSeed_includesStage21FashBranchGroups() {
+        val browseByCode = CatalogSeed.browseNodes.associateBy { it.browseCode }
+        val menChildren = CatalogSeed.browseNodes
+            .filter { it.parentBrowseCode == "B.FASH.MEN" }
+            .map { it.browseCode }
+            .toSet()
+
+        assertTrue("Missing FASH.MEN stage2.1 group node", "B.FASH.MEN.04" in menChildren)
+        assertEquals("FASH.MEN", browseByCode["B.FASH.MEN.04"]?.targetCategoryCode)
+        assertTrue(
+            "Stage2.1 browse nodes need English fallback titles for display coverage",
+            !browseByCode["B.FASH.MEN.04"]?.title?.get("en").isNullOrBlank(),
+        )
+    }
+
     private fun browseRootCodes(): Set<String> = CatalogSeed.browseNodes
         .asSequence()
         .filter { it.parentBrowseCode.isNullOrBlank() }

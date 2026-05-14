@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "layers": [
+    {
+      "code": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "appliesToL0": ["FASH"],
+      "negativeGuardTargets": ["TECH", "BEAUTY", "KIDS", "SPORT"],
+      "requiredGoldenKinds": ["positive_route", "route_out", "cross_branch_negative", "alias_collision"]
+    },
+    {
+      "code": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "appliesToL0": ["TECH", "APPL", "HOME"],
+      "negativeGuardTargets": ["FASH", "AUTO", "KIDS"],
+      "requiredGoldenKinds": ["positive_route", "route_out", "model_only_negative", "compatibility_negative"]
+    },
+    {
+      "code": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "appliesToL0": ["AUTO", "SPORT"],
+      "negativeGuardTargets": ["TECH", "HOME", "KIDS"],
+      "requiredGoldenKinds": ["positive_route", "fitment_negative", "part_vs_vehicle_negative", "size_conflict"]
+    },
+    {
+      "code": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "appliesToL0": ["KIDS", "FASH", "HOME", "SPORT"],
+      "negativeGuardTargets": ["FASH.SHOES", "FASH.BAGS", "FOOD", "BEAUTY"],
+      "requiredGoldenKinds": ["positive_route", "age_route_out", "safety_negative", "adult_branch_negative"]
+    },
+    {
+      "code": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "appliesToL0": ["FOOD", "BEAUTY", "PETS", "HOME"],
+      "negativeGuardTargets": ["TECH", "FASH", "AUTO"],
+      "requiredGoldenKinds": ["positive_route", "regulated_claim_negative", "allergen_warning", "consumable_vs_device_negative"]
+    }
+  ]
+}

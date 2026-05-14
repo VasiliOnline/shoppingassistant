@@ -1,0 +1,66 @@
+surface_id: user_surface.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+public_category: false
+shared_standard: true
+initial_fields_max: 8
+initial_fields:
+- brand
+- family
+- line
+- model_name_text
+- model
+- region_variant
+- identity_resolution_status
+- identity_confidence
+expanded_fields:
+- model_aliases
+- model_number
+- mpn
+- gtin
+- ean
+- upc
+- release_year
+- generation
+- variant_label
+- model_granularity
+- identity_evidence_level
+- identity_evidence_types
+- identity_context_role
+- identity_review_required
+review_only_fields:
+- identity_review_reason
+- identity_conflict_notes
+- image_model_text_visible
+- logo_brand_visible
+- bundle_identity_exclusion
+primary_facets:
+- brand
+- family
+- release_year
+- region_variant
+- model_granularity
+- identity_resolution_status
+- identity_confidence_bucket
+hidden_fields:
+- device_identity_key
+- canonical_product_key
+- dedup_fingerprint
+- identity_candidate_count
+- raw_title_identity_tokens
+- raw_ocr_identity_tokens
+- raw_barcode_payload
+- raw_model_candidates
+- source_url_identity_tokens
+- source_page_metadata
+- serial_number_masked
+- imei_hash
+- image_embedding_id
+- title_embedding_id
+- identity_debug_trace
+- identity_resolution_version
+- identity_last_resolved_at
+ui_rules:
+- Do not show serial_number_masked or imei_hash in public UI.
+- Show exact model only when identity_resolution_status in [FULL, USER_CONFIRMED] or confidence >= 0.86 with strong evidence.
+- If context role is ACCESSORY_COMPATIBILITY_HINT, show model text as compatibility hint, not as main product identity.
+- If conflict status, show review badge and block auto-merge.

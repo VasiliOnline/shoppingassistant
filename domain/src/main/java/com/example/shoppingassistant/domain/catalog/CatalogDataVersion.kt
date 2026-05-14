@@ -71,6 +71,9 @@ object CatalogDataVersion {
                 descriptor.valueDictsFile?.trim()?.takeIf { it.isNotEmpty() }?.let { fileName ->
                     addResource("$basePath/$fileName")
                 }
+                descriptor.sharedProfilesFile?.trim()?.takeIf { it.isNotEmpty() }?.let { fileName ->
+                    addResource("$basePath/$fileName")
+                }
             }
 
         addResource("${CatalogContractPaths.stage30Base}/facet_definitions.json")

@@ -1,0 +1,21 @@
+mapping_id: integration_mapping.tech_specs_common.v1_0
+category_code: TECH.SPECS_COMMON
+runtime_mount: shared_standard_registry
+imports_after:
+- TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+- TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU
+exports_to_future_packs:
+- TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU
+- TECH_PHONES_IDENTITY_PACK_v1_0_RU
+- TECH_PHONE_ACCESSORIES_COMPATIBILITY_PACK_v1_0_RU
+- all future TECH public category packs
+field_mapping:
+  title: parser_input.title
+  description: parser_input.description
+  source_attributes: parser_input.source_attributes
+  ocr_text: parser_input.ocr_text
+  normalized_specs: offer.normalized_specs
+  spec_confidence: offer.spec_confidence
+  spec_profile_status: offer.spec_profile_status
+do_not_mount_as_public_category: true
+do_not_accept_offers_directly: true

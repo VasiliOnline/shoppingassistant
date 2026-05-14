@@ -1,18 +1,24 @@
 browse_node_code	parent_browse_node_code	node_kind	title_ru	title_en	target_category_code	is_visible	sort_order	availability_scope	icon_key	analytics_key	search_keywords_ru	notes
-B.TECH		root	Электроника	Electronics		true	0	ALL	ic_tech	browse.tech	электроника;гаджеты;техника	Root L0 TECH
-B.TECH.PHONES	B.TECH	group	Телефоны и аксессуары	Phones & accessories		true	10	ALL	ic_phone	browse.tech.phones	смартфон;телефон;аксессуар;чехол;зарядка	Group
-B.TECH.COMPUTERS	B.TECH	group	Компьютеры	Computers		true	20	ALL	ic_laptop	browse.tech.computers	ноутбук;пк;комплектующие;планшет;ридер	Group
-B.TECH.TV_AUDIO_VIDEO	B.TECH	group	ТВ, аудио и видео	TV, audio & video		true	30	ALL	ic_tv	browse.tech.tv_audio_video	телевизор;тв;аудио;наушники;саундбар;плеер	Group
-B.TECH.PHOTO	B.TECH	group	Фото и видеосъемка	Photo & video		true	40	ALL	ic_camera	browse.tech.photo	камера;фотоаппарат;беззеркалка;gopro;объектив	Group
-B.TECH.GAMING	B.TECH	group	Игры и консоли	Gaming		true	50	ALL	ic_game	browse.tech.gaming	ps5;xbox;switch;игра;приставка	Group
-B.TECH.SMART_HOME	B.TECH	group	Умный дом	Smart home		true	60	ALL	ic_smart_home	browse.tech.smart_home	умный дом;датчик;лампа;розетка;камера;zigbee	Group
-B.TECH.PHONES.SMARTPHONES	B.TECH.PHONES	leaf_link	Смартфоны	Smartphones	TECH.PHONES	true	11	ALL	ic_phone	browse.tech.leaf.phones	iphone;android;смартфон;телефон	Leaf link
-B.TECH.PHONES.ACCESSORIES	B.TECH.PHONES	leaf_link	Аксессуары для телефонов	Phone accessories	TECH.PHONE_ACCESSORIES	true	12	ALL	ic_case	browse.tech.leaf.phone_accessories	чехол;стекло;зарядка;кабель;держатель;powerbank	Leaf link
-B.TECH.COMPUTERS.LAPTOPS	B.TECH.COMPUTERS	leaf_link	Ноутбуки	Laptops	TECH.LAPTOPS	true	21	ALL	ic_laptop	browse.tech.leaf.laptops	ноутбук;macbook;ultrabook;игровой ноутбук	Leaf link
-B.TECH.COMPUTERS.PC_COMPONENTS	B.TECH.COMPUTERS	leaf_link	ПК и комплектующие	PC & components	TECH.PC_COMPONENTS	true	22	ALL	ic_gpu	browse.tech.leaf.pc_components	видеокарта;процессор;материнка;ssd;ddr;бп;корпус	Leaf link
-B.TECH.COMPUTERS.TABLETS_EBOOKS	B.TECH.COMPUTERS	leaf_link	Планшеты и электронные книги	Tablets & e-books	TECH.TABLETS_EBOOKS	true	23	ALL	ic_tablet	browse.tech.leaf.tablets_ebooks	планшет;ipad;таблет;ридер;электронная книга;kindle	Leaf link
-B.TECH.TV_AUDIO_VIDEO.TV_VIDEO	B.TECH.TV_AUDIO_VIDEO	leaf_link	ТВ и видео	TV & video	TECH.TV_VIDEO	true	31	ALL	ic_tv	browse.tech.leaf.tv_video	телевизор;smart tv;oled;проектор;приставка tv	Leaf link
-B.TECH.TV_AUDIO_VIDEO.AUDIO	B.TECH.TV_AUDIO_VIDEO	leaf_link	Аудио и наушники	Audio & headphones	TECH.AUDIO	true	32	ALL	ic_headphones	browse.tech.leaf.audio	наушники;колонка;саундбар;микрофон;bluetooth	Leaf link
-B.TECH.PHOTO.CAMERAS	B.TECH.PHOTO	leaf_link	Фото и видеокамеры	Cameras	TECH.CAMERAS	true	41	ALL	ic_camera	browse.tech.leaf.cameras	фотоаппарат;камера;беззеркалка;зеркалка;gopro;объектив	Leaf link
-B.TECH.GAMING.CONSOLES_GAMES	B.TECH.GAMING	leaf_link	Игровые приставки и игры	Consoles & games	TECH.GAMING	true	51	ALL	ic_game	browse.tech.leaf.gaming	ps5;xbox;switch;игра;dualsense	Leaf link
-B.TECH.SMART_HOME.SMART_HOME	B.TECH.SMART_HOME	leaf_link	Умный дом и гаджеты	Smart home & gadgets	TECH.SMART_HOME	true	61	ALL	ic_smart_home	browse.tech.leaf.smart_home	умная лампа;розетка;датчик;zigbee;homekit;alexa	Leaf link
+B.TECH		root	Электроника	Electronics		true	10	ALL	ic_tech	browse.tech	электроника;гаджеты;техника	Root L0 TECH v1.1
+B.TECH.MOBILE	B.TECH	group	Мобильные устройства	Mobile devices		true	10	ALL	ic_phone	browse.tech.mobile	смартфон;телефон;аксессуар;чехол;часы	TECH v1.1 UI group
+B.TECH.WORKSPACE	B.TECH	group	Компьютеры и рабочее место	Computers and workspace		true	20	ALL	ic_laptop	browse.tech.workspace	ноутбук;пк;монитор;планшет;накопитель	TECH v1.1 UI group
+B.TECH.MEDIA_GAMING	B.TECH	group	Аудио, видео, фото и игры	Audio, video, photo and gaming		true	30	ALL	ic_tv	browse.tech.media_gaming	телевизор;аудио;камера;игры;консоль	TECH v1.1 UI group
+B.TECH.HOME_POWER_AUTO	B.TECH	group	Дом, сеть, питание и авто	Home, network, power and car		true	40	ALL	ic_smart_home	browse.tech.home_power_auto	умный дом;роутер;зарядка;принтер;gps	TECH v1.1 UI group
+B.TECH.MOBILE.PHONES	B.TECH.MOBILE	leaf_link	Телефоны	Phones	TECH.PHONES	true	11	ALL	ic_phone	browse.tech.leaf.phones	iphone;android;смартфон;телефон	Leaf link
+B.TECH.MOBILE.PHONE_ACCESSORIES	B.TECH.MOBILE	leaf_link	Аксессуары для телефонов	Phone accessories	TECH.PHONE_ACCESSORIES	true	12	ALL	ic_case	browse.tech.leaf.phone_accessories	чехол;стекло;зарядка;кабель;держатель;powerbank	Leaf link
+B.TECH.MOBILE.WEARABLES	B.TECH.MOBILE	leaf_link	Носимая электроника	Wearables	TECH.WEARABLES	true	13	ALL	ic_watch	browse.tech.leaf.wearables	умные часы;apple watch;фитнес браслет;smartwatch	Leaf link
+B.TECH.WORKSPACE.COMPUTERS	B.TECH.WORKSPACE	leaf_link	Компьютеры и ноутбуки	Computers and laptops	TECH.COMPUTERS	true	21	ALL	ic_laptop	browse.tech.leaf.computers	ноутбук;macbook;desktop pc;mini pc;workstation	Leaf link
+B.TECH.WORKSPACE.TABLETS_E_READERS	B.TECH.WORKSPACE	leaf_link	Планшеты и электронные книги	Tablets and e-readers	TECH.TABLETS_E_READERS	true	22	ALL	ic_tablet	browse.tech.leaf.tablets_e_readers	планшет;ipad;ридер;электронная книга;kindle	Leaf link
+B.TECH.WORKSPACE.MONITORS_DISPLAYS	B.TECH.WORKSPACE	leaf_link	Мониторы и дисплеи	Monitors and displays	TECH.MONITORS_DISPLAYS	true	23	ALL	ic_monitor	browse.tech.leaf.monitors_displays	монитор;дисплей;gaming monitor;portable monitor	Leaf link
+B.TECH.WORKSPACE.COMPUTER_ACCESSORIES	B.TECH.WORKSPACE	leaf_link	Компьютерные аксессуары	Computer accessories	TECH.COMPUTER_ACCESSORIES	true	24	ALL	ic_keyboard	browse.tech.leaf.computer_accessories	клавиатура;мышь;webcam;док станция;usb hub	Leaf link
+B.TECH.WORKSPACE.PC_COMPONENTS	B.TECH.WORKSPACE	leaf_link	Комплектующие ПК	PC components	TECH.PC_COMPONENTS	true	25	ALL	ic_gpu	browse.tech.leaf.pc_components	видеокарта;процессор;материнка;ddr;бп;корпус	Leaf link
+B.TECH.WORKSPACE.STORAGE_MEMORY	B.TECH.WORKSPACE	leaf_link	Накопители и память	Storage and memory	TECH.STORAGE_MEMORY	true	26	ALL	ic_memory	browse.tech.leaf.storage_memory	ssd;hdd;флешка;карта памяти;nas	Leaf link
+B.TECH.MEDIA_GAMING.AUDIO	B.TECH.MEDIA_GAMING	leaf_link	Аудио	Audio	TECH.AUDIO	true	31	ALL	ic_headphones	browse.tech.leaf.audio	наушники;колонка;саундбар;микрофон;bluetooth	Leaf link
+B.TECH.MEDIA_GAMING.TV_HOME_THEATER	B.TECH.MEDIA_GAMING	leaf_link	ТВ и домашний кинотеатр	TV and home theater	TECH.TV_HOME_THEATER	true	32	ALL	ic_tv	browse.tech.leaf.tv_home_theater	телевизор;smart tv;oled;проектор;tv box	Leaf link
+B.TECH.MEDIA_GAMING.CAMERAS_DRONES	B.TECH.MEDIA_GAMING	leaf_link	Камеры и дроны	Cameras and drones	TECH.CAMERAS_DRONES	true	33	ALL	ic_camera	browse.tech.leaf.cameras_drones	фотоаппарат;камера;беззеркалка;gopro;дрон;объектив	Leaf link
+B.TECH.MEDIA_GAMING.GAMING	B.TECH.MEDIA_GAMING	leaf_link	Игры и консоли	Gaming	TECH.GAMING	true	34	ALL	ic_game	browse.tech.leaf.gaming	ps5;xbox;switch;игра;приставка	Leaf link
+B.TECH.HOME_POWER_AUTO.SMART_HOME_SECURITY	B.TECH.HOME_POWER_AUTO	leaf_link	Умный дом и безопасность	Smart home and security	TECH.SMART_HOME_SECURITY	true	41	ALL	ic_smart_home	browse.tech.leaf.smart_home_security	умная лампа;розетка;датчик;камера;zigbee;сигнализация	Leaf link
+B.TECH.HOME_POWER_AUTO.NETWORKING	B.TECH.HOME_POWER_AUTO	leaf_link	Сетевое оборудование	Networking	TECH.NETWORKING	true	42	ALL	ic_wifi	browse.tech.leaf.networking	роутер;маршрутизатор;mesh wifi;модем;switch	Leaf link
+B.TECH.HOME_POWER_AUTO.POWER_CHARGING_CABLES	B.TECH.HOME_POWER_AUTO	leaf_link	Питание, зарядки и кабели	Power, charging and cables	TECH.POWER_CHARGING_CABLES	true	43	ALL	ic_charger	browse.tech.leaf.power_charging_cables	зарядка;кабель;ups;батареи;сетевой фильтр	Leaf link
+B.TECH.HOME_POWER_AUTO.PRINTERS_SCANNERS	B.TECH.HOME_POWER_AUTO	leaf_link	Принтеры и сканеры	Printers and scanners	TECH.PRINTERS_SCANNERS	true	44	ALL	ic_printer	browse.tech.leaf.printers_scanners	принтер;сканер;мфу;тонер;картридж	Leaf link
+B.TECH.HOME_POWER_AUTO.CAR_ELECTRONICS_GPS	B.TECH.HOME_POWER_AUTO	leaf_link	Автоэлектроника и GPS	Car electronics and GPS	TECH.CAR_ELECTRONICS_GPS	true	45	ALL	ic_car	browse.tech.leaf.car_electronics_gps	видеорегистратор;gps;магнитола;obd;парктроник	Leaf link

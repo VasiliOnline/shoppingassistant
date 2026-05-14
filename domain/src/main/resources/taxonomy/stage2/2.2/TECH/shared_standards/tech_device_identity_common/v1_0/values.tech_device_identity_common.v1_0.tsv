@@ -1,0 +1,278 @@
+attribute_code	value_code	ru_label	en_label	aliases_ru	usage_scope	sort_order	is_head	notes
+identity_resolution_status	UNRESOLVED	не распознано	UNRESOLVED		head	0	true	
+identity_resolution_status	CANDIDATE_ONLY	есть кандидаты	CANDIDATE_ONLY		head	1	true	
+identity_resolution_status	PARTIAL	частично распознано	PARTIAL		head	2	true	
+identity_resolution_status	FULL	точно распознано	FULL		head	3	true	
+identity_resolution_status	CONFLICT	конфликт данных	CONFLICT		head	4	true	
+identity_resolution_status	REVIEW_REQUIRED	нужна проверка	REVIEW_REQUIRED		head	5	true	
+identity_resolution_status	USER_CONFIRMED	подтверждено пользователем	USER_CONFIRMED		head	6	true	
+identity_evidence_level	NONE	нет evidence	NONE		head	0	true	
+identity_evidence_level	TITLE_ONLY	только title	TITLE_ONLY		head	1	true	
+identity_evidence_level	TITLE_BRAND_FAMILY	бренд+семейство из title	TITLE_BRAND_FAMILY		head	2	true	
+identity_evidence_level	TITLE_EXACT_MODEL	точная модель из title	TITLE_EXACT_MODEL		head	3	true	
+identity_evidence_level	OCR_VISIBLE_MODEL	модель видна OCR	OCR_VISIBLE_MODEL		head	4	true	
+identity_evidence_level	BARCODE_GTIN	штрихкод/GTIN	BARCODE_GTIN		head	5	true	
+identity_evidence_level	MPN_MATCH	MPN/model number совпал	MPN_MATCH		head	6	true	
+identity_evidence_level	VENDOR_FEED	vendor feed	VENDOR_FEED		head	7	true	
+identity_evidence_level	OFFICIAL_DB_MATCH	official DB match	OFFICIAL_DB_MATCH		head	8	true	
+identity_evidence_level	USER_CONFIRMED	подтверждено пользователем	USER_CONFIRMED		head	9	true	
+identity_evidence_level	MULTI_EVIDENCE_HIGH	несколько сильных evidence	MULTI_EVIDENCE_HIGH		head	10	true	
+identity_source	TITLE	title	TITLE		head	0	true	
+identity_source	DESCRIPTION	description	DESCRIPTION		head	1	true	
+identity_source	IMAGE_OCR	image_ocr	IMAGE_OCR		head	2	true	
+identity_source	BARCODE	barcode	BARCODE		head	3	true	
+identity_source	QR_CODE	qr_code	QR_CODE		head	4	true	
+identity_source	EXIF	exif	EXIF		head	5	true	
+identity_source	SELLER_ATTRIBUTES	seller_attributes	SELLER_ATTRIBUTES		head	6	true	
+identity_source	MARKETPLACE_FEED	marketplace_feed	MARKETPLACE_FEED		head	7	true	
+identity_source	EXTERNAL_URL	external_url	EXTERNAL_URL		head	8	true	
+identity_source	USER_INPUT	user_input	USER_INPUT		head	9	true	
+identity_source	OFFICIAL_SPEC_DB	official_spec_db	OFFICIAL_SPEC_DB		head	10	true	
+identity_source	PREVIOUS_USER_CONFIRMATION	previous_user_confirmation	PREVIOUS_USER_CONFIRMATION		head	11	true	
+identity_evidence_types	TITLE	title	TITLE		head	0	true	
+identity_evidence_types	DESCRIPTION	description	DESCRIPTION		head	1	true	
+identity_evidence_types	IMAGE_OCR	image_ocr	IMAGE_OCR		head	2	true	
+identity_evidence_types	BARCODE	barcode	BARCODE		head	3	true	
+identity_evidence_types	QR_CODE	qr_code	QR_CODE		head	4	true	
+identity_evidence_types	GTIN	gtin	GTIN		head	5	true	
+identity_evidence_types	EAN	ean	EAN		head	6	true	
+identity_evidence_types	UPC	upc	UPC		head	7	true	
+identity_evidence_types	MPN	mpn	MPN		head	8	true	
+identity_evidence_types	MODEL_NUMBER	model_number	MODEL_NUMBER		head	9	true	
+identity_evidence_types	PART_NUMBER	part_number	PART_NUMBER		head	10	true	
+identity_evidence_types	VENDOR_SKU	vendor_sku	VENDOR_SKU		head	11	true	
+identity_evidence_types	EXTERNAL_URL	external_url	EXTERNAL_URL		head	12	true	
+identity_evidence_types	USER_CONFIRMATION	user_confirmation	USER_CONFIRMATION		head	13	true	
+identity_evidence_types	OFFICIAL_SPEC_DB	official_spec_db	OFFICIAL_SPEC_DB		head	14	true	
+identity_evidence_types	MARKETPLACE_FEED	marketplace_feed	MARKETPLACE_FEED		head	15	true	
+model_granularity	BRAND_ONLY	brand_only	BRAND_ONLY		head	0	true	
+model_granularity	FAMILY_ONLY	family_only	FAMILY_ONLY		head	1	true	
+model_granularity	LINE_ONLY	line_only	LINE_ONLY		head	2	true	
+model_granularity	SERIES_ONLY	series_only	SERIES_ONLY		head	3	true	
+model_granularity	MODEL_FAMILY	model_family	MODEL_FAMILY		head	4	true	
+model_granularity	EXACT_MODEL	exact_model	EXACT_MODEL		head	5	true	
+model_granularity	EXACT_MODEL_VARIANT	exact_model_variant	EXACT_MODEL_VARIANT		head	6	true	
+model_granularity	BUNDLE_OR_KIT	bundle_or_kit	BUNDLE_OR_KIT		head	7	true	
+model_granularity	ACCESSORY_COMPATIBILITY_TEXT	accessory_compatibility_text	ACCESSORY_COMPATIBILITY_TEXT		head	8	true	
+model_granularity	UNKNOWN	unknown	UNKNOWN		head	9	true	
+identity_context_role	OWN_DEVICE	own_device	OWN_DEVICE		head	0	true	
+identity_context_role	ACCESSORY_COMPATIBILITY_HINT	accessory_compatibility_hint	ACCESSORY_COMPATIBILITY_HINT		head	1	true	
+identity_context_role	BUNDLE_MAIN_ITEM	bundle_main_item	BUNDLE_MAIN_ITEM		head	2	true	
+identity_context_role	BUNDLE_SECONDARY_ITEM	bundle_secondary_item	BUNDLE_SECONDARY_ITEM		head	3	true	
+identity_context_role	REPLACEMENT_PART	replacement_part	REPLACEMENT_PART		head	4	true	
+identity_context_role	CONSUMABLE_FOR_DEVICE	consumable_for_device	CONSUMABLE_FOR_DEVICE		head	5	true	
+identity_context_role	SERVICE_FOR_DEVICE	service_for_device	SERVICE_FOR_DEVICE		head	6	true	
+identity_context_role	AMBIGUOUS	ambiguous	AMBIGUOUS		head	7	true	
+identity_context_role	UNKNOWN	unknown	UNKNOWN		head	8	true	
+region_variant	GLOBAL	global	GLOBAL	global;глобалка;международная версия	head	0	true	
+region_variant	EU	eu	EU	европа;европейская версия	head	1	true	
+region_variant	US	us	US	американская версия;usa	head	2	true	
+region_variant	UK	uk	UK		head	3	true	
+region_variant	CN	cn	CN	китайская версия;china	head	4	true	
+region_variant	JP	jp	JP	япония;японская версия	head	5	true	
+region_variant	KR	kr	KR		head	6	true	
+region_variant	RU	ru	RU	ростест;еас;для россии	head	7	true	
+region_variant	IN	in	IN		head	8	true	
+region_variant	LATAM	latam	LATAM		head	9	true	
+region_variant	MENA	mena	MENA		head	10	true	
+region_variant	GLOBAL_DUAL_SIM	global_dual_sim	GLOBAL_DUAL_SIM		head	11	true	
+region_variant	SINGLE_SIM	single_sim	SINGLE_SIM		head	12	true	
+region_variant	DUAL_SIM	dual_sim	DUAL_SIM		head	13	true	
+region_variant	CARRIER_LOCKED	carrier_locked	CARRIER_LOCKED		head	14	true	
+region_variant	UNLOCKED	unlocked	UNLOCKED	unlocked;разлочен	head	15	true	
+region_variant	COUNTRY_SPECIFIC	country_specific	COUNTRY_SPECIFIC		head	16	true	
+region_variant	UNKNOWN	unknown	UNKNOWN		head	17	true	
+identity_confidence_bucket	LOW	low	LOW		head	0	true	
+identity_confidence_bucket	MEDIUM	medium	MEDIUM		head	1	true	
+identity_confidence_bucket	HIGH	high	HIGH		head	2	true	
+identity_confidence_bucket	VERY_HIGH	very_high	VERY_HIGH		head	3	true	
+identity_confidence_bucket	BLOCKED_BY_CONFLICT	blocked_by_conflict	BLOCKED_BY_CONFLICT		head	4	true	
+identity_review_reason	AMBIGUOUS_BRAND	ambiguous_brand	AMBIGUOUS_BRAND		head	0	true	
+identity_review_reason	AMBIGUOUS_FAMILY	ambiguous_family	AMBIGUOUS_FAMILY		head	1	true	
+identity_review_reason	MODEL_CONFLICT	model_conflict	MODEL_CONFLICT		head	2	true	
+identity_review_reason	WEAK_EVIDENCE	weak_evidence	WEAK_EVIDENCE		head	3	true	
+identity_review_reason	ACCESSORY_CONTEXT	accessory_context	ACCESSORY_CONTEXT		head	4	true	
+identity_review_reason	BUNDLE_CONTEXT	bundle_context	BUNDLE_CONTEXT		head	5	true	
+identity_review_reason	PHOTO_ONLY_GUESS	photo_only_guess	PHOTO_ONLY_GUESS		head	6	true	
+identity_review_reason	REGION_VARIANT_CONFLICT	region_variant_conflict	REGION_VARIANT_CONFLICT		head	7	true	
+identity_review_reason	IDENTIFIER_CHECK_FAILED	identifier_check_failed	IDENTIFIER_CHECK_FAILED		head	8	true	
+identity_review_reason	POSSIBLE_COUNTERFEIT	possible_counterfeit	POSSIBLE_COUNTERFEIT		head	9	true	
+identity_review_reason	NON_TECH_ROUTE_CONFLICT	non_tech_route_conflict	NON_TECH_ROUTE_CONFLICT		head	10	true	
+identifier_scheme	GTIN_8	gtin_8	GTIN_8		head	0	true	
+identifier_scheme	GTIN_12_UPC	gtin_12_upc	GTIN_12_UPC		head	1	true	
+identifier_scheme	GTIN_13_EAN	gtin_13_ean	GTIN_13_EAN		head	2	true	
+identifier_scheme	GTIN_14	gtin_14	GTIN_14		head	3	true	
+identifier_scheme	MPN	mpn	MPN		head	4	true	
+identifier_scheme	MODEL_NUMBER	model_number	MODEL_NUMBER		head	5	true	
+identifier_scheme	PART_NUMBER	part_number	PART_NUMBER		head	6	true	
+identifier_scheme	SKU_VENDOR	sku_vendor	SKU_VENDOR		head	7	true	
+identifier_scheme	ASIN	asin	ASIN		head	8	true	
+identifier_scheme	ISBN	isbn	ISBN		head	9	true	
+identifier_scheme	SERIAL_MASKED	serial_masked	SERIAL_MASKED		head	10	true	
+identifier_scheme	IMEI_HASH	imei_hash	IMEI_HASH		head	11	true	
+identifier_scheme	QR_PAYLOAD	qr_payload	QR_PAYLOAD		head	12	true	
+identifier_scheme	UNKNOWN	unknown	UNKNOWN		head	13	true	
+alias_status	CANONICAL_DISPLAY	canonical_display	CANONICAL_DISPLAY		head	0	true	
+alias_status	ALIAS_ONLY	alias_only	ALIAS_ONLY		head	1	true	
+alias_status	RAW_TEXT_ONLY	raw_text_only	RAW_TEXT_ONLY		head	2	true	
+alias_status	RUNTIME_CANDIDATE	runtime_candidate	RUNTIME_CANDIDATE		head	3	true	
+alias_status	USER_ENTERED	user_entered	USER_ENTERED		head	4	true	
+alias_status	DEPRECATED_ALIAS	deprecated_alias	DEPRECATED_ALIAS		head	5	true	
+alias_status	BLOCKED_ALIAS	blocked_alias	BLOCKED_ALIAS		head	6	true	
+identity_normalization_policy	NORMALIZE_LATIN_CYRILLIC	normalize_latin_cyrillic	NORMALIZE_LATIN_CYRILLIC		head	0	true	
+identity_normalization_policy	PRESERVE_CASE_FOR_MODEL	preserve_case_for_model	PRESERVE_CASE_FOR_MODEL		head	1	true	
+identity_normalization_policy	STRIP_STORAGE_SUFFIX	strip_storage_suffix	STRIP_STORAGE_SUFFIX		head	2	true	
+identity_normalization_policy	STRIP_COLOR_SUFFIX	strip_color_suffix	STRIP_COLOR_SUFFIX		head	3	true	
+identity_normalization_policy	KEEP_REGION_SUFFIX	keep_region_suffix	KEEP_REGION_SUFFIX		head	4	true	
+identity_normalization_policy	SPLIT_BUNDLE_TERMS	split_bundle_terms	SPLIT_BUNDLE_TERMS		head	5	true	
+identity_normalization_policy	BLOCK_IF_COMPATIBILITY_PREPOSITION	block_if_compatibility_preposition	BLOCK_IF_COMPATIBILITY_PREPOSITION		head	6	true	
+identity_normalization_policy	REVIEW_IF_TITLE_ONLY	review_if_title_only	REVIEW_IF_TITLE_ONLY		head	7	true	
+identity_no_guess_policy	ALLOW_EXACT_WITH_STRONG_EVIDENCE	allow_exact_with_strong_evidence	ALLOW_EXACT_WITH_STRONG_EVIDENCE		head	0	true	
+identity_no_guess_policy	ALLOW_FAMILY_ONLY_FROM_LOGO	allow_family_only_from_logo	ALLOW_FAMILY_ONLY_FROM_LOGO		head	1	true	
+identity_no_guess_policy	BLOCK_EXACT_FROM_PHOTO_SHAPE	block_exact_from_photo_shape	BLOCK_EXACT_FROM_PHOTO_SHAPE		head	2	true	
+identity_no_guess_policy	BLOCK_EXACT_FROM_COLOR	block_exact_from_color	BLOCK_EXACT_FROM_COLOR		head	3	true	
+identity_no_guess_policy	REQUIRE_REVIEW_ON_CONFLICT	require_review_on_conflict	REQUIRE_REVIEW_ON_CONFLICT		head	4	true	
+identity_no_guess_policy	ALLOW_USER_CONFIRMATION	allow_user_confirmation	ALLOW_USER_CONFIRMATION		head	5	true	
+identity_no_guess_policy	ALLOW_BARCODE_MATCH	allow_barcode_match	ALLOW_BARCODE_MATCH		head	6	true	
+brand_head	APPLE	Apple	Apple	эпл;аппл;apple	head_identity_hint	0	true	Head brand hint for normalization; not full registry.
+brand_head	SAMSUNG	Samsung	Samsung	самсунг;samsung	head_identity_hint	1	true	Head brand hint for normalization; not full registry.
+brand_head	XIAOMI	Xiaomi	Xiaomi	сяоми;ксяоми;xiaomi	head_identity_hint	2	true	Head brand hint for normalization; not full registry.
+brand_head	REDMI	Redmi	Redmi	редми	head_identity_hint	3	true	Head brand hint for normalization; not full registry.
+brand_head	POCO	POCO	POCO	поко;pocophone	head_identity_hint	4	true	Head brand hint for normalization; not full registry.
+brand_head	GOOGLE	Google	Google	гугл	head_identity_hint	5	true	Head brand hint for normalization; not full registry.
+brand_head	HUAWEI	Huawei	Huawei	хуавей	head_identity_hint	6	true	Head brand hint for normalization; not full registry.
+brand_head	HONOR	Honor	Honor	хонор	head_identity_hint	7	true	Head brand hint for normalization; not full registry.
+brand_head	OPPO	OPPO	OPPO	оппо	head_identity_hint	8	true	Head brand hint for normalization; not full registry.
+brand_head	VIVO	vivo	vivo	виво	head_identity_hint	9	true	Head brand hint for normalization; not full registry.
+brand_head	ONEPLUS	OnePlus	OnePlus	ванплас;one plus	head_identity_hint	10	true	Head brand hint for normalization; not full registry.
+brand_head	REALME	realme	realme	реалми	head_identity_hint	11	true	Head brand hint for normalization; not full registry.
+brand_head	NOKIA	Nokia	Nokia	нокиа	head_identity_hint	12	true	Head brand hint for normalization; not full registry.
+brand_head	MOTOROLA	Motorola	Motorola	моторола	head_identity_hint	13	true	Head brand hint for normalization; not full registry.
+brand_head	SONY	Sony	Sony	сони	head_identity_hint	14	true	Head brand hint for normalization; not full registry.
+brand_head	LG	LG	LG	элджи	head_identity_hint	15	true	Head brand hint for normalization; not full registry.
+brand_head	LENOVO	Lenovo	Lenovo	леново	head_identity_hint	16	true	Head brand hint for normalization; not full registry.
+brand_head	HP	HP	HP	hewlett packard;ашпи	head_identity_hint	17	true	Head brand hint for normalization; not full registry.
+brand_head	DELL	Dell	Dell	делл	head_identity_hint	18	true	Head brand hint for normalization; not full registry.
+brand_head	ASUS	ASUS	ASUS	асус	head_identity_hint	19	true	Head brand hint for normalization; not full registry.
+brand_head	ACER	Acer	Acer	эйсер	head_identity_hint	20	true	Head brand hint for normalization; not full registry.
+brand_head	MSI	MSI	MSI	эмэсай	head_identity_hint	21	true	Head brand hint for normalization; not full registry.
+brand_head	MICROSOFT	Microsoft	Microsoft	майкрософт	head_identity_hint	22	true	Head brand hint for normalization; not full registry.
+brand_head	RAZER	Razer	Razer	рейзер	head_identity_hint	23	true	Head brand hint for normalization; not full registry.
+brand_head	LOGITECH	Logitech	Logitech	лоджитек	head_identity_hint	24	true	Head brand hint for normalization; not full registry.
+brand_head	ANKER	Anker	Anker	анкер	head_identity_hint	25	true	Head brand hint for normalization; not full registry.
+brand_head	BASEUS	Baseus	Baseus	басеус;базеус	head_identity_hint	26	true	Head brand hint for normalization; not full registry.
+brand_head	BELKIN	Belkin	Belkin	белкин	head_identity_hint	27	true	Head brand hint for normalization; not full registry.
+brand_head	UGREEN	UGREEN	UGREEN	югрин	head_identity_hint	28	true	Head brand hint for normalization; not full registry.
+brand_head	TP_LINK	TP-Link	TP-Link	tp link;тп линк	head_identity_hint	29	true	Head brand hint for normalization; not full registry.
+brand_head	ASROCK	ASRock	ASRock	асрок	head_identity_hint	30	true	Head brand hint for normalization; not full registry.
+brand_head	GIGABYTE	Gigabyte	Gigabyte	гигабайт	head_identity_hint	31	true	Head brand hint for normalization; not full registry.
+brand_head	INTEL	Intel	Intel	интел	head_identity_hint	32	true	Head brand hint for normalization; not full registry.
+brand_head	AMD	AMD	AMD	амд	head_identity_hint	33	true	Head brand hint for normalization; not full registry.
+brand_head	NVIDIA	NVIDIA	NVIDIA	nvidia;энвидиа	head_identity_hint	34	true	Head brand hint for normalization; not full registry.
+brand_head	KINGSTON	Kingston	Kingston	кингстон	head_identity_hint	35	true	Head brand hint for normalization; not full registry.
+brand_head	SANDISK	SanDisk	SanDisk	сандиск	head_identity_hint	36	true	Head brand hint for normalization; not full registry.
+brand_head	WESTERN_DIGITAL	Western Digital	Western Digital	wd;western digital	head_identity_hint	37	true	Head brand hint for normalization; not full registry.
+brand_head	SEAGATE	Seagate	Seagate	сигейт	head_identity_hint	38	true	Head brand hint for normalization; not full registry.
+brand_head	CANON	Canon	Canon	кэнон	head_identity_hint	39	true	Head brand hint for normalization; not full registry.
+brand_head	NIKON	Nikon	Nikon	никон	head_identity_hint	40	true	Head brand hint for normalization; not full registry.
+brand_head	FUJIFILM	Fujifilm	Fujifilm	фуджи	head_identity_hint	41	true	Head brand hint for normalization; not full registry.
+brand_head	PANASONIC	Panasonic	Panasonic	панасоник	head_identity_hint	42	true	Head brand hint for normalization; not full registry.
+brand_head	DJI	DJI	DJI	диджиай	head_identity_hint	43	true	Head brand hint for normalization; not full registry.
+brand_head	GOPRO	GoPro	GoPro	гоупро	head_identity_hint	44	true	Head brand hint for normalization; not full registry.
+brand_head	GARMIN	Garmin	Garmin	гармин	head_identity_hint	45	true	Head brand hint for normalization; not full registry.
+brand_head	BOSE	Bose	Bose	боуз	head_identity_hint	46	true	Head brand hint for normalization; not full registry.
+brand_head	JBL	JBL	JBL	джибиэль	head_identity_hint	47	true	Head brand hint for normalization; not full registry.
+brand_head	SENNHEISER	Sennheiser	Sennheiser	сенхайзер	head_identity_hint	48	true	Head brand hint for normalization; not full registry.
+brand_head	SHURE	Shure	Shure	шур	head_identity_hint	49	true	Head brand hint for normalization; not full registry.
+brand_head	BEATS	Beats	Beats	битс	head_identity_hint	50	true	Head brand hint for normalization; not full registry.
+brand_head	MARSHALL	Marshall	Marshall	маршал	head_identity_hint	51	true	Head brand hint for normalization; not full registry.
+brand_head	YAMAHA	Yamaha	Yamaha	ямаха	head_identity_hint	52	true	Head brand hint for normalization; not full registry.
+brand_head	PIONEER	Pioneer	Pioneer	пионер	head_identity_hint	53	true	Head brand hint for normalization; not full registry.
+brand_head	DENON	Denon	Denon	денон	head_identity_hint	54	true	Head brand hint for normalization; not full registry.
+brand_head	PHILIPS	Philips	Philips	филипс	head_identity_hint	55	true	Head brand hint for normalization; not full registry.
+brand_head	TCL	TCL	TCL	тисэль	head_identity_hint	56	true	Head brand hint for normalization; not full registry.
+brand_head	HISENSE	Hisense	Hisense	хайсенс	head_identity_hint	57	true	Head brand hint for normalization; not full registry.
+brand_head	NINTENDO	Nintendo	Nintendo	нинтендо	head_identity_hint	58	true	Head brand hint for normalization; not full registry.
+brand_head	PLAYSTATION	PlayStation	PlayStation	sony playstation;плейстейшен;пс	head_identity_hint	59	true	Head brand hint for normalization; not full registry.
+brand_head	XBOX	Xbox	Xbox	иксбокс;microsoft xbox	head_identity_hint	60	true	Head brand hint for normalization; not full registry.
+brand_head	META	Meta	Meta	oculus;мета	head_identity_hint	61	true	Head brand hint for normalization; not full registry.
+brand_head	VALVE	Valve	Valve	валв	head_identity_hint	62	true	Head brand hint for normalization; not full registry.
+brand_head	AMAZON	Amazon	Amazon	амазон	head_identity_hint	63	true	Head brand hint for normalization; not full registry.
+brand_head	YALE	Yale	Yale	йель	head_identity_hint	64	true	Head brand hint for normalization; not full registry.
+brand_head	AQARA	Aqara	Aqara	акара	head_identity_hint	65	true	Head brand hint for normalization; not full registry.
+brand_head	UBIQUITI	Ubiquiti	Ubiquiti	юбикуити;unifi	head_identity_hint	66	true	Head brand hint for normalization; not full registry.
+brand_head	SYNOLOGY	Synology	Synology	синолоджи	head_identity_hint	67	true	Head brand hint for normalization; not full registry.
+brand_head	QNAP	QNAP	QNAP	кнап	head_identity_hint	68	true	Head brand hint for normalization; not full registry.
+brand_head	EPSON	Epson	Epson	эпсон	head_identity_hint	69	true	Head brand hint for normalization; not full registry.
+brand_head	BROTHER	Brother	Brother	бразер	head_identity_hint	70	true	Head brand hint for normalization; not full registry.
+brand_head	BLACKVUE	BlackVue	BlackVue	блэквью	head_identity_hint	71	true	Head brand hint for normalization; not full registry.
+brand_head	PIONEER_CAR	Pioneer	Pioneer	пионер авто	head_identity_hint	72	true	Head brand hint for normalization; not full registry.
+family_head	IPHONE	iPhone	iPhone	айфон;iphone	head_identity_hint	0	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	IPAD	iPad	iPad	айпад;ipad	head_identity_hint	1	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MACBOOK	MacBook	MacBook	макбук;mac book	head_identity_hint	2	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MACBOOK_AIR	MacBook Air	MacBook Air	макбук эйр	head_identity_hint	3	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MACBOOK_PRO	MacBook Pro	MacBook Pro	макбук про	head_identity_hint	4	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	APPLE_WATCH	Apple Watch	Apple Watch	эпл вотч;applewatch	head_identity_hint	5	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	AIRPODS	AirPods	AirPods	аирподс;эйрподс	head_identity_hint	6	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	GALAXY_S	Galaxy S	Galaxy S	галакси эс;галакси s	head_identity_hint	7	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	GALAXY_Z	Galaxy Z	Galaxy Z	galaxy fold;galaxy flip	head_identity_hint	8	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	GALAXY_TAB	Galaxy Tab	Galaxy Tab	галакси таб	head_identity_hint	9	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	GALAXY_WATCH	Galaxy Watch	Galaxy Watch	галакси вотч	head_identity_hint	10	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	PIXEL	Pixel	Pixel	пиксель	head_identity_hint	11	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	REDMI_NOTE	Redmi Note	Redmi Note	редми ноут	head_identity_hint	12	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	POCO_X	POCO X	POCO X	поко x	head_identity_hint	13	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	POCO_F	POCO F	POCO F	поко f	head_identity_hint	14	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MI_BAND	Mi Band	Mi Band	ми бэнд	head_identity_hint	15	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	THINKPAD	ThinkPad	ThinkPad	тинкпад	head_identity_hint	16	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	IDEAPAD	IdeaPad	IdeaPad	идеапад	head_identity_hint	17	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	LEGION	Legion	Legion	легион	head_identity_hint	18	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	YOGA	Yoga	Yoga	йога lenovo	head_identity_hint	19	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	XPS	XPS	XPS	dell xps	head_identity_hint	20	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	INSPIRON	Inspiron	Inspiron	инспирон	head_identity_hint	21	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	LATITUDE	Latitude	Latitude	латитьюд	head_identity_hint	22	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ELITEBOOK	EliteBook	EliteBook	элитбук	head_identity_hint	23	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	PAVILION	Pavilion	Pavilion	павилион	head_identity_hint	24	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ROG	ROG	ROG	republic of gamers;рог	head_identity_hint	25	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	TUF	TUF	TUF	tuf gaming	head_identity_hint	26	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	SURFACE	Surface	Surface	серфейс	head_identity_hint	27	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	SURFACE_PRO	Surface Pro	Surface Pro	surface pro	head_identity_hint	28	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	KINDLE	Kindle	Kindle	киндл	head_identity_hint	29	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	KINDLE_PAPERWHITE	Kindle Paperwhite	Kindle Paperwhite	киндл пейпервайт	head_identity_hint	30	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ULTRASHARP	UltraSharp	UltraSharp	ultrasharp dell	head_identity_hint	31	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ODYSSEY	Odyssey	Odyssey	самсунг одиссей	head_identity_hint	32	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ULTRAGEAR	UltraGear	UltraGear	lg ultragear	head_identity_hint	33	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	GEFORCE_RTX	GeForce RTX	GeForce RTX	rtx;джифорс	head_identity_hint	34	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	GEFORCE_GTX	GeForce GTX	GeForce GTX	gtx;джифорс	head_identity_hint	35	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	RADEON_RX	Radeon RX	Radeon RX	radeon;радеон	head_identity_hint	36	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	RYZEN	Ryzen	Ryzen	райзен	head_identity_hint	37	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	CORE_I	Core i	Core i	intel core	head_identity_hint	38	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	PLAYSTATION	PlayStation	PlayStation	ps;ps5;ps4;пс5	head_identity_hint	39	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	XBOX_SERIES	Xbox Series	Xbox Series	series x;series s	head_identity_hint	40	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	NINTENDO_SWITCH	Nintendo Switch	Nintendo Switch	свитч;switch oled	head_identity_hint	41	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	QUEST	Quest	Quest	oculus quest;meta quest	head_identity_hint	42	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ALPHA	Alpha	Alpha	sony alpha;sony a	head_identity_hint	43	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	EOS	EOS	EOS	canon eos	head_identity_hint	44	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	NIKON_Z	Nikon Z	Nikon Z	nikon z	head_identity_hint	45	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	LUMIX	Lumix	Lumix	панасоник люмикс	head_identity_hint	46	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MAVIC	Mavic	Mavic	dji mavic	head_identity_hint	47	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MINI_DRONE	DJI Mini	DJI Mini	dji mini	head_identity_hint	48	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	OSMO	Osmo	Osmo	dji osmo	head_identity_hint	49	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	HERO	HERO	HERO	gopro hero	head_identity_hint	50	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	WH_1000X	WH-1000X	WH-1000X	sony wh1000;wh-1000	head_identity_hint	51	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	WF_1000X	WF-1000X	WF-1000X	sony wf1000;wf-1000	head_identity_hint	52	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	QUIETCOMFORT	QuietComfort	QuietComfort	qc;bose quietcomfort	head_identity_hint	53	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	FLIP	JBL Flip	JBL Flip	джибиэль флип	head_identity_hint	54	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	CHARGE_SPEAKER	JBL Charge	JBL Charge	jbl charge	head_identity_hint	55	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ECHO	Echo	Echo	amazon echo	head_identity_hint	56	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	NEST	Nest	Nest	google nest	head_identity_hint	57	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ARCHER	Archer	Archer	tp-link archer	head_identity_hint	58	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	DECO	Deco	Deco	tp-link deco	head_identity_hint	59	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	UNIFI	UniFi	UniFi	ubiquiti unifi	head_identity_hint	60	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	LASERJET	LaserJet	LaserJet	hp laserjet	head_identity_hint	61	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	PIXMA	PIXMA	PIXMA	canon pixma	head_identity_hint	62	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	ECOTANK	EcoTank	EcoTank	epson ecotank	head_identity_hint	63	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	DRIVESMART	DriveSmart	DriveSmart	garmin drivesmart	head_identity_hint	64	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	DASHCAM_BLACKVUE	BlackVue DR	BlackVue DR	blackvue dr	head_identity_hint	65	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	MYPASSPORT	My Passport	My Passport	wd my passport	head_identity_hint	66	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	EXTREME_PRO	Extreme Pro	Extreme Pro	sandisk extreme pro	head_identity_hint	67	true	Head family hint for parsing; exact model registry remains downstream/runtime.
+family_head	DS_NAS	DiskStation	DiskStation	synology diskstation	head_identity_hint	68	true	Head family hint for parsing; exact model registry remains downstream/runtime.

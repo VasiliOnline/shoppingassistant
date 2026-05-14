@@ -1,0 +1,59 @@
+ruleset_id: route_guardrails.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+public_category: false
+evaluation_mode: shared_enrichment_then_route_target_confirmation
+guardrails:
+- id: shared_standard_never_final_route
+  priority: 10000
+  rule: TECH.DEVICE_IDENTITY_COMMON must never be final public categoryCode
+  action: enrich_only
+- id: no_microcategory_route
+  priority: 9900
+  blocked_category_codes:
+  - TECH.IPHONE
+  - TECH.SAMSUNG_PHONES
+  - TECH.MACBOOK
+  - TECH.AIRPODS
+  - TECH.CASES
+  - TECH.CHARGERS
+  - TECH.CABLES
+  action: block_mount_and_fail_gate
+- id: device_query_with_model_tokens
+  priority: 9000
+  when: query has brand/family/model token and no accessory/compatibility marker
+  action: route to matching TECH public category; attach identity candidate
+- id: accessory_compatibility_marker
+  priority: 8900
+  when: query has accessory type + compatibility preposition + model token
+  action: route accessory public category; model tokens become compatibility/identity_context_hint
+- id: phone_case_not_phone
+  priority: 8800
+  examples:
+  - чехол iphone 13
+  - стекло samsung s23
+  - кабель для pixel
+  action: do not route as TECH.PHONES solely by model token
+- id: wearable_strap_context
+  priority: 8700
+  examples:
+  - ремешок apple watch
+  - браслет mi band
+  action: route to TECH.WEARABLES or downstream wearable accessory policy; not FASH.ACCESSORIES
+- id: fashion_word_with_tech_model
+  priority: 8500
+  examples:
+  - футболка с принтом iphone
+  - сумка с логотипом playstation
+  action: if product is apparel/bag, route FASH; identity tokens are decorative unless device/accessory evidence exists
+- id: non_tech_homonym_guard
+  priority: 8200
+  examples:
+  - яблоко телефон игрушка
+  - пиксель арт картина
+  action: require electronics context before TECH identity enrichment
+golden_conflicts_required:
+- phone_vs_phone_accessory
+- wearable_strap_vs_fashion_accessory
+- laptop_bag_vs_fash_bag
+- decorative_brand_print_vs_device
+- toy_model_vs_device

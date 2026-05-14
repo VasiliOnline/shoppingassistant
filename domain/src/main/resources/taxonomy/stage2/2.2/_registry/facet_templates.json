@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0.0",
+  "templates": [
+    {
+      "code": "enum_primary",
+      "usageScopes": ["PRIMARY_FACET"],
+      "widgetHint": "CHIPS",
+      "allowedValueTypes": ["ENUM", "STRING"],
+      "notes": "Primary closed or semi-closed enum selector for category-defining type, condition, gender, or core state."
+    },
+    {
+      "code": "enum_secondary",
+      "usageScopes": ["SECONDARY_FACET"],
+      "widgetHint": "DROPDOWN",
+      "allowedValueTypes": ["ENUM", "STRING"],
+      "notes": "Secondary enum selector for material, color, purpose, or other narrowing attributes."
+    },
+    {
+      "code": "numeric_range",
+      "usageScopes": ["PRIMARY_FACET", "SECONDARY_FACET"],
+      "widgetHint": "RANGE_INPUT",
+      "allowedValueTypes": ["NUMBER"],
+      "notes": "General numeric range for price, power, weight, volume, screen size, and similar numeric attributes."
+    },
+    {
+      "code": "size_selector",
+      "usageScopes": ["USER_VISIBLE_REQUIRED", "PRIMARY_FACET"],
+      "widgetHint": "DROPDOWN",
+      "allowedValueTypes": ["STRING", "NUMBER", "ENUM"],
+      "notes": "Size-aware selector. It may expose raw seller size, normalized size, and system-specific size fields."
+    },
+    {
+      "code": "brand_optional",
+      "usageScopes": ["USER_VISIBLE_OPTIONAL", "PRIMARY_FACET", "MATCHING_ONLY"],
+      "widgetHint": "INPUT",
+      "allowedValueTypes": ["STRING", "ENUM"],
+      "notes": "Brand is searchable and matchable, but not every archetype requires a curated brand graph."
+    },
+    {
+      "code": "condition_price_base",
+      "usageScopes": ["USER_VISIBLE_REQUIRED", "PRIMARY_FACET"],
+      "widgetHint": "DROPDOWN",
+      "allowedValueTypes": ["ENUM", "NUMBER"],
+      "notes": "Shared base controls for condition and price surfaces."
+    },
+    {
+      "code": "compatibility_widget",
+      "usageScopes": ["MATCHING_ONLY", "SECONDARY_FACET"],
+      "widgetHint": "DROPDOWN",
+      "allowedValueTypes": ["ENUM", "STRING"],
+      "notes": "Compatibility selector for host product, vehicle, phone model, connector, or use-case compatibility."
+    },
+    {
+      "code": "spec_range",
+      "usageScopes": ["SECONDARY_FACET", "MATCHING_ONLY"],
+      "widgetHint": "RANGE_INPUT",
+      "allowedValueTypes": ["NUMBER"],
+      "notes": "Technical/spec-heavy numeric range that should not become a primary facet by default."
+    },
+    {
+      "code": "ingredient/allergen_warning",
+      "usageScopes": ["USER_VISIBLE_OPTIONAL", "ADMIN_REVIEW_ONLY"],
+      "widgetHint": "DROPDOWN",
+      "allowedValueTypes": ["ENUM", "STRING"],
+      "notes": "Consumable safety surface for ingredients, allergens, dietary flags, and safety warnings."
+    },
+    {
+      "code": "life_stage_selector",
+      "usageScopes": ["USER_VISIBLE_REQUIRED", "PRIMARY_FACET", "MATCHING_ONLY"],
+      "widgetHint": "DROPDOWN",
+      "allowedValueTypes": ["ENUM", "STRING", "NUMBER"],
+      "notes": "Age, life-stage, grade, or eligibility selector for kids, pets, and regulated consumables."
+    }
+  ]
+}

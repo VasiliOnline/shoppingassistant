@@ -173,7 +173,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.CAMERAS",
+    "categoryCode": "TECH.CAMERAS_DRONES",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -223,7 +223,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.CAMERAS по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.CAMERAS_DRONES по атрибуту condition."
           }
         ]
       }
@@ -304,7 +304,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.LAPTOPS",
+    "categoryCode": "TECH.COMPUTERS",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -371,7 +371,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.LAPTOPS по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.COMPUTERS по атрибуту condition."
           }
         ]
       }
@@ -508,7 +508,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.SMART_HOME",
+    "categoryCode": "TECH.SMART_HOME_SECURITY",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -579,7 +579,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.SMART_HOME по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.SMART_HOME_SECURITY по атрибуту condition."
           }
         ]
       }
@@ -589,7 +589,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.TABLETS_EBOOKS",
+    "categoryCode": "TECH.TABLETS_E_READERS",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -660,7 +660,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.TABLETS_EBOOKS по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.TABLETS_E_READERS по атрибуту condition."
           }
         ]
       }
@@ -670,7 +670,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.TV_VIDEO",
+    "categoryCode": "TECH.TV_HOME_THEATER",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -731,7 +731,575 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.TV_VIDEO по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.TV_HOME_THEATER по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.MONITORS_DISPLAYS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.MONITORS_DISPLAYS по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.COMPUTER_ACCESSORIES по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.STORAGE_MEMORY",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.STORAGE_MEMORY по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.WEARABLES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.WEARABLES по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.NETWORKING",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.NETWORKING по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.POWER_CHARGING_CABLES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.POWER_CHARGING_CABLES по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PRINTERS_SCANNERS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.PRINTERS_SCANNERS по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.CAR_ELECTRONICS_GPS по атрибуту condition."
           }
         ]
       }

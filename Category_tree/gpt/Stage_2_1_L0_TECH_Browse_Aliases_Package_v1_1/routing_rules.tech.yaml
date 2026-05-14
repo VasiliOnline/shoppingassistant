@@ -25,7 +25,7 @@ priority_buckets:
     examples:
     - смартфон
     - ноутбук
-    - телевизор
+    - монитор
     - наушники
   P1_brand_model:
     priority: 80
@@ -36,33 +36,51 @@ priority_buckets:
 triggers:
   TECH.PHONES:
     bonus:
-    - pattern: \b(iphone|айфон|android|смартфон)\b
+    - pattern: \b(iphone|айфон|android|смартфон|телефон)\b
       add: 15
     - pattern: \b(samsung|xiaomi|pixel|huawei|oneplus)\b
       add: 10
   TECH.PHONE_ACCESSORIES:
     bonus:
-    - pattern: \b(чехол|стекло|пленк|зарядк|кабель|пауэрбанк|power\s?bank)\b
+    - pattern: \b(чехол|чехл[\p{L}\p{N}_]*|стекло|стекл[\p{L}\p{N}_]*|пленк[\p{L}\p{N}_]*|magsafe|попсокет)\b
       add: 15
-    - pattern: \b(lightning|type\s?c|usb\s?c|адаптер|держатель|попсокет)\b
+    - pattern: \b(iphone|айфон|телефон|смартфон|samsung|android|lightning|держатель|кабель|cable|зарядк[\p{L}\p{N}_]*|charger|type\s?c)\b
       add: 10
-  TECH.LAPTOPS:
+  TECH.COMPUTERS:
     bonus:
-    - pattern: \b(ноутбук|laptop|ultrabook|ультрабук)\b
+    - pattern: \b(ноутбук|ноут|laptop|desktop|ultrabook|ультрабук|компьютер|mini\s?pc|workstation)\b
       add: 15
-    - pattern: \b(macbook|thinkpad|xps|vivobook|legion)\b
+    - pattern: \b(macbook|thinkpad|xps|vivobook|legion|chromebook)\b
+      add: 10
+  TECH.TABLETS_E_READERS:
+    bonus:
+    - pattern: \b(планшет|tablet|ipad)\b
+      add: 15
+    - pattern: \b(ридер|электронная\s?книга|kindle|kobo|boox|ebook|e\s?reader)\b
+      add: 10
+  TECH.MONITORS_DISPLAYS:
+    bonus:
+    - pattern: \b(монитор|monitor|display|дисплей)\b
+      add: 15
+    - pattern: \b(144hz|240hz|oled|ips|portable\s?monitor|gaming\s?monitor)\b
+      add: 10
+  TECH.COMPUTER_ACCESSORIES:
+    bonus:
+    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|вебкамера)\b
+      add: 15
+    - pattern: \b(док\s?станц|docking|usb\s?hub|коврик\s?для\s?мыши|mouse\s?pad|laptop\s?stand)\b
       add: 10
   TECH.PC_COMPONENTS:
     bonus:
-    - pattern: \b(gpu|видеокарта|rtx|rx)\b
+    - pattern: \b(gpu|видеокарта|rtx|rx|cpu|процессор|motherboard|материн)\b
       add: 15
-    - pattern: \b(cpu|процессор|ryzen|intel|ddr|ram|ssd|nvme|материн)\b
+    - pattern: \b(блок\s?питания|psu|корпус\s?пк|cooling|кулер|thermal\s?paste)\b
       add: 10
-  TECH.TV_VIDEO:
+  TECH.STORAGE_MEMORY:
     bonus:
-    - pattern: \b(телевизор|tv|smart\s?tv|oled|qled|android\s?tv)\b
+    - pattern: \b(ssd|hdd|nvme|флешк[\p{L}\p{N}_]*|usb\s?flash|memory\s?card|карта\s?памяти|micro\s?sd)\b
       add: 15
-    - pattern: \b(проектор|медиаплеер|tv\s?box|apple\s?tv|google\s?tv)\b
+    - pattern: \b(nas|card\s?reader|картридер|external\s?drive|внешний\s?диск)\b
       add: 10
   TECH.AUDIO:
     bonus:
@@ -70,54 +88,101 @@ triggers:
       add: 15
     - pattern: \b(колонк|speaker|soundbar|саундбар|микрофон|hi[- ]?fi)\b
       add: 10
-  TECH.CAMERAS:
+  TECH.TV_HOME_THEATER:
     bonus:
-    - pattern: \b(фотоаппарат|камера|camera|dslr|беззеркалк|mirrorless)\b
+    - pattern: \b(телевизор|tv|smart\s?tv|oled|qled|android\s?tv)\b
       add: 15
-    - pattern: \b(canon|nikon|sony|gopro|объектив|lens)\b
+    - pattern: \b(проектор|медиаплеер|tv\s?box|apple\s?tv|google\s?tv|домашний\s?кинотеатр)\b
+      add: 10
+  TECH.WEARABLES:
+    bonus:
+    - pattern: \b(apple\s?watch|galaxy\s?watch|smartwatch|smart\s?watch|смарт\s?часы|умные\s?часы)\b
+      add: 15
+    - pattern: \b(fitness\s?tracker|фитнес\s?браслет|mi\s?band|watch\s?band|ремешок\s?apple\s?watch)\b
+      add: 10
+  TECH.CAMERAS_DRONES:
+    bonus:
+    - pattern: \b(фотоаппарат|камера|camera|dslr|беззеркалк|mirrorless|дрон|drone)\b
+      add: 15
+    - pattern: \b(canon|nikon|sony|gopro|объектив|lens|gimbal|штатив)\b
       add: 10
   TECH.GAMING:
     bonus:
     - pattern: \b(ps5|playstation|xbox|switch|игровая\s?приставка|консоль)\b
       add: 15
-    - pattern: \b(dualsense|геймпад|game\s?pass|игры)\b
+    - pattern: \b(dualsense|геймпад|game\s?pass|игры|vr\s?headset)\b
       add: 10
-  TECH.TABLETS_EBOOKS:
-    bonus:
-    - pattern: \b(планшет|tablet|ipad)\b
-      add: 15
-    - pattern: \b(ридер|электронная\s?книга|kindle|kobo|boox|ebook)\b
-      add: 10
-  TECH.SMART_HOME:
+  TECH.SMART_HOME_SECURITY:
     bonus:
     - pattern: \b(умный\s?дом|smart\s?home|zigbee|homekit|alexa|google\s?home)\b
       add: 15
-    - pattern: \b(умная\s?лампочка|умная\s?розетка|датчик|motion\s?sensor|термостат|smart\s?plug)\b
+    - pattern: \b(умная\s?лампочка|умная\s?розетка|датчик|motion\s?sensor|термостат|smart\s?plug|doorbell|smart\s?lock)\b
+      add: 10
+  TECH.NETWORKING:
+    bonus:
+    - pattern: \b(роутер|router|маршрутизатор|mesh\s?wifi|wi\s?fi|wifi|модем|modem)\b
+      add: 15
+    - pattern: \b(access\s?point|switch|коммутатор|ethernet|poe|network\s?adapter)\b
+      add: 10
+  TECH.POWER_CHARGING_CABLES:
+    bonus:
+    - pattern: \b(ups|ибп|сетевой\s?фильтр|surge\s?protector|portable\s?power\s?station|батаре[яи])\b
+      add: 15
+    - pattern: \b(hdmi|audio\s?video\s?cable|кабель\s?hdmi|зарядное\s?устройство|wall\s?charger)\b
+      add: 10
+  TECH.PRINTERS_SCANNERS:
+    bonus:
+    - pattern: \b(принтер|printer|мфу|multifunction|scanner|сканер)\b
+      add: 15
+    - pattern: \b(картридж|cartridge|toner|тонер|label\s?printer)\b
+      add: 10
+  TECH.CAR_ELECTRONICS_GPS:
+    bonus:
+    - pattern: \b(видеорегистратор|dash\s?cam|gps\s?навигатор|gps\s?tracker|obd)\b
+      add: 15
+    - pattern: \b(магнитола|car\s?head\s?unit|парктроник|parking\s?sensor|backup\s?camera)\b
       add: 10
 conflicts:
 - pattern: \b(airpods|earbuds|buds)\b
   prefer: TECH.AUDIO
   penalty_other: 10
-- pattern: \b(чехол|стекло|зарядк|кабель)\b
+- pattern: \b(apple\s?watch|galaxy\s?watch|smartwatch|smart\s?watch|смарт\s?часы|умные\s?часы|фитнес\s?браслет)\b
+  prefer: TECH.WEARABLES
+  penalty_other: 10
+- pattern: \b(чехол|чехл[\p{L}\p{N}_]*|стекло|стекл[\p{L}\p{N}_]*|пленк[\p{L}\p{N}_]*)\b
   prefer: TECH.PHONE_ACCESSORIES
   penalty_other: 8
-- pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi)\b
-  prefer: TECH.SMART_HOME
+- pattern: \b(мышь|mouse|keyboard|клавиатур[\p{L}\p{N}_]*)\b
+  prefer: TECH.COMPUTER_ACCESSORIES
+  penalty_other: 8
+- pattern: \b(ssd|hdd|nvme|флешк[\p{L}\p{N}_]*|карта\s?памяти|memory\s?card)\b
+  prefer: TECH.STORAGE_MEMORY
+  penalty_other: 8
+- pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi|security\s?camera|video\s?doorbell)\b
+  prefer: TECH.SMART_HOME_SECURITY
   penalty_other: 8
 - pattern: \b(объектив|lens)\b
-  prefer: TECH.CAMERAS
+  prefer: TECH.CAMERAS_DRONES
   penalty_other: 6
 fallbacks:
   ambiguous_to_group: true
   default_root: B.TECH
   group_map:
-    TECH.PHONES: B.TECH.PHONES
-    TECH.PHONE_ACCESSORIES: B.TECH.PHONES
-    TECH.LAPTOPS: B.TECH.COMPUTERS
-    TECH.PC_COMPONENTS: B.TECH.COMPUTERS
-    TECH.TABLETS_EBOOKS: B.TECH.COMPUTERS
-    TECH.TV_VIDEO: B.TECH.TV_AUDIO_VIDEO
-    TECH.AUDIO: B.TECH.TV_AUDIO_VIDEO
-    TECH.CAMERAS: B.TECH.PHOTO
-    TECH.GAMING: B.TECH.GAMING
-    TECH.SMART_HOME: B.TECH.SMART_HOME
+    TECH.PHONES: B.TECH.MOBILE
+    TECH.PHONE_ACCESSORIES: B.TECH.MOBILE
+    TECH.WEARABLES: B.TECH.MOBILE
+    TECH.COMPUTERS: B.TECH.WORKSPACE
+    TECH.TABLETS_E_READERS: B.TECH.WORKSPACE
+    TECH.MONITORS_DISPLAYS: B.TECH.WORKSPACE
+    TECH.COMPUTER_ACCESSORIES: B.TECH.WORKSPACE
+    TECH.PC_COMPONENTS: B.TECH.WORKSPACE
+    TECH.STORAGE_MEMORY: B.TECH.WORKSPACE
+    TECH.AUDIO: B.TECH.MEDIA_GAMING
+    TECH.TV_HOME_THEATER: B.TECH.MEDIA_GAMING
+    TECH.CAMERAS_DRONES: B.TECH.MEDIA_GAMING
+    TECH.GAMING: B.TECH.MEDIA_GAMING
+    TECH.SMART_HOME_SECURITY: B.TECH.HOME_POWER_AUTO
+    TECH.NETWORKING: B.TECH.HOME_POWER_AUTO
+    TECH.POWER_CHARGING_CABLES: B.TECH.HOME_POWER_AUTO
+    TECH.PRINTERS_SCANNERS: B.TECH.HOME_POWER_AUTO
+    TECH.CAR_ELECTRONICS_GPS: B.TECH.HOME_POWER_AUTO

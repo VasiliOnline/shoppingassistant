@@ -1,0 +1,57 @@
+surface_id: user_surface.tech_specs_common.v1_0
+category_code: TECH.SPECS_COMMON
+public_category: false
+accepts_offers_directly: false
+surface_policy: Inherited by public TECH category packs; this shared standard never renders a standalone listing form.
+limits:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_system_hidden_never_show: true
+initial_fields:
+- primary_spec_summary
+- storage_capacity
+- ram_capacity
+- screen_size
+- battery_capacity_mah
+- connector_type
+- condition
+- spec_profile_status
+expanded_fields:
+- screen_resolution
+- refresh_rate_hz
+- power_watts
+- wireless_standard
+- os_family
+- dimensions
+- weight
+- water_resistance
+- network_generation
+- bluetooth_version
+- wi_fi_standard
+- storage_type
+- panel_type
+- charging_standard
+- battery_health_percent
+hidden_fields:
+- normalized_spec_key
+- spec_fingerprint
+- raw_spec_tokens
+- raw_title_spec_tokens
+- raw_ocr_spec_tokens
+- raw_source_spec_tokens
+- spec_candidate_count
+- spec_conflict_set
+- spec_unit_parse_notes
+- spec_review_required
+- spec_review_reason
+- source_evidence_fingerprint
+- spec_runtime_version
+- unit_parser_version
+- spec_last_verified_at
+display_rules:
+- when: attribute_not_applicable_by_coverage_matrix
+  action: hide
+- when: spec_evidence_level in [NONE] and value is exact_numeric
+  action: require_review_before_publish
+- when: unit_normalization_status in [CONFLICT, AMBIGUOUS]
+  action: show_non_blocking_warning_or_block_if_required_by_child_pack

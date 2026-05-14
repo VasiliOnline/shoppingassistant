@@ -1,0 +1,104 @@
+query_id	query	locale	expected_route_target	shared_standard_applies	expected_common_extraction	negative_route	notes
+GQ001	iphone 13 новый с коробкой	ru	TECH.PHONES	true	brand=APPLE;condition=NEW;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	defer_identity
+GQ002	чехол iphone 13 прозрачный	ru	TECH.PHONE_ACCESSORIES	true	color_family=TRANSPARENT	TECH.ELECTRONICS_COMMON	defer_compatibility
+GQ003	ноутбук lenovo бу хорошее состояние с зарядкой	ru	TECH.COMPUTERS	true	brand=LENOVO;condition=USED_GOOD;included_accessories=CHARGER	TECH.ELECTRONICS_COMMON	
+GQ004	монитор samsung 27 серебристый без коробки	ru	TECH.MONITORS_DISPLAYS	true	brand=SAMSUNG;color_family=SILVER;original_box=NO	TECH.ELECTRONICS_COMMON	
+GQ005	наушники sony новые гарантия магазина	ru	TECH.AUDIO	true	brand=SONY;condition=NEW;warranty_status=SELLER_WARRANTY	TECH.ELECTRONICS_COMMON	
+GQ006	камера canon с объективом и коробкой	ru	TECH.CAMERAS_DRONES	true	brand=CANON;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	
+GQ007	роутер tp link новый запечатан	ru	TECH.NETWORKING	true	brand=TP_LINK;condition=NEW	TECH.ELECTRONICS_COMMON	
+GQ008	зарядка usb c apple новая	ru	TECH.POWER_CHARGING_CABLES	true	brand=APPLE;condition=NEW	TECH.ELECTRONICS_COMMON	
+GQ009	принтер hp бу без гарантии	ru	TECH.PRINTERS_SCANNERS	true	brand=HP;condition=USED_GOOD;warranty_status=NO_WARRANTY	TECH.ELECTRONICS_COMMON	
+GQ010	apple watch ремешок черный	ru	TECH.WEARABLES	true	brand=APPLE;color_family=BLACK	TECH.ELECTRONICS_COMMON	fash_conflict
+GQ011	детский рюкзак с usb	ru	FASH.BAGS	false	blocked_route_family=TECH	TECH.ELECTRONICS_COMMON	cross_domain_negative
+GQ012	кожаный ремень apple watch нет	ru	FASH.ACCESSORIES	false	blocked_without_smartwatch_context	TECH.ELECTRONICS_COMMON	negative_context
+GQ013	телефон apple новый черный с коробкой	ru	TECH.PHONES	true	brand=APPLE;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ014	телефон samsung бу как новый белый с коробкой	ru	TECH.PHONES	true	brand=SAMSUNG;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ015	телефон xiaomi бу хорошее состояние серебристый с коробкой	ru	TECH.PHONES	true	brand=XIAOMI;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ016	телефон sony на запчасти синий с коробкой	ru	TECH.PHONES	true	brand=SONY;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ017	телефон lg витринный золотой с коробкой	ru	TECH.PHONES	true	brand=LG;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ018	чехол samsung бу как новый белый с коробкой	ru	TECH.PHONE_ACCESSORIES	true	brand=SAMSUNG;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ019	чехол xiaomi бу хорошее состояние серебристый с коробкой	ru	TECH.PHONE_ACCESSORIES	true	brand=XIAOMI;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ020	чехол sony на запчасти синий с коробкой	ru	TECH.PHONE_ACCESSORIES	true	brand=SONY;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ021	чехол lg витринный золотой с коробкой	ru	TECH.PHONE_ACCESSORIES	true	brand=LG;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ022	чехол hp восстановленный серый с коробкой	ru	TECH.PHONE_ACCESSORIES	true	brand=HP;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ023	ноутбук xiaomi бу хорошее состояние серебристый с коробкой	ru	TECH.COMPUTERS	true	brand=XIAOMI;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ024	ноутбук sony на запчасти синий с коробкой	ru	TECH.COMPUTERS	true	brand=SONY;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ025	ноутбук lg витринный золотой с коробкой	ru	TECH.COMPUTERS	true	brand=LG;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ026	ноутбук hp восстановленный серый с коробкой	ru	TECH.COMPUTERS	true	brand=HP;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ027	ноутбук dell новый черный с коробкой	ru	TECH.COMPUTERS	true	brand=DELL;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ028	планшет sony на запчасти синий с коробкой	ru	TECH.TABLETS_E_READERS	true	brand=SONY;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ029	планшет lg витринный золотой с коробкой	ru	TECH.TABLETS_E_READERS	true	brand=LG;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ030	планшет hp восстановленный серый с коробкой	ru	TECH.TABLETS_E_READERS	true	brand=HP;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ031	планшет dell новый черный с коробкой	ru	TECH.TABLETS_E_READERS	true	brand=DELL;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ032	планшет asus бу как новый белый с коробкой	ru	TECH.TABLETS_E_READERS	true	brand=ASUS;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ033	монитор lg витринный золотой с коробкой	ru	TECH.MONITORS_DISPLAYS	true	brand=LG;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ034	монитор hp восстановленный серый с коробкой	ru	TECH.MONITORS_DISPLAYS	true	brand=HP;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ035	монитор dell новый черный с коробкой	ru	TECH.MONITORS_DISPLAYS	true	brand=DELL;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ036	монитор asus бу как новый белый с коробкой	ru	TECH.MONITORS_DISPLAYS	true	brand=ASUS;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ037	монитор canon бу хорошее состояние серебристый с коробкой	ru	TECH.MONITORS_DISPLAYS	true	brand=CANON;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ038	клавиатура hp восстановленный серый с коробкой	ru	TECH.COMPUTER_ACCESSORIES	true	brand=HP;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ039	клавиатура dell новый черный с коробкой	ru	TECH.COMPUTER_ACCESSORIES	true	brand=DELL;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ040	клавиатура asus бу как новый белый с коробкой	ru	TECH.COMPUTER_ACCESSORIES	true	brand=ASUS;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ041	клавиатура canon бу хорошее состояние серебристый с коробкой	ru	TECH.COMPUTER_ACCESSORIES	true	brand=CANON;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ042	клавиатура nikon на запчасти синий с коробкой	ru	TECH.COMPUTER_ACCESSORIES	true	brand=NIKON;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ043	ssd dell новый черный с коробкой	ru	TECH.STORAGE_MEMORY	true	brand=DELL;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ044	ssd asus бу как новый белый с коробкой	ru	TECH.STORAGE_MEMORY	true	brand=ASUS;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ045	ssd canon бу хорошее состояние серебристый с коробкой	ru	TECH.STORAGE_MEMORY	true	brand=CANON;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ046	ssd nikon на запчасти синий с коробкой	ru	TECH.STORAGE_MEMORY	true	brand=NIKON;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ047	ssd jbl витринный золотой с коробкой	ru	TECH.STORAGE_MEMORY	true	brand=JBL;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ048	наушники asus бу как новый белый с коробкой	ru	TECH.AUDIO	true	brand=ASUS;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ049	наушники canon бу хорошее состояние серебристый с коробкой	ru	TECH.AUDIO	true	brand=CANON;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ050	наушники nikon на запчасти синий с коробкой	ru	TECH.AUDIO	true	brand=NIKON;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ051	наушники jbl витринный золотой с коробкой	ru	TECH.AUDIO	true	brand=JBL;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ052	наушники logitech восстановленный серый с коробкой	ru	TECH.AUDIO	true	brand=LOGITECH;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ053	телевизор canon бу хорошее состояние серебристый с коробкой	ru	TECH.TV_HOME_THEATER	true	brand=CANON;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ054	телевизор nikon на запчасти синий с коробкой	ru	TECH.TV_HOME_THEATER	true	brand=NIKON;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ055	телевизор jbl витринный золотой с коробкой	ru	TECH.TV_HOME_THEATER	true	brand=JBL;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ056	телевизор logitech восстановленный серый с коробкой	ru	TECH.TV_HOME_THEATER	true	brand=LOGITECH;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ057	телевизор dji новый черный с коробкой	ru	TECH.TV_HOME_THEATER	true	brand=DJI;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ058	смарт часы nikon на запчасти синий с коробкой	ru	TECH.WEARABLES	true	brand=NIKON;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ059	смарт часы jbl витринный золотой с коробкой	ru	TECH.WEARABLES	true	brand=JBL;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ060	смарт часы logitech восстановленный серый с коробкой	ru	TECH.WEARABLES	true	brand=LOGITECH;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ061	смарт часы dji новый черный с коробкой	ru	TECH.WEARABLES	true	brand=DJI;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ062	смарт часы tp link бу как новый белый с коробкой	ru	TECH.WEARABLES	true	brand=TP_LINK;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ063	камера jbl витринный золотой с коробкой	ru	TECH.CAMERAS_DRONES	true	brand=JBL;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ064	камера logitech восстановленный серый с коробкой	ru	TECH.CAMERAS_DRONES	true	brand=LOGITECH;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ065	камера dji новый черный с коробкой	ru	TECH.CAMERAS_DRONES	true	brand=DJI;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ066	камера tp link бу как новый белый с коробкой	ru	TECH.CAMERAS_DRONES	true	brand=TP_LINK;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ067	камера apple бу хорошее состояние серебристый с коробкой	ru	TECH.CAMERAS_DRONES	true	brand=APPLE;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ068	геймпад logitech восстановленный серый с коробкой	ru	TECH.GAMING	true	brand=LOGITECH;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ069	геймпад dji новый черный с коробкой	ru	TECH.GAMING	true	brand=DJI;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ070	геймпад tp link бу как новый белый с коробкой	ru	TECH.GAMING	true	brand=TP_LINK;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ071	геймпад apple бу хорошее состояние серебристый с коробкой	ru	TECH.GAMING	true	brand=APPLE;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ072	геймпад samsung на запчасти синий с коробкой	ru	TECH.GAMING	true	brand=SAMSUNG;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ073	датчик умного дома dji новый черный с коробкой	ru	TECH.SMART_HOME_SECURITY	true	brand=DJI;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ074	датчик умного дома tp link бу как новый белый с коробкой	ru	TECH.SMART_HOME_SECURITY	true	brand=TP_LINK;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ075	датчик умного дома apple бу хорошее состояние серебристый с коробкой	ru	TECH.SMART_HOME_SECURITY	true	brand=APPLE;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ076	датчик умного дома samsung на запчасти синий с коробкой	ru	TECH.SMART_HOME_SECURITY	true	brand=SAMSUNG;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ077	датчик умного дома xiaomi витринный золотой с коробкой	ru	TECH.SMART_HOME_SECURITY	true	brand=XIAOMI;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ078	роутер tp link бу как новый белый с коробкой	ru	TECH.NETWORKING	true	brand=TP_LINK;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ079	роутер apple бу хорошее состояние серебристый с коробкой	ru	TECH.NETWORKING	true	brand=APPLE;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ080	роутер samsung на запчасти синий с коробкой	ru	TECH.NETWORKING	true	brand=SAMSUNG;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ081	роутер xiaomi витринный золотой с коробкой	ru	TECH.NETWORKING	true	brand=XIAOMI;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ082	роутер sony восстановленный серый с коробкой	ru	TECH.NETWORKING	true	brand=SONY;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ083	кабель usb c apple бу хорошее состояние серебристый с коробкой	ru	TECH.POWER_CHARGING_CABLES	true	brand=APPLE;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ084	кабель usb c samsung на запчасти синий с коробкой	ru	TECH.POWER_CHARGING_CABLES	true	brand=SAMSUNG;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ085	кабель usb c xiaomi витринный золотой с коробкой	ru	TECH.POWER_CHARGING_CABLES	true	brand=XIAOMI;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ086	кабель usb c sony восстановленный серый с коробкой	ru	TECH.POWER_CHARGING_CABLES	true	brand=SONY;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ087	кабель usb c lg новый черный с коробкой	ru	TECH.POWER_CHARGING_CABLES	true	brand=LG;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ088	картридж samsung на запчасти синий с коробкой	ru	TECH.PRINTERS_SCANNERS	true	brand=SAMSUNG;condition=USED_FOR_PARTS;color_family=BLUE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ089	картридж xiaomi витринный золотой с коробкой	ru	TECH.PRINTERS_SCANNERS	true	brand=XIAOMI;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ090	картридж sony восстановленный серый с коробкой	ru	TECH.PRINTERS_SCANNERS	true	brand=SONY;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ091	картридж lg новый черный с коробкой	ru	TECH.PRINTERS_SCANNERS	true	brand=LG;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ092	картридж hp бу как новый белый с коробкой	ru	TECH.PRINTERS_SCANNERS	true	brand=HP;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ093	видеорегистратор xiaomi витринный золотой с коробкой	ru	TECH.CAR_ELECTRONICS_GPS	true	brand=XIAOMI;condition=OPEN_BOX;color_family=GOLD;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ094	видеорегистратор sony восстановленный серый с коробкой	ru	TECH.CAR_ELECTRONICS_GPS	true	brand=SONY;condition=REFURBISHED_SELLER;color_family=GRAY;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ095	видеорегистратор lg новый черный с коробкой	ru	TECH.CAR_ELECTRONICS_GPS	true	brand=LG;condition=NEW;color_family=BLACK;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ096	видеорегистратор hp бу как новый белый с коробкой	ru	TECH.CAR_ELECTRONICS_GPS	true	brand=HP;condition=USED_LIKE_NEW;color_family=WHITE;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ097	видеорегистратор dell бу хорошее состояние серебристый с коробкой	ru	TECH.CAR_ELECTRONICS_GPS	true	brand=DELL;condition=USED_GOOD;color_family=SILVER;original_box=YES_ORIGINAL	TECH.ELECTRONICS_COMMON	generated_common_coverage
+GQ098	кроссовки apple зеленые	ru	FASH.SHOES	false	blocked_route_family=TECH	TECH.ELECTRONICS_COMMON	brand word collision
+GQ099	платье samsung style	ru	FASH.WOMEN	false	blocked_route_family=TECH	TECH.ELECTRONICS_COMMON	brand word in fashion context
+GQ100	сумка для ноутбука кожаная	ru	POLICY_DECISION	maybe	possible=FASH.BAGS|TECH.COMPUTER_ACCESSORIES	TECH.ELECTRONICS_COMMON	requires policy
+GQ101	ремень кожаный черный	ru	FASH.ACCESSORIES	false	blocked_route_family=TECH	TECH.ELECTRONICS_COMMON	fashion accessory
+GQ102	стол компьютерный	ru	HOME	false	blocked_route_family=TECH	TECH.ELECTRONICS_COMMON	furniture
+GQ103	корм для робота игрушки	ru	TOYS_OR_PETS	false	blocked_route_family=TECH	TECH.ELECTRONICS_COMMON	not electronics

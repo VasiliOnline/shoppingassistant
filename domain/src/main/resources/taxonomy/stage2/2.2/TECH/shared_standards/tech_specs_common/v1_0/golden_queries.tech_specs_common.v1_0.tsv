@@ -1,0 +1,124 @@
+query	expected_route_hint	expected_shared_standard	expected_attrs_json	notes
+iphone 13 128 гб аккумулятор 87%	TECH.PHONES	TECH.SPECS_COMMON	"{""battery_health_percent"": ""87"", ""storage_capacity"": ""128GB""}"	hand_selected
+samsung galaxy 8/256 5g ip68	TECH.PHONES	TECH.SPECS_COMMON	"{""network_generation"": [""FIVE_G""], ""ram_capacity"": ""8GB"", ""storage_capacity"": ""256GB"", ""water_resistance"": ""IP68""}"	hand_selected
+ноутбук 16 гб 512 ssd экран 15.6	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""ram_capacity"": ""16GB"", ""screen_size"": ""IN_15_6"", ""storage_capacity"": ""512GB"", ""storage_type"": [""SSD""]}"	hand_selected
+macbook air m2 8 256 battery cycles 120	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""cycle_count"": ""120"", ""ram_capacity"": ""8GB"", ""storage_capacity"": ""256GB""}"	hand_selected
+монитор 27 144 гц 2к ips	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""panel_type"": ""IPS"", ""refresh_rate_hz"": ""144HZ"", ""screen_resolution"": ""QHD"", ""screen_size"": ""IN_27""}"	hand_selected
+игровой монитор 32 4k 165hz hdr10	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""hdr_standard"": [""HDR10""], ""refresh_rate_hz"": ""165HZ"", ""screen_resolution"": ""UHD_4K"", ""screen_size"": ""IN_32""}"	hand_selected
+зарядка 65w usb c pd	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""charging_standard"": [""USB_PD""], ""connector_type"": [""USB_C""], ""power_watts"": ""65W""}"	hand_selected
+кабель type c 2м 100w	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""cable_length_m"": ""2M"", ""connector_type"": [""USB_C""], ""power_watts"": ""100W""}"	hand_selected
+power bank 20000 mah 22.5w	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""battery_capacity_mah"": ""20000"", ""power_watts"": ""22.5W""}"	hand_selected
+наушники bluetooth 5.3 ipx4	TECH.AUDIO	TECH.SPECS_COMMON	"{""bluetooth_version"": ""BT_5_3"", ""water_resistance"": ""IPX4""}"	hand_selected
+роутер wifi 6 gigabit 4 антенны	TECH.NETWORKING	TECH.SPECS_COMMON	"{""antenna_count"": ""4"", ""network_speed"": ""GIGABIT"", ""wi_fi_standard"": [""WIFI_6""]}"	hand_selected
+камера видеонаблюдения 4k wifi ip67	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""video_resolution"": [""UHD_4K""], ""water_resistance"": ""IP67"", ""wireless_standard"": [""WIFI""]}"	hand_selected
+ssd nvme 1tb скорость чтения 3500 мб с	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""read_speed_mbps"": ""3500"", ""storage_capacity"": ""1TB"", ""storage_type"": [""NVME_SSD""]}"	hand_selected
+микрофон usb-c 24 бит 96 кГц	TECH.AUDIO	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""]}"	hand_selected
+принтер лазерный wifi duplex	TECH.PRINTERS_SCANNERS	TECH.SPECS_COMMON	"{""print_technology"": ""LASER"", ""wireless_standard"": [""WIFI""]}"	hand_selected
+видеорегистратор 4k gps wifi	TECH.CAR_ELECTRONICS_GPS	TECH.SPECS_COMMON	"{""video_resolution"": [""UHD_4K""], ""wireless_standard"": [""GPS"", ""WIFI""]}"	hand_selected
+apple watch 44mm gps lte	TECH.WEARABLES	TECH.SPECS_COMMON	"{""network_generation"": [""LTE""], ""wireless_standard"": [""GPS""]}"	hand_selected
+экшн камера 4k 60fps водозащита	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	"{""frame_rate_fps"": ""60"", ""video_resolution"": [""UHD_4K""]}"	hand_selected
+игровая консоль 1tb 4k hdr	TECH.GAMING	TECH.SPECS_COMMON	"{""hdr_standard"": [""HDR10""], ""screen_resolution"": ""UHD_4K"", ""storage_capacity"": ""1TB""}"	hand_selected
+смартфон 128 гб	TECH.PHONES	TECH.SPECS_COMMON	"{""storage_capacity"": ""128GB""}"	generated_head_spec_query
+смартфон 256 гб	TECH.PHONES	TECH.SPECS_COMMON	"{""storage_capacity"": ""256GB""}"	generated_head_spec_query
+смартфон 8 гб озу	TECH.PHONES	TECH.SPECS_COMMON	"{""ram_capacity"": ""8GB""}"	generated_head_spec_query
+смартфон 5000 мач	TECH.PHONES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+смартфон 5g	TECH.PHONES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+смартфон ip68	TECH.PHONES	TECH.SPECS_COMMON	"{""water_resistance"": ""IP68""}"	generated_head_spec_query
+смартфон 120 гц	TECH.PHONES	TECH.SPECS_COMMON	"{""refresh_rate_hz"": ""120HZ""}"	generated_head_spec_query
+ноутбук 16 гб озу	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""ram_capacity"": ""16GB""}"	generated_head_spec_query
+ноутбук 512 ssd	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""storage_capacity"": ""512GB""}"	generated_head_spec_query
+ноутбук 1tb ssd	TECH.COMPUTERS	TECH.SPECS_COMMON	{}	generated_head_spec_query
+ноутбук 14 дюймов	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""screen_size"": ""IN_14""}"	generated_head_spec_query
+ноутбук 16 дюймов	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""screen_size"": ""IN_16""}"	generated_head_spec_query
+ноутбук wifi 6	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""wi_fi_standard"": [""WIFI_6""]}"	generated_head_spec_query
+ноутбук usb-c	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""]}"	generated_head_spec_query
+монитор 27 дюймов	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""screen_size"": ""IN_27""}"	generated_head_spec_query
+монитор 32 дюйма	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""screen_size"": ""IN_32""}"	generated_head_spec_query
+монитор 144 гц	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""refresh_rate_hz"": ""144HZ"", ""screen_size"": ""IN_14""}"	generated_head_spec_query
+монитор 4к	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""screen_resolution"": ""UHD_4K""}"	generated_head_spec_query
+монитор ips	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	{}	generated_head_spec_query
+монитор oled	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	{}	generated_head_spec_query
+монитор 1 ms	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	{}	generated_head_spec_query
+колонка bluetooth 5.0	TECH.AUDIO	TECH.SPECS_COMMON	"{""bluetooth_version"": ""BT_5_0""}"	generated_head_spec_query
+колонка ipx7	TECH.AUDIO	TECH.SPECS_COMMON	"{""water_resistance"": ""IPX7""}"	generated_head_spec_query
+колонка 20 вт	TECH.AUDIO	TECH.SPECS_COMMON	{}	generated_head_spec_query
+колонка usb-c	TECH.AUDIO	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""]}"	generated_head_spec_query
+колонка stereo	TECH.AUDIO	TECH.SPECS_COMMON	{}	generated_head_spec_query
+роутер wifi 6	TECH.NETWORKING	TECH.SPECS_COMMON	"{""wi_fi_standard"": [""WIFI_6""]}"	generated_head_spec_query
+роутер wifi 7	TECH.NETWORKING	TECH.SPECS_COMMON	"{""wi_fi_standard"": [""WIFI_7""]}"	generated_head_spec_query
+роутер gigabit	TECH.NETWORKING	TECH.SPECS_COMMON	{}	generated_head_spec_query
+роутер 2.5 gbps	TECH.NETWORKING	TECH.SPECS_COMMON	{}	generated_head_spec_query
+роутер 4 антенны	TECH.NETWORKING	TECH.SPECS_COMMON	{}	generated_head_spec_query
+зарядка 20w	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""power_watts"": ""20W""}"	generated_head_spec_query
+зарядка 65w	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""power_watts"": ""65W""}"	generated_head_spec_query
+зарядка 100w	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""power_watts"": ""100W""}"	generated_head_spec_query
+зарядка usb-c	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""]}"	generated_head_spec_query
+зарядка pd	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+зарядка gan	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+ssd 512 гб	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""storage_capacity"": ""512GB""}"	generated_head_spec_query
+ssd 1 тб	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""storage_capacity"": ""1TB""}"	generated_head_spec_query
+ssd nvme	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	{}	generated_head_spec_query
+ssd 3500 mb/s	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	{}	generated_head_spec_query
+ssd usb-c	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""]}"	generated_head_spec_query
+дрон 4k	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	"{""screen_resolution"": ""UHD_4K""}"	generated_head_spec_query
+дрон 60 fps	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+дрон gps	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+дрон аккумулятор 30 минут	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+дрон 3 осевой стабилизатор	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	{}	generated_head_spec_query
+камера 1080p	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""screen_resolution"": ""FHD""}"	generated_head_spec_query
+камера 4k	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""screen_resolution"": ""UHD_4K""}"	generated_head_spec_query
+камера wifi	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	{}	generated_head_spec_query
+камера ip67	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""water_resistance"": ""IP67""}"	generated_head_spec_query
+камера ночное видение	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	{}	generated_head_spec_query
+куртка waterproof ip67	FASH.*	TECH.SPECS_COMMON	{}	TECH specs tokens must not force TECH when fashion garment context wins
+чехол кожаный для документов 15 дюймов	FASH.BAGS	TECH.SPECS_COMMON	{}	inch token alone is not display spec
+бутылка 500 мл bluetooth нет	HOME.*	TECH.SPECS_COMMON	{}	random unit tokens do not trigger TECH
+кроссовки 42 4к фото	FASH.SHOES	TECH.SPECS_COMMON	{}	4k in photo quality text is not device spec
+игрушечный телефон звук батарейки	KIDS.*	TECH.SPECS_COMMON	{}	toy phone not TECH.PHONES
+футболка с принтом iphone 15	FASH.*	TECH.SPECS_COMMON	{}	model token in print text not device identity/spec
+смартфон 64 гб 4 гб озу usb-c android	TECH.PHONES	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""], ""os_family"": ""ANDROID"", ""ram_capacity"": ""4GB"", ""storage_capacity"": ""64GB""}"	expanded_production_coverage
+смартфон 512 гб 12 гб озу 5g 120hz	TECH.PHONES	TECH.SPECS_COMMON	"{""network_generation"": [""FIVE_G""], ""ram_capacity"": ""12GB"", ""refresh_rate_hz"": ""120HZ"", ""storage_capacity"": ""512GB""}"	expanded_production_coverage
+чехол батарея 5000 мач lightning	TECH.PHONE_ACCESSORIES	TECH.SPECS_COMMON	"{""battery_capacity_mah"": ""5000"", ""connector_type"": [""LIGHTNING""]}"	expanded_production_coverage
+держатель с зарядкой 15w qi magsafe	TECH.PHONE_ACCESSORIES	TECH.SPECS_COMMON	"{""charging_standard"": [""QI"", ""MAGSAFE""], ""power_watts"": ""15W""}"	expanded_production_coverage
+мини пк 32 гб озу 1 тб ssd windows	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""os_family"": ""WINDOWS"", ""ram_capacity"": ""32GB"", ""storage_capacity"": ""1TB"", ""storage_type"": [""SSD""]}"	expanded_production_coverage
+моноблок 24 дюйма full hd 16 гб озу	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""ram_capacity"": ""16GB"", ""screen_resolution"": ""FHD"", ""screen_size"": ""IN_24""}"	expanded_production_coverage
+электронная книга 7.9 e-ink 32 гб usb-c	TECH.TABLETS_E_READERS	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""], ""panel_type"": ""E_INK"", ""screen_size"": ""IN_7_9"", ""storage_capacity"": ""32GB""}"	expanded_production_coverage
+графический планшет usb-c bluetooth	TECH.TABLETS_E_READERS	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""], ""wireless_standard"": [""BLUETOOTH""]}"	expanded_production_coverage
+монитор 34 ultrawide qhd 165 гц	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""refresh_rate_hz"": ""165HZ"", ""screen_resolution"": ""ULTRAWIDE_QHD"", ""screen_size"": ""IN_34""}"	expanded_production_coverage
+сенсорный монитор 24 full hd hdmi vesa 100	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""connector_type"": [""HDMI""], ""mounting_type"": [""VESA_100""], ""screen_resolution"": ""FHD"", ""screen_size"": ""IN_24""}"	expanded_production_coverage
+webcam 1080p 60fps usb	TECH.COMPUTER_ACCESSORIES	TECH.SPECS_COMMON	"{""connector_type"": [""USB_A""], ""frame_rate_fps"": ""60"", ""screen_resolution"": ""FHD""}"	expanded_production_coverage
+usb hub type-c hdmi ethernet 100w	TECH.COMPUTER_ACCESSORIES	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C"", ""HDMI"", ""ETHERNET_RJ45""], ""power_watts"": ""100W""}"	expanded_production_coverage
+видеокарта gddr6 8gb hdmi displayport	TECH.PC_COMPONENTS	TECH.SPECS_COMMON	"{""connector_type"": [""HDMI"", ""DISPLAYPORT""], ""memory_type"": ""GDDR6"", ""ram_capacity"": ""8GB""}"	expanded_production_coverage
+материнская плата ddr5 wifi 6e bluetooth 5.3	TECH.PC_COMPONENTS	TECH.SPECS_COMMON	"{""bluetooth_version"": ""BT_5_3"", ""memory_type"": ""DDR5"", ""wi_fi_standard"": [""WIFI_6E""]}"	expanded_production_coverage
+внешний ssd 2 тб usb-c 1050 мб с	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""], ""read_speed_mbps"": ""1050"", ""storage_capacity"": ""2TB"", ""storage_type"": [""SSD""]}"	expanded_production_coverage
+флешка 128 гб usb 3.2	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""storage_capacity"": ""128GB"", ""storage_type"": [""USB_FLASH""]}"	expanded_production_coverage
+микрофон usb-c 24bit 96khz	TECH.AUDIO	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""]}"	expanded_production_coverage
+ресивер 7.1 hdmi dolby atmos	TECH.AUDIO	TECH.SPECS_COMMON	"{""audio_channels"": ""SEVEN_ONE"", ""connector_type"": [""HDMI""]}"	expanded_production_coverage
+проектор 4k hdr10 hdmi 60hz	TECH.TV_HOME_THEATER	TECH.SPECS_COMMON	"{""connector_type"": [""HDMI""], ""hdr_standard"": [""HDR10""], ""refresh_rate_hz"": ""60HZ"", ""screen_resolution"": ""UHD_4K""}"	expanded_production_coverage
+smart tv 65 4k dolby vision wifi 6	TECH.TV_HOME_THEATER	TECH.SPECS_COMMON	"{""hdr_standard"": [""DOLBY_VISION""], ""screen_resolution"": ""UHD_4K"", ""screen_size"": ""IN_65"", ""wi_fi_standard"": [""WIFI_6""]}"	expanded_production_coverage
+умные часы 1.4 amoled bluetooth 5.2 gps	TECH.WEARABLES	TECH.SPECS_COMMON	"{""bluetooth_version"": ""BT_5_2"", ""panel_type"": ""AMOLED"", ""screen_size"": ""IN_1_4"", ""wireless_standard"": [""GPS""]}"	expanded_production_coverage
+фитнес трекер spO2 пульс ip68	TECH.WEARABLES	TECH.SPECS_COMMON	"{""sensor_set"": [""SPO2"", ""HEART_RATE""], ""water_resistance"": ""IP68""}"	expanded_production_coverage
+зеркальная камера 24 мп 4k 60fps	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	"{""camera_resolution_mp"": ""24"", ""frame_rate_fps"": ""60"", ""video_resolution"": [""UHD_4K""]}"	expanded_production_coverage
+стабилизатор bluetooth usb-c battery	TECH.CAMERAS_DRONES	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""], ""power_source"": [""BATTERY""], ""wireless_standard"": [""BLUETOOTH""]}"	expanded_production_coverage
+портативная консоль 7 oled 512 гб 120hz	TECH.GAMING	TECH.SPECS_COMMON	"{""panel_type"": ""OLED"", ""refresh_rate_hz"": ""120HZ"", ""screen_size"": ""IN_7"", ""storage_capacity"": ""512GB""}"	expanded_production_coverage
+игровая гарнитура 7.1 usb-c bluetooth 5.2	TECH.GAMING	TECH.SPECS_COMMON	"{""audio_channels"": ""SEVEN_ONE"", ""bluetooth_version"": ""BT_5_2"", ""connector_type"": [""USB_C""]}"	expanded_production_coverage
+умный замок wifi bluetooth батарейки	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""power_source"": [""REPLACEABLE_BATTERY""], ""wireless_standard"": [""WIFI"", ""BLUETOOTH""]}"	expanded_production_coverage
+датчик температуры zigbee батарейка	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""power_source"": [""REPLACEABLE_BATTERY""], ""sensor_set"": [""TEMPERATURE""], ""wireless_standard"": [""ZIGBEE""]}"	expanded_production_coverage
+точка доступа wifi 7 poe 2.5gbps	TECH.NETWORKING	TECH.SPECS_COMMON	"{""network_speed"": ""TWO_FIVE_G"", ""poe_support"": true, ""wi_fi_standard"": [""WIFI_7""]}"	expanded_production_coverage
+сетевой адаптер usb-c ethernet 2.5g	TECH.NETWORKING	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C"", ""ETHERNET_RJ45""], ""network_speed"": ""TWO_FIVE_G""}"	expanded_production_coverage
+автомобильная зарядка 45w usb-c pd pps	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""charging_standard"": [""USB_PD"", ""PPS""], ""connector_type"": [""USB_C""], ""power_watts"": ""45W""}"	expanded_production_coverage
+портативная станция 1000w 1024wh ac usb-c	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""battery_capacity_wh"": ""1024"", ""connector_type"": [""USB_C""], ""power_source"": [""AC_MAINS"", ""BATTERY""], ""power_watts"": ""1000W""}"	expanded_production_coverage
+термопринтер этикеток usb bluetooth 203 dpi	TECH.PRINTERS_SCANNERS	TECH.SPECS_COMMON	"{""connector_type"": [""USB_A""], ""print_technology"": ""THERMAL"", ""scan_resolution"": ""203dpi"", ""wireless_standard"": [""BLUETOOTH""]}"	expanded_production_coverage
+сканер документов 600dpi usb-c	TECH.PRINTERS_SCANNERS	TECH.SPECS_COMMON	"{""connector_type"": [""USB_C""], ""scan_resolution"": ""600dpi""}"	expanded_production_coverage
+магнитола android 10 дюймов 4g gps	TECH.CAR_ELECTRONICS_GPS	TECH.SPECS_COMMON	"{""network_generation"": [""FOUR_G""], ""os_family"": ""ANDROID"", ""screen_size"": ""IN_10_2"", ""wireless_standard"": [""GPS""]}"	expanded_production_coverage
+парктроник 4 датчика 12v	TECH.CAR_ELECTRONICS_GPS	TECH.SPECS_COMMON	"{""power_source"": [""CAR_12V""], ""sensor_set"": [""PIR""]}"	expanded_production_coverage
+накопитель 1024 гб это 1 тб	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""storage_capacity"": ""1TB""}"	unit_parser_stress
+кабель 150 см type c	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""cable_length_m"": ""1.5M"", ""connector_type"": [""USB_C""]}"	unit_parser_stress
+монитор вес 5.4 кг	TECH.MONITORS_DISPLAYS	TECH.SPECS_COMMON	"{""weight"": ""5400g""}"	unit_parser_stress
+ноутбук 1.36 kg 16gb 512gb	TECH.COMPUTERS	TECH.SPECS_COMMON	"{""ram_capacity"": ""16GB"", ""storage_capacity"": ""512GB"", ""weight"": ""1360g""}"	unit_parser_stress
+зарядка output 20v 3.25a 65w	TECH.POWER_CHARGING_CABLES	TECH.SPECS_COMMON	"{""output_current_a"": ""3.25A"", ""output_voltage"": ""20V"", ""power_watts"": ""65W""}"	unit_parser_stress
+ssd read 7000 mb/s write 5000 mb/s	TECH.STORAGE_MEMORY	TECH.SPECS_COMMON	"{""read_speed_mbps"": ""7000"", ""write_speed_mbps"": ""5000""}"	unit_parser_stress
+router wan 2.5gbps lan gigabit wifi 6	TECH.NETWORKING	TECH.SPECS_COMMON	"{""network_speed"": ""TWO_FIVE_G"", ""wi_fi_standard"": [""WIFI_6""]}"	unit_parser_stress
+камера 3840x2160 30fps ip66	TECH.SMART_HOME_SECURITY	TECH.SPECS_COMMON	"{""frame_rate_fps"": ""30"", ""screen_resolution"": ""UHD_4K""}"	unit_parser_stress
+планшет 10.9 256gb lte esim	TECH.TABLETS_E_READERS	TECH.SPECS_COMMON	"{""network_generation"": [""LTE""], ""screen_size"": ""IN_10_9"", ""sim_support"": [""ESIM""], ""storage_capacity"": ""256GB""}"	unit_parser_stress
+гарнитура 2.4ghz bluetooth 5.4 usb-c	TECH.AUDIO	TECH.SPECS_COMMON	"{""bluetooth_version"": ""BT_5_4"", ""connector_type"": [""USB_C""]}"	unit_parser_stress

@@ -316,7 +316,7 @@ internal object VisualSearchPreflightCategoryRouter {
             negativeTerms = listOf("charger", "adapter", "заряд", "чехол", "кабель"),
         ),
         CategoryRule(
-            categoryCode = "TECH.LAPTOPS",
+            categoryCode = "TECH.COMPUTERS",
             baseScore = 0.58f,
             positiveTerms = terms(
                 "laptop" to 0.28f,
@@ -356,7 +356,7 @@ internal object VisualSearchPreflightCategoryRouter {
             ),
         ),
         CategoryRule(
-            categoryCode = "TECH.TABLETS_EBOOKS",
+            categoryCode = "TECH.TABLETS_E_READERS",
             baseScore = 0.56f,
             positiveTerms = terms(
                 "tablet" to 0.24f,
@@ -368,7 +368,7 @@ internal object VisualSearchPreflightCategoryRouter {
             ),
         ),
         CategoryRule(
-            categoryCode = "TECH.TV_VIDEO",
+            categoryCode = "TECH.TV_HOME_THEATER",
             baseScore = 0.54f,
             positiveTerms = terms(
                 "television" to 0.24f,
@@ -392,7 +392,7 @@ internal object VisualSearchPreflightCategoryRouter {
             ),
         ),
         CategoryRule(
-            categoryCode = "TECH.CAMERAS",
+            categoryCode = "TECH.CAMERAS_DRONES",
             baseScore = 0.54f,
             positiveTerms = terms(
                 "camera" to 0.22f,
@@ -422,7 +422,7 @@ internal object VisualSearchPreflightCategoryRouter {
             ),
         ),
         CategoryRule(
-            categoryCode = "TECH.SMART_HOME",
+            categoryCode = "TECH.SMART_HOME_SECURITY",
             baseScore = 0.52f,
             positiveTerms = terms(
                 "smart bulb" to 0.22f,

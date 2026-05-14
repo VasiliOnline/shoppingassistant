@@ -48,14 +48,14 @@ private const val MAX_REQUEST_IMAGES: Int = 3
 private const val ROUTER_MAX_COMPLETION_TOKENS: Int = 180
 private val BROAD_FALLBACK_CATEGORY_CODES: List<String> = listOf(
     "TECH.PHONES",
-    "TECH.LAPTOPS",
+    "TECH.COMPUTERS",
     "TECH.PC_COMPONENTS",
     "TECH.PHONE_ACCESSORIES",
-    "TECH.TV_VIDEO",
+    "TECH.TV_HOME_THEATER",
     "TECH.AUDIO",
     "TECH.GAMING",
-    "TECH.CAMERAS",
-    "TECH.SMART_HOME",
+    "TECH.CAMERAS_DRONES",
+    "TECH.SMART_HOME_SECURITY",
     "APPL.MAJOR",
     "APPL.SMALL",
     "APPL.CLIMATE",
@@ -1251,7 +1251,7 @@ class YandexVisualSearchAiDraftNormalizer(
             "TECH.GAMING",
             "AUTO.PARTS" -> true
 
-            "TECH.SMART_HOME" ->
+            "TECH.SMART_HOME_SECURITY" ->
                 itemText.contains("watch") ||
                     itemText.contains("smartwatch") ||
                     itemText.contains("wearable")
@@ -1292,7 +1292,7 @@ class YandexVisualSearchAiDraftNormalizer(
             "AUTO.PARTS"
             -> true
 
-            "TECH.SMART_HOME" ->
+            "TECH.SMART_HOME_SECURITY" ->
                 itemContains("watch", "smartwatch", "wearable", "smart watch")
 
             "TECH.AUDIO" ->

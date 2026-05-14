@@ -1,0 +1,682 @@
+{
+  "schemaVersion": "1.0.0",
+  "matrixCode": "FASH_TYPED_ATTRIBUTE_COVERAGE_MATRIX_v1_0",
+  "categories": [
+    {
+      "categoryCode": "FASH.MEN",
+      "typeAttribute": "apparel_type",
+      "initialFieldsLimit": 8,
+      "primaryFacetsLimit": 7,
+      "commonHiddenAttributes": [
+        "target_gender",
+        "age_group",
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "normalization_confidence",
+        "visual_evidence_flags",
+        "source_text_evidence",
+        "bra_cup"
+      ],
+      "commonRequiredAttributes": ["apparel_type", "condition"],
+      "commonValidatorAttributes": [
+        "apparel_type",
+        "condition",
+        "size_label",
+        "color_primary",
+        "brand",
+        "material_primary",
+        "fit",
+        "season",
+        "target_gender",
+        "age_group",
+        "model_or_line_text",
+        "price",
+        "currency"
+      ],
+      "commonNoGuessAttributes": ["target_gender", "age_group", "brand", "model_or_line_text", "size_label"],
+      "nonFacetExplanations": {
+        "model_or_line_text": "free seller text for model/line matching; not a curated model facet",
+        "currency": "external commerce unit paired with price; not type-specific",
+        "brand_text_raw": "raw seller evidence; normalization support field, not a user facet",
+        "size_text_raw": "raw seller evidence; normalized size_label remains the facet",
+        "source_text_evidence": "matching evidence field for audit/review only",
+        "visual_evidence_flags": "AI evidence field hidden from shopper UI",
+        "normalization_confidence": "system confidence signal hidden from shopper UI"
+      },
+      "groups": [
+        {
+          "groupCode": "TOP",
+          "typeValues": ["TSHIRT", "LONGSLEEVE", "SHIRT", "POLO", "TURTLENECK"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit", "sleeve_length"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "sleeve_length", "fit"],
+          "secondaryAttributes": ["condition", "pattern", "neckline", "style_aesthetic", "occasion", "measurements", "defect_type"],
+          "validatorAttributes": ["sleeve_length", "neckline", "pattern"]
+        },
+        {
+          "groupCode": "KNITWEAR",
+          "typeValues": ["SWEATER", "SWEATSHIRT", "HOODIE", "CARDIGAN"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "hood", "closure_type", "pattern", "neckline", "defect_type"],
+          "validatorAttributes": ["hood", "closure_type", "pattern"]
+        },
+        {
+          "groupCode": "OUTERWEAR",
+          "typeValues": ["VEST", "BLAZER", "JACKET", "BOMBER", "DENIM_JACKET", "LEATHER_JACKET", "WINDBREAKER", "RAINCOAT", "COAT", "PARKA", "DOWN_JACKET"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "season", "outerwear_weight", "hood"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "season", "outerwear_weight", "water_resistance"],
+          "secondaryAttributes": ["condition", "closure_type", "hood", "lining", "insulation_material", "material_primary", "defect_type"],
+          "validatorAttributes": ["outerwear_weight", "water_resistance", "hood", "lining", "insulation_material"]
+        },
+        {
+          "groupCode": "BOTTOM",
+          "typeValues": ["JEANS", "TROUSERS", "CHINOS", "CARGO_PANTS", "SHORTS"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "fit", "leg_fit", "waist_rise"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "waist_rise", "leg_fit", "fit"],
+          "secondaryAttributes": ["condition", "waist_type", "length_type", "material_primary", "pattern", "waist_cm", "inseam_cm", "defect_type"],
+          "validatorAttributes": ["waist_rise", "leg_fit", "fit", "waist_type", "length_type", "waist_cm", "inseam_cm"]
+        },
+        {
+          "groupCode": "SET",
+          "typeValues": ["SUIT", "TRACKSUIT"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "occasion", "fit", "pack_type"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "occasion", "fit"],
+          "secondaryAttributes": ["condition", "material_primary", "pattern", "style_aesthetic", "defect_type"],
+          "validatorAttributes": ["occasion", "fit", "pack_type"]
+        },
+        {
+          "groupCode": "SLEEPWEAR",
+          "typeValues": ["PAJAMAS", "ROBE"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "sleeve_length"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary"],
+          "secondaryAttributes": ["condition", "length_type", "pattern", "defect_type"],
+          "validatorAttributes": ["length_type", "sleeve_length", "pattern"]
+        },
+        {
+          "groupCode": "UNDERWEAR",
+          "typeValues": ["UNDERWEAR"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "pack_type"],
+          "primaryAttributes": ["apparel_type", "size_label", "brand", "material_primary", "pack_type"],
+          "secondaryAttributes": ["condition", "pattern", "defect_type"],
+          "validatorAttributes": ["pack_type", "material_primary"]
+        },
+        {
+          "groupCode": "SOCKS_HOSIERY",
+          "typeValues": ["SOCKS"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "pack_type"],
+          "primaryAttributes": ["apparel_type", "size_label", "brand", "material_primary", "pack_type"],
+          "secondaryAttributes": ["condition", "season", "pattern", "defect_type"],
+          "validatorAttributes": ["pack_type", "material_primary", "season"]
+        },
+        {
+          "groupCode": "BASE_LAYER",
+          "typeValues": ["THERMAL_UNDERWEAR"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "season", "material_primary", "fit"],
+          "primaryAttributes": ["apparel_type", "size_label", "brand", "season", "activity", "material_primary"],
+          "secondaryAttributes": ["condition", "fit", "defect_type"],
+          "validatorAttributes": ["season", "activity", "material_primary"]
+        },
+        {
+          "groupCode": "SWIMWEAR",
+          "typeValues": ["SWIMWEAR"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary"],
+          "secondaryAttributes": ["condition", "stretch", "occasion", "defect_type"],
+          "validatorAttributes": ["stretch", "occasion", "material_primary"]
+        },
+        {
+          "groupCode": "SPORT",
+          "typeValues": ["ACTIVE_TOP", "ACTIVE_BOTTOM"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "activity", "fit", "material_primary"],
+          "primaryAttributes": ["apparel_type", "size_label", "brand", "activity", "fit", "material_primary"],
+          "secondaryAttributes": ["condition", "breathable", "stretch", "season", "defect_type"],
+          "validatorAttributes": ["activity", "fit", "material_primary", "breathable", "stretch"]
+        },
+        {
+          "groupCode": "SPECIAL",
+          "typeValues": ["UNIFORM"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "occasion", "material_primary"],
+          "primaryAttributes": ["apparel_type", "size_label", "brand", "occasion", "condition"],
+          "secondaryAttributes": ["color_primary", "material_primary", "closure_type", "defect_type"],
+          "validatorAttributes": ["occasion", "condition", "material_primary"]
+        }
+      ]
+    },
+    {
+      "categoryCode": "FASH.WOMEN",
+      "typeAttribute": "apparel_type",
+      "initialFieldsLimit": 8,
+      "primaryFacetsLimit": 7,
+      "commonHiddenAttributes": [
+        "target_gender",
+        "age_group",
+        "apparel_type_group",
+        "size_text_raw",
+        "brand_text_raw",
+        "normalization_confidence",
+        "visual_evidence_flags",
+        "source_text_evidence"
+      ],
+      "commonRequiredAttributes": ["apparel_type", "condition"],
+      "commonValidatorAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "model_or_line_text", "material_primary", "fit", "season", "price", "currency"],
+      "commonNoGuessAttributes": ["target_gender", "age_group", "brand", "model_or_line_text", "size_label"],
+      "nonFacetExplanations": {
+        "model_or_line_text": "free seller text for model/line matching; not a curated model facet",
+        "currency": "external commerce unit paired with price; not type-specific",
+        "brand_text_raw": "raw seller evidence; normalization support field, not a user facet",
+        "size_text_raw": "raw seller evidence; normalized size_label remains the facet",
+        "source_text_evidence": "matching evidence field for audit/review only",
+        "visual_evidence_flags": "AI evidence field hidden from shopper UI",
+        "normalization_confidence": "system confidence signal hidden from shopper UI"
+      },
+      "groups": [
+        {
+          "groupCode": "TOP",
+          "typeValues": ["TSHIRT", "LONGSLEEVE", "SHIRT", "BLOUSE", "TOP", "TANK_TOP", "POLO", "TURTLENECK"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit", "sleeve_length"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "pattern", "neckline", "style_aesthetic", "occasion", "sleeve_length", "defect_type"],
+          "validatorAttributes": ["sleeve_length", "neckline", "pattern"]
+        },
+        {
+          "groupCode": "KNITWEAR",
+          "typeValues": ["SWEATER", "SWEATSHIRT", "HOODIE", "CARDIGAN"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "hood", "closure_type", "pattern", "neckline", "defect_type"],
+          "validatorAttributes": ["hood", "closure_type", "pattern"]
+        },
+        {
+          "groupCode": "OUTERWEAR",
+          "typeValues": ["VEST", "BLAZER", "JACKET", "BOMBER", "DENIM_JACKET", "LEATHER_JACKET", "WINDBREAKER", "RAINCOAT", "COAT", "PARKA", "DOWN_JACKET"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "season", "outerwear_weight", "material_primary"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "season", "outerwear_weight", "water_resistance"],
+          "secondaryAttributes": ["condition", "hood", "lining", "closure_type", "insulation_material", "material_primary", "defect_type"],
+          "validatorAttributes": ["outerwear_weight", "water_resistance", "hood", "lining", "insulation_material"]
+        },
+        {
+          "groupCode": "BOTTOM",
+          "typeValues": ["JEANS", "TROUSERS", "CHINOS", "CARGO_PANTS", "LEGGINGS", "SHORTS", "SKIRT"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "waist_rise", "fit", "length_type"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "waist_rise", "fit", "length_type"],
+          "secondaryAttributes": ["condition", "material_primary", "leg_fit", "waist_type", "pattern", "waist_cm", "hips_cm", "inseam_cm", "defect_type"],
+          "validatorAttributes": ["waist_rise", "fit", "length_type", "leg_fit", "waist_type", "waist_cm", "hips_cm", "inseam_cm"]
+        },
+        {
+          "groupCode": "ONE_PIECE",
+          "typeValues": ["DRESS", "JUMPSUIT", "ROMPER"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "length_type", "sleeve_length", "neckline"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "length_type", "occasion", "sleeve_length"],
+          "secondaryAttributes": ["condition", "material_primary", "silhouette", "pattern", "lining", "defect_type"],
+          "validatorAttributes": ["length_type", "occasion", "sleeve_length", "neckline", "silhouette"]
+        },
+        {
+          "groupCode": "SET",
+          "typeValues": ["SUIT", "TRACKSUIT"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "pack_type", "style_aesthetic", "season"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "pack_type", "style_aesthetic", "occasion", "pattern", "defect_type"],
+          "validatorAttributes": ["pack_type", "style_aesthetic", "season", "fit"]
+        },
+        {
+          "groupCode": "SLEEPWEAR",
+          "typeValues": ["PAJAMAS", "ROBE"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "length_type", "pattern", "defect_type"],
+          "validatorAttributes": ["length_type", "pattern", "material_primary"]
+        },
+        {
+          "groupCode": "UNDERWEAR",
+          "typeValues": ["UNDERWEAR", "BRA"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "bra_cup", "pack_type"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "bra_cup", "pack_type", "condition"],
+          "secondaryAttributes": ["material_primary", "pattern", "style_aesthetic", "defect_type"],
+          "requiredAttributes": ["bra_cup"],
+          "validatorAttributes": ["bra_cup", "pack_type", "material_primary"]
+        },
+        {
+          "groupCode": "SOCKS_HOSIERY",
+          "typeValues": ["SOCKS", "TIGHTS"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "pack_type", "pattern"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "pack_type", "material_primary", "condition"],
+          "secondaryAttributes": ["pattern", "compression_level", "defect_type"],
+          "validatorAttributes": ["pack_type", "material_primary", "compression_level"]
+        },
+        {
+          "groupCode": "BASE_LAYER",
+          "typeValues": ["THERMAL_UNDERWEAR"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "season", "material_primary", "fit"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "activity", "defect_type"],
+          "validatorAttributes": ["season", "activity", "material_primary"]
+        },
+        {
+          "groupCode": "SWIMWEAR",
+          "typeValues": ["SWIMWEAR"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "pack_type", "style_aesthetic", "pattern"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "pack_type", "style_aesthetic", "bra_cup", "defect_type"],
+          "validatorAttributes": ["pack_type", "style_aesthetic", "bra_cup"]
+        },
+        {
+          "groupCode": "SPORT",
+          "typeValues": ["ACTIVE_TOP", "ACTIVE_BOTTOM"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "activity", "material_primary", "fit"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "activity", "fit", "material_primary"],
+          "secondaryAttributes": ["condition", "compression_level", "breathable", "stretch", "pattern", "defect_type"],
+          "validatorAttributes": ["activity", "fit", "material_primary", "compression_level", "breathable", "stretch"]
+        },
+        {
+          "groupCode": "SPECIAL",
+          "typeValues": ["UNIFORM"],
+          "initialAttributes": ["apparel_type", "condition", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "primaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "material_primary", "fit", "season"],
+          "secondaryAttributes": ["condition", "occasion", "pattern", "defect_type"],
+          "validatorAttributes": ["occasion", "material_primary"]
+        }
+      ]
+    },
+    {
+      "categoryCode": "FASH.KIDS",
+      "typeAttribute": "apparel_type",
+      "initialFieldsLimit": 8,
+      "primaryFacetsLimit": 7,
+      "commonHiddenAttributes": ["apparel_type_group", "size_text_raw", "brand_text_raw", "normalization_confidence", "visual_evidence_flags", "source_text_evidence", "bra_cup"],
+      "commonRequiredAttributes": ["apparel_type", "condition", "age_group"],
+      "commonValidatorAttributes": ["apparel_type", "condition", "size_label", "target_gender", "age_group", "brand", "model_or_line_text", "color_primary", "season", "price", "currency"],
+      "commonNoGuessAttributes": ["target_gender", "age_group", "brand", "model_or_line_text", "size_label"],
+      "nonFacetExplanations": {
+        "model_or_line_text": "free seller text for model/line matching; not a curated model facet",
+        "currency": "external commerce unit paired with price; not type-specific",
+        "brand_text_raw": "raw seller evidence; normalization support field, not a user facet",
+        "size_text_raw": "raw seller evidence; normalized size_label remains the facet",
+        "source_text_evidence": "matching evidence field for audit/review only",
+        "visual_evidence_flags": "AI evidence field hidden from shopper UI",
+        "normalization_confidence": "system confidence signal hidden from shopper UI"
+      },
+      "groups": [
+        {
+          "groupCode": "TOPS",
+          "typeValues": ["TSHIRT", "LONGSLEEVE", "SHIRT", "POLO", "HOODIE", "SWEATSHIRT", "SWEATER", "BLOUSE", "CARDIGAN"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "color_primary", "material_primary"],
+          "primaryAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "brand", "condition"],
+          "secondaryAttributes": ["color_primary", "material_primary", "fit", "season", "defect_type"],
+          "validatorAttributes": ["target_gender", "age_group", "size_label", "material_primary"]
+        },
+        {
+          "groupCode": "BOTTOMS",
+          "typeValues": ["JEANS", "TROUSERS", "SHORTS", "LEGGINGS", "SKIRT"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "color_primary", "fit"],
+          "primaryAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "fit", "condition"],
+          "secondaryAttributes": ["brand", "color_primary", "waist_rise", "leg_fit", "length_type", "defect_type"],
+          "validatorAttributes": ["target_gender", "age_group", "size_label", "fit", "waist_rise", "leg_fit", "length_type"]
+        },
+        {
+          "groupCode": "OUTERWEAR",
+          "typeValues": ["JACKET", "DOWN_JACKET", "COAT", "RAINCOAT", "VEST"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "season", "insulation_material"],
+          "primaryAttributes": ["apparel_type", "age_group", "size_label", "season", "condition", "brand"],
+          "secondaryAttributes": ["target_gender", "color_primary", "outerwear_weight", "water_resistance", "hood", "defect_type"],
+          "validatorAttributes": ["age_group", "size_label", "season", "outerwear_weight", "water_resistance", "hood", "insulation_material"]
+        },
+        {
+          "groupCode": "SETS_SUITS",
+          "typeValues": ["TRACKSUIT", "SPORTSWEAR", "SCHOOL_UNIFORM", "FORMALWEAR", "BABY_SET"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "season", "pack_type"],
+          "primaryAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "season"],
+          "secondaryAttributes": ["brand", "color_primary", "material_primary", "activity", "occasion", "defect_type"],
+          "validatorAttributes": ["target_gender", "age_group", "size_label", "season", "activity", "occasion"]
+        },
+        {
+          "groupCode": "DRESSES_ONE_PIECE",
+          "typeValues": ["DRESS", "ROMPER", "JUMPSUIT", "OVERALLS", "BODYSUIT"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "color_primary", "season"],
+          "primaryAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand"],
+          "secondaryAttributes": ["color_primary", "length_type", "sleeve_length", "material_primary", "defect_type"],
+          "validatorAttributes": ["target_gender", "age_group", "size_label", "length_type", "sleeve_length"]
+        },
+        {
+          "groupCode": "UNDERWEAR_SLEEP",
+          "typeValues": ["UNDERWEAR", "SOCKS", "PAJAMAS", "HOMEWEAR", "THERMAL_UNDERWEAR"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "material_primary", "color_primary"],
+          "primaryAttributes": ["apparel_type", "age_group", "size_label", "condition", "material_primary"],
+          "secondaryAttributes": ["target_gender", "brand", "color_primary", "season", "pack_type", "defect_type"],
+          "validatorAttributes": ["age_group", "size_label", "material_primary", "pack_type"]
+        },
+        {
+          "groupCode": "SEASONAL_SPECIAL",
+          "typeValues": ["SWIMWEAR", "COSTUME", "HAT_SCARF_SET"],
+          "initialAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "brand", "season", "color_primary"],
+          "primaryAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "season"],
+          "secondaryAttributes": ["brand", "color_primary", "material_primary", "occasion", "defect_type"],
+          "validatorAttributes": ["target_gender", "age_group", "size_label", "season", "occasion"]
+        }
+      ]
+    },
+    {
+      "categoryCode": "FASH.SHOES",
+      "typeAttribute": "shoe_type",
+      "initialFieldsLimit": 8,
+      "primaryFacetsLimit": 7,
+      "commonHiddenAttributes": ["raw_size_text", "size_ru", "child_height_cm", "defect_notes", "authenticity_status"],
+      "commonRequiredAttributes": ["shoe_type", "condition", "pair_completeness"],
+      "commonValidatorAttributes": ["shoe_type", "condition", "pair_completeness", "size_eu", "raw_size_text", "target_gender", "age_group", "brand", "model_name_text", "color_primary", "season", "material_upper", "price", "currency"],
+      "commonNoGuessAttributes": ["size_eu", "size_ru", "size_system", "raw_size_text", "foot_length_cm", "insole_length_cm", "target_gender", "age_group", "brand", "model_name_text", "authenticity_status"],
+      "nonFacetExplanations": {
+        "raw_size_text": "raw seller evidence; size_eu remains the normalized size facet",
+        "currency": "external commerce unit paired with price; not type-specific",
+        "model_name_text": "brand/model text kept as matching evidence, not a curated model facet",
+        "defect_notes": "seller/review evidence required only for defective condition",
+        "authenticity_status": "compliance-sensitive review field hidden from shopper UI",
+        "source_text_evidence": "matching evidence field for audit/review only",
+        "visual_evidence_flags": "AI evidence field hidden from shopper UI"
+      },
+      "groups": [
+        {
+          "groupCode": "SNEAKERS_SPORT",
+          "typeValues": ["SNEAKERS", "RUNNING_SHOES", "SPORT_SHOES", "FOOTBALL_BOOTS"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "color_primary", "sport_purpose", "sole_type"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "sport_purpose", "sole_type", "color_primary"],
+          "secondaryAttributes": ["target_gender", "age_group", "season", "material_upper", "closure_type", "model_name_text"],
+          "requiredAttributes": ["sport_purpose"],
+          "validatorAttributes": ["sport_purpose", "sole_type", "closure_type"]
+        },
+        {
+          "groupCode": "BOOTS",
+          "typeValues": ["BOOTS", "ANKLE_BOOTS", "WINTER_BOOTS", "HIKING_SHOES", "RUBBER_BOOTS"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "season", "waterproof_level", "shaft_height"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "season", "waterproof_level", "shaft_height"],
+          "secondaryAttributes": ["target_gender", "age_group", "color_primary", "material_upper", "insulation", "material_lining"],
+          "validatorAttributes": ["season", "waterproof_level", "shaft_height", "insulation", "material_lining"]
+        },
+        {
+          "groupCode": "CLASSIC",
+          "typeValues": ["SHOES", "LOAFERS", "MOCCASINS", "OXFORDS", "DERBY"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "color_primary", "target_gender", "material_upper"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "target_gender", "material_upper", "color_primary"],
+          "secondaryAttributes": ["season", "closure_type", "sole_type", "width_fit", "model_name_text"],
+          "validatorAttributes": ["target_gender", "material_upper", "closure_type", "sole_type", "width_fit"]
+        },
+        {
+          "groupCode": "OPEN_SHOES",
+          "typeValues": ["SANDALS", "SLIDES", "CLOGS", "ESPADRILLES"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "color_primary", "season", "material_upper"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "color_primary", "material_upper", "season"],
+          "secondaryAttributes": ["target_gender", "age_group", "closure_type", "sole_type"],
+          "validatorAttributes": ["material_upper", "season", "closure_type", "sole_type"]
+        },
+        {
+          "groupCode": "HOME",
+          "typeValues": ["SLIPPERS"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "color_primary", "material_upper", "season"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "material_upper", "color_primary"],
+          "secondaryAttributes": ["target_gender", "age_group", "season", "sole_type"],
+          "validatorAttributes": ["material_upper", "season", "sole_type"]
+        },
+        {
+          "groupCode": "HEELS",
+          "typeValues": ["HEELS", "PUMPS", "WEDGES", "BALLET_FLATS"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "heel_height_cm", "heel_type", "toe_shape"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "heel_height_cm", "heel_type", "toe_shape"],
+          "secondaryAttributes": ["target_gender", "color_primary", "material_upper", "platform_height_cm"],
+          "validatorAttributes": ["heel_height_cm", "heel_type", "toe_shape", "platform_height_cm"]
+        },
+        {
+          "groupCode": "KIDS",
+          "typeValues": ["KIDS_SHOES", "BABY_SHOES"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "age_group", "foot_length_cm", "closure_type"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "age_group", "foot_length_cm", "closure_type"],
+          "secondaryAttributes": ["target_gender", "insole_length_cm", "orthopedic_feature", "waterproof_level", "age_label"],
+          "requiredAttributes": ["age_group"],
+          "validatorAttributes": ["age_group", "foot_length_cm", "insole_length_cm", "closure_type", "orthopedic_feature", "age_label"],
+          "noGuessAttributes": ["foot_length_cm", "insole_length_cm", "orthopedic_feature"]
+        },
+        {
+          "groupCode": "OTHER",
+          "typeValues": ["OTHER_SHOES"],
+          "initialAttributes": ["shoe_type", "brand", "size_eu", "condition", "color_primary", "season", "material_upper"],
+          "primaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "color_primary", "material_upper"],
+          "secondaryAttributes": ["target_gender", "age_group", "season", "closure_type"],
+          "validatorAttributes": ["condition", "color_primary", "material_upper"]
+        }
+      ]
+    },
+    {
+      "categoryCode": "FASH.BAGS",
+      "typeAttribute": "bag_type",
+      "initialFieldsLimit": 8,
+      "primaryFacetsLimit": 7,
+      "commonHiddenAttributes": ["strap_count", "handle_drop_cm", "strap_length_cm", "set_includes", "defect_notes", "authenticity_state"],
+      "commonRequiredAttributes": ["bag_type", "condition"],
+      "commonValidatorAttributes": ["bag_type", "condition", "brand", "model_name_text", "color_primary", "material_outer", "size_class", "price", "currency"],
+      "commonNoGuessAttributes": ["target_gender", "age_group", "brand", "model_name_text", "size_class", "authenticity_state", "fits_laptop_inch", "volume_liter"],
+      "nonFacetExplanations": {
+        "model_name_text": "brand/model text kept as matching evidence, not a curated model facet",
+        "currency": "external commerce unit paired with price; not type-specific",
+        "defect_notes": "seller/review evidence required only for worn or repair condition",
+        "authenticity_state": "compliance-sensitive review field hidden from shopper UI",
+        "source_text_evidence": "matching evidence field for audit/review only",
+        "visual_evidence_flags": "AI evidence field hidden from shopper UI"
+      },
+      "groups": [
+        {
+          "groupCode": "BACKPACKS",
+          "typeValues": ["BACKPACK", "SCHOOL_BAG", "DRAWSTRING_BAG"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "volume_liter", "fits_laptop_inch"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "fits_laptop_inch"],
+          "secondaryAttributes": ["target_gender", "age_group", "usage_context", "orthopedic_back", "pocket_count", "defect_notes"],
+          "validatorAttributes": ["size_class", "volume_liter", "fits_laptop_inch", "orthopedic_back", "pocket_count"],
+          "noGuessAttributes": ["fits_laptop_inch", "orthopedic_back"]
+        },
+        {
+          "groupCode": "EVERYDAY_BAGS",
+          "typeValues": ["HANDBAG", "SHOULDER_BAG", "CROSSBODY_BAG", "TOTE", "SHOPPER_BAG"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "strap_type", "closure_type"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "strap_type"],
+          "secondaryAttributes": ["target_gender", "style", "pattern", "handle_type", "closure_type", "defect_notes"],
+          "validatorAttributes": ["strap_type", "closure_type", "handle_type", "style", "pattern"]
+        },
+        {
+          "groupCode": "CLUTCH_WAIST",
+          "typeValues": ["CLUTCH", "WAIST_BAG"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "strap_type", "closure_type"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "strap_type"],
+          "secondaryAttributes": ["target_gender", "style", "pattern", "handle_type", "defect_notes"],
+          "validatorAttributes": ["strap_type", "size_class", "style", "pattern"]
+        },
+        {
+          "groupCode": "WORK_LAPTOP",
+          "typeValues": ["LAPTOP_BAG", "LAPTOP_SLEEVE", "BRIEFCASE", "DOCUMENT_BAG"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "fits_laptop_inch", "size_class", "closure_type"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "material_outer", "fits_laptop_inch", "size_class", "closure_type"],
+          "secondaryAttributes": ["color_primary", "usage_context", "compartment_count", "pocket_count", "length_cm", "height_cm", "depth_cm"],
+          "validatorAttributes": ["fits_laptop_inch", "size_class", "closure_type", "compartment_count", "pocket_count", "length_cm", "height_cm", "depth_cm"],
+          "noGuessAttributes": ["fits_laptop_inch"]
+        },
+        {
+          "groupCode": "TRAVEL",
+          "typeValues": ["TRAVEL_BAG", "DUFFEL_BAG", "SUITCASE"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "volume_liter", "wheels_count"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "material_outer", "size_class", "volume_liter", "wheels_count"],
+          "secondaryAttributes": ["color_primary", "cabin_size_status", "lock_type", "length_cm", "height_cm", "depth_cm", "defect_notes"],
+          "validatorAttributes": ["volume_liter", "wheels_count", "cabin_size_status", "lock_type", "length_cm", "height_cm", "depth_cm"],
+          "noGuessAttributes": ["volume_liter", "cabin_size_status"]
+        },
+        {
+          "groupCode": "WALLETS",
+          "typeValues": ["WALLET", "CARDHOLDER"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "card_slots_count", "closure_type"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "card_slots_count", "closure_type"],
+          "secondaryAttributes": ["target_gender", "size_class", "pattern", "defect_notes"],
+          "validatorAttributes": ["card_slots_count", "closure_type", "size_class"]
+        },
+        {
+          "groupCode": "SPECIAL_BAGS",
+          "typeValues": ["COSMETIC_BAG", "DIAPER_BAG", "BEACH_BAG"],
+          "initialAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "usage_context", "closure_type"],
+          "primaryAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "usage_context"],
+          "secondaryAttributes": ["volume_liter", "compartment_count", "pocket_count", "defect_notes"],
+          "validatorAttributes": ["usage_context", "size_class", "volume_liter", "compartment_count", "pocket_count"]
+        }
+      ]
+    },
+    {
+      "categoryCode": "FASH.ACCESSORIES",
+      "typeAttribute": "accessory_type",
+      "initialFieldsLimit": 8,
+      "primaryFacetsLimit": 7,
+      "commonHiddenAttributes": ["route_confidence"],
+      "commonRequiredAttributes": ["accessory_type", "condition"],
+      "commonValidatorAttributes": ["accessory_type", "condition", "target_gender", "age_group", "brand", "model_name_text", "color", "material_primary", "price", "currency"],
+      "commonNoGuessAttributes": ["target_gender", "age_group", "brand", "model_name_text"],
+      "nonFacetExplanations": {
+        "model_name_text": "brand/model text kept as matching evidence, not a curated model facet",
+        "currency": "external commerce unit paired with price; not type-specific",
+        "route_confidence": "routing evidence field hidden from shopper UI",
+        "source_text_evidence": "matching evidence field for audit/review only",
+        "visual_evidence_flags": "AI evidence field hidden from shopper UI"
+      },
+      "groups": [
+        {
+          "groupCode": "BELTS",
+          "typeValues": ["BELT", "SUSPENDERS"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "color", "material_primary", "belt_size_cm", "belt_width_cm"],
+          "primaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "color", "material_primary", "belt_size_cm"],
+          "secondaryAttributes": ["age_group", "belt_width_cm", "buckle_material", "buckle_type"],
+          "requiredAttributes": ["belt_size_cm"],
+          "validatorAttributes": ["belt_size_cm", "belt_width_cm", "buckle_material", "buckle_type"]
+        },
+        {
+          "groupCode": "HEADWEAR",
+          "typeValues": ["HAT", "CAP", "BEANIE", "BERET", "BALACLAVA", "PANAMA_HAT", "VISOR", "BANDANA", "HEADBAND_FASHION"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "age_group", "color", "season", "head_size_cm"],
+          "primaryAttributes": ["accessory_type", "target_gender", "age_group", "brand", "condition", "color", "season"],
+          "secondaryAttributes": ["head_size_cm", "material_primary", "lining_material", "adjustable", "closure_type"],
+          "validatorAttributes": ["age_group", "season", "head_size_cm", "lining_material", "adjustable", "closure_type"]
+        },
+        {
+          "groupCode": "NECKWEAR",
+          "typeValues": ["SCARF", "SHAWL", "SNOOD", "STOLE", "TIE", "BOW_TIE", "POCKET_SQUARE"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "color", "material_primary", "pattern", "season"],
+          "primaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "color", "material_primary", "pattern"],
+          "secondaryAttributes": ["age_group", "season", "accessory_length_cm", "accessory_width_cm", "tie_width_type"],
+          "validatorAttributes": ["pattern", "season", "accessory_length_cm", "accessory_width_cm", "tie_width_type"]
+        },
+        {
+          "groupCode": "HANDWEAR",
+          "typeValues": ["GLOVES", "MITTENS", "FINGERLESS_GLOVES"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "age_group", "color", "glove_size", "season"],
+          "primaryAttributes": ["accessory_type", "target_gender", "age_group", "brand", "condition", "glove_size", "season"],
+          "secondaryAttributes": ["color", "material_primary", "touchscreen_compatible", "lining_material"],
+          "requiredAttributes": ["glove_size"],
+          "validatorAttributes": ["glove_size", "season", "touchscreen_compatible", "lining_material"]
+        },
+        {
+          "groupCode": "EYEWEAR",
+          "typeValues": ["SUNGLASSES", "GLASSES_FRAME", "EYEGLASS_CASE"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "frame_shape", "frame_material", "lens_color", "uv_protection"],
+          "primaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "frame_shape", "frame_material", "uv_protection"],
+          "secondaryAttributes": ["age_group", "lens_color", "polarized", "material_primary", "color"],
+          "validatorAttributes": ["frame_shape", "frame_material", "lens_color", "uv_protection", "polarized"]
+        },
+        {
+          "groupCode": "JEWELRY",
+          "typeValues": ["RING", "EARRINGS", "NECKLACE", "BRACELET", "BROOCH", "PENDANT", "CHAIN", "ANKLET", "CUFFLINKS", "CHARM", "JEWELRY_SET"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "material_primary", "metal_type", "metal_purity", "stone_type"],
+          "primaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "material_primary", "metal_type", "stone_type"],
+          "secondaryAttributes": ["age_group", "metal_purity", "ring_size_ru", "clasp_type", "color"],
+          "requiredAttributes": ["ring_size_ru"],
+          "validatorAttributes": ["metal_type", "metal_purity", "stone_type", "ring_size_ru", "clasp_type"]
+        },
+        {
+          "groupCode": "WATCHES",
+          "typeValues": ["WATCHES_NON_SMART", "WATCH_STRAP"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "movement_type", "case_diameter_mm", "strap_material", "watch_strap_lug_width_mm"],
+          "primaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "movement_type", "strap_material", "watch_strap_lug_width_mm"],
+          "secondaryAttributes": ["case_diameter_mm", "water_resistance_atm", "analog_digital", "watch_style", "color"],
+          "requiredAttributes": ["watch_strap_lug_width_mm"],
+          "validatorAttributes": ["movement_type", "case_diameter_mm", "strap_material", "watch_strap_lug_width_mm", "water_resistance_atm", "analog_digital", "watch_style"],
+          "noGuessAttributes": ["movement_type", "watch_strap_lug_width_mm", "case_diameter_mm"]
+        },
+        {
+          "groupCode": "HAIR_ACCESSORIES",
+          "typeValues": ["HAIR_CLIP", "HAIR_BAND", "SCRUNCHIE", "HAIR_PIN", "HAIR_COMB"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "age_group", "color", "material_primary", "decor_type"],
+          "primaryAttributes": ["accessory_type", "target_gender", "age_group", "brand", "condition", "color", "material_primary"],
+          "secondaryAttributes": ["decor_type", "set_quantity", "hair_accessory_size"],
+          "validatorAttributes": ["decor_type", "set_quantity", "hair_accessory_size"]
+        },
+        {
+          "groupCode": "UMBRELLAS",
+          "typeValues": ["UMBRELLA"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "age_group", "color", "umbrella_type", "foldable"],
+          "primaryAttributes": ["accessory_type", "target_gender", "age_group", "brand", "condition", "color", "umbrella_type"],
+          "secondaryAttributes": ["foldable", "windproof", "material_primary"],
+          "requiredAttributes": ["umbrella_type"],
+          "validatorAttributes": ["umbrella_type", "foldable", "windproof"]
+        },
+        {
+          "groupCode": "OTHER",
+          "typeValues": ["KEYCHAIN", "OTHER_ACCESSORY"],
+          "initialAttributes": ["accessory_type", "condition", "brand", "target_gender", "age_group", "color", "material_primary"],
+          "primaryAttributes": ["accessory_type", "target_gender", "age_group", "brand", "condition", "color", "material_primary"],
+          "secondaryAttributes": ["model_name_text"],
+          "validatorAttributes": ["condition", "material_primary", "color"]
+        }
+      ]
+    }
+  ],
+  "goldenCases": [
+    {
+      "caseId": "FASH.TYPE_SURFACE.001",
+      "categoryCode": "FASH.MEN",
+      "typeValue": "JEANS",
+      "expectedGroupCode": "BOTTOM",
+      "expectedPrimaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "waist_rise", "leg_fit", "fit"]
+    },
+    {
+      "caseId": "FASH.TYPE_SURFACE.002",
+      "categoryCode": "FASH.WOMEN",
+      "typeValue": "DRESS",
+      "expectedGroupCode": "ONE_PIECE",
+      "expectedPrimaryAttributes": ["apparel_type", "size_label", "color_primary", "brand", "length_type", "occasion", "sleeve_length"]
+    },
+    {
+      "caseId": "FASH.TYPE_SURFACE.003",
+      "categoryCode": "FASH.KIDS",
+      "typeValue": "SCHOOL_UNIFORM",
+      "expectedGroupCode": "SETS_SUITS",
+      "expectedPrimaryAttributes": ["apparel_type", "target_gender", "age_group", "size_label", "condition", "season"]
+    },
+    {
+      "caseId": "FASH.TYPE_SURFACE.004",
+      "categoryCode": "FASH.SHOES",
+      "typeValue": "SNEAKERS",
+      "expectedGroupCode": "SNEAKERS_SPORT",
+      "expectedPrimaryAttributes": ["shoe_type", "size_eu", "brand", "condition", "sport_purpose", "sole_type", "color_primary"]
+    },
+    {
+      "caseId": "FASH.TYPE_SURFACE.005",
+      "categoryCode": "FASH.BAGS",
+      "typeValue": "BACKPACK",
+      "expectedGroupCode": "BACKPACKS",
+      "expectedPrimaryAttributes": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class", "fits_laptop_inch"]
+    },
+    {
+      "caseId": "FASH.TYPE_SURFACE.006",
+      "categoryCode": "FASH.ACCESSORIES",
+      "typeValue": "BELT",
+      "expectedGroupCode": "BELTS",
+      "expectedPrimaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "color", "material_primary", "belt_size_cm"]
+    },
+    {
+      "caseId": "FASH.TYPE_SURFACE.007",
+      "categoryCode": "FASH.ACCESSORIES",
+      "typeValue": "WATCHES_NON_SMART",
+      "expectedGroupCode": "WATCHES",
+      "expectedPrimaryAttributes": ["accessory_type", "target_gender", "brand", "condition", "movement_type", "strap_material", "watch_strap_lug_width_mm"]
+    }
+  ]
+}

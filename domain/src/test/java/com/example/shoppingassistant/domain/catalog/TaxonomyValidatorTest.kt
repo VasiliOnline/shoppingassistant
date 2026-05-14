@@ -354,12 +354,12 @@ class TaxonomyValidatorTest {
         val categories = listOf(
             category(code = "TECH", parentCode = null, segment = CategorySegment.TECH),
             category(code = "TECH.PHONES", parentCode = "TECH", segment = CategorySegment.TECH),
-            category(code = "TECH.TV_VIDEO", parentCode = "TECH", segment = CategorySegment.TECH),
+            category(code = "TECH.TV_HOME_THEATER", parentCode = "TECH", segment = CategorySegment.TECH),
         )
         val mappings = listOf(
             mapping("TECH", 222L, "Electronics"),
             mapping("TECH.PHONES", 267L, "Electronics > Communications > Telephony > Mobile Phones"),
-            mapping("TECH.TV_VIDEO", 229L, "Electronics > Video > Televisions"),
+            mapping("TECH.TV_HOME_THEATER", 229L, "Electronics > Video > Televisions"),
         )
         val aliasEntries = listOf(
             AliasEntry(
@@ -375,7 +375,7 @@ class TaxonomyValidatorTest {
                 term = "экран",
                 normalizedTerm = "экран",
                 kind = AliasKind.CATEGORY,
-                targetCode = "TECH.TV_VIDEO",
+                targetCode = "TECH.TV_HOME_THEATER",
                 weight = 70,
             ),
         )

@@ -1,0 +1,27 @@
+quality_gates_id: quality_gates.tech_specs_common.v1_0
+required_gates:
+- Stage22SeedValidator
+- FacetSchemaValidator
+- EffectiveSpecSnapshotGate
+- RouteConflictGate
+- UserSurfaceGate
+- AliasCollisionGate
+- VisionRulesGate
+- SampleOffersSmokeGate
+- SpecUnitNormalizationGate
+- SpecCoverageMatrixGate
+- NoExactSpecFromVisionGate
+- NoPublicCategoryMountGate
+thresholds:
+  json_syntax: PASS
+  yaml_syntax: PASS
+  jsonl_syntax: PASS
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_hidden_leaks: 0
+  sample_offers_min: 120
+  golden_queries_min: 120
+  aliases_min: 350
+  attributes_min: 70
+  coverage_matrix_min_rows: 300
+release_policy: GO for runtime mount only after project validators are green against actual registry effective spec.

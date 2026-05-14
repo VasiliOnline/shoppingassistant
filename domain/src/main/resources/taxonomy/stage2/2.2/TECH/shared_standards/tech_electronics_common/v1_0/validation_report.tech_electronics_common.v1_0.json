@@ -1,0 +1,45 @@
+{
+  "pack_id": "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+  "category_code": "TECH.ELECTRONICS_COMMON",
+  "generated_at": "2026-05-13T00:00:00+03:00",
+  "validation_scope": "static_package_self_check; runtime project validators not executed in sandbox",
+  "status": "PASS",
+  "errors": [],
+  "summary": {
+    "json_syntax": "PASS",
+    "jsonl_syntax": "PASS",
+    "required_files": "PASS",
+    "public_category": false,
+    "accepts_offers_directly": false,
+    "forbidden_embedded_packs_present": false,
+    "model_head_seed_present": false,
+    "initial_fields_count": 8,
+    "primary_facets_count": 7,
+    "t3_hidden_leaks": 0,
+    "attribute_definitions": 38,
+    "value_rows": 180,
+    "alias_rows": 382,
+    "golden_queries": 103,
+    "sample_offers": 120
+  },
+  "runtime_validators_required_after_mount": [
+    "Stage22SeedValidator",
+    "FacetSchemaValidator",
+    "EffectiveSpecSnapshotGate",
+    "RouteConflictGate",
+    "UserSurfaceGate",
+    "AliasCollisionGate",
+    "VisionRulesGate",
+    "SampleOffersSmokeGate",
+    "SharedStandardNoFinalRouteGate",
+    "T3HiddenLeakGate",
+    "IdentityCandidateGate",
+    "CompatibilityGate",
+    "SafetyRegulatedGate"
+  ],
+  "known_limitations": [
+    "Runtime registry is not mounted in sandbox; effective snapshot is expected, not actual runtime output.",
+    "Brand head values are normalization conveniences only, not a complete brand registry.",
+    "Model, specs and compatibility are intentionally deferred to subsequent shared packs."
+  ]
+}

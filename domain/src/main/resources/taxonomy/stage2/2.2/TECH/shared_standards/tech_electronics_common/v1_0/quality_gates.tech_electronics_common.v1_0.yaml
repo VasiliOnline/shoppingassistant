@@ -1,0 +1,51 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+required_gates:
+  - name: Stage22SeedValidator
+    required: true
+    expected: green
+  - name: FacetSchemaValidator
+    required: true
+    expected: green
+  - name: EffectiveSpecSnapshotGate
+    required: true
+    expected: green
+  - name: RouteConflictGate
+    required: true
+    expected: green
+  - name: UserSurfaceGate
+    required: true
+    expected: green
+  - name: AliasCollisionGate
+    required: true
+    expected: green
+  - name: VisionRulesGate
+    required: true
+    expected: green
+  - name: SampleOffersSmokeGate
+    required: true
+    expected: green
+  - name: SharedStandardNoFinalRouteGate
+    required: true
+    expected: green
+  - name: T3HiddenLeakGate
+    required: true
+    expected: green
+special_gates:
+  - name: IdentityCandidateGate
+    required: true
+    expected: no_identity_registry_created
+  - name: CompatibilityGate
+    required: true
+    expected: no_compatibility_refs_created
+  - name: SafetyRegulatedGate
+    required: true
+    expected: no_regulated_or_restricted_items_enabled_by_shared_layer
+limits:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  sample_offers_min: 80
+  golden_queries_min: 80
+  t3_hidden_allowed_in_ui: 0
+  public_category_codes_allowed_in_pack: 0
+  model_head_seed_allowed: 0

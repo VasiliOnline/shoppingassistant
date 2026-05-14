@@ -1,0 +1,574 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifests": [
+    {
+      "packId": "APPL_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "APPL",
+        "APPL.CLIMATE",
+        "APPL.MAJOR",
+        "APPL.SMALL"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/APPL",
+      "requiredFiles": [
+        "profiles.appl.json",
+        "constraints.appl.json"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "AUTO_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "AUTO",
+        "AUTO.ACCESSORIES",
+        "AUTO.PARTS",
+        "AUTO.TIRES_WHEELS",
+        "AUTO.TOOLS_GARAGE"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/AUTO",
+      "requiredFiles": [
+        "profiles.auto.json",
+        "constraints.auto.json"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "BEAUTY_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "BEAUTY",
+        "BEAUTY.BODYCARE",
+        "BEAUTY.DEVICES",
+        "BEAUTY.FRAGRANCE",
+        "BEAUTY.HAIRCARE",
+        "BEAUTY.HEALTH",
+        "BEAUTY.MAKEUP",
+        "BEAUTY.SKINCARE"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/BEAUTY",
+      "requiredFiles": [
+        "profiles.beauty.json",
+        "constraints.beauty.json"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_CATALOG_ROOT_v2",
+      "categoryCodes": [
+        "FASH"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH",
+      "requiredFiles": [
+        "profiles.fash.json",
+        "constraints.fash.json",
+        "fash_category_tree_contract.v1_0.json",
+        "fash_route_conflict_golden.tsv",
+        "fash_visual_search_golden.v1_0.json",
+        "fash_typed_attribute_coverage_matrix.v1_0.json",
+        "FASH_LAUNCH_READINESS_REPORT.md",
+        "shared_standard.fash_apparel_common.v1_0.yaml",
+        "shared_profiles.fash.json"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FOOD_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "FOOD",
+        "FOOD.DRINKS",
+        "FOOD.GROCERIES",
+        "FOOD.READY_MEALS",
+        "FOOD.SNACKS"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FOOD",
+      "requiredFiles": [
+        "profiles.food.json",
+        "constraints.food.json"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "HOME_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "HOME",
+        "HOME.CLEANING",
+        "HOME.FURNITURE",
+        "HOME.GARDEN",
+        "HOME.KITCHEN_DINING",
+        "HOME.LIGHTING",
+        "HOME.PLUMBING",
+        "HOME.REPAIR_TOOLS",
+        "HOME.STORAGE",
+        "HOME.TEXTILES"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/HOME",
+      "requiredFiles": [
+        "profiles.home.json",
+        "constraints.home.json"
+      ]
+    },
+    {
+      "packId": "KIDS_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "KIDS",
+        "KIDS.BABY_GEAR",
+        "KIDS.NURSERY_FURNITURE",
+        "KIDS.STROLLERS_CARSEATS",
+        "KIDS.TOYS_GAMES"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/KIDS",
+      "requiredFiles": [
+        "profiles.kids.json",
+        "constraints.kids.json"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "PETS_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "PETS",
+        "PETS.ACCESSORIES",
+        "PETS.FOOD",
+        "PETS.HEALTH",
+        "PETS.HYGIENE"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/PETS",
+      "requiredFiles": [
+        "profiles.pets.json",
+        "constraints.pets.json"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "SPORT_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "SPORT",
+        "SPORT.BIKES_SCOOTERS",
+        "SPORT.EQUIPMENT",
+        "SPORT.FITNESS",
+        "SPORT.HOBBY",
+        "SPORT.OUTDOOR"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/SPORT",
+      "requiredFiles": [
+        "profiles.sport.json",
+        "constraints.sport.json"
+      ]
+    },
+    {
+      "packId": "TECH_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "TECH",
+        "TECH.PHONES",
+        "TECH.PHONE_ACCESSORIES",
+        "TECH.COMPUTERS",
+        "TECH.TABLETS_E_READERS",
+        "TECH.MONITORS_DISPLAYS",
+        "TECH.COMPUTER_ACCESSORIES",
+        "TECH.PC_COMPONENTS",
+        "TECH.STORAGE_MEMORY",
+        "TECH.AUDIO",
+        "TECH.TV_HOME_THEATER",
+        "TECH.WEARABLES",
+        "TECH.CAMERAS_DRONES",
+        "TECH.GAMING",
+        "TECH.SMART_HOME_SECURITY",
+        "TECH.NETWORKING",
+        "TECH.POWER_CHARGING_CABLES",
+        "TECH.PRINTERS_SCANNERS",
+        "TECH.CAR_ELECTRONICS_GPS"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "shared_standard",
+        "compatibility_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH",
+      "requiredFiles": [
+        "profiles.tech.json",
+        "constraints.tech.json",
+        "shared_profiles.tech.json"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_APPAREL_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH",
+      "requiredFiles": [
+        "shared_standard.fash_apparel_common.v1_0.yaml",
+        "shared_profiles.fash.json",
+        "ai_vision_contract.fash_apparel_common.v1_0.json"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_SHOES_PRODUCTION_v1_0",
+      "categoryCode": "FASH.SHOES",
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/category_packs/fash_shoes/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_shoes.v1_0.json",
+        "attributes.fash_shoes.v1_0.tsv",
+        "values.fash_shoes.v1_0.tsv",
+        "aliases.fash_shoes.ru.v1_0.tsv",
+        "routing_guardrails.fash_shoes.v1_0.yaml",
+        "route_conflict_layer.fash.v1_0.yaml",
+        "vision_rules.fash_shoes.v1_0.yaml",
+        "user_surface.fash_shoes.v1_0.yaml",
+        "facet_schema.fash_shoes.v1_0.yaml",
+        "quality_gates.fash_shoes.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_shoes.v1_0.json",
+        "validation_report.fash_shoes.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_shoes.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_ACCESSORIES_PRODUCTION_v1_0",
+      "categoryCode": "FASH.ACCESSORIES",
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_accessories/v1_0",
+      "requiredFiles": [
+        "manifest.fash_accessories.v1_0.json",
+        "schema_pack.fash_accessories.v1_0.json",
+        "attributes.fash_accessories.v1_0.tsv",
+        "values.fash_accessories.v1_0.tsv",
+        "aliases.fash_accessories.ru.v1_0.tsv",
+        "routing_guardrails.fash_accessories.v1_0.yaml",
+        "route_conflict_layer.fash_common.v1_0.yaml",
+        "vision_rules.fash_accessories.v1_0.yaml",
+        "user_surface.fash_accessories.v1_0.yaml",
+        "facet_schema.fash_accessories.v1_0.yaml",
+        "quality_gates.fash_accessories.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_accessories.v1_0.json",
+        "validation_report.fash_accessories.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_accessories.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_BAGS_PRODUCTION_v1_0",
+      "categoryCode": "FASH.BAGS",
+      "packSections": [
+        "category_schema_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_bags/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_bags.v1_0.json",
+        "attributes.fash_bags.v1_0.tsv",
+        "values.fash_bags.v1_0.tsv",
+        "aliases.fash_bags.ru.v1_0.tsv",
+        "routing_guardrails.fash_bags.v1_0.yaml",
+        "route_conflict_layer.fash_bags.v1_0.yaml",
+        "vision_rules.fash_bags.v1_0.yaml",
+        "user_surface.fash_bags.v1_0.yaml",
+        "facet_schema.fash_bags.v1_0.yaml",
+        "quality_gates.fash_bags.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_bags.v1_0.json",
+        "validation_report.fash_bags.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_bags.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_MEN_CHILD_OVERRIDE_v1_0",
+      "categoryCode": "FASH.MEN",
+      "packSections": [
+        "child_override_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_men/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_men.v1_0.json",
+        "child_defaults.fash_men.v1_0.yaml",
+        "size_overrides.fash_men.v1_0.yaml",
+        "type_priorities.fash_men.v1_0.yaml",
+        "user_surface.fash_men.v1_0.yaml",
+        "vision_rules.fash_men.v1_0.yaml",
+        "routing_guardrails.fash_men.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_men.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_men.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_WOMEN_CHILD_OVERRIDE_v1_0",
+      "categoryCode": "FASH.WOMEN",
+      "packSections": [
+        "child_override_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_women/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_women.v1_0.json",
+        "child_defaults.fash_women.v1_0.yaml",
+        "size_overrides.fash_women.v1_0.yaml",
+        "type_priorities.fash_women.v1_0.yaml",
+        "user_surface.fash_women.v1_0.yaml",
+        "vision_rules.fash_women.v1_0.yaml",
+        "routing_guardrails.fash_women.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_women.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_women.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_KIDS_CHILD_OVERRIDE_v1_0",
+      "categoryCode": "FASH.KIDS",
+      "packSections": [
+        "child_override_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN",
+        "LIFE_STAGE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH/overrides/fash_kids/v1_0",
+      "requiredFiles": [
+        "schema_pack.fash_kids.v1_0.json",
+        "child_defaults.fash_kids.v1_0.yaml",
+        "size_overrides.fash_kids.v1_0.yaml",
+        "type_priorities.fash_kids.v1_0.yaml",
+        "user_surface.fash_kids.v1_0.yaml",
+        "vision_rules.fash_kids.v1_0.yaml",
+        "routing_guardrails.fash_kids.v1_0.yaml",
+        "effective_spec_snapshot.expected.fash_kids.v1_0.json"
+      ],
+      "userSurfaceFile": "user_surface.fash_kids.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_PHONE_ACCESSORIES_v1_2",
+      "categoryCode": "TECH.PHONE_ACCESSORIES",
+      "packSections": [
+        "category_schema_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH",
+      "requiredFiles": [
+        "profiles.tech.json",
+        "constraints.tech.json",
+        "ai_vision_contract.tech_phone_accessories.v1_2.json",
+        "integration_mapping.tech_phone_accessories.v1_2.yaml",
+        "sample_offers.tech_phone_accessories.v1_2.jsonl",
+        "branch_done_checklist.tech_phone_accessories.v1_2.md"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_ELECTRONICS_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_electronics_common/v1_0",
+      "requiredFiles": [
+        "aliases.tech_electronics_common.ru.v1_0.tsv",
+        "attributes.tech_electronics_common.v1_0.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
+        "facet_templates.tech_electronics_common.v1_0.yaml",
+        "generated_alias_rules.tech_electronics_common.v1_0.yaml",
+        "golden_queries.tech_electronics_common.v1_0.tsv",
+        "integration_mapping.tech_electronics_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_electronics_common.v1_0.yaml",
+        "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md",
+        "route_guardrails.tech_electronics_common.v1_0.yaml",
+        "sample_offers.tech_electronics_common.v1_0.jsonl",
+        "schema_pack.tech_electronics_common.v1_0.json",
+        "shared_standard.tech_electronics_common.v1_0.yaml",
+        "user_surface.tech_electronics_common.v1_0.yaml",
+        "validation_report.tech_electronics_common.v1_0.json",
+        "values.tech_electronics_common.v1_0.tsv",
+        "vision_rules.tech_electronics_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_electronics_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_DEVICE_IDENTITY_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "identity_pack",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_device_identity_common/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_DEVICE_IDENTITY_COMMON_v1_0_RU.md",
+        "aliases.tech_device_identity_common.ru.v1_0.tsv",
+        "attributes.tech_device_identity_common.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "dedup_key_policy.tech_device_identity_common.v1_0.yaml",
+        "docs/IDENTITY_POLICY_RU.md",
+        "docs/NO_MODEL_REGISTRY_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_device_identity_common.v1_0.json",
+        "facet_templates.tech_device_identity_common.v1_0.yaml",
+        "generated_alias_rules.tech_device_identity_common.v1_0.yaml",
+        "golden_queries.tech_device_identity_common.v1_0.tsv",
+        "identity_surface_matrix.tech_device_identity_common.v1_0.tsv",
+        "integration_mapping.tech_device_identity_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_device_identity_common.v1_0.yaml",
+        "route_guardrails.tech_device_identity_common.v1_0.yaml",
+        "sample_offers.tech_device_identity_common.v1_0.jsonl",
+        "schema_pack.tech_device_identity_common.v1_0.json",
+        "shared_standard.tech_device_identity_common.v1_0.yaml",
+        "title_identity_parser_rules.tech_device_identity_common.v1_0.yaml",
+        "user_surface.tech_device_identity_common.v1_0.yaml",
+        "validation_report.tech_device_identity_common.v1_0.json",
+        "values.tech_device_identity_common.v1_0.tsv",
+        "vision_rules.tech_device_identity_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_device_identity_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_SPECS_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_specs_common/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_SPECS_COMMON_v1_0_RU.md",
+        "aliases.tech_specs_common.ru.v1_0.tsv",
+        "attributes.tech_specs_common.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/BOUNDARY_WITH_IDENTITY_AND_COMPATIBILITY_RU.md",
+        "docs/NO_GUESS_AND_UNIT_POLICY_RU.md",
+        "docs/SPECS_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_specs_common.v1_0.json",
+        "facet_templates.tech_specs_common.v1_0.yaml",
+        "generated_alias_rules.tech_specs_common.v1_0.yaml",
+        "golden_queries.tech_specs_common.v1_0.tsv",
+        "integration_mapping.tech_specs_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_specs_common.v1_0.yaml",
+        "route_guardrails.tech_specs_common.v1_0.yaml",
+        "sample_offers.tech_specs_common.v1_0.jsonl",
+        "schema_pack.tech_specs_common.v1_0.json",
+        "spec_confidence_policy.tech_specs_common.v1_0.yaml",
+        "spec_coverage_matrix.tech_specs_common.v1_0.tsv",
+        "unit_normalization_rules.tech_specs_common.v1_0.yaml",
+        "user_surface.tech_specs_common.v1_0.yaml",
+        "validation_report.tech_specs_common.v1_0.json",
+        "values.tech_specs_common.v1_0.tsv",
+        "vision_rules.tech_specs_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_specs_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    }
+  ]
+}

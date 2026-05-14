@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "contractCode": "FASH_VISUAL_SEARCH_GOLDEN_v1_0",
+  "cases": [
+    {
+      "caseId": "FASH.VISION.001",
+      "description": "Single photo of a plain T-shirt without label, seller text, model context or selected branch.",
+      "expectedRoutePolicy": "APPAREL_CANDIDATE_NEEDS_CONTEXT",
+      "forbiddenRoutes": ["FASH.MEN", "FASH.WOMEN"],
+      "forbiddenInferences": ["target_gender"],
+      "ruleEvidence": [
+        "target_gender from style alone when ambiguous",
+        "must_return_NEED_MORE_CONTEXT_for_weak_gender_evidence"
+      ]
+    },
+    {
+      "caseId": "FASH.VISION.002",
+      "description": "Photo clearly shows sneakers; no readable size tag or model text.",
+      "expectedRoutePolicy": "FASH.SHOES_CANDIDATE",
+      "forbiddenInferences": ["size_eu", "brand", "model_name_text"],
+      "ruleEvidence": [
+        "if_visual_shoe_and_text_absent",
+        "brand without visible logo/text or seller title evidence"
+      ]
+    },
+    {
+      "caseId": "FASH.VISION.003",
+      "description": "Photo clearly shows a bag; brand logo is not readable.",
+      "expectedRoutePolicy": "FASH.BAGS_CANDIDATE",
+      "forbiddenInferences": ["brand", "authenticity_state", "fits_laptop_inch"],
+      "ruleEvidence": [
+        "brand unless logo/text is readable",
+        "fits_laptop_inch from image only"
+      ]
+    },
+    {
+      "caseId": "FASH.VISION.004",
+      "description": "Photo or text indicates Apple Watch / smartwatch rather than a classic non-smart watch.",
+      "expectedRoutePolicy": "TECH.WEARABLES_CANDIDATE",
+      "forbiddenRoutes": ["FASH.ACCESSORIES"],
+      "forbiddenInferences": ["WATCHES_NON_SMART"],
+      "ruleEvidence": [
+        "smartwatch vs classic watch",
+        "route to TECH.WEARABLES"
+      ]
+    }
+  ]
+}

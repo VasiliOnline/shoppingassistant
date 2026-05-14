@@ -30,29 +30,23 @@
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   },
   {
     "category": {
       "code": "TECH.PHONES",
       "segment": "TECH",
-      "title": "Смартфоны",
+      "title": "Телефоны",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
       {
         "code": "model",
         "title": "Модель",
@@ -81,28 +75,6 @@
         "dataType": "INT",
         "requiredForSearch": false,
         "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
-        "code": "release_year",
-        "title": "Год релиза",
-        "dataType": "INT",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
@@ -189,17 +161,6 @@
         "code": "dual_sim",
         "title": "Dual SIM",
         "dataType": "BOOL",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "region_code",
-        "title": "Регион",
-        "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
@@ -422,12 +383,6 @@
       },
       {
         "categoryCode": "TECH.PHONES",
-        "attributeCode": "region_code",
-        "uiOrder": 15,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "TECH.PHONES",
         "attributeCode": "battery_health_percent",
         "uiOrder": 16,
         "isRequiredForCategory": false
@@ -501,6 +456,11 @@
           }
         ]
       }
+    ],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
     ]
   },
   {
@@ -534,17 +494,6 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": "accessory_subtype"
-      },
-      {
-        "code": "brand",
-        "title": "Бренд аксессуара",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
       },
       {
         "code": "compatibility_mode",
@@ -624,17 +573,6 @@
         "valueDictCode": "material"
       },
       {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
         "code": "pack_quantity",
         "title": "Количество в комплекте",
         "dataType": "INT",
@@ -666,17 +604,6 @@
         "facetEnabled": true,
         "multiValued": true,
         "valueDictCode": "certification"
-      },
-      {
-        "code": "warranty_months",
-        "title": "Гарантия, месяцев",
-        "dataType": "INT",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
       },
       {
         "code": "case_form_factor",
@@ -1906,12 +1833,6 @@
         "categoryCode": "TECH.PHONE_ACCESSORIES",
         "attributeCode": "certification",
         "uiOrder": 14,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "TECH.PHONE_ACCESSORIES",
-        "attributeCode": "warranty_months",
-        "uiOrder": 15,
         "isRequiredForCategory": false
       },
       {
@@ -3405,29 +3326,23 @@
           }
         ]
       }
+    ],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
     ]
   },
   {
     "category": {
-      "code": "TECH.LAPTOPS",
+      "code": "TECH.COMPUTERS",
       "segment": "TECH",
-      "title": "Ноутбуки",
+      "title": "Компьютеры",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
       {
         "code": "model",
         "title": "Модель",
@@ -3438,17 +3353,6 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
       },
       {
         "code": "cpu_family",
@@ -3541,96 +3445,90 @@
     ],
     "categoryAttributes": [
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "brand",
         "uiOrder": 1,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "model",
         "uiOrder": 2,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "condition",
         "uiOrder": 3,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "cpu_family",
         "uiOrder": 4,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "ram_gb",
         "uiOrder": 5,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "storage_type",
         "uiOrder": 6,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "storage_gb",
         "uiOrder": 7,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "screen_size_inch",
         "uiOrder": 8,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "gpu_type",
         "uiOrder": 9,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "os_family",
         "uiOrder": 10,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.LAPTOPS",
+        "categoryCode": "TECH.COMPUTERS",
         "attributeCode": "keyboard_layout",
         "uiOrder": 11,
         "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   },
   {
     "category": {
-      "code": "TECH.PC_COMPONENTS",
+      "code": "TECH.TABLETS_E_READERS",
       "segment": "TECH",
-      "title": "ПК и комплектующие",
+      "title": "Планшеты и электронные книги",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
       {
         "code": "model",
         "title": "Модель",
@@ -3643,15 +3541,659 @@
         "valueDictCode": null
       },
       {
-        "code": "condition",
-        "title": "Состояние",
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "os_family",
+        "title": "ОС",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "os_family"
+      },
+      {
+        "code": "network_type",
+        "title": "Сеть",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "network_type"
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "storage_gb",
+        "uiOrder": 5,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "os_family",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "network_type",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.TABLETS_E_READERS",
+        "attributeCode": "color",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.MONITORS_DISPLAYS",
+      "segment": "TECH",
+      "title": "Мониторы и дисплеи",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
         "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": true,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "condition"
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.MONITORS_DISPLAYS",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.COMPUTER_ACCESSORIES",
+      "segment": "TECH",
+      "title": "Компьютерные аксессуары",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.PC_COMPONENTS",
+      "segment": "TECH",
+      "title": "Комплектующие ПК",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
       },
       {
         "code": "cpu_family",
@@ -3760,26 +4302,31 @@
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   },
   {
     "category": {
-      "code": "TECH.TABLETS_EBOOKS",
+      "code": "TECH.STORAGE_MEMORY",
       "segment": "TECH",
-      "title": "Планшеты и электронные книги",
+      "title": "Накопители и память",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
       {
-        "code": "brand",
-        "title": "Бренд",
+        "code": "product_name",
+        "title": "Название",
         "dataType": "STRING",
         "requiredForSearch": false,
         "requiredForOffer": true,
         "requiredForExpress": false,
-        "facetEnabled": true,
+        "facetEnabled": false,
         "multiValued": false,
         "valueDictCode": null
       },
@@ -3788,33 +4335,66 @@
         "title": "Модель",
         "dataType": "STRING",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
       },
       {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "condition"
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
       },
       {
         "code": "screen_size_inch",
         "title": "Диагональ",
         "dataType": "DECIMAL",
         "requiredForSearch": false,
-        "requiredForOffer": true,
+        "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
       },
       {
         "code": "storage_gb",
@@ -3828,231 +4408,177 @@
         "valueDictCode": null
       },
       {
-        "code": "os_family",
-        "title": "ОС",
-        "dataType": "ENUM",
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
         "requiredForSearch": false,
-        "requiredForOffer": false,
+        "requiredForOffer": true,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "os_family"
+        "valueDictCode": null
       },
       {
-        "code": "network_type",
-        "title": "Сеть",
-        "dataType": "ENUM",
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "network_type"
+        "valueDictCode": null
       },
       {
-        "code": "color",
-        "title": "Цвет",
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
         "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": false,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "color"
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
       }
     ],
     "categoryAttributes": [
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "brand",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "product_name",
         "uiOrder": 1,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "model",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "brand",
         "uiOrder": 2,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "condition",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "model",
         "uiOrder": 3,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "screen_size_inch",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "condition",
         "uiOrder": 4,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "storage_gb",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "type_of_item",
         "uiOrder": 5,
-        "isRequiredForCategory": true
+        "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "os_family",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "release_year",
         "uiOrder": 6,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "network_type",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "color",
         "uiOrder": 7,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TABLETS_EBOOKS",
-        "attributeCode": "color",
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "material",
         "uiOrder": 8,
         "isRequiredForCategory": false
-      }
-    ],
-    "valueDictionaries": [],
-    "requiredIfRules": []
-  },
-  {
-    "category": {
-      "code": "TECH.TV_VIDEO",
-      "segment": "TECH",
-      "title": "ТВ и видео",
-      "parentCode": "TECH",
-      "description": null,
-      "status": "ACTIVE"
-    },
-    "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
       },
       {
-        "code": "model",
-        "title": "Модель",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
-        "code": "screen_size_inch",
-        "title": "Диагональ",
-        "dataType": "DECIMAL",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "os_family",
-        "title": "ОС",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "os_family"
-      },
-      {
-        "code": "color",
-        "title": "Цвет",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "color"
-      }
-    ],
-    "categoryAttributes": [
-      {
-        "categoryCode": "TECH.TV_VIDEO",
-        "attributeCode": "brand",
-        "uiOrder": 1,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.TV_VIDEO",
-        "attributeCode": "model",
-        "uiOrder": 2,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.TV_VIDEO",
-        "attributeCode": "condition",
-        "uiOrder": 3,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.TV_VIDEO",
+        "categoryCode": "TECH.STORAGE_MEMORY",
         "attributeCode": "screen_size_inch",
-        "uiOrder": 4,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.TV_VIDEO",
-        "attributeCode": "os_family",
-        "uiOrder": 5,
+        "uiOrder": 9,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.TV_VIDEO",
-        "attributeCode": "color",
-        "uiOrder": 6,
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.STORAGE_MEMORY",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
         "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   },
   {
     "category": {
       "code": "TECH.AUDIO",
       "segment": "TECH",
-      "title": "Аудио и наушники",
+      "title": "Аудио",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
       {
         "code": "model",
         "title": "Модель",
@@ -4063,17 +4589,6 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
       },
       {
         "code": "color",
@@ -4233,29 +4748,23 @@
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   },
   {
     "category": {
-      "code": "TECH.GAMING",
+      "code": "TECH.TV_HOME_THEATER",
       "segment": "TECH",
-      "title": "Игровые приставки и игры",
+      "title": "ТВ и домашний кинотеатр",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
       {
         "code": "model",
         "title": "Модель",
@@ -4268,15 +4777,455 @@
         "valueDictCode": null
       },
       {
-        "code": "condition",
-        "title": "Состояние",
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "os_family",
+        "title": "ОС",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "os_family"
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.TV_HOME_THEATER",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TV_HOME_THEATER",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TV_HOME_THEATER",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TV_HOME_THEATER",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 4,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.TV_HOME_THEATER",
+        "attributeCode": "os_family",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.TV_HOME_THEATER",
+        "attributeCode": "color",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.WEARABLES",
+      "segment": "TECH",
+      "title": "Носимая электроника",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
         "dataType": "ENUM",
         "requiredForSearch": false,
         "requiredForOffer": true,
         "requiredForExpress": false,
         "facetEnabled": true,
         "multiValued": false,
-        "valueDictCode": "condition"
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.WEARABLES",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.CAMERAS_DRONES",
+      "segment": "TECH",
+      "title": "Камеры и дроны",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "weight_kg",
+        "title": "Вес (кг)",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.CAMERAS_DRONES",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.CAMERAS_DRONES",
+        "attributeCode": "model",
+        "uiOrder": 2,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.CAMERAS_DRONES",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.CAMERAS_DRONES",
+        "attributeCode": "release_year",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAMERAS_DRONES",
+        "attributeCode": "color",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAMERAS_DRONES",
+        "attributeCode": "weight_kg",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.GAMING",
+      "segment": "TECH",
+      "title": "Игры и консоли",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
       },
       {
         "code": "storage_gb",
@@ -4419,29 +5368,23 @@
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   },
   {
     "category": {
-      "code": "TECH.CAMERAS",
+      "code": "TECH.SMART_HOME_SECURITY",
       "segment": "TECH",
-      "title": "Фото и видеокамеры",
+      "title": "Умный дом и безопасность",
       "parentCode": "TECH",
       "description": null,
       "status": "ACTIVE"
     },
     "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
       {
         "code": "model",
         "title": "Модель",
@@ -4452,135 +5395,6 @@
         "facetEnabled": true,
         "multiValued": false,
         "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
-      },
-      {
-        "code": "release_year",
-        "title": "Год релиза",
-        "dataType": "INT",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "color",
-        "title": "Цвет",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "color"
-      },
-      {
-        "code": "weight_kg",
-        "title": "Вес (кг)",
-        "dataType": "DECIMAL",
-        "requiredForSearch": false,
-        "requiredForOffer": false,
-        "requiredForExpress": false,
-        "facetEnabled": false,
-        "multiValued": false,
-        "valueDictCode": null
-      }
-    ],
-    "categoryAttributes": [
-      {
-        "categoryCode": "TECH.CAMERAS",
-        "attributeCode": "brand",
-        "uiOrder": 1,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.CAMERAS",
-        "attributeCode": "model",
-        "uiOrder": 2,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.CAMERAS",
-        "attributeCode": "condition",
-        "uiOrder": 3,
-        "isRequiredForCategory": true
-      },
-      {
-        "categoryCode": "TECH.CAMERAS",
-        "attributeCode": "release_year",
-        "uiOrder": 4,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "TECH.CAMERAS",
-        "attributeCode": "color",
-        "uiOrder": 5,
-        "isRequiredForCategory": false
-      },
-      {
-        "categoryCode": "TECH.CAMERAS",
-        "attributeCode": "weight_kg",
-        "uiOrder": 6,
-        "isRequiredForCategory": false
-      }
-    ],
-    "valueDictionaries": [],
-    "requiredIfRules": []
-  },
-  {
-    "category": {
-      "code": "TECH.SMART_HOME",
-      "segment": "TECH",
-      "title": "Умный дом и гаджеты",
-      "parentCode": "TECH",
-      "description": null,
-      "status": "ACTIVE"
-    },
-    "attributes": [
-      {
-        "code": "brand",
-        "title": "Бренд",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "model",
-        "title": "Модель",
-        "dataType": "STRING",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": null
-      },
-      {
-        "code": "condition",
-        "title": "Состояние",
-        "dataType": "ENUM",
-        "requiredForSearch": false,
-        "requiredForOffer": true,
-        "requiredForExpress": false,
-        "facetEnabled": true,
-        "multiValued": false,
-        "valueDictCode": "condition"
       },
       {
         "code": "network_type",
@@ -4662,67 +5476,1112 @@
     ],
     "categoryAttributes": [
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "type_of_item",
         "uiOrder": 0,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "brand",
         "uiOrder": 1,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "model",
         "uiOrder": 2,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "condition",
         "uiOrder": 3,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "network_type",
         "uiOrder": 4,
         "isRequiredForCategory": true
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "os_family",
         "uiOrder": 5,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "color",
         "uiOrder": 6,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "primary_color",
         "uiOrder": 7,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "shape",
         "uiOrder": 8,
         "isRequiredForCategory": false
       },
       {
-        "categoryCode": "TECH.SMART_HOME",
+        "categoryCode": "TECH.SMART_HOME_SECURITY",
         "attributeCode": "visible_logo_present",
         "uiOrder": 9,
         "isRequiredForCategory": false
       }
     ],
     "valueDictionaries": [],
-    "requiredIfRules": []
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.NETWORKING",
+      "segment": "TECH",
+      "title": "Сетевое оборудование",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.NETWORKING",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.POWER_CHARGING_CABLES",
+      "segment": "TECH",
+      "title": "Питание, зарядки и кабели",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.POWER_CHARGING_CABLES",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.PRINTERS_SCANNERS",
+      "segment": "TECH",
+      "title": "Принтеры и сканеры",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.PRINTERS_SCANNERS",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
+  },
+  {
+    "category": {
+      "code": "TECH.CAR_ELECTRONICS_GPS",
+      "segment": "TECH",
+      "title": "Автоэлектроника и GPS",
+      "parentCode": "TECH",
+      "description": null,
+      "status": "ACTIVE"
+    },
+    "attributes": [
+      {
+        "code": "product_name",
+        "title": "Название",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "type_of_item",
+        "title": "Тип товара",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "color",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color"
+      },
+      {
+        "code": "material",
+        "title": "Материал",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "material"
+      },
+      {
+        "code": "screen_size_inch",
+        "title": "Диагональ",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "storage_gb",
+        "title": "Накопитель (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ram_gb",
+        "title": "ОЗУ (ГБ)",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "max_power_watt",
+        "title": "Макс. мощность, Вт",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Стандарт беспроводной зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "compatibility_mode",
+        "title": "Тип совместимости",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "compatibility_mode"
+      },
+      {
+        "code": "compatible_model_text",
+        "title": "Совместимость текстом продавца",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "product_name",
+        "uiOrder": 1,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "brand",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "model",
+        "uiOrder": 3,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "condition",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "type_of_item",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "release_year",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "color",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "material",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "screen_size_inch",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "storage_type",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "storage_gb",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "ram_gb",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "max_power_watt",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "compatibility_mode",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+        "attributeCode": "compatible_model_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [],
+    "extendsProfiles": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON"
+    ]
   }
 ]

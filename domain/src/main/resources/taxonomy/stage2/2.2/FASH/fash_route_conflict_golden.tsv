@@ -1,0 +1,11 @@
+case_id	query_text	locale	expected_route_type	expected_target	forbidden_targets	notes
+FASH.ROUTE.001	мужская футболка	ru-RU	OPEN_CATEGORY	FASH.MEN	FASH.WOMEN|FASH.KIDS|FASH.SHOES	male apparel must stay in MEN
+FASH.ROUTE.002	женское платье	ru-RU	OPEN_CATEGORY	FASH.WOMEN	FASH.MEN|FASH.KIDS|FASH.BAGS	women apparel must stay in WOMEN
+FASH.ROUTE.003	детская куртка	ru-RU	OPEN_CATEGORY	FASH.KIDS	FASH.MEN|FASH.WOMEN|FASH.BAGS	kids apparel must stay in KIDS
+FASH.ROUTE.004	мужские кроссовки	ru-RU	OPEN_CATEGORY	FASH.SHOES	FASH.MEN|FASH.ACCESSORIES	male modifier must not override shoe head noun
+FASH.ROUTE.005	женская сумка	ru-RU	OPEN_CATEGORY	FASH.BAGS	FASH.WOMEN|FASH.ACCESSORIES	female modifier must not override bag head noun
+FASH.ROUTE.006	детский рюкзак	ru-RU	OPEN_CATEGORY	FASH.BAGS	FASH.KIDS	child modifier must not route backpack to apparel
+FASH.ROUTE.007	ремень кожаный	ru-RU	OPEN_CATEGORY	FASH.ACCESSORIES	FASH.MEN|FASH.BAGS	belt is an accessory, not apparel/bag
+FASH.ROUTE.008	очки солнцезащитные	ru-RU	OPEN_CATEGORY	FASH.ACCESSORIES	TECH.WEARABLES|FASH.BAGS	sunglasses are fashion accessories
+FASH.ROUTE.009	apple watch	ru-RU	OPEN_CATEGORY	TECH.WEARABLES	FASH.ACCESSORIES|FASH.BAGS|FASH.SHOES	smartwatch must route to TECH candidate
+FASH.ROUTE.010	часы наручные механические	ru-RU	OPEN_CATEGORY	FASH.ACCESSORIES	TECH.WEARABLES	non-smart watch remains in fashion accessories

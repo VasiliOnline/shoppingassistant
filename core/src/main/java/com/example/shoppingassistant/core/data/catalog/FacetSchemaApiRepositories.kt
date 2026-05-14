@@ -58,6 +58,11 @@ class FacetDefinitionApiRepository(
                     error = error,
                     fallbackCall = { fallback.listFacetDefinitions() },
                 )
+            }.let { remoteDefinitions ->
+                mergeFacetDefinitionsWithFashSeed(
+                    remoteDefinitions = remoteDefinitions,
+                    seedDefinitions = fallback.listFacetDefinitions(),
+                )
             }
         } else {
             fallbackOrThrow(
@@ -107,6 +112,19 @@ class FacetDefinitionApiRepository(
                     error = error,
                     fallbackCall = { fallback.listFacetDefinitions(normalized) },
                 )
+            }.let { remoteDefinitions ->
+                if (normalized.isFashCategoryCode()) {
+                    mergeFacetDefinitionsWithFashSeed(
+                        remoteDefinitions = remoteDefinitions,
+                        seedDefinitions = fallback.listFacetDefinitions(),
+                    ).filter { definition ->
+                        definition.appliesToCategoryCodes.any { code ->
+                            code.equals(normalized, ignoreCase = true)
+                        }
+                    }
+                } else {
+                    remoteDefinitions
+                }
             }
         } else {
             fallbackOrThrow(
@@ -172,6 +190,45 @@ class FacetDefinitionApiRepository(
         if (allowSeedFallback) return fallbackCall()
         throw IllegalStateException("Facet API call failed: $operation", error)
     }
+}
+
+internal fun mergeFacetDefinitionsWithFashSeed(
+    remoteDefinitions: List<FacetDefinition>,
+    seedDefinitions: List<FacetDefinition>,
+): List<FacetDefinition> {
+    if (remoteDefinitions.isEmpty()) return seedDefinitions
+    if (seedDefinitions.isEmpty()) return remoteDefinitions
+
+    val seedByKey = seedDefinitions.associateBy { definition -> definition.facetDefinitionMergeKey() }
+    val merged = LinkedHashMap<String, FacetDefinition>()
+    remoteDefinitions.forEach { remoteDefinition ->
+        val key = remoteDefinition.facetDefinitionMergeKey()
+        val seedDefinition = seedByKey[key]
+        merged[key] = if (
+            seedDefinition != null &&
+            (remoteDefinition.hasFashScope() || seedDefinition.hasFashScope())
+        ) {
+            seedDefinition
+        } else {
+            remoteDefinition
+        }
+    }
+    seedDefinitions.forEach { seedDefinition ->
+        if (!seedDefinition.hasFashScope()) return@forEach
+        merged.putIfAbsent(seedDefinition.facetDefinitionMergeKey(), seedDefinition)
+    }
+    return merged.values.toList()
+}
+
+private fun FacetDefinition.facetDefinitionMergeKey(): String =
+    facetKey.trim().lowercase()
+
+private fun FacetDefinition.hasFashScope(): Boolean =
+    appliesToCategoryCodes.any { code -> code.isFashCategoryCode() }
+
+private fun String.isFashCategoryCode(): Boolean {
+    val normalized = trim().uppercase()
+    return normalized == "FASH" || normalized.startsWith("FASH.")
 }
 
 class FacetPresetApiRepository(

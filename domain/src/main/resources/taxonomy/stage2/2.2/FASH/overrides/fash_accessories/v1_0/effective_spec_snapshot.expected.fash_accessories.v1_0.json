@@ -1,0 +1,54 @@
+{
+  "categoryCode": "FASH.ACCESSORIES",
+  "expected_effective_spec": {
+    "public_category": true,
+    "materialized_profile": true,
+    "attributes_count": 67,
+    "required_fields": ["accessory_type", "condition"],
+    "identity_attributes": ["accessory_type", "brand", "model_name_text"],
+    "type_attribute": "accessory_type"
+  },
+  "production_gate": {
+    "archetypes": ["TYPE_DRIVEN", "VISUAL_SIMPLE"],
+    "required_present": [
+      "accessory_type",
+      "brand",
+      "condition",
+      "color",
+      "material_primary",
+      "belt_size_cm",
+      "belt_length_cm",
+      "buckle_type",
+      "route_confidence"
+    ],
+    "required_fields": ["accessory_type", "condition"],
+    "primary_facets": [
+      "accessory_type",
+      "target_gender",
+      "age_group",
+      "brand",
+      "condition",
+      "color",
+      "material_primary"
+    ],
+    "hidden_from_primary_ui": ["route_confidence"],
+    "initial_fields": [
+      "accessory_type",
+      "condition",
+      "brand",
+      "target_gender",
+      "age_group",
+      "color",
+      "material_primary"
+    ],
+    "type_specific": {
+      "BELT": [
+        "belt_size_cm",
+        "belt_length_cm",
+        "material_primary",
+        "color",
+        "buckle_type"
+      ]
+    }
+  }
+}

@@ -19,7 +19,7 @@ class Stage21HomeQueryRouterTest {
     fun route_smart_lighting_query_to_tech_smart_home() = runBlocking {
         val result = router.route(query = "умная лампочка zigbee", locale = "ru-RU")
         assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
-        assertEquals("TECH.SMART_HOME", result.primaryTargetCode)
+        assertEquals("TECH.SMART_HOME_SECURITY", result.primaryTargetCode)
     }
 
     @Test

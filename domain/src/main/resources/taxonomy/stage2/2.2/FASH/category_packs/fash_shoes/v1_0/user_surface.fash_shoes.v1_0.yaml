@@ -2,6 +2,8 @@ id: user_surface.fash_shoes.v1_0
 categoryCode: FASH.SHOES
 version: 1.0.0
 locale: ru-RU
+initial_form_limit: 8
+primary_facets_limit: 7
 ui_groups:
 - group_id: sneakers_sport
   label_ru: Кроссовки и спорт
@@ -59,17 +61,8 @@ create_offer_minimal_form:
 - attribute: shoe_type
   label_ru: Тип обуви
   required: true
-- attribute: target_gender
-  label_ru: Для кого
-  required: false
-- attribute: age_group
-  label_ru: Возраст
-  required: false
 - attribute: brand
   label_ru: Бренд
-  required: false
-- attribute: model_name_text
-  label_ru: Модель
   required: false
 - attribute: size_eu
   label_ru: Размер EU
@@ -88,6 +81,16 @@ create_offer_minimal_form:
   required: false
 - attribute: material_upper
   label_ru: Материал
+  required: false
+create_offer_secondary_form:
+- attribute: target_gender
+  label_ru: Для кого
+  required: false
+- attribute: age_group
+  label_ru: Возраст
+  required: false
+- attribute: model_name_text
+  label_ru: Модель
   required: false
 type_specific_forms:
   WINTER_BOOTS:

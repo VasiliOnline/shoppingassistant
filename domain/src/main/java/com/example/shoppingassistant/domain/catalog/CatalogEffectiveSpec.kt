@@ -37,6 +37,9 @@ data class CatalogAttributeSpec(
     val code: String,
     val title: String,
     val labels: LocalizedText = LocalizedText.Empty,
+    val role: CatalogAttributeRole = CatalogAttributeRole.T2_ADVANCED,
+    val usageScopes: List<CatalogAttributeUsageScope> = emptyList(),
+    val facetTemplateCode: String? = null,
     val dataType: AttributeDataType,
     val valueType: Stage22ValueType,
     val valueSetType: Stage22ValueSetType,
@@ -65,6 +68,7 @@ data class CatalogAttributeSpec(
 @Serializable
 data class CatalogEffectiveSpecMeta(
     val source: String = "profile+registry+stage4+constraints",
+    val archetypes: List<CategoryArchetype> = emptyList(),
     val identityAttributeCodes: List<String> = emptyList(),
     val facetAttributeCodes: List<String> = emptyList(),
     val hasTypedConstraints: Boolean = false,
@@ -253,6 +257,7 @@ private fun buildCategoryEffectiveSpec(
                 attributeDef?.facetEnabled == true || immutable?.isFacet == true || registryDef?.isFacet == true || systemDefaults?.facetEnabled == true
             val isIdentity =
                 immutable?.isIdentity == true || registryDef?.isIdentity == true || systemDefaults?.isIdentity == true || normalizedCode in defaultIdentityAttributeCodes
+            val isFacet = immutable?.isFacet == true || registryDef?.isFacet == true || attributeDef?.facetEnabled == true || systemDefaults?.isFacet == true
             val widgetHint = systemDefaults?.widgetHint ?: inferWidgetHint(
                 dataType = dataType,
                 valueType = valueType,
@@ -265,6 +270,29 @@ private fun buildCategoryEffectiveSpec(
                 code = attributeDef?.code ?: rawCode.trim(),
                 title = title,
                 labels = labels,
+                role = inferAttributeRole(
+                    normalizedCode = normalizedCode,
+                    isIdentity = isIdentity,
+                    requiredForCategory = requiredForCategory,
+                    requiredForSearch = requiredForSearch,
+                    requiredForOffer = requiredForOffer,
+                    requiredForExpress = requiredForExpress,
+                ),
+                usageScopes = inferAttributeUsageScopes(
+                    normalizedCode = normalizedCode,
+                    isIdentity = isIdentity,
+                    isFacet = isFacet || facetEnabled,
+                    requiredForCategory = requiredForCategory,
+                    requiredForSearch = requiredForSearch,
+                    requiredForOffer = requiredForOffer,
+                    requiredForExpress = requiredForExpress,
+                ),
+                facetTemplateCode = inferFacetTemplateCode(
+                    normalizedCode = normalizedCode,
+                    valueType = valueType,
+                    isFacet = isFacet || facetEnabled,
+                    requiredForCategory = requiredForCategory,
+                ),
                 dataType = dataType,
                 valueType = valueType,
                 valueSetType = valueSetType,
@@ -280,7 +308,7 @@ private fun buildCategoryEffectiveSpec(
                 unit = immutable?.unit ?: registryDef?.unit ?: systemDefaults?.unit,
                 normalization = immutable?.normalization ?: registryDef?.normalization ?: systemDefaults?.normalization,
                 isIdentity = isIdentity,
-                isFacet = immutable?.isFacet == true || registryDef?.isFacet == true || attributeDef?.facetEnabled == true || systemDefaults?.isFacet == true,
+                isFacet = isFacet,
                 dictionaryRequired = immutable?.dictionaryRequired ?: systemDefaults?.dictionaryRequired ?: (valueSetType != Stage22ValueSetType.OPEN),
                 enumOnly = typed?.enumOnly == true || systemDefaults?.enumOnly == true,
                 regexPattern = typed?.regex ?: systemDefaults?.regexPattern,
@@ -339,6 +367,7 @@ private fun buildCategoryEffectiveSpec(
         ),
         constraints = constraints,
         meta = CatalogEffectiveSpecMeta(
+            archetypes = CatalogPackV2RegistryLoader.archetypesFor(category.code),
             identityAttributeCodes = identityAttributeCodes,
             facetAttributeCodes = facetAttributeCodes,
             hasTypedConstraints = allAttributeSpecs.any { spec ->
@@ -414,6 +443,79 @@ private val defaultSystemAttributeCodeSet = defaultSystemAttributeCodes.toSet()
 
 private val readinessOfferSignalIgnoredAttributeCodes = systemAttributeRegistry.ignoredForOfferSignalCodes
 
+private val adminOnlyAttributeCodes = setOf(
+    "apparel_type_group",
+    "authenticity_status",
+    "authenticity_state",
+    "cabin_size_status",
+    "canonical_product_key",
+    "compatible_model_text",
+    "compatibility_confidence",
+    "data_quality_score",
+    "defect_notes",
+    "dedup_fingerprint",
+    "device_identity_key",
+    "evidence_policy",
+    "evidence_level",
+    "extraction_warnings",
+    "identity_candidate_count",
+    "identity_debug_trace",
+    "identity_last_resolved_at",
+    "identity_resolution_version",
+    "image_embedding_id",
+    "imei_hash",
+    "listing_completeness_confidence",
+    "model_name_text_raw",
+    "normalization_source",
+    "package_text",
+    "raw_barcode_payload",
+    "raw_model_candidates",
+    "raw_ocr_spec_tokens",
+    "raw_ocr_identity_tokens",
+    "raw_source_spec_tokens",
+    "raw_spec_tokens",
+    "raw_title_spec_tokens",
+    "raw_title_identity_tokens",
+    "raw_size_text",
+    "route_guardrail_trace",
+    "serial_number_masked",
+    "source_locale",
+    "source_market",
+    "source_evidence_fingerprint",
+    "source_page_metadata",
+    "source_url_identity_tokens",
+    "normalized_spec_key",
+    "spec_candidate_count",
+    "spec_conflict_set",
+    "spec_fingerprint",
+    "spec_last_verified_at",
+    "spec_review_reason",
+    "spec_review_required",
+    "spec_runtime_version",
+    "spec_unit_parse_notes",
+    "title_embedding_id",
+    "unit_parser_version",
+    "visual_evidence_flags",
+    "vision_confidence",
+    "visible_label_text",
+)
+
+private val identityCoreAttributeCodes = setOf(
+    "identity_confidence",
+    "identity_resolution_status",
+)
+
+private val specsCoreAttributeCodes = setOf(
+    "measurement_system",
+    "primary_spec_summary",
+    "spec_completeness_score",
+    "spec_confidence",
+    "spec_evidence_level",
+    "spec_profile_status",
+    "spec_source",
+    "unit_normalization_status",
+)
+
 private fun stage40ImmutableByCode(): Map<String, Stage40ImmutableAttribute> =
     CatalogSeed.stage40ImmutableSchema.attributes.associateBy { normalizeCatalogAttributeCode(it.attributeCode) }
 
@@ -474,6 +576,126 @@ private fun inferWidgetHint(
     else ->
         CatalogAttributeWidgetHint.INPUT
 }
+
+private fun inferAttributeRole(
+    normalizedCode: String,
+    isIdentity: Boolean,
+    requiredForCategory: Boolean,
+    requiredForSearch: Boolean,
+    requiredForOffer: Boolean,
+    requiredForExpress: Boolean,
+): CatalogAttributeRole = when {
+    normalizedCode in adminOnlyAttributeCodes -> CatalogAttributeRole.T3_SYSTEM_HIDDEN
+    normalizedCode in defaultSystemAttributeCodeSet -> CatalogAttributeRole.T0_CORE
+    normalizedCode in identityCoreAttributeCodes -> CatalogAttributeRole.T0_CORE
+    normalizedCode in specsCoreAttributeCodes -> CatalogAttributeRole.T0_CORE
+    normalizedCode in typeCriticalAttributeCodes -> CatalogAttributeRole.T1_TYPE_CRITICAL
+    isIdentity -> CatalogAttributeRole.T0_CORE
+    requiredForCategory || requiredForSearch || requiredForOffer || requiredForExpress -> CatalogAttributeRole.T1_TYPE_CRITICAL
+    else -> CatalogAttributeRole.T2_ADVANCED
+}
+
+private fun inferAttributeUsageScopes(
+    normalizedCode: String,
+    isIdentity: Boolean,
+    isFacet: Boolean,
+    requiredForCategory: Boolean,
+    requiredForSearch: Boolean,
+    requiredForOffer: Boolean,
+    requiredForExpress: Boolean,
+): List<CatalogAttributeUsageScope> {
+    if (normalizedCode in adminOnlyAttributeCodes) {
+        return listOf(
+            CatalogAttributeUsageScope.MATCHING_ONLY,
+            CatalogAttributeUsageScope.AI_EXTRACTION_ONLY,
+            CatalogAttributeUsageScope.ADMIN_REVIEW_ONLY,
+        )
+    }
+
+    val scopes = linkedSetOf<CatalogAttributeUsageScope>()
+    if (requiredForCategory || requiredForSearch || requiredForOffer || requiredForExpress) {
+        scopes += CatalogAttributeUsageScope.USER_VISIBLE_REQUIRED
+    } else {
+        scopes += CatalogAttributeUsageScope.USER_VISIBLE_OPTIONAL
+    }
+    if (isFacet) {
+        scopes += if (requiredForCategory || requiredForSearch || requiredForOffer || requiredForExpress) {
+            CatalogAttributeUsageScope.PRIMARY_FACET
+        } else {
+            CatalogAttributeUsageScope.SECONDARY_FACET
+        }
+    }
+    if (isIdentity) {
+        scopes += CatalogAttributeUsageScope.MATCHING_ONLY
+    }
+    return scopes.toList()
+}
+
+private fun inferFacetTemplateCode(
+    normalizedCode: String,
+    valueType: Stage22ValueType,
+    isFacet: Boolean,
+    requiredForCategory: Boolean,
+): String? = when {
+    normalizedCode in setOf("brand", "compatible_phone_brand") -> "brand_optional"
+    normalizedCode in setOf("price", "condition") -> "condition_price_base"
+    normalizedCode.contains("compatib") || normalizedCode == "used_for" -> "compatibility_widget"
+    normalizedCode.contains("allergen") || normalizedCode.contains("ingredient") -> "ingredient/allergen_warning"
+    normalizedCode.contains("life_stage") ||
+        normalizedCode in setOf("age_group", "age_from_months", "age_to_months", "school_grade_group") -> "life_stage_selector"
+    normalizedCode.contains("size") ||
+        normalizedCode.contains("length") ||
+        normalizedCode in setOf("height_cm", "child_height_cm", "foot_length_cm", "insole_length_cm") -> "size_selector"
+    valueType == Stage22ValueType.NUMBER && isFacet -> "numeric_range"
+    valueType == Stage22ValueType.NUMBER -> "spec_range"
+    isFacet && requiredForCategory -> "enum_primary"
+    isFacet -> "enum_secondary"
+    else -> null
+}
+
+private val typeCriticalAttributeCodes = setOf(
+    "accessory_type",
+    "apparel_type",
+    "bag_type",
+    "battery_capacity_mah",
+    "battery_capacity_wh",
+    "bluetooth_version",
+    "chipset_text",
+    "connector_type",
+    "dimensions",
+    "ean",
+    "form_factor",
+    "generation",
+    "gtin",
+    "identity_context_role",
+    "identity_evidence_level",
+    "identity_evidence_types",
+    "identity_review_required",
+    "identity_source",
+    "model_aliases",
+    "model_granularity",
+    "model_number",
+    "mpn",
+    "network_generation",
+    "os_family",
+    "power_source",
+    "power_watts",
+    "ram_capacity",
+    "refresh_rate_hz",
+    "region_variant",
+    "screen_resolution",
+    "screen_size",
+    "series",
+    "shoe_type",
+    "storage_capacity",
+    "type_of_item",
+    "upc",
+    "variant_label",
+    "water_resistance",
+    "weight",
+    "wi_fi_standard",
+    "wireless_standard",
+)
 
 private fun resolveCatalogValueOptions(
     dictionary: AttributeValueDict?,

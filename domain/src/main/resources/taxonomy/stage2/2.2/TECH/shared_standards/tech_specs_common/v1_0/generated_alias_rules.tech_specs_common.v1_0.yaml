@@ -1,0 +1,39 @@
+ruleset_id: generated_alias_rules.tech_specs_common.v1_0
+category_code: TECH.SPECS_COMMON
+rules:
+- id: capacity_variants
+  generate_from:
+  - storage_capacity
+  - ram_capacity
+  patterns:
+  - '{n}gb'
+  - '{n} гб'
+  - '{n} гб памяти'
+  - '{n}tb'
+  - '{n} тб'
+- id: power_variants
+  generate_from:
+  - power_watts
+  patterns:
+  - '{n}w'
+  - '{n} вт'
+  - '{n} ватт'
+  - мощность {n}
+- id: screen_variants
+  generate_from:
+  - screen_size
+  - refresh_rate_hz
+  patterns:
+  - экран {n}
+  - '{n} дюйм'
+  - '{n}hz'
+  - '{n} гц'
+  - '{n} герц'
+- id: connector_synonyms
+  generate_from:
+  - connector_type
+  patterns:
+  - usb c/type c/тайп си
+  - lightning/лайтнинг
+  - hdmi/ашдимиай
+collision_policy: Alias may extract spec attributes but must not override route category when non-TECH context guard wins.

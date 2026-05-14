@@ -1,0 +1,65 @@
+facet_template_id: facet_templates.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+primary_facets_max: 7
+primary_facets:
+- attribute: brand
+  type: multi_select
+  sort: popularity_then_alpha
+  show_counts: true
+- attribute: family
+  type: multi_select
+  sort: popularity_then_alpha
+  show_counts: true
+- attribute: release_year
+  type: range_or_discrete
+  sort: desc
+  show_counts: true
+- attribute: region_variant
+  type: multi_select
+  sort: priority_then_alpha
+  show_counts: true
+- attribute: model_granularity
+  type: single_select
+  sort: fixed
+  show_counts: true
+- attribute: identity_resolution_status
+  type: single_select
+  sort: fixed
+  show_counts: true
+- attribute: identity_confidence_bucket
+  type: single_select
+  sort: fixed
+  show_counts: true
+secondary_facets:
+- attribute: model_number
+  type: searchable_text
+- attribute: mpn
+  type: searchable_text
+- attribute: gtin
+  type: exact_id_search
+- attribute: generation
+  type: multi_select
+- attribute: variant_label
+  type: multi_select
+- attribute: identity_evidence_level
+  type: multi_select
+- attribute: identity_context_role
+  type: multi_select
+forbidden_facets:
+- device_identity_key
+- canonical_product_key
+- dedup_fingerprint
+- identity_candidate_count
+- raw_title_identity_tokens
+- raw_ocr_identity_tokens
+- raw_barcode_payload
+- raw_model_candidates
+- source_url_identity_tokens
+- source_page_metadata
+- serial_number_masked
+- imei_hash
+- image_embedding_id
+- title_embedding_id
+- identity_debug_trace
+- identity_resolution_version
+- identity_last_resolved_at

@@ -138,7 +138,7 @@ class SeedAliasFirstQueryRouterTest {
                         term = "смартфон",
                         normalizedTerm = "смартфон",
                         kind = AliasKind.CATEGORY,
-                        targetCode = "TECH.TV_VIDEO",
+                        targetCode = "TECH.TV_HOME_THEATER",
                         weight = 90,
                         matchKind = AliasMatchKind.EXACT,
                         source = AliasSource.SEED,
@@ -151,7 +151,7 @@ class SeedAliasFirstQueryRouterTest {
         val result = router.route(query = "смартфон", locale = "ru-RU")
 
         assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
-        assertEquals("TECH.TV_VIDEO", result.primaryTargetCode)
+        assertEquals("TECH.TV_HOME_THEATER", result.primaryTargetCode)
     }
 
     @Test

@@ -34,7 +34,10 @@ class CatalogApiDataSource(
             operation = "listCategories",
             requireDataVersionParity = allowSeedFallback,
         )
-        response.body<List<Category>>()
+        mergeCategoriesWithSeed(
+            remoteCategories = response.body(),
+            seedCategories = fallback.listCategories(),
+        )
     }
 
     override suspend fun getEffectiveSpec(
@@ -70,7 +73,11 @@ class CatalogApiDataSource(
                 requireDataVersionParity = allowSeedFallback,
             )
             when {
-                response.status == HttpStatusCode.NotFound -> null
+                response.status == HttpStatusCode.NotFound -> fallback.getEffectiveSpec(
+                    code = normalizedCode,
+                    brand = brand,
+                    model = model,
+                )
                 response.status.isSuccess() -> response.body<CatalogCategoryEffectiveSpec>()
                 else -> throw IllegalStateException("Catalog API status=${response.status}")
             }
@@ -107,4 +114,23 @@ class CatalogApiDataSource(
 
     private fun normalizeCode(code: String?): String =
         code?.trim()?.uppercase(Locale.ROOT).orEmpty()
+}
+
+internal fun mergeCategoriesWithSeed(
+    remoteCategories: List<Category>,
+    seedCategories: List<Category>,
+): List<Category> {
+    if (remoteCategories.isEmpty()) return seedCategories
+    if (seedCategories.isEmpty()) return remoteCategories
+
+    val merged = LinkedHashMap<String, Category>()
+    remoteCategories.forEach { category ->
+        val key = category.code.trim().uppercase(Locale.ROOT)
+        if (key.isNotEmpty()) merged[key] = category
+    }
+    seedCategories.forEach { category ->
+        val key = category.code.trim().uppercase(Locale.ROOT)
+        if (key.isNotEmpty()) merged.putIfAbsent(key, category)
+    }
+    return merged.values.toList()
 }

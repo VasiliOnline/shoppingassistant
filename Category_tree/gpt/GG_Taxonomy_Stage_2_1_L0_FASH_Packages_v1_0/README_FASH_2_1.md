@@ -15,6 +15,6 @@
 - коляска/автокресло/подгузники → `KIDS.STROLLERS_CARSEATS` / `KIDS.BABY_GEAR`
 - игрушки/LEGO → `KIDS.TOYS_GAMES`
 - духи/парфюм → `BEAUTY.FRAGRANCE`
-- смарт‑часы/фитнес‑браслет → `TECH.SMART_HOME`
+- смарт‑часы/фитнес‑браслет → `TECH.WEARABLES`
 - перчатки хозяйственные (для уборки) → `HOME.CLEANING`
-- ноутбук без bag‑токенов (рюкзак/сумка) → `TECH.LAPTOPS`
+- ноутбук без bag‑токенов (рюкзак/сумка) → `TECH.COMPUTERS`

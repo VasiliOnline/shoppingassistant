@@ -9,7 +9,7 @@ class VisualSearchPreflightCategoryRouterTest {
     @Test
     fun route_prioritizes_selected_category() {
         val candidates = VisualSearchPreflightCategoryRouter.route(
-            selectedCategoryCode = "TECH.LAPTOPS",
+            selectedCategoryCode = "TECH.COMPUTERS",
             barcodeValue = null,
             ocrTextHints = emptyList(),
             imageLabelHints = listOf("smartphone"),
@@ -17,7 +17,7 @@ class VisualSearchPreflightCategoryRouterTest {
             objectConfidence = null,
         )
 
-        assertEquals("TECH.LAPTOPS", candidates.first().categoryCode)
+        assertEquals("TECH.COMPUTERS", candidates.first().categoryCode)
         assertTrue(candidates.first().confidence!! >= 0.95f)
     }
 
@@ -46,7 +46,7 @@ class VisualSearchPreflightCategoryRouterTest {
             objectConfidence = 0.71f,
         )
 
-        assertEquals("TECH.LAPTOPS", candidates.first().categoryCode)
+        assertEquals("TECH.COMPUTERS", candidates.first().categoryCode)
     }
 
     @Test

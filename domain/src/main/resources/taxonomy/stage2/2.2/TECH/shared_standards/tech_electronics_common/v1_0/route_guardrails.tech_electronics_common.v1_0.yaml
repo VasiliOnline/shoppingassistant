@@ -1,0 +1,76 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+public_category: false
+accepts_offers_directly: false
+evaluation_mode: sort_by_priority_desc_then_first_match
+route_guardrails:
+  - id: shared_standard_never_final_destination
+    priority: 1000
+    effect: block_final_route
+    if_category_code: TECH.ELECTRONICS_COMMON
+    route_to: runtime_public_category_router
+    reason: shared_standard_not_public
+  - id: tech_root_positive_signal
+    priority: 900
+    effect: add_route_family_signal
+    route_family: TECH
+    include_any:
+      - электроника
+      - техника
+      - гаджет
+      - устройство
+      - девайс
+      - цифровая техника
+    exclude_any:
+      - одежда
+      - обувь
+      - мебель
+      - косметика
+      - продукт питания
+  - id: fash_wearable_strap_conflict
+    priority: 850
+    effect: route_conflict_note
+    if_all: [ремешок]
+    if_any: [apple watch, smartwatch, умные часы, фитнес браслет]
+    preferred_route_family: TECH
+    forbidden_route_family: FASH.ACCESSORIES
+  - id: fash_bag_laptop_conflict
+    priority: 830
+    effect: require_public_policy_decision
+    if_all: [сумка]
+    if_any: [ноутбук, laptop, macbook]
+    possible_routes: [FASH.BAGS, TECH.COMPUTER_ACCESSORIES]
+    reason: laptop_bag_cross_domain_policy
+  - id: tech_case_vs_fash_case_conflict
+    priority: 820
+    effect: add_route_family_signal
+    route_family: TECH
+    if_any: [чехол iphone, чехол samsung, чехол планшет, чехол ноутбук, case for]
+    forbidden_route_family: FASH.ACCESSORIES
+  - id: power_cable_common_signal
+    priority: 760
+    effect: add_route_target_candidate
+    route_target: TECH.POWER_CHARGING_CABLES
+    if_any: [зарядка, кабель, usb-c, hdmi, power bank, блок питания]
+  - id: phone_common_signal_defer_to_public_pack
+    priority: 740
+    effect: add_route_target_candidate
+    route_target: TECH.PHONES
+    if_any: [смартфон, телефон, iphone, galaxy, pixel, redmi]
+    note: public category pack must finalize; electronics common only provides shared fields
+  - id: accessory_common_signal_defer_to_public_pack
+    priority: 730
+    effect: add_route_target_candidate
+    route_target: TECH.PHONE_ACCESSORIES
+    if_any: [чехол, защитное стекло, пленка, magsafe, sim tool]
+    note: public accessory pack must finalize compatibility/type
+negative_guardrails:
+  - id: no_food_or_consumables
+    block_route_family: TECH
+    if_any: [еда, корм, напиток, лекарство, крем]
+  - id: no_fashion_final_route
+    block_shared_route: true
+    if_any: [куртка, платье, кроссовки, сумка женская, ремень кожаный]
+  - id: no_furniture_final_route
+    block_route_family: TECH
+    if_any: [диван, стол, шкаф]

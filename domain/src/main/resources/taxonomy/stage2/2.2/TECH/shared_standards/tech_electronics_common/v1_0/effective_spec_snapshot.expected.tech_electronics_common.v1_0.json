@@ -1,0 +1,196 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_electronics_common.v1_0",
+  "category_code": "TECH.ELECTRONICS_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "resolved_inheritance": {
+    "parent": "TECH_CATEGORY_TREE_CONTRACT_v1_0",
+    "children": [],
+    "will_be_inherited_by_public_categories": true
+  },
+  "attribute_roles": {
+    "T0_CORE": [
+      "brand",
+      "manufacturer",
+      "condition",
+      "color_family",
+      "release_year",
+      "warranty_status",
+      "region",
+      "country_version"
+    ],
+    "T1_TYPE_RELEVANT": [
+      "included_accessories",
+      "seller_bundle",
+      "original_box",
+      "refurbished_status",
+      "repair_history",
+      "cosmetic_condition_grade",
+      "functional_condition"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "color_vendor_text",
+      "warranty_months_remaining",
+      "warranty_provider",
+      "receipt_available",
+      "purchase_channel",
+      "return_policy_status",
+      "refurbishment_grade",
+      "refurbishment_provider",
+      "service_history_text",
+      "defect_notes",
+      "accessory_completeness_grade",
+      "packaging_condition",
+      "seller_notes_quality"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "model_name_text_raw",
+      "listing_completeness_confidence",
+      "evidence_level",
+      "normalization_source",
+      "source_locale",
+      "source_market",
+      "extraction_warnings",
+      "route_guardrail_trace",
+      "vision_confidence",
+      "data_quality_score"
+    ]
+  },
+  "attributes_total": 38,
+  "required_shared_mount_fields": [
+    "brand",
+    "condition",
+    "color_family"
+  ],
+  "ui_surface": {
+    "initial_fields": [
+      "brand",
+      "condition",
+      "color_family",
+      "warranty_status",
+      "region",
+      "release_year",
+      "included_accessories",
+      "original_box"
+    ],
+    "initial_fields_count": 8,
+    "primary_facets": [
+      "condition",
+      "brand",
+      "color_family",
+      "warranty_status",
+      "region",
+      "release_year",
+      "included_accessories"
+    ],
+    "primary_facets_count": 7,
+    "never_show_in_ui": [
+      "model_name_text_raw",
+      "listing_completeness_confidence",
+      "evidence_level",
+      "normalization_source",
+      "source_locale",
+      "source_market",
+      "extraction_warnings",
+      "route_guardrail_trace",
+      "vision_confidence",
+      "data_quality_score"
+    ]
+  },
+  "allowed_values_summary": {
+    "attributes_with_head_values": [
+      "accessory_completeness_grade",
+      "brand",
+      "color_family",
+      "condition",
+      "cosmetic_condition_grade",
+      "country_version",
+      "evidence_level",
+      "functional_condition",
+      "included_accessories",
+      "normalization_source",
+      "original_box",
+      "packaging_condition",
+      "purchase_channel",
+      "receipt_available",
+      "refurbished_status",
+      "refurbishment_grade",
+      "refurbishment_provider",
+      "region",
+      "repair_history",
+      "return_policy_status",
+      "seller_notes_quality",
+      "warranty_provider",
+      "warranty_status"
+    ],
+    "value_rows_count": 180,
+    "long_tail_strategy": "runtime_candidates/live_values"
+  },
+  "blocked_outputs": [
+    "family",
+    "line",
+    "model",
+    "model_aliases",
+    "mpn",
+    "gtin",
+    "storage",
+    "ram",
+    "screen_size",
+    "battery_capacity",
+    "connector_type",
+    "wireless_standard",
+    "compatible_brand",
+    "compatible_family",
+    "compatible_model"
+  ],
+  "blocked_public_category_codes": [
+    "TECH.IPHONE",
+    "TECH.SAMSUNG_PHONES",
+    "TECH.CASES",
+    "TECH.CHARGERS",
+    "TECH.CABLES"
+  ],
+  "route_policy": {
+    "final_route_to_shared_standard_allowed": false,
+    "candidate_route_targets_allowed": [
+      "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.COMPUTERS",
+      "TECH.TABLETS_E_READERS",
+      "TECH.MONITORS_DISPLAYS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.PC_COMPONENTS",
+      "TECH.STORAGE_MEMORY",
+      "TECH.AUDIO",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES",
+      "TECH.CAMERAS_DRONES",
+      "TECH.GAMING",
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.NETWORKING",
+      "TECH.POWER_CHARGING_CABLES",
+      "TECH.PRINTERS_SCANNERS",
+      "TECH.CAR_ELECTRONICS_GPS"
+    ],
+    "cross_domain_conflicts_declared": true
+  },
+  "quality_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7,
+    "t3_hidden_leak_allowed": 0,
+    "model_head_seed_allowed": 0
+  },
+  "expected_gates": [
+    "Stage22SeedValidator",
+    "FacetSchemaValidator",
+    "EffectiveSpecSnapshotGate",
+    "RouteConflictGate",
+    "UserSurfaceGate",
+    "AliasCollisionGate",
+    "VisionRulesGate",
+    "SampleOffersSmokeGate",
+    "SharedStandardNoFinalRouteGate",
+    "T3HiddenLeakGate"
+  ]
+}

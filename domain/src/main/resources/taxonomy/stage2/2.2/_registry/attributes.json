@@ -356,7 +356,7 @@
       "attributeCode": "battery_health_percent",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
-      "unit": null,
+      "unit": "percent",
       "isIdentity": false,
       "isFacet": false,
       "labels": {
@@ -1697,7 +1697,7 @@
       "valueSetType": "CLOSED",
       "unit": null,
       "isIdentity": false,
-      "isFacet": false,
+      "isFacet": true,
       "labels": {
         "ru": "Форма выпуска",
         "en": "form factor"
@@ -2152,7 +2152,7 @@
       "valueSetType": "OPEN",
       "unit": null,
       "isIdentity": false,
-      "isFacet": false,
+      "isFacet": true,
       "labels": {
         "ru": "Защита IP",
         "en": "ip rating"
@@ -3486,19 +3486,6 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
-      "attributeCode": "region_code",
-      "valueType": "STRING",
-      "valueSetType": "OPEN",
-      "unit": null,
-      "isIdentity": false,
-      "isFacet": false,
-      "labels": {
-        "ru": "Регион",
-        "en": "region code"
-      },
-      "normalization": "stage22.query_normalizer_v1"
-    },
-    {
       "attributeCode": "release_collection",
       "valueType": "STRING",
       "valueSetType": "OPEN",
@@ -4193,7 +4180,7 @@
       "valueSetType": "CLOSED",
       "unit": null,
       "isIdentity": false,
-      "isFacet": false,
+      "isFacet": true,
       "labels": {
         "ru": "Тип накопителя",
         "en": "storage type"
@@ -4721,19 +4708,6 @@
       "normalization": "stage22.query_normalizer_v1"
     },
     {
-      "attributeCode": "warranty_months",
-      "valueType": "NUMBER",
-      "valueSetType": "OPEN",
-      "unit": "month",
-      "isIdentity": false,
-      "isFacet": true,
-      "labels": {
-        "ru": "Гарантия, месяцев",
-        "en": "warranty months"
-      },
-      "normalization": "stage22.query_normalizer_v1"
-    },
-    {
       "attributeCode": "watch_strap_lug_width_mm",
       "valueType": "NUMBER",
       "valueSetType": "OPEN",
@@ -5018,6 +4992,2151 @@
         "en": "wireless standard"
       },
       "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "manufacturer",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Производитель",
+        "en": "manufacturer"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "color_family",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Цвет",
+        "en": "color family"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "warranty_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Гарантия",
+        "en": "warranty status"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "region",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Регион",
+        "en": "region"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "country_version",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Версия рынка",
+        "en": "country version"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "seller_bundle",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Набор продавца",
+        "en": "seller bundle"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "refurbished_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Восстановление",
+        "en": "refurbished status"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "repair_history",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "История ремонта",
+        "en": "repair history"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "cosmetic_condition_grade",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Внешнее состояние",
+        "en": "cosmetic condition grade"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "functional_condition",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Работоспособность",
+        "en": "functional condition"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "color_vendor_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Цвет продавца",
+        "en": "color vendor text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "warranty_months_remaining",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Остаток гарантии, месяцев",
+        "en": "warranty months remaining"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "warranty_provider",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поставщик гарантии",
+        "en": "warranty provider"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "receipt_available",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Чек",
+        "en": "receipt available"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "purchase_channel",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Канал покупки",
+        "en": "purchase channel"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "return_policy_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Возврат",
+        "en": "return policy status"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "refurbishment_grade",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Грейд восстановления",
+        "en": "refurbishment grade"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "refurbishment_provider",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Кто восстановил",
+        "en": "refurbishment provider"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "service_history_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Сервисная история",
+        "en": "service history text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "accessory_completeness_grade",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Полнота комплектации",
+        "en": "accessory completeness grade"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "packaging_condition",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Состояние упаковки",
+        "en": "packaging condition"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "seller_notes_quality",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Качество описания",
+        "en": "seller notes quality"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model_name_text_raw",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Модель как в объявлении",
+        "en": "model name text raw"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "listing_completeness_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уверенность полноты объявления",
+        "en": "listing completeness confidence"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "evidence_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уровень доказательности",
+        "en": "evidence level"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "normalization_source",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Источник нормализации",
+        "en": "normalization source"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "source_locale",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Локаль источника",
+        "en": "source locale"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "source_market",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Рынок источника",
+        "en": "source market"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "extraction_warnings",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Предупреждения извлечения",
+        "en": "extraction warnings"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "route_guardrail_trace",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "След route guardrails",
+        "en": "route guardrail trace"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "vision_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уверенность vision",
+        "en": "vision confidence"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "data_quality_score",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Оценка качества данных",
+        "en": "data quality score"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "family",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Семейство",
+        "en": "family"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "line",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Линейка",
+        "en": "line"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_resolution_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Статус идентификации",
+        "en": "identity resolution status"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уверенность идентификации",
+        "en": "identity confidence"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "series",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Серия",
+        "en": "series"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model_aliases",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Алиасы модели",
+        "en": "model aliases"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model_number",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Номер модели",
+        "en": "model number"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "mpn",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "MPN",
+        "en": "mpn"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "gtin",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "GTIN",
+        "en": "gtin"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "ean",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "EAN",
+        "en": "ean"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "upc",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "UPC",
+        "en": "upc"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "region_variant",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Региональный вариант",
+        "en": "region variant"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "generation",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поколение",
+        "en": "generation"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "variant_label",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": true,
+      "labels": {
+        "ru": "Вариант модели",
+        "en": "variant label"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model_granularity",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Точность модели",
+        "en": "model granularity"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_evidence_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Уровень evidence идентичности",
+        "en": "identity evidence level"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_evidence_types",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Типы evidence идентичности",
+        "en": "identity evidence types"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_source",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Источник идентичности",
+        "en": "identity source"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_context_role",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Роль identity-контекста",
+        "en": "identity context role"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_review_required",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Нужна проверка identity",
+        "en": "identity review required"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "brand_aliases",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Brand aliases",
+        "en": "brand aliases"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "family_aliases",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Family aliases",
+        "en": "family aliases"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "line_aliases",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Line aliases",
+        "en": "line aliases"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "sub_model",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Sub model",
+        "en": "sub model"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "edition",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Edition",
+        "en": "edition"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "product_code",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Product code",
+        "en": "product code"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "part_number",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Part number",
+        "en": "part number"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "manufacturer_part_number",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Manufacturer part number",
+        "en": "manufacturer part number"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "hardware_revision",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Hardware revision",
+        "en": "hardware revision"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "carrier_variant",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Carrier variant",
+        "en": "carrier variant"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "country_variant_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Country variant text",
+        "en": "country variant text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "retailer_sku",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Retailer sku",
+        "en": "retailer sku"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "sku_vendor",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Sku vendor",
+        "en": "sku vendor"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "asin",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Asin",
+        "en": "asin"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "model_year_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Model year text",
+        "en": "model year text"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "generation_number",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": true,
+      "isFacet": false,
+      "labels": {
+        "ru": "Generation number",
+        "en": "generation number"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "image_model_text_visible",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Image model text visible",
+        "en": "image model text visible"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "logo_brand_visible",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Logo brand visible",
+        "en": "logo brand visible"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "bundle_identity_exclusion",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Bundle identity exclusion",
+        "en": "bundle identity exclusion"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_confidence_bucket",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Уровень уверенности identity",
+        "en": "identity confidence bucket"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_review_reason",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Причина проверки identity",
+        "en": "identity review reason"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_conflict_notes",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Заметки конфликта identity",
+        "en": "identity conflict notes"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "device_identity_key",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Device identity key",
+        "en": "device identity key"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "canonical_product_key",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Canonical product key",
+        "en": "canonical product key"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "dedup_fingerprint",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Dedup fingerprint",
+        "en": "dedup fingerprint"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_candidate_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Identity candidate count",
+        "en": "identity candidate count"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "raw_title_identity_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw title identity tokens",
+        "en": "raw title identity tokens"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "raw_ocr_identity_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw ocr identity tokens",
+        "en": "raw ocr identity tokens"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "raw_barcode_payload",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw barcode payload",
+        "en": "raw barcode payload"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "raw_model_candidates",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw model candidates",
+        "en": "raw model candidates"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "source_url_identity_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Source url identity tokens",
+        "en": "source url identity tokens"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "source_page_metadata",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Source page metadata",
+        "en": "source page metadata"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "serial_number_masked",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Serial number masked",
+        "en": "serial number masked"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "imei_hash",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Imei hash",
+        "en": "imei hash"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "image_embedding_id",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Image embedding id",
+        "en": "image embedding id"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "title_embedding_id",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Title embedding id",
+        "en": "title embedding id"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_debug_trace",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Identity debug trace",
+        "en": "identity debug trace"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_resolution_version",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Identity resolution version",
+        "en": "identity resolution version"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "identity_last_resolved_at",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Identity last resolved at",
+        "en": "identity last resolved at"
+      },
+      "normalization": "stage22.query_normalizer_v1"
+    },
+    {
+      "attributeCode": "spec_profile_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Статус профиля характеристик",
+        "en": "Spec profile status"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_confidence",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уверенность характеристик",
+        "en": "Spec confidence"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_evidence_level",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уровень доказательств характеристик",
+        "en": "Spec evidence level"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_source",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Источник характеристик",
+        "en": "Spec source"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "primary_spec_summary",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Краткая сводка характеристик",
+        "en": "Primary spec summary"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_completeness_score",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Полнота характеристик",
+        "en": "Spec completeness score"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "measurement_system",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Система измерения",
+        "en": "Measurement system"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "unit_normalization_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Статус нормализации единиц",
+        "en": "Unit normalization status"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "storage_capacity",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "GB",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Объём накопителя",
+        "en": "Storage capacity"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "ram_capacity",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "GB",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Оперативная память",
+        "en": "RAM capacity"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "screen_size",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "in",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Диагональ экрана",
+        "en": "Screen size"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "screen_resolution",
+      "valueType": "ENUM",
+      "valueSetType": "SEMI_CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Разрешение экрана",
+        "en": "Screen resolution"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "battery_capacity_mah",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "mAh",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Ёмкость аккумулятора мА·ч",
+        "en": "Battery capacity mAh"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "battery_capacity_wh",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "Wh",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Ёмкость аккумулятора Вт·ч",
+        "en": "Battery capacity Wh"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "power_watts",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "W",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Мощность",
+        "en": "Power watts"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "connector_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип разъёма",
+        "en": "Connector type"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "chipset_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Чипсет / процессор text",
+        "en": "Chipset text"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "dimensions",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": "mm",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Габариты",
+        "en": "Dimensions"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "weight",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "g",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Вес",
+        "en": "Weight"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "network_generation",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поколение сети",
+        "en": "Network generation"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "wi_fi_standard",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Стандарт Wi-Fi",
+        "en": "Wi-Fi standard"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "power_source",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Источник питания",
+        "en": "Power source"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "memory_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип памяти",
+        "en": "Memory type"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "cpu_cores",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Количество ядер CPU",
+        "en": "CPU cores"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "cpu_frequency_ghz",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "GHz",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Частота CPU",
+        "en": "CPU frequency"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "gpu_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Графика / GPU text",
+        "en": "GPU text"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "camera_resolution_mp",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "MP",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Разрешение камеры МП",
+        "en": "Camera megapixels"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "video_resolution",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Разрешение видео",
+        "en": "Video resolution"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "frame_rate_fps",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "fps",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Частота кадров",
+        "en": "Frame rate"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "panel_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип матрицы",
+        "en": "Panel type"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "aspect_ratio",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Соотношение сторон",
+        "en": "Aspect ratio"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "brightness_nits",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "nits",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Яркость",
+        "en": "Brightness"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "response_time_ms",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "ms",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Время отклика",
+        "en": "Response time"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "hdr_standard",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "HDR стандарт",
+        "en": "HDR standard"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "port_list_text",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Список портов text",
+        "en": "Port list text"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "data_transfer_rate",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "Gbps",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Скорость передачи данных",
+        "en": "Data transfer rate"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "read_speed_mbps",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "MBps",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Скорость чтения",
+        "en": "Read speed"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "write_speed_mbps",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "MBps",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Скорость записи",
+        "en": "Write speed"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "charging_standard",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Стандарт зарядки",
+        "en": "Charging standard"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "input_voltage",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": "V",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Входное напряжение",
+        "en": "Input voltage"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "output_voltage",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": "V",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Выходное напряжение",
+        "en": "Output voltage"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "output_current_a",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "A",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Выходной ток",
+        "en": "Output current"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "energy_consumption_w",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "W",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Потребление энергии",
+        "en": "Energy consumption"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "noise_level_db",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "dB",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Уровень шума",
+        "en": "Noise level"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "audio_channels",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Аудиоканалы",
+        "en": "Audio channels"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "microphone_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Количество микрофонов",
+        "en": "Microphone count"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "sensor_set",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Набор датчиков",
+        "en": "Sensor set"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "operating_temperature",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": "C",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Рабочая температура",
+        "en": "Operating temperature"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "mounting_type",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Тип крепления",
+        "en": "Mounting type"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "color_depth",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Глубина цвета",
+        "en": "Color depth"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "print_technology",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Технология печати",
+        "en": "Print technology"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "scan_resolution",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": "dpi",
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Разрешение сканирования",
+        "en": "Scan resolution"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "network_speed",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": "Mbps",
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Скорость сети",
+        "en": "Network speed"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "antenna_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Количество антенн",
+        "en": "Antenna count"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "poe_support",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поддержка PoE",
+        "en": "PoE support"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "sim_support",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": true,
+      "labels": {
+        "ru": "Поддержка SIM/eSIM",
+        "en": "SIM support"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "satellite_support",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Спутниковая связь",
+        "en": "Satellite support"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "cycle_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Количество циклов",
+        "en": "Cycle count"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "factory_reset_status",
+      "valueType": "ENUM",
+      "valueSetType": "CLOSED",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Сброс до заводских настроек",
+        "en": "Factory reset status"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "normalized_spec_key",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Нормализованный ключ характеристик",
+        "en": "Normalized spec key"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_fingerprint",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Отпечаток характеристик",
+        "en": "Spec fingerprint"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "raw_spec_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw tokens характеристик",
+        "en": "Raw spec tokens"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "raw_title_spec_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw title spec tokens",
+        "en": "Raw title spec tokens"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "raw_ocr_spec_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw OCR spec tokens",
+        "en": "Raw OCR spec tokens"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "raw_source_spec_tokens",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Raw source spec tokens",
+        "en": "Raw source spec tokens"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_candidate_count",
+      "valueType": "NUMBER",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Количество spec-кандидатов",
+        "en": "Spec candidate count"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_conflict_set",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Набор конфликтов характеристик",
+        "en": "Spec conflict set"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_unit_parse_notes",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Заметки парсинга единиц",
+        "en": "Spec unit parse notes"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_review_required",
+      "valueType": "BOOLEAN",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Требуется review характеристик",
+        "en": "Spec review required"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_review_reason",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Причина review характеристик",
+        "en": "Spec review reason"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "source_evidence_fingerprint",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Отпечаток evidence источника",
+        "en": "Source evidence fingerprint"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_runtime_version",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Версия runtime specs",
+        "en": "Spec runtime version"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "unit_parser_version",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Версия unit parser",
+        "en": "Unit parser version"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
+    },
+    {
+      "attributeCode": "spec_last_verified_at",
+      "valueType": "STRING",
+      "valueSetType": "OPEN",
+      "unit": null,
+      "isIdentity": false,
+      "isFacet": false,
+      "labels": {
+        "ru": "Дата последней проверки spec",
+        "en": "Spec last verified at"
+      },
+      "normalization": "tech_specs_common.unit_normalization.v1"
     }
   ]
 }

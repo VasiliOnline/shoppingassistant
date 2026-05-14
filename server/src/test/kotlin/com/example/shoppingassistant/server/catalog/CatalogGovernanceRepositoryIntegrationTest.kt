@@ -1024,7 +1024,7 @@ class CatalogGovernanceRepositoryIntegrationTest {
         assertTrue(repository.listCanonicalValuesAnyScope("chipset_family").any { it.canonicalCode == "SNAPDRAGON_8_GEN_3" })
         assertTrue(
             report.artifacts.productFamilies.families.any { family ->
-                family.familyCode == "SONY_BRAVIA" && family.defaultCategoryCode == "TECH.TV_VIDEO"
+                family.familyCode == "SONY_BRAVIA" && family.defaultCategoryCode == "TECH.TV_HOME_THEATER"
             },
         )
         assertTrue(invalidator.events.any { it.reason == "serving_artifacts_synced" })

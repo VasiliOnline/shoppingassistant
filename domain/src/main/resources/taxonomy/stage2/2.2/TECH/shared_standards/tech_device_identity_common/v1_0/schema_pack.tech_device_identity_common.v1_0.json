@@ -1,0 +1,204 @@
+{
+  "schema_id": "schema_pack.tech_device_identity_common.v1_0",
+  "category_code": "TECH.DEVICE_IDENTITY_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "runtime_mount": "shared_standard_registry",
+  "semantic_contract": {
+    "ru": "Общий слой идентичности TECH-устройств: brand/family/line/model/model aliases/MPN/GTIN/EAN/UPC/release year/region variant/evidence/no-guess policy/dedup identity key. Не является публичной категорией и не содержит полный реестр моделей.",
+    "not_public_category": true,
+    "not_model_head_seed": true,
+    "not_specs_registry": true,
+    "not_compatibility_registry": true,
+    "no_microcategory_mounts": true,
+    "identity_rule": "Точная модель допускается только при явном evidence: title/model_number/mpn/gtin/barcode/OCR/source attributes/user confirmation. Фото формы/цвета/логотипа недостаточно для exact model."
+  },
+  "category_archetypes": [
+    "DEVICE_IDENTITY_SHARED",
+    "IDENTITY_CRITICAL",
+    "MODEL_ALIAS_AWARE",
+    "MPN_GTIN_AWARE",
+    "REGION_VARIANT_AWARE",
+    "NO_GUESS_VISION",
+    "DEDUP_IDENTITY_KEY_AWARE"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON"
+  ],
+  "explicitly_excludes": [
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON",
+    "TECH.PHONES",
+    "TECH.PHONE_ACCESSORIES",
+    "TECH_PHONES_IDENTITY_PACK_v1_0_RU",
+    "TECH_PHONE_ACCESSORIES_COMPATIBILITY_PACK_v1_0_RU"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "brand",
+      "manufacturer",
+      "family",
+      "line",
+      "model",
+      "model_name_text",
+      "identity_resolution_status",
+      "identity_confidence"
+    ],
+    "T1_TYPE_RELEVANT": [
+      "series",
+      "model_aliases",
+      "model_number",
+      "mpn",
+      "gtin",
+      "ean",
+      "upc",
+      "release_year",
+      "region_variant",
+      "generation",
+      "variant_label",
+      "model_granularity",
+      "identity_evidence_level",
+      "identity_evidence_types",
+      "identity_source",
+      "identity_context_role",
+      "identity_review_required"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "brand_aliases",
+      "family_aliases",
+      "line_aliases",
+      "sub_model",
+      "edition",
+      "product_code",
+      "part_number",
+      "manufacturer_part_number",
+      "hardware_revision",
+      "carrier_variant",
+      "country_variant_text",
+      "retailer_sku",
+      "sku_vendor",
+      "asin",
+      "model_year_text",
+      "generation_number",
+      "image_model_text_visible",
+      "logo_brand_visible",
+      "bundle_identity_exclusion",
+      "identity_confidence_bucket",
+      "identity_review_reason",
+      "identity_conflict_notes"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "device_identity_key",
+      "canonical_product_key",
+      "dedup_fingerprint",
+      "identity_candidate_count",
+      "raw_title_identity_tokens",
+      "raw_ocr_identity_tokens",
+      "raw_barcode_payload",
+      "raw_model_candidates",
+      "source_url_identity_tokens",
+      "source_page_metadata",
+      "serial_number_masked",
+      "imei_hash",
+      "image_embedding_id",
+      "title_embedding_id",
+      "identity_debug_trace",
+      "identity_resolution_version",
+      "identity_last_resolved_at"
+    ]
+  },
+  "required_policy": {
+    "shared_standard_required_for_runtime_mount": [
+      "brand",
+      "model_name_text",
+      "identity_resolution_status",
+      "identity_confidence"
+    ],
+    "required_for_exact_model_resolution": [
+      "brand",
+      "model",
+      "identity_evidence_level",
+      "identity_evidence_types"
+    ],
+    "required_if_identifier_present": {
+      "mpn": [
+        "brand"
+      ],
+      "gtin": [
+        "identifier_scheme:GTIN_8_OR_12_OR_13_OR_14"
+      ],
+      "ean": [
+        "identifier_scheme:GTIN_13_EAN"
+      ],
+      "upc": [
+        "identifier_scheme:GTIN_12_UPC"
+      ]
+    },
+    "not_required_at_shared_layer": [
+      "storage",
+      "ram",
+      "screen_size",
+      "battery_capacity",
+      "compatible_model"
+    ],
+    "notes": "Shared standard не принимает офферы напрямую; publish-required поля финализируются в public category packs через inheritance/overrides."
+  },
+  "value_policy": {
+    "seed_scope": "head_values_only",
+    "long_tail_strategy": "runtime_candidates/live_values",
+    "unknown_value_policy": "ALLOW_UNKNOWN_WITH_CONFIDENCE_AND_EVIDENCE",
+    "model_registry_policy": "NO_FULL_MODEL_REGISTRY_IN_THIS_PACK",
+    "family_alias_policy": "head family aliases allowed as parsing hints; exact model catalog belongs to downstream identity packs"
+  },
+  "ui_policy": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7,
+    "t3_hidden_must_not_surface": true,
+    "default_hidden_fields": [
+      "T3_SYSTEM_HIDDEN"
+    ]
+  },
+  "prohibited": {
+    "public_category_codes": [
+      "TECH.IPHONE",
+      "TECH.SAMSUNG_PHONES",
+      "TECH.MACBOOK",
+      "TECH.AIRPODS",
+      "TECH.CASES",
+      "TECH.CHARGERS",
+      "TECH.CABLES"
+    ],
+    "embedded_packs": [
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON",
+      "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES"
+    ],
+    "embedded_model_seed": true,
+    "embedded_specs_tables": true,
+    "embedded_compatibility_refs": true
+  },
+  "files_contract": [
+    "schema_pack.tech_device_identity_common.v1_0.json",
+    "attributes.tech_device_identity_common.v1_0.tsv",
+    "values.tech_device_identity_common.v1_0.tsv",
+    "aliases.tech_device_identity_common.ru.v1_0.tsv",
+    "user_surface.tech_device_identity_common.v1_0.yaml",
+    "facet_templates.tech_device_identity_common.v1_0.yaml",
+    "generated_alias_rules.tech_device_identity_common.v1_0.yaml",
+    "route_guardrails.tech_device_identity_common.v1_0.yaml",
+    "vision_rules.tech_device_identity_common.v1_0.yaml",
+    "golden_queries.tech_device_identity_common.v1_0.tsv",
+    "sample_offers.tech_device_identity_common.v1_0.jsonl",
+    "identity_surface_matrix.tech_device_identity_common.v1_0.tsv",
+    "dedup_key_policy.tech_device_identity_common.v1_0.yaml",
+    "title_identity_parser_rules.tech_device_identity_common.v1_0.yaml",
+    "integration_mapping.tech_device_identity_common.v1_0.yaml",
+    "quality_gates.tech_device_identity_common.v1_0.yaml",
+    "effective_spec_snapshot.expected.tech_device_identity_common.v1_0.json",
+    "validation_report.tech_device_identity_common.v1_0.json",
+    "checksums.sha256.json",
+    "README_TECH_DEVICE_IDENTITY_COMMON_v1_0_RU.md"
+  ]
+}

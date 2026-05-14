@@ -14,6 +14,7 @@ import com.example.shoppingassistant.domain.facet.FacetUiWidget
 import com.example.shoppingassistant.domain.facet.FacetValueSource
 import com.example.shoppingassistant.domain.i18n.LocalizedText
 import com.example.shoppingassistant.domain.i18n.localizedTextOf
+import com.example.shoppingassistant.domain.i18n.toLocalizedText
 import java.util.Locale
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -35,11 +36,15 @@ internal object CatalogSeedLoader {
     }
 
     val browseNodes: List<BrowseNode> by lazy {
-        CatalogSeedResourceReader.readJson(
+        val stage20BrowseNodes = CatalogSeedResourceReader.readJson(
             resourcePath = "${CatalogContractPaths.stage20Base}/browse_nodes.json",
             deserializer = ListSerializer(SeedBrowseNodeRow.serializer()),
         )
             .map { row -> row.toRuntimeBrowseNode() }
+        mergeBrowseNodes(
+            stage20BrowseNodes,
+            Stage21FashPackageLoader.browseNodes,
+        )
     }
 
     val aliasEntries: List<AliasEntry> by lazy {
@@ -769,6 +774,40 @@ private val TECH_PHONES_MODEL_CONSTRAINED_ATTRIBUTES = listOf(
     "network_type",
     "chipset_family",
 )
+
+private fun mergeBrowseNodes(
+    baseNodes: List<BrowseNode>,
+    vararg overrideNodeGroups: List<BrowseNode>,
+): List<BrowseNode> {
+    val merged = LinkedHashMap<String, BrowseNode>()
+    fun put(node: BrowseNode) {
+        val code = node.browseCode.trim()
+        if (code.isEmpty()) return
+        val key = code.uppercase(Locale.ROOT)
+        val existing = merged[key]
+        val normalizedNode = node.copy(
+            browseCode = code,
+            order = if (existing?.parentBrowseCode.isNullOrBlank() && node.parentBrowseCode.isNullOrBlank()) {
+                existing?.order ?: node.order
+            } else {
+                node.order
+            },
+        )
+        merged[key] = normalizedNode.withEnglishFallbackTitle()
+    }
+
+    baseNodes.forEach(::put)
+    overrideNodeGroups.forEach { nodes -> nodes.forEach(::put) }
+    return merged.values.toList()
+}
+
+private fun BrowseNode.withEnglishFallbackTitle(): BrowseNode {
+    if (!title["en"].isNullOrBlank()) return this
+    val fallbackTitle = title["ru"]
+        ?: title.asMap().values.firstOrNull()
+        ?: return this
+    return copy(title = (title.asMap() + ("en" to fallbackTitle)).toLocalizedText())
+}
 
 @Serializable
 private data class SeedCategoryRow(

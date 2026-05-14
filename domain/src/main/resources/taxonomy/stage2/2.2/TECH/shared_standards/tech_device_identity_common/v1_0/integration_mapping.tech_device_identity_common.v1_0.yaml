@@ -1,0 +1,76 @@
+mapping_id: integration_mapping.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+mount:
+  registry: shared_standard_registry
+  public_category_mount: false
+  inherits_from:
+  - TECH.ELECTRONICS_COMMON
+input_sources:
+  title:
+  - model_name_text
+  - brand
+  - family
+  - line
+  - model
+  - variant_label
+  - generation
+  - region_variant
+  description:
+  - model_aliases
+  - model_number
+  - mpn
+  - region_variant
+  - identity_context_role
+  seller_attributes:
+  - brand
+  - manufacturer
+  - model
+  - model_number
+  - mpn
+  - gtin
+  - ean
+  - upc
+  - release_year
+  - region_variant
+  image_ocr:
+  - raw_ocr_identity_tokens
+  - model_number
+  - mpn
+  - brand
+  - family
+  - image_model_text_visible
+  barcode_scan:
+  - raw_barcode_payload
+  - gtin
+  - ean
+  - upc
+  - identity_evidence_level
+  external_url:
+  - source_url_identity_tokens
+  - brand
+  - family
+  - model_name_text
+  user_confirmation:
+  - identity_resolution_status
+  - identity_confidence
+  - identity_evidence_types
+output_bindings:
+  identity_candidate: brand,family,line,model,model_name_text,model_number,mpn,gtin,region_variant,confidence,evidence
+  dedup_key: device_identity_key
+  review_payload: identity_review_required,identity_review_reason,identity_conflict_notes,raw_model_candidates
+downstream_consumers:
+- TECH.PHONES
+- TECH.COMPUTERS
+- TECH.TABLETS_E_READERS
+- TECH.AUDIO
+- TECH.WEARABLES
+- TECH.CAMERAS_DRONES
+- TECH.GAMING
+- TECH.PC_COMPONENTS
+- TECH.STORAGE_MEMORY
+- TECH.COMPATIBILITY_COMMON
+blocked_outputs:
+- public categoryCode = TECH.DEVICE_IDENTITY_COMMON
+- microcategory creation
+- exact model without evidence
+- serial/imei public exposure

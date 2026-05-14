@@ -1,0 +1,238 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_device_identity_common.v1_0",
+  "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+  "pack_type": "shared_standard_pack",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON"
+  ],
+  "excluded_packs": [
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON",
+    "TECH.PHONES",
+    "TECH.PHONE_ACCESSORIES"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "brand",
+      "manufacturer",
+      "family",
+      "line",
+      "model",
+      "model_name_text",
+      "identity_resolution_status",
+      "identity_confidence"
+    ],
+    "T1_TYPE_RELEVANT": [
+      "series",
+      "model_aliases",
+      "model_number",
+      "mpn",
+      "gtin",
+      "ean",
+      "upc",
+      "release_year",
+      "region_variant",
+      "generation",
+      "variant_label",
+      "model_granularity",
+      "identity_evidence_level",
+      "identity_evidence_types",
+      "identity_source",
+      "identity_context_role",
+      "identity_review_required"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "brand_aliases",
+      "family_aliases",
+      "line_aliases",
+      "sub_model",
+      "edition",
+      "product_code",
+      "part_number",
+      "manufacturer_part_number",
+      "hardware_revision",
+      "carrier_variant",
+      "country_variant_text",
+      "retailer_sku",
+      "sku_vendor",
+      "asin",
+      "model_year_text",
+      "generation_number",
+      "image_model_text_visible",
+      "logo_brand_visible",
+      "bundle_identity_exclusion",
+      "identity_confidence_bucket",
+      "identity_review_reason",
+      "identity_conflict_notes"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "device_identity_key",
+      "canonical_product_key",
+      "dedup_fingerprint",
+      "identity_candidate_count",
+      "raw_title_identity_tokens",
+      "raw_ocr_identity_tokens",
+      "raw_barcode_payload",
+      "raw_model_candidates",
+      "source_url_identity_tokens",
+      "source_page_metadata",
+      "serial_number_masked",
+      "imei_hash",
+      "image_embedding_id",
+      "title_embedding_id",
+      "identity_debug_trace",
+      "identity_resolution_version",
+      "identity_last_resolved_at"
+    ]
+  },
+  "required_fields_runtime_mount": [
+    "brand",
+    "model_name_text",
+    "identity_resolution_status",
+    "identity_confidence"
+  ],
+  "required_for_exact_model_resolution": [
+    "brand",
+    "model",
+    "identity_evidence_level",
+    "identity_evidence_types"
+  ],
+  "initial_fields": [
+    "brand",
+    "family",
+    "line",
+    "model_name_text",
+    "model",
+    "region_variant",
+    "identity_resolution_status",
+    "identity_confidence"
+  ],
+  "primary_facets": [
+    "brand",
+    "family",
+    "release_year",
+    "region_variant",
+    "model_granularity",
+    "identity_resolution_status",
+    "identity_confidence_bucket"
+  ],
+  "hidden_fields": [
+    "device_identity_key",
+    "canonical_product_key",
+    "dedup_fingerprint",
+    "identity_candidate_count",
+    "raw_title_identity_tokens",
+    "raw_ocr_identity_tokens",
+    "raw_barcode_payload",
+    "raw_model_candidates",
+    "source_url_identity_tokens",
+    "source_page_metadata",
+    "serial_number_masked",
+    "imei_hash",
+    "image_embedding_id",
+    "title_embedding_id",
+    "identity_debug_trace",
+    "identity_resolution_version",
+    "identity_last_resolved_at"
+  ],
+  "allowed_values": {
+    "identity_resolution_status": [
+      "UNRESOLVED",
+      "CANDIDATE_ONLY",
+      "PARTIAL",
+      "FULL",
+      "CONFLICT",
+      "REVIEW_REQUIRED",
+      "USER_CONFIRMED"
+    ],
+    "identity_evidence_level": [
+      "NONE",
+      "TITLE_ONLY",
+      "TITLE_BRAND_FAMILY",
+      "TITLE_EXACT_MODEL",
+      "OCR_VISIBLE_MODEL",
+      "BARCODE_GTIN",
+      "MPN_MATCH",
+      "VENDOR_FEED",
+      "OFFICIAL_DB_MATCH",
+      "USER_CONFIRMED",
+      "MULTI_EVIDENCE_HIGH"
+    ],
+    "identity_context_role": [
+      "OWN_DEVICE",
+      "ACCESSORY_COMPATIBILITY_HINT",
+      "BUNDLE_MAIN_ITEM",
+      "BUNDLE_SECONDARY_ITEM",
+      "REPLACEMENT_PART",
+      "CONSUMABLE_FOR_DEVICE",
+      "SERVICE_FOR_DEVICE",
+      "AMBIGUOUS",
+      "UNKNOWN"
+    ],
+    "model_granularity": [
+      "BRAND_ONLY",
+      "FAMILY_ONLY",
+      "LINE_ONLY",
+      "SERIES_ONLY",
+      "MODEL_FAMILY",
+      "EXACT_MODEL",
+      "EXACT_MODEL_VARIANT",
+      "BUNDLE_OR_KIT",
+      "ACCESSORY_COMPATIBILITY_TEXT",
+      "UNKNOWN"
+    ],
+    "region_variant": [
+      "GLOBAL",
+      "EU",
+      "US",
+      "UK",
+      "CN",
+      "JP",
+      "KR",
+      "RU",
+      "IN",
+      "LATAM",
+      "MENA",
+      "GLOBAL_DUAL_SIM",
+      "SINGLE_SIM",
+      "DUAL_SIM",
+      "CARRIER_LOCKED",
+      "UNLOCKED",
+      "COUNTRY_SPECIFIC",
+      "UNKNOWN"
+    ]
+  },
+  "blocked_category_codes": [
+    "TECH.IPHONE",
+    "TECH.SAMSUNG_PHONES",
+    "TECH.MACBOOK",
+    "TECH.AIRPODS",
+    "TECH.CASES",
+    "TECH.CHARGERS",
+    "TECH.CABLES"
+  ],
+  "blocked_cross_route_values": [
+    "compatibility_marker_as_own_device",
+    "decorative_brand_print_as_device",
+    "photo_shape_as_exact_model"
+  ],
+  "model_registry_boundary": {
+    "contains_model_head_seed": false,
+    "contains_full_brand_family_model_graph": false,
+    "allows_runtime_candidates": true,
+    "downstream_exact_model_packs_allowed": [
+      "TECH_PHONES_IDENTITY_PACK_v1_0_RU"
+    ]
+  },
+  "quality_gate_expectations": {
+    "min_sample_offers": 120,
+    "min_golden_queries": 120,
+    "initial_fields_max": 8,
+    "primary_facets_max": 7,
+    "t3_ui_leak_max": 0,
+    "forbidden_microcategory_mounts": 0,
+    "model_seed_files_max": 0
+  }
+}

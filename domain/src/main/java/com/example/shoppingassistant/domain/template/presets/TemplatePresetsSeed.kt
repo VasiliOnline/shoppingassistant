@@ -96,7 +96,7 @@ private fun laptopPresets(): List<TemplatePresetSpec> {
                 val rank = m.baseRank - rIndex * 4 - sIndex
                 presets += presetSpec(
                     source = TemplatePresetSource.POPULAR,
-                    categoryCode = "TECH.LAPTOPS",
+                    categoryCode = "TECH.COMPUTERS",
                     anchorType = TemplateAnchorType.PRODUCT,
                     anchorId = "${m.brand} ${m.model}",
                     title = "${m.brand} ${m.model}",

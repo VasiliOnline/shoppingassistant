@@ -1,0 +1,59 @@
+version: '1.0'
+standard_code: TECH.ELECTRONICS_COMMON
+artifact_type: shared_standard_pack
+public_category: false
+accepts_offers_directly: false
+runtime_mount: shared_standard_registry
+do_not_create_canonical_category: true
+runtime_inheritance:
+  enabled: true
+  shared_profiles_file: shared_profiles.tech.json
+  extends_field: extendsProfiles
+  inheritance_mode: merge_into_public_tech_category_packs
+materialized_into:
+  - TECH.PHONES
+  - TECH.PHONE_ACCESSORIES
+  - TECH.COMPUTERS
+  - TECH.TABLETS_E_READERS
+  - TECH.MONITORS_DISPLAYS
+  - TECH.COMPUTER_ACCESSORIES
+  - TECH.PC_COMPONENTS
+  - TECH.STORAGE_MEMORY
+  - TECH.AUDIO
+  - TECH.TV_HOME_THEATER
+  - TECH.WEARABLES
+  - TECH.CAMERAS_DRONES
+  - TECH.GAMING
+  - TECH.SMART_HOME_SECURITY
+  - TECH.NETWORKING
+  - TECH.POWER_CHARGING_CABLES
+  - TECH.PRINTERS_SCANNERS
+  - TECH.CAR_ELECTRONICS_GPS
+source_pack: C:\Users\Asus\Downloads\TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+runtime_contract:
+  initial_form_limit: 8
+  primary_facets_max: 7
+  common_initial_fields:
+    - brand
+    - condition
+    - color_family
+    - warranty_status
+    - region
+    - release_year
+    - included_accessories
+    - original_box
+  hidden_system_fields:
+    - model_name_text_raw
+    - listing_completeness_confidence
+    - evidence_level
+    - normalization_source
+    - source_locale
+    - source_market
+    - extraction_warnings
+    - route_guardrail_trace
+    - vision_confidence
+    - data_quality_score
+hardening:
+  shared_standard_no_final_route_gate: true
+  t3_system_hidden_must_not_surface: true
+  identity_specs_compatibility_deferred: true

@@ -279,7 +279,7 @@ val coreModule: Module = module {
         CatalogApiDataSource(
             backendClient = get(),
             fallback = get<SeededCatalogDataSource>(),
-            allowSeedFallback = false,
+            allowSeedFallback = true,
             versionVerifier = get(),
         )
     }
@@ -349,7 +349,7 @@ val coreModule: Module = module {
         FacetDefinitionApiRepository(
             backendClient = get(),
             fallback = get<FacetDefinitionRepositoryImpl>(),
-            allowSeedFallback = false,
+            allowSeedFallback = true,
             versionVerifier = get(),
         )
     }

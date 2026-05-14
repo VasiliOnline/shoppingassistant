@@ -1,0 +1,856 @@
+{
+  "schemaVersion": "1.0.0",
+  "assignments": [
+    {
+      "categoryCode": "APPL",
+      "archetypes": [
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "APPL.CLIMATE",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL"
+    },
+    {
+      "categoryCode": "APPL.MAJOR",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL"
+    },
+    {
+      "categoryCode": "APPL.SMALL",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL"
+    },
+    {
+      "categoryCode": "AUTO",
+      "archetypes": [
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "AUTO.ACCESSORIES",
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL",
+      "liveCandidateAttributeCodes": [
+        "compatible_vehicle_text"
+      ]
+    },
+    {
+      "categoryCode": "AUTO.PARTS",
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL",
+      "liveCandidateAttributeCodes": [
+        "compatible_vehicle_text",
+        "oem_part_number"
+      ]
+    },
+    {
+      "categoryCode": "AUTO.TIRES_WHEELS",
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "SIZE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL",
+      "liveCandidateAttributeCodes": [
+        "tire_size_text",
+        "compatible_vehicle_text"
+      ]
+    },
+    {
+      "categoryCode": "AUTO.TOOLS_GARAGE",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "BEAUTY",
+      "archetypes": [
+        "SAFETY_REGULATED",
+        "CONSUMABLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "BEAUTY.BODYCARE",
+      "archetypes": [
+        "CONSUMABLE",
+        "SAFETY_REGULATED"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "BEAUTY.DEVICES",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL"
+    },
+    {
+      "categoryCode": "BEAUTY.FRAGRANCE",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "CONSUMABLE",
+        "SAFETY_REGULATED"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "BEAUTY.HAIRCARE",
+      "archetypes": [
+        "CONSUMABLE",
+        "SAFETY_REGULATED"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "BEAUTY.HEALTH",
+      "archetypes": [
+        "SAFETY_REGULATED",
+        "CONSUMABLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_REGULATED",
+      "seedAttributeCodes": [
+        "dosage_unit",
+        "substance_code"
+      ],
+      "liveCandidateAttributeCodes": [
+        "substance_code",
+        "certification"
+      ]
+    },
+    {
+      "categoryCode": "BEAUTY.MAKEUP",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "CONSUMABLE",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "BEAUTY.SKINCARE",
+      "archetypes": [
+        "CONSUMABLE",
+        "SAFETY_REGULATED"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "FASH",
+      "archetypes": [
+        "VISUAL_SIMPLE"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "FASH.ACCESSORIES",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_OPTIONAL"
+    },
+    {
+      "categoryCode": "FASH.BAGS",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_OPTIONAL"
+    },
+    {
+      "categoryCode": "FASH.KIDS",
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN",
+        "LIFE_STAGE_DRIVEN"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "APPAREL_TYPE_SIZE"
+    },
+    {
+      "categoryCode": "FASH.MEN",
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "APPAREL_TYPE_SIZE"
+    },
+    {
+      "categoryCode": "FASH.SHOES",
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "SHOE_TYPE_SIZE"
+    },
+    {
+      "categoryCode": "FASH.WOMEN",
+      "archetypes": [
+        "SIZE_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "sharedStandards": [
+        "FASH.APPAREL_COMMON"
+      ],
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "APPAREL_TYPE_SIZE"
+    },
+    {
+      "categoryCode": "FOOD",
+      "archetypes": [
+        "CONSUMABLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "FOOD.DRINKS",
+      "archetypes": [
+        "CONSUMABLE",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "FOOD.GROCERIES",
+      "archetypes": [
+        "CONSUMABLE",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "FOOD.READY_MEALS",
+      "archetypes": [
+        "CONSUMABLE",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_SELLER"
+    },
+    {
+      "categoryCode": "FOOD.SNACKS",
+      "archetypes": [
+        "CONSUMABLE",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "HOME",
+      "archetypes": [
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "HOME.CLEANING",
+      "archetypes": [
+        "CONSUMABLE",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "HOME.FURNITURE",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "HOME.GARDEN",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "HOME.KITCHEN_DINING",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "CONSUMABLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME"
+    },
+    {
+      "categoryCode": "HOME.LIGHTING",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "HOME.PLUMBING",
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "HOME.REPAIR_TOOLS",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "HOME.STORAGE",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "HOME.TEXTILES",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "KIDS",
+      "archetypes": [
+        "LIFE_STAGE_DRIVEN",
+        "SAFETY_REGULATED"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "KIDS.BABY_GEAR",
+      "archetypes": [
+        "LIFE_STAGE_DRIVEN",
+        "SAFETY_REGULATED",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "KIDS.NURSERY_FURNITURE",
+      "archetypes": [
+        "LIFE_STAGE_DRIVEN",
+        "SAFETY_REGULATED",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "KIDS.STROLLERS_CARSEATS",
+      "archetypes": [
+        "LIFE_STAGE_DRIVEN",
+        "SAFETY_REGULATED",
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "KIDS.TOYS_GAMES",
+      "archetypes": [
+        "LIFE_STAGE_DRIVEN",
+        "TYPE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "PETS",
+      "archetypes": [
+        "LIFE_STAGE_DRIVEN",
+        "CONSUMABLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "PETS.ACCESSORIES",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "COMPATIBILITY_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "PETS.FOOD",
+      "archetypes": [
+        "CONSUMABLE",
+        "LIFE_STAGE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND",
+      "liveCandidateAttributeCodes": [
+        "pet_life_stage",
+        "breed_size",
+        "dietary_need"
+      ]
+    },
+    {
+      "categoryCode": "PETS.HEALTH",
+      "archetypes": [
+        "SAFETY_REGULATED",
+        "CONSUMABLE",
+        "LIFE_STAGE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_REGULATED",
+      "liveCandidateAttributeCodes": [
+        "pet_life_stage",
+        "substance_code"
+      ]
+    },
+    {
+      "categoryCode": "PETS.HYGIENE",
+      "archetypes": [
+        "CONSUMABLE",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON",
+      "identityMode": "PRODUCT_NAME_BRAND"
+    },
+    {
+      "categoryCode": "SPORT",
+      "archetypes": [
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER"
+    },
+    {
+      "categoryCode": "SPORT.BIKES_SCOOTERS",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "AUTO_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "SPORT.EQUIPMENT",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "SPORT.FITNESS",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "SPORT.HOBBY",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "LIFE_STAGE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "SPORT.OUTDOOR",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "KIDS_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL"
+    },
+    {
+      "categoryCode": "TECH",
+      "archetypes": [
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "L0_CONTAINER",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.AUDIO",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.CAMERAS_DRONES",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL",
+      "liveCandidateAttributeCodes": [
+        "compatible_model_text"
+      ],
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.COMPUTERS",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.COMPUTER_ACCESSORIES",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL",
+      "liveCandidateAttributeCodes": [
+        "compatible_model_text"
+      ],
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.GAMING",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.MONITORS_DISPLAYS",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.NETWORKING",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.PC_COMPONENTS",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.PHONES",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_CANONICAL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.PHONE_ACCESSORIES",
+      "archetypes": [
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "HOST_PRODUCT_COMPATIBILITY",
+      "seedAttributeCodes": [
+        "accessory_type",
+        "compatible_phone_brand",
+        "compatibility_mode"
+      ],
+      "liveCandidateAttributeCodes": [
+        "compatible_phone_family",
+        "compatible_phone_model",
+        "compatible_model_text"
+      ],
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.POWER_CHARGING_CABLES",
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_OPTIONAL",
+      "liveCandidateAttributeCodes": [
+        "compatible_model_text"
+      ],
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.PRINTERS_SCANNERS",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.SMART_HOME_SECURITY",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "COMPATIBILITY_DRIVEN",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.STORAGE_MEMORY",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "TYPE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.TABLETS_E_READERS",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.TV_HOME_THEATER",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    },
+    {
+      "categoryCode": "TECH.WEARABLES",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL",
+      "sharedStandards": [
+        "TECH.ELECTRONICS_COMMON",
+        "TECH.DEVICE_IDENTITY_COMMON",
+        "TECH.SPECS_COMMON"
+      ]
+    }
+  ]
+}

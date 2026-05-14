@@ -58,6 +58,6 @@ class Stage21TechQueryRouterTest {
         assertNotNull(debug.result.primaryTargetCode)
         assertFalse(debug.topCandidates.isEmpty())
         assertTrue(debug.topCandidates.size <= 3)
-        assertTrue(debug.topCandidates.any { it.targetCode == "TECH.TV_VIDEO" })
+        assertTrue(debug.topCandidates.any { it.targetCode == "TECH.TV_HOME_THEATER" })
     }
 }

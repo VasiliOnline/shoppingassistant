@@ -66,8 +66,8 @@ class CatalogEffectiveSpecTest {
         assertNotNull(spec)
         spec ?: return@runBlocking
 
-        assertEquals("Смартфоны", spec.category.title["ru"])
-        assertEquals("Smartphones", spec.category.title["en"])
+        assertEquals("Телефоны", spec.category.title["ru"])
+        assertEquals("Phones", spec.category.title["en"])
     }
 
     @Test

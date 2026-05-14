@@ -1,0 +1,54 @@
+{
+  "categoryCode": "FASH.BAGS",
+  "expected_effective_spec": {
+    "public_category": true,
+    "materialized_profile": true,
+    "attributes_count": 55,
+    "required_fields": ["bag_type", "condition"],
+    "identity_attributes": ["bag_type", "brand", "model_name_text"],
+    "type_attribute": "bag_type"
+  },
+  "production_gate": {
+    "archetypes": ["TYPE_DRIVEN", "SIZE_DRIVEN", "VISUAL_SIMPLE"],
+    "required_present": [
+      "bag_type",
+      "brand",
+      "condition",
+      "material_outer",
+      "color_primary",
+      "size_class",
+      "volume_liter",
+      "laptop_compartment",
+      "fits_laptop_inch"
+    ],
+    "required_fields": ["bag_type", "condition"],
+    "primary_facets": ["bag_type", "brand", "condition", "color_primary", "material_outer", "size_class"],
+    "hidden_from_primary_ui": [
+      "strap_count",
+      "handle_drop_cm",
+      "strap_length_cm",
+      "set_includes",
+      "defect_notes"
+    ],
+    "initial_fields": [
+      "bag_type",
+      "brand",
+      "condition",
+      "color_primary",
+      "material_outer",
+      "size_class",
+      "volume_liter"
+    ],
+    "type_specific": {
+      "BACKPACK": [
+        "brand",
+        "condition",
+        "material_outer",
+        "size_class",
+        "volume_liter",
+        "laptop_compartment",
+        "fits_laptop_inch"
+      ]
+    }
+  }
+}

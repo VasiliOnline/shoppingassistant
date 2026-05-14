@@ -1,0 +1,82 @@
+quality_gates_id: quality_gates.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+required_gates:
+- gate: Stage22SeedValidator
+  status_expected: PASS
+  checks:
+  - all files present
+  - TSV headers stable
+  - JSON/YAML valid
+- gate: FacetSchemaValidator
+  status_expected: PASS
+  checks:
+  - primary_facets<=7
+  - hidden fields not faceted
+  - facet attributes defined
+- gate: EffectiveSpecSnapshotGate
+  status_expected: PASS
+  checks:
+  - snapshot categoryCode shared
+  - inherited ELECTRONICS_COMMON
+  - no public mount
+  - roles resolved
+- gate: RouteConflictGate
+  status_expected: PASS
+  checks:
+  - shared never final route
+  - accessory context not device
+  - FASH decorative conflicts
+- gate: UserSurfaceGate
+  status_expected: PASS
+  checks:
+  - initial_fields<=8
+  - T3 hidden not in UI
+  - privacy ids hidden
+- gate: AliasCollisionGate
+  status_expected: PASS
+  checks:
+  - ambiguous aliases require review
+  - brand/family alias collisions marked
+- gate: VisionRulesGate
+  status_expected: PASS
+  checks:
+  - no exact model from photo only
+  - OCR/barcode evidence required
+- gate: SampleOffersSmokeGate
+  status_expected: PASS
+  checks:
+  - 120+ synthetic fixtures
+  - negative conflicts included
+- gate: IdentityCandidateGate
+  status_expected: PASS
+  checks:
+  - exact identity requires evidence
+  - model candidates carry confidence/evidence
+- gate: NoMicrocategoryGate
+  status_expected: PASS
+  checks:
+  - TECH.IPHONE/CASES/CHARGERS/CABLES forbidden
+- gate: NoModelRegistryLeakGate
+  status_expected: PASS
+  checks:
+  - no model head seed file
+  - no exhaustive model registry
+- gate: PrivacyIdentifierGate
+  status_expected: PASS
+  checks:
+  - serial masked
+  - IMEI hashed
+  - T3 hidden
+- gate: DedupIdentityKeyGate
+  status_expected: PASS
+  checks:
+  - strong/weak key order defined
+  - merge blockers defined
+thresholds:
+  min_sample_offers: 120
+  min_golden_queries: 120
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_ui_leak_max: 0
+  forbidden_microcategory_mounts: 0
+  model_seed_files_max: 0

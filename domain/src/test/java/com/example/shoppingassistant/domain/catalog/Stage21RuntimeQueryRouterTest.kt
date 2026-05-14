@@ -103,7 +103,7 @@ class Stage21RuntimeQueryRouterTest {
         val result = router.route("macbook air m3 15", "en-US")
 
         assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
-        assertEquals("TECH.LAPTOPS", result.primaryTargetCode)
+        assertEquals("TECH.COMPUTERS", result.primaryTargetCode)
     }
 
     @Test
@@ -113,7 +113,7 @@ class Stage21RuntimeQueryRouterTest {
         val result = router.route("киндл paperwhite", "ru-RU")
 
         assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
-        assertEquals("TECH.TABLETS_EBOOKS", result.primaryTargetCode)
+        assertEquals("TECH.TABLETS_E_READERS", result.primaryTargetCode)
     }
 
     @Test
@@ -154,6 +154,16 @@ class Stage21RuntimeQueryRouterTest {
 
         assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
         assertEquals("TECH.PHONES", result.primaryTargetCode)
+    }
+
+    @Test
+    fun fash_apparel_text_beats_sport_stem_collision() = kotlinx.coroutines.runBlocking {
+        val router = Stage21RuntimeQueryRouter()
+
+        val result = router.route("штаны мужские красные", "ru-RU")
+
+        assertEquals(QueryRouteType.OPEN_CATEGORY, result.routeType)
+        assertEquals("FASH.MEN", result.primaryTargetCode)
     }
 
     private class FakeRouter(

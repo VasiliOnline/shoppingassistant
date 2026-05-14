@@ -1,5 +1,648 @@
 [
   {
+    "browseCode": "B.TECH",
+    "parentBrowseCode": null,
+    "nodeKind": "ROOT",
+    "titleKey": "catalog.browse.tech",
+    "titleRu": "Электроника",
+    "titleEn": "Electronics",
+    "targetCategoryCode": null,
+    "targetType": null,
+    "order": 10,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_tech",
+    "analyticsKey": "browse.tech",
+    "searchKeywordsRu": [
+      "электроника",
+      "гаджеты",
+      "техника"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:root"
+    ],
+    "notes": "Root L0 TECH v1.1"
+  },
+  {
+    "browseCode": "B.TECH.MOBILE",
+    "parentBrowseCode": "B.TECH",
+    "nodeKind": "GROUP",
+    "titleKey": "catalog.browse.tech.mobile",
+    "titleRu": "Мобильные устройства",
+    "titleEn": "Mobile devices",
+    "targetCategoryCode": null,
+    "targetType": null,
+    "order": 10,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_phone",
+    "analyticsKey": "browse.tech.mobile",
+    "searchKeywordsRu": [
+      "смартфон",
+      "телефон",
+      "аксессуар",
+      "чехол",
+      "часы"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:group"
+    ],
+    "notes": "TECH v1.1 UI group"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE",
+    "parentBrowseCode": "B.TECH",
+    "nodeKind": "GROUP",
+    "titleKey": "catalog.browse.tech.workspace",
+    "titleRu": "Компьютеры и рабочее место",
+    "titleEn": "Computers and workspace",
+    "targetCategoryCode": null,
+    "targetType": null,
+    "order": 20,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_laptop",
+    "analyticsKey": "browse.tech.workspace",
+    "searchKeywordsRu": [
+      "ноутбук",
+      "пк",
+      "монитор",
+      "планшет",
+      "накопитель"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:group"
+    ],
+    "notes": "TECH v1.1 UI group"
+  },
+  {
+    "browseCode": "B.TECH.MEDIA_GAMING",
+    "parentBrowseCode": "B.TECH",
+    "nodeKind": "GROUP",
+    "titleKey": "catalog.browse.tech.media_gaming",
+    "titleRu": "Аудио, видео, фото и игры",
+    "titleEn": "Audio, video, photo and gaming",
+    "targetCategoryCode": null,
+    "targetType": null,
+    "order": 30,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_tv",
+    "analyticsKey": "browse.tech.media_gaming",
+    "searchKeywordsRu": [
+      "телевизор",
+      "аудио",
+      "камера",
+      "игры",
+      "консоль"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:group"
+    ],
+    "notes": "TECH v1.1 UI group"
+  },
+  {
+    "browseCode": "B.TECH.HOME_POWER_AUTO",
+    "parentBrowseCode": "B.TECH",
+    "nodeKind": "GROUP",
+    "titleKey": "catalog.browse.tech.home_power_auto",
+    "titleRu": "Дом, сеть, питание и авто",
+    "titleEn": "Home, network, power and car",
+    "targetCategoryCode": null,
+    "targetType": null,
+    "order": 40,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_smart_home",
+    "analyticsKey": "browse.tech.home_power_auto",
+    "searchKeywordsRu": [
+      "умный дом",
+      "роутер",
+      "зарядка",
+      "принтер",
+      "gps"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:group"
+    ],
+    "notes": "TECH v1.1 UI group"
+  },
+  {
+    "browseCode": "B.TECH.MOBILE.PHONES",
+    "parentBrowseCode": "B.TECH.MOBILE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.phones",
+    "titleRu": "Телефоны",
+    "titleEn": "Phones",
+    "targetCategoryCode": "TECH.PHONES",
+    "targetType": "CATEGORY",
+    "order": 11,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_phone",
+    "analyticsKey": "browse.tech.leaf.phones",
+    "searchKeywordsRu": [
+      "iphone",
+      "android",
+      "смартфон",
+      "телефон"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.MOBILE.PHONE_ACCESSORIES",
+    "parentBrowseCode": "B.TECH.MOBILE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.phone_accessories",
+    "titleRu": "Аксессуары для телефонов",
+    "titleEn": "Phone accessories",
+    "targetCategoryCode": "TECH.PHONE_ACCESSORIES",
+    "targetType": "CATEGORY",
+    "order": 12,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_case",
+    "analyticsKey": "browse.tech.leaf.phone_accessories",
+    "searchKeywordsRu": [
+      "чехол",
+      "стекло",
+      "зарядка",
+      "кабель",
+      "держатель",
+      "powerbank"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.MOBILE.WEARABLES",
+    "parentBrowseCode": "B.TECH.MOBILE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.wearables",
+    "titleRu": "Носимая электроника",
+    "titleEn": "Wearables",
+    "targetCategoryCode": "TECH.WEARABLES",
+    "targetType": "CATEGORY",
+    "order": 13,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_watch",
+    "analyticsKey": "browse.tech.leaf.wearables",
+    "searchKeywordsRu": [
+      "умные часы",
+      "apple watch",
+      "фитнес браслет",
+      "smartwatch"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE.COMPUTERS",
+    "parentBrowseCode": "B.TECH.WORKSPACE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.computers",
+    "titleRu": "Компьютеры и ноутбуки",
+    "titleEn": "Computers and laptops",
+    "targetCategoryCode": "TECH.COMPUTERS",
+    "targetType": "CATEGORY",
+    "order": 21,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_laptop",
+    "analyticsKey": "browse.tech.leaf.computers",
+    "searchKeywordsRu": [
+      "ноутбук",
+      "macbook",
+      "desktop pc",
+      "mini pc",
+      "workstation"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE.TABLETS_E_READERS",
+    "parentBrowseCode": "B.TECH.WORKSPACE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.tablets_e_readers",
+    "titleRu": "Планшеты и электронные книги",
+    "titleEn": "Tablets and e-readers",
+    "targetCategoryCode": "TECH.TABLETS_E_READERS",
+    "targetType": "CATEGORY",
+    "order": 22,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_tablet",
+    "analyticsKey": "browse.tech.leaf.tablets_e_readers",
+    "searchKeywordsRu": [
+      "планшет",
+      "ipad",
+      "ридер",
+      "электронная книга",
+      "kindle"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE.MONITORS_DISPLAYS",
+    "parentBrowseCode": "B.TECH.WORKSPACE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.monitors_displays",
+    "titleRu": "Мониторы и дисплеи",
+    "titleEn": "Monitors and displays",
+    "targetCategoryCode": "TECH.MONITORS_DISPLAYS",
+    "targetType": "CATEGORY",
+    "order": 23,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_monitor",
+    "analyticsKey": "browse.tech.leaf.monitors_displays",
+    "searchKeywordsRu": [
+      "монитор",
+      "дисплей",
+      "gaming monitor",
+      "portable monitor"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE.COMPUTER_ACCESSORIES",
+    "parentBrowseCode": "B.TECH.WORKSPACE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.computer_accessories",
+    "titleRu": "Компьютерные аксессуары",
+    "titleEn": "Computer accessories",
+    "targetCategoryCode": "TECH.COMPUTER_ACCESSORIES",
+    "targetType": "CATEGORY",
+    "order": 24,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_keyboard",
+    "analyticsKey": "browse.tech.leaf.computer_accessories",
+    "searchKeywordsRu": [
+      "клавиатура",
+      "мышь",
+      "webcam",
+      "док станция",
+      "usb hub"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE.PC_COMPONENTS",
+    "parentBrowseCode": "B.TECH.WORKSPACE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.pc_components",
+    "titleRu": "Комплектующие ПК",
+    "titleEn": "PC components",
+    "targetCategoryCode": "TECH.PC_COMPONENTS",
+    "targetType": "CATEGORY",
+    "order": 25,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_gpu",
+    "analyticsKey": "browse.tech.leaf.pc_components",
+    "searchKeywordsRu": [
+      "видеокарта",
+      "процессор",
+      "материнка",
+      "ddr",
+      "бп",
+      "корпус"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.WORKSPACE.STORAGE_MEMORY",
+    "parentBrowseCode": "B.TECH.WORKSPACE",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.storage_memory",
+    "titleRu": "Накопители и память",
+    "titleEn": "Storage and memory",
+    "targetCategoryCode": "TECH.STORAGE_MEMORY",
+    "targetType": "CATEGORY",
+    "order": 26,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_memory",
+    "analyticsKey": "browse.tech.leaf.storage_memory",
+    "searchKeywordsRu": [
+      "ssd",
+      "hdd",
+      "флешка",
+      "карта памяти",
+      "nas"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.MEDIA_GAMING.AUDIO",
+    "parentBrowseCode": "B.TECH.MEDIA_GAMING",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.audio",
+    "titleRu": "Аудио",
+    "titleEn": "Audio",
+    "targetCategoryCode": "TECH.AUDIO",
+    "targetType": "CATEGORY",
+    "order": 31,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_headphones",
+    "analyticsKey": "browse.tech.leaf.audio",
+    "searchKeywordsRu": [
+      "наушники",
+      "колонка",
+      "саундбар",
+      "микрофон",
+      "bluetooth"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.MEDIA_GAMING.TV_HOME_THEATER",
+    "parentBrowseCode": "B.TECH.MEDIA_GAMING",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.tv_home_theater",
+    "titleRu": "ТВ и домашний кинотеатр",
+    "titleEn": "TV and home theater",
+    "targetCategoryCode": "TECH.TV_HOME_THEATER",
+    "targetType": "CATEGORY",
+    "order": 32,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_tv",
+    "analyticsKey": "browse.tech.leaf.tv_home_theater",
+    "searchKeywordsRu": [
+      "телевизор",
+      "smart tv",
+      "oled",
+      "проектор",
+      "tv box"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.MEDIA_GAMING.CAMERAS_DRONES",
+    "parentBrowseCode": "B.TECH.MEDIA_GAMING",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.cameras_drones",
+    "titleRu": "Камеры и дроны",
+    "titleEn": "Cameras and drones",
+    "targetCategoryCode": "TECH.CAMERAS_DRONES",
+    "targetType": "CATEGORY",
+    "order": 33,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_camera",
+    "analyticsKey": "browse.tech.leaf.cameras_drones",
+    "searchKeywordsRu": [
+      "фотоаппарат",
+      "камера",
+      "беззеркалка",
+      "gopro",
+      "дрон",
+      "объектив"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.MEDIA_GAMING.GAMING",
+    "parentBrowseCode": "B.TECH.MEDIA_GAMING",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.gaming",
+    "titleRu": "Игры и консоли",
+    "titleEn": "Gaming",
+    "targetCategoryCode": "TECH.GAMING",
+    "targetType": "CATEGORY",
+    "order": 34,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_game",
+    "analyticsKey": "browse.tech.leaf.gaming",
+    "searchKeywordsRu": [
+      "ps5",
+      "xbox",
+      "switch",
+      "игра",
+      "приставка"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.HOME_POWER_AUTO.SMART_HOME_SECURITY",
+    "parentBrowseCode": "B.TECH.HOME_POWER_AUTO",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.smart_home_security",
+    "titleRu": "Умный дом и безопасность",
+    "titleEn": "Smart home and security",
+    "targetCategoryCode": "TECH.SMART_HOME_SECURITY",
+    "targetType": "CATEGORY",
+    "order": 41,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_smart_home",
+    "analyticsKey": "browse.tech.leaf.smart_home_security",
+    "searchKeywordsRu": [
+      "умная лампа",
+      "розетка",
+      "датчик",
+      "камера",
+      "zigbee",
+      "сигнализация"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.HOME_POWER_AUTO.NETWORKING",
+    "parentBrowseCode": "B.TECH.HOME_POWER_AUTO",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.networking",
+    "titleRu": "Сетевое оборудование",
+    "titleEn": "Networking",
+    "targetCategoryCode": "TECH.NETWORKING",
+    "targetType": "CATEGORY",
+    "order": 42,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_wifi",
+    "analyticsKey": "browse.tech.leaf.networking",
+    "searchKeywordsRu": [
+      "роутер",
+      "маршрутизатор",
+      "mesh wifi",
+      "модем",
+      "switch"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.HOME_POWER_AUTO.POWER_CHARGING_CABLES",
+    "parentBrowseCode": "B.TECH.HOME_POWER_AUTO",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.power_charging_cables",
+    "titleRu": "Питание, зарядки и кабели",
+    "titleEn": "Power, charging and cables",
+    "targetCategoryCode": "TECH.POWER_CHARGING_CABLES",
+    "targetType": "CATEGORY",
+    "order": 43,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_charger",
+    "analyticsKey": "browse.tech.leaf.power_charging_cables",
+    "searchKeywordsRu": [
+      "зарядка",
+      "кабель",
+      "ups",
+      "батареи",
+      "сетевой фильтр"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.HOME_POWER_AUTO.PRINTERS_SCANNERS",
+    "parentBrowseCode": "B.TECH.HOME_POWER_AUTO",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.printers_scanners",
+    "titleRu": "Принтеры и сканеры",
+    "titleEn": "Printers and scanners",
+    "targetCategoryCode": "TECH.PRINTERS_SCANNERS",
+    "targetType": "CATEGORY",
+    "order": 44,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_printer",
+    "analyticsKey": "browse.tech.leaf.printers_scanners",
+    "searchKeywordsRu": [
+      "принтер",
+      "сканер",
+      "мфу",
+      "тонер",
+      "картридж"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
+    "browseCode": "B.TECH.HOME_POWER_AUTO.CAR_ELECTRONICS_GPS",
+    "parentBrowseCode": "B.TECH.HOME_POWER_AUTO",
+    "nodeKind": "LEAF_LINK",
+    "titleKey": "catalog.browse.tech.leaf.car_electronics_gps",
+    "titleRu": "Автоэлектроника и GPS",
+    "titleEn": "Car electronics and GPS",
+    "targetCategoryCode": "TECH.CAR_ELECTRONICS_GPS",
+    "targetType": "CATEGORY",
+    "order": 45,
+    "availabilityScope": "ALL",
+    "iconKey": "ic_car",
+    "analyticsKey": "browse.tech.leaf.car_electronics_gps",
+    "searchKeywordsRu": [
+      "видеорегистратор",
+      "gps",
+      "магнитола",
+      "obd",
+      "парктроник"
+    ],
+    "status": "ACTIVE",
+    "tags": [
+      "stage2.0",
+      "TECH",
+      "kind:leaf_link"
+    ],
+    "notes": "Leaf link"
+  },
+  {
     "browseCode": "B.FASH",
     "parentBrowseCode": null,
     "nodeKind": "ROOT",
@@ -6619,485 +7262,5 @@
       "kind:leaf_link"
     ],
     "notes": null
-  },
-  {
-    "browseCode": "B.TECH",
-    "parentBrowseCode": null,
-    "nodeKind": "ROOT",
-    "titleKey": "catalog.browse.tech",
-    "titleRu": "Электроника",
-    "titleEn": "Electronics",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 10,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_tech",
-    "analyticsKey": "browse.tech",
-    "searchKeywordsRu": [
-      "электроника",
-      "гаджеты",
-      "техника"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:root"
-    ],
-    "notes": "Root L0 TECH"
-  },
-  {
-    "browseCode": "B.TECH.PHONES",
-    "parentBrowseCode": "B.TECH",
-    "nodeKind": "GROUP",
-    "titleKey": "catalog.browse.tech.phones",
-    "titleRu": "Телефоны и аксессуары",
-    "titleEn": "Phones & accessories",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 10,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_phone",
-    "analyticsKey": "browse.tech.phones",
-    "searchKeywordsRu": [
-      "смартфон",
-      "телефон",
-      "аксессуар",
-      "чехол",
-      "зарядка"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:group"
-    ],
-    "notes": "Group"
-  },
-  {
-    "browseCode": "B.TECH.COMPUTERS",
-    "parentBrowseCode": "B.TECH",
-    "nodeKind": "GROUP",
-    "titleKey": "catalog.browse.tech.computers",
-    "titleRu": "Компьютеры",
-    "titleEn": "Computers",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 20,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_laptop",
-    "analyticsKey": "browse.tech.computers",
-    "searchKeywordsRu": [
-      "ноутбук",
-      "пк",
-      "комплектующие",
-      "планшет",
-      "ридер"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:group"
-    ],
-    "notes": "Group"
-  },
-  {
-    "browseCode": "B.TECH.TV_AUDIO_VIDEO",
-    "parentBrowseCode": "B.TECH",
-    "nodeKind": "GROUP",
-    "titleKey": "catalog.browse.tech.tv_audio_video",
-    "titleRu": "ТВ, аудио и видео",
-    "titleEn": "TV, audio & video",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 30,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_tv",
-    "analyticsKey": "browse.tech.tv_audio_video",
-    "searchKeywordsRu": [
-      "телевизор",
-      "тв",
-      "аудио",
-      "наушники",
-      "саундбар",
-      "плеер"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:group"
-    ],
-    "notes": "Group"
-  },
-  {
-    "browseCode": "B.TECH.PHOTO",
-    "parentBrowseCode": "B.TECH",
-    "nodeKind": "GROUP",
-    "titleKey": "catalog.browse.tech.photo",
-    "titleRu": "Фото и видеосъемка",
-    "titleEn": "Photo & video",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 40,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_camera",
-    "analyticsKey": "browse.tech.photo",
-    "searchKeywordsRu": [
-      "камера",
-      "фотоаппарат",
-      "беззеркалка",
-      "gopro",
-      "объектив"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:group"
-    ],
-    "notes": "Group"
-  },
-  {
-    "browseCode": "B.TECH.GAMING",
-    "parentBrowseCode": "B.TECH",
-    "nodeKind": "GROUP",
-    "titleKey": "catalog.browse.tech.gaming",
-    "titleRu": "Игры и консоли",
-    "titleEn": "Gaming",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 50,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_game",
-    "analyticsKey": "browse.tech.gaming",
-    "searchKeywordsRu": [
-      "ps5",
-      "xbox",
-      "switch",
-      "игра",
-      "приставка"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:group"
-    ],
-    "notes": "Group"
-  },
-  {
-    "browseCode": "B.TECH.SMART_HOME",
-    "parentBrowseCode": "B.TECH",
-    "nodeKind": "GROUP",
-    "titleKey": "catalog.browse.tech.smart_home",
-    "titleRu": "Умный дом",
-    "titleEn": "Smart home",
-    "targetCategoryCode": null,
-    "targetType": null,
-    "order": 60,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_smart_home",
-    "analyticsKey": "browse.tech.smart_home",
-    "searchKeywordsRu": [
-      "умный дом",
-      "датчик",
-      "лампа",
-      "розетка",
-      "камера",
-      "zigbee"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:group"
-    ],
-    "notes": "Group"
-  },
-  {
-    "browseCode": "B.TECH.PHONES.SMARTPHONES",
-    "parentBrowseCode": "B.TECH.PHONES",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.phones",
-    "titleRu": "Смартфоны",
-    "titleEn": "Smartphones",
-    "targetCategoryCode": "TECH.PHONES",
-    "targetType": "CATEGORY",
-    "order": 11,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_phone",
-    "analyticsKey": "browse.tech.leaf.phones",
-    "searchKeywordsRu": [
-      "iphone",
-      "android",
-      "смартфон",
-      "телефон"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.PHONES.ACCESSORIES",
-    "parentBrowseCode": "B.TECH.PHONES",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.phone_accessories",
-    "titleRu": "Аксессуары для телефонов",
-    "titleEn": "Phone accessories",
-    "targetCategoryCode": "TECH.PHONE_ACCESSORIES",
-    "targetType": "CATEGORY",
-    "order": 12,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_case",
-    "analyticsKey": "browse.tech.leaf.phone_accessories",
-    "searchKeywordsRu": [
-      "чехол",
-      "стекло",
-      "зарядка",
-      "кабель",
-      "держатель",
-      "powerbank"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.COMPUTERS.LAPTOPS",
-    "parentBrowseCode": "B.TECH.COMPUTERS",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.laptops",
-    "titleRu": "Ноутбуки",
-    "titleEn": "Laptops",
-    "targetCategoryCode": "TECH.LAPTOPS",
-    "targetType": "CATEGORY",
-    "order": 21,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_laptop",
-    "analyticsKey": "browse.tech.leaf.laptops",
-    "searchKeywordsRu": [
-      "ноутбук",
-      "macbook",
-      "ultrabook",
-      "игровой ноутбук"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.COMPUTERS.PC_COMPONENTS",
-    "parentBrowseCode": "B.TECH.COMPUTERS",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.pc_components",
-    "titleRu": "ПК и комплектующие",
-    "titleEn": "PC & components",
-    "targetCategoryCode": "TECH.PC_COMPONENTS",
-    "targetType": "CATEGORY",
-    "order": 22,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_gpu",
-    "analyticsKey": "browse.tech.leaf.pc_components",
-    "searchKeywordsRu": [
-      "видеокарта",
-      "процессор",
-      "материнка",
-      "ssd",
-      "ddr",
-      "бп",
-      "корпус"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.COMPUTERS.TABLETS_EBOOKS",
-    "parentBrowseCode": "B.TECH.COMPUTERS",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.tablets_ebooks",
-    "titleRu": "Планшеты и электронные книги",
-    "titleEn": "Tablets & e-books",
-    "targetCategoryCode": "TECH.TABLETS_EBOOKS",
-    "targetType": "CATEGORY",
-    "order": 23,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_tablet",
-    "analyticsKey": "browse.tech.leaf.tablets_ebooks",
-    "searchKeywordsRu": [
-      "планшет",
-      "ipad",
-      "таблет",
-      "ридер",
-      "электронная книга",
-      "kindle"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.TV_AUDIO_VIDEO.TV_VIDEO",
-    "parentBrowseCode": "B.TECH.TV_AUDIO_VIDEO",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.tv_video",
-    "titleRu": "ТВ и видео",
-    "titleEn": "TV & video",
-    "targetCategoryCode": "TECH.TV_VIDEO",
-    "targetType": "CATEGORY",
-    "order": 31,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_tv",
-    "analyticsKey": "browse.tech.leaf.tv_video",
-    "searchKeywordsRu": [
-      "телевизор",
-      "smart tv",
-      "oled",
-      "проектор",
-      "приставка tv"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.TV_AUDIO_VIDEO.AUDIO",
-    "parentBrowseCode": "B.TECH.TV_AUDIO_VIDEO",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.audio",
-    "titleRu": "Аудио и наушники",
-    "titleEn": "Audio & headphones",
-    "targetCategoryCode": "TECH.AUDIO",
-    "targetType": "CATEGORY",
-    "order": 32,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_headphones",
-    "analyticsKey": "browse.tech.leaf.audio",
-    "searchKeywordsRu": [
-      "наушники",
-      "колонка",
-      "саундбар",
-      "микрофон",
-      "bluetooth"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.PHOTO.CAMERAS",
-    "parentBrowseCode": "B.TECH.PHOTO",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.cameras",
-    "titleRu": "Фото и видеокамеры",
-    "titleEn": "Cameras",
-    "targetCategoryCode": "TECH.CAMERAS",
-    "targetType": "CATEGORY",
-    "order": 41,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_camera",
-    "analyticsKey": "browse.tech.leaf.cameras",
-    "searchKeywordsRu": [
-      "фотоаппарат",
-      "камера",
-      "беззеркалка",
-      "зеркалка",
-      "gopro",
-      "объектив"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.GAMING.CONSOLES_GAMES",
-    "parentBrowseCode": "B.TECH.GAMING",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.gaming",
-    "titleRu": "Игровые приставки и игры",
-    "titleEn": "Consoles & games",
-    "targetCategoryCode": "TECH.GAMING",
-    "targetType": "CATEGORY",
-    "order": 51,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_game",
-    "analyticsKey": "browse.tech.leaf.gaming",
-    "searchKeywordsRu": [
-      "ps5",
-      "xbox",
-      "switch",
-      "игра",
-      "dualsense"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
-  },
-  {
-    "browseCode": "B.TECH.SMART_HOME.SMART_HOME",
-    "parentBrowseCode": "B.TECH.SMART_HOME",
-    "nodeKind": "LEAF_LINK",
-    "titleKey": "catalog.browse.tech.leaf.smart_home",
-    "titleRu": "Умный дом и гаджеты",
-    "titleEn": "Smart home & gadgets",
-    "targetCategoryCode": "TECH.SMART_HOME",
-    "targetType": "CATEGORY",
-    "order": 61,
-    "availabilityScope": "ALL",
-    "iconKey": "ic_smart_home",
-    "analyticsKey": "browse.tech.leaf.smart_home",
-    "searchKeywordsRu": [
-      "умная лампа",
-      "розетка",
-      "датчик",
-      "zigbee",
-      "homekit",
-      "alexa"
-    ],
-    "status": "ACTIVE",
-    "tags": [
-      "stage2.1",
-      "TECH",
-      "kind:leaf_link"
-    ],
-    "notes": "Leaf link"
   }
 ]

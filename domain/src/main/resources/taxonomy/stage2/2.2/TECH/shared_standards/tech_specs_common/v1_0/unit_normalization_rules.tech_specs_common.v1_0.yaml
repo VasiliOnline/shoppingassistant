@@ -1,0 +1,24 @@
+ruleset_id: unit_normalization_rules.tech_specs_common.v1_0
+capacity:
+  storage_capacity: normalize KB/MB/GB/TB to GB numeric + display unit
+  ram_capacity: normalize MB/GB to GB
+  binary_vs_decimal_policy: store displayed text and normalized numeric; do not silently convert vendor marketing units
+screen:
+  screen_size: inches canonical
+  refresh_rate_hz: Hz integer
+  brightness_nits: nits
+battery_power:
+  battery_capacity_mah: mAh integer
+  battery_capacity_wh: Wh decimal
+  power_watts: W decimal
+  voltage: V
+  current: A
+physical:
+  weight: grams canonical
+  dimensions: millimeters canonical
+  cable_length: meters canonical
+data_rate:
+  data_transfer_rate: Gbps canonical unless source says MB/s; preserve unit_type
+  read_write_speed: MB/s canonical
+ambiguity_policy: If unit or context is ambiguous, set unit_normalization_status=AMBIGUOUS and require review when child pack
+  marks the attribute required.

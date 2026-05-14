@@ -14,6 +14,93 @@
       ]
     },
     {
+      "profileCode": "TECH_ELECTRONICS_COMMON_CORE",
+      "categoryPrefixes": [
+        "TECH"
+      ],
+      "pinnedSystemFacetKeys": [
+        "brand",
+        "price",
+        "condition"
+      ],
+      "hiddenTypedFacetKeys": [
+        "model_name_text_raw",
+        "listing_completeness_confidence",
+        "evidence_level",
+        "normalization_source",
+        "source_locale",
+        "source_market",
+        "extraction_warnings",
+        "route_guardrail_trace",
+        "vision_confidence",
+        "data_quality_score",
+        "canonical_product_key",
+        "dedup_fingerprint",
+        "device_identity_key",
+        "identity_candidate_count",
+        "identity_debug_trace",
+        "identity_last_resolved_at",
+        "identity_resolution_version",
+        "image_embedding_id",
+        "imei_hash",
+        "raw_barcode_payload",
+        "raw_model_candidates",
+        "raw_ocr_identity_tokens",
+        "raw_title_identity_tokens",
+        "serial_number_masked",
+        "source_page_metadata",
+        "source_url_identity_tokens",
+        "title_embedding_id"
+      ],
+      "mainTypedFacetKeys": [
+        "color_family",
+        "warranty_status",
+        "region",
+        "included_accessories",
+        "family",
+        "region_variant",
+        "model_granularity",
+        "identity_resolution_status",
+        "identity_confidence_bucket"
+      ],
+      "additionalTypedFacetKeys": [
+        "release_year",
+        "country_version",
+        "original_box",
+        "refurbished_status",
+        "repair_history",
+        "cosmetic_condition_grade",
+        "functional_condition",
+        "receipt_available",
+        "warranty_months_remaining",
+        "warranty_provider",
+        "packaging_condition",
+        "accessory_completeness_grade",
+        "line",
+        "model_name_text",
+        "model_number",
+        "mpn",
+        "gtin",
+        "generation",
+        "variant_label",
+        "identity_evidence_level",
+        "identity_context_role"
+      ],
+      "orderedTypedFacetKeys": [
+        "color_family",
+        "warranty_status",
+        "region",
+        "release_year",
+        "included_accessories",
+        "original_box",
+        "refurbished_status",
+        "functional_condition"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "model_name_text_raw"
+      ]
+    },
+    {
       "profileCode": "TECH_PHONES_CORE",
       "categoryPrefixes": [
         "TECH.PHONES"
@@ -225,14 +312,14 @@
       "mainTypedFacetKeys": [
         "apparel_type",
         "size_label",
-        "color_primary",
         "brand",
-        "material_primary",
-        "season",
-        "fit"
+        "condition",
+        "season"
       ],
       "additionalTypedFacetKeys": [
-        "condition",
+        "color_primary",
+        "material_primary",
+        "fit",
         "target_gender",
         "age_group",
         "size_system",
@@ -357,6 +444,7 @@
         "visual_evidence_flags",
         "normalization_confidence",
         "source_text_evidence",
+        "target_gender",
         "age_group",
         "bra_cup"
       ],
@@ -946,6 +1034,7 @@
         "visual_evidence_flags",
         "normalization_confidence",
         "source_text_evidence",
+        "target_gender",
         "age_group"
       ],
       "mainTypedFacetKeys": [
@@ -1356,6 +1445,120 @@
       ],
       "requiresBrandContextTypedFacetKeys": [
         "model_name_text"
+      ]
+    },
+    {
+      "profileCode": "TECH_SPECS_COMMON_CORE",
+      "categoryPrefixes": [
+        "TECH"
+      ],
+      "hiddenTypedFacetKeys": [
+        "normalized_spec_key",
+        "spec_fingerprint",
+        "raw_spec_tokens",
+        "raw_title_spec_tokens",
+        "raw_ocr_spec_tokens",
+        "raw_source_spec_tokens",
+        "spec_candidate_count",
+        "spec_conflict_set",
+        "spec_unit_parse_notes",
+        "spec_review_required",
+        "spec_review_reason",
+        "source_evidence_fingerprint",
+        "spec_runtime_version",
+        "unit_parser_version",
+        "spec_last_verified_at"
+      ],
+      "mainTypedFacetKeys": [
+        "storage_capacity",
+        "ram_capacity",
+        "screen_size",
+        "power_watts",
+        "connector_type",
+        "wireless_standard"
+      ],
+      "additionalTypedFacetKeys": [
+        "screen_resolution",
+        "refresh_rate_hz",
+        "battery_capacity_mah",
+        "battery_capacity_wh",
+        "os_family",
+        "water_resistance",
+        "network_generation",
+        "bluetooth_version",
+        "wi_fi_standard",
+        "weight",
+        "dimensions",
+        "storage_type",
+        "panel_type",
+        "charging_standard",
+        "cable_length_m",
+        "data_transfer_rate"
+      ],
+      "orderedTypedFacetKeys": [
+        "storage_capacity",
+        "ram_capacity",
+        "screen_size",
+        "power_watts",
+        "connector_type",
+        "wireless_standard",
+        "screen_resolution",
+        "refresh_rate_hz",
+        "battery_capacity_mah",
+        "battery_capacity_wh",
+        "os_family",
+        "water_resistance",
+        "network_generation",
+        "bluetooth_version",
+        "wi_fi_standard",
+        "weight",
+        "dimensions",
+        "storage_type",
+        "panel_type",
+        "charging_standard",
+        "cable_length_m",
+        "data_transfer_rate"
+      ],
+      "noticePriorityTypedFacetKeys": [
+        "primary_spec_summary",
+        "storage_capacity",
+        "ram_capacity",
+        "screen_size",
+        "battery_capacity_mah",
+        "connector_type",
+        "spec_profile_status",
+        "screen_resolution",
+        "refresh_rate_hz",
+        "power_watts",
+        "wireless_standard",
+        "os_family",
+        "dimensions",
+        "weight",
+        "water_resistance",
+        "network_generation",
+        "bluetooth_version",
+        "wi_fi_standard",
+        "storage_type",
+        "panel_type",
+        "charging_standard",
+        "battery_health_percent"
+      ],
+      "suppressedAutoAppliedTypedFacetKeys": [
+        "normalized_spec_key",
+        "spec_fingerprint",
+        "raw_spec_tokens",
+        "raw_title_spec_tokens",
+        "raw_ocr_spec_tokens",
+        "raw_source_spec_tokens",
+        "spec_candidate_count",
+        "spec_conflict_set",
+        "spec_unit_parse_notes",
+        "spec_review_required",
+        "spec_review_reason",
+        "source_evidence_fingerprint",
+        "spec_runtime_version",
+        "unit_parser_version",
+        "spec_last_verified_at"
       ]
     }
   ]

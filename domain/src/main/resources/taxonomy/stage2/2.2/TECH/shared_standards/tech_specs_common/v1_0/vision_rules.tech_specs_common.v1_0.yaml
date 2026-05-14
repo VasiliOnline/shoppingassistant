@@ -1,0 +1,27 @@
+ruleset_id: vision_rules.tech_specs_common.v1_0
+category_code: TECH.SPECS_COMMON
+no_guess_rules:
+- id: no_exact_storage_from_photo
+  rule: Do not infer storage/RAM from exterior photo without OCR/source/user evidence.
+- id: no_exact_screen_size_from_photo
+  rule: Do not infer exact screen size from image alone; allow coarse class only if child pack supports it.
+- id: no_battery_capacity_from_photo
+  rule: Battery mAh/Wh requires text/OCR/source/manual evidence.
+- id: no_chipset_from_logo
+  rule: Brand/logo does not prove chipset or exact processor.
+- id: ocr_allowed
+  rule: Visible label/spec sticker/OCR may create spec candidates with evidence_level=OCR, confidence according to quality.
+allowed_visual_estimates:
+- form_factor
+- connector_type_candidate
+- screen_presence
+- port_presence_candidate
+- rough_condition_context
+blocked_visual_estimates:
+- storage_capacity
+- ram_capacity
+- battery_capacity_mah
+- battery_capacity_wh
+- chipset_text exact
+- refresh_rate_hz exact
+- water_resistance exact without text

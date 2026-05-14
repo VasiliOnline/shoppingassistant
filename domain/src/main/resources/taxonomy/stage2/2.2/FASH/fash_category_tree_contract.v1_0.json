@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "contractCode": "FASH_CATEGORY_TREE_PRODUCTION_v1_0",
+  "rootCategory": {
+    "code": "FASH",
+    "public": true,
+    "titleRu": "Одежда, обувь, сумки и аксессуары"
+  },
+  "sharedBranches": [
+    {
+      "code": "FASH.APPAREL_COMMON",
+      "public": false,
+      "role": "shared_standard",
+      "appliesTo": ["FASH.MEN", "FASH.WOMEN", "FASH.KIDS"]
+    }
+  ],
+  "publicBranches": [
+    {
+      "code": "FASH.MEN",
+      "typeAttribute": "apparel_type",
+      "packRole": "child_override_pack"
+    },
+    {
+      "code": "FASH.WOMEN",
+      "typeAttribute": "apparel_type",
+      "packRole": "child_override_pack"
+    },
+    {
+      "code": "FASH.KIDS",
+      "typeAttribute": "apparel_type",
+      "packRole": "child_override_pack"
+    },
+    {
+      "code": "FASH.SHOES",
+      "typeAttribute": "shoe_type",
+      "packRole": "category_schema_pack"
+    },
+    {
+      "code": "FASH.BAGS",
+      "typeAttribute": "bag_type",
+      "packRole": "category_schema_pack"
+    },
+    {
+      "code": "FASH.ACCESSORIES",
+      "typeAttribute": "accessory_type",
+      "packRole": "category_schema_pack"
+    }
+  ],
+  "governance": {
+    "publicBranchAdditionsRequireReview": true,
+    "newPublicFashBranchDefault": "forbidden_without_review",
+    "detailMustLiveIn": ["type", "facets", "aliases", "user_surface", "route_guards"],
+    "forbiddenPublicBranchExamples": [
+      "FASH.SNEAKERS",
+      "FASH.JEWELRY",
+      "FASH.WATCHES",
+      "FASH.MEN_SHOES",
+      "FASH.WOMEN_BAGS"
+    ]
+  }
+}

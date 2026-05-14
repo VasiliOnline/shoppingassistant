@@ -169,6 +169,7 @@ import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesRepository
 import com.example.shoppingassistant.domain.catalog.CatalogLiveValuesSnapshot
 import com.example.shoppingassistant.domain.catalog.CatalogCanonicalModelRegistry
 import com.example.shoppingassistant.domain.catalog.CatalogCanonicalProductFamilyRegistry
+import com.example.shoppingassistant.domain.catalog.CatalogFacetPresentationProfile
 import com.example.shoppingassistant.domain.catalog.CatalogFacetPresentationProfiles
 import com.example.shoppingassistant.domain.catalog.CatalogGovernanceCuratedSeed
 import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
@@ -656,9 +657,13 @@ fun ResultsPage(
             definitions = loadedFacetDefinitions,
             categoryCode = effectiveCategoryCode,
         )
-        facetDefinitions = scopedFacetDefinitions
+        val presentationFacetDefinitions = filterFacetDefinitionsForPresentation(
+            definitions = scopedFacetDefinitions,
+            categoryCode = effectiveCategoryCode,
+        )
+        facetDefinitions = presentationFacetDefinitions
         val typedDependencyContext = buildResultsDependencyContext(
-            facetDefinitions = scopedFacetDefinitions,
+            facetDefinitions = presentationFacetDefinitions,
             categoriesByCode = loadedCategories.associateBy { category -> category.code },
             availableSellerTrustSignals = SellerTrustSignal.entries.toSet(),
         )
@@ -721,9 +726,15 @@ fun ResultsPage(
     val appliedFacetPresentationProfile = remember(filters.categoryCode) {
         CatalogFacetPresentationProfiles.resolve(filters.categoryCode)
     }
-    val facetDefinitionsForUi = remember(allFacetDefinitions, uiFacetCategoryCode) {
+    val scopedFacetDefinitionsForUi = remember(allFacetDefinitions, uiFacetCategoryCode) {
         scopeFacetDefinitionsForCategory(
             definitions = allFacetDefinitions,
+            categoryCode = uiFacetCategoryCode,
+        )
+    }
+    val facetDefinitionsForUi = remember(scopedFacetDefinitionsForUi, uiFacetCategoryCode) {
+        filterFacetDefinitionsForPresentation(
+            definitions = scopedFacetDefinitionsForUi,
             categoryCode = uiFacetCategoryCode,
         )
     }
@@ -9874,6 +9885,51 @@ internal fun scopeFacetDefinitionsForCategory(
         .toList()
 }
 
+internal fun filterFacetDefinitionsForPresentation(
+    definitions: List<FacetDefinition>,
+    categoryCode: String?,
+): List<FacetDefinition> {
+    val profile = CatalogFacetPresentationProfiles.resolve(categoryCode) ?: return definitions
+    val allowedTypedFacetKeys = profile.visibleTypedFacetKeys()
+    if (allowedTypedFacetKeys.isEmpty() && profile.hiddenTypedFacetKeys.isEmpty()) return definitions
+
+    return definitions
+        .asSequence()
+        .filterNot { definition ->
+            val normalizedKey = definition.normalizedFacetKey()
+            val normalizedRuntimeKey = definition.normalizedRuntimeKey()
+            normalizedKey in profile.hiddenTypedFacetKeys ||
+                normalizedRuntimeKey in profile.hiddenTypedFacetKeys
+        }
+        .filter { definition ->
+            val normalizedKey = definition.normalizedFacetKey()
+            val normalizedRuntimeKey = definition.normalizedRuntimeKey()
+            if (normalizedKey in systemFacetKeys || normalizedRuntimeKey in systemFacetKeys) {
+                true
+            } else {
+                allowedTypedFacetKeys.isEmpty() ||
+                    normalizedKey in allowedTypedFacetKeys ||
+                    normalizedRuntimeKey in allowedTypedFacetKeys
+            }
+        }
+        .toList()
+}
+
+private fun CatalogFacetPresentationProfile.visibleTypedFacetKeys(): Set<String> =
+    sequenceOf(
+        mainTypedFacetKeys,
+        additionalTypedFacetKeys,
+        orderedTypedFacetKeys,
+        liveOnlyTypedFacetKeys.toList(),
+        noticePriorityTypedFacetKeys,
+        requiresBrandContextTypedFacetKeys.toList(),
+    )
+        .flatMap { keys -> keys.asSequence() }
+        .map { key -> key.trim().lowercase(Locale.ROOT) }
+        .filter { key -> key.isNotEmpty() }
+        .filterNot { key -> key in hiddenTypedFacetKeys }
+        .toCollection(LinkedHashSet())
+
 internal fun buildFacetUiFilters(
     definitions: List<FacetDefinition>,
     categoryCode: String? = null,
@@ -9884,7 +9940,7 @@ internal fun buildFacetUiFilters(
     val hiddenTypedFacetKeys = profile?.hiddenTypedFacetKeys.orEmpty()
     val pinnedSystemFacetKeys = profile?.pinnedSystemFacetKeys.orEmpty()
     val orderedTypedFacetKeys = profile?.orderedTypedFacetKeys.orEmpty()
-    val mapped = definitions
+    val mapped = filterFacetDefinitionsForPresentation(definitions, categoryCode)
         .asSequence()
         .filter { definition -> definition.isActiveForToday() }
         .filterNot { definition -> definition.ui.hidden }
@@ -10051,7 +10107,11 @@ private suspend fun loadTypedFacetUniverse(
     val normalizedBrand = primaryScope?.brand
     val normalizedModel = primaryScope?.model
     val localeTag = Locale.getDefault().toLanguageTag()
-    val attributeCodes = facetDefinitions
+    val presentationFacetDefinitions = filterFacetDefinitionsForPresentation(
+        definitions = facetDefinitions,
+        categoryCode = normalizedCategoryCode,
+    )
+    val attributeCodes = presentationFacetDefinitions
         .asSequence()
         .filter { definition -> definition.isActiveForToday() }
         .filterNot { definition -> definition.ui.hidden }
@@ -10129,7 +10189,7 @@ private suspend fun loadTypedFacetUniverse(
         ?.modelOptions
         .orEmpty()
     val entriesByFacetKey = LinkedHashMap<String, ResultsTypedFacetUniverseEntry>()
-    facetDefinitions
+    presentationFacetDefinitions
         .asSequence()
         .filter { definition -> definition.isActiveForToday() }
         .filterNot { definition -> definition.ui.hidden }

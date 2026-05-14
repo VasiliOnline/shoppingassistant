@@ -1,0 +1,33 @@
+ruleset_id: vision_rules.tech_device_identity_common.v1_0
+category_code: TECH.DEVICE_IDENTITY_COMMON
+principles:
+- No exact model from visual shape/color alone.
+- Logo may support brand only; family/model requires visible text, OCR, barcode, source title, seller attributes, or user
+  confirmation.
+- Barcode/GTIN/MPN/model number can upgrade confidence after checksum/format and brand consistency checks.
+- If multiple visually similar model candidates exist, return candidate list and REVIEW_REQUIRED, not exact model.
+- Serial/IMEI must be masked/hashed and never surfaced publicly.
+allowed_evidence_for_exact_model:
+- TITLE_EXACT_MODEL
+- OCR_VISIBLE_MODEL
+- BARCODE_GTIN
+- MPN_MATCH
+- VENDOR_FEED
+- OFFICIAL_DB_MATCH
+- USER_CONFIRMED
+- MULTI_EVIDENCE_HIGH
+blocked_exact_model_evidence:
+- LOGO_ONLY
+- SHAPE_ONLY
+- COLOR_ONLY
+- CAMERA_COUNT_ONLY
+- SCREEN_SIZE_GUESS
+- SELLER_CATEGORY_ONLY
+vision_output_contract:
+  min_output: brand/family/model_name_text candidates with evidence array and confidence
+  exact_model_requires: identity_evidence_level in allowed_evidence_for_exact_model and confidence >= 0.86
+  fallback: family-only or candidate list with review_required=true
+privacy_rules:
+- mask serial number
+- hash IMEI/MEID
+- do not expose source EXIF user identifiers

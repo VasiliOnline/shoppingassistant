@@ -1,0 +1,67 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+pack_type: shared_standard_pack
+facet_policy:
+  primary_facets_max: 7
+  inherited_by_public_categories: true
+  zero_count_values_hidden: true
+  t3_fields_forbidden: true
+primary_facets:
+  - code: condition
+    label_ru: Состояние
+    type: enum_multi
+    priority: 100
+    default_collapsed: false
+  - code: brand
+    label_ru: Бренд
+    type: search_enum_multi
+    priority: 95
+    default_collapsed: false
+  - code: color_family
+    label_ru: Цвет
+    type: enum_multi
+    priority: 90
+    default_collapsed: false
+  - code: warranty_status
+    label_ru: Гарантия
+    type: enum_multi
+    priority: 80
+    default_collapsed: true
+  - code: region
+    label_ru: Регион
+    type: enum_multi
+    priority: 75
+    default_collapsed: true
+  - code: release_year
+    label_ru: Год выпуска
+    type: range
+    priority: 70
+    default_collapsed: true
+  - code: included_accessories
+    label_ru: Комплектация
+    type: enum_multi
+    priority: 65
+    default_collapsed: true
+secondary_facets:
+  - code: original_box
+    label_ru: Коробка
+    type: enum_multi
+  - code: refurbished_status
+    label_ru: Восстановление
+    type: enum_multi
+  - code: cosmetic_condition_grade
+    label_ru: Внешнее состояние
+    type: enum_multi
+  - code: functional_condition
+    label_ru: Работоспособность
+    type: enum_multi
+  - code: receipt_available
+    label_ru: Чек
+    type: enum_multi
+seo_policy:
+  index_shared_facets_directly: false
+  public_category_may_whitelist:
+    - condition
+    - brand
+    - warranty_status
+    - region

@@ -76,6 +76,12 @@ internal class Stage22SeedValidator(
             globalConstraints = globalConstraints,
             issues = issues,
         )
+        issues += CatalogPackV2SeedValidator().validate(
+            categories = categories,
+            registry = registry,
+            packages = packages,
+            globalConstraints = globalConstraints,
+        )
 
         if (packages.isNotEmpty() || globalConstraints.isNotEmpty()) {
             validateReferentialIntegrity(

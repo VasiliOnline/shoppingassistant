@@ -1,7 +1,10 @@
 package com.example.shoppingassistant.core.data.catalog
 
+import com.example.shoppingassistant.domain.catalog.CategoryAlias
+import com.example.shoppingassistant.domain.catalog.CategoryAliasRepository
 import com.example.shoppingassistant.domain.catalog.TaxonomyValidator
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -35,5 +38,27 @@ class TaxonomyGateTest {
         assertTrue(report.stats.categoriesCount > 0)
         assertTrue(report.stats.browseNodesCount > 0)
         assertTrue(report.stats.aliasEntriesCount > 0)
+    }
+
+    @Test
+    fun validate_usesTypedAliasEntriesAsAuthoritativeWhenLegacyAliasesConflict() = runBlocking {
+        val conflictingLegacyAliases = object : CategoryAliasRepository {
+            override suspend fun listAliases(): List<CategoryAlias> = listOf(
+                CategoryAlias(alias = "camera", categoryCode = "TECH.CAMERAS"),
+                CategoryAlias(alias = "camera", categoryCode = "TECH.CAMERAS_DRONES"),
+            )
+        }
+        val gate = TaxonomyGate(
+            catalogRepository = CatalogRepositoryImpl(SeededCatalogDataSource()),
+            categoryAliasRepository = conflictingLegacyAliases,
+            browseNodeRepository = BrowseNodeRepositoryImpl(),
+            aliasEntryRepository = AliasEntryRepositoryImpl(),
+            googleTaxonomyMappingRepository = GoogleTaxonomyMappingRepositoryImpl(),
+            validator = TaxonomyValidator(),
+        )
+
+        val report = gate.validate()
+
+        assertFalse(report.summary(), report.failIssues.any { it.code == "ALIAS_AMBIGUOUS" })
     }
 }

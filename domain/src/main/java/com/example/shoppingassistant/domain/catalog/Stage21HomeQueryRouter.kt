@@ -499,12 +499,12 @@ class Stage21HomeQueryRouter(
         if (left.isEmpty() || right.isEmpty()) return false
         if (left == right) return true
         if (left.length <= 2 || right.length <= 2) return false
-        if (left.startsWith(right) || right.startsWith(left)) return true
+        if (left.startsWith(right)) return true
 
         val leftStem = tokenStem(left)
         val rightStem = tokenStem(right)
         if (leftStem.length < 4 || rightStem.length < 4) return false
-        return leftStem == rightStem || leftStem.startsWith(rightStem) || rightStem.startsWith(leftStem)
+        return leftStem == rightStem || leftStem.startsWith(rightStem)
     }
 
     private fun tokenStem(token: String): String {
@@ -515,6 +515,7 @@ class Stage21HomeQueryRouter(
             "ая", "яя", "ое", "ее", "ые", "ие",
             "ой", "ый", "ий", "ом", "ем", "ам", "ям",
             "ах", "ях", "ы", "и", "а", "я", "е", "о", "у", "ю",
+            "ь",
         )
         val matchedSuffix = suffixes.firstOrNull { lower.length > it.length + 2 && lower.endsWith(it) }
         return if (matchedSuffix == null) lower else lower.removeSuffix(matchedSuffix)

@@ -1,0 +1,3261 @@
+[
+  {
+    "profileCode": "TECH.ELECTRONICS_COMMON",
+    "attributes": [
+      {
+        "code": "brand",
+        "title": "Бренд",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "manufacturer",
+        "title": "Производитель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "condition",
+        "title": "Состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": true,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "condition"
+      },
+      {
+        "code": "color_family",
+        "title": "Цвет",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "color_family"
+      },
+      {
+        "code": "release_year",
+        "title": "Год выпуска",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "warranty_status",
+        "title": "Гарантия",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "warranty_status"
+      },
+      {
+        "code": "region",
+        "title": "Регион",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "region"
+      },
+      {
+        "code": "country_version",
+        "title": "Версия рынка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "country_version"
+      },
+      {
+        "code": "included_accessories",
+        "title": "Комплектация",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "included_accessories"
+      },
+      {
+        "code": "seller_bundle",
+        "title": "Набор продавца",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "original_box",
+        "title": "Оригинальная коробка",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "original_box"
+      },
+      {
+        "code": "refurbished_status",
+        "title": "Восстановление",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "refurbished_status"
+      },
+      {
+        "code": "repair_history",
+        "title": "История ремонта",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "repair_history"
+      },
+      {
+        "code": "cosmetic_condition_grade",
+        "title": "Внешнее состояние",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "cosmetic_condition_grade"
+      },
+      {
+        "code": "functional_condition",
+        "title": "Работоспособность",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "functional_condition"
+      },
+      {
+        "code": "color_vendor_text",
+        "title": "Цвет продавца",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "warranty_months_remaining",
+        "title": "Остаток гарантии, месяцев",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "warranty_provider",
+        "title": "Поставщик гарантии",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "warranty_provider"
+      },
+      {
+        "code": "receipt_available",
+        "title": "Чек",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "receipt_available"
+      },
+      {
+        "code": "purchase_channel",
+        "title": "Канал покупки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "purchase_channel"
+      },
+      {
+        "code": "return_policy_status",
+        "title": "Возврат",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "return_policy_status"
+      },
+      {
+        "code": "refurbishment_grade",
+        "title": "Грейд восстановления",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "refurbishment_grade"
+      },
+      {
+        "code": "refurbishment_provider",
+        "title": "Кто восстановил",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "refurbishment_provider"
+      },
+      {
+        "code": "service_history_text",
+        "title": "Сервисная история",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "defect_notes",
+        "title": "Описание дефектов",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "accessory_completeness_grade",
+        "title": "Полнота комплектации",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "accessory_completeness_grade"
+      },
+      {
+        "code": "packaging_condition",
+        "title": "Состояние упаковки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "packaging_condition"
+      },
+      {
+        "code": "seller_notes_quality",
+        "title": "Качество описания",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "seller_notes_quality"
+      },
+      {
+        "code": "model_name_text_raw",
+        "title": "Модель как в объявлении",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "listing_completeness_confidence",
+        "title": "Уверенность полноты объявления",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "evidence_level",
+        "title": "Уровень доказательности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "evidence_level"
+      },
+      {
+        "code": "normalization_source",
+        "title": "Источник нормализации",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "normalization_source"
+      },
+      {
+        "code": "source_locale",
+        "title": "Локаль источника",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "source_market",
+        "title": "Рынок источника",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "extraction_warnings",
+        "title": "Предупреждения извлечения",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "route_guardrail_trace",
+        "title": "След route guardrails",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "vision_confidence",
+        "title": "Уверенность vision",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "data_quality_score",
+        "title": "Оценка качества данных",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "brand",
+        "uiOrder": 1,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "manufacturer",
+        "uiOrder": 2,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "condition",
+        "uiOrder": 3,
+        "isRequiredForCategory": true
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "color_family",
+        "uiOrder": 4,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "release_year",
+        "uiOrder": 5,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "warranty_status",
+        "uiOrder": 6,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "region",
+        "uiOrder": 7,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "country_version",
+        "uiOrder": 8,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "included_accessories",
+        "uiOrder": 9,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "seller_bundle",
+        "uiOrder": 10,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "original_box",
+        "uiOrder": 11,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "refurbished_status",
+        "uiOrder": 12,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "repair_history",
+        "uiOrder": 13,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "cosmetic_condition_grade",
+        "uiOrder": 14,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "functional_condition",
+        "uiOrder": 15,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "color_vendor_text",
+        "uiOrder": 16,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "warranty_months_remaining",
+        "uiOrder": 17,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "warranty_provider",
+        "uiOrder": 18,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "receipt_available",
+        "uiOrder": 19,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "purchase_channel",
+        "uiOrder": 20,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "return_policy_status",
+        "uiOrder": 21,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "refurbishment_grade",
+        "uiOrder": 22,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "refurbishment_provider",
+        "uiOrder": 23,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "service_history_text",
+        "uiOrder": 24,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "defect_notes",
+        "uiOrder": 25,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "accessory_completeness_grade",
+        "uiOrder": 26,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "packaging_condition",
+        "uiOrder": 27,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "seller_notes_quality",
+        "uiOrder": 28,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "model_name_text_raw",
+        "uiOrder": 29,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "listing_completeness_confidence",
+        "uiOrder": 30,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "evidence_level",
+        "uiOrder": 31,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "normalization_source",
+        "uiOrder": 32,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "source_locale",
+        "uiOrder": 33,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "source_market",
+        "uiOrder": 34,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "extraction_warnings",
+        "uiOrder": 35,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "route_guardrail_trace",
+        "uiOrder": 36,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "vision_confidence",
+        "uiOrder": 37,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.ELECTRONICS_COMMON",
+        "attributeCode": "data_quality_score",
+        "uiOrder": 38,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "functional_condition",
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "USED_LIKE_NEW",
+              "USED_GOOD",
+              "USED_FAIR",
+              "USED_FOR_PARTS",
+              "REFURBISHED_MANUFACTURER",
+              "REFURBISHED_SELLER",
+              "LIKE_NEW",
+              "GOOD",
+              "FAIR",
+              "FOR_PARTS",
+              "REFURBISHED"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "defect_notes",
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "USED_FOR_PARTS",
+              "FOR_PARTS",
+              "FOR_REPAIR",
+              "DEFECTS",
+              "DEFECTS_OR_REPAIR"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "profileCode": "TECH.DEVICE_IDENTITY_COMMON",
+    "attributes": [
+      {
+        "code": "family",
+        "title": "Семейство",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "line",
+        "title": "Линейка",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model",
+        "title": "Модель",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_name_text",
+        "title": "Модель текстом",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "identity_resolution_status",
+        "title": "Статус идентификации",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "identity_resolution_status"
+      },
+      {
+        "code": "identity_confidence",
+        "title": "Уверенность идентификации",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "series",
+        "title": "Серия",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_aliases",
+        "title": "Алиасы модели",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_number",
+        "title": "Номер модели",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "mpn",
+        "title": "MPN",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "gtin",
+        "title": "GTIN",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "ean",
+        "title": "EAN",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "upc",
+        "title": "UPC",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "region_variant",
+        "title": "Региональный вариант",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "region_variant"
+      },
+      {
+        "code": "generation",
+        "title": "Поколение",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "variant_label",
+        "title": "Вариант модели",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_granularity",
+        "title": "Точность модели",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "model_granularity"
+      },
+      {
+        "code": "identity_evidence_level",
+        "title": "Уровень evidence идентичности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "identity_evidence_level"
+      },
+      {
+        "code": "identity_evidence_types",
+        "title": "Типы evidence идентичности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "identity_evidence_types"
+      },
+      {
+        "code": "identity_source",
+        "title": "Источник идентичности",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "identity_source"
+      },
+      {
+        "code": "identity_context_role",
+        "title": "Роль identity-контекста",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "identity_context_role"
+      },
+      {
+        "code": "identity_review_required",
+        "title": "Нужна проверка identity",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "brand_aliases",
+        "title": "Brand aliases",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "family_aliases",
+        "title": "Family aliases",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "line_aliases",
+        "title": "Line aliases",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "sub_model",
+        "title": "Sub model",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "edition",
+        "title": "Edition",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "product_code",
+        "title": "Product code",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "part_number",
+        "title": "Part number",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "manufacturer_part_number",
+        "title": "Manufacturer part number",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "hardware_revision",
+        "title": "Hardware revision",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "carrier_variant",
+        "title": "Carrier variant",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "country_variant_text",
+        "title": "Country variant text",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "retailer_sku",
+        "title": "Retailer sku",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "sku_vendor",
+        "title": "Sku vendor",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "asin",
+        "title": "Asin",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "model_year_text",
+        "title": "Model year text",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "generation_number",
+        "title": "Generation number",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "image_model_text_visible",
+        "title": "Image model text visible",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "logo_brand_visible",
+        "title": "Logo brand visible",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "bundle_identity_exclusion",
+        "title": "Bundle identity exclusion",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "identity_confidence_bucket",
+        "title": "Уровень уверенности identity",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "identity_confidence_bucket"
+      },
+      {
+        "code": "identity_review_reason",
+        "title": "Причина проверки identity",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "identity_review_reason"
+      },
+      {
+        "code": "identity_conflict_notes",
+        "title": "Заметки конфликта identity",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "device_identity_key",
+        "title": "Device identity key",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "canonical_product_key",
+        "title": "Canonical product key",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "dedup_fingerprint",
+        "title": "Dedup fingerprint",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "identity_candidate_count",
+        "title": "Identity candidate count",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_title_identity_tokens",
+        "title": "Raw title identity tokens",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_ocr_identity_tokens",
+        "title": "Raw ocr identity tokens",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_barcode_payload",
+        "title": "Raw barcode payload",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_model_candidates",
+        "title": "Raw model candidates",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "source_url_identity_tokens",
+        "title": "Source url identity tokens",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "source_page_metadata",
+        "title": "Source page metadata",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "serial_number_masked",
+        "title": "Serial number masked",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "imei_hash",
+        "title": "Imei hash",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "image_embedding_id",
+        "title": "Image embedding id",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "title_embedding_id",
+        "title": "Title embedding id",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "identity_debug_trace",
+        "title": "Identity debug trace",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "identity_resolution_version",
+        "title": "Identity resolution version",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "identity_last_resolved_at",
+        "title": "Identity last resolved at",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "family",
+        "uiOrder": 39,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "line",
+        "uiOrder": 40,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "model",
+        "uiOrder": 41,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "model_name_text",
+        "uiOrder": 42,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_resolution_status",
+        "uiOrder": 43,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_confidence",
+        "uiOrder": 44,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "series",
+        "uiOrder": 45,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "model_aliases",
+        "uiOrder": 46,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "model_number",
+        "uiOrder": 47,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "mpn",
+        "uiOrder": 48,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "gtin",
+        "uiOrder": 49,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "ean",
+        "uiOrder": 50,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "upc",
+        "uiOrder": 51,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "region_variant",
+        "uiOrder": 52,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "generation",
+        "uiOrder": 53,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "variant_label",
+        "uiOrder": 54,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "model_granularity",
+        "uiOrder": 55,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_evidence_level",
+        "uiOrder": 56,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_evidence_types",
+        "uiOrder": 57,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_source",
+        "uiOrder": 58,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_context_role",
+        "uiOrder": 59,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_review_required",
+        "uiOrder": 60,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "brand_aliases",
+        "uiOrder": 61,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "family_aliases",
+        "uiOrder": 62,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "line_aliases",
+        "uiOrder": 63,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "sub_model",
+        "uiOrder": 64,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "edition",
+        "uiOrder": 65,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "product_code",
+        "uiOrder": 66,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "part_number",
+        "uiOrder": 67,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "manufacturer_part_number",
+        "uiOrder": 68,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "hardware_revision",
+        "uiOrder": 69,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "carrier_variant",
+        "uiOrder": 70,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "country_variant_text",
+        "uiOrder": 71,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "retailer_sku",
+        "uiOrder": 72,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "sku_vendor",
+        "uiOrder": 73,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "asin",
+        "uiOrder": 74,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "model_year_text",
+        "uiOrder": 75,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "generation_number",
+        "uiOrder": 76,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "image_model_text_visible",
+        "uiOrder": 77,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "logo_brand_visible",
+        "uiOrder": 78,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "bundle_identity_exclusion",
+        "uiOrder": 79,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_confidence_bucket",
+        "uiOrder": 80,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_review_reason",
+        "uiOrder": 81,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_conflict_notes",
+        "uiOrder": 82,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "device_identity_key",
+        "uiOrder": 83,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "canonical_product_key",
+        "uiOrder": 84,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "dedup_fingerprint",
+        "uiOrder": 85,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_candidate_count",
+        "uiOrder": 86,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "raw_title_identity_tokens",
+        "uiOrder": 87,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "raw_ocr_identity_tokens",
+        "uiOrder": 88,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "raw_barcode_payload",
+        "uiOrder": 89,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "raw_model_candidates",
+        "uiOrder": 90,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "source_url_identity_tokens",
+        "uiOrder": 91,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "source_page_metadata",
+        "uiOrder": 92,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "serial_number_masked",
+        "uiOrder": 93,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "imei_hash",
+        "uiOrder": 94,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "image_embedding_id",
+        "uiOrder": 95,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "title_embedding_id",
+        "uiOrder": 96,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_debug_trace",
+        "uiOrder": 97,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_resolution_version",
+        "uiOrder": 98,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.DEVICE_IDENTITY_COMMON",
+        "attributeCode": "identity_last_resolved_at",
+        "uiOrder": 99,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": [
+      {
+        "requiredAttributeCode": "model",
+        "whenAll": [
+          {
+            "attributeCode": "model_granularity",
+            "op": "EQUALS_ANY",
+            "values": [
+              "EXACT_MODEL",
+              "EXACT_MODEL_VARIANT"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "identity_evidence_level",
+        "whenAll": [
+          {
+            "attributeCode": "identity_resolution_status",
+            "op": "EQUALS_ANY",
+            "values": [
+              "FULL",
+              "USER_CONFIRMED"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "identity_evidence_types",
+        "whenAll": [
+          {
+            "attributeCode": "identity_resolution_status",
+            "op": "EQUALS_ANY",
+            "values": [
+              "FULL",
+              "USER_CONFIRMED"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "identity_review_reason",
+        "whenAll": [
+          {
+            "attributeCode": "identity_resolution_status",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CONFLICT",
+              "REVIEW_REQUIRED"
+            ]
+          }
+        ]
+      },
+      {
+        "requiredAttributeCode": "identity_conflict_notes",
+        "whenAll": [
+          {
+            "attributeCode": "identity_resolution_status",
+            "op": "EQUALS_ANY",
+            "values": [
+              "CONFLICT"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "profileCode": "TECH.SPECS_COMMON",
+    "attributes": [
+      {
+        "code": "spec_profile_status",
+        "title": "Статус профиля характеристик",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "spec_profile_status"
+      },
+      {
+        "code": "spec_confidence",
+        "title": "Уверенность характеристик",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_evidence_level",
+        "title": "Уровень доказательств характеристик",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "spec_evidence_level"
+      },
+      {
+        "code": "spec_source",
+        "title": "Источник характеристик",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "spec_source"
+      },
+      {
+        "code": "primary_spec_summary",
+        "title": "Краткая сводка характеристик",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_completeness_score",
+        "title": "Полнота характеристик",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "measurement_system",
+        "title": "Система измерения",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "measurement_system"
+      },
+      {
+        "code": "unit_normalization_status",
+        "title": "Статус нормализации единиц",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "unit_normalization_status"
+      },
+      {
+        "code": "storage_capacity",
+        "title": "Объём накопителя",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "storage_capacity"
+      },
+      {
+        "code": "ram_capacity",
+        "title": "Оперативная память",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "ram_capacity"
+      },
+      {
+        "code": "screen_size",
+        "title": "Диагональ экрана",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "screen_size"
+      },
+      {
+        "code": "screen_resolution",
+        "title": "Разрешение экрана",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "screen_resolution"
+      },
+      {
+        "code": "refresh_rate_hz",
+        "title": "Частота обновления",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "refresh_rate_hz"
+      },
+      {
+        "code": "battery_capacity_mah",
+        "title": "Ёмкость аккумулятора мА·ч",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "battery_capacity_wh",
+        "title": "Ёмкость аккумулятора Вт·ч",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "power_watts",
+        "title": "Мощность",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "power_watts"
+      },
+      {
+        "code": "connector_type",
+        "title": "Тип разъёма",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "connector_type"
+      },
+      {
+        "code": "wireless_standard",
+        "title": "Беспроводной стандарт",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "wireless_standard"
+      },
+      {
+        "code": "os_family",
+        "title": "Операционная система",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "os_family"
+      },
+      {
+        "code": "chipset_text",
+        "title": "Чипсет / процессор text",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "dimensions",
+        "title": "Габариты",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "weight",
+        "title": "Вес",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "water_resistance",
+        "title": "Влагозащита",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "water_resistance"
+      },
+      {
+        "code": "network_generation",
+        "title": "Поколение сети",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "network_generation"
+      },
+      {
+        "code": "bluetooth_version",
+        "title": "Версия Bluetooth",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "bluetooth_version"
+      },
+      {
+        "code": "wi_fi_standard",
+        "title": "Стандарт Wi-Fi",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "wi_fi_standard"
+      },
+      {
+        "code": "form_factor",
+        "title": "Форм-фактор",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "form_factor"
+      },
+      {
+        "code": "power_source",
+        "title": "Источник питания",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "power_source"
+      },
+      {
+        "code": "storage_type",
+        "title": "Тип накопителя",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "storage_type"
+      },
+      {
+        "code": "memory_type",
+        "title": "Тип памяти",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "memory_type"
+      },
+      {
+        "code": "cpu_cores",
+        "title": "Количество ядер CPU",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "cpu_cores"
+      },
+      {
+        "code": "cpu_frequency_ghz",
+        "title": "Частота CPU",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "gpu_text",
+        "title": "Графика / GPU text",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "camera_resolution_mp",
+        "title": "Разрешение камеры МП",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "video_resolution",
+        "title": "Разрешение видео",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "video_resolution"
+      },
+      {
+        "code": "frame_rate_fps",
+        "title": "Частота кадров",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "panel_type",
+        "title": "Тип матрицы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "panel_type"
+      },
+      {
+        "code": "aspect_ratio",
+        "title": "Соотношение сторон",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "aspect_ratio"
+      },
+      {
+        "code": "brightness_nits",
+        "title": "Яркость",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "response_time_ms",
+        "title": "Время отклика",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "hdr_standard",
+        "title": "HDR стандарт",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "hdr_standard"
+      },
+      {
+        "code": "ports_count",
+        "title": "Количество портов",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "ports_count"
+      },
+      {
+        "code": "port_list_text",
+        "title": "Список портов text",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "data_transfer_rate",
+        "title": "Скорость передачи данных",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "read_speed_mbps",
+        "title": "Скорость чтения",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "write_speed_mbps",
+        "title": "Скорость записи",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "charging_standard",
+        "title": "Стандарт зарядки",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "charging_standard"
+      },
+      {
+        "code": "input_voltage",
+        "title": "Входное напряжение",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "output_voltage",
+        "title": "Выходное напряжение",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "output_current_a",
+        "title": "Выходной ток",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "cable_length_m",
+        "title": "Длина кабеля",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "cable_length_m"
+      },
+      {
+        "code": "energy_consumption_w",
+        "title": "Потребление энергии",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "noise_level_db",
+        "title": "Уровень шума",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "audio_channels",
+        "title": "Аудиоканалы",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "audio_channels"
+      },
+      {
+        "code": "microphone_count",
+        "title": "Количество микрофонов",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "microphone_count"
+      },
+      {
+        "code": "sensor_set",
+        "title": "Набор датчиков",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": "sensor_set"
+      },
+      {
+        "code": "ip_rating",
+        "title": "IP рейтинг",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "operating_temperature",
+        "title": "Рабочая температура",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "mounting_type",
+        "title": "Тип крепления",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "mounting_type"
+      },
+      {
+        "code": "color_depth",
+        "title": "Глубина цвета",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "color_depth"
+      },
+      {
+        "code": "print_technology",
+        "title": "Технология печати",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "print_technology"
+      },
+      {
+        "code": "scan_resolution",
+        "title": "Разрешение сканирования",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "network_speed",
+        "title": "Скорость сети",
+        "dataType": "DECIMAL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": "network_speed"
+      },
+      {
+        "code": "antenna_count",
+        "title": "Количество антенн",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "antenna_count"
+      },
+      {
+        "code": "poe_support",
+        "title": "Поддержка PoE",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "sim_support",
+        "title": "Поддержка SIM/eSIM",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": true,
+        "multiValued": true,
+        "valueDictCode": "sim_support"
+      },
+      {
+        "code": "satellite_support",
+        "title": "Спутниковая связь",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "battery_health_percent",
+        "title": "Здоровье батареи",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "cycle_count",
+        "title": "Количество циклов",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "factory_reset_status",
+        "title": "Сброс до заводских настроек",
+        "dataType": "ENUM",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": "factory_reset_status"
+      },
+      {
+        "code": "normalized_spec_key",
+        "title": "Нормализованный ключ характеристик",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_fingerprint",
+        "title": "Отпечаток характеристик",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_spec_tokens",
+        "title": "Raw tokens характеристик",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_title_spec_tokens",
+        "title": "Raw title spec tokens",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_ocr_spec_tokens",
+        "title": "Raw OCR spec tokens",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "raw_source_spec_tokens",
+        "title": "Raw source spec tokens",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_candidate_count",
+        "title": "Количество spec-кандидатов",
+        "dataType": "INT",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_conflict_set",
+        "title": "Набор конфликтов характеристик",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_unit_parse_notes",
+        "title": "Заметки парсинга единиц",
+        "dataType": "STRING_LIST",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": true,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_review_required",
+        "title": "Требуется review характеристик",
+        "dataType": "BOOL",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_review_reason",
+        "title": "Причина review характеристик",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "source_evidence_fingerprint",
+        "title": "Отпечаток evidence источника",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_runtime_version",
+        "title": "Версия runtime specs",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "unit_parser_version",
+        "title": "Версия unit parser",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      },
+      {
+        "code": "spec_last_verified_at",
+        "title": "Дата последней проверки spec",
+        "dataType": "STRING",
+        "requiredForSearch": false,
+        "requiredForOffer": false,
+        "requiredForExpress": false,
+        "facetEnabled": false,
+        "multiValued": false,
+        "valueDictCode": null
+      }
+    ],
+    "categoryAttributes": [
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_profile_status",
+        "uiOrder": 101,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_confidence",
+        "uiOrder": 102,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_evidence_level",
+        "uiOrder": 103,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_source",
+        "uiOrder": 104,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "primary_spec_summary",
+        "uiOrder": 105,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_completeness_score",
+        "uiOrder": 106,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "measurement_system",
+        "uiOrder": 107,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "unit_normalization_status",
+        "uiOrder": 108,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "storage_capacity",
+        "uiOrder": 109,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "ram_capacity",
+        "uiOrder": 110,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "screen_size",
+        "uiOrder": 111,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "screen_resolution",
+        "uiOrder": 112,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "refresh_rate_hz",
+        "uiOrder": 113,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "battery_capacity_mah",
+        "uiOrder": 114,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "battery_capacity_wh",
+        "uiOrder": 115,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "power_watts",
+        "uiOrder": 116,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "connector_type",
+        "uiOrder": 117,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "wireless_standard",
+        "uiOrder": 118,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "os_family",
+        "uiOrder": 119,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "chipset_text",
+        "uiOrder": 120,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "dimensions",
+        "uiOrder": 121,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "weight",
+        "uiOrder": 122,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "water_resistance",
+        "uiOrder": 123,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "network_generation",
+        "uiOrder": 124,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "bluetooth_version",
+        "uiOrder": 125,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "wi_fi_standard",
+        "uiOrder": 126,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "form_factor",
+        "uiOrder": 127,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "power_source",
+        "uiOrder": 128,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "storage_type",
+        "uiOrder": 129,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "memory_type",
+        "uiOrder": 130,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "cpu_cores",
+        "uiOrder": 131,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "cpu_frequency_ghz",
+        "uiOrder": 132,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "gpu_text",
+        "uiOrder": 133,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "camera_resolution_mp",
+        "uiOrder": 134,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "video_resolution",
+        "uiOrder": 135,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "frame_rate_fps",
+        "uiOrder": 136,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "panel_type",
+        "uiOrder": 137,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "aspect_ratio",
+        "uiOrder": 138,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "brightness_nits",
+        "uiOrder": 139,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "response_time_ms",
+        "uiOrder": 140,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "hdr_standard",
+        "uiOrder": 141,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "ports_count",
+        "uiOrder": 142,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "port_list_text",
+        "uiOrder": 143,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "data_transfer_rate",
+        "uiOrder": 144,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "read_speed_mbps",
+        "uiOrder": 145,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "write_speed_mbps",
+        "uiOrder": 146,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "charging_standard",
+        "uiOrder": 147,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "input_voltage",
+        "uiOrder": 148,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "output_voltage",
+        "uiOrder": 149,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "output_current_a",
+        "uiOrder": 150,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "cable_length_m",
+        "uiOrder": 151,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "energy_consumption_w",
+        "uiOrder": 152,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "noise_level_db",
+        "uiOrder": 153,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "audio_channels",
+        "uiOrder": 154,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "microphone_count",
+        "uiOrder": 155,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "sensor_set",
+        "uiOrder": 156,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "ip_rating",
+        "uiOrder": 157,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "operating_temperature",
+        "uiOrder": 158,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "mounting_type",
+        "uiOrder": 159,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "color_depth",
+        "uiOrder": 160,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "print_technology",
+        "uiOrder": 161,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "scan_resolution",
+        "uiOrder": 162,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "network_speed",
+        "uiOrder": 163,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "antenna_count",
+        "uiOrder": 164,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "poe_support",
+        "uiOrder": 165,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "sim_support",
+        "uiOrder": 166,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "satellite_support",
+        "uiOrder": 167,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "battery_health_percent",
+        "uiOrder": 168,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "cycle_count",
+        "uiOrder": 169,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "factory_reset_status",
+        "uiOrder": 170,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "normalized_spec_key",
+        "uiOrder": 171,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_fingerprint",
+        "uiOrder": 172,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "raw_spec_tokens",
+        "uiOrder": 173,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "raw_title_spec_tokens",
+        "uiOrder": 174,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "raw_ocr_spec_tokens",
+        "uiOrder": 175,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "raw_source_spec_tokens",
+        "uiOrder": 176,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_candidate_count",
+        "uiOrder": 177,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_conflict_set",
+        "uiOrder": 178,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_unit_parse_notes",
+        "uiOrder": 179,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_review_required",
+        "uiOrder": 180,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_review_reason",
+        "uiOrder": 181,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "source_evidence_fingerprint",
+        "uiOrder": 182,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_runtime_version",
+        "uiOrder": 183,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "unit_parser_version",
+        "uiOrder": 184,
+        "isRequiredForCategory": false
+      },
+      {
+        "categoryCode": "TECH.SPECS_COMMON",
+        "attributeCode": "spec_last_verified_at",
+        "uiOrder": 185,
+        "isRequiredForCategory": false
+      }
+    ],
+    "valueDictionaries": [],
+    "requiredIfRules": []
+  }
+]

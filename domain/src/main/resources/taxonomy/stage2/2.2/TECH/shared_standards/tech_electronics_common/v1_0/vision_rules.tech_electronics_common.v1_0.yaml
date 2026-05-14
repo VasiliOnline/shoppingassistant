@@ -1,0 +1,59 @@
+pack_id: TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU
+category_code: TECH.ELECTRONICS_COMMON
+vision_policy:
+  shared_standard_only: true
+  no_model_guessing: true
+  no_specs_guessing: true
+  no_compatibility_guessing: true
+  accepts_visual_evidence_for:
+    - condition
+    - color_family
+    - original_box
+    - included_accessories
+    - packaging_condition
+    - cosmetic_condition_grade
+    - obvious_damage_or_defect_notes
+  never_infer_here:
+    - family
+    - line
+    - model
+    - mpn
+    - gtin
+    - storage
+    - ram
+    - chipset
+    - compatibility_refs
+rules:
+  - id: visual_brand_logo_allowed_low_risk
+    action: extract_brand_candidate
+    allowed_when: logo_or_text_visible
+    confidence_threshold: 0.72
+    output: brand + evidence_level=IMAGE_CONFIRMED
+    review_required_when_multiple_logos: true
+  - id: visual_model_text_raw_only
+    action: store_raw_model_text_only
+    allowed_when: model_text_visible_on_box_or_label
+    output: model_name_text_raw
+    forbidden_output: [family, line, model, mpn]
+  - id: cosmetic_condition_from_images
+    action: estimate_cosmetic_condition_grade
+    allowed_when: enough_angles_or_closeups
+    confidence_threshold: 0.65
+    output: cosmetic_condition_grade + vision_confidence
+  - id: color_family_from_primary_object
+    action: estimate_color_family
+    confidence_threshold: 0.60
+    output: color_family + color_vendor_text_if_ocr
+  - id: box_and_accessories_visible
+    action: extract_included_accessories
+    allowed_when: accessories_clearly_visible
+    output: included_accessories + evidence_level=IMAGE_CONFIRMED
+  - id: no_hidden_defect_inference
+    action: forbid
+    forbidden_claims: [water_damage, repair_history, functional_condition]
+    reason: cannot infer hidden defects from photo alone
+quality_thresholds:
+  brand_visual_candidate_min_confidence: 0.72
+  color_visual_min_confidence: 0.60
+  condition_visual_min_confidence: 0.65
+  low_confidence_behavior: keep_raw_candidate_and_warn

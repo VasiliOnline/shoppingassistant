@@ -1,0 +1,33 @@
+ruleset_id: title_identity_parser_rules.tech_device_identity_common.v1_0
+pipeline:
+- normalize whitespace/punctuation but preserve model separators
+- extract brand/family aliases
+- extract model number / MPN / GTIN markers
+- detect compatibility/bundle context before final identity
+- strip pure specs/color/condition tokens from model candidate
+- assign granularity and evidence level
+- emit candidates with confidence and review reasons
+strip_from_model_candidate:
+- storage_capacity
+- ram_capacity
+- screen_size
+- color
+- condition
+- price
+- seller_grade
+- shipping_words
+preserve_in_model_candidate:
+- hyphenated_model_number
+- plus_sign
+- roman_numeral
+- generation_word
+- edition_word_if_part_of_name
+- letter_number_suffix
+review_triggers:
+- two_brands_in_title
+- two_primary_models_in_title
+- compatibility_preposition
+- bundle_terms
+- model_number_without_brand
+- brand_family_conflict
+- gtin_checksum_failed

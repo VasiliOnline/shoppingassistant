@@ -1,0 +1,54 @@
+{
+  "categoryCode": "FASH.SHOES",
+  "expected_effective_spec": {
+    "public_category": true,
+    "materialized_profile": true,
+    "attributes_count": 37,
+    "required_fields": ["shoe_type", "condition", "pair_completeness"],
+    "identity_attributes": ["shoe_type", "size_eu", "model_name_text"],
+    "type_attribute": "shoe_type"
+  },
+  "production_gate": {
+    "archetypes": ["SIZE_DRIVEN", "TYPE_DRIVEN"],
+    "required_present": [
+      "shoe_type",
+      "size_eu",
+      "raw_size_text",
+      "brand",
+      "condition",
+      "pair_completeness",
+      "color_primary",
+      "material_upper",
+      "sport_purpose"
+    ],
+    "required_fields": ["shoe_type", "condition", "pair_completeness"],
+    "primary_facets": ["shoe_type", "target_gender", "size_eu", "brand", "condition"],
+    "hidden_from_primary_ui": [
+      "raw_size_text",
+      "size_ru",
+      "child_height_cm",
+      "defect_notes",
+      "authenticity_status"
+    ],
+    "initial_fields": [
+      "shoe_type",
+      "size_eu",
+      "brand",
+      "condition",
+      "color_primary",
+      "material_upper",
+      "season"
+    ],
+    "type_specific": {
+      "SNEAKERS": [
+        "size_eu",
+        "brand",
+        "condition",
+        "color_primary",
+        "sport_purpose",
+        "material_upper",
+        "sole_type"
+      ]
+    }
+  }
+}
