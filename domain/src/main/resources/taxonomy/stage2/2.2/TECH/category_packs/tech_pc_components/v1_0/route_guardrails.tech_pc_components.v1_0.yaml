@@ -1,0 +1,35 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+evaluation_mode: priority_desc_first_match
+guards:
+  - id: complete_computer_exclusion
+    priority: 110
+    when_any: ["ноутбук", "laptop", "macbook", "desktop pc", "системный блок целиком", "mini pc", "all-in-one", "моноблок"]
+    route_to: TECH.COMPUTERS
+  - id: storage_exclusion
+    priority: 105
+    when_any: ["ssd", "hdd", "nvme", "m.2 ssd", "usb flash", "карта памяти", "external ssd", "внешний диск"]
+    route_to: TECH.STORAGE_MEMORY
+  - id: peripherals_exclusion
+    priority: 104
+    when_any: ["клавиатура", "мышь", "webcam", "вебкамера", "usb hub", "док станция", "подставка для ноутбука", "mouse pad"]
+    route_to: TECH.COMPUTER_ACCESSORIES
+  - id: monitor_exclusion
+    priority: 103
+    when_any: ["монитор", "gaming monitor", "portable monitor", "дисплей 27", "экран 144hz"]
+    route_to: TECH.MONITORS_DISPLAYS
+  - id: power_cables_exclusion
+    priority: 102
+    when_any: ["зарядка", "кабель usb", "hdmi кабель", "power bank", "ups", "сетевой фильтр"]
+    route_to: TECH.POWER_CHARGING_CABLES
+  - id: audio_exclusion
+    priority: 100
+    when_any: ["наушники", "колонки", "микрофон", "audio interface", "dac amp"]
+    route_to: TECH.AUDIO
+  - id: pc_component_positive
+    priority: 80
+    when_any: ["процессор", "видеокарта", "материнская плата", "оперативная память", "блок питания", "корпус пк", "кулер процессора", "термопаста", "карта захвата", "звуковая карта", "сетевая карта", "плата расширения", "cpu", "gpu", "motherboard", "psu", "ram ddr5"]
+    route_to: TECH.PC_COMPONENTS
+fallback:
+  route_to: TECH.OTHER_ELECTRONICS
+  reason: insufficient_component_evidence

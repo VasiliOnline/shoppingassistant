@@ -1,0 +1,20 @@
+policy_id: storage_dedup_policy.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+master_key_priority:
+  - gtin
+  - mpn + brand + storage_capacity_gb + form_factor + interface_type
+  - brand + normalized_model + storage_capacity_gb + interface_type + form_factor
+  - title_fingerprint + image_fingerprint + capacity + interface
+variant_dimensions:
+  - storage_capacity_gb
+  - color_family
+  - region_variant
+  - included_accessories
+  - condition
+do_not_merge_when:
+  - different_health_status_for_used_drives
+  - different_usage_hours_material_for_resale
+  - different_nas_bay_count
+  - same_family_but_different_model
+  - different_interface_type
+bundle_policy: seller_bundle LOT or BUNDLE_WITH_ACCESSORIES must not be merged into single-item offers

@@ -3,6 +3,7 @@ package com.example.shoppingassistant.server.offers
 import com.example.shoppingassistant.domain.model.OfferFull
 import com.example.shoppingassistant.domain.model.OfferSort
 import com.example.shoppingassistant.domain.model.asDoubleOrNull
+import java.time.LocalDate
 
 /**
  * Заглушка ранжирования: пока просто пробрасываем список.
@@ -17,10 +18,23 @@ object OfferRanking {
         OfferSort.DELIVERY_ASC, OfferSort.DISTANCE_ASC -> offers.sortedBy { it.distanceKmOrNull() ?: Double.MAX_VALUE }
         OfferSort.NEWEST -> offers.sortedByDescending { it.updatedAt ?: 0L }
         OfferSort.MODEL_FRESHNESS_DESC -> offers.sortedWith(
-            compareByDescending<OfferFull> { it.product.specs["release_year"]?.asDoubleOrNull() ?: Double.NEGATIVE_INFINITY }
+            compareByDescending<OfferFull> { it.modelFreshnessKey() }
                 .thenByDescending { it.updatedAt ?: 0L },
         )
     }
+
+    private fun OfferFull.modelFreshnessKey(): Long =
+        product.specs["release_date"]
+            ?.asRawString()
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { value -> runCatching { LocalDate.parse(value) }.getOrNull() }
+            ?.let { date -> date.year * 10_000L + date.monthValue * 100L + date.dayOfMonth }
+            ?: product.specs["release_year"]
+                ?.asDoubleOrNull()
+                ?.toLong()
+                ?.let { year -> year * 10_000L }
+            ?: Long.MIN_VALUE
 
     private fun OfferFull.distanceKmOrNull(): Double? {
         val raw = attributes["distance_km"]

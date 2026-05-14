@@ -1,0 +1,36 @@
+package: TECH_AUDIO_brand_head_delta_pack_v1_1_RU
+version: "1.1"
+target:
+  categoryCode: TECH.AUDIO
+  base_package: TECH_AUDIO_public_category_pack_v1_0_RU
+type: data_overlay_patch
+schema_breaking_changes: false
+operations:
+  - op: append_category_scoped_head_values
+    target_attribute: brand
+    target_categoryCode: TECH.AUDIO
+    source_file: audio_brand_head_delta.tech_audio.v1_1.tsv
+    key: brand_code
+    duplicate_policy: keep_existing_value_append_aliases
+    visibility:
+      facet_head: true
+      search_head: true
+  - op: append_aliases
+    target_alias_index: TECH.AUDIO.brand
+    locale: ru
+    source_file: audio_brand_aliases_delta.ru.tech_audio.v1_1.tsv
+    collision_policy: reject_if_alias_points_to_different_brand_with_equal_or_higher_priority
+  - op: append_smoke_queries
+    source_file: brand_facet_smoke_queries.tech_audio.v1_1.tsv
+  - op: append_sample_offers
+    source_file: sample_offers.audio_brand_delta.v1_1.jsonl
+non_goals:
+  - no_presets
+  - no_collections
+  - no_seo_landing_pages
+  - no_new_category_codes
+  - no_model_registry_expansion
+runtime_notes:
+  brand_values_are_not_closed_enum: true
+  long_tail_policy: runtime_candidates/live_values
+  facet_sorting_hint: priority_tier_then_inventory_count_then_query_demand

@@ -982,7 +982,7 @@ class OfferRepositoryImpl(
             OfferSort.NEWEST -> orderBy(OffersTable.updatedAt to SortOrder.DESC)
             OfferSort.MODEL_FRESHNESS_DESC -> {
                 orderBy(
-                    productNumericSpecExpr("release_year") to SortOrder.DESC,
+                    productModelFreshnessSpecExpr() to SortOrder.DESC,
                     OffersTable.updatedAt to SortOrder.DESC,
                 )
             }
@@ -1445,6 +1445,31 @@ class OfferRepositoryImpl(
                 queryBuilder.append("->>")
                 queryBuilder.registerArgument(TextColumnType(), attributeCode)
                 queryBuilder.append(", ',', '.')::double precision ELSE NULL END")
+            }
+        }
+
+    private fun productModelFreshnessSpecExpr(): ExpressionWithColumnType<Double?> =
+        object : ExpressionWithColumnType<Double?>() {
+            override val columnType = DoubleColumnType()
+
+            override fun toQueryBuilder(queryBuilder: QueryBuilder) {
+                queryBuilder.append("CASE WHEN COALESCE(")
+                queryBuilder.append(ProductsTable.specs)
+                queryBuilder.append("->>")
+                queryBuilder.registerArgument(TextColumnType(), "release_date")
+                queryBuilder.append(", '') ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' THEN REPLACE(")
+                queryBuilder.append(ProductsTable.specs)
+                queryBuilder.append("->>")
+                queryBuilder.registerArgument(TextColumnType(), "release_date")
+                queryBuilder.append(", '-', '')::double precision WHEN COALESCE(")
+                queryBuilder.append(ProductsTable.specs)
+                queryBuilder.append("->>")
+                queryBuilder.registerArgument(TextColumnType(), "release_year")
+                queryBuilder.append(", '') ~ '^[0-9]{4}$' THEN (")
+                queryBuilder.append(ProductsTable.specs)
+                queryBuilder.append("->>")
+                queryBuilder.registerArgument(TextColumnType(), "release_year")
+                queryBuilder.append(")::double precision * 10000 ELSE NULL END")
             }
         }
 

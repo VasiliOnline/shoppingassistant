@@ -1,0 +1,21 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+model_resolution:
+  evidence_order:
+    - gtin
+    - mpn
+    - exact model text from OCR/title
+    - brand + normalized model_alias
+    - visual type only
+  no_guess:
+    - exact CPU model
+    - exact GPU AIB model
+    - exact motherboard SKU
+  allow_soft_guess:
+    - component type
+    - socket from explicit text
+    - RAM generation from visible label/title
+variant_handling:
+  GPU: "chipset and AIB model are separate; RTX 4070 and ASUS TUF RTX 4070 are not identical product keys."
+  RAM_MODULE: "capacity/speed/timings/kit modules participate in dedup."
+  POWER_SUPPLY: "wattage/efficiency/modularity participate in dedup."

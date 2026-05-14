@@ -1,0 +1,23 @@
+version: 1.0
+categoryCode: TECH.AUDIO
+rules:
+  - id: no_exact_model_guess_from_photo
+    severity: P0
+    statement: Do not assert exact audio model from image alone unless packaging/OCR/logo/model text is visible or user confirms.
+  - id: classify_form_first
+    severity: P0
+    statement: Image may classify form factor and audio_type (headphones, earbuds, speaker, microphone) with confidence, but model requires evidence.
+  - id: counterfeit_sensitive_brands
+    severity: P1
+    statement: For AirPods, Bose, Sony, JBL, Samsung Buds and high-value studio microphones, mark counterfeit_risk if price/title/images conflict.
+  - id: serial_privacy
+    severity: P0
+    statement: Serial numbers may be used for local validation but must not be published in user-visible fields.
+  - id: accessory_vs_device
+    severity: P0
+    statement: Cases, ear tips, cables, stands and adapters must route to AUDIO_ACCESSORY only when accessory is audio-specific.
+confidence_policy:
+  model_from_ocr_or_barcode: high
+  model_from_title: medium_high
+  model_from_image_shape_only: low
+  audio_type_from_image: medium

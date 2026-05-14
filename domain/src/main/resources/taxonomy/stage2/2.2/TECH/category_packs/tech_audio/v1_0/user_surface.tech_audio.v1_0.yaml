@@ -1,0 +1,33 @@
+version: 1.0
+categoryCode: TECH.AUDIO
+initial_fields:
+  - audio_type
+  - brand
+  - model_name_text
+  - condition
+  - connection_type
+  - form_factor
+  - color_family
+  - price
+expanded_fields:
+  - noise_control
+  - microphone_included
+  - connector_type
+  - wireless_standard
+  - codec_support
+  - battery_life_hours
+  - water_resistance
+  - channel_config
+  - input_type
+  - output_type
+  - audio_accessory_type
+hidden_fields:
+  - identity_confidence
+  - spec_confidence
+  - route_confidence
+  - source_evidence
+  - dedup_key
+rules:
+  initial_fields_limit: 8
+  primary_facets_limit: 7
+  t3_system_hidden_visible: false

@@ -1,145 +1,89 @@
 [
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.PHONES",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "brand",
-            "op": "EQUALS_ANY",
-            "values": [
-              "APPLE"
-            ]
-          },
-          {
-            "attributeCode": "model",
-            "op": "STARTS_WITH_ANY",
-            "values": [
-              "iPhone"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "os_family",
-            "allowedValues": [
-              "IOS"
-            ],
-            "forbiddenValues": [],
-            "reason": "Для iPhone доступна только iOS"
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "MODEL",
-    "categoryCode": "TECH.PHONES",
-    "brand": "APPLE",
-    "model": "iPhone 16 Pro",
-    "attributeConstraints": [
-      {
-        "attributeCode": "memory_gb",
-        "allowedValues": [
-          "256",
-          "512",
-          "1024"
-        ],
-        "forbiddenValues": [],
-        "reason": "Доступные варианты памяти для iPhone 16 Pro"
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "BLUE",
-          "NATURAL_TITANIUM"
-        ],
-        "forbiddenValues": [],
-        "reason": "Доступные цвета для iPhone 16 Pro"
-      }
-    ],
-    "compatibilityRules": [],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "MODEL",
-    "categoryCode": "TECH.PHONES",
-    "brand": "APPLE",
-    "model": "iPhone 16",
-    "attributeConstraints": [
-      {
-        "attributeCode": "memory_gb",
-        "allowedValues": [
-          "128",
-          "256",
-          "512"
-        ],
-        "forbiddenValues": [],
-        "reason": "Доступные варианты памяти для iPhone 16"
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "PINK"
-        ],
-        "forbiddenValues": [],
-        "reason": "Доступные цвета для iPhone 16"
-      }
-    ],
-    "compatibilityRules": [],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
     "categoryCode": "TECH.AUDIO",
     "brand": null,
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "condition",
+        "attributeCode": "audio_type",
         "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "HEADPHONES",
+          "EARBUDS",
+          "HEADSET",
+          "SPEAKER",
+          "SMART_SPEAKER",
+          "SOUNDBAR",
+          "MICROPHONE",
+          "AUDIO_INTERFACE",
+          "DAC_AMP",
+          "TURNTABLE",
+          "RECEIVER_AMPLIFIER",
+          "STUDIO_MONITOR",
+          "MP3_PLAYER",
+          "RADIO",
+          "AUDIO_ACCESSORY"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "Allowed TECH.AUDIO public head types from audio pack v1.0."
       },
       {
-        "attributeCode": "color",
+        "attributeCode": "form_factor",
         "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "OVER_EAR",
+          "ON_EAR",
+          "IN_EAR",
+          "EARBUD",
+          "TRUE_WIRELESS",
+          "OPEN_EAR",
+          "NECKBAND",
+          "HEADSET_BOOM",
+          "PORTABLE_SPEAKER",
+          "BOOKSHELF_SPEAKER",
+          "FLOORSTANDING_SPEAKER",
+          "PARTY_SPEAKER",
+          "SOUNDBAR",
+          "SUBWOOFER",
+          "LAVALIER_MIC",
+          "USB_MIC",
+          "XLR_MIC",
+          "HANDHELD_MIC",
+          "SHOTGUN_MIC",
+          "DESKTOP_INTERFACE",
+          "RACK_INTERFACE",
+          "PORTABLE_DAC",
+          "DESKTOP_DAC",
+          "TURNTABLE",
+          "AV_RECEIVER",
+          "STEREO_AMPLIFIER",
+          "STUDIO_MONITOR",
+          "PORTABLE_PLAYER",
+          "RADIO_DESKTOP"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "Allowed TECH.AUDIO form-factor head values from audio pack v1.0."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "connection_type",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "WIRED",
+          "WIRELESS",
+          "TRUE_WIRELESS",
+          "BLUETOOTH",
+          "WIFI",
+          "USB",
+          "XLR",
+          "RCA",
+          "OPTICAL",
+          "HDMI_ARC",
+          "THREE_POINT_FIVE_MM",
+          "SIX_POINT_THREE_MM",
+          "TWO_POINT_FOUR_GHZ",
+          "RF",
+          "HYBRID"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "Allowed TECH.AUDIO connection head values from audio pack v1.0."
       }
     ],
     "compatibilityRules": [
@@ -159,16 +103,18 @@
             "allowedValues": [
               "NEW",
               "LIKE_NEW",
+              "GOOD",
               "USED",
-              "REFURBISHED"
+              "REFURBISHED",
+              "OPEN_BOX"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.AUDIO по атрибуту condition."
+            "reason": "Audio condition compatibility safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -233,7 +179,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.GAMING",
+    "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -249,17 +195,6 @@
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
       },
       {
-        "attributeCode": "os_family",
-        "allowedValues": [
-          "ANDROID",
-          "IOS",
-          "WINDOWS",
-          "MACOS"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
-      },
-      {
         "attributeCode": "color",
         "allowedValues": [
           "BLACK",
@@ -271,6 +206,17 @@
         ],
         "forbiddenValues": [],
         "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
       }
     ],
     "compatibilityRules": [
@@ -294,7 +240,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.GAMING по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.CAR_ELECTRONICS_GPS по атрибуту condition."
           }
         ]
       }
@@ -381,63 +327,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.PC_COMPONENTS",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [
-      {
-        "attributeCode": "condition",
-        "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
-      },
-      {
-        "attributeCode": "storage_type",
-        "allowedValues": [
-          "SSD",
-          "HDD"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'storage_type'."
-      }
-    ],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "condition",
-            "op": "EQUALS_ANY",
-            "values": [
-              "NEW"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "condition",
-            "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
-            ],
-            "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.PC_COMPONENTS по атрибуту condition."
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
-    "categoryCode": "TECH.PHONE_ACCESSORIES",
+    "categoryCode": "TECH.COMPUTER_ACCESSORIES",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -498,7 +388,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.PHONE_ACCESSORIES по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.COMPUTER_ACCESSORIES по атрибуту condition."
           }
         ]
       }
@@ -508,169 +398,7 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.SMART_HOME_SECURITY",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [
-      {
-        "attributeCode": "condition",
-        "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
-      },
-      {
-        "attributeCode": "network_type",
-        "allowedValues": [
-          "5G",
-          "4G",
-          "3G"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
-      },
-      {
-        "attributeCode": "os_family",
-        "allowedValues": [
-          "ANDROID",
-          "IOS",
-          "WINDOWS",
-          "MACOS"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
-      }
-    ],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "condition",
-            "op": "EQUALS_ANY",
-            "values": [
-              "NEW"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "condition",
-            "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
-            ],
-            "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.SMART_HOME_SECURITY по атрибуту condition."
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
-    "categoryCode": "TECH.TABLETS_E_READERS",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [
-      {
-        "attributeCode": "condition",
-        "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
-      },
-      {
-        "attributeCode": "os_family",
-        "allowedValues": [
-          "ANDROID",
-          "IOS",
-          "WINDOWS",
-          "MACOS"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
-      },
-      {
-        "attributeCode": "network_type",
-        "allowedValues": [
-          "5G",
-          "4G",
-          "3G"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
-      }
-    ],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "condition",
-            "op": "EQUALS_ANY",
-            "values": [
-              "NEW"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "condition",
-            "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
-            ],
-            "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.TABLETS_E_READERS по атрибуту condition."
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
-    "categoryCode": "TECH.TV_HOME_THEATER",
+    "categoryCode": "TECH.GAMING",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -731,7 +459,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.TV_HOME_THEATER по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.GAMING по атрибуту condition."
           }
         ]
       }
@@ -812,219 +540,6 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.COMPUTER_ACCESSORIES",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [
-      {
-        "attributeCode": "condition",
-        "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
-      },
-      {
-        "attributeCode": "material",
-        "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
-      }
-    ],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "condition",
-            "op": "EQUALS_ANY",
-            "values": [
-              "NEW"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "condition",
-            "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
-            ],
-            "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.COMPUTER_ACCESSORIES по атрибуту condition."
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
-    "categoryCode": "TECH.STORAGE_MEMORY",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [
-      {
-        "attributeCode": "condition",
-        "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
-      },
-      {
-        "attributeCode": "material",
-        "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
-      }
-    ],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "condition",
-            "op": "EQUALS_ANY",
-            "values": [
-              "NEW"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "condition",
-            "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
-            ],
-            "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.STORAGE_MEMORY по атрибуту condition."
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
-    "categoryCode": "TECH.WEARABLES",
-    "brand": null,
-    "model": null,
-    "attributeConstraints": [
-      {
-        "attributeCode": "condition",
-        "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
-      },
-      {
-        "attributeCode": "color",
-        "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
-      },
-      {
-        "attributeCode": "material",
-        "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
-        ],
-        "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
-      }
-    ],
-    "compatibilityRules": [
-      {
-        "whenAll": [
-          {
-            "attributeCode": "condition",
-            "op": "EQUALS_ANY",
-            "values": [
-              "NEW"
-            ]
-          }
-        ],
-        "apply": [
-          {
-            "attributeCode": "condition",
-            "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
-            ],
-            "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.WEARABLES по атрибуту condition."
-          }
-        ]
-      }
-    ],
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
-  },
-  {
-    "scope": "CATEGORY",
     "categoryCode": "TECH.NETWORKING",
     "brand": null,
     "model": null,
@@ -1087,6 +602,245 @@
             ],
             "forbiddenValues": [],
             "reason": "Базовый compatibility-safe-list для категории TECH.NETWORKING по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PC_COMPONENTS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "pc_component_type",
+        "allowedValues": [
+          "CPU",
+          "GPU",
+          "MOTHERBOARD",
+          "RAM_MODULE",
+          "POWER_SUPPLY",
+          "PC_CASE",
+          "CPU_COOLER",
+          "CASE_FAN",
+          "THERMAL_PASTE",
+          "CAPTURE_CARD",
+          "SOUND_CARD",
+          "NETWORK_CARD",
+          "EXPANSION_CARD"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'pc_component_type'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.PC_COMPONENTS по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PHONES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "brand",
+            "op": "EQUALS_ANY",
+            "values": [
+              "APPLE"
+            ]
+          },
+          {
+            "attributeCode": "model",
+            "op": "STARTS_WITH_ANY",
+            "values": [
+              "iPhone"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "os_family",
+            "allowedValues": [
+              "IOS"
+            ],
+            "forbiddenValues": [],
+            "reason": "Для iPhone доступна только iOS"
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "MODEL",
+    "categoryCode": "TECH.PHONES",
+    "brand": "APPLE",
+    "model": "iPhone 16",
+    "attributeConstraints": [
+      {
+        "attributeCode": "memory_gb",
+        "allowedValues": [
+          "128",
+          "256",
+          "512"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные варианты памяти для iPhone 16"
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "PINK"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные цвета для iPhone 16"
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "MODEL",
+    "categoryCode": "TECH.PHONES",
+    "brand": "APPLE",
+    "model": "iPhone 16 Pro",
+    "attributeConstraints": [
+      {
+        "attributeCode": "memory_gb",
+        "allowedValues": [
+          "256",
+          "512",
+          "1024"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные варианты памяти для iPhone 16 Pro"
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "BLUE",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Доступные цвета для iPhone 16 Pro"
+      }
+    ],
+    "compatibilityRules": [],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.PHONE_ACCESSORIES",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      },
+      {
+        "attributeCode": "material",
+        "allowedValues": [
+          "CERAMIC",
+          "GLASS",
+          "STEEL",
+          "PLASTIC"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.PHONE_ACCESSORIES по атрибуту condition."
           }
         ]
       }
@@ -1238,7 +992,654 @@
   },
   {
     "scope": "CATEGORY",
-    "categoryCode": "TECH.CAR_ELECTRONICS_GPS",
+    "categoryCode": "TECH.SMART_HOME_SECURITY",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "network_type",
+        "allowedValues": [
+          "5G",
+          "4G",
+          "3G"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.SMART_HOME_SECURITY по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.STORAGE_MEMORY",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "GOOD",
+          "USED",
+          "REFURBISHED",
+          "OPEN_BOX"
+        ],
+        "forbiddenValues": [],
+        "reason": "Storage branch accepts resale-safe condition values."
+      },
+      {
+        "attributeCode": "storage_type",
+        "allowedValues": [
+          "INTERNAL_SSD",
+          "INTERNAL_HDD",
+          "EXTERNAL_SSD",
+          "EXTERNAL_HDD",
+          "USB_FLASH_DRIVE",
+          "MEMORY_CARD",
+          "CARD_READER",
+          "NAS",
+          "STORAGE_ACCESSORY"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.STORAGE_MEMORY package v1.0 storage_type boundary."
+      },
+      {
+        "attributeCode": "interface_type",
+        "allowedValues": [
+          "SATA",
+          "NVME",
+          "PCIE",
+          "USB",
+          "USB_3_2",
+          "THUNDERBOLT",
+          "SAS",
+          "SD",
+          "MICROSD",
+          "CFEXPRESS",
+          "XQD",
+          "CFAST"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.STORAGE_MEMORY package v1.0 interface values."
+      },
+      {
+        "attributeCode": "form_factor",
+        "allowedValues": [
+          "M2_2230",
+          "M2_2242",
+          "M2_2260",
+          "M2_2280",
+          "M2_22110",
+          "U2",
+          "U3",
+          "MSATA",
+          "SATA_2_5",
+          "HDD_3_5",
+          "PCIE_ADD_IN_CARD",
+          "PORTABLE_EXTERNAL",
+          "DESKTOP_EXTERNAL",
+          "SD_FULL_SIZE",
+          "MICROSD_CARD",
+          "CFEXPRESS_TYPE_A",
+          "CFEXPRESS_TYPE_B"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.STORAGE_MEMORY package v1.0 form-factor values."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "GOOD",
+              "USED",
+              "REFURBISHED",
+              "OPEN_BOX"
+            ],
+            "forbiddenValues": [],
+            "reason": "Storage condition safe-list."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.TABLETS_E_READERS",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "NEW",
+          "LIKE_NEW",
+          "USED",
+          "REFURBISHED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+      },
+      {
+        "attributeCode": "os_family",
+        "allowedValues": [
+          "ANDROID",
+          "IOS",
+          "WINDOWS",
+          "MACOS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+      },
+      {
+        "attributeCode": "network_type",
+        "allowedValues": [
+          "5G",
+          "4G",
+          "3G"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
+      },
+      {
+        "attributeCode": "color",
+        "allowedValues": [
+          "BLACK",
+          "WHITE",
+          "GRAY",
+          "BLUE",
+          "PINK",
+          "NATURAL_TITANIUM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "condition",
+            "op": "EQUALS_ANY",
+            "values": [
+              "NEW"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "condition",
+            "allowedValues": [
+              "NEW",
+              "LIKE_NEW",
+              "USED",
+              "REFURBISHED"
+            ],
+            "forbiddenValues": [],
+            "reason": "Базовый compatibility-safe-list для категории TECH.TABLETS_E_READERS по атрибуту condition."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.TV_HOME_THEATER",
+    "brand": null,
+    "model": null,
+    "attributeConstraints": [
+      {
+        "attributeCode": "av_type",
+        "allowedValues": [
+          "TV",
+          "PROJECTOR",
+          "STREAMING_DEVICE",
+          "TV_BOX",
+          "HOME_THEATER_SYSTEM",
+          "AV_RECEIVER",
+          "DVD_BLU_RAY_PLAYER",
+          "SET_TOP_BOX",
+          "REMOTE_CONTROL",
+          "TV_MOUNT",
+          "PROJECTOR_SCREEN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for av_type."
+      },
+      {
+        "attributeCode": "display_technology",
+        "allowedValues": [
+          "LED",
+          "LCD",
+          "QLED",
+          "OLED",
+          "QD_OLED",
+          "MINI_LED",
+          "MICRO_LED",
+          "NANOCELL",
+          "LASER_TV",
+          "PLASMA"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for display_technology."
+      },
+      {
+        "attributeCode": "resolution",
+        "allowedValues": [
+          "HD",
+          "FHD",
+          "QHD",
+          "UHD_4K",
+          "UHD_8K",
+          "DCI_4K",
+          "WVGA",
+          "XGA",
+          "WXGA"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for resolution."
+      },
+      {
+        "attributeCode": "hdr_standard",
+        "allowedValues": [
+          "HDR10",
+          "HDR10_PLUS",
+          "HLG",
+          "DOLBY_VISION",
+          "DOLBY_VISION_IQ",
+          "IMAX_ENHANCED",
+          "NONE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for hdr_standard."
+      },
+      {
+        "attributeCode": "smart_tv_platform",
+        "allowedValues": [
+          "TIZEN",
+          "WEBOS",
+          "GOOGLE_TV",
+          "ANDROID_TV",
+          "ROKU_TV",
+          "FIRE_TV",
+          "VIDAA",
+          "TITAN_OS",
+          "APPLE_TV_APP_ONLY",
+          "NONE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for smart_tv_platform."
+      },
+      {
+        "attributeCode": "projector_type",
+        "allowedValues": [
+          "LONG_THROW",
+          "SHORT_THROW",
+          "ULTRA_SHORT_THROW",
+          "PORTABLE",
+          "PICO",
+          "HOME_CINEMA",
+          "BUSINESS",
+          "LASER_TV"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for projector_type."
+      },
+      {
+        "attributeCode": "projector_light_source",
+        "allowedValues": [
+          "LAMP",
+          "LED",
+          "LASER",
+          "HYBRID",
+          "RGB_LASER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for projector_light_source."
+      },
+      {
+        "attributeCode": "streaming_os",
+        "allowedValues": [
+          "TVOS",
+          "GOOGLE_TV",
+          "ANDROID_TV",
+          "ROKU_OS",
+          "FIRE_TV_OS",
+          "SHIELD_TV",
+          "WEBOS",
+          "TIZEN",
+          "LINUX_MEDIA_PLAYER",
+          "PROPRIETARY"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for streaming_os."
+      },
+      {
+        "attributeCode": "audio_channel_config",
+        "allowedValues": [
+          "TWO_ZERO",
+          "TWO_ONE",
+          "FIVE_ONE",
+          "FIVE_ONE_TWO",
+          "SEVEN_ONE",
+          "SEVEN_ONE_FOUR",
+          "NINE_ONE_FOUR",
+          "ELEVEN_ONE_FOUR"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for audio_channel_config."
+      },
+      {
+        "attributeCode": "receiver_channels",
+        "allowedValues": [
+          "FIVE_TWO",
+          "SEVEN_TWO",
+          "SEVEN_TWO_FOUR",
+          "NINE_TWO",
+          "NINE_FOUR",
+          "ELEVEN_TWO",
+          "THIRTEEN_TWO"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for receiver_channels."
+      },
+      {
+        "attributeCode": "surround_format",
+        "allowedValues": [
+          "DOLBY_DIGITAL",
+          "DOLBY_TRUEHD",
+          "DOLBY_ATMOS",
+          "DTS",
+          "DTS_HD_MA",
+          "DTS_X",
+          "AURO_3D",
+          "IMAX_ENHANCED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for surround_format."
+      },
+      {
+        "attributeCode": "disc_format",
+        "allowedValues": [
+          "DVD",
+          "BLU_RAY",
+          "UHD_BLU_RAY",
+          "CD",
+          "SACD",
+          "DVD_AUDIO"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for disc_format."
+      },
+      {
+        "attributeCode": "set_top_box_type",
+        "allowedValues": [
+          "CABLE_BOX",
+          "SATELLITE_RECEIVER",
+          "IPTV_BOX",
+          "DVB_T2_RECEIVER",
+          "HYBRID_RECEIVER",
+          "OTT_BOX"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for set_top_box_type."
+      },
+      {
+        "attributeCode": "remote_target_type",
+        "allowedValues": [
+          "TV",
+          "STREAMING_DEVICE",
+          "AV_RECEIVER",
+          "PROJECTOR",
+          "SET_TOP_BOX",
+          "UNIVERSAL",
+          "AIR_MOUSE",
+          "MAGIC_REMOTE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for remote_target_type."
+      },
+      {
+        "attributeCode": "mount_type",
+        "allowedValues": [
+          "FIXED_WALL",
+          "TILT_WALL",
+          "FULL_MOTION",
+          "CEILING_MOUNT",
+          "FLOOR_STAND",
+          "DESK_STAND",
+          "PROJECTOR_CEILING"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for mount_type."
+      },
+      {
+        "attributeCode": "vesa_pattern",
+        "allowedValues": [
+          "VESA_75X75",
+          "VESA_100X100",
+          "VESA_200X200",
+          "VESA_300X300",
+          "VESA_400X400",
+          "VESA_600X400",
+          "VESA_800X400",
+          "UNIVERSAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for vesa_pattern."
+      },
+      {
+        "attributeCode": "screen_format",
+        "allowedValues": [
+          "FORMAT_16_9",
+          "FORMAT_16_10",
+          "FORMAT_4_3",
+          "FORMAT_2_35_1",
+          "FORMAT_1_1"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for screen_format."
+      },
+      {
+        "attributeCode": "screen_surface_type",
+        "allowedValues": [
+          "MATTE_WHITE",
+          "GREY",
+          "ALR",
+          "CLR_UST",
+          "ACOUSTIC_TRANSPARENT",
+          "BEADED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for screen_surface_type."
+      },
+      {
+        "attributeCode": "panel_defect_status",
+        "allowedValues": [
+          "NO_KNOWN_DEFECTS",
+          "BURN_IN",
+          "DEAD_PIXELS",
+          "LINES_ON_PANEL",
+          "BACKLIGHT_BLEED",
+          "CRACKED_PANEL",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Head values from TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU for panel_defect_status."
+      },
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "ACCEPTABLE",
+          "DEFECTS",
+          "DEFECTS_OR_REPAIR",
+          "EXCELLENT",
+          "FAIR",
+          "FOR_PARTS",
+          "FOR_REPAIR",
+          "GOOD",
+          "HEAVILY_USED",
+          "LIKE_NEW",
+          "NEW",
+          "NEW_WITH_TAGS",
+          "NEW_WITHOUT_TAGS",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "REFURBISHED_MANUFACTURER",
+          "REFURBISHED_SELLER",
+          "UNKNOWN",
+          "USED",
+          "USED_EXCELLENT",
+          "USED_FAIR",
+          "USED_FOR_PARTS",
+          "USED_GOOD",
+          "USED_LIKE_NEW",
+          "VERY_GOOD"
+        ],
+        "forbiddenValues": [],
+        "reason": "Базовый compatibility-safe-list для категории TECH.TV_HOME_THEATER по атрибуту condition."
+      }
+    ],
+    "compatibilityRules": [
+      {
+        "whenAll": [
+          {
+            "attributeCode": "av_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "TV_MOUNT"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "mount_type",
+            "allowedValues": [
+              "FIXED_WALL",
+              "TILT_WALL",
+              "FULL_MOTION",
+              "CEILING_MOUNT",
+              "FLOOR_STAND",
+              "DESK_STAND",
+              "PROJECTOR_CEILING"
+            ],
+            "forbiddenValues": [],
+            "reason": "TV mounts must use mount_type from TECH.TV_HOME_THEATER."
+          }
+        ]
+      },
+      {
+        "whenAll": [
+          {
+            "attributeCode": "av_type",
+            "op": "EQUALS_ANY",
+            "values": [
+              "PROJECTOR_SCREEN"
+            ]
+          }
+        ],
+        "apply": [
+          {
+            "attributeCode": "screen_format",
+            "allowedValues": [
+              "FORMAT_16_9",
+              "FORMAT_16_10",
+              "FORMAT_4_3",
+              "FORMAT_2_35_1",
+              "FORMAT_1_1"
+            ],
+            "forbiddenValues": [],
+            "reason": "Projector screens must use screen_format from TECH.TV_HOME_THEATER."
+          }
+        ]
+      }
+    ],
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "scope": "CATEGORY",
+    "categoryCode": "TECH.WEARABLES",
     "brand": null,
     "model": null,
     "attributeConstraints": [
@@ -1299,7 +1700,7 @@
               "REFURBISHED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.CAR_ELECTRONICS_GPS по атрибуту condition."
+            "reason": "Базовый compatibility-safe-list для категории TECH.WEARABLES по атрибуту condition."
           }
         ]
       }

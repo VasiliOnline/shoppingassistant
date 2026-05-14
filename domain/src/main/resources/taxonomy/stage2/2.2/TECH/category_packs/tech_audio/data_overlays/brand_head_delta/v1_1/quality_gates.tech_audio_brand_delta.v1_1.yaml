@@ -1,0 +1,44 @@
+package: TECH_AUDIO_brand_head_delta_pack_v1_1_RU
+version: "1.1"
+gates:
+  - id: AudioBrandHeadDeltaSchemaGate
+    severity: P0
+    checks:
+      - brand_code_not_empty
+      - brand_code_unique
+      - target_attribute_equals_brand
+      - category_scope_equals_TECH_AUDIO
+  - id: BrandAliasCollisionGate
+    severity: P0
+    checks:
+      - no_alias_points_to_multiple_brand_codes_with_equal_priority
+      - latin_ru_translit_aliases_casefolded
+  - id: NoTreeMutationGate
+    severity: P0
+    checks:
+      - no_new_category_codes
+      - no_microcategory_codes
+      - public_category_false
+      - accepts_offers_directly_false
+  - id: NoDiscoveryPresetGate
+    severity: P0
+    checks:
+      - no_presets
+      - no_collections
+      - no_shelves
+      - no_landing_pages
+  - id: AudioBrandFacetSmokeGate
+    severity: P1
+    min_pass_rate: 0.98
+    source_file: brand_facet_smoke_queries.tech_audio.v1_1.tsv
+  - id: SampleOffersSmokeGate
+    severity: P1
+    min_pass_rate: 0.98
+    source_file: sample_offers.audio_brand_delta.v1_1.jsonl
+  - id: EffectiveSpecSnapshotGate
+    severity: P1
+    source_file: effective_spec_snapshot.expected.tech_audio_brand_delta.v1_1.json
+ui_limits:
+  initial_fields_unchanged: true
+  primary_facets_unchanged: true
+  t3_hidden_leak_allowed: false

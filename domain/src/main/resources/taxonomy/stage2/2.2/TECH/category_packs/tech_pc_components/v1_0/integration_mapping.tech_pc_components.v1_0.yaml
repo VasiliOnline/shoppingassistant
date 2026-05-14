@@ -1,0 +1,26 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+input_sources:
+  title: [pc_component_type, brand, model_name_text, key_specs]
+  description: [condition, included_accessories, compatibility_notes, repair_history]
+  image_ocr: [brand, model_name_text, mpn, gtin, key_specs]
+  seller_form: [condition, price, currency, availability, region]
+publish_blockers:
+  - missing_pc_component_type
+  - missing_brand_when_not_unknown
+  - missing_model_name_text_for_identity_critical_types
+  - missing_condition
+  - missing_price
+  - missing_currency
+  - missing_availability
+soft_warnings:
+  - missing_socket_for_cpu_or_motherboard
+  - missing_vram_for_gpu
+  - missing_ram_type_for_ram_or_motherboard
+  - missing_psu_wattage_for_power_supply
+  - missing_images
+routing_dependencies:
+  - TECH.ELECTRONICS_COMMON
+  - TECH.DEVICE_IDENTITY_COMMON
+  - TECH.SPECS_COMMON
+  - TECH.COMPATIBILITY_COMMON

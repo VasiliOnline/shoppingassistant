@@ -1,0 +1,42 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+rules:
+  - id: pccomp_type_cpu_ru
+    match_any: ["процессор", "cpu", "цпу", "ryzen", "core ultra", "core i9", "core i7", "core i5"]
+    set:
+      categoryCode: TECH.PC_COMPONENTS
+      pc_component_type: CPU
+  - id: pccomp_type_gpu_ru
+    match_any: ["видеокарта", "gpu", "rtx", "geforce", "radeon", "видюха"]
+    set:
+      categoryCode: TECH.PC_COMPONENTS
+      pc_component_type: GPU
+  - id: pccomp_type_motherboard_ru
+    match_any: ["материнская плата", "материнка", "motherboard", "mobo", "b650", "z790", "x870"]
+    set:
+      categoryCode: TECH.PC_COMPONENTS
+      pc_component_type: MOTHERBOARD
+  - id: pccomp_type_ram_ru
+    match_any: ["оперативная память", "озу", "ram", "ddr5", "ddr4", "плашка памяти"]
+    set:
+      categoryCode: TECH.PC_COMPONENTS
+      pc_component_type: RAM_MODULE
+  - id: pccomp_type_psu_ru
+    match_any: ["блок питания", "бп", "psu", "power supply", "850w", "80 plus"]
+    set:
+      categoryCode: TECH.PC_COMPONENTS
+      pc_component_type: POWER_SUPPLY
+  - id: pccomp_model_storage_redirect
+    match_any: ["ssd", "hdd", "nvme", "m.2 ssd", "external ssd", "usb flash"]
+    set:
+      categoryCode: TECH.STORAGE_MEMORY
+    priority: 95
+  - id: pccomp_peripherals_redirect
+    match_any: ["клавиатура", "мышь", "webcam", "usb hub", "док станция", "laptop stand"]
+    set:
+      categoryCode: TECH.COMPUTER_ACCESSORIES
+    priority: 95
+normalization:
+  collapse_spaces: true
+  latin_cyrillic_common_terms: true
+  preserve_model_tokens: true

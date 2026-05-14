@@ -1,0 +1,40 @@
+{
+  "package_name": "TECH_AUDIO_brand_head_delta_pack_v1_1_RU",
+  "version": "1.1",
+  "created_at": "2026-05-14",
+  "static_validation": {
+    "zip_integrity": "PASS",
+    "json_syntax": "PASS",
+    "yaml_structure": "PASS",
+    "tsv_structure": "PASS",
+    "jsonl_structure": "PASS",
+    "brand_code_unique": "PASS",
+    "no_new_category_codes": "PASS",
+    "no_presets_collections": "PASS",
+    "schema_breaking_changes": false
+  },
+  "counts": {
+    "brand_head_delta_rows": 38,
+    "alias_delta_rows": 179,
+    "smoke_queries": 54,
+    "sample_offers": 53,
+    "negative_sample_offers": 5
+  },
+  "runtime_validators": {
+    "executed_in_sandbox": false,
+    "required_after_mount": [
+      "AudioBrandHeadDeltaSchemaGate",
+      "BrandAliasCollisionGate",
+      "AudioBrandFacetSmokeGate",
+      "SampleOffersSmokeGate",
+      "EffectiveSpecSnapshotGate"
+    ]
+  },
+  "verdict": {
+    "branch": "TECH.AUDIO",
+    "patch_needed": true,
+    "patch_scope": "P1 audio brand head delta",
+    "after_static_patch_status": "DATA_COVERED_FOR_AUDIO_BRAND_FACET",
+    "additional_hardening_needed_now": false
+  }
+}

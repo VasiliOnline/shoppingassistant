@@ -1,0 +1,47 @@
+version: 1.0
+categoryCode: TECH.AUDIO
+evaluation_mode: sort_by_priority_desc_then_first_match
+guards:
+  - id: car_audio_precedence
+    priority: 950
+    when_any: ['автомагнитола', 'car head unit', 'автомобильные колонки', 'car speaker', 'car amplifier']
+    route_to: TECH.CAR_ELECTRONICS_GPS
+  - id: tv_projector_precedence
+    priority: 940
+    when_any: ['телевизор', 'tv ', 'projector', 'проектор']
+    route_to: TECH.TV_HOME_THEATER
+  - id: gaming_headset_precedence
+    priority: 930
+    when_all_any_groups:
+      - ['gaming', 'игровая', 'ps5', 'xbox', 'playstation']
+      - ['headset', 'гарнитура', 'наушники']
+    route_to: TECH.GAMING
+  - id: wearable_precedence
+    priority: 920
+    when_any: ['apple watch', 'galaxy watch', 'smartwatch', 'ремешок для часов']
+    route_to: TECH.WEARABLES
+  - id: generic_power_cable_precedence
+    priority: 900
+    when_any: ['зарядный кабель', 'usb-c кабель', 'hdmi кабель', 'power bank', 'зарядка 100w']
+    route_to: TECH.POWER_CHARGING_CABLES
+  - id: display_monitor_exclusion
+    priority: 880
+    when_any: ['монитор 27', 'gaming monitor', 'дисплей 144hz']
+    route_to: TECH.MONITORS_DISPLAYS
+  - id: computer_accessory_exclusion
+    priority: 860
+    when_any: ['webcam', 'вебкамера', 'keyboard', 'клавиатура', 'mouse', 'мышь']
+    route_to: TECH.COMPUTER_ACCESSORIES
+  - id: phone_case_for_audio_exclusion
+    priority: 850
+    when_any: ['чехол airpods', 'case for airpods', 'силиконовый чехол airpods']
+    route_to: TECH.PHONE_ACCESSORIES
+  - id: studio_monitor_include_audio
+    priority: 830
+    when_any: ['студийный монитор', 'studio monitor', 'active monitor speaker']
+    route_to: TECH.AUDIO
+    set: { audio_type: STUDIO_MONITOR }
+  - id: audio_include_core
+    priority: 500
+    when_any: ['наушники', 'earbuds', 'headphones', 'гарнитура', 'колонка', 'speaker', 'саундбар', 'soundbar', 'микрофон', 'microphone', 'аудиоинтерфейс', 'цап', 'усилитель', 'виниловый проигрыватель', 'ресивер', 'радио']
+    route_to: TECH.AUDIO

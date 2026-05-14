@@ -1,0 +1,136 @@
+{
+  "schema_id": "schema_pack.tech_tv_home_theater.v1_0",
+  "categoryCode": "TECH.TV_HOME_THEATER",
+  "pack_type": "public_category_pack",
+  "display_name_ru": "ТВ и домашний кинотеатр",
+  "description_ru": "Телевизоры, проекторы, стриминговые устройства, TV boxes, домашние кинотеатры, AV-ресиверы, DVD/Blu-ray плееры, set-top boxes, пульты, крепления для ТВ и экраны для проекторов.",
+  "main_type_attribute": "av_type",
+  "av_type_values": [
+    "TV",
+    "PROJECTOR",
+    "STREAMING_DEVICE",
+    "TV_BOX",
+    "HOME_THEATER_SYSTEM",
+    "AV_RECEIVER",
+    "DVD_BLU_RAY_PLAYER",
+    "SET_TOP_BOX",
+    "REMOTE_CONTROL",
+    "TV_MOUNT",
+    "PROJECTOR_SCREEN"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "uses_optional_relation_layer": [
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "presets_collections_allowed": false,
+  "microcategory_policy": {
+    "forbidden_category_codes": [
+      "TECH.TV",
+      "TECH.PROJECTORS",
+      "TECH.APPLE_TV",
+      "TECH.ROKU",
+      "TECH.DENON_RECEIVERS",
+      "TECH.TV_MOUNTS",
+      "TECH.PROJECTOR_SCREENS"
+    ],
+    "detail_via": [
+      "av_type",
+      "brand",
+      "family",
+      "model",
+      "specs",
+      "compatibility_target_text"
+    ]
+  },
+  "attribute_roles": {
+    "T0_CORE": [
+      "categoryCode",
+      "av_type",
+      "brand",
+      "condition",
+      "model_name_text",
+      "resolution",
+      "screen_size_in",
+      "color_family",
+      "price",
+      "currency",
+      "availability"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "display_technology",
+      "refresh_rate_hz",
+      "hdr_standard",
+      "smart_tv_platform",
+      "tuner_standard",
+      "hdmi_ports",
+      "hdmi_version",
+      "projector_light_source",
+      "projector_type",
+      "brightness_lumens",
+      "throw_type",
+      "audio_channel_config",
+      "receiver_channels",
+      "disc_format",
+      "streaming_os",
+      "remote_target_type",
+      "mount_type",
+      "vesa_pattern",
+      "max_load_kg",
+      "screen_format",
+      "screen_diagonal_in"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "panel_bit_depth",
+      "local_dimming",
+      "backlight_type",
+      "variable_refresh_rate",
+      "gaming_features",
+      "input_lag_ms",
+      "dolby_vision",
+      "dolby_atmos",
+      "audio_output_w",
+      "ethernet",
+      "wifi_standard",
+      "bluetooth_version",
+      "voice_assistant",
+      "app_store",
+      "storage_capacity_gb",
+      "ram_gb",
+      "cpu_chipset_text",
+      "keystone_correction",
+      "lens_shift",
+      "projection_ratio",
+      "screen_gain",
+      "alr_support",
+      "motorized",
+      "cable_management",
+      "included_accessories",
+      "warranty"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "identity_confidence",
+      "spec_confidence",
+      "route_confidence",
+      "source_evidence",
+      "normalized_title",
+      "dedup_key",
+      "image_fingerprint",
+      "compatibility_confidence",
+      "seller_bundle_hash",
+      "risk_flags",
+      "internal_notes"
+    ]
+  },
+  "runtime_notes": [
+    "type-first routing",
+    "no merchandising presets in base pack",
+    "head values only; long-tail models via runtime candidates/live values",
+    "projector screens and TV mounts belong here; soundbars remain TECH.AUDIO"
+  ]
+}

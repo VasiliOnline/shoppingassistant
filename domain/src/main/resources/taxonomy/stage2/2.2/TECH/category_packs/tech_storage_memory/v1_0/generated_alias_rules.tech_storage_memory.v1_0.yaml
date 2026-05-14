@@ -1,0 +1,60 @@
+generated_alias_rules_id: generated_alias_rules.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+rules:
+  -
+    rule_id: capacity_parser_gb_tb
+    detect:
+      - "{number}gb"
+      - "{number} gb"
+      - "{number}гб"
+      - "{number} гб"
+      - "{number}tb"
+      - "{number} tb"
+      - "{number}тб"
+      - "{number} тб"
+    normalize_to_attribute: storage_capacity_gb
+    unit_policy: TB_MULTIPLY_BY_1024; GB_AS_IS
+    examples:
+      1tb: 1024
+      512 гб: 512
+  -
+    rule_id: m2_nvme_ssd_parser
+    detect:
+      - "m.2 {form} nvme"
+      - "m2 {form} nvme"
+      - "ssd nvme {capacity}"
+      - "nvme ssd {capacity}"
+    normalize:
+      storage_type: INTERNAL_SSD
+      interface_type: NVME
+      form_factor_hint: M2
+  -
+    rule_id: hdd_rpm_parser
+    detect:
+      - "{capacity} hdd {rpm}rpm"
+      - "жесткий диск {capacity} {rpm} об"
+    normalize:
+      storage_type: INTERNAL_HDD
+      rpm: "RPM_{rpm}"
+  -
+    rule_id: memory_card_class_parser
+    detect:
+      - "micro sd {capacity} u3 v30"
+      - "microsd {capacity} a2"
+      - "sdxc {capacity} v90"
+    normalize:
+      storage_type: MEMORY_CARD
+      memory_card_format: PARSE_FORMAT
+      speed_class: PARSE_CLASS
+  -
+    rule_id: nas_bay_parser
+    detect:
+      - "nas {number} bay"
+      - "nas {number}-bay"
+      - "{number} отсека nas"
+      - "nas на {number} диска"
+    normalize:
+      storage_type: NAS
+      bay_count: PARSE_NUMBER
+collision_policy: explicit_route_guards_win_over_alias_rules
+long_tail_policy: "unknown model names become runtime candidates, not new categoryCodes"

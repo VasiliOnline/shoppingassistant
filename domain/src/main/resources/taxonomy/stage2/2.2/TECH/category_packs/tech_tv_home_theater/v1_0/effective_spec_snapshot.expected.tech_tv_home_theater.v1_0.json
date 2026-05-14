@@ -1,0 +1,73 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_tv_home_theater.v1_0",
+  "categoryCode": "TECH.TV_HOME_THEATER",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "main_type_attribute": "av_type",
+  "type_values": [
+    "TV",
+    "PROJECTOR",
+    "STREAMING_DEVICE",
+    "TV_BOX",
+    "HOME_THEATER_SYSTEM",
+    "AV_RECEIVER",
+    "DVD_BLU_RAY_PLAYER",
+    "SET_TOP_BOX",
+    "REMOTE_CONTROL",
+    "TV_MOUNT",
+    "PROJECTOR_SCREEN"
+  ],
+  "required_fields": [
+    "categoryCode",
+    "av_type",
+    "brand",
+    "condition",
+    "price",
+    "currency",
+    "availability"
+  ],
+  "primary_facets": [
+    "av_type",
+    "brand",
+    "price",
+    "condition",
+    "screen_size_in",
+    "resolution",
+    "display_technology"
+  ],
+  "hidden_fields": [
+    "identity_confidence",
+    "spec_confidence",
+    "route_confidence",
+    "source_evidence",
+    "dedup_key",
+    "image_fingerprint"
+  ],
+  "blocked_cross_routes": [
+    {
+      "query_family": "soundbar/headphones/microphone",
+      "route_to": "TECH.AUDIO"
+    },
+    {
+      "query_family": "computer monitor",
+      "route_to": "TECH.MONITORS_DISPLAYS"
+    },
+    {
+      "query_family": "game console",
+      "route_to": "TECH.GAMING"
+    },
+    {
+      "query_family": "hdmi/usb/power cable",
+      "route_to": "TECH.POWER_CHARGING_CABLES"
+    },
+    {
+      "query_family": "monitor arm/usb hub/dock",
+      "route_to": "TECH.COMPUTER_ACCESSORIES"
+    }
+  ],
+  "no_presets_collections": true,
+  "no_microcategory_codes": true
+}

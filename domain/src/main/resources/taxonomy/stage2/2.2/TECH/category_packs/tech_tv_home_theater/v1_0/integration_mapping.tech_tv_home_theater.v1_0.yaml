@@ -1,0 +1,21 @@
+integration_mapping:
+  package: TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU
+  mount:
+    categoryCode: TECH.TV_HOME_THEATER
+    pack_type: public_category_pack
+    after:
+      - TECH_FOUNDATION_MANIFEST_v1_0_RU
+      - TECH.ELECTRONICS_COMMON
+      - TECH.DEVICE_IDENTITY_COMMON
+      - TECH.SPECS_COMMON
+  files:
+    schema: schema_pack.tech_tv_home_theater.v1_0.json
+    attributes: attributes.tech_tv_home_theater.v1_0.tsv
+    values: values.tech_tv_home_theater.v1_0.tsv
+    aliases: aliases.tech_tv_home_theater.ru.v1_0.tsv
+    route_guardrails: route_guardrails.tech_tv_home_theater.v1_0.yaml
+    vision_rules: vision_rules.tech_tv_home_theater.v1_0.yaml
+    golden_queries: golden_queries.tech_tv_home_theater.v1_0.tsv
+    sample_offers: sample_offers.tech_tv_home_theater.v1_0.jsonl
+  no_public_microcategories: true
+  no_presets_collections: true

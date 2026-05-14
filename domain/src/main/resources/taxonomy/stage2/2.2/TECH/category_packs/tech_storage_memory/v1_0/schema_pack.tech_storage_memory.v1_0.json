@@ -1,0 +1,141 @@
+{
+  "schema_id": "schema_pack.tech_storage_memory.v1_0",
+  "categoryCode": "TECH.STORAGE_MEMORY",
+  "pack_type": "public_category_pack",
+  "display_name_ru": "Накопители и память",
+  "description_ru": "SSD, HDD, внешние накопители, USB-флешки, карты памяти, кардридеры, NAS и аксессуары для хранения данных.",
+  "main_type_attribute": "storage_type",
+  "storage_type_values": [
+    "INTERNAL_SSD",
+    "INTERNAL_HDD",
+    "EXTERNAL_SSD",
+    "EXTERNAL_HDD",
+    "USB_FLASH_DRIVE",
+    "MEMORY_CARD",
+    "CARD_READER",
+    "NAS",
+    "STORAGE_ACCESSORY"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "categoryCode",
+      "storage_type",
+      "brand",
+      "condition",
+      "storage_capacity_gb",
+      "interface_type",
+      "form_factor",
+      "color_family",
+      "price",
+      "currency",
+      "availability"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "storage_media_type",
+      "bus_protocol",
+      "connector_type",
+      "read_speed_mb_s",
+      "write_speed_mb_s",
+      "rpm",
+      "cache_mb",
+      "nand_type",
+      "dram_cache",
+      "endurance_tbw",
+      "memory_card_format",
+      "speed_class",
+      "video_speed_class",
+      "app_performance_class",
+      "bay_count",
+      "nas_drive_bays",
+      "raid_support",
+      "card_reader_slots",
+      "enclosure_supported_form_factor"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "model_name_text",
+      "mpn",
+      "gtin",
+      "release_year",
+      "warranty_months",
+      "rugged_protection",
+      "encryption_support",
+      "shock_resistance",
+      "water_resistance_rating",
+      "included_accessories",
+      "seller_bundle",
+      "health_status",
+      "usage_hours",
+      "power_on_count",
+      "region_variant"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "dedup_key",
+      "normalization_confidence",
+      "vision_evidence",
+      "source_hash",
+      "route_guard_trace",
+      "candidate_value_status",
+      "model_seed_match_level",
+      "compatibility_hint_confidence"
+    ]
+  },
+  "required_policy": {
+    "always_required_for_publish": [
+      "categoryCode",
+      "storage_type",
+      "brand",
+      "condition",
+      "storage_capacity_gb",
+      "price",
+      "currency",
+      "availability"
+    ],
+    "required_by_type": {
+      "INTERNAL_SSD": [
+        "interface_type",
+        "form_factor",
+        "bus_protocol"
+      ],
+      "INTERNAL_HDD": [
+        "interface_type",
+        "form_factor"
+      ],
+      "EXTERNAL_SSD": [
+        "connector_type",
+        "interface_type"
+      ],
+      "EXTERNAL_HDD": [
+        "connector_type",
+        "interface_type"
+      ],
+      "USB_FLASH_DRIVE": [
+        "connector_type"
+      ],
+      "MEMORY_CARD": [
+        "memory_card_format"
+      ],
+      "CARD_READER": [
+        "card_reader_slots",
+        "connector_type"
+      ],
+      "NAS": [
+        "bay_count",
+        "raid_support"
+      ],
+      "STORAGE_ACCESSORY": [
+        "storage_accessory_type"
+      ]
+    }
+  },
+  "routing_policy": {
+    "route_target": "TECH.STORAGE_MEMORY",
+    "do_not_route": {
+      "RAM_MODULE": "TECH.PC_COMPONENTS",
+      "GPU_MEMORY": "TECH.PC_COMPONENTS",
+      "USB_HUB": "TECH.COMPUTER_ACCESSORIES",
+      "PHONE_SIM_CARD": "TECH.PHONE_ACCESSORIES",
+      "POWER_BANK": "TECH.POWER_CHARGING_CABLES",
+      "CABLE_GENERIC": "TECH.POWER_CHARGING_CABLES"
+    }
+  }
+}

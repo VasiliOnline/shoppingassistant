@@ -179,6 +179,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "acoustic_design",
+    "titleRu": "Акустическое оформление",
+    "titleEn": "Acoustic Design",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "acoustic_design",
+    "dictionaryCode": "acoustic_design",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6030,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "activity",
     "titleRu": "Вид активности",
     "titleEn": "Activity",
@@ -440,6 +463,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "alr_support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "alr_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9042,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "ALR",
+    "titleEn": "Alr Support"
+  },
+  {
+    "facetKey": "amplifier_power_w_per_channel",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "amplifier_power_w_per_channel",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9029,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Мощность на канал",
+    "titleEn": "Amplifier Power W Per Channel"
+  },
+  {
     "facetKey": "analog_digital",
     "titleRu": "Отображение времени",
     "titleEn": "Analog Digital",
@@ -509,12 +578,36 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "app_control",
+    "titleRu": "Управление через приложение",
+    "titleEn": "App Control",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "app_control",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6490,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "app_performance_class",
     "titleRu": "Класс приложений",
     "titleEn": "App Performance Class",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.STORAGE_MEMORY"
     ],
     "attributeCode": "app_performance_class",
     "dictionaryCode": "app_performance_class",
@@ -554,6 +647,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "argb_support",
+    "titleRu": "ARGB",
+    "titleEn": "argb support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "argb_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5220,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -643,6 +759,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "audio_accessory_type",
+    "titleRu": "Тип аудиоаксессуара",
+    "titleEn": "Audio Accessory Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "audio_accessory_type",
+    "dictionaryCode": "audio_accessory_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6430,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "audio_channel_config",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "audio_channel_config",
+    "dictionaryCode": "audio_channel_config",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9027,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Аудиоконфигурация",
+    "titleEn": "Audio Channel Config"
+  },
+  {
     "facetKey": "audio_channels",
     "titleRu": "Аудиоканалы",
     "titleEn": "Audio channels",
@@ -675,6 +837,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 2740,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "audio_type",
+    "titleRu": "Тип аудиотовара",
+    "titleEn": "Audio Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "audio_type",
+    "dictionaryCode": "audio_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6000,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -777,6 +962,99 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "autofocus",
+    "titleRu": "Автофокус",
+    "titleEn": "autofocus",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "autofocus",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4740,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "av_type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "av_type",
+    "dictionaryCode": "av_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9001,
+      "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Тип AV-товара",
+    "titleEn": "Av Type"
+  },
+  {
+    "facetKey": "availability",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "availability",
+    "dictionaryCode": "availability",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9075,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Наличие",
+    "titleEn": "Availability"
+  },
+  {
+    "facetKey": "backlight_type",
+    "titleRu": "Подсветка",
+    "titleEn": "backlight type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "backlight_type",
+    "dictionaryCode": "backlight_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4640,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "backlight_uniformity_status",
     "titleRu": "Backlight/uniformity disclosure",
     "titleEn": "backlight uniformity status",
@@ -820,6 +1098,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "balanced_output",
+    "titleRu": "Балансный выход",
+    "titleEn": "Balanced Output",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "balanced_output",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6350,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -1037,6 +1338,30 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "battery_life_hours",
+    "titleRu": "Время работы, часы",
+    "titleEn": "battery life hours",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO",
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "battery_life_hours",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4870,
+      "pinned": false,
+      "hidden": false,
+      "format": "h"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "battery_mah",
     "titleRu": "Батарея (мА·ч)",
     "titleEn": "Battery Capacity",
@@ -1052,6 +1377,52 @@
       "format": null
     },
     "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "battery_type",
+    "titleRu": "Тип батареи",
+    "titleEn": "battery type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "battery_type",
+    "dictionaryCode": "battery_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4860,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "bay_count",
+    "titleRu": "Количество отсеков NAS",
+    "titleEn": "bay count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "bay_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5330,
+      "pinned": false,
+      "hidden": false,
+      "format": "bay"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -1147,6 +1518,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "bit_depth",
+    "titleRu": "Разрядность, бит",
+    "titleEn": "Bit Depth",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "bit_depth",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6330,
+      "pinned": false,
+      "hidden": false,
+      "format": "bit"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "blue_light_filter",
     "titleRu": "Фильтр синего света",
     "titleEn": "Blue Light Filter",
@@ -1175,16 +1569,16 @@
     "titleEn": "Bluetooth Version",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES",
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
@@ -1335,9 +1729,10 @@
     "effectiveFrom": "2026-02-19",
     "effectiveTo": null,
     "attributeCode": "brand",
-    "dictionaryCode": null,
+    "dictionaryCode": "brand",
     "selectionMode": "MULTI",
-    "uiWidget": "CHECKBOX_GROUP"
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1"
   },
   {
     "facetKey": "breathable",
@@ -1386,6 +1781,29 @@
     },
     "effectiveFrom": "2026-05-11",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "brightness_lumens",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "brightness_lumens",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9019,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Яркость, люмены",
+    "titleEn": "Brightness Lumens"
   },
   {
     "facetKey": "brightness_nits",
@@ -1503,6 +1921,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "bus_protocol",
+    "titleRu": "Протокол шины",
+    "titleEn": "bus protocol",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "bus_protocol",
+    "dictionaryCode": "bus_protocol",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5220,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "business_grade",
     "titleRu": "Бизнес-класс",
     "titleEn": "Бизнес-класс",
@@ -1518,6 +1959,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 3670,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "buttons_count",
+    "titleRu": "Количество кнопок",
+    "titleEn": "buttons count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "buttons_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4670,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -1577,16 +2041,16 @@
     "titleEn": "Cable Length M",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES",
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
@@ -1632,6 +2096,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cache_mb",
+    "titleRu": "Кэш HDD/SSD, МБ",
+    "titleEn": "cache mb",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "cache_mb",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5290,
+      "pinned": false,
+      "hidden": false,
+      "format": "MB"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -1748,6 +2235,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "capture_interface",
+    "titleRu": "Интерфейс карты захвата",
+    "titleEn": "capture interface",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "capture_interface",
+    "dictionaryCode": "capture_interface",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5250,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "car_charger_socket",
     "titleRu": "Автомобильный разъём",
     "titleEn": "Car Charger Socket",
@@ -1789,6 +2299,52 @@
       "format": "G"
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "card_interface",
+    "titleRu": "Интерфейс платы",
+    "titleEn": "card interface",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "card_interface",
+    "dictionaryCode": "card_interface",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5280,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "card_reader_slots",
+    "titleRu": "Слоты кардридера",
+    "titleEn": "card reader slots",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "card_reader_slots",
+    "dictionaryCode": "card_reader_slots",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5390,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -2000,6 +2556,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "case_size",
+    "titleRu": "Размер корпуса",
+    "titleEn": "case size",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "case_size",
+    "dictionaryCode": "case_size",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5120,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "case_size_mm",
     "titleRu": "Размер корпуса target в мм, например Apple Watch 41/45/49",
     "titleEn": "Case Size Mm",
@@ -2172,6 +2751,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "channel_config",
+    "titleRu": "Канальность",
+    "titleEn": "Channel Config",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "channel_config",
+    "dictionaryCode": "channel_config",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6210,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "charge_indicator_type",
     "titleRu": "Индикатор заряда",
     "titleEn": "Charge Indicator Type",
@@ -2329,6 +2931,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "chipset",
+    "titleRu": "Чипсет",
+    "titleEn": "chipset",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "chipset",
+    "dictionaryCode": "chipset",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5010,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "chipset_family",
     "titleRu": "Чипсет",
     "titleEn": "Chipset",
@@ -2398,6 +3023,7 @@
     "titleEn": "Тип чистящего набора",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.PHONE_ACCESSORIES"
     ],
     "attributeCode": "cleaning_item_type",
@@ -2464,6 +3090,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "codec_support",
+    "titleRu": "Кодеки",
+    "titleEn": "Codec Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "codec_support",
+    "dictionaryCode": "codec_support",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6100,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -2622,24 +3271,24 @@
     "titleEn": "color family",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
       "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
       "TECH.CAMERAS_DRONES",
+      "TECH.CAR_ELECTRONICS_GPS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
+      "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
+      "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "color_family",
     "dictionaryCode": "color_family",
@@ -3025,6 +3674,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "compatible_device_type",
+    "titleRu": "Совместимый тип устройства",
+    "titleEn": "compatible device type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "compatible_device_type",
+    "dictionaryCode": "compatible_device_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4590,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "compatible_model",
     "titleRu": "Нормализованная совместимая модель",
     "titleEn": "Compatible Model",
@@ -3154,6 +3826,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_platform",
+    "titleRu": "Совместимые платформы",
+    "titleEn": "Compatible Platform",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "compatible_platform",
+    "dictionaryCode": "compatible_platform",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6550,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -3291,6 +3986,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "computer_accessory_type",
+    "titleRu": "Тип компьютерного аксессуара",
+    "titleEn": "computer accessory type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "computer_accessory_type",
+    "dictionaryCode": "computer_accessory_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4580,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "computer_type",
     "titleRu": "Тип компьютера",
     "titleEn": "Тип компьютера",
@@ -3381,7 +4099,31 @@
     "attributeCode": "condition",
     "dictionaryCode": "condition",
     "selectionMode": "MULTI",
-    "uiWidget": "CHECKBOX_GROUP"
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1"
+  },
+  {
+    "facetKey": "condition_grade",
+    "titleRu": "Грейд состояния",
+    "titleEn": "Condition Grade",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "condition_grade",
+    "dictionaryCode": "condition_grade",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6600,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
   },
   {
     "facetKey": "connection_type",
@@ -3389,6 +4131,8 @@
     "titleEn": "connection type",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.AUDIO",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "connection_type",
@@ -3599,14 +4343,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -3646,6 +4390,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 3370,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "console_compatibility_hint",
+    "titleRu": "Совместимость с консолью",
+    "titleEn": "console compatibility hint",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "console_compatibility_hint",
+    "dictionaryCode": "console_compatibility_hint",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5470,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -3700,6 +4467,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "cooler_type",
+    "titleRu": "Тип охлаждения CPU",
+    "titleEn": "cooler type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "cooler_type",
+    "dictionaryCode": "cooler_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5170,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "cooling_type",
     "titleRu": "Тип охлаждения",
     "titleEn": "Cooling Type",
@@ -3720,6 +4510,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "core_count",
+    "titleRu": "Количество ядер",
+    "titleEn": "core count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "core_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4920,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -3803,6 +4616,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "cover_form_factor",
+    "titleRu": "Форм-фактор защиты/чехла",
+    "titleEn": "cover form factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "cover_form_factor",
+    "dictionaryCode": "cover_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4850,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "cpu_brand",
     "titleRu": "Бренд CPU",
     "titleEn": "Бренд CPU",
@@ -3872,6 +4708,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "cpu_series",
+    "titleRu": "Серия CPU",
+    "titleEn": "cpu series",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "cpu_series",
+    "dictionaryCode": "cpu_series",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4910,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cpu_socket",
+    "titleRu": "Сокет процессора",
+    "titleEn": "cpu socket",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "cpu_socket",
+    "dictionaryCode": "cpu_socket",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4900,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "cuisine",
     "titleRu": "Кухня",
     "titleEn": "Cuisine",
@@ -3923,6 +4805,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 4350,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "dac_resolution_bit",
+    "titleRu": "Разрядность DAC",
+    "titleEn": "dac resolution bit",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "dac_resolution_bit",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5290,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -4132,6 +5037,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "detachable_cable",
+    "titleRu": "Съёмный кабель",
+    "titleEn": "Detachable Cable",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "detachable_cable",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6460,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "dimensions",
     "titleRu": "Габариты",
     "titleEn": "Dimensions",
@@ -4170,6 +5098,52 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "disc_format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "disc_format",
+    "dictionaryCode": "disc_format",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9031,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Формат дисков",
+    "titleEn": "Disc Format"
+  },
+  {
+    "facetKey": "display_panel_finish",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "display_panel_finish",
+    "dictionaryCode": "display_panel_finish",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9011,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Покрытие экрана",
+    "titleEn": "Display Panel Finish"
   },
   {
     "facetKey": "display_panel_type",
@@ -4223,7 +5197,8 @@
     "titleEn": "display technology",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.TABLETS_E_READERS"
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER"
     ],
     "attributeCode": "display_technology",
     "dictionaryCode": "display_technology",
@@ -4310,6 +5285,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "downstream_ports_count",
+    "titleRu": "Количество downstream-портов",
+    "titleEn": "downstream ports count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "downstream_ports_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4750,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "dpi_max",
+    "titleRu": "Максимальный DPI",
+    "titleEn": "dpi max",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "dpi_max",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4660,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "dram_cache",
+    "titleRu": "DRAM cache",
+    "titleEn": "dram cache",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "dram_cache",
+    "dictionaryCode": "dram_cache",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5260,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "dress_length",
     "titleRu": "Длина платья",
     "titleEn": "Dress Length",
@@ -4332,6 +5376,75 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "drive_height_mm",
+    "titleRu": "Высота диска, мм",
+    "titleEn": "drive height mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "drive_height_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5300,
+      "pinned": false,
+      "hidden": false,
+      "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "driver_size_mm",
+    "titleRu": "Размер драйвера, мм",
+    "titleEn": "Driver Size Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "driver_size_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6170,
+      "pinned": false,
+      "hidden": false,
+      "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "driver_type",
+    "titleRu": "Тип драйвера",
+    "titleEn": "Driver Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "driver_type",
+    "dictionaryCode": "driver_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6160,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -4490,6 +5603,121 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "efficiency_rating",
+    "titleRu": "Сертификат эффективности",
+    "titleEn": "efficiency rating",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "efficiency_rating",
+    "dictionaryCode": "efficiency_rating",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5080,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "enclosure_supported_form_factor",
+    "titleRu": "Поддерживаемый форм-фактор корпуса",
+    "titleEn": "enclosure supported form factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "enclosure_supported_form_factor",
+    "dictionaryCode": "enclosure_supported_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5410,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "enclosure_supported_interface",
+    "titleRu": "Поддерживаемый интерфейс корпуса",
+    "titleEn": "enclosure supported interface",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "enclosure_supported_interface",
+    "dictionaryCode": "enclosure_supported_interface",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5420,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "encryption_support",
+    "titleRu": "Аппаратное шифрование",
+    "titleEn": "encryption support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "encryption_support",
+    "dictionaryCode": "encryption_support",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5440,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "endurance_tbw",
+    "titleRu": "Ресурс TBW",
+    "titleEn": "endurance tbw",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "endurance_tbw",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5270,
+      "pinned": false,
+      "hidden": false,
+      "format": "TBW"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "energy_class",
     "titleRu": "Energy efficiency label where available",
     "titleEn": "energy class",
@@ -4505,6 +5733,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 4550,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ergonomic_hand",
+    "titleRu": "Эргономика под руку",
+    "titleEn": "ergonomic hand",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "ergonomic_hand",
+    "dictionaryCode": "ergonomic_hand",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4680,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -4532,6 +5783,52 @@
     "attributeCode": "esim_support"
   },
   {
+    "facetKey": "ethernet",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "ethernet",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9047,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Ethernet",
+    "titleEn": "Ethernet"
+  },
+  {
+    "facetKey": "ethernet_speed",
+    "titleRu": "Скорость Ethernet",
+    "titleEn": "ethernet speed",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "ethernet_speed",
+    "dictionaryCode": "ethernet_speed",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4780,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "expandable",
     "titleRu": "Расширяемый объём",
     "titleEn": "Expandable",
@@ -4552,6 +5849,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "expansion_function",
+    "titleRu": "Назначение платы расширения",
+    "titleEn": "expansion function",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "expansion_function",
+    "dictionaryCode": "expansion_function",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5310,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -4633,6 +5953,76 @@
     "source": "PRODUCT",
     "ui": {
       "order": 2310,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "fan_count",
+    "titleRu": "Количество вентиляторов",
+    "titleEn": "fan count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "fan_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4820,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "fan_size_mm",
+    "titleRu": "Размер вентилятора",
+    "titleEn": "fan size mm",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "fan_size_mm",
+    "dictionaryCode": "fan_size_mm",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5200,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "fast_charge",
+    "titleRu": "Быстрая зарядка",
+    "titleEn": "Fast Charge",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "fast_charge",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6140,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -4808,6 +6198,7 @@
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
       "FASH.ACCESSORIES",
+      "TECH.AUDIO",
       "TECH.PHONE_ACCESSORIES",
       "TECH.TABLETS_E_READERS"
     ],
@@ -4835,14 +6226,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -4999,6 +6390,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "gaming_features",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "gaming_features",
+    "dictionaryCode": "gaming_features",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9015,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Игровые функции",
+    "titleEn": "Gaming Features"
+  },
+  {
     "facetKey": "gaming_grade",
     "titleRu": "Игровой класс",
     "titleEn": "Игровой класс",
@@ -5126,6 +6540,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "gpu_length_mm",
+    "titleRu": "Длина видеокарты",
+    "titleEn": "gpu length mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "gpu_length_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4980,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "gpu_memory_type",
+    "titleRu": "Тип видеопамяти",
+    "titleEn": "gpu memory type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "gpu_memory_type",
+    "dictionaryCode": "gpu_memory_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4970,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "gpu_model_text",
     "titleRu": "Модель GPU текстом",
     "titleEn": "Модель GPU текстом",
@@ -5141,6 +6601,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 3770,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "gpu_series",
+    "titleRu": "Серия GPU",
+    "titleEn": "gpu series",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "gpu_series",
+    "dictionaryCode": "gpu_series",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4950,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -5373,6 +6856,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "hdmi_ports",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "hdmi_ports",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9009,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Количество HDMI",
+    "titleEn": "Hdmi Ports"
+  },
+  {
+    "facetKey": "hdmi_version",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "hdmi_version",
+    "dictionaryCode": "hdmi_version",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9010,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Версия HDMI",
+    "titleEn": "Hdmi Version"
+  },
+  {
     "facetKey": "hdr_standard",
     "titleRu": "HDR стандарт",
     "titleEn": "HDR standard",
@@ -5459,6 +6988,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "health_status",
+    "titleRu": "Состояние SMART/Health",
+    "titleEn": "health status",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "health_status",
+    "dictionaryCode": "health_status",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5450,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "heel_height_cm",
     "titleRu": "Высота каблука, см",
     "titleEn": "Heel Height Cm",
@@ -5509,6 +7061,7 @@
     "titleEn": "height adjustable",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.MONITORS_DISPLAYS"
     ],
     "attributeCode": "height_adjustable",
@@ -5781,6 +7334,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "impedance_ohm",
+    "titleRu": "Импеданс, Ом",
+    "titleEn": "Impedance Ohm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "impedance_ohm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6180,
+      "pinned": false,
+      "hidden": false,
+      "format": "ohm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "included_accessories",
     "titleRu": "Комплектация",
     "titleEn": "included accessories",
@@ -5867,6 +7443,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "input_type",
+    "titleRu": "Входы",
+    "titleEn": "Input Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "input_type",
+    "dictionaryCode": "input_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6290,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "input_voltage_range",
     "titleRu": "Входное напряжение",
     "titleEn": "Input Voltage Range",
@@ -5936,6 +7535,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "integrated_graphics",
+    "titleRu": "Встроенная графика",
+    "titleEn": "integrated graphics",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "integrated_graphics",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4940,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "interface_type",
+    "titleRu": "Интерфейс",
+    "titleEn": "interface type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "interface_type",
+    "dictionaryCode": "interface_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5200,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -6024,6 +7669,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "key_switch_type",
+    "titleRu": "Тип переключателей",
+    "titleEn": "key switch type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "key_switch_type",
+    "dictionaryCode": "key_switch_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4610,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "keyboard_included",
     "titleRu": "Клавиатура в комплекте",
     "titleEn": "keyboard included",
@@ -6047,12 +7715,36 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "keyboard_language",
+    "titleRu": "Язык клавиш",
+    "titleEn": "keyboard language",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "keyboard_language",
+    "dictionaryCode": "keyboard_language",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4600,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "keyboard_layout",
     "titleRu": "Раскладка клавиатуры",
     "titleEn": "keyboard layout",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.COMPUTERS"
+      "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES"
     ],
     "attributeCode": "keyboard_layout",
     "dictionaryCode": "keyboard_layout",
@@ -6062,6 +7754,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 3650,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "keyboard_size",
+    "titleRu": "Размер клавиатуры",
+    "titleEn": "keyboard size",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "keyboard_size",
+    "dictionaryCode": "keyboard_size",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4620,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -6091,6 +7806,29 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "keystone_correction",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "keystone_correction",
+    "dictionaryCode": "keystone_correction",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9021,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Коррекция трапеции",
+    "titleEn": "Keystone Correction"
   },
   {
     "facetKey": "laminated_display",
@@ -6159,6 +7897,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "laptop_size_supported",
+    "titleRu": "Поддерживаемый размер ноутбука",
+    "titleEn": "laptop size supported",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "laptop_size_supported",
+    "dictionaryCode": "laptop_size_supported",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4830,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "latency_mode",
+    "titleRu": "Низкая задержка / gaming mode",
+    "titleEn": "Latency Mode",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "latency_mode",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6270,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -6321,6 +8105,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "lens_shift",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "lens_shift",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9022,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Lens shift",
+    "titleEn": "Lens Shift"
+  },
+  {
     "facetKey": "light_color_temperature_k",
     "titleRu": "Цветовая температура, K",
     "titleEn": "Light Color Temperature K",
@@ -6459,6 +8266,29 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "local_dimming",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "local_dimming",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9013,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Локальное затемнение",
+    "titleEn": "Local Dimming"
   },
   {
     "facetKey": "lock_type",
@@ -6686,7 +8516,12 @@
       "format": null
     },
     "effectiveFrom": "2026-02-19",
-    "effectiveTo": null
+    "effectiveTo": null,
+    "attributeCode": "material",
+    "dictionaryCode": "material",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP"
   },
   {
     "facetKey": "material_family",
@@ -6830,6 +8665,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "max_capture_fps",
+    "titleRu": "Макс. FPS захвата",
+    "titleEn": "max capture fps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "max_capture_fps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5270,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_capture_resolution",
+    "titleRu": "Макс. разрешение захвата",
+    "titleEn": "max capture resolution",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "max_capture_resolution",
+    "dictionaryCode": "max_capture_resolution",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5260,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_cpu_cooler_height_mm",
+    "titleRu": "Макс. высота кулера",
+    "titleEn": "max cpu cooler height mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "max_cpu_cooler_height_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5150,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "max_current_amp",
     "titleRu": "Макс. ток, А",
     "titleEn": "Max Current Amp",
@@ -6850,6 +8754,76 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_display_resolution",
+    "titleRu": "Максимальное разрешение дисплея",
+    "titleEn": "max display resolution",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "max_display_resolution",
+    "dictionaryCode": "max_display_resolution",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4770,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_gpu_length_mm",
+    "titleRu": "Макс. длина GPU",
+    "titleEn": "max gpu length mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "max_gpu_length_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5140,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_load_kg",
+    "titleRu": "Максимальная нагрузка, кг",
+    "titleEn": "max load kg",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "max_load_kg",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4800,
+      "pinned": false,
+      "hidden": false,
+      "format": "kg"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -6874,6 +8848,29 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "max_output_resolution",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "max_output_resolution",
+    "dictionaryCode": "max_output_resolution",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9024,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Максимальное выходное разрешение",
+    "titleEn": "Max Output Resolution"
   },
   {
     "facetKey": "max_power_w",
@@ -6942,6 +8939,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "memory_card_format",
+    "titleRu": "Формат карты памяти",
+    "titleEn": "memory card format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "memory_card_format",
+    "dictionaryCode": "memory_card_format",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5370,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -7155,6 +9175,98 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "mic_type",
+    "titleRu": "Тип микрофона",
+    "titleEn": "Mic Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "mic_type",
+    "dictionaryCode": "mic_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6060,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "microphone_included",
+    "titleRu": "Есть микрофон",
+    "titleEn": "Microphone Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "microphone_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6050,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "microphone_present",
+    "titleRu": "Встроенный микрофон",
+    "titleEn": "microphone present",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "microphone_present",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4720,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "midi_support",
+    "titleRu": "MIDI",
+    "titleEn": "Midi Support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "midi_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6340,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -7391,7 +9503,8 @@
     "titleEn": "Форм-фактор материнской платы",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.COMPUTERS"
+      "TECH.COMPUTERS",
+      "TECH.PC_COMPONENTS"
     ],
     "attributeCode": "motherboard_form_factor",
     "dictionaryCode": null,
@@ -7407,6 +9520,75 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "motherboard_form_factor_support",
+    "titleRu": "Поддержка форм-факторов плат",
+    "titleEn": "motherboard form factor support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "motherboard_form_factor_support",
+    "dictionaryCode": "motherboard_form_factor_support",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5130,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "motherboard_socket",
+    "titleRu": "Сокет материнской платы",
+    "titleEn": "motherboard socket",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "motherboard_socket",
+    "dictionaryCode": "motherboard_socket",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5000,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "motorized",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "motorized",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9043,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Моторизованный",
+    "titleEn": "Motorized"
   },
   {
     "facetKey": "mount_attachment",
@@ -7463,14 +9645,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -7535,6 +9717,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "mouse_sensor_type",
+    "titleRu": "Сенсор мыши",
+    "titleEn": "mouse sensor type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "mouse_sensor_type",
+    "dictionaryCode": "mouse_sensor_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4650,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "movement_type",
     "titleRu": "Тип механизма",
     "titleEn": "Movement Type",
@@ -7590,6 +9795,98 @@
     "source": "PRODUCT",
     "ui": {
       "order": 2400,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "multipoint_support",
+    "titleRu": "Multipoint",
+    "titleEn": "Multipoint Support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "multipoint_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6280,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "nand_type",
+    "titleRu": "Тип NAND",
+    "titleEn": "nand type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "nand_type",
+    "dictionaryCode": "nand_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5250,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "nas_drive_bays",
+    "titleRu": "Формат отсеков NAS",
+    "titleEn": "nas drive bays",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "nas_drive_bays",
+    "dictionaryCode": "nas_drive_bays",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5340,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "nas_grade",
+    "titleRu": "NAS grade",
+    "titleEn": "nas grade",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "nas_grade",
+    "dictionaryCode": "nas_grade",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5310,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -7686,6 +9983,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "network_ports",
+    "titleRu": "Сетевые порты NAS",
+    "titleEn": "network ports",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "network_ports",
+    "dictionaryCode": "network_ports",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5360,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "network_speed",
     "titleRu": "Скорость сети",
     "titleEn": "Network speed",
@@ -7726,6 +10046,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "network_speed_gbps",
+    "titleRu": "Скорость сети",
+    "titleEn": "network speed gbps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "network_speed_gbps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5300,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "network_type",
     "titleRu": "Сеть",
     "titleEn": "Network",
@@ -7743,6 +10086,52 @@
       "format": null
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "noise_control",
+    "titleRu": "Шумоподавление/прозрачность",
+    "titleEn": "Noise Control",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "noise_control",
+    "dictionaryCode": "noise_control",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6040,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "numpad_present",
+    "titleRu": "Цифровой блок",
+    "titleEn": "numpad present",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "numpad_present",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4630,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -7845,24 +10234,24 @@
     "titleEn": "original box",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
       "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
       "TECH.CAMERAS_DRONES",
+      "TECH.CAR_ELECTRONICS_GPS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
+      "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
+      "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "original_box",
     "dictionaryCode": "original_box",
@@ -8058,6 +10447,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "output_type",
+    "titleRu": "Выходы",
+    "titleEn": "Output Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "output_type",
+    "dictionaryCode": "output_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6300,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "pack_quantity",
     "titleRu": "Количество в комплекте",
     "titleEn": "Pack Quantity",
@@ -8174,6 +10586,7 @@
     "titleEn": "Palm rejection",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.PHONE_ACCESSORIES"
     ],
     "attributeCode": "palm_rejection",
@@ -8397,6 +10810,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "pc_component_type",
+    "titleRu": "Тип комплектующего",
+    "titleEn": "pc component type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "pc_component_type",
+    "dictionaryCode": "pc_component_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4890,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pcie_5_support",
+    "titleRu": "PCIe 5.0 / 12VHPWR ready",
+    "titleEn": "pcie 5 support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "pcie_5_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5110,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pcie_lanes",
+    "titleRu": "PCIe lanes",
+    "titleEn": "pcie lanes",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "pcie_lanes",
+    "dictionaryCode": "pcie_lanes",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5320,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "pen_technology",
     "titleRu": "Технология пера",
     "titleEn": "pen technology",
@@ -8412,6 +10894,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 4170,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "phantom_power",
+    "titleRu": "Фантомное питание 48V",
+    "titleEn": "Phantom Power",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "phantom_power",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6310,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -8708,6 +11213,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "polling_rate_hz",
+    "titleRu": "Polling rate, Гц",
+    "titleEn": "polling rate hz",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "polling_rate_hz",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4690,
+      "pinned": false,
+      "hidden": false,
+      "format": "HZ"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "port_configuration",
     "titleRu": "Конфигурация портов",
     "titleEn": "Конфигурация портов",
@@ -8886,6 +11414,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "power_delivery_watts",
+    "titleRu": "Power Delivery, Вт",
+    "titleEn": "power delivery watts",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "power_delivery_watts",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4760,
+      "pinned": false,
+      "hidden": false,
+      "format": "W"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "power_source",
     "titleRu": "Источник питания",
     "titleEn": "Power source",
@@ -8989,6 +11540,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "preamp_built_in",
+    "titleRu": "Встроенный фонокорректор",
+    "titleEn": "Preamp Built In",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "preamp_built_in",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6400,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "prebuilt_or_custom",
     "titleRu": "Сборка",
     "titleEn": "Сборка",
@@ -9017,6 +11591,7 @@
     "titleEn": "pressure levels",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "pressure_levels",
@@ -9202,6 +11777,121 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "privacy_filter_type",
+    "titleRu": "Тип privacy-фильтра",
+    "titleEn": "privacy filter type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "privacy_filter_type",
+    "dictionaryCode": "privacy_filter_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4840,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "privacy_shutter",
+    "titleRu": "Шторка приватности",
+    "titleEn": "privacy shutter",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "privacy_shutter",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4730,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "projector_display_tech",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "projector_display_tech",
+    "dictionaryCode": "projector_display_tech",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9018,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Технология проекции",
+    "titleEn": "Projector Display Tech"
+  },
+  {
+    "facetKey": "projector_light_source",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "projector_light_source",
+    "dictionaryCode": "projector_light_source",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9017,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Источник света",
+    "titleEn": "Projector Light Source"
+  },
+  {
+    "facetKey": "projector_type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "projector_type",
+    "dictionaryCode": "projector_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9016,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Тип проектора",
+    "titleEn": "Projector Type"
+  },
+  {
     "facetKey": "protection_level",
     "titleRu": "Уровень защиты",
     "titleEn": "Protection Level",
@@ -9378,6 +12068,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "psu_form_factor",
+    "titleRu": "Форм-фактор БП",
+    "titleEn": "psu form factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "psu_form_factor",
+    "dictionaryCode": "psu_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5100,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "psu_modularity",
+    "titleRu": "Модульность БП",
+    "titleEn": "psu modularity",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "psu_modularity",
+    "dictionaryCode": "psu_modularity",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5090,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "psu_wattage",
     "titleRu": "Мощность БП, Вт",
     "titleEn": "Мощность БП, Вт",
@@ -9393,6 +12129,98 @@
     "source": "PRODUCT",
     "ui": {
       "order": 3840,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "psu_wattage_w",
+    "titleRu": "Мощность БП",
+    "titleEn": "psu wattage w",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "psu_wattage_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5070,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "pwm_support",
+    "titleRu": "PWM",
+    "titleEn": "pwm support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "pwm_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5210,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "radiator_size_mm",
+    "titleRu": "Размер радиатора",
+    "titleEn": "radiator size mm",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "radiator_size_mm",
+    "dictionaryCode": "radiator_size_mm",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5190,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "raid_support",
+    "titleRu": "RAID support",
+    "titleEn": "raid support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "raid_support",
+    "dictionaryCode": "raid_support",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5350,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -9510,6 +12338,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "ram_capacity_gb",
+    "titleRu": "Объём RAM",
+    "titleEn": "ram capacity gb",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "ram_capacity_gb",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5030,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ram_form_factor",
+    "titleRu": "Форм-фактор RAM",
+    "titleEn": "ram form factor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "ram_form_factor",
+    "dictionaryCode": "ram_form_factor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5060,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "ram_gb",
     "titleRu": "ОЗУ",
     "titleEn": "RAM",
@@ -9518,7 +12392,8 @@
       "TECH.COMPUTERS",
       "TECH.PC_COMPONENTS",
       "TECH.PHONES",
-      "TECH.TABLETS_E_READERS"
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -9533,6 +12408,52 @@
     "dictionaryCode": null,
     "selectionMode": "RANGE",
     "uiWidget": "RANGE_INPUT"
+  },
+  {
+    "facetKey": "ram_kit_modules",
+    "titleRu": "Количество модулей",
+    "titleEn": "ram kit modules",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "ram_kit_modules",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5040,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ram_speed_mhz",
+    "titleRu": "Частота памяти",
+    "titleEn": "ram speed mhz",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "ram_speed_mhz",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5050,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
   },
   {
     "facetKey": "ram_type",
@@ -9570,6 +12491,29 @@
       "pinned": false,
       "hidden": false,
       "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "read_speed_mb_s",
+    "titleRu": "Скорость чтения, МБ/с",
+    "titleEn": "read speed mb s",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "read_speed_mb_s",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5230,
+      "pinned": false,
+      "hidden": false,
+      "format": "MB/s"
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
@@ -9678,6 +12622,99 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "receiver_channels",
+    "titleRu": "Каналы ресивера",
+    "titleEn": "Receiver Channels",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO",
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "receiver_channels",
+    "dictionaryCode": "receiver_channels",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6410,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "rechargeable",
+    "titleRu": "Перезаряжаемый",
+    "titleEn": "rechargeable",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "rechargeable",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4880,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "recommended_psu_w",
+    "titleRu": "Рекомендованный БП",
+    "titleEn": "recommended psu w",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "recommended_psu_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4990,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "recording_pattern",
+    "titleRu": "Диаграмма направленности",
+    "titleEn": "Recording Pattern",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "recording_pattern",
+    "dictionaryCode": "recording_pattern",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6070,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "reflective_elements",
     "titleRu": "Светоотражающие элементы",
     "titleEn": "Reflective Elements",
@@ -9734,7 +12771,8 @@
     },
     "effectiveFrom": "2026-03-14",
     "effectiveTo": null,
-    "attributeCode": "refresh_rate_hz"
+    "attributeCode": "refresh_rate_hz",
+    "dictionaryCode": "refresh_rate_hz"
   },
   {
     "facetKey": "refurbished_grade",
@@ -9765,24 +12803,24 @@
     "titleEn": "refurbished status",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
       "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
       "TECH.CAMERAS_DRONES",
+      "TECH.CAR_ELECTRONICS_GPS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
+      "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
+      "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "refurbished_status",
     "dictionaryCode": "refurbished_status",
@@ -9925,9 +12963,12 @@
     "titleEn": "Release Year",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
+      "TECH.AUDIO",
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.PHONES",
-      "TECH.TABLETS_E_READERS"
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -9941,7 +12982,8 @@
     "attributeCode": "release_year",
     "dictionaryCode": null,
     "selectionMode": "RANGE",
-    "uiWidget": "RANGE_INPUT"
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1"
   },
   {
     "facetKey": "remote_shutter_included",
@@ -9965,6 +13007,29 @@
     },
     "effectiveFrom": "2026-05-11",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "remote_target_type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "remote_target_type",
+    "dictionaryCode": "remote_target_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9033,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Для чего пульт",
+    "titleEn": "Remote Target Type"
   },
   {
     "facetKey": "repair_consumable_type",
@@ -9995,24 +13060,24 @@
     "titleEn": "repair history",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
       "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
       "TECH.CAMERAS_DRONES",
+      "TECH.CAR_ELECTRONICS_GPS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
+      "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
+      "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "repair_history",
     "dictionaryCode": "repair_history",
@@ -10122,6 +13187,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "resolution",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "resolution",
+    "dictionaryCode": "resolution",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9004,
+      "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Разрешение",
+    "titleEn": "Resolution"
+  },
+  {
     "facetKey": "resolution_class",
     "titleRu": "Normalized resolution bucket",
     "titleEn": "resolution class",
@@ -10208,6 +13296,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "room_calibration",
+    "titleRu": "Калибровка комнаты",
+    "titleEn": "Room Calibration",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "room_calibration",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6530,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "rotation_support",
     "titleRu": "Поворот/регулировка",
     "titleEn": "Rotation Support",
@@ -10231,6 +13342,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "rpm",
+    "titleRu": "Обороты HDD",
+    "titleEn": "rpm",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "rpm",
+    "dictionaryCode": "rpm",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5280,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "rpm_speed",
+    "titleRu": "Скорость вращения",
+    "titleEn": "Rpm Speed",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "rpm_speed",
+    "dictionaryCode": "rpm_speed",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6380,
+      "pinned": false,
+      "hidden": false,
+      "format": "RPM"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "rugged_case_included",
     "titleRu": "Ударопрочный чехол в комплекте",
     "titleEn": "rugged case included",
@@ -10246,6 +13403,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 4090,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "rugged_protection",
+    "titleRu": "Защита корпуса",
+    "titleEn": "rugged protection",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "rugged_protection",
+    "dictionaryCode": "rugged_protection",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5430,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -10297,6 +13477,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "sample_rate_khz",
+    "titleRu": "Частота дискретизации, кГц",
+    "titleEn": "Sample Rate Khz",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "sample_rate_khz",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6320,
+      "pinned": false,
+      "hidden": false,
+      "format": "kHz"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -10392,6 +13595,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "screen_diagonal_in",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "screen_diagonal_in",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9039,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Диагональ экрана проектора",
+    "titleEn": "Screen Diagonal In"
+  },
+  {
+    "facetKey": "screen_format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "screen_format",
+    "dictionaryCode": "screen_format",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9038,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Формат экрана",
+    "titleEn": "Screen Format"
+  },
+  {
+    "facetKey": "screen_gain",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "screen_gain",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9040,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Gain экрана",
+    "titleEn": "Screen Gain"
+  },
+  {
     "facetKey": "screen_resolution",
     "titleRu": "Разрешение экрана",
     "titleEn": "Screen resolution",
@@ -10479,7 +13751,8 @@
     "appliesToCategoryCodes": [
       "TECH.COMPUTERS",
       "TECH.MONITORS_DISPLAYS",
-      "TECH.TABLETS_E_READERS"
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER"
     ],
     "attributeCode": "screen_size_in",
     "dictionaryCode": null,
@@ -10523,6 +13796,7 @@
     "titleEn": "screen size inches",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.PHONES"
     ],
     "attributeCode": "screen_size_inches",
@@ -10602,6 +13876,29 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "screen_surface_type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "screen_surface_type",
+    "dictionaryCode": "screen_surface_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9041,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Тип полотна",
+    "titleEn": "Screen Surface Type"
   },
   {
     "facetKey": "sd_card_support",
@@ -10717,6 +14014,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "sensitivity_db",
+    "titleRu": "Чувствительность, дБ",
+    "titleEn": "Sensitivity Db",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "sensitivity_db",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6190,
+      "pinned": false,
+      "hidden": false,
+      "format": "dB"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "set_top_box_type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "set_top_box_type",
+    "dictionaryCode": "set_top_box_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9032,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Тип set-top box",
+    "titleEn": "Set Top Box Type"
+  },
+  {
     "facetKey": "shaft_height",
     "titleRu": "Высота голенища",
     "titleEn": "Shaft Height",
@@ -10781,6 +14124,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "side_panel_material",
+    "titleRu": "Боковая панель",
+    "titleEn": "side panel material",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "side_panel_material",
+    "dictionaryCode": "side_panel_material",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5160,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -11057,6 +14423,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "smart_assistant",
+    "titleRu": "Голосовой ассистент",
+    "titleEn": "Smart Assistant",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "smart_assistant",
+    "dictionaryCode": "smart_assistant",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6240,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "smart_os",
     "titleRu": "Smart OS/app platform",
     "titleEn": "smart os",
@@ -11072,6 +14461,52 @@
     "source": "PRODUCT",
     "ui": {
       "order": 4440,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "smart_tv_platform",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "smart_tv_platform",
+    "dictionaryCode": "smart_tv_platform",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9007,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Smart TV платформа",
+    "titleEn": "Smart Tv Platform"
+  },
+  {
+    "facetKey": "socket_support",
+    "titleRu": "Поддерживаемые сокеты",
+    "titleEn": "socket support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "socket_support",
+    "dictionaryCode": "socket_support",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5180,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -11143,12 +14578,82 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "spatial_audio",
+    "titleRu": "Пространственное аудио",
+    "titleEn": "Spatial Audio",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "spatial_audio",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6260,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "speaker_power_w",
+    "titleRu": "Мощность, Вт",
+    "titleEn": "Speaker Power W",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "speaker_power_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6220,
+      "pinned": false,
+      "hidden": false,
+      "format": "W"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "speaker_type",
+    "titleRu": "Тип акустики",
+    "titleEn": "Speaker Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "speaker_type",
+    "dictionaryCode": "speaker_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6230,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "speed_class",
     "titleRu": "Класс скорости",
     "titleEn": "Speed Class",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.STORAGE_MEMORY"
     ],
     "attributeCode": "speed_class",
     "dictionaryCode": "speed_class",
@@ -11276,6 +14781,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "storage_accessory_type",
+    "titleRu": "Тип аксессуара для накопителя",
+    "titleEn": "storage accessory type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "storage_accessory_type",
+    "dictionaryCode": "storage_accessory_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5400,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "storage_capacity",
     "titleRu": "Объём накопителя",
     "titleEn": "Storage capacity",
@@ -11324,7 +14852,9 @@
       "TECH.COMPUTERS",
       "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
-      "TECH.TABLETS_E_READERS"
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER"
     ],
     "attributeCode": "storage_capacity_gb",
     "dictionaryCode": null,
@@ -11403,6 +14933,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "storage_media_type",
+    "titleRu": "Тип носителя",
+    "titleEn": "storage media type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "storage_media_type",
+    "dictionaryCode": "storage_media_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5210,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "storage_regime",
     "titleRu": "Режим хранения",
     "titleEn": "Storage Regime",
@@ -11461,6 +15014,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "storage_use_case",
+    "titleRu": "Сценарий использования",
+    "titleEn": "storage use case",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "storage_use_case",
+    "dictionaryCode": "storage_use_case",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5460,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -11553,6 +15129,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "streaming_os",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "streaming_os",
+    "dictionaryCode": "streaming_os",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9023,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "ОС медиаплеера",
+    "titleEn": "Streaming Os"
+  },
+  {
+    "facetKey": "streaming_protocols",
+    "titleRu": "Стриминг/протоколы",
+    "titleEn": "Streaming Protocols",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "streaming_protocols",
+    "dictionaryCode": "streaming_protocols",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6250,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -11676,6 +15298,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "stylus_protocol",
+    "titleRu": "Протокол стилуса",
+    "titleEn": "stylus protocol",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "stylus_protocol",
+    "dictionaryCode": "stylus_protocol",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4810,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "stylus_support",
     "titleRu": "Поддержка стилуса",
     "titleEn": "stylus support",
@@ -11719,6 +15364,98 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "subwoofer_included",
+    "titleRu": "Сабвуфер в комплекте",
+    "titleEn": "Subwoofer Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "subwoofer_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6510,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "surround_format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "surround_format",
+    "dictionaryCode": "surround_format",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9030,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Surround-форматы",
+    "titleEn": "Surround Format"
+  },
+  {
+    "facetKey": "surround_formats",
+    "titleRu": "Форматы surround",
+    "titleEn": "Surround Formats",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "surround_formats",
+    "dictionaryCode": "surround_formats",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6420,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "surveillance_grade",
+    "titleRu": "Surveillance grade",
+    "titleEn": "surveillance grade",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "surveillance_grade",
+    "dictionaryCode": "surveillance_grade",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5320,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -11796,6 +15533,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "tdp_w",
+    "titleRu": "TDP",
+    "titleEn": "tdp w",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "tdp_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4930,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "thermal_conductivity_w_mk",
+    "titleRu": "Теплопроводность",
+    "titleEn": "thermal conductivity w mk",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "thermal_conductivity_w_mk",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5230,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "thermal_paste_quantity_g",
+    "titleRu": "Количество термопасты",
+    "titleEn": "thermal paste quantity g",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "thermal_paste_quantity_g",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5240,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "thermal_profile",
     "titleRu": "Тепловой/игровой профиль",
     "titleEn": "Тепловой/игровой профиль",
@@ -11863,6 +15669,29 @@
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "throw_type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "throw_type",
+    "dictionaryCode": "throw_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9020,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Проекционное расстояние",
+    "titleEn": "Throw Type"
   },
   {
     "facetKey": "tie_width_type",
@@ -12073,6 +15902,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "tube_amp",
+    "titleRu": "Ламповый усилитель",
+    "titleEn": "Tube Amp",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "tube_amp",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6360,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "tuner_standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "tuner_standard",
+    "dictionaryCode": "tuner_standard",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9008,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "ТВ-тюнер",
+    "titleEn": "Tuner Standard"
+  },
+  {
+    "facetKey": "turntable_drive_type",
+    "titleRu": "Привод проигрывателя",
+    "titleEn": "Turntable Drive Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "turntable_drive_type",
+    "dictionaryCode": "turntable_drive_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6370,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "type_of_item",
     "titleRu": "Тип товара",
     "titleEn": "Type Of Item",
@@ -12229,6 +16127,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "use_case",
+    "titleRu": "Сценарий использования",
+    "titleEn": "Use Case",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.AUDIO"
+    ],
+    "attributeCode": "use_case",
+    "dictionaryCode": "use_case",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 6540,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "uv_protection",
     "titleRu": "UV-защита",
     "titleEn": "UV Protection",
@@ -12250,6 +16171,29 @@
     },
     "effectiveFrom": "2026-05-13",
     "effectiveTo": null
+  },
+  {
+    "facetKey": "variable_refresh_rate",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "variable_refresh_rate",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9014,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "VRR",
+    "titleEn": "Variable Refresh Rate"
   },
   {
     "facetKey": "variant_label",
@@ -12338,6 +16282,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "vesa_pattern",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "vesa_pattern",
+    "dictionaryCode": "vesa_pattern",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9036,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "VESA",
+    "titleEn": "Vesa Pattern"
+  },
+  {
+    "facetKey": "vesa_supported",
+    "titleRu": "Поддержка VESA",
+    "titleEn": "vesa supported",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "vesa_supported",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4790,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "video_fps",
+    "titleRu": "Частота видео, fps",
+    "titleEn": "video fps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "video_fps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4710,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "video_output_support",
     "titleRu": "Поддержка видео",
     "titleEn": "Video Output Support",
@@ -12401,6 +16414,75 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "video_speed_class",
+    "titleRu": "Video speed class",
+    "titleEn": "video speed class",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "video_speed_class",
+    "dictionaryCode": "video_speed_class",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5380,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "voice_assistant",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "voice_assistant",
+    "dictionaryCode": "voice_assistant",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9046,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Голосовой ассистент",
+    "titleEn": "Voice Assistant"
+  },
+  {
+    "facetKey": "voice_remote",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "voice_remote",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9034,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Голосовой пульт",
+    "titleEn": "Voice Remote"
+  },
+  {
     "facetKey": "volume_liter",
     "titleRu": "Объём, л",
     "titleEn": "Volume Liter",
@@ -12448,6 +16530,29 @@
       "format": "ML"
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "vram_gb",
+    "titleRu": "Видеопамять",
+    "titleEn": "vram gb",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "vram_gb",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4960,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -12553,6 +16658,7 @@
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "warranty",
@@ -12748,14 +16854,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
+      "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -12920,6 +17026,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "webcam_resolution",
+    "titleRu": "Разрешение камеры",
+    "titleEn": "webcam resolution",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES"
+    ],
+    "attributeCode": "webcam_resolution",
+    "dictionaryCode": "webcam_resolution",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4700,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "weight",
     "titleRu": "Вес",
     "titleEn": "Weight",
@@ -12965,6 +17094,7 @@
     "titleEn": "weight g",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "weight_g",
@@ -13139,6 +17269,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "wifi_bluetooth",
+    "titleRu": "Wi‑Fi / Bluetooth",
+    "titleEn": "wifi bluetooth",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PC_COMPONENTS"
+    ],
+    "attributeCode": "wifi_bluetooth",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5020,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wifi_standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.TV_HOME_THEATER"
+    ],
+    "attributeCode": "wifi_standard",
+    "dictionaryCode": "wifi_standard",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "OFFER",
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null,
+    "ui": {
+      "order": 9044,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "titleRu": "Wi‑Fi",
+    "titleEn": "Wifi Standard"
+  },
+  {
     "facetKey": "windproof",
     "titleRu": "Защита от ветра",
     "titleEn": "Windproof",
@@ -13299,16 +17475,16 @@
     "titleEn": "Wireless Standard",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES",
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.COMPUTERS",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
@@ -13352,6 +17528,29 @@
       "pinned": false,
       "hidden": false,
       "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "write_speed_mb_s",
+    "titleRu": "Скорость записи, МБ/с",
+    "titleEn": "write speed mb s",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.STORAGE_MEMORY"
+    ],
+    "attributeCode": "write_speed_mb_s",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 5240,
+      "pinned": false,
+      "hidden": false,
+      "format": "MB/s"
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null

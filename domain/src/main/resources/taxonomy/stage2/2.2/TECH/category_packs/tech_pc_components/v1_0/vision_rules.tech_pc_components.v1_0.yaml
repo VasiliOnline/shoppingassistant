@@ -1,0 +1,27 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+rules:
+  - id: no_model_guess_from_photo
+    severity: P0
+    text: "Не угадывать точную модель CPU/GPU/motherboard по одному внешнему виду без текста, маркировки, коробки или OCR evidence."
+  - id: component_type_from_visual_ok
+    severity: P1
+    text: "Можно определить общий pc_component_type по визуальной форме: видеокарта, материнская плата, RAM, PSU, корпус, вентилятор."
+  - id: cpu_requires_label_or_title
+    severity: P0
+    text: "Для CPU точная модель требует читаемой маркировки на теплораспределителе, коробке, чеке или title text."
+  - id: compatibility_soft_evidence
+    severity: P1
+    text: "Сокет, форм-фактор и разъёмы извлекать из title/OCR/spec table; при отсутствии оставлять unknown, не блокировать публикацию."
+  - id: damaged_components_flag
+    severity: P1
+    text: "Сгоревшие контакты, вздутые конденсаторы, сколы PCB, погнутые ножки сокета отмечать risk_flags, но не скрывать без moderation rule."
+  - id: storage_not_pc_components
+    severity: P0
+    text: "SSD/HDD/flash/memory card маршрутизировать в TECH.STORAGE_MEMORY, а не в TECH.PC_COMPONENTS."
+evidence_priority:
+  - gtin_or_mpn
+  - ocr_on_box_or_label
+  - title_model_tokens
+  - visual_component_type
+  - seller_description

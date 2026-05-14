@@ -1,0 +1,87 @@
+facet_template_id: facet_templates.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+primary_facets:
+  -
+    attribute: storage_type
+    label_ru: Тип
+    widget: multi_select
+    priority: 10
+  -
+    attribute: brand
+    label_ru: Бренд
+    widget: searchable_multi_select
+    priority: 20
+  -
+    attribute: storage_capacity_gb
+    label_ru: Объём
+    widget: range_plus_quick_values
+    priority: 30
+  -
+    attribute: condition
+    label_ru: Состояние
+    widget: multi_select
+    priority: 40
+  -
+    attribute: interface_type
+    label_ru: Интерфейс
+    widget: multi_select
+    priority: 50
+  -
+    attribute: form_factor
+    label_ru: Форм-фактор
+    widget: multi_select
+    priority: 60
+  -
+    attribute: price
+    label_ru: Цена
+    widget: range
+    priority: 70
+type_specific_facets:
+  INTERNAL_SSD:
+    - bus_protocol
+    - read_speed_mb_s
+    - write_speed_mb_s
+    - nand_type
+    - dram_cache
+    - endurance_tbw
+  INTERNAL_HDD:
+    - rpm
+    - cache_mb
+    - nas_grade
+    - surveillance_grade
+    - drive_height_mm
+  EXTERNAL_SSD:
+    - connector_type
+    - bus_protocol
+    - rugged_protection
+    - encryption_support
+  EXTERNAL_HDD:
+    - connector_type
+    - rugged_protection
+    - encryption_support
+  USB_FLASH_DRIVE:
+    - connector_type
+    - read_speed_mb_s
+    - write_speed_mb_s
+  MEMORY_CARD:
+    - memory_card_format
+    - speed_class
+    - video_speed_class
+    - app_performance_class
+  CARD_READER:
+    - card_reader_slots
+    - connector_type
+    - bus_protocol
+  NAS:
+    - bay_count
+    - nas_drive_bays
+    - raid_support
+    - network_ports
+  STORAGE_ACCESSORY:
+    - storage_accessory_type
+    - enclosure_supported_form_factor
+    - enclosure_supported_interface
+facet_display_rules:
+  hide_zero_count_values: true
+  show_facet_if_distinct_values_at_least: 2
+  T3_SYSTEM_HIDDEN_must_not_be_facet: true

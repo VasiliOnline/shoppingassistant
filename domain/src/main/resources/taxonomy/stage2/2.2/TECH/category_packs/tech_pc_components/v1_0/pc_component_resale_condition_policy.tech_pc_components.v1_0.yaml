@@ -1,0 +1,16 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+condition_policy:
+  required: condition
+  recommended:
+    - original_box
+    - warranty_status
+    - repair_history
+    - included_accessories
+type_specific_warnings:
+  CPU: ["bent pins/contacts", "delidded", "overclocking history"]
+  GPU: ["mining history", "fan noise", "artifacting", "repaired memory", "missing backplate"]
+  MOTHERBOARD: ["bent socket pins", "missing I/O shield", "BIOS version"]
+  RAM_MODULE: ["mixed kits warning", "XMP/EXPO stability"]
+  POWER_SUPPLY: ["age", "missing modular cables", "high-load noise"]
+  PC_CASE: ["missing screws/accessories", "glass panel damage"]

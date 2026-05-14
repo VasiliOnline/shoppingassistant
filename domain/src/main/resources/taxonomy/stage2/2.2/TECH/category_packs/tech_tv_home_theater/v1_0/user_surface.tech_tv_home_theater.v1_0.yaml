@@ -1,0 +1,33 @@
+user_surface:
+  categoryCode: TECH.TV_HOME_THEATER
+  initial_fields:
+    - av_type
+    - brand
+    - model_name_text
+    - condition
+    - screen_size_in
+    - resolution
+    - price
+    - availability
+  expanded_fields:
+    - display_technology
+    - refresh_rate_hz
+    - hdr_standard
+    - smart_tv_platform
+    - hdmi_ports
+    - projector_light_source
+    - brightness_lumens
+    - receiver_channels
+    - mount_type
+    - screen_diagonal_in
+    - included_accessories
+  hidden_fields:
+    - identity_confidence
+    - spec_confidence
+    - route_confidence
+    - source_evidence
+    - dedup_key
+    - image_fingerprint
+  limits:
+    initial_fields_max: 8
+    primary_facets_max: 7

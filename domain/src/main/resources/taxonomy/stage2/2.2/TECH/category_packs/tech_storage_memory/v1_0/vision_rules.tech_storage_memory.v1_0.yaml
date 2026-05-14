@@ -1,0 +1,29 @@
+vision_rules_id: vision_rules.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+principles:
+  - Never infer exact capacity from photo alone unless capacity text is readable.
+  - "Never infer health/usage hours from photo alone; require seller text, screenshot, SMART data or metadata."
+  - M.2 SSD form factor may be estimated from visible label/shape but exact 2230/2242/2280 requires text/evidence.
+  - "Memory card speed class can be extracted only from readable markings such as U3, V30, A2, UHS-II."
+  - "NAS bay count may be counted from visible bays, but exact model requires label/OCR/title evidence."
+allowed_evidence:
+  - title_text
+  - description_text
+  - ocr_label
+  - barcode_gtin
+  - seller_specs
+  - smart_screenshot
+  - model_seed_match
+  - url_metadata
+no_guess_attributes:
+  - storage_capacity_gb
+  - health_status
+  - usage_hours
+  - wear_level_percent
+  - endurance_tbw
+  - mpn
+  - gtin
+fallback_policy:
+  unknown_capacity: ask_or_keep_null_not_publish_blocker_for_classification
+  unknown_model: model_name_text_optional; do not create model value manually
+  unknown_interface: infer only from strong title/spec evidence

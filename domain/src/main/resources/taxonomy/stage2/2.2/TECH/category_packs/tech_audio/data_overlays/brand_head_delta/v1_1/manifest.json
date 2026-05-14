@@ -1,0 +1,28 @@
+{
+  "package_name": "TECH_AUDIO_brand_head_delta_pack_v1_1_RU",
+  "version": "1.1",
+  "locale": "ru",
+  "created_at": "2026-05-14",
+  "pack_type": "data_overlay_patch",
+  "target_categoryCode": "TECH.AUDIO",
+  "base_required_package": "TECH_AUDIO_public_category_pack_v1_0_RU",
+  "scope": "brand_head_delta_for_audio_brand_facet_and_search",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "schema_breaking_changes": false,
+  "new_category_codes": [],
+  "forbidden_content": {
+    "presets": false,
+    "collections": false,
+    "seo_landing_pages": false,
+    "microcategories": false,
+    "model_registry_full": false
+  },
+  "purpose_ru": "Закрыть P1-дыру TECH.AUDIO: усилить head-бренды и русские/латинские алиасы для брендового фасета и поиска, не расширяя дерево и не создавая merchandising-слой.",
+  "merge_policy": {
+    "brand_values": "append_category_scoped_head_values_to_TECH_AUDIO_brand_facet",
+    "aliases": "append_locale_aliases_if_no_collision",
+    "duplicates": "keep_existing_value_update_aliases",
+    "validation_mode": "lightweight_delta_gates"
+  }
+}

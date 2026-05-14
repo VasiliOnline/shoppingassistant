@@ -1,0 +1,14 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+dedup_key_priority:
+  - gtin
+  - mpn + brand
+  - brand + model_name_text + pc_component_type + key_specs
+  - title_embedding + image_fingerprint
+do_not_merge:
+  - same GPU chipset but different AIB model/cooler
+  - same RAM capacity but different speed/timings
+  - same PSU wattage but different efficiency/modularity
+  - used item with unique defect/repair history
+merge_allowed:
+  - duplicate listing reposted by same seller with same photos and same specs

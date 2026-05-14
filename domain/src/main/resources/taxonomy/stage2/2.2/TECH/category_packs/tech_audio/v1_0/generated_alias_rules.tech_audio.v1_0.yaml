@@ -1,0 +1,26 @@
+version: 1.0
+categoryCode: TECH.AUDIO
+rules:
+  - id: audio_type_core_ru_en
+    purpose: normalize common RU/EN names into audio_type
+    examples:
+      - 'наушники -> HEADPHONES/EARBUDS by form hints'
+      - 'саундбар -> SOUNDBAR'
+      - 'микрофон -> MICROPHONE'
+      - 'аудиоинтерфейс -> AUDIO_INTERFACE'
+  - id: model_spacing_dash_normalizer
+    purpose: normalize model spellings with spaces, dashes and compact forms
+    examples:
+      - 'wh1000xm6 -> WH-1000XM6'
+      - 'wf 1000 xm5 -> WF-1000XM5'
+      - 'sm 7 b -> SM7B'
+  - id: tws_alias_rule
+    purpose: TWS/earbuds/вкладыши/затычки with wireless hints route to EARBUDS
+  - id: studio_monitor_guard
+    purpose: 'студийный монитор' routes to TECH.AUDIO/STUDIO_MONITOR, not TECH.MONITORS_DISPLAYS
+  - id: gaming_headset_guard
+    purpose: explicit gaming/PS5/Xbox headset routes to TECH.GAMING when gaming intent dominates
+long_tail_policy:
+  brands_models: runtime_candidates_live_values
+  aliases: generated + observed query aliases
+  promotion: only by IdentityCandidateGate + AliasCollisionGate

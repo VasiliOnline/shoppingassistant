@@ -1,0 +1,39 @@
+{
+  "validation_report_id": "validation_report.tech_storage_memory.v1_0",
+  "pack_name": "TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.STORAGE_MEMORY",
+  "created_at": "2026-05-14",
+  "static_checks": {
+    "zip_integrity": "PASS",
+    "json_syntax": "PASS",
+    "yaml_structure": "PASS",
+    "jsonl_structure": "PASS",
+    "tsv_structure": "PASS",
+    "required_files_present": "PASS",
+    "initial_fields_max_8": "PASS",
+    "primary_facets_max_7": "PASS",
+    "T3_hidden_leaks": 0,
+    "presets_collections_files": 0,
+    "forbidden_microcategory_codes": 0
+  },
+  "coverage_summary": {
+    "attributes": 54,
+    "values": 187,
+    "aliases": 123,
+    "model_head_seed": 50,
+    "model_aliases": 173,
+    "golden_queries": 155,
+    "sample_offers": 120,
+    "publish_sample_offers": 45,
+    "facet_coverage_rows": 102
+  },
+  "runtime_validators_executed_in_sandbox": false,
+  "runtime_release_status": "PENDING_PROJECT_VALIDATORS",
+  "data_coverage_verdict": "BASELINE_PRODUCTION_DATA_COVERED",
+  "hardening_needed_now": false,
+  "notes": [
+    "Package is base branch data, not final mounted runtime proof.",
+    "No presets/collections included by design.",
+    "Long-tail model updates should use runtime candidates/live values."
+  ]
+}

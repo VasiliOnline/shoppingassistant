@@ -1,0 +1,55 @@
+attribute_code	label_ru	role	data_type	required_policy	multi_value	allowed_values_source	unit	usage_scope	description_ru
+storage_type	Тип накопителя	T0_CORE	enum	always	false	values.tsv#storage_type		classification	Главный type-атрибут ветки.
+storage_media_type	Тип носителя	T1_TYPE_SPECIFIC	enum	soft	false	values.tsv#storage_media_type		classification	SSD/HDD/flash/NAS enclosure/accessory.
+storage_capacity_gb	Объём, ГБ	T0_CORE	number	always	false	range:1..1048576	GB	search_filter_publish	Нормализованная ёмкость в гигабайтах.
+capacity_label	Маркировка объёма	T1_TYPE_SPECIFIC	string	recommended	false	free_text		display	Как указано в объявлении: 1TB, 2 ТБ, 512GB.
+interface_type	Интерфейс	T0_CORE	enum	required_by_type	true	values.tsv#interface_type		search_filter_publish	SATA/NVMe/USB/Thunderbolt/SAS/SD etc.
+bus_protocol	Протокол шины	T1_TYPE_SPECIFIC	enum	required_for_ssd	false	values.tsv#bus_protocol		search_filter	PCIe Gen3/Gen4/Gen5, SATA III, USB 3.x.
+form_factor	Форм-фактор	T0_CORE	enum	required_for_internal_drives	false	values.tsv#form_factor		search_filter_publish	M.2 2280, 2.5 inch, 3.5 inch, CFexpress Type B etc.
+connector_type	Разъём	T1_TYPE_SPECIFIC	enum	required_for_external_or_reader	true	values.tsv#connector_type		search_filter_publish	USB-A, USB-C, Thunderbolt, Lightning etc.
+read_speed_mb_s	Скорость чтения, МБ/с	T1_TYPE_SPECIFIC	number	optional	false	range:1..20000	MB/s	search_filter	Заявленная последовательная скорость чтения.
+write_speed_mb_s	Скорость записи, МБ/с	T1_TYPE_SPECIFIC	number	optional	false	range:1..20000	MB/s	search_filter	Заявленная последовательная скорость записи.
+random_read_iops	Random read IOPS	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:1..5000000	IOPS	enrichment	Random read для SSD.
+random_write_iops	Random write IOPS	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:1..5000000	IOPS	enrichment	Random write для SSD.
+nand_type	Тип NAND	T1_TYPE_SPECIFIC	enum	optional	false	values.tsv#nand_type		search_filter	SLC/MLC/TLC/QLC/V-NAND etc.
+dram_cache	DRAM cache	T1_TYPE_SPECIFIC	enum	optional	false	values.tsv#boolean_unknown		search_filter	Есть ли DRAM cache у SSD.
+endurance_tbw	Ресурс TBW	T1_TYPE_SPECIFIC	number	optional	false	range:1..100000	TBW	search_filter	Total Bytes Written для SSD.
+rpm	Обороты HDD	T1_TYPE_SPECIFIC	enum	required_for_hdd_optional	false	values.tsv#rpm		search_filter	5400/5900/7200/10000 rpm.
+cache_mb	Кэш HDD/SSD, МБ	T1_TYPE_SPECIFIC	number	optional	false	range:0..65536	MB	search_filter	Кэш устройства.
+drive_height_mm	Высота диска, мм	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:1..30	mm	compatibility_hint	Важно для 2.5 inch HDD/SSD.
+nas_grade	NAS grade	T1_TYPE_SPECIFIC	enum	optional	false	values.tsv#boolean_unknown		search_filter	Оптимизировано для NAS.
+surveillance_grade	Surveillance grade	T1_TYPE_SPECIFIC	enum	optional	false	values.tsv#boolean_unknown		search_filter	Оптимизировано для видеонаблюдения.
+bay_count	Количество отсеков NAS	T1_TYPE_SPECIFIC	number	required_for_nas	false	range:1..64	bay	search_filter_publish	Количество отсеков под диски.
+nas_drive_bays	Формат отсеков NAS	T1_TYPE_SPECIFIC	enum	required_for_nas_optional	true	values.tsv#nas_drive_bays		search_filter	2.5/3.5 inch drive bays.
+raid_support	RAID support	T1_TYPE_SPECIFIC	enum	required_for_nas	true	values.tsv#raid_support		search_filter	RAID 0/1/5/6/10/JBOD/SHR.
+network_ports	Сетевые порты NAS	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#network_ports		enrichment	1GbE/2.5GbE/10GbE.
+memory_card_format	Формат карты памяти	T1_TYPE_SPECIFIC	enum	required_for_memory_card	false	values.tsv#memory_card_format		search_filter_publish	SD/microSD/CFexpress etc.
+speed_class	Speed class	T1_TYPE_SPECIFIC	enum	optional	true	values.tsv#speed_class		search_filter	Class 10, UHS-I, UHS-II etc.
+video_speed_class	Video speed class	T1_TYPE_SPECIFIC	enum	optional	true	values.tsv#video_speed_class		search_filter	V10/V30/V60/V90.
+app_performance_class	App performance class	T1_TYPE_SPECIFIC	enum	optional	false	values.tsv#app_performance_class		search_filter	A1/A2.
+card_reader_slots	Слоты кардридера	T1_TYPE_SPECIFIC	enum	required_for_card_reader	true	values.tsv#card_reader_slots		search_filter_publish	SD/microSD/CFexpress slots.
+storage_accessory_type	Тип аксессуара для накопителя	T1_TYPE_SPECIFIC	enum	required_for_storage_accessory	false	values.tsv#storage_accessory_type		classification	Корпус, док, салазки, адаптер и т.д.
+enclosure_supported_form_factor	Поддерживаемый форм-фактор корпуса	T1_TYPE_SPECIFIC	enum	required_for_enclosure_optional	true	values.tsv#form_factor		compatibility_hint	Какие диски принимает корпус/док.
+enclosure_supported_interface	Поддерживаемый интерфейс корпуса	T1_TYPE_SPECIFIC	enum	required_for_enclosure_optional	true	values.tsv#interface_type		compatibility_hint	SATA/NVMe/USB etc.
+rugged_protection	Защита корпуса	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#rugged_protection		search_filter	Shockproof/water-resistant/rugged.
+encryption_support	Аппаратное шифрование	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#boolean_unknown		search_filter	Поддержка аппаратного шифрования.
+health_status	Состояние SMART/Health	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#health_status		resale_quality	Для б/у накопителей.
+usage_hours	Наработка, часы	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:0..1000000	hours	resale_quality	Для б/у HDD/SSD/NAS.
+power_on_count	Количество включений	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:0..1000000	count	resale_quality	Для б/у HDD/SSD.
+wear_level_percent	Износ, %	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:0..100	percent	resale_quality	Износ SSD/карты, если известен.
+warranty_months	Гарантия, месяцев	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:0..120	months	publish_quality	Гарантия продавца/производителя.
+included_accessories	Комплект	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#included_accessories		display	Кабель, коробка, винты, адаптер и др.
+seller_bundle	Комплект/лот продавца	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#seller_bundle		display	Один товар, лот, комплект.
+storage_use_case	Сценарий использования	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#storage_use_case		search_filter	Gaming, NAS, surveillance, backup, camera, phone, console.
+console_compatibility_hint	Совместимость с консолью	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#console_compatibility_hint		compatibility_hint	PS5/Xbox/Switch/Steam Deck hints.
+model_name_text	Название модели текстом	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		identity_light	Сырой текст модели.
+mpn	MPN	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		identity_light	Manufacturer Part Number.
+gtin	GTIN/EAN/UPC	T2_OPTIONAL_ENRICHMENT	string	optional	false	regex:gtin		identity_light	Штрихкод.
+release_year	Год релиза	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:1990..2035	year	identity_light	Год релиза, если известен.
+region_variant	Региональная версия	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#region_variant		identity_light	GLOBAL/EU/US/CN/JP etc.
+dedup_key	Dedup key	T3_SYSTEM_HIDDEN	string	system	false	generated		dedup	Системный ключ дедупликации.
+normalization_confidence	Уверенность нормализации	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Confidence после нормализации.
+vision_evidence	Vision evidence	T3_SYSTEM_HIDDEN	json	system	false	generated		system	Доказательства vision/OCR.
+route_guard_trace	Route guard trace	T3_SYSTEM_HIDDEN	json	system	false	generated		system	Trace маршрутизации.
+candidate_value_status	Статус runtime candidate	T3_SYSTEM_HIDDEN	enum	system	false	values.tsv#candidate_value_status		runtime	head/live/candidate/rejected.
+model_seed_match_level	Уровень совпадения с seed	T3_SYSTEM_HIDDEN	enum	system	false	values.tsv#model_seed_match_level		runtime	exact/fuzzy/family/no_match.

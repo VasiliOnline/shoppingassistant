@@ -1,0 +1,117 @@
+attribute_code	label_ru	role	data_type	required_policy	allowed_values_source	unit	usage_scope	notes
+categoryCode	Код категории	T0_CORE	string	required	fixed:TECH.PC_COMPONENTS		all	
+pc_component_type	Тип комплектующего	T0_CORE	enum	required	values.pc_component_type		all	
+brand	Бренд	T0_CORE	string	required	runtime_head+free_text		all	
+condition	Состояние	T0_CORE	enum	required	values.condition		all	
+model_name_text	Модель / название модели	T0_CORE	string	required	free_text_normalized		all	
+price	Цена	T0_CORE	decimal	required	commerce		all	
+currency	Валюта	T0_CORE	enum	required	values.currency		all	
+availability	Наличие	T0_CORE	enum	required	values.availability		all	
+region	Регион / версия рынка	T0_CORE	enum	recommended	values.region		all	
+cpu_socket	Сокет процессора	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.socket		CPU	
+cpu_series	Серия CPU	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.cpu_series		CPU	
+cpu_generation	Поколение CPU	T1_TYPE_SPECIFIC	string	required_for_type_or_recommended	runtime_head		CPU	
+core_count	Количество ядер	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:1-128		CPU	
+thread_count	Количество потоков	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:1-256		CPU	
+base_clock_ghz	Базовая частота	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	range:0.5-7.0		CPU	
+boost_clock_ghz	Boost-частота	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	range:0.5-8.0		CPU	
+tdp_w	TDP	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:5-500		CPU|CPU_COOLER	
+integrated_graphics	Встроенная графика	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		CPU	
+unlocked_multiplier	Разблокированный множитель	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		CPU	
+gpu_chipset	Чип GPU	T1_TYPE_SPECIFIC	string	required_for_type_or_recommended	runtime_head		GPU	
+gpu_series	Серия GPU	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.gpu_series		GPU	
+vram_gb	Видеопамять	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.vram_gb		GPU	
+gpu_memory_type	Тип видеопамяти	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.gpu_memory_type		GPU	
+gpu_bus_width_bit	Шина памяти GPU	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.gpu_bus_width_bit		GPU	
+gpu_length_mm	Длина видеокарты	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:80-500		GPU	
+recommended_psu_w	Рекомендованный БП	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:200-1600		GPU	
+power_connector	Разъём питания	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.power_connector		GPU|POWER_SUPPLY	
+display_output	Видеовыходы	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.display_output		GPU	
+ray_tracing_support	Поддержка ray tracing	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		GPU	
+motherboard_socket	Сокет материнской платы	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.socket		MOTHERBOARD	
+chipset	Чипсет	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.chipset		MOTHERBOARD	
+motherboard_form_factor	Форм-фактор платы	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.motherboard_form_factor		MOTHERBOARD	
+ram_type	Тип памяти	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.ram_type		MOTHERBOARD|RAM_MODULE	
+memory_slots	Слоты памяти	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.memory_slots		MOTHERBOARD	
+max_memory_gb	Максимум памяти	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.max_memory_gb		MOTHERBOARD	
+pcie_version	PCIe версия	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.pcie_version		MOTHERBOARD|GPU|EXPANSION_CARD	
+wifi_bluetooth	Wi‑Fi / Bluetooth	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		MOTHERBOARD	
+m2_slots	M.2 слоты	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:0-8		MOTHERBOARD	
+sata_ports	SATA порты	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:0-12		MOTHERBOARD	
+ram_capacity_gb	Объём RAM	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.ram_capacity_gb		RAM_MODULE	
+ram_kit_modules	Количество модулей	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.ram_kit_modules		RAM_MODULE	
+ram_speed_mhz	Частота памяти	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.ram_speed_mhz		RAM_MODULE	
+ram_form_factor	Форм-фактор RAM	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.ram_form_factor		RAM_MODULE	
+cas_latency	CAS latency	T1_TYPE_SPECIFIC	string	required_for_type_or_recommended	runtime_head		RAM_MODULE	
+ecc_support	ECC	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		RAM_MODULE	
+rgb_lighting	RGB / ARGB	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		RAM_MODULE|CPU_COOLER|CASE_FAN|PC_CASE	
+psu_wattage_w	Мощность БП	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.psu_wattage_w		POWER_SUPPLY	
+efficiency_rating	Сертификат эффективности	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.efficiency_rating		POWER_SUPPLY	
+psu_modularity	Модульность БП	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.psu_modularity		POWER_SUPPLY	
+psu_form_factor	Форм-фактор БП	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.psu_form_factor		POWER_SUPPLY	
+atx_version	Версия ATX	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.atx_version		POWER_SUPPLY	
+pcie_5_support	PCIe 5.0 / 12VHPWR ready	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		POWER_SUPPLY	
+case_size	Размер корпуса	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.case_size		PC_CASE	
+motherboard_form_factor_support	Поддержка форм-факторов плат	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.motherboard_form_factor		PC_CASE	
+max_gpu_length_mm	Макс. длина GPU	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:100-600		PC_CASE	
+max_cpu_cooler_height_mm	Макс. высота кулера	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:20-250		PC_CASE	
+radiator_support_mm	Поддержка радиатора	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.radiator_size_mm		PC_CASE|CPU_COOLER	
+side_panel_material	Боковая панель	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.side_panel_material		PC_CASE	
+case_color	Цвет корпуса	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.color_family		PC_CASE	
+included_fans_count	Вентиляторы в комплекте	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:0-10		PC_CASE	
+cooler_type	Тип охлаждения CPU	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.cooler_type		CPU_COOLER	
+socket_support	Поддерживаемые сокеты	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.socket		CPU_COOLER	
+radiator_size_mm	Размер радиатора	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.radiator_size_mm		CPU_COOLER	
+fan_size_mm	Размер вентилятора	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.fan_size_mm		CPU_COOLER|CASE_FAN	
+cooler_height_mm	Высота кулера	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:20-250		CPU_COOLER	
+tdp_rating_w	Рейтинг отвода тепла	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:30-500		CPU_COOLER	
+fan_thickness_mm	Толщина вентилятора	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.fan_thickness_mm		CASE_FAN	
+fan_count	Количество вентиляторов	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.fan_count		CASE_FAN	
+pwm_support	PWM	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		CASE_FAN	
+argb_support	ARGB	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		CASE_FAN	
+airflow_cfm	Воздушный поток	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	range:5-300		CASE_FAN	
+noise_level_db	Шум	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	range:5-60		CASE_FAN	
+thermal_conductivity_w_mk	Теплопроводность	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	range:0.1-20		THERMAL_PASTE	
+thermal_paste_quantity_g	Количество термопасты	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	range:0.1-100		THERMAL_PASTE	
+application_count	Количество нанесений	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	range:1-100		THERMAL_PASTE	
+electrically_conductive	Электропроводная	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		THERMAL_PASTE	
+capture_interface	Интерфейс карты захвата	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.card_interface		CAPTURE_CARD	
+max_capture_resolution	Макс. разрешение захвата	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.video_resolution		CAPTURE_CARD	
+max_capture_fps	Макс. FPS захвата	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.fps		CAPTURE_CARD	
+passthrough_resolution	Passthrough-разрешение	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.video_resolution		CAPTURE_CARD	
+input_port	Входы	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.av_port		CAPTURE_CARD|SOUND_CARD	
+output_port	Выходы	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.av_port		CAPTURE_CARD|SOUND_CARD	
+encoder_support	Аппаратный энкодер	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		CAPTURE_CARD	
+card_interface	Интерфейс платы	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.card_interface		SOUND_CARD|NETWORK_CARD|EXPANSION_CARD	
+audio_channels	Аудиоканалы	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.audio_channels		SOUND_CARD	
+dac_resolution_bit	Разрядность DAC	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.dac_resolution_bit		SOUND_CARD	
+sample_rate_khz	Частота дискретизации	T1_TYPE_SPECIFIC	integer	required_for_type_or_recommended	values.sample_rate_khz		SOUND_CARD	
+network_speed_gbps	Скорость сети	T1_TYPE_SPECIFIC	decimal	required_for_type_or_recommended	values.network_speed_gbps		NETWORK_CARD	
+wireless_standard	Беспроводной стандарт	T1_TYPE_SPECIFIC	enum_multi	required_for_type_or_recommended	values.wireless_standard		NETWORK_CARD	
+bluetooth_version	Bluetooth	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.bluetooth_version		NETWORK_CARD	
+antenna_included	Антенна в комплекте	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		NETWORK_CARD	
+expansion_function	Назначение платы расширения	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.expansion_function		EXPANSION_CARD	
+pcie_lanes	PCIe lanes	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.pcie_lanes		EXPANSION_CARD	
+bracket_size	Планка	T1_TYPE_SPECIFIC	enum	required_for_type_or_recommended	values.bracket_size		EXPANSION_CARD	
+driver_required	Нужен драйвер	T1_TYPE_SPECIFIC	boolean	required_for_type_or_recommended	true_false_unknown		EXPANSION_CARD	
+manufacturer	Производитель	T2_OPTIONAL_ENRICHMENT	string	optional	runtime_head		all	
+mpn	MPN / part number	T2_OPTIONAL_ENRICHMENT	string	optional	free_text_normalized		all	
+gtin	GTIN/EAN/UPC	T2_OPTIONAL_ENRICHMENT	string	optional	barcode		all	
+release_year	Год выпуска	T2_OPTIONAL_ENRICHMENT	integer	optional	range:1995-2030		all	
+warranty_status	Гарантия	T2_OPTIONAL_ENRICHMENT	enum	optional	values.warranty_status		all	
+original_box	Оригинальная коробка	T2_OPTIONAL_ENRICHMENT	boolean	optional	true_false_unknown		all	
+included_accessories	Комплект	T2_OPTIONAL_ENRICHMENT	string	optional	free_text		all	
+seller_bundle	Набор / бандл	T2_OPTIONAL_ENRICHMENT	boolean	optional	true_false_unknown		all	
+repair_history	История ремонта	T2_OPTIONAL_ENRICHMENT	enum	optional	values.repair_history		all	
+compatibility_notes	Заметки совместимости	T2_OPTIONAL_ENRICHMENT	string	optional	free_text		all	
+listing_completeness_confidence	Полнота карточки	T2_OPTIONAL_ENRICHMENT	decimal	optional	range:0-1		system	
+identity_confidence	Уверенность идентификации	T2_OPTIONAL_ENRICHMENT	decimal	optional	range:0-1		system	
+spec_confidence	Уверенность спецификаций	T2_OPTIONAL_ENRICHMENT	decimal	optional	range:0-1		system	
+dedup_key	dedup_key	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+image_fingerprint	image_fingerprint	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+source_offer_id	source_offer_id	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+source_url	source_url	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+ingestion_timestamp	ingestion_timestamp	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+normalization_trace_id	normalization_trace_id	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+risk_flags	risk_flags	T3_SYSTEM_HIDDEN	string	system_only	internal		system	
+moderation_status	moderation_status	T3_SYSTEM_HIDDEN	string	system_only	internal		system	

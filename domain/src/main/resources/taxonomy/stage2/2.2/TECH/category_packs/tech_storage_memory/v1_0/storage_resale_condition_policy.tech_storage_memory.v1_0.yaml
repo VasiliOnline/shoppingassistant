@@ -1,0 +1,23 @@
+policy_id: storage_resale_condition_policy.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+resale_fields:
+  - health_status
+  - usage_hours
+  - power_on_count
+  - wear_level_percent
+  - repair_history
+  - warranty_months
+publish_warnings:
+  -
+    if: condition in USED and health_status is UNKNOWN
+    severity: P1
+    message: Б/у накопитель без SMART/health снижает доверие.
+  -
+    if: "storage_type in [INTERNAL_HDD, INTERNAL_SSD] and condition in USED and usage_hours missing"
+    severity: P2
+    message: Рекомендуется указать наработку.
+  -
+    if: "health_status in [WARNING, BAD]"
+    severity: P0_REVIEW
+    message: Нужно явно показать риск покупателю.
+privacy_policy: Do not require screenshots with personal file names; SMART data should be cropped/anonymized.

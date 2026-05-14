@@ -1,0 +1,32 @@
+route_guardrails:
+  evaluation_mode: priority_desc_first_match
+  include:
+    - id: tv_home_theater_core
+      priority: 800
+      when_any: ["телевизор", "smart tv", "oled tv", "qled", "проектор", "apple tv", "chromecast", "av ресивер", "blu ray", "кронштейн для телевизора", "экран для проектора"]
+      route_to: TECH.TV_HOME_THEATER
+  exclude:
+    - id: soundbar_audio
+      priority: 950
+      when_any: ["soundbar", "саундбар", "bluetooth speaker", "колонка", "наушники", "микрофон"]
+      route_to: TECH.AUDIO
+    - id: monitor_display
+      priority: 940
+      when_any: ["монитор", "gaming monitor", "displayport monitor", "27 дюймов монитор"]
+      route_to: TECH.MONITORS_DISPLAYS
+    - id: gaming_console
+      priority: 930
+      when_any: ["playstation", "xbox", "nintendo switch", "игровая приставка"]
+      route_to: TECH.GAMING
+    - id: hdmi_cable_power
+      priority: 920
+      when_any: ["hdmi кабель", "usb-c cable", "сетевой фильтр", "power bank", "зарядка"]
+      route_to: TECH.POWER_CHARGING_CABLES
+    - id: computer_accessory_mount
+      priority: 910
+      when_any: ["monitor arm", "кронштейн для монитора", "док станция", "usb hub"]
+      route_to: TECH.COMPUTER_ACCESSORIES
+    - id: camera_projector_conflict
+      priority: 900
+      when_any: ["камера", "объектив", "экшн камера", "дрон"]
+      route_to: TECH.CAMERAS_DRONES

@@ -1,0 +1,19 @@
+generated_alias_rules:
+  tv_size_resolution:
+    examples: ["телевизор 55 4к", "65 дюймов oled", "smart tv 43"]
+    normalize_to: {categoryCode: TECH.TV_HOME_THEATER, av_type: TV}
+  projector_lumens_resolution:
+    examples: ["проектор 4к лазерный", "ust projector 3000 lumens"]
+    normalize_to: {categoryCode: TECH.TV_HOME_THEATER, av_type: PROJECTOR}
+  streaming_device_brand:
+    examples: ["apple tv 4k", "chromecast google tv", "fire tv stick"]
+    normalize_to: {categoryCode: TECH.TV_HOME_THEATER, av_type: STREAMING_DEVICE}
+  receiver_channels:
+    examples: ["denon 7.2 ресивер", "yamaha av receiver atmos"]
+    normalize_to: {categoryCode: TECH.TV_HOME_THEATER, av_type: AV_RECEIVER}
+  mount_vesa:
+    examples: ["кронштейн тв vesa 400x400", "настенное крепление телевизора"]
+    normalize_to: {categoryCode: TECH.TV_HOME_THEATER, av_type: TV_MOUNT}
+  projection_screen:
+    examples: ["экран для проектора 100", "alr screen 120"]
+    normalize_to: {categoryCode: TECH.TV_HOME_THEATER, av_type: PROJECTOR_SCREEN}

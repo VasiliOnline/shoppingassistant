@@ -1,0 +1,59 @@
+integration_mapping_id: integration_mapping.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+source_fields:
+  title:
+    - title
+    - name
+    - productName
+  brand:
+    - brand
+    - manufacturer
+    - vendor
+  model_name_text:
+    - model
+    - modelName
+    - mpn
+    - partNumber
+  storage_capacity_gb:
+    - capacity
+    - storage
+    - size
+    - объем
+    - объём
+  interface_type:
+    - interface
+    - connection
+    - bus
+  form_factor:
+    - formFactor
+    - format
+  condition:
+    - condition
+    - itemCondition
+  price:
+    - price
+    - amount
+  currency:
+    - currency
+  availability:
+    - availability
+    - stockStatus
+normalizers:
+  - capacity_parser_gb_tb
+  - storage_type_alias_matcher
+  - interface_form_factor_parser
+  - model_head_seed_matcher
+  - runtime_candidate_value_collector
+publish_blockers:
+  - missing_categoryCode
+  - missing_storage_type
+  - missing_brand
+  - missing_condition
+  - missing_price
+  - missing_currency
+  - missing_availability
+soft_warnings:
+  - used_drive_without_health_status
+  - missing_capacity_for_accessory_allowed
+  - unknown_model_name
+  - missing_interface_for_external_drive

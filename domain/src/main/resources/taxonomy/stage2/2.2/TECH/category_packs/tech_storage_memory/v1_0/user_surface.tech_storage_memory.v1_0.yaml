@@ -1,0 +1,34 @@
+surface_id: user_surface.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+initial_fields:
+  - storage_type
+  - brand
+  - storage_capacity_gb
+  - condition
+  - interface_type
+  - form_factor
+  - price
+  - availability
+expanded_fields:
+  - connector_type
+  - read_speed_mb_s
+  - write_speed_mb_s
+  - rpm
+  - memory_card_format
+  - bay_count
+  - raid_support
+  - health_status
+  - warranty_months
+  - included_accessories
+hidden_system_fields:
+  - dedup_key
+  - normalization_confidence
+  - vision_evidence
+  - source_hash
+  - route_guard_trace
+  - candidate_value_status
+rules:
+  max_initial_fields: 8
+  max_primary_facets: 7
+  show_type_specific_fields_after_storage_type_known: true
+  do_not_show_T3_SYSTEM_HIDDEN: true

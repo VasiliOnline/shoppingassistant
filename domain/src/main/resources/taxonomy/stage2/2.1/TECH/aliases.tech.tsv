@@ -3,7 +3,7 @@ alias_text	locale	normalized_alias	route_kind	target_code	priority	match_kind	is
 гаджеты	ru-RU	гаджеты	BROWSE_NODE	B.TECH	70	EXACT	false	SEED	
 телефоны	ru-RU	телефоны	BROWSE_NODE	B.TECH.MOBILE	70	EXACT	false	SEED	
 компьютеры	ru-RU	компьютеры	BROWSE_NODE	B.TECH.WORKSPACE	70	EXACT	false	SEED	
-тв и аудио	ru-RU	тв и аудио	BROWSE_NODE	B.TECH.MEDIA_GAMING	70	EXACT	false	SEED	
+тв и аудио	ru-RU	тв и аудио	BROWSE_NODE	B.TECH.MEDIA_GAMING	90	EXACT	false	SEED	
 фото техника	ru-RU	фото техника	BROWSE_NODE	B.TECH.MEDIA_GAMING.CAMERAS_DRONES	70	EXACT	false	SEED	
 игры и консоли	ru-RU	игры и консоли	BROWSE_NODE	B.TECH.MEDIA_GAMING.GAMING	70	EXACT	false	SEED	
 умный дом	ru-RU	умный дом	BROWSE_NODE	B.TECH.HOME_POWER_AUTO	80	EXACT	false	SEED	
@@ -293,7 +293,7 @@ xbox game pass	en-US	xbox game pass	CATEGORY_LEAF	TECH.GAMING	72	EXACT	false	SEE
 умные датчики	ru-RU	умные датчики	CATEGORY_LEAF	TECH.SMART_HOME_SECURITY	72	EXACT	false	SEED	golden backfill
 телефоны и аксессуары	ru-RU	телефоны и аксессуары	BROWSE_NODE	B.TECH.MOBILE	68	EXACT	false	SEED	golden backfill
 комплектующие	ru-RU	комплектующие	BROWSE_NODE	B.TECH.WORKSPACE	68	EXACT	false	SEED	golden backfill
-тв аудио	ru-RU	тв аудио	BROWSE_NODE	B.TECH.MEDIA_GAMING	68	EXACT	false	SEED	golden backfill
+тв аудио	ru-RU	тв аудио	BROWSE_NODE	B.TECH.MEDIA_GAMING	90	EXACT	false	SEED	golden backfill
 фото и видео	ru-RU	фото и видео	BROWSE_NODE	B.TECH.MEDIA_GAMING.CAMERAS_DRONES	68	EXACT	false	SEED	golden backfill
 игровые товары	ru-RU	игровые товары	BROWSE_NODE	B.TECH.MEDIA_GAMING.GAMING	68	EXACT	false	SEED	golden backfill
 умный дом гаджеты	ru-RU	умный дом гаджеты	BROWSE_NODE	B.TECH.HOME_POWER_AUTO	68	EXACT	false	SEED	golden backfill
@@ -1126,3 +1126,485 @@ printer	en-US	printer	CATEGORY_LEAF	TECH.PRINTERS_SCANNERS	90	EXACT	false	SEED	T
 dash cam	en-US	dash cam	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	86	EXACT	false	SEED	TECH v1.1
 gps навигатор	ru-RU	gps навигатор	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	84	EXACT	false	SEED	TECH v1.1
 obd scanner	en-US	obd scanner	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	80	EXACT	false	SEED	TECH v1.1
+клава	ru-RU	клава	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+mx keys	en-US	mx keys	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; model_head
+keychron	en-US	keychron	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; model_head
+magic keyboard	en-US	magic keyboard	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; model_head
+док-станция	ru-RU	док станция	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+docking station	en-US	docking station	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+thunderbolt dock	en-US	thunderbolt dock	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+usb c dock	en-US	usb c dock	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+usb hub	en-US	usb hub	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+usb c hub	en-US	usb c hub	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+usb hub type c	en-US	usb hub type c	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; storage boundary
+type c usb hub	en-US	type c usb hub	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; storage boundary
+type c hub	en-US	type c hub	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+usb хаб	ru-RU	usb хаб	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+юсб хаб	ru-RU	юсб хаб	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+концентратор usb	ru-RU	концентратор usb	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+подставка для ноутбука	ru-RU	подставка для ноутбука	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+laptop stand	en-US	laptop stand	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+держатель ноутбука	ru-RU	держатель ноутбука	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+рука для монитора	ru-RU	рука для монитора	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+vesa arm	en-US	vesa arm	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+настольный кронштейн монитора	ru-RU	настольный кронштейн монитора	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+коврик для мыши	ru-RU	коврик для мыши	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+mouse pad	en-US	mouse pad	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+desk mat	en-US	desk mat	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+surface pen	en-US	surface pen	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+wacom bamboo ink	en-US	wacom bamboo ink	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+цифровое перо	ru-RU	цифровое перо	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+переходник usb c hdmi	ru-RU	переходник usb c hdmi	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+usb c to hdmi	en-US	usb c to hdmi	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+dongle	en-US	dongle	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+донгл	ru-RU	донгл	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+type c hdmi	en-US	type c hdmi	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+охлаждающая подставка	ru-RU	охлаждающая подставка	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+cooling pad	en-US	cooling pad	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+кулер для ноутбука	ru-RU	кулер для ноутбука	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; route_guardrail
+чехол для macbook	ru-RU	чехол для macbook	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; hard-shell boundary
+накладка на macbook	ru-RU	накладка на macbook	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; hard-shell boundary
+hard shell macbook	en-US	hard shell macbook	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; hard-shell boundary
+накладка на клавиатуру macbook	ru-RU	накладка на клавиатуру macbook	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; keyboard-cover boundary
+защита клавиатуры	ru-RU	защита клавиатуры	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; keyboard-cover boundary
+keyboard cover	en-US	keyboard cover	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; keyboard-cover boundary
+privacy filter	en-US	privacy filter	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; screen-filter boundary
+фильтр приватности	ru-RU	фильтр приватности	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	96	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; screen-filter boundary
+антишпион для экрана	ru-RU	антишпион для экрана	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	94	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; screen-filter boundary
+набор для чистки	ru-RU	набор для чистки	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; cleaning-kit boundary
+cleaning kit	en-US	cleaning kit	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; cleaning-kit boundary
+салфетка для монитора	ru-RU	салфетка для монитора	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; cleaning-kit boundary
+спрей для экрана	ru-RU	спрей для экрана	CATEGORY_LEAF	TECH.COMPUTER_ACCESSORIES	92	EXACT	false	MANUAL	TECH_COMPUTER_ACCESSORIES_public_category_pack_v1_0_RU; cleaning-kit boundary
+термопаста	ru-RU	термопаста	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+карта захвата	ru-RU	карта захвата	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+звуковая карта	ru-RU	звуковая карта	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+сетевая карта	ru-RU	сетевая карта	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+плата расширения	ru-RU	плата расширения	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+корпус для пк	ru-RU	корпус для пк	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+материнка	ru-RU	материнка	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+озу	ru-RU	озу	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+бп	ru-RU	бп	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+вентилятор для корпуса	ru-RU	вентилятор для корпуса	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+geforce rtx	en-US	geforce rtx	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+radeon rx	en-US	radeon rx	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+pc case	en-US	pc case	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+computer case	en-US	computer case	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+power supply	en-US	power supply	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+cpu cooler	en-US	cpu cooler	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+case fan	en-US	case fan	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+capture card	en-US	capture card	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+sound card	en-US	sound card	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+network card	en-US	network card	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+expansion card	en-US	expansion card	CATEGORY_LEAF	TECH.PC_COMPONENTS	96	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; route_guardrail
+rtx	en-US	rtx	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+geforce	en-US	geforce	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+radeon	en-US	radeon	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+ryzen	en-US	ryzen	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+amd ryzen	en-US	amd ryzen	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+intel core	en-US	intel core	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+mobo	en-US	mobo	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_PC_COMPONENTS_public_category_pack_v1_0_RU; component aliases
+ssd внутренний	ru-RU	ssd внутренний	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+внутренний ссд	ru-RU	внутренний ссд	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+m.2 ssd	ru-RU	m.2 ssd	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+sata ssd	ru-RU	sata ssd	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+внешний ssd	ru-RU	внешний ssd	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+внешний hdd	ru-RU	внешний hdd	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+внешний жесткий диск	ru-RU	внешний жесткий диск	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+флешка	ru-RU	флешка	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+usb флешка	ru-RU	usb флешка	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+карта памяти	ru-RU	карта памяти	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+micro sd	ru-RU	micro sd	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+кардридер	ru-RU	кардридер	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+card reader	en-US	card reader	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+nas	en-US	nas	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+сетевое хранилище	ru-RU	сетевое хранилище	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+корпус для ssd	ru-RU	корпус для ssd	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+док для дисков	ru-RU	док для дисков	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+samsung 990 pro	en-US	samsung 990 pro	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+samsung 980 pro	en-US	samsung 980 pro	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+wd black sn850x	en-US	wd black sn850x	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+crucial p3 plus	en-US	crucial p3 plus	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+kingston nv2	en-US	kingston nv2	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+synology nas	en-US	synology nas	CATEGORY_LEAF	TECH.STORAGE_MEMORY	96	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; route_guardrail
+ddr5	en-US	ddr5	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; ram boundary
+ddr4	en-US	ddr4	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; ram boundary
+ram ddr5	en-US	ram ddr5	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; ram boundary
+ram ddr4	en-US	ram ddr4	CATEGORY_LEAF	TECH.PC_COMPONENTS	94	EXACT	false	MANUAL	TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU; ram boundary
+полноразмерные наушники	ru-RU	полноразмерные наушники	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+накладные наушники	ru-RU	накладные наушники	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+wireless headphones	ru-RU	wireless headphones	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+блютуз наушники	ru-RU	блютуз наушники	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+tws	ru-RU	tws	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+tws наушники	ru-RU	tws наушники	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+вкладыши	ru-RU	вкладыши	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+внутриканальные наушники	ru-RU	внутриканальные наушники	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+затычки	ru-RU	затычки	CATEGORY_LEAF	TECH.AUDIO	94	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+беспроводные вкладыши	ru-RU	беспроводные вкладыши	CATEGORY_LEAF	TECH.AUDIO	93	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+гарнитура	ru-RU	гарнитура	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+компьютерная гарнитура	ru-RU	компьютерная гарнитура	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+headset	ru-RU	headset	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+наушники с микрофоном	ru-RU	наушники с микрофоном	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+офисная гарнитура	ru-RU	офисная гарнитура	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+портативная колонка	ru-RU	портативная колонка	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+portable speaker	ru-RU	portable speaker	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+homepod	ru-RU	homepod	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+sound bar	ru-RU	sound bar	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+акустическая панель	ru-RU	акустическая панель	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+саунд бар	ru-RU	саунд бар	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+usb микрофон	ru-RU	usb микрофон	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+xlr микрофон	ru-RU	xlr микрофон	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+петличка	ru-RU	петличка	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+петличный микрофон	ru-RU	петличный микрофон	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+microphone	ru-RU	microphone	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+mic	ru-RU	mic	CATEGORY_LEAF	TECH.AUDIO	94	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+аудиоинтерфейс	ru-RU	аудиоинтерфейс	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+звуковая карта для записи	ru-RU	звуковая карта для записи	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+audio interface	ru-RU	audio interface	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+внешняя звуковая карта	ru-RU	внешняя звуковая карта	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+интерфейс для микрофона	ru-RU	интерфейс для микрофона	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+цап	ru-RU	цап	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+усилитель для наушников	ru-RU	усилитель для наушников	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+dac amp	ru-RU	dac amp	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+внешний цап	ru-RU	внешний цап	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+портативный цап	ru-RU	портативный цап	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+виниловый проигрыватель	ru-RU	виниловый проигрыватель	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+проигрыватель винила	ru-RU	проигрыватель винила	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+turntable	ru-RU	turntable	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+вертушка	ru-RU	вертушка	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+vinyl player	ru-RU	vinyl player	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+ресивер	ru-RU	ресивер	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+av ресивер	ru-RU	av ресивер	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+stereo amplifier	ru-RU	stereo amplifier	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+receiver	ru-RU	receiver	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+amplifier	ru-RU	amplifier	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+студийный монитор	ru-RU	студийный монитор	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+мониторы студийные	ru-RU	мониторы студийные	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+studio monitor	ru-RU	studio monitor	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+активные мониторы	ru-RU	активные мониторы	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+mp3 плеер	ru-RU	mp3 плеер	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+hi-fi плеер	ru-RU	hi fi плеер	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+dap	ru-RU	dap	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+аудиоплеер	ru-RU	аудиоплеер	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+плеер для музыки	ru-RU	плеер для музыки	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+радио	ru-RU	радио	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+радиоприемник	ru-RU	радиоприемник	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+internet radio	ru-RU	internet radio	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+fm radio	ru-RU	fm radio	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+аудио аксессуар	ru-RU	аудио аксессуар	CATEGORY_LEAF	TECH.AUDIO	100	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+амбушюры	ru-RU	амбушюры	CATEGORY_LEAF	TECH.AUDIO	99	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+поп фильтр	ru-RU	поп фильтр	CATEGORY_LEAF	TECH.AUDIO	98	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+микрофонная стойка	ru-RU	микрофонная стойка	CATEGORY_LEAF	TECH.AUDIO	97	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+кабель для наушников	ru-RU	кабель для наушников	CATEGORY_LEAF	TECH.AUDIO	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+audio accessory	ru-RU	audio accessory	CATEGORY_LEAF	TECH.AUDIO	95	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; type_alias
+аирподс	ru-RU	аирподс	CATEGORY_LEAF	TECH.AUDIO	69	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+эйрподс	ru-RU	эйрподс	CATEGORY_LEAF	TECH.AUDIO	68	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+airpods pro	ru-RU	airpods pro	CATEGORY_LEAF	TECH.AUDIO	67	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+airpods max	ru-RU	airpods max	CATEGORY_LEAF	TECH.AUDIO	66	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+sony wh	ru-RU	sony wh	CATEGORY_LEAF	TECH.AUDIO	65	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+sony wf	ru-RU	sony wf	CATEGORY_LEAF	TECH.AUDIO	64	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+bose quietcomfort	ru-RU	bose quietcomfort	CATEGORY_LEAF	TECH.AUDIO	63	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+jbl flip	ru-RU	jbl flip	CATEGORY_LEAF	TECH.AUDIO	62	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+jbl charge	ru-RU	jbl charge	CATEGORY_LEAF	TECH.AUDIO	61	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+sennheiser momentum	ru-RU	sennheiser momentum	CATEGORY_LEAF	TECH.AUDIO	60	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+shure sm7b	ru-RU	shure sm7b	CATEGORY_LEAF	TECH.AUDIO	59	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+focusrite scarlett	ru-RU	focusrite scarlett	CATEGORY_LEAF	TECH.AUDIO	58	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+rode nt usb	ru-RU	rode nt usb	CATEGORY_LEAF	TECH.AUDIO	57	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+audio technica m50x	ru-RU	audio technica m50x	CATEGORY_LEAF	TECH.AUDIO	56	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+marshall major	ru-RU	marshall major	CATEGORY_LEAF	TECH.AUDIO	55	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+yamaha hs5	ru-RU	yamaha hs5	CATEGORY_LEAF	TECH.AUDIO	54	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+denon avr	ru-RU	denon avr	CATEGORY_LEAF	TECH.AUDIO	53	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+fiio k11	ru-RU	fiio k11	CATEGORY_LEAF	TECH.AUDIO	52	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+soundcore liberty	ru-RU	soundcore liberty	CATEGORY_LEAF	TECH.AUDIO	51	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+samsung buds	ru-RU	samsung buds	CATEGORY_LEAF	TECH.AUDIO	50	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; brand_model_search_alias
+AirPods 4	ru-RU	airpods 4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpods4	ru-RU	airpods4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+аирподс 4	ru-RU	аирподс 4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AirPods 4 Active Noise Cancellation	ru-RU	airpods 4 active noise cancellation	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpods4activenoisecancellation	ru-RU	airpods4activenoisecancellation	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+аирподс 4 active noise cancellation	ru-RU	аирподс 4 active noise cancellation	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AirPods Pro 2 USB-C	ru-RU	airpods pro 2 usb c	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AirPods Pro 2 USBC	ru-RU	airpods pro 2 usbc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpods про 2 usb-c	ru-RU	airpods про 2 usb c	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpodspro2usb-c	ru-RU	airpodspro2usb c	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+аирподс pro 2 usb-c	ru-RU	аирподс pro 2 usb c	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AirPods Pro 3	ru-RU	airpods pro 3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpods про 3	ru-RU	airpods про 3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpodspro3	ru-RU	airpodspro3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+аирподс pro 3	ru-RU	аирподс pro 3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AirPods Max 2	ru-RU	airpods max 2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpods макс 2	ru-RU	airpods макс 2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+airpodsmax2	ru-RU	airpodsmax2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+аирподс max 2	ru-RU	аирподс max 2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HomePod mini	ru-RU	homepod mini	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+homepodmini	ru-RU	homepodmini	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WH-1000XM6	ru-RU	wh 1000xm6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WH1000XM6	ru-RU	wh1000xm6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+сони wh 1000xm6	ru-RU	сони wh 1000xm6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WH-1000XM5	ru-RU	wh 1000xm5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WH1000XM5	ru-RU	wh1000xm5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+сони wh 1000xm5	ru-RU	сони wh 1000xm5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WF-1000XM5	ru-RU	wf 1000xm5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WF1000XM5	ru-RU	wf1000xm5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+сони wf 1000xm5	ru-RU	сони wf 1000xm5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WH-CH720N	ru-RU	wh ch720n	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+WHCH720N	ru-RU	whch720n	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+сони wh ch720n	ru-RU	сони wh ch720n	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SRS-XB100	ru-RU	srs xb100	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SRSXB100	ru-RU	srsxb100	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+сони srs xb100	ru-RU	сони srs xb100	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HT-S2000	ru-RU	ht s2000	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HTS2000	ru-RU	hts2000	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+сони ht s2000	ru-RU	сони ht s2000	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+QuietComfort Ultra Headphones 2nd Gen	ru-RU	quietcomfort ultra headphones 2nd gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+qc ultra headphones 2nd gen	ru-RU	qc ultra headphones 2nd gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+quietcomfortultraheadphones2ndgen	ru-RU	quietcomfortultraheadphones2ndgen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+боуз quietcomfort ultra headphones 2nd gen	ru-RU	боуз quietcomfort ultra headphones 2nd gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+QuietComfort Headphones	ru-RU	quietcomfort headphones	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+qc headphones	ru-RU	qc headphones	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+quietcomfortheadphones	ru-RU	quietcomfortheadphones	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+боуз quietcomfort headphones	ru-RU	боуз quietcomfort headphones	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+QuietComfort Ultra Earbuds	ru-RU	quietcomfort ultra earbuds	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+qc ultra earbuds	ru-RU	qc ultra earbuds	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+quietcomfortultraearbuds	ru-RU	quietcomfortultraearbuds	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+боуз quietcomfort ultra earbuds	ru-RU	боуз quietcomfort ultra earbuds	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SoundLink Flex	ru-RU	soundlink flex	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+soundlinkflex	ru-RU	soundlinkflex	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+боуз soundlink flex	ru-RU	боуз soundlink flex	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Bose Smart Soundbar	ru-RU	bose smart soundbar	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+bosesmartsoundbar	ru-RU	bosesmartsoundbar	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+боуз bose smart soundbar	ru-RU	боуз bose smart soundbar	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+JBL Flip 7	ru-RU	jbl flip 7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+flip 7	ru-RU	flip 7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+jblflip7	ru-RU	jblflip7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+жбл flip 7	ru-RU	жбл flip 7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+JBL Charge 6	ru-RU	jbl charge 6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+charge 6	ru-RU	charge 6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+jblcharge6	ru-RU	jblcharge6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+жбл charge 6	ru-RU	жбл charge 6	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+JBL Go 4	ru-RU	jbl go 4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+go 4	ru-RU	go 4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+jblgo4	ru-RU	jblgo4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+жбл go 4	ru-RU	жбл go 4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+JBL PartyBox 320	ru-RU	jbl partybox 320	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+jblpartybox320	ru-RU	jblpartybox320	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+partybox 320	ru-RU	partybox 320	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+жбл partybox 320	ru-RU	жбл partybox 320	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+JBL Tune 770NC	ru-RU	jbl tune 770nc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+jbltune770nc	ru-RU	jbltune770nc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+tune 770nc	ru-RU	tune 770nc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+жбл tune 770nc	ru-RU	жбл tune 770nc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+JBL Live Beam 3	ru-RU	jbl live beam 3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+jbllivebeam3	ru-RU	jbllivebeam3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+live beam 3	ru-RU	live beam 3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+жбл live beam 3	ru-RU	жбл live beam 3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Galaxy Buds3 Pro	ru-RU	galaxy buds3 pro	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+galaxybuds3pro	ru-RU	galaxybuds3pro	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+галакси buds3 pro	ru-RU	галакси buds3 pro	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+самсунг galaxy buds3 pro	ru-RU	самсунг galaxy buds3 pro	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Galaxy Buds3	ru-RU	galaxy buds3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+galaxybuds3	ru-RU	galaxybuds3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+галакси buds3	ru-RU	галакси buds3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+самсунг galaxy buds3	ru-RU	самсунг galaxy buds3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Samsung HW-Q990D	ru-RU	samsung hw q990d	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Samsung HWQ990D	ru-RU	samsung hwq990d	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+samsunghw-q990d	ru-RU	samsunghw q990d	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+самсунг samsung hw q990d	ru-RU	самсунг samsung hw q990d	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Momentum 4 Wireless	ru-RU	momentum 4 wireless	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+momentum4wireless	ru-RU	momentum4wireless	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Momentum True Wireless 4	ru-RU	momentum true wireless 4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+momentumtruewireless4	ru-RU	momentumtruewireless4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HD 600	ru-RU	hd 600	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+hd600	ru-RU	hd600	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HD 650	ru-RU	hd 650	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+hd650	ru-RU	hd650	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HD 660S2	ru-RU	hd 660s2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+hd660s2	ru-RU	hd660s2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HD 560S	ru-RU	hd 560s	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+hd560s	ru-RU	hd560s	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ATH-M50x	ru-RU	ath m50x	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ATHM50x	ru-RU	athm50x	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ATH-M50xBT2	ru-RU	ath m50xbt2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ATHM50xBT2	ru-RU	athm50xbt2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AT2020	ru-RU	at2020	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AT-LP60X	ru-RU	at lp60x	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ATLP60X	ru-RU	atlp60x	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AT-LP120XUSB	ru-RU	at lp120xusb	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ATLP120XUSB	ru-RU	atlp120xusb	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SM7B	ru-RU	sm7b	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+шур sm7b	ru-RU	шур sm7b	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+эсэм7b	ru-RU	эсэм7b	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SM58	ru-RU	sm58	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+шур sm58	ru-RU	шур sm58	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+эсэм58	ru-RU	эсэм58	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+MV7	ru-RU	mv7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+шур mv7	ru-RU	шур mv7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SE215	ru-RU	se215	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+шур se215	ru-RU	шур se215	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+NT-USB+	ru-RU	nt usb	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+NTUSB+	ru-RU	ntusb	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+nt usb plus	ru-RU	nt usb plus	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+PodMic	ru-RU	podmic	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Wireless GO II	ru-RU	wireless go ii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+wirelessgoii	ru-RU	wirelessgoii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Scarlett 2i2 4th Gen	ru-RU	scarlett 2i2 4th gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+scarlett2i24thgen	ru-RU	scarlett2i24thgen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+скарлетт 2i2 4th gen	ru-RU	скарлетт 2i2 4th gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+фокусрайт scarlett 2i2 4th gen	ru-RU	фокусрайт scarlett 2i2 4th gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Scarlett Solo 4th Gen	ru-RU	scarlett solo 4th gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+scarlettsolo4thgen	ru-RU	scarlettsolo4thgen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+скарлетт solo 4th gen	ru-RU	скарлетт solo 4th gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+фокусрайт scarlett solo 4th gen	ru-RU	фокусрайт scarlett solo 4th gen	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Volt 2	ru-RU	volt 2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+volt2	ru-RU	volt2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+iD4 MKII	ru-RU	id4 mkii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+id4mkii	ru-RU	id4mkii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+UMC202HD	ru-RU	umc202hd	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HS5	ru-RU	hs5	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+HS8	ru-RU	hs8	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+RX-V6A	ru-RU	rx v6a	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+RXV6A	ru-RU	rxv6a	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AVR-X2800H	ru-RU	avr x2800h	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+AVRX2800H	ru-RU	avrx2800h	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+PM6007	ru-RU	pm6007	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+K11	ru-RU	k11	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+BTR7	ru-RU	btr7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+ZEN DAC V2	ru-RU	zen dac v2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+zendacv2	ru-RU	zendacv2	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Soundcore Liberty 4 NC	ru-RU	soundcore liberty 4 nc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+soundcoreliberty4nc	ru-RU	soundcoreliberty4nc	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Soundcore Space One	ru-RU	soundcore space one	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+soundcorespaceone	ru-RU	soundcorespaceone	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Major IV	ru-RU	major iv	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+majoriv	ru-RU	majoriv	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Emberton II	ru-RU	emberton ii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+embertonii	ru-RU	embertonii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Stanmore III	ru-RU	stanmore iii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+stanmoreiii	ru-RU	stanmoreiii	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SL-1200MK7	ru-RU	sl 1200mk7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+SL1200MK7	ru-RU	sl1200mk7	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+DDJ-FLX4	ru-RU	ddj flx4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+DDJFLX4	ru-RU	ddjflx4	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+MPK Mini MK3	ru-RU	mpk mini mk3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+mpkminimk3	ru-RU	mpkminimk3	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Blue Yeti	ru-RU	blue yeti	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+blueyeti	ru-RU	blueyeti	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+QuadCast	ru-RU	quadcast	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+Arctis Nova Pro	ru-RU	arctis nova pro	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+arctisnovapro	ru-RU	arctisnovapro	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+G Pro X Wireless	ru-RU	g pro x wireless	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+gproxwireless	ru-RU	gproxwireless	CATEGORY_LEAF	TECH.AUDIO	70	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias
+sennheiser momentum 4	ru-RU	sennheiser momentum 4	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+сенхайзер hd 560s	ru-RU	сенхайзер hd 560s	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+audio technica ath m50x	ru-RU	audio technica ath m50x	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+аудиотехника проигрыватель	ru-RU	аудиотехника проигрыватель	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+shure sm7b микрофон	ru-RU	shure sm7b микрофон	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+шур микрофон для стрима	ru-RU	шур микрофон для стрима	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+rode nt usb mini	ru-RU	rode nt usb mini	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+род микрофон wireless go	ru-RU	род микрофон wireless go	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+marshall major наушники	ru-RU	marshall major наушники	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+маршал колонка bluetooth	ru-RU	маршал колонка bluetooth	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+yamaha receiver	ru-RU	yamaha receiver	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+ямаха студийные мониторы	ru-RU	ямаха студийные мониторы	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+soundcore liberty 4	ru-RU	soundcore liberty 4	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+анкер саундкор колонка	ru-RU	анкер саундкор колонка	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+focusrite scarlett 2i2	ru-RU	focusrite scarlett 2i2	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+фокусрайт аудиоинтерфейс	ru-RU	фокусрайт аудиоинтерфейс	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+fiio k7 dac	ru-RU	fiio k7 dac	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+фио плеер hi res	ru-RU	фио плеер hi res	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+denon avr receiver	ru-RU	denon avr receiver	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+marantz усилитель	ru-RU	marantz усилитель	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+behringer mixer	ru-RU	behringer mixer	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+берингер микшер	ru-RU	берингер микшер	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+audient id14	ru-RU	audient id14	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+technics sl 1200	ru-RU	technics sl 1200	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+pioneer dj наушники	ru-RU	pioneer dj наушники	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+hyperx cloud headset	ru-RU	hyperx cloud headset	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+steelseries arctis headset	ru-RU	steelseries arctis headset	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+akg k371	ru-RU	akg k371	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+beyerdynamic dt 770 pro	ru-RU	beyerdynamic dt 770 pro	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+sonos beam soundbar	ru-RU	sonos beam soundbar	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+jabra elite earbuds	ru-RU	jabra elite earbuds	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+skullcandy crusher	ru-RU	skullcandy crusher	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+b&w px7	ru-RU	b w px7	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+b&o beoplay	ru-RU	b o beoplay	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+devialet phantom	ru-RU	devialet phantom	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+edifier r1280	ru-RU	edifier r1280	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+presonus audiobox	ru-RU	presonus audiobox	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+mackie mixer	ru-RU	mackie mixer	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+neumann u87	ru-RU	neumann u87	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+moondrop aria	ru-RU	moondrop aria	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+koss porta pro	ru-RU	koss porta pro	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+audeze maxwell	ru-RU	audeze maxwell	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+klipsch soundbar	ru-RU	klipsch soundbar	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+polk audio soundbar	ru-RU	polk audio soundbar	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+cambridge audio dacmagic	ru-RU	cambridge audio dacmagic	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+qcy t13	ru-RU	qcy t13	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+soundpeats air4	ru-RU	soundpeats air4	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+creative sound blaster	ru-RU	creative sound blaster	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; brand_audio_smoke
+автомагнитола	ru-RU	автомагнитола	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	94	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; audio_negative_boundary
+автомагнитола 2 din	ru-RU	автомагнитола 2 din	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; audio_negative_boundary
+колонки автомобильные	ru-RU	колонки автомобильные	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; audio_negative_boundary
+автомобильные колонки	ru-RU	автомобильные колонки	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; audio_negative_boundary
+pioneer магнитола автомобильная	ru-RU	pioneer магнитола автомобильная	CATEGORY_LEAF	TECH.CAR_ELECTRONICS_GPS	96	EXACT	false	MANUAL	TECH_AUDIO_brand_head_delta_pack_v1_1_RU; audio_negative_boundary
+кабель usb c зарядка	ru-RU	кабель usb c зарядка	CATEGORY_LEAF	TECH.POWER_CHARGING_CABLES	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; audio_negative_boundary
+переходник hdmi usb c	ru-RU	переходник hdmi usb c	CATEGORY_LEAF	TECH.POWER_CHARGING_CABLES	96	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; audio_negative_boundary
+sony wh-1000xm5	en-US	sony wh 1000xm5	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias_boundary
+sony wh 1000xm5	en-US	sony wh 1000xm5	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias_boundary
+yamaha hs5	ru-RU	yamaha hs5	CATEGORY_LEAF	TECH.AUDIO	88	EXACT	false	MANUAL	TECH_AUDIO_public_category_pack_v1_0_RU; model_alias_boundary
+тв	ru-RU	тв	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+смарт тв	ru-RU	смарт тв	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+4k tv	ru-RU	4k tv	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+oled телевизор	ru-RU	oled телевизор	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+лазерный проектор	ru-RU	лазерный проектор	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+4к проектор	ru-RU	4к проектор	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+мини проектор	ru-RU	мини проектор	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+ust проектор	ru-RU	ust проектор	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+стриминговая приставка	ru-RU	стриминговая приставка	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+chromecast	ru-RU	chromecast	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+fire tv	ru-RU	fire tv	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+roku	ru-RU	roku	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+shield tv	ru-RU	shield tv	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+тв бокс	ru-RU	тв бокс	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+android tv box	ru-RU	android tv box	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+андроид приставка	ru-RU	андроид приставка	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+медиабокс	ru-RU	медиабокс	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+комплект домашнего кинотеатра	ru-RU	комплект домашнего кинотеатра	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+5.1 комплект	ru-RU	5 1 комплект	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+home theater	ru-RU	home theater	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+av ресивер	ru-RU	av ресивер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+ав ресивер	ru-RU	ав ресивер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+ресивер домашний кинотеатр	ru-RU	ресивер домашний кинотеатр	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+denon ресивер	ru-RU	denon ресивер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+yamaha ресивер	ru-RU	yamaha ресивер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+blu ray плеер	ru-RU	blu ray плеер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+блюрей плеер	ru-RU	блюрей плеер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+dvd плеер	ru-RU	dvd плеер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+uhd blu ray	ru-RU	uhd blu ray	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+4k blu-ray player	ru-RU	4k blu ray player	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+приставка тв	ru-RU	приставка тв	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+set top box	ru-RU	set top box	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+iptv приставка	ru-RU	iptv приставка	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+спутниковый ресивер	ru-RU	спутниковый ресивер	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+dvb t2 приставка	ru-RU	dvb t2 приставка	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+пульт	ru-RU	пульт	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+пульт ду	ru-RU	пульт ду	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+пульт телевизора	ru-RU	пульт телевизора	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+magic remote	ru-RU	magic remote	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+siri remote	ru-RU	siri remote	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+универсальный пульт	ru-RU	универсальный пульт	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+кронштейн для телевизора	ru-RU	кронштейн для телевизора	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+крепление для тв	ru-RU	крепление для тв	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+настенный кронштейн тв	ru-RU	настенный кронштейн тв	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+vesa mount	ru-RU	vesa mount	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+стойка для телевизора	ru-RU	стойка для телевизора	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+экран для проектора	ru-RU	экран для проектора	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+проекционный экран	ru-RU	проекционный экран	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+моторизованный экран	ru-RU	моторизованный экран	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+alr экран	ru-RU	alr экран	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+экран 100 дюймов	ru-RU	экран 100 дюймов	CATEGORY_LEAF	TECH.TV_HOME_THEATER	86	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; type_alias
+apple tv 4k	ru-RU	apple tv 4k	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; route_guard_smoke
+chromecast google tv 4k	ru-RU	chromecast google tv 4k	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; route_guard_smoke
+nvidia shield tv pro	ru-RU	nvidia shield tv pro	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; route_guard_smoke
+av ресивер 7.2 atmos	ru-RU	av ресивер 7 2 atmos	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; route_guard_smoke
+denon avr x1800h домашний кинотеатр	ru-RU	denon avr x1800h домашний кинотеатр	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; route_guard_smoke
+экран для проектора 100 дюймов	ru-RU	экран для проектора 100 дюймов	CATEGORY_LEAF	TECH.TV_HOME_THEATER	88	EXACT	false	MANUAL	TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU; route_guard_smoke

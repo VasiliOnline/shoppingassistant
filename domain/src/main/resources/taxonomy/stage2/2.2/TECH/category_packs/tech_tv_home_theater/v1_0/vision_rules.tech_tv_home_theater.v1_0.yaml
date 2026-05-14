@@ -1,0 +1,18 @@
+vision_rules:
+  no_guess_policy:
+    model: do_not_guess_without_text_logo_label_or_source_url
+    resolution: infer_from_visible_label_or_title_only
+    screen_size: infer_from_title/specs; image-only estimate must be low confidence
+  strong_visual_cues:
+    TV: ["large flat panel", "stand/feet", "bezel", "screen UI"]
+    PROJECTOR: ["lens", "projector body", "vent", "ceiling/desk projector"]
+    STREAMING_DEVICE: ["small puck/stick/box", "remote", "HDMI stick"]
+    AV_RECEIVER: ["large front panel", "volume knob", "many rear ports"]
+    TV_MOUNT: ["metal bracket", "VESA holes", "wall plate"]
+    PROJECTOR_SCREEN: ["rolled screen", "tripod/fixed frame", "projection fabric"]
+  required_evidence_for_publish:
+    - av_type
+    - brand_or_unknown_brand_allowed
+    - condition
+    - price
+    - at_least_one_image_or_source_url

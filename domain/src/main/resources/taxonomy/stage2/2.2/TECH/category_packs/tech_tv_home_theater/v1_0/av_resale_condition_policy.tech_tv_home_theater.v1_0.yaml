@@ -1,0 +1,24 @@
+resale_condition_policy:
+  important_checks:
+    TV:
+      - panel_defect_status
+      - original_remote_included
+      - original_stand_included
+      - burn_in_for_oled
+    PROJECTOR:
+      - lamp_hours
+      - lens_condition
+      - remote_included
+    AV_RECEIVER:
+      - all_channels_working
+      - hdmi_board_status
+      - remote_included
+    TV_MOUNT:
+      - screws_included
+      - max_load_kg
+      - vesa_pattern
+  publish_warning_if_missing:
+    - condition
+    - price
+    - images_count
+    - brand

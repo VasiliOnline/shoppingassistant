@@ -1,0 +1,131 @@
+{
+  "schema_id": "schema_pack.tech_audio.v1_0",
+  "categoryCode": "TECH.AUDIO",
+  "pack_type": "public_category_pack",
+  "display_name_ru": "Аудио",
+  "description_ru": "Наушники, гарнитуры, колонки, умные колонки, саундбары, микрофоны, аудиоинтерфейсы, DAC/AMP, винил, ресиверы, студийные мониторы, плееры, радио и аудиоаксессуары.",
+  "main_type_attribute": "audio_type",
+  "audio_type_values": [
+    "HEADPHONES",
+    "EARBUDS",
+    "HEADSET",
+    "SPEAKER",
+    "SMART_SPEAKER",
+    "SOUNDBAR",
+    "MICROPHONE",
+    "AUDIO_INTERFACE",
+    "DAC_AMP",
+    "TURNTABLE",
+    "RECEIVER_AMPLIFIER",
+    "STUDIO_MONITOR",
+    "MP3_PLAYER",
+    "RADIO",
+    "AUDIO_ACCESSORY"
+  ],
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "uses_optional_relation_layer": [
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "presets_collections_allowed": false,
+  "microcategory_policy": {
+    "forbidden_category_codes": [
+      "TECH.HEADPHONES",
+      "TECH.EARBUDS",
+      "TECH.SPEAKERS",
+      "TECH.AIRPODS",
+      "TECH.BOSE_QC",
+      "TECH.SOUNDBARS",
+      "TECH.MICROPHONES"
+    ]
+  },
+  "attribute_roles": {
+    "T0_CORE": [
+      "categoryCode",
+      "audio_type",
+      "brand",
+      "condition",
+      "model_name_text",
+      "connection_type",
+      "form_factor",
+      "color_family",
+      "price",
+      "currency",
+      "availability"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "acoustic_design",
+      "noise_control",
+      "microphone_included",
+      "connector_type",
+      "wireless_standard",
+      "codec_support",
+      "battery_life_hours",
+      "water_resistance",
+      "driver_type",
+      "driver_size_mm",
+      "impedance_ohm",
+      "channel_config",
+      "speaker_power_w",
+      "smart_assistant",
+      "input_type",
+      "output_type",
+      "phantom_power",
+      "sample_rate_khz",
+      "bit_depth",
+      "turntable_drive_type",
+      "cartridge_included",
+      "receiver_channels",
+      "audio_accessory_type"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "latency_mode",
+      "multipoint_support",
+      "spatial_audio",
+      "app_control",
+      "fast_charge",
+      "charging_case_included",
+      "detachable_cable",
+      "foldable",
+      "ear_tip_size_included",
+      "mount_type",
+      "room_calibration",
+      "streaming_protocols",
+      "recording_pattern",
+      "midi_support",
+      "balanced_output",
+      "tube_amp",
+      "rpm_speed",
+      "preamp_built_in",
+      "remote_included",
+      "subwoofer_included",
+      "pair_count",
+      "cable_length_m",
+      "included_accessories",
+      "warranty"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "identity_confidence",
+      "spec_confidence",
+      "route_confidence",
+      "source_evidence",
+      "normalized_title",
+      "dedup_key",
+      "image_fingerprint",
+      "seller_bundle_hash",
+      "risk_flags",
+      "internal_notes"
+    ]
+  },
+  "runtime_notes": [
+    "type-first routing",
+    "head values only",
+    "long-tail model/brand values via runtime candidates/live values",
+    "no preset/collection definitions in base category pack"
+  ]
+}

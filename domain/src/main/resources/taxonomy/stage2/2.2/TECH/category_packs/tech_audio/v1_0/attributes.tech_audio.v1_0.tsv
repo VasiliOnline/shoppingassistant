@@ -1,0 +1,85 @@
+attribute_code	label_ru	role	data_type	required_policy	multi_value	allowed_values_source	unit	usage_scope	description_ru
+audio_type	Тип аудиотовара	T0_CORE	enum	always	false	values.tsv#audio_type		classification	Главный type-атрибут ветки TECH.AUDIO.
+form_factor	Форм-фактор	T0_CORE	enum	always	false	values.tsv#form_factor		classification_search	Конструктивный форм-фактор: over-ear, TWS, soundbar, lavalier и т.д.
+connection_type	Тип подключения	T0_CORE	enum	always	true	values.tsv#connection_type		search_filter_publish	Проводное/беспроводное/USB/Bluetooth/Wi‑Fi/2.4GHz.
+acoustic_design	Акустическое оформление	T1_TYPE_SPECIFIC	enum	recommended_for_headphones_speakers	false	values.tsv#acoustic_design		search_filter	Открытые/закрытые/полуоткрытые/портативные/настольные.
+noise_control	Шумоподавление/прозрачность	T1_TYPE_SPECIFIC	enum	recommended_for_headphones_earbuds	true	values.tsv#noise_control		search_filter	ANC, transparency, passive isolation, none.
+microphone_included	Есть микрофон	T1_TYPE_SPECIFIC	boolean	recommended_for_headphones_headset	false	boolean		search_filter_publish	Наличие встроенного/съёмного микрофона.
+mic_type	Тип микрофона	T1_TYPE_SPECIFIC	enum	required_for_microphone_or_headset	false	values.tsv#mic_type		search_filter	USB/XLR/петличный/ручной/студийный/петличный и др.
+recording_pattern	Диаграмма направленности	T2_OPTIONAL_ENRICHMENT	enum	recommended_for_microphone	true	values.tsv#recording_pattern		search_filter	Cardioid/omni/figure-8/supercardioid и т.п.
+connector_type	Разъём	T1_TYPE_SPECIFIC	enum	required_for_wired_or_interface	true	values.tsv#connector_type		search_filter_publish	USB-C, 3.5mm, 6.35mm, XLR, RCA, HDMI ARC, Optical, Lightning.
+wireless_standard	Беспроводной стандарт	T1_TYPE_SPECIFIC	enum	required_for_wireless	true	values.tsv#wireless_standard		search_filter	Bluetooth/Wi‑Fi/AirPlay/Chromecast/RF/2.4GHz.
+codec_support	Кодеки	T1_TYPE_SPECIFIC	enum	recommended_for_wireless_audio	true	values.tsv#codec_support		search_filter	SBC, AAC, aptX, LDAC, LC3 и др.
+bluetooth_version	Версия Bluetooth	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		search_filter	Например: Bluetooth 5.3.
+battery_life_hours	Автономность, часы	T1_TYPE_SPECIFIC	number	recommended_for_wireless	false	range:0..200	hours	search_filter_publish	Ориентировочное время работы на одном заряде.
+charging_case_included	Кейс зарядки в комплекте	T2_OPTIONAL_ENRICHMENT	boolean	recommended_for_tws	false	boolean		display	Для TWS-наушников.
+fast_charge	Быстрая зарядка	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Поддержка быстрой зарядки.
+water_resistance	Защита от воды/пыли	T1_TYPE_SPECIFIC	enum	recommended_for_portable	false	values.tsv#water_resistance		search_filter_publish	IP-рейтинг или отсутствие защиты.
+driver_type	Тип драйвера	T1_TYPE_SPECIFIC	enum	recommended_for_headphones_speakers	false	values.tsv#driver_type		search_filter	Dynamic, planar, balanced armature и др.
+driver_size_mm	Размер драйвера, мм	T1_TYPE_SPECIFIC	number	optional	false	range:1..300	mm	search_filter	Размер излучателя.
+impedance_ohm	Импеданс, Ом	T1_TYPE_SPECIFIC	number	optional	false	range:1..1000	ohm	search_filter	Особенно важно для проводных наушников.
+sensitivity_db	Чувствительность, дБ	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:1..140	dB	search_filter	Заявленная чувствительность.
+frequency_response_text	Частотный диапазон	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		display	Как указано продавцом/производителем: 20Hz–20kHz.
+channel_config	Канальность	T1_TYPE_SPECIFIC	enum	required_for_soundbar_receiver	false	values.tsv#channel_config		search_filter_publish	2.0/2.1/5.1/7.1/Atmos и т.п.
+speaker_power_w	Мощность, Вт	T1_TYPE_SPECIFIC	number	recommended_for_speaker_soundbar_receiver	false	range:1..5000	W	search_filter	Заявленная мощность акустики/усилителя.
+speaker_type	Тип акустики	T1_TYPE_SPECIFIC	enum	recommended_for_speaker_studio_monitor	false	values.tsv#speaker_type		classification_search	Portable/bookshelf/floorstanding/studio/subwoofer/party.
+smart_assistant	Голосовой ассистент	T1_TYPE_SPECIFIC	enum	recommended_for_smart_speaker	true	values.tsv#smart_assistant		search_filter	Siri/Alexa/Google Assistant/Алиса и др.
+streaming_protocols	Стриминг/протоколы	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#streaming_protocols		search_filter	AirPlay, Chromecast, Spotify Connect, DLNA.
+spatial_audio	Пространственное аудио	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Поддержка spatial audio / surround virtualization.
+latency_mode	Низкая задержка / gaming mode	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Низколатентный режим для игр/видео.
+multipoint_support	Multipoint	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Одновременное подключение к нескольким устройствам.
+input_type	Входы	T1_TYPE_SPECIFIC	enum	recommended_for_interface_receiver_soundbar	true	values.tsv#input_type		search_filter_publish	XLR, TRS, RCA, HDMI ARC, optical, USB и др.
+output_type	Выходы	T1_TYPE_SPECIFIC	enum	recommended_for_interface_dac_receiver	true	values.tsv#output_type		search_filter_publish	Headphone out, RCA, XLR, line out, speaker terminals.
+phantom_power	Фантомное питание 48V	T1_TYPE_SPECIFIC	boolean	required_for_audio_interface	false	boolean		search_filter	Для аудиоинтерфейсов и микрофонов.
+sample_rate_khz	Частота дискретизации, кГц	T1_TYPE_SPECIFIC	number	recommended_for_interface_dac	false	range:8..768	kHz	search_filter	Максимальная частота дискретизации.
+bit_depth	Разрядность, бит	T1_TYPE_SPECIFIC	number	recommended_for_interface_dac	false	range:8..32	bit	search_filter	16/24/32 bit.
+midi_support	MIDI	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Наличие MIDI I/O.
+balanced_output	Балансный выход	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	XLR/4.4mm/2.5mm/TRS balanced.
+tube_amp	Ламповый усилитель	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Для усилителей/DAC/AMP.
+turntable_drive_type	Привод проигрывателя	T1_TYPE_SPECIFIC	enum	required_for_turntable	false	values.tsv#turntable_drive_type		search_filter	Belt/direct drive.
+rpm_speed	Скорость вращения	T2_OPTIONAL_ENRICHMENT	enum	recommended_for_turntable	true	values.tsv#rpm_speed	RPM	search_filter	33/45/78 RPM.
+cartridge_included	Картридж/головка в комплекте	T1_TYPE_SPECIFIC	boolean	recommended_for_turntable	false	boolean		display	Есть ли звукосниматель.
+preamp_built_in	Встроенный фонокорректор	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Для проигрывателей винила.
+receiver_channels	Каналы ресивера	T1_TYPE_SPECIFIC	enum	required_for_receiver	false	values.tsv#receiver_channels		search_filter	2.0/5.1/7.2/9.2 и т.п.
+surround_formats	Форматы surround	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#surround_formats		search_filter	Dolby Atmos, DTS:X и др.
+audio_accessory_type	Тип аудиоаксессуара	T1_TYPE_SPECIFIC	enum	required_for_audio_accessory	false	values.tsv#audio_accessory_type		classification_search	Амбушюры, аудиокабель, стойка, поп-фильтр, чехол, адаптер.
+mount_type	Крепление / стойка	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#mount_type		search_filter	Boom arm, mic stand, wall mount, speaker stand.
+cable_length_m	Длина кабеля, м	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:0..100	m	search_filter	Для аудиокабелей/адаптеров.
+detachable_cable	Съёмный кабель	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Особенно для наушников.
+foldable	Складная конструкция	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Для полноразмерных/накладных наушников.
+ear_tip_size_included	Амбушюры/насадки в комплекте	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#ear_tip_size		display	XS/S/M/L и др.
+app_control	Управление через приложение	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Фирменное приложение/эквалайзер/обновление прошивки.
+remote_included	Пульт в комплекте	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		display	Для саундбаров/ресиверов/колонок.
+subwoofer_included	Сабвуфер в комплекте	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Для саундбаров и комплектов акустики.
+pair_count	Количество предметов/пар	T2_OPTIONAL_ENRICHMENT	number	optional	false	range:1..100		display	Для пар колонок/комплектов/насадок.
+room_calibration	Калибровка комнаты	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	Для smart speakers/soundbars/receivers.
+use_case	Сценарий использования	T1_TYPE_SPECIFIC	enum	recommended	true	values.tsv#use_case		search_filter	Music, calls, gaming, studio, podcast, TV, party, travel.
+compatible_platform	Совместимые платформы	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#compatible_platform		search_filter	iOS/Android/Windows/macOS/PS5/Xbox/Switch.
+bundle_contents	Комплект	T1_TYPE_SPECIFIC	string	recommended	false	free_text		display	Кабели, кейс, насадки, стойка, блок питания.
+original_box	Оригинальная коробка	T1_TYPE_SPECIFIC	boolean	recommended_for_resale	false	boolean		publish_quality	Для resale-предложений.
+repair_history	История ремонта	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#repair_history		publish_quality	Ремонт/замена батареи/ремонт динамика и т.п.
+refurbished_status	Восстановленность	T1_TYPE_SPECIFIC	enum	optional	false	values.tsv#refurbished_status		search_filter_publish	Factory/seller refurbished, open-box и др.
+condition_grade	Грейд состояния	T1_TYPE_SPECIFIC	enum	recommended_for_resale	false	values.tsv#condition_grade		search_filter_publish	A/B/C/for parts.
+serial_number_present	Есть серийный номер	T2_OPTIONAL_ENRICHMENT	boolean	optional_hidden	false	boolean		validation_only	Не публикуем сам серийный номер.
+counterfeit_risk	Риск подделки	T3_SYSTEM_HIDDEN	enum	system	false	values.tsv#risk_level		moderation	Системная оценка риска подделки.
+identity_confidence	Уверенность identity	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Не показывать в UI.
+spec_confidence	Уверенность specs	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Не показывать в UI.
+source_evidence	Evidence источника	T3_SYSTEM_HIDDEN	json	system	true	json		system	Текст/URL/OCR/штрихкод/пользовательское подтверждение.
+dedup_key	Dedup key	T3_SYSTEM_HIDDEN	string	system	false	computed		system	Стабильный ключ дедупликации.
+image_fingerprint	Image fingerprint	T3_SYSTEM_HIDDEN	string	system	false	computed		system	Служебный perceptual hash.
+normalized_title	Нормализованный title	T3_SYSTEM_HIDDEN	string	system	false	computed		system	Для роутинга/поиска.
+route_confidence	Уверенность маршрутизации	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Не показывать в UI.
+brand	Бренд	T0_CORE	enum	always	false	TECH.ELECTRONICS_COMMON#brand		inherited	Наследуется из Electronics common.
+condition	Состояние	T0_CORE	enum	always	false	TECH.ELECTRONICS_COMMON#condition		inherited	Наследуется из Electronics common.
+model_name_text	Название модели текстом	T0_CORE	string	recommended	false	free_text		identity	Текстовая модель до нормализации.
+family	Семейство	T1_TYPE_SPECIFIC	enum	optional	false	TECH.DEVICE_IDENTITY_COMMON#family		identity	Например AirPods, QuietComfort, WH-1000X.
+line	Линейка	T1_TYPE_SPECIFIC	enum	optional	false	TECH.DEVICE_IDENTITY_COMMON#line		identity	Стабильная линейка внутри семейства.
+model	Модель	T1_TYPE_SPECIFIC	enum	optional	false	runtime_candidates/live_values		identity	Head seed + runtime candidates.
+mpn	MPN	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		identity	Model/part number производителя.
+gtin	GTIN/EAN/UPC	T2_OPTIONAL_ENRICHMENT	string	optional	false	regex:gtin		identity	Штрихкод, если есть.
+release_year	Год выпуска	T1_TYPE_SPECIFIC	number	optional	false	range:1970..2035	year	search_filter	Наследуемое поле.
+region_variant	Региональная версия	T2_OPTIONAL_ENRICHMENT	enum	optional	false	TECH.DEVICE_IDENTITY_COMMON#region_variant		identity	EU/US/JP/CN/Global и т.п.
+color_family	Цвет	T0_CORE	enum	recommended	false	TECH.ELECTRONICS_COMMON#color_family		search_filter_publish	Нормализованный цвет.
+price	Цена	T0_CORE	number	publish_required	false	range:0..10000000		commerce	Commerce layer.
+currency	Валюта	T0_CORE	enum	publish_required	false	values:currency		commerce	Commerce layer.
+availability	Наличие	T0_CORE	enum	publish_required	false	values:availability		commerce	Commerce layer.

@@ -1,0 +1,76 @@
+attribute_code	label_ru	role	data_type	required_policy	multi_value	allowed_values_source	unit	usage_scope	description_ru
+av_type	Тип AV-товара	T0_CORE	enum	always	false	values.tsv#av_type		classification	Главный type-атрибут ветки TECH.TV_HOME_THEATER.
+display_technology	Технология экрана	T1_TYPE_SPECIFIC	enum	required_for_tv	false	values.tsv#display_technology		search_filter	LED, OLED, QLED, Mini LED, QD-OLED и др.
+screen_size_in	Диагональ, дюймы	T0_CORE	number	required_for_tv_projector_screen	false	range:10..300	inch	search_filter_publish	Размер ТВ или экрана проектора.
+resolution	Разрешение	T0_CORE	enum	required_for_visual_device	false	values.tsv#resolution		search_filter_publish	HD/FHD/4K/8K и др.
+refresh_rate_hz	Частота обновления, Гц	T1_TYPE_SPECIFIC	enum	recommended_for_tv	false	values.tsv#refresh_rate_hz	Hz	search_filter	60/100/120/144Hz и т.д.
+hdr_standard	HDR-стандарты	T1_TYPE_SPECIFIC	enum	recommended_for_tv_projector_streaming	true	values.tsv#hdr_standard		search_filter	HDR10, HDR10+, Dolby Vision, HLG.
+smart_tv_platform	Smart TV платформа	T1_TYPE_SPECIFIC	enum	recommended_for_tv	false	values.tsv#smart_tv_platform		search_filter	Google TV, webOS, Tizen, Roku TV, VIDAA и др.
+tuner_standard	ТВ-тюнер	T1_TYPE_SPECIFIC	enum	optional_for_tv_set_top_box	true	values.tsv#tuner_standard		search_filter	DVB-T2/C/S2, ATSC, ISDB и др.
+hdmi_ports	Количество HDMI	T1_TYPE_SPECIFIC	integer	recommended_for_tv_receiver_projector	false	range:0..12	ports	search_filter_publish	Количество HDMI-входов/выходов.
+hdmi_version	Версия HDMI	T1_TYPE_SPECIFIC	enum	recommended_for_tv_receiver_projector	true	values.tsv#hdmi_version		search_filter	HDMI 1.4/2.0/2.1, eARC.
+display_panel_finish	Покрытие экрана	T2_OPTIONAL_ENRICHMENT	enum	optional	false	values.tsv#display_panel_finish		search_filter	Глянцевое/матовое/антибликовое.
+backlight_type	Подсветка	T2_OPTIONAL_ENRICHMENT	enum	optional_for_lcd_tv	false	values.tsv#backlight_type		search_filter	Edge LED, Direct LED, FALD, Mini LED.
+local_dimming	Локальное затемнение	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_tv	false	boolean		search_filter	Наличие local dimming.
+variable_refresh_rate	VRR	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_tv	false	boolean		search_filter	VRR/FreeSync/G-Sync compatible.
+gaming_features	Игровые функции	T2_OPTIONAL_ENRICHMENT	enum	optional_for_tv	true	values.tsv#gaming_features		search_filter	ALLM, VRR, Game Bar и др.
+projector_type	Тип проектора	T1_TYPE_SPECIFIC	enum	required_for_projector	false	values.tsv#projector_type		classification_search	Long throw, short throw, UST, portable, pico.
+projector_light_source	Источник света	T1_TYPE_SPECIFIC	enum	required_for_projector	false	values.tsv#projector_light_source		search_filter	Lamp, LED, laser, hybrid.
+projector_display_tech	Технология проекции	T1_TYPE_SPECIFIC	enum	recommended_for_projector	false	values.tsv#projector_display_tech		search_filter	DLP, 3LCD, LCoS, SXRD.
+brightness_lumens	Яркость, люмены	T1_TYPE_SPECIFIC	number	recommended_for_projector	false	range:10..20000	lm	search_filter_publish	ANSI/ISO lumens if known.
+throw_type	Проекционное расстояние	T1_TYPE_SPECIFIC	enum	required_for_projector	false	values.tsv#throw_type		search_filter	Standard/short/ultra-short throw.
+keystone_correction	Коррекция трапеции	T2_OPTIONAL_ENRICHMENT	enum	optional_for_projector	false	values.tsv#keystone_correction		search_filter	Manual/auto/vertical/horizontal.
+lens_shift	Lens shift	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_projector	false	boolean		search_filter	Наличие lens shift.
+streaming_os	ОС медиаплеера	T1_TYPE_SPECIFIC	enum	required_for_streaming_or_tv_box	false	values.tsv#streaming_os		search_filter	tvOS, Google TV, Roku OS, Fire TV, Android TV и др.
+max_output_resolution	Максимальное выходное разрешение	T1_TYPE_SPECIFIC	enum	required_for_streaming_or_tv_box	false	values.tsv#resolution		search_filter_publish	Для медиаплееров/приставок.
+storage_capacity_gb	Память, ГБ	T2_OPTIONAL_ENRICHMENT	number	optional_for_streaming_or_tv_box	false	range:0..2048	GB	search_filter	Встроенная память.
+ram_gb	RAM, ГБ	T2_OPTIONAL_ENRICHMENT	number	optional_for_tv_box	false	range:0..128	GB	search_filter	Оперативная память TV box.
+audio_channel_config	Аудиоконфигурация	T1_TYPE_SPECIFIC	enum	recommended_for_home_theater_receiver	false	values.tsv#audio_channel_config		search_filter	2.1/5.1/7.1/Atmos и т.п.
+receiver_channels	Каналы AV-ресивера	T1_TYPE_SPECIFIC	enum	required_for_av_receiver	false	values.tsv#receiver_channels		search_filter_publish	5.2/7.2/9.4 и др.
+amplifier_power_w_per_channel	Мощность на канал	T2_OPTIONAL_ENRICHMENT	number	optional_for_av_receiver	false	range:1..1000	W/ch	search_filter	Заявленная мощность.
+surround_format	Surround-форматы	T1_TYPE_SPECIFIC	enum	recommended_for_receiver_home_theater	true	values.tsv#surround_format		search_filter	Dolby Atmos, DTS:X, Auro-3D и др.
+disc_format	Формат дисков	T1_TYPE_SPECIFIC	enum	required_for_disc_player	true	values.tsv#disc_format		search_filter_publish	DVD, Blu-ray, UHD Blu-ray.
+set_top_box_type	Тип set-top box	T1_TYPE_SPECIFIC	enum	required_for_set_top_box	false	values.tsv#set_top_box_type		classification_search	Cable, satellite, IPTV, DVB receiver.
+remote_target_type	Для чего пульт	T1_TYPE_SPECIFIC	enum	required_for_remote_control	true	values.tsv#remote_target_type		search_filter	TV/streaming/AV receiver/projector/universal.
+voice_remote	Голосовой пульт	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_remote	false	boolean		search_filter	Поддержка голосового управления.
+mount_type	Тип крепления	T1_TYPE_SPECIFIC	enum	required_for_tv_mount	false	values.tsv#mount_type		classification_search	Fixed/tilt/full motion/ceiling/floor stand.
+vesa_pattern	VESA	T1_TYPE_SPECIFIC	enum	recommended_for_tv_mount	true	values.tsv#vesa_pattern		search_filter_publish	VESA pattern.
+max_load_kg	Максимальная нагрузка, кг	T1_TYPE_SPECIFIC	number	recommended_for_tv_mount	false	range:1..300	kg	search_filter_publish	Для креплений и стоек.
+screen_format	Формат экрана	T1_TYPE_SPECIFIC	enum	required_for_projector_screen	false	values.tsv#screen_format		search_filter	16:9, 16:10, 4:3, 2.35:1.
+screen_diagonal_in	Диагональ экрана проектора	T1_TYPE_SPECIFIC	number	required_for_projector_screen	false	range:20..300	inch	search_filter_publish	Диагональ projection screen.
+screen_gain	Gain экрана	T2_OPTIONAL_ENRICHMENT	number	optional_for_projector_screen	false	range:0.1..5.0	gain	search_filter	Коэффициент отражения.
+screen_surface_type	Тип полотна	T1_TYPE_SPECIFIC	enum	recommended_for_projector_screen	false	values.tsv#screen_surface_type		search_filter	Matte white, grey, ALR, acoustic transparent.
+alr_support	ALR	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_projector_screen	false	boolean		search_filter	Ambient Light Rejecting.
+motorized	Моторизованный	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_projector_screen_or_mount	false	boolean		search_filter	Электропривод.
+wifi_standard	Wi‑Fi	T2_OPTIONAL_ENRICHMENT	enum	optional	true	TECH.SPECS_COMMON#wireless_standard		search_filter	Wi‑Fi 5/6/6E/7.
+bluetooth_version	Bluetooth	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		search_filter	Например 5.3.
+voice_assistant	Голосовой ассистент	T2_OPTIONAL_ENRICHMENT	enum	optional	true	values.tsv#voice_assistant		search_filter	Alexa/Google/Siri/Алиса.
+ethernet	Ethernet	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		search_filter	RJ-45 Ethernet.
+included_accessories	Комплектация	T2_OPTIONAL_ENRICHMENT	string	optional	true	free_text		display	Пульт, кабель питания, ножки, кронштейн и т.д.
+original_remote_included	Оригинальный пульт в комплекте	T2_OPTIONAL_ENRICHMENT	boolean	optional	false	boolean		publish_quality	Особенно важно для ТВ/ресиверов/приставок.
+original_stand_included	Оригинальная подставка ТВ	T2_OPTIONAL_ENRICHMENT	boolean	optional_for_tv	false	boolean		publish_quality	Важный resale-признак.
+panel_defect_status	Дефекты панели/матрицы	T2_OPTIONAL_ENRICHMENT	enum	optional_for_tv_projector	false	values.tsv#panel_defect_status		publish_quality	Burn-in, битые пиксели, полосы и т.д.
+lamp_hours	Наработка лампы/лазера, ч	T2_OPTIONAL_ENRICHMENT	number	optional_for_projector	false	range:0..100000	hours	publish_quality	Наработка проектора.
+warranty	Гарантия	T2_OPTIONAL_ENRICHMENT	enum	optional	false	TECH.ELECTRONICS_COMMON#warranty		publish_quality	Гарантия продавца/производителя.
+compatibility_target_text	Текст совместимости	T2_OPTIONAL_ENRICHMENT	string	optional_for_remote_mount_screen	false	free_text		compatibility	Для каких ТВ/проекторов/устройств подходит.
+identity_confidence	Уверенность identity	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Не показывать в UI.
+spec_confidence	Уверенность specs	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Не показывать в UI.
+route_confidence	Уверенность routing	T3_SYSTEM_HIDDEN	number	system	false	range:0..1		system	Не показывать в UI.
+source_evidence	Evidence	T3_SYSTEM_HIDDEN	json	system	true	computed		system	Служебные источники evidence.
+dedup_key	Dedup key	T3_SYSTEM_HIDDEN	string	system	false	computed		system	Служебный ключ дедупликации.
+image_fingerprint	Image fingerprint	T3_SYSTEM_HIDDEN	string	system	false	computed		system	Служебный perceptual hash.
+normalized_title	Нормализованный title	T3_SYSTEM_HIDDEN	string	system	false	computed		system	Для routing/search.
+brand	Бренд	T0_CORE	enum	always	false	TECH.ELECTRONICS_COMMON#brand		inherited	Наследуется из Electronics common + AV brand head/runtime candidates.
+condition	Состояние	T0_CORE	enum	always	false	TECH.ELECTRONICS_COMMON#condition		inherited	Новое/б/у/refurbished/for parts.
+model_name_text	Название модели текстом	T0_CORE	string	recommended	false	free_text		identity	Текстовая модель до нормализации.
+family	Семейство	T1_TYPE_SPECIFIC	enum	optional	false	TECH.DEVICE_IDENTITY_COMMON#family		identity	BRAVIA, OLED evo, The Frame, Shield TV и т.п.
+line	Линейка	T1_TYPE_SPECIFIC	enum	optional	false	TECH.DEVICE_IDENTITY_COMMON#line		identity	Линейка внутри семейства.
+model	Модель	T1_TYPE_SPECIFIC	enum	optional	false	runtime_candidates/live_values		identity	Head seed + runtime candidates.
+mpn	MPN	T2_OPTIONAL_ENRICHMENT	string	optional	false	free_text		identity	Model/part number производителя.
+gtin	GTIN/EAN/UPC	T2_OPTIONAL_ENRICHMENT	string	optional	false	regex:gtin		identity	Штрихкод.
+release_year	Год выпуска	T1_TYPE_SPECIFIC	number	optional	false	range:1990..2035	year	search_filter	Наследуемое поле.
+region_variant	Региональная версия	T2_OPTIONAL_ENRICHMENT	enum	optional	false	TECH.DEVICE_IDENTITY_COMMON#region_variant		identity	EU/US/JP/CN/Global и т.п.
+color_family	Цвет	T0_CORE	enum	recommended	false	TECH.ELECTRONICS_COMMON#color_family		search_filter_publish	Нормализованный цвет.
+price	Цена	T0_CORE	number	publish_required	false	range:0..10000000		commerce	Commerce layer.
+currency	Валюта	T0_CORE	enum	publish_required	false	values:currency		commerce	Commerce layer.
+availability	Наличие	T0_CORE	enum	publish_required	false	values:availability		commerce	Commerce layer.

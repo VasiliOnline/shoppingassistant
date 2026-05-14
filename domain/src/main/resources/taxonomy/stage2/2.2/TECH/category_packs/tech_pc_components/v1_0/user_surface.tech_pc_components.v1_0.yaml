@@ -1,0 +1,41 @@
+version: 1.0.0
+categoryCode: TECH.PC_COMPONENTS
+initial_fields:
+  - pc_component_type
+  - brand
+  - model_name_text
+  - condition
+  - key_spec_summary
+  - compatibility_summary
+  - price
+  - availability
+primary_facets:
+  - pc_component_type
+  - brand
+  - condition
+  - price
+  - compatibility_core
+  - key_spec_group
+  - seller_location
+expanded_fields_by_type:
+  CPU: [cpu_socket, cpu_series, core_count, thread_count, integrated_graphics, tdp_w]
+  GPU: [gpu_series, vram_gb, gpu_memory_type, recommended_psu_w, gpu_length_mm, display_output]
+  MOTHERBOARD: [motherboard_socket, chipset, motherboard_form_factor, ram_type, memory_slots, wifi_bluetooth]
+  RAM_MODULE: [ram_type, ram_capacity_gb, ram_speed_mhz, ram_kit_modules, ram_form_factor, ecc_support]
+  POWER_SUPPLY: [psu_wattage_w, efficiency_rating, psu_modularity, psu_form_factor, pcie_5_support]
+  PC_CASE: [case_size, motherboard_form_factor_support, max_gpu_length_mm, max_cpu_cooler_height_mm, radiator_support_mm]
+  CPU_COOLER: [cooler_type, socket_support, radiator_size_mm, fan_size_mm, cooler_height_mm]
+  CASE_FAN: [fan_size_mm, fan_count, pwm_support, argb_support]
+  THERMAL_PASTE: [thermal_conductivity_w_mk, thermal_paste_quantity_g]
+  CAPTURE_CARD: [capture_interface, max_capture_resolution, max_capture_fps, input_port]
+  SOUND_CARD: [card_interface, audio_channels, dac_resolution_bit, sample_rate_khz]
+  NETWORK_CARD: [card_interface, network_speed_gbps, wireless_standard, bluetooth_version]
+  EXPANSION_CARD: [expansion_function, card_interface, pcie_lanes, bracket_size]
+hidden_fields:
+  - dedup_key
+  - image_fingerprint
+  - normalization_trace_id
+  - moderation_status
+limits:
+  initial_fields_max: 8
+  primary_facets_max: 7

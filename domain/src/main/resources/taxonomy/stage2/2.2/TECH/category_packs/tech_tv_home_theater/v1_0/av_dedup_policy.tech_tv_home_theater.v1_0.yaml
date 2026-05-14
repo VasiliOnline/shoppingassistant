@@ -1,0 +1,18 @@
+dedup_policy:
+  master_keys:
+    TV: [brand, model, screen_size_in, region_variant]
+    PROJECTOR: [brand, model, projector_type, resolution]
+    STREAMING_DEVICE: [brand, model, storage_capacity_gb]
+    TV_BOX: [brand, model, ram_gb, storage_capacity_gb]
+    AV_RECEIVER: [brand, model, receiver_channels]
+    TV_MOUNT: [brand, model, vesa_pattern, max_load_kg]
+    PROJECTOR_SCREEN: [brand, model, screen_diagonal_in, screen_format, screen_surface_type]
+  variant_keys:
+    - condition
+    - included_accessories
+    - region_variant
+  never_merge_if:
+    - different av_type
+    - different screen_size_in for TV/projector screen
+    - different receiver_channels for AV receiver
+    - panel_defect_status indicates severe damage

@@ -1,0 +1,25 @@
+facet_templates:
+  primary_facets:
+    - av_type
+    - brand
+    - price
+    - condition
+    - screen_size_in
+    - resolution
+    - display_technology
+  secondary_facets:
+    - refresh_rate_hz
+    - hdr_standard
+    - smart_tv_platform
+    - hdmi_version
+    - projector_light_source
+    - brightness_lumens
+    - receiver_channels
+    - mount_type
+    - vesa_pattern
+    - screen_format
+  facet_rules:
+    hide_zero_count_values: true
+    show_primary_only_until_filter_open: true
+    do_not_expose_T3_SYSTEM_HIDDEN: true
+    no_presets_or_collections_in_base_pack: true

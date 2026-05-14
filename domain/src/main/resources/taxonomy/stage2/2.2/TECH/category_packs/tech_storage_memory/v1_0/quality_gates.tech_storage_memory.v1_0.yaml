@@ -1,0 +1,26 @@
+quality_gates_id: quality_gates.tech_storage_memory.v1_0
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+  - IdentityCandidateGate
+  - StorageCapacityParserGate
+  - StorageResaleSafetyGate
+thresholds:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  T3_SYSTEM_HIDDEN_UI_leaks: 0
+  sample_offers_min: 80
+  golden_queries_min: 100
+  positive_route_accuracy_min: 0.96
+  negative_route_accuracy_min: 0.94
+  capacity_parser_accuracy_min: 0.98
+known_non_blockers:
+  - "Model head seed is representative only, not full global registry."
+  - Long-tail models should enter runtime candidates/live values.
+  - Health status is recommended for used drives but not required for classification.

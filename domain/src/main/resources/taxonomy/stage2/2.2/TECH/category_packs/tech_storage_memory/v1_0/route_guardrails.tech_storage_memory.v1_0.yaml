@@ -1,0 +1,141 @@
+route_guardrails_id: route_guardrails.tech_storage_memory.v1_0
+categoryCode: TECH.STORAGE_MEMORY
+evaluation_mode: priority_desc_first_match
+include_guards:
+  -
+    guard_id: include_storage_core
+    priority: 100
+    if_any_terms:
+      - ssd
+      - hdd
+      - nvme
+      - жесткий диск
+      - жёсткий диск
+      - внешний диск
+      - флешка
+      - usb flash
+      - карта памяти
+      - micro sd
+      - microsd
+      - кардридер
+      - nas
+    route_to: TECH.STORAGE_MEMORY
+  -
+    guard_id: include_storage_accessory
+    priority: 90
+    if_any_terms:
+      - корпус для ssd
+      - корпус для hdd
+      - док для дисков
+      - sata usb adapter
+      - m.2 heatsink
+      - салазки для диска
+    route_to: TECH.STORAGE_MEMORY
+exclude_guards:
+  -
+    guard_id: ram_module_to_pc_components
+    priority: 200
+    if_any_terms:
+      - оперативная память
+      - озу
+      - ram ddr4
+      - ram ddr5
+      - ddr5 16gb
+      - ddr4 8gb
+    route_to: TECH.PC_COMPONENTS
+    reason: "RAM modules are PC components, not storage memory branch."
+  -
+    guard_id: gpu_memory_to_pc_components
+    priority: 190
+    if_all_terms:
+      - видеокарта
+    if_any_terms:
+      - 8gb
+      - 12gb
+      - 16gb
+      - gddr6
+      - gddr7
+    route_to: TECH.PC_COMPONENTS
+    reason: VRAM belongs to GPU component listing.
+  -
+    guard_id: usb_hub_to_computer_accessories
+    priority: 180
+    if_any_terms:
+      - usb hub
+      - юсб хаб
+      - hub usb
+      - концентратор usb
+    route_to: TECH.COMPUTER_ACCESSORIES
+    reason: USB hub is not a storage/card reader unless card slots detected.
+  -
+    guard_id: power_bank_to_power_charging
+    priority: 175
+    if_any_terms:
+      - power bank
+      - пауэрбанк
+      - powerbank
+    route_to: TECH.POWER_CHARGING_CABLES
+    reason: Power banks are power category.
+  -
+    guard_id: sim_card_exclusion
+    priority: 170
+    if_any_terms:
+      - sim карта
+      - сим карта
+      - esim
+      - симка
+    route_to: TECH.PHONE_ACCESSORIES
+    reason: SIM cards are not memory cards.
+  -
+    guard_id: camera_to_cameras
+    priority: 160
+    if_any_terms:
+      - камера
+      - фотоаппарат
+      - объектив
+    unless_any_terms:
+      - карта памяти
+      - sdxc
+      - microsd
+      - cfexpress
+    route_to: TECH.CAMERAS_DRONES
+    reason: Camera devices are not storage.
+  -
+    guard_id: console_to_gaming
+    priority: 150
+    if_any_terms:
+      - playstation
+      - xbox
+      - nintendo switch
+    unless_any_terms:
+      - ssd
+      - карта памяти
+      - накопитель
+      - external drive
+    route_to: TECH.GAMING
+    reason: Console itself not storage.
+ambiguous_resolution:
+  -
+    case: sata cable
+    prefer: TECH.STORAGE_MEMORY
+    when_terms:
+      - для ssd
+      - для hdd
+      - sata data
+    else_route: TECH.POWER_CHARGING_CABLES
+  -
+    case: card reader vs usb hub
+    prefer: TECH.STORAGE_MEMORY
+    when_terms:
+      - sd
+      - micro sd
+      - card reader
+      - кардридер
+    else_route: TECH.COMPUTER_ACCESSORIES
+  -
+    case: nas vs server
+    prefer: TECH.STORAGE_MEMORY
+    when_terms:
+      - nas
+      - сетевое хранилище
+    else_route: TECH.ENTERPRISE_SERVERS

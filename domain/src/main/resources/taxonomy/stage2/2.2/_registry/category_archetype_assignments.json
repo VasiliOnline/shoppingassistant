@@ -576,7 +576,8 @@
       "archetypes": [
         "IDENTITY_CRITICAL",
         "TYPE_DRIVEN",
-        "VISUAL_SIMPLE"
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
       "identityMode": "BRAND_MODEL",
@@ -585,6 +586,21 @@
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "audio_type",
+        "brand",
+        "model_name_text",
+        "connection_type",
+        "form_factor",
+        "condition"
+      ],
+      "liveCandidateAttributeCodes": [
+        "brand",
+        "family",
+        "line",
+        "model",
+        "model_name_text"
       ]
     },
     {
@@ -656,18 +672,32 @@
       "categoryCode": "TECH.COMPUTER_ACCESSORIES",
       "archetypes": [
         "TYPE_DRIVEN",
-        "COMPATIBILITY_DRIVEN"
+        "COMPATIBILITY_DRIVEN",
+        "IDENTITY_CRITICAL"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL_OPTIONAL",
-      "liveCandidateAttributeCodes": [
-        "compatible_model_text"
-      ],
+      "identityMode": "BRAND_MODEL_OPTIONAL_COMPATIBILITY",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "computer_accessory_type",
+        "brand",
+        "model_name_text",
+        "connection_type",
+        "connector_type",
+        "compatible_device_type"
+      ],
+      "liveCandidateAttributeCodes": [
+        "compatible_brand",
+        "compatible_family",
+        "compatible_model_text",
+        "model_number",
+        "mpn",
+        "gtin"
       ]
     },
     {
@@ -741,12 +771,31 @@
         "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_COMPONENT",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "pc_component_type",
+        "brand",
+        "model_name_text",
+        "cpu_socket",
+        "gpu_series",
+        "ram_type",
+        "psu_wattage_w"
+      ],
+      "liveCandidateAttributeCodes": [
+        "manufacturer",
+        "mpn",
+        "gtin",
+        "cpu_series",
+        "gpu_chipset",
+        "motherboard_socket",
+        "socket_support",
+        "compatibility_notes"
       ]
     },
     {
@@ -857,15 +906,31 @@
       "archetypes": [
         "IDENTITY_CRITICAL",
         "SPEC_HEAVY",
-        "TYPE_DRIVEN"
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_STORAGE",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "storage_type",
+        "brand",
+        "model_name_text",
+        "storage_capacity_gb",
+        "interface_type",
+        "form_factor"
+      ],
+      "liveCandidateAttributeCodes": [
+        "mpn",
+        "gtin",
+        "release_year",
+        "storage_use_case",
+        "console_compatibility_hint",
+        "compatibility_hint_confidence"
       ]
     },
     {
@@ -903,16 +968,34 @@
       "categoryCode": "TECH.TV_HOME_THEATER",
       "archetypes": [
         "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
         "SPEC_HEAVY",
-        "SIZE_DRIVEN"
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_AV_TYPE",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "av_type",
+        "brand",
+        "model_name_text",
+        "screen_size_in",
+        "resolution",
+        "display_technology"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "mpn",
+        "gtin",
+        "compatibility_target_text"
       ]
     },
     {

@@ -1,0 +1,189 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_pc_components.v1_0",
+  "categoryCode": "TECH.PC_COMPONENTS",
+  "pack_type": "public_category_pack",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "main_type_attribute": "pc_component_type",
+  "type_values": [
+    "CPU",
+    "GPU",
+    "MOTHERBOARD",
+    "RAM_MODULE",
+    "POWER_SUPPLY",
+    "PC_CASE",
+    "CPU_COOLER",
+    "CASE_FAN",
+    "THERMAL_PASTE",
+    "CAPTURE_CARD",
+    "SOUND_CARD",
+    "NETWORK_CARD",
+    "EXPANSION_CARD"
+  ],
+  "required_fields": [
+    "categoryCode",
+    "pc_component_type",
+    "brand",
+    "condition",
+    "model_name_text",
+    "price",
+    "currency",
+    "availability",
+    "region"
+  ],
+  "t1_type_specific_policy": {
+    "CPU": [
+      "cpu_socket",
+      "cpu_series",
+      "cpu_generation",
+      "core_count",
+      "thread_count",
+      "base_clock_ghz",
+      "boost_clock_ghz",
+      "tdp_w",
+      "integrated_graphics",
+      "unlocked_multiplier"
+    ],
+    "GPU": [
+      "gpu_chipset",
+      "gpu_series",
+      "vram_gb",
+      "gpu_memory_type",
+      "gpu_bus_width_bit",
+      "gpu_length_mm",
+      "recommended_psu_w",
+      "power_connector",
+      "display_output",
+      "ray_tracing_support"
+    ],
+    "MOTHERBOARD": [
+      "motherboard_socket",
+      "chipset",
+      "motherboard_form_factor",
+      "ram_type",
+      "memory_slots",
+      "max_memory_gb",
+      "pcie_version",
+      "wifi_bluetooth",
+      "m2_slots",
+      "sata_ports"
+    ],
+    "RAM_MODULE": [
+      "ram_type",
+      "ram_capacity_gb",
+      "ram_kit_modules",
+      "ram_speed_mhz",
+      "ram_form_factor",
+      "cas_latency",
+      "ecc_support",
+      "rgb_lighting"
+    ],
+    "POWER_SUPPLY": [
+      "psu_wattage_w",
+      "efficiency_rating",
+      "psu_modularity",
+      "psu_form_factor",
+      "atx_version",
+      "pcie_5_support",
+      "power_connector"
+    ],
+    "PC_CASE": [
+      "case_size",
+      "motherboard_form_factor_support",
+      "max_gpu_length_mm",
+      "max_cpu_cooler_height_mm",
+      "radiator_support_mm",
+      "side_panel_material",
+      "case_color",
+      "included_fans_count"
+    ],
+    "CPU_COOLER": [
+      "cooler_type",
+      "socket_support",
+      "radiator_size_mm",
+      "fan_size_mm",
+      "cooler_height_mm",
+      "tdp_rating_w",
+      "rgb_lighting"
+    ],
+    "CASE_FAN": [
+      "fan_size_mm",
+      "fan_thickness_mm",
+      "fan_count",
+      "pwm_support",
+      "argb_support",
+      "airflow_cfm",
+      "noise_level_db"
+    ],
+    "THERMAL_PASTE": [
+      "thermal_conductivity_w_mk",
+      "thermal_paste_quantity_g",
+      "application_count",
+      "electrically_conductive"
+    ],
+    "CAPTURE_CARD": [
+      "capture_interface",
+      "max_capture_resolution",
+      "max_capture_fps",
+      "passthrough_resolution",
+      "input_port",
+      "output_port",
+      "encoder_support"
+    ],
+    "SOUND_CARD": [
+      "card_interface",
+      "audio_channels",
+      "dac_resolution_bit",
+      "sample_rate_khz",
+      "input_port",
+      "output_port"
+    ],
+    "NETWORK_CARD": [
+      "card_interface",
+      "network_speed_gbps",
+      "wireless_standard",
+      "bluetooth_version",
+      "antenna_included"
+    ],
+    "EXPANSION_CARD": [
+      "expansion_function",
+      "card_interface",
+      "pcie_lanes",
+      "bracket_size",
+      "driver_required"
+    ]
+  },
+  "facet_attributes_common": [
+    "pc_component_type",
+    "brand",
+    "condition",
+    "price",
+    "region"
+  ],
+  "initial_fields_count": 8,
+  "primary_facets_count": 7,
+  "hidden_fields": [
+    "dedup_key",
+    "image_fingerprint",
+    "source_offer_id",
+    "source_url",
+    "ingestion_timestamp",
+    "normalization_trace_id",
+    "risk_flags",
+    "moderation_status"
+  ],
+  "blocked_cross_route_targets": [
+    "TECH.STORAGE_MEMORY",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.COMPUTERS",
+    "TECH.MONITORS_DISPLAYS",
+    "TECH.POWER_CHARGING_CABLES",
+    "TECH.AUDIO"
+  ],
+  "presets_collections": "excluded",
+  "long_tail_policy": "runtime_candidates_live_values_not_manual_full_registry"
+}

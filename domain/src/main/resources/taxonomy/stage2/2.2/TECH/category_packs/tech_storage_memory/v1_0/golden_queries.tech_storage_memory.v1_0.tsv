@@ -1,0 +1,156 @@
+query	expected_categoryCode	expected_storage_type	expected_attrs	locale	priority	notes
+ssd nvme 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	100	
+samsung 990 pro 2tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=2048	ru	100	
+m2 ssd 2280 512gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=512	ru	100	
+wd black sn850x 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	100	
+ssd sata 2.5 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	100	
+crucial mx500 500gb	TECH.STORAGE_MEMORY	INTERNAL_SSD		ru	100	
+накопитель nvme gen4	TECH.STORAGE_MEMORY	INTERNAL_SSD		ru	100	
+жесткий диск 4tb	TECH.STORAGE_MEMORY	INTERNAL_HDD		ru	100	
+hdd 3.5 2tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	storage_capacity_gb=2048	ru	100	
+wd red plus 8tb	TECH.STORAGE_MEMORY	INTERNAL_HDD		ru	100	
+seagate ironwolf 4tb	TECH.STORAGE_MEMORY	INTERNAL_HDD		ru	100	
+hdd для nas 6tb	TECH.STORAGE_MEMORY	INTERNAL_HDD		ru	100	
+жесткий диск для видеонаблюдения	TECH.STORAGE_MEMORY	INTERNAL_HDD		ru	100	
+внешний ssd 1tb usb c	TECH.STORAGE_MEMORY	EXTERNAL_SSD	storage_capacity_gb=1024	ru	100	
+samsung t7 1tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	storage_capacity_gb=1024	ru	100	
+sandisk extreme portable ssd	TECH.STORAGE_MEMORY	EXTERNAL_SSD		ru	100	
+portable ssd 2tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	storage_capacity_gb=2048	ru	100	
+внешний ссд для macbook	TECH.STORAGE_MEMORY	EXTERNAL_SSD		ru	100	
+внешний жесткий диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	100	
+wd my passport 4tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD		ru	100	
+seagate expansion 5tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD		ru	100	
+toshiba canvio 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	100	
+флешка 128гб	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE		ru	100	
+usb флешка type c	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE		ru	100	
+kingston datatraveler 64gb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE		ru	100	
+sandisk ultra flair 256gb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE		ru	100	
+карта памяти microsd 128gb	TECH.STORAGE_MEMORY	MEMORY_CARD		ru	100	
+micro sd 256gb u3	TECH.STORAGE_MEMORY	MEMORY_CARD		ru	100	
+sdxc v90 для камеры	TECH.STORAGE_MEMORY	MEMORY_CARD		ru	100	
+cfexpress type b 512gb	TECH.STORAGE_MEMORY	MEMORY_CARD	storage_capacity_gb=512	ru	100	
+карта памяти для switch 512	TECH.STORAGE_MEMORY	MEMORY_CARD	storage_capacity_gb=512	ru	100	
+кардридер usb c sd microsd	TECH.STORAGE_MEMORY	CARD_READER		ru	100	
+card reader cfexpress	TECH.STORAGE_MEMORY	CARD_READER		ru	100	
+ридер карт памяти для ноутбука	TECH.STORAGE_MEMORY	CARD_READER		ru	100	
+synology nas 2 bay	TECH.STORAGE_MEMORY	NAS		ru	100	
+qnap ts 464	TECH.STORAGE_MEMORY	NAS		ru	100	
+сетевое хранилище на 4 диска	TECH.STORAGE_MEMORY	NAS		ru	100	
+nas сервер домашний	TECH.STORAGE_MEMORY	NAS		ru	100	
+корпус для m2 nvme usb c	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	100	
+адаптер sata usb для hdd	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	100	
+док станция для жестких дисков	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	100	
+радиатор m2 ssd	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	100	
+салазки для ssd 2.5	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	100	
+оперативная память ddr5 16gb	TECH.PC_COMPONENTS	RAM_MODULE	blocked_from_STORAGE_MEMORY	ru	200	negative route guard
+usb hub type c 7 in 1	TECH.COMPUTER_ACCESSORIES	USB_HUB	blocked_from_STORAGE_MEMORY	ru	200	negative route guard
+power bank 20000 mah	TECH.POWER_CHARGING_CABLES	POWER_BANK	blocked_from_STORAGE_MEMORY	ru	200	negative route guard
+sim карта мтс	TECH.PHONE_ACCESSORIES	SIM_CARD	blocked_from_STORAGE_MEMORY	ru	200	negative route guard
+видеокарта rtx 4070 12gb	TECH.PC_COMPONENTS	GPU	blocked_from_STORAGE_MEMORY	ru	200	negative route guard
+ssd nvme 128gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=128gb	ru	75	capacity parser smoke
+внешний жесткий диск 128gb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	capacity=128gb	ru	75	capacity parser smoke
+флешка 128gb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=128gb	ru	75	capacity parser smoke
+micro sd 128gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=128gb	ru	75	capacity parser smoke
+ssd nvme 256gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=256gb	ru	75	capacity parser smoke
+внешний жесткий диск 256gb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	capacity=256gb	ru	75	capacity parser smoke
+флешка 256gb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=256gb	ru	75	capacity parser smoke
+micro sd 256gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=256gb	ru	75	capacity parser smoke
+ssd nvme 512gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=512gb	ru	75	capacity parser smoke
+внешний жесткий диск 512gb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	capacity=512gb	ru	75	capacity parser smoke
+флешка 512gb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=512gb	ru	75	capacity parser smoke
+micro sd 512gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=512gb	ru	75	capacity parser smoke
+внешний жесткий диск 1tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	capacity=1tb	ru	75	capacity parser smoke
+флешка 1tb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=1tb	ru	75	capacity parser smoke
+micro sd 1tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=1tb	ru	75	capacity parser smoke
+ssd nvme 2tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=2tb	ru	75	capacity parser smoke
+флешка 2tb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=2tb	ru	75	capacity parser smoke
+micro sd 2tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=2tb	ru	75	capacity parser smoke
+ssd nvme 4tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=4tb	ru	75	capacity parser smoke
+внешний жесткий диск 4tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	capacity=4tb	ru	75	capacity parser smoke
+флешка 4tb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=4tb	ru	75	capacity parser smoke
+micro sd 4tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=4tb	ru	75	capacity parser smoke
+ssd nvme 8tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=8tb	ru	75	capacity parser smoke
+внешний жесткий диск 8tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	capacity=8tb	ru	75	capacity parser smoke
+флешка 8tb	TECH.STORAGE_MEMORY	USB_FLASH_DRIVE	capacity=8tb	ru	75	capacity parser smoke
+micro sd 8tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=8tb	ru	75	capacity parser smoke
+ssd 32gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=32gb	ru	70	additional coverage
+m2 nvme 32gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=32gb	ru	70	additional coverage
+hdd 32gb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=32gb	ru	70	additional coverage
+внешний ssd 32gb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=32gb	ru	70	additional coverage
+карта памяти 32gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=32gb	ru	70	additional coverage
+ssd 64gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=64gb	ru	70	additional coverage
+m2 nvme 64gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=64gb	ru	70	additional coverage
+hdd 64gb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=64gb	ru	70	additional coverage
+внешний ssd 64gb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=64gb	ru	70	additional coverage
+карта памяти 64gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=64gb	ru	70	additional coverage
+ssd 128gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=128gb	ru	70	additional coverage
+m2 nvme 128gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=128gb	ru	70	additional coverage
+hdd 128gb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=128gb	ru	70	additional coverage
+внешний ssd 128gb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=128gb	ru	70	additional coverage
+карта памяти 128gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=128gb	ru	70	additional coverage
+ssd 256gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=256gb	ru	70	additional coverage
+m2 nvme 256gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=256gb	ru	70	additional coverage
+hdd 256gb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=256gb	ru	70	additional coverage
+внешний ssd 256gb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=256gb	ru	70	additional coverage
+карта памяти 256gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=256gb	ru	70	additional coverage
+ssd 512gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=512gb	ru	70	additional coverage
+m2 nvme 512gb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=512gb	ru	70	additional coverage
+hdd 512gb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=512gb	ru	70	additional coverage
+внешний ssd 512gb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=512gb	ru	70	additional coverage
+карта памяти 512gb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=512gb	ru	70	additional coverage
+ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=1tb	ru	70	additional coverage
+m2 nvme 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=1tb	ru	70	additional coverage
+hdd 1tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=1tb	ru	70	additional coverage
+внешний ssd 1tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=1tb	ru	70	additional coverage
+карта памяти 1tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=1tb	ru	70	additional coverage
+ssd 2tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=2tb	ru	70	additional coverage
+m2 nvme 2tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=2tb	ru	70	additional coverage
+hdd 2tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=2tb	ru	70	additional coverage
+внешний ssd 2tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=2tb	ru	70	additional coverage
+карта памяти 2tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=2tb	ru	70	additional coverage
+ssd 4tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=4tb	ru	70	additional coverage
+m2 nvme 4tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=4tb	ru	70	additional coverage
+hdd 4tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=4tb	ru	70	additional coverage
+внешний ssd 4tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=4tb	ru	70	additional coverage
+карта памяти 4tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=4tb	ru	70	additional coverage
+ssd 8tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=8tb	ru	70	additional coverage
+m2 nvme 8tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=8tb	ru	70	additional coverage
+hdd 8tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=8tb	ru	70	additional coverage
+внешний ssd 8tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=8tb	ru	70	additional coverage
+карта памяти 8tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=8tb	ru	70	additional coverage
+ssd 12tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=12tb	ru	70	additional coverage
+m2 nvme 12tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=12tb	ru	70	additional coverage
+hdd 12tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=12tb	ru	70	additional coverage
+внешний ssd 12tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=12tb	ru	70	additional coverage
+карта памяти 12tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=12tb	ru	70	additional coverage
+ssd 16tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=16tb	ru	70	additional coverage
+m2 nvme 16tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	capacity=16tb	ru	70	additional coverage
+hdd 16tb	TECH.STORAGE_MEMORY	INTERNAL_HDD	capacity=16tb	ru	70	additional coverage
+внешний ssd 16tb	TECH.STORAGE_MEMORY	EXTERNAL_SSD	capacity=16tb	ru	70	additional coverage
+карта памяти 16tb	TECH.STORAGE_MEMORY	MEMORY_CARD	capacity=16tb	ru	70	additional coverage
+samsung ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+samsung внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+wd ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+wd внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+seagate ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+seagate внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+crucial ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+crucial внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+kingston ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+kingston внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+sandisk ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+sandisk внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+lexar ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+lexar внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+synology ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+synology внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+qnap ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+qnap внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+toshiba ssd 1tb	TECH.STORAGE_MEMORY	INTERNAL_SSD	storage_capacity_gb=1024	ru	80	brand smoke
+toshiba внешний диск 2tb	TECH.STORAGE_MEMORY	EXTERNAL_HDD	storage_capacity_gb=2048	ru	75	brand smoke
+m2 heatsink	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	80	accessory smoke
+радиатор для ssd m2	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	80	accessory smoke
+sata usb adapter	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	80	accessory smoke
+корпус 2.5 hdd	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	80	accessory smoke
+корпус m2 nvme	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	80	accessory smoke
+нас лоток для диска	TECH.STORAGE_MEMORY	STORAGE_ACCESSORY		ru	80	accessory smoke

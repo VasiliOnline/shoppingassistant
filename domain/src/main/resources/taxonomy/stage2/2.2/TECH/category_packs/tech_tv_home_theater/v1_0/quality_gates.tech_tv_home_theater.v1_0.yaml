@@ -1,0 +1,23 @@
+quality_gates:
+  required:
+    - Stage22SeedValidator
+    - FacetSchemaValidator
+    - EffectiveSpecSnapshotGate
+    - RouteConflictGate
+    - UserSurfaceGate
+    - AliasCollisionGate
+    - VisionRulesGate
+    - SampleOffersSmokeGate
+    - IdentityCandidateGate
+  category_specific:
+    - AVRouteBoundaryGate
+    - DisplaySpecGate
+    - ProjectorSpecGate
+    - MountCompatibilityGate
+  thresholds:
+    initial_fields_max: 8
+    primary_facets_max: 7
+    sample_offers_min: 80
+    golden_queries_min: 120
+    T3_hidden_leaks: 0
+    presets_collections_files: 0

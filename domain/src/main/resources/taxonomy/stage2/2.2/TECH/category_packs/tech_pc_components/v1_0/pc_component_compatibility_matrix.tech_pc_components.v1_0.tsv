@@ -1,0 +1,14 @@
+pc_component_type	compatibility_fields	validation_mode	hard_block_conditions
+CPU	cpu_socket -> motherboard_socket; tdp_w -> cooler/board power envelope	soft_suggest	explicit physical impossibility only
+GPU	pcie_version -> motherboard pcie; gpu_length_mm -> case max_gpu_length_mm; recommended_psu_w -> psu_wattage_w; power_connector -> PSU connectors	soft_suggest	explicit physical impossibility only
+MOTHERBOARD	motherboard_socket -> CPU socket; ram_type -> RAM type; motherboard_form_factor -> case support	soft_suggest	explicit physical impossibility only
+RAM_MODULE	ram_type -> motherboard ram_type; ram_form_factor -> desktop board slots; ram_speed_mhz -> motherboard/CPU support	soft_suggest	explicit physical impossibility only
+POWER_SUPPLY	psu_wattage_w -> CPU/GPU needs; psu_form_factor -> case support; power_connector -> GPU/CPU needs	soft_suggest	explicit physical impossibility only
+PC_CASE	motherboard_form_factor_support -> motherboard; max_gpu_length_mm -> GPU; max_cpu_cooler_height_mm -> air cooler; radiator_support_mm -> AIO	soft_suggest	explicit physical impossibility only
+CPU_COOLER	socket_support -> CPU/motherboard socket; cooler_height_mm/radiator_size_mm -> case	soft_suggest	explicit physical impossibility only
+CASE_FAN	fan_size_mm -> case fan mounts	soft_suggest	explicit physical impossibility only
+THERMAL_PASTE	generic	soft_suggest	explicit physical impossibility only
+CAPTURE_CARD	capture_interface -> motherboard slot; video ports -> source/display	soft_suggest	explicit physical impossibility only
+SOUND_CARD	card_interface -> motherboard slot	soft_suggest	explicit physical impossibility only
+NETWORK_CARD	card_interface -> motherboard slot; wireless_standard/network_speed -> use case	soft_suggest	explicit physical impossibility only
+EXPANSION_CARD	card_interface/pcie_lanes -> motherboard slot	soft_suggest	explicit physical impossibility only

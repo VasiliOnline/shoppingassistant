@@ -66,33 +66,33 @@ triggers:
       add: 10
   TECH.COMPUTER_ACCESSORIES:
     bonus:
-    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|вебкамера|матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm)\b
+    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|вебкамера|матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm|hard\s?shell|keyboard\s?cover|privacy\s?filter|фильтр\s?приватности)\b
       add: 15
-    - pattern: \b(док\s?станц|docking|usb\s?hub|коврик\s?для\s?мыши|mouse\s?pad|laptop\s?stand|настольное\s?крепление\s?монитора|газлифт\s?для\s?монитора)\b
+    - pattern: \b(док\s?станц|docking|usb\s?hub|usb\s?c\s?hub|юсб\s?хаб|коврик\s?для\s?мыши|mouse\s?pad|laptop\s?stand|подставк[\p{L}\p{N}_]*\s?для\s?ноутбук[\p{L}\p{N}_]*|настольное\s?крепление\s?монитора|газлифт\s?для\s?монитора|накладк[\p{L}\p{N}_]*\s?на\s?клавиатур[\p{L}\p{N}_]*|охлаждающ[\p{L}\p{N}_]*\s?подставк[\p{L}\p{N}_]*|cleaning\s?kit)\b
       add: 10
   TECH.PC_COMPONENTS:
     bonus:
-    - pattern: \b(gpu|видеокарта|rtx|rx|cpu|процессор|motherboard|материн)\b
+    - pattern: \b(gpu|видеокарта|rtx|geforce|radeon|rx|cpu|процессор|motherboard|материн|материнк[\p{L}\p{N}_]*|mobo|ram|ddr|озу|оперативн[\p{L}\p{N}_]*)\b
       add: 15
-    - pattern: \b(блок\s?питания|psu|корпус\s?пк|cooling|кулер|thermal\s?paste)\b
+    - pattern: \b(блок\s?питания|psu|power\s?supply|корпус\s?(?:для\s?)?пк|pc\s?case|computer\s?case|cooling|кулер|cpu\s?cooler|case\s?fan|термопаст[\p{L}\p{N}_]*|thermal\s?paste|карта\s?захвата|capture\s?card|звуковая\s?карта|sound\s?card|сетевая\s?карта|network\s?card|плата\s?расширения|expansion\s?card)\b
       add: 10
   TECH.STORAGE_MEMORY:
     bonus:
-    - pattern: \b(ssd|hdd|nvme|флешк[\p{L}\p{N}_]*|usb\s?flash|memory\s?card|карта\s?памяти|micro\s?sd)\b
+    - pattern: \b(ssd|hdd|nvme|m\.?2|m2|флешк[\p{L}\p{N}_]*|usb\s?флешк[\p{L}\p{N}_]*|usb\s?flash|memory\s?card|карта\s?памяти|micro\s?sd|microsd|sdxc|cfexpress)\b
       add: 15
-    - pattern: \b(nas|card\s?reader|картридер|external\s?drive|внешний\s?диск)\b
+    - pattern: \b(nas|сетевое\s?хранилище|card\s?reader|картридер|external\s?drive|внешний\s?диск|внешний\s?жестк[\p{L}\p{N}_]*\s?диск|корпус\s?для\s?(?:ssd|hdd)|док\s?для\s?дисков|sata\s?usb\s?adapter)\b
       add: 10
   TECH.AUDIO:
     bonus:
-    - pattern: \b(наушники|headphones|earbuds|airpods|buds)\b
+    - pattern: \b(наушники|headphones|earbuds|airpods|buds|tws|гарнитура|headset)\b
       add: 15
-    - pattern: \b(колонк|speaker|soundbar|саундбар|микрофон|hi[- ]?fi)\b
+    - pattern: \b(колонк|speaker|soundbar|саундбар|микрофон|microphone|hi[- ]?fi|аудиоинтерфейс|audio\s?interface|цап|dac|ресивер|receiver|turntable|виниловый|студийный\s?монитор|studio\s?monitor|амбушюр|поп\s?фильтр)\b
       add: 10
   TECH.TV_HOME_THEATER:
     bonus:
-    - pattern: \b(телевизор|tv|smart\s?tv|oled|qled|android\s?tv)\b
+    - pattern: \b(телевизор|телевизоры|тв|tv|smart\s?tv|смарт\s?тв|oled|qled|mini\s?led|android\s?tv)\b
       add: 15
-    - pattern: \b(проектор|медиаплеер|tv\s?box|apple\s?tv|google\s?tv|домашний\s?кинотеатр)\b
+    - pattern: \b(проектор|лазерный\s?проектор|мини\s?проектор|медиаплеер|стриминговая\s?приставка|тв\s?бокс|tv\s?box|apple\s?tv|google\s?tv|chromecast|fire\s?tv|shield\s?tv|домашний\s?кинотеатр|av\s?ресивер|ав\s?ресивер|blu\s?ray|dvd\s?плеер|кронштейн\s?для\s?тв|кронштейн\s?для\s?телевизора|экран\s?для\s?проектора|проекционный\s?экран)\b
       add: 10
   TECH.WEARABLES:
     bonus:
@@ -143,6 +143,21 @@ triggers:
     - pattern: \b(магнитола|car\s?head\s?unit|парктроник|parking\s?sensor|backup\s?camera)\b
       add: 10
 conflicts:
+- pattern: \b(студийный\s?монитор|studio\s?monitor|active\s?monitor\s?speaker|мониторы\s?студийные)\b
+  prefer: TECH.AUDIO
+  penalty_other: 20
+- pattern: \b((игров[а-я]*|gaming|ps5|xbox|playstation).*(гарнитур[а-я]*|headset|наушник[а-я]*|headphones)|(гарнитур[а-я]*|headset|наушник[а-я]*|headphones).*(игров[а-я]*|gaming|ps5|xbox|playstation))\b
+  prefer: TECH.GAMING
+  penalty_other: 25
+- pattern: \b(автомагнитол[а-я]*|car\s?head\s?unit|колонки\s?автомобильные|автомобильные\s?колонки|car\s?speaker|car\s?amplifier|pioneer\s?магнитола)\b
+  prefer: TECH.CAR_ELECTRONICS_GPS
+  penalty_other: 25
+- pattern: \b(кабель\s?usb\s?c\s?зарядк[а-я]*|usb\s?c\s?charging\s?cable|hdmi\s?кабель|кабель\s?hdmi|зарядный\s?кабель|power\s?bank|зарядк[а-я]*\s?100w|переходник\s?hdmi\s?usb\s?c)\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(webcam|вебкамера|keyboard|клавиатур[\p{L}\p{N}_]*|mouse|мышь)\b
+  prefer: TECH.COMPUTER_ACCESSORIES
+  penalty_other: 20
 - pattern: \b(airpods|earbuds|buds)\b
   prefer: TECH.AUDIO
   penalty_other: 10
@@ -152,17 +167,32 @@ conflicts:
 - pattern: \b(чехол|чехл[\p{L}\p{N}_]*|стекло|стекл[\p{L}\p{N}_]*|пленк[\p{L}\p{N}_]*)\b
   prefer: TECH.PHONE_ACCESSORIES
   penalty_other: 8
+- pattern: \b(для\s?телефон[\p{L}\p{N}_]*|для\s?смартфон[\p{L}\p{N}_]*|iphone|айфон|android|lightning|magsafe)\b
+  prefer: TECH.PHONE_ACCESSORIES
+  penalty_other: 12
+- pattern: \b((usb\s?c\s?hub|usb\s?hub|type\s?c\s?hub|hub|юсб\s?хаб).*(для\s?телефон[\p{L}\p{N}_]*|для\s?смартфон[\p{L}\p{N}_]*|iphone|айфон|android|lightning)|(для\s?телефон[\p{L}\p{N}_]*|для\s?смартфон[\p{L}\p{N}_]*|iphone|айфон|android|lightning).*(usb\s?c\s?hub|usb\s?hub|type\s?c\s?hub|hub|юсб\s?хаб))\b
+  prefer: TECH.PHONE_ACCESSORIES
+  penalty_other: 20
+- pattern: \b(сумк[\p{L}\p{N}_]*\s?для\s?ноутбук[\p{L}\p{N}_]*|рюкзак[\p{L}\p{N}_]*\s?для\s?ноутбук[\p{L}\p{N}_]*|чехол\s?для\s?ноутбук[\p{L}\p{N}_]*|laptop\s?bag|laptop\s?backpack|laptop\s?sleeve)\b
+  prefer: FASH.BAGS
+  penalty_other: 25
 - pattern: \b(мышь|mouse|keyboard|клавиатур[\p{L}\p{N}_]*)\b
   prefer: TECH.COMPUTER_ACCESSORIES
   penalty_other: 8
 - pattern: \b(матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm|настольное\s?крепление\s?монитора|газлифт\s?для\s?монитора)\b
   prefer: TECH.COMPUTER_ACCESSORIES
   penalty_other: 10
+- pattern: \b(док\s?станц[\p{L}\p{N}_]*|docking\s?station|thunderbolt\s?dock|usb\s?c\s?dock|usb\s?hub|usb\s?c\s?hub|type\s?c\s?hub|type\s?c\s?usb\s?hub|usb\s?hub\s?type\s?c|usb\s?хаб|юсб\s?хаб|подставк[\p{L}\p{N}_]*\s?для\s?ноутбук[\p{L}\p{N}_]*|laptop\s?stand|hard\s?shell\s?macbook|накладк[\p{L}\p{N}_]*\s?на\s?macbook|чехол\s?для\s?macbook|keyboard\s?cover|накладк[\p{L}\p{N}_]*\s?на\s?клавиатур[\p{L}\p{N}_]*|privacy\s?filter|фильтр\s?приватности|антишпион\s?для\s?экрана|cleaning\s?kit|набор\s?для\s?чистки)\b
+  prefer: TECH.COMPUTER_ACCESSORIES
+  penalty_other: 15
 - pattern: \b(wacom|huion|xp-?pen|cintiq|kamvas|pen\s?display)\b
   prefer: TECH.TABLETS_E_READERS
   penalty_other: 10
-- pattern: \b(ssd|hdd|nvme|флешк[\p{L}\p{N}_]*|карта\s?памяти|memory\s?card)\b
+- pattern: \b(ssd|hdd|nvme|m\.?2|m2|флешк[\p{L}\p{N}_]*|usb\s?флешк[\p{L}\p{N}_]*|usb\s?flash|карта\s?памяти|memory\s?card|micro\s?sd|microsd|sdxc|cfexpress|card\s?reader|картридер|nas|сетевое\s?хранилище|external\s?drive|внешний\s?диск|внешний\s?жестк[\p{L}\p{N}_]*\s?диск|корпус\s?для\s?(?:ssd|hdd)|док\s?для\s?дисков)\b
   prefer: TECH.STORAGE_MEMORY
+  penalty_other: 25
+- pattern: \b(ram|ddr|озу|оперативн[\p{L}\p{N}_]*\s?памят[\p{L}\p{N}_]*|gpu|rtx|geforce|radeon|видеокарт[\p{L}\p{N}_]*|cpu|процессор|motherboard|материнск[\p{L}\p{N}_]*\s?плат[\p{L}\p{N}_]*|материнк[\p{L}\p{N}_]*|блок\s?питания|psu|power\s?supply|корпус\s?(?:для\s?)?пк|pc\s?case|термопаст[\p{L}\p{N}_]*|thermal\s?paste|карта\s?захвата|capture\s?card|звуковая\s?карта|sound\s?card|сетевая\s?карта|network\s?card|плата\s?расширения|expansion\s?card)\b
+  prefer: TECH.PC_COMPONENTS
   penalty_other: 8
 - pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi|security\s?camera|video\s?doorbell)\b
   prefer: TECH.SMART_HOME_SECURITY
@@ -170,6 +200,12 @@ conflicts:
 - pattern: \b(объектив|lens)\b
   prefer: TECH.CAMERAS_DRONES
   penalty_other: 6
+- pattern: ^тв\s?(?:и\s?)?аудио$
+  prefer: B.TECH.MEDIA_GAMING
+  penalty_other: 25
+- pattern: \b(пульт\s?(?:для\s?)?(?:тв|телевизор[\p{L}\p{N}_]*)|кронштейн\s?для\s?(?:тв|телевизор[\p{L}\p{N}_]*)|крепление\s?для\s?тв|экран\s?для\s?проектора|проекционный\s?экран|av\s?ресивер|ав\s?ресивер|ресивер\s?домашн[\p{L}\p{N}_]*\s?кинотеатр|blu\s?ray|dvd\s?плеер|apple\s?tv|chromecast|shield\s?tv|tv\s?box|тв\s?бокс|андроид\s?приставка)\b
+  prefer: TECH.TV_HOME_THEATER
+  penalty_other: 15
 fallbacks:
   ambiguous_to_group: true
   default_root: B.TECH
@@ -192,3 +228,4 @@ fallbacks:
     TECH.POWER_CHARGING_CABLES: B.TECH.HOME_POWER_AUTO
     TECH.PRINTERS_SCANNERS: B.TECH.HOME_POWER_AUTO
     TECH.CAR_ELECTRONICS_GPS: B.TECH.HOME_POWER_AUTO
+

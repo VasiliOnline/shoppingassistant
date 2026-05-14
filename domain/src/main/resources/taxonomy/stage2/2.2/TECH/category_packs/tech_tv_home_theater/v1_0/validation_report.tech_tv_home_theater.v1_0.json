@@ -1,0 +1,38 @@
+{
+  "package": "TECH_TV_HOME_THEATER_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.TV_HOME_THEATER",
+  "status": "baseline_complete_static_production_candidate",
+  "data_covered": "yes",
+  "runtime_prod_proven": "pending_project_validators",
+  "static_checks": {
+    "zip_integrity": "PASS",
+    "json_syntax": "PASS",
+    "jsonl_structure": "PASS",
+    "tsv_structure": "PASS",
+    "attributes": 75,
+    "values": 301,
+    "aliases": 154,
+    "model_head_seed": 67,
+    "model_aliases": 307,
+    "golden_queries": 148,
+    "sample_offers": 130,
+    "publish_sample_offers": 50,
+    "facet_coverage_rows": 128,
+    "initial_fields": "8/8",
+    "primary_facets": "7/7",
+    "presets_collections_files": 0,
+    "forbidden_microcategory_codes": 0,
+    "T3_hidden_leaks": 0
+  },
+  "hole_check": {
+    "type_values_covered": "yes",
+    "brand_head_layer": "sufficient_for_baseline",
+    "model_seed_policy": "representative_head_seed_only_runtime_candidates_for_long_tail",
+    "route_conflict_coverage": "baseline_sufficient",
+    "presets_collections_absent": true,
+    "hardening_patch_needed_now": false,
+    "notes": [
+      "SET_TOP_BOX and TV_BOX are broad, but baseline data is enough; long-tail operators/devices should use runtime candidates."
+    ]
+  }
+}

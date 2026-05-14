@@ -1,0 +1,17 @@
+version: 1.0
+categoryCode: TECH.AUDIO
+dedup_keys:
+  primary: [brand, normalized_model, audio_type, connection_type, color_family]
+  fallback: [brand, model_name_text, form_factor, image_fingerprint]
+variant_dimensions:
+  - color_family
+  - connection_type
+  - region_variant
+  - bundle_contents
+non_duplicates:
+  - different model generation
+  - different connection variant if marketed separately
+  - speaker pair vs single unit
+  - bundle with subwoofer vs soundbar only
+runtime_notes:
+  exact serial number must not be part of public dedup key

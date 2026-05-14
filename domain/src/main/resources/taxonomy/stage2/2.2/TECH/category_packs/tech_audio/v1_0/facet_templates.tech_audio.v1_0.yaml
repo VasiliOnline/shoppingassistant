@@ -1,0 +1,28 @@
+version: 1.0
+categoryCode: TECH.AUDIO
+primary_facets:
+  - brand
+  - condition
+  - price
+  - audio_type
+  - connection_type
+  - form_factor
+  - color_family
+secondary_facets_by_type:
+  HEADPHONES: [noise_control, acoustic_design, codec_support, battery_life_hours, impedance_ohm, detachable_cable]
+  EARBUDS: [noise_control, codec_support, battery_life_hours, water_resistance, charging_case_included]
+  HEADSET: [mic_type, compatible_platform, latency_mode, connection_type]
+  SPEAKER: [speaker_type, speaker_power_w, water_resistance, battery_life_hours]
+  SMART_SPEAKER: [smart_assistant, streaming_protocols, wireless_standard]
+  SOUNDBAR: [channel_config, subwoofer_included, surround_formats, input_type]
+  MICROPHONE: [mic_type, recording_pattern, connector_type, phantom_power]
+  AUDIO_INTERFACE: [input_type, output_type, phantom_power, sample_rate_khz, bit_depth]
+  DAC_AMP: [input_type, output_type, sample_rate_khz, bit_depth, balanced_output]
+  TURNTABLE: [turntable_drive_type, rpm_speed, cartridge_included, preamp_built_in]
+  RECEIVER_AMPLIFIER: [receiver_channels, speaker_power_w, input_type, surround_formats]
+  STUDIO_MONITOR: [speaker_power_w, input_type, driver_size_mm, pair_count]
+  AUDIO_ACCESSORY: [audio_accessory_type, connector_type, cable_length_m, mount_type]
+show_policy:
+  hide_zero_count_values: true
+  show_secondary_only_if_non_empty_values: 2
+  no_presets_or_collections: true
