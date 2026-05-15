@@ -1,0 +1,11 @@
+package: TECH_PRINTERS_SCANNERS_consumables_compatibility_delta_pack_v1_1_RU
+apply_to: TECH.PRINTERS_SCANNERS
+merge_strategy:
+  values_delta: append_or_update_by_attribute_code_value_code
+  aliases_delta: append_or_update_by_alias_target
+  golden_queries_delta: append
+  sample_offers_delta: append
+  publish_sample_offers_delta: append
+  policy: overlay_non_breaking
+requires:
+  - TECH_PRINTERS_SCANNERS_public_category_pack_v1_0_RU

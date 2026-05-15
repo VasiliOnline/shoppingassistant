@@ -607,10 +607,30 @@
       "categoryCode": "TECH.CAMERAS_DRONES",
       "archetypes": [
         "IDENTITY_CRITICAL",
-        "SPEC_HEAVY"
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_CAMERA_TYPE",
+      "seedAttributeCodes": [
+        "camera_type",
+        "brand",
+        "model_name_text",
+        "sensor_format",
+        "lens_mount",
+        "video_resolution_max"
+      ],
+      "liveCandidateAttributeCodes": [
+        "brand",
+        "family",
+        "line",
+        "model",
+        "model_name_text",
+        "mpn",
+        "gtin"
+      ],
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
@@ -704,16 +724,33 @@
       "categoryCode": "TECH.GAMING",
       "archetypes": [
         "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
         "SPEC_HEAVY",
-        "TYPE_DRIVEN"
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_GAMING_TYPE",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "gaming_type",
+        "brand",
+        "platform",
+        "model_name_text",
+        "compatible_platform"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "compatible_model_text",
+        "model_name_text",
+        "mpn",
+        "gtin"
       ]
     },
     {
@@ -751,16 +788,37 @@
       "categoryCode": "TECH.NETWORKING",
       "archetypes": [
         "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
         "SPEC_HEAVY",
         "COMPATIBILITY_DRIVEN"
       ],
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_NETWORKING_TYPE",
+      "seedAttributeCodes": [
+        "networking_type",
+        "brand",
+        "model",
+        "model_name_text",
+        "condition",
+        "wifi_standard",
+        "ethernet_max_speed",
+        "port_count",
+        "poe_support"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "model_name_text",
+        "mpn",
+        "gtin",
+        "compatibility_target"
       ]
     },
     {
@@ -855,50 +913,158 @@
       "categoryCode": "TECH.POWER_CHARGING_CABLES",
       "archetypes": [
         "TYPE_DRIVEN",
+        "COMPATIBILITY_DRIVEN",
         "SPEC_HEAVY",
-        "COMPATIBILITY_DRIVEN"
-      ],
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL_OPTIONAL",
-      "liveCandidateAttributeCodes": [
-        "compatible_model_text"
+        "IDENTITY_CRITICAL"
       ],
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
+      "identityMode": "BRAND_MODEL_POWER_CABLE_TYPE",
+      "seedAttributeCodes": [
+        "power_cable_type",
+        "brand",
+        "model",
+        "model_name_text",
+        "condition",
+        "connector_type",
+        "wattage_w",
+        "capacity_mah"
+      ],
+      "liveCandidateAttributeCodes": [
+        "model",
+        "model_name_text",
+        "mpn",
+        "gtin",
+        "compatibility_target",
+        "replacement_part_context"
       ]
     },
     {
       "categoryCode": "TECH.PRINTERS_SCANNERS",
       "archetypes": [
         "IDENTITY_CRITICAL",
-        "TYPE_DRIVEN"
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_PRINTER_SCANNER",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "printer_scanner_type",
+        "brand",
+        "model",
+        "model_name_text",
+        "condition",
+        "print_technology",
+        "scanner_type",
+        "cartridge_type",
+        "compatible_cartridge_code"
+      ],
+      "liveCandidateAttributeCodes": [
+        "model",
+        "model_name_text",
+        "mpn",
+        "gtin",
+        "compatible_printer_model_text",
+        "compatible_cartridge_code",
+        "compatibility_target"
       ]
     },
     {
       "categoryCode": "TECH.SMART_HOME_SECURITY",
       "archetypes": [
         "IDENTITY_CRITICAL",
-        "COMPATIBILITY_DRIVEN",
-        "TYPE_DRIVEN"
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_SMART_HOME",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "smart_home_type",
+        "brand",
+        "model_name_text",
+        "condition",
+        "color_family",
+        "region",
+        "protocol",
+        "ecosystem",
+        "power_source",
+        "voice_assistant_support",
+        "hub_required",
+        "indoor_outdoor",
+        "video_resolution",
+        "sensor_kind",
+        "lock_type",
+        "thermostat_type",
+        "bulb_base",
+        "brightness_lumen",
+        "max_load_watt",
+        "installation_type",
+        "device_count_in_kit",
+        "release_year",
+        "warranty_status",
+        "matter_support",
+        "thread_support",
+        "zigbee_support",
+        "z_wave_support",
+        "connectivity_band",
+        "battery_life_months",
+        "night_vision",
+        "field_of_view_deg",
+        "storage_mode",
+        "subscription_required",
+        "two_way_audio",
+        "motion_detection",
+        "person_detection",
+        "package_detection",
+        "privacy_shutter",
+        "mounting_type",
+        "ip_rating",
+        "energy_monitoring",
+        "switch_type",
+        "neutral_wire_required",
+        "keypad",
+        "fingerprint",
+        "auto_lock",
+        "hvac_compatibility",
+        "hub_protocols",
+        "max_connected_devices",
+        "alarm_volume_db",
+        "siren_type",
+        "automation_use_case",
+        "kit_contains",
+        "included_accessories",
+        "original_box",
+        "repair_history",
+        "normalization_confidence",
+        "identity_evidence",
+        "route_confidence",
+        "source_quality_score",
+        "dedup_fingerprint",
+        "privacy_risk_flag"
+      ],
+      "liveCandidateAttributeCodes": [
+        "compatible_model_text",
+        "protocol",
+        "ecosystem"
       ]
     },
     {
@@ -1003,15 +1169,33 @@
       "archetypes": [
         "IDENTITY_CRITICAL",
         "TYPE_DRIVEN",
-        "SPEC_HEAVY"
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
       ],
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON",
-      "identityMode": "BRAND_MODEL",
+      "identityMode": "BRAND_MODEL_WEARABLE_TYPE",
       "sharedStandards": [
         "TECH.ELECTRONICS_COMMON",
         "TECH.DEVICE_IDENTITY_COMMON",
         "TECH.SPECS_COMMON",
         "TECH.COMPATIBILITY_COMMON"
+      ],
+      "seedAttributeCodes": [
+        "wearable_type",
+        "brand",
+        "model_name_text",
+        "case_size_mm",
+        "compatible_os",
+        "ecosystem"
+      ],
+      "liveCandidateAttributeCodes": [
+        "family",
+        "line",
+        "model",
+        "mpn",
+        "gtin",
+        "compatible_wearable_model_text"
       ]
     }
   ]

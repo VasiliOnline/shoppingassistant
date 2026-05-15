@@ -1,0 +1,17 @@
+categoryCode: TECH.GAMING
+resale_critical_fields:
+  - condition
+  - included_accessories
+  - account_lock_status
+  - online_ban_status
+  - cosmetic_grade
+  - functional_grade
+  - for_parts_only
+  - repair_history
+publish_warnings:
+  - id: used_console_lock_unknown
+    when: "gaming_type in [GAME_CONSOLE,HANDHELD_CONSOLE,VR_HEADSET] and condition != NEW and account_lock_status == UNKNOWN"
+    severity: P1
+  - id: physical_game_missing_media_format
+    when: "gaming_type == PHYSICAL_GAME and media_format is empty"
+    severity: P0

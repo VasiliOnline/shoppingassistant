@@ -1,0 +1,12 @@
+patch_name: TECH_GAMING_route_alias_type_coverage_delta_pack_v1_1_RU
+applies_to: TECH_GAMING_public_category_pack_v1_0_RU
+merge_policy:
+  model_alias_retractions: remove_exact_alias_model_pairs
+  aliases_delta: append_with_alias_collision_check
+  route_guardrails_delta: overlay_include_rules_by_priority
+  model_head_seed_delta: append_as_head_delta_or_candidate_pattern
+  sample_offers_delta: append_to_smoke_suite
+  publish_sample_offers_delta: append_to_publish_smoke_suite
+no_schema_changes: true
+no_ui_surface_changes: true
+no_new_category_codes: true

@@ -1,5 +1,95 @@
 [
   {
+    "version": "2.2.39",
+    "releaseDate": "2026-05-15",
+    "changes": [
+      "Mounted TECH.POWER_CHARGING_CABLES route/publish delta pack v1.1.",
+      "Added publish fixtures for SURGE_PROTECTOR and CABLE_MANAGEMENT.",
+      "Added route guardrails for power adapters vs Wi-Fi/Ethernet network adapters."
+    ]
+  },
+  {
+    "version": "2.2.38",
+    "releaseDate": "2026-05-15",
+    "changes": [
+      "Mounted TECH.POWER_CHARGING_CABLES public category pack v1.0.",
+      "Replaced baseline placeholder profile with power_cable_type, connector, wattage, capacity, cable, UPS, battery and surge-protector facets.",
+      "Added power/cable aliases and route boundaries against phone accessories, computer accessories, networking, PC components and car electronics."
+    ]
+  },
+  {
+    "version": "2.2.37",
+    "releaseDate": "2026-05-15",
+    "changes": [
+      "Mounted TECH.NETWORKING public category pack v1.0.",
+      "Mounted TECH.NETWORKING type coverage delta v1.1 as a data_overlay_only patch.",
+      "Synchronized networking_type, Wi-Fi/Ethernet/PoE, GPON/ONT, antenna and RJ45 accessory dictionaries, facets and route boundaries."
+    ]
+  },
+  {
+    "version": "2.2.36",
+    "releaseDate": "2026-05-15",
+    "changes": [
+      "Mounted TECH.SMART_HOME_SECURITY public category pack v1.0.",
+      "Replaced baseline smart-home placeholder profile with smart_home_type, protocol, ecosystem, power and security/privacy attributes.",
+      "Added smart-home aliases and route boundaries for audio speakers, webcams, dashcams, action cameras, phones, wearables, routers and cables."
+    ]
+  },
+  {
+    "version": "2.2.35",
+    "releaseDate": "2026-05-14",
+    "changes": [
+      "Mounted TECH.GAMING route alias/type coverage delta v1.1 as a data_overlay_only patch.",
+      "Retracted leaked model source-note aliases from TECH.GAMING base model aliases.",
+      "Added delta route aliases and golden-query boundaries for VR, controllers, gaming peripherals, console accessories, arcade equipment and physical games."
+    ]
+  },
+  {
+    "version": "2.2.34",
+    "releaseDate": "2026-05-14",
+    "changes": [
+      "TECH.GAMING public category pack v1.0 mounted under TECH/category_packs/tech_gaming/v1_0.",
+      "gaming_type, platform, compatibility, physical game and gaming accessory dictionaries synchronized into Stage 2.2 and Stage 3.",
+      "Stage 4 immutable schema, normalization contract, typed constraints and TECH.GAMING facet presentation regenerated while preserving audio, computer-accessory, storage, PC-component, TV and phone route boundaries."
+    ]
+  },
+  {
+    "version": "2.2.33",
+    "releaseDate": "2026-05-14",
+    "changes": [
+      "Mounted TECH.CAMERAS_DRONES type coverage delta v1.1 as a data_overlay_only patch.",
+      "Extended camera accessory and optics brand dictionaries while preserving the public TECH.CAMERAS_DRONES category.",
+      "Added delta golden-query aliases for DSLR, camcorder, camera accessory and optics coverage plus webcam/security-camera/dashcam/storage/cable boundaries."
+    ]
+  },
+  {
+    "version": "2.2.32",
+    "releaseDate": "2026-05-14",
+    "changes": [
+      "TECH.CAMERAS_DRONES public category pack v1.0 mounted under TECH/category_packs/tech_cameras_drones/v1_0.",
+      "camera_type, camera/drone specs, dictionaries and head model seed synchronized into Stage 2.2 and Stage 3.",
+      "Stage 4 immutable schema, normalization contract, typed constraints and TECH.CAMERAS_DRONES facet presentation regenerated while preserving phone, webcam, security-camera, car-dashcam and gaming-camera route boundaries."
+    ]
+  },
+  {
+    "version": "2.2.31",
+    "releaseDate": "2026-05-14",
+    "changes": [
+      "Mounted TECH.WEARABLES type coverage delta v1.1 as a data overlay.",
+      "Extended wearable brand and band connector value dictionaries without new category codes.",
+      "Registered overlay manifest for runtime validators."
+    ]
+  },
+  {
+    "version": "2.2.30",
+    "releaseDate": "2026-05-14",
+    "changes": [
+      "TECH.WEARABLES public category pack v1.0 mounted under TECH/category_packs/tech_wearables/v1_0.",
+      "wearable_type, wearable specs, compatibility fields, dictionaries and model seed artifacts synchronized into Stage 2.2 and Stage 3.",
+      "Stage 4 immutable schema, normalization contract, typed constraints and TECH.WEARABLES facet presentation regenerated while preserving phone, audio and FASH accessory route boundaries."
+    ]
+  },
+  {
     "version": "2.2.28",
     "releaseDate": "2026-05-14",
     "changes": [
@@ -227,6 +317,15 @@
       "TECH.TV_HOME_THEATER public category pack v1.0 mounted under TECH/category_packs/tech_tv_home_theater/v1_0.",
       "AV type-first attributes, value dictionaries, model seed artifacts and user-surface facets synchronized into Stage 2.2 and Stage 3.",
       "Stage 4 immutable schema, normalization contract, typed constraints and TECH.TV_HOME_THEATER facet presentation regenerated while preserving the broad TV/audio browse route."
+    ]
+  },
+  {
+    "version": "2.2.40",
+    "releaseDate": "2026-05-15",
+    "changes": [
+      "TECH.PRINTERS_SCANNERS public category pack v1.0 mounted under TECH/category_packs/tech_printers_scanners/v1_0.",
+      "Printer/scanner type attributes, consumable dictionaries, model seed artifacts and route boundaries synchronized into Stage 2.2.",
+      "Consumables compatibility overlay v1.1 mounted as data_overlay_only with cartridge-code aliases and publish fixtures."
     ]
   }
 ]

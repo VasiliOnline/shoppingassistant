@@ -1,0 +1,18 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+rules:
+  - id: no_model_guess_from_photo
+    severity: P0
+    text: Do not infer exact brand/model from charger/cable photo unless label/OCR/packaging evidence is visible.
+  - id: read_wattage_from_label_or_title
+    severity: P0
+    text: wattage_w must come from OCR/title/spec text; if not visible, keep unknown and lower confidence.
+  - id: cable_connector_visible_only
+    severity: P1
+    text: Connector type can be inferred visually only when both connector ends are visible and clear.
+  - id: capacity_from_text_only
+    severity: P0
+    text: power_bank capacity_mah and power station capacity_wh require text evidence.
+  - id: battery_safety_no_guess
+    severity: P0
+    text: Battery chemistry must not be guessed from generic battery appearance.

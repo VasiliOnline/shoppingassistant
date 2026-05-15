@@ -1,0 +1,63 @@
+attribute_code	label_ru	data_type	role	required	usage_scope	values_ref	notes
+brand	Бренд	string	T0_CORE	true	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+condition	Состояние	string	T0_CORE	true	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+color_family	Цвет	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+release_year	Год выпуска	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+warranty	Гарантия	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+region	Регион/версия	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+model_name_text	Текст модели	string	T0_CORE	true	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+included_accessories	Комплект	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+seller_bundle	Набор продавца	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+family	Семейство	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+line	Линейка	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+model	Модель	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+model_aliases	Алиасы модели	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+mpn	MPN / manufacturer part number	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+gtin	GTIN/EAN/UPC	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	TECH.ELECTRONICS_COMMON / TECH.DEVICE_IDENTITY_COMMON	inherited_or_overlay
+camera_type	Тип товара в ветке камеры/дроны	enum	T0_CORE	true	runtime_search|publish|facets	camera_type	
+is_body_only	Только корпус/body only	boolean	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+kit_lens_included	Китовый объектив в комплекте	boolean	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+sensor_format	Формат сенсора	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	sensor_format	
+sensor_resolution_mp	Разрешение сенсора, Мп	decimal	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+lens_mount	Байонет/крепление	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	lens_mount	
+camera_lens_type	Тип объектива	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	camera_lens_type	
+focal_length_mm	Фокусное расстояние, мм	range/string	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+aperture_range	Светосила / диафрагма	string	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+video_resolution_max	Макс. разрешение видео	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	video_resolution	
+frame_rate_max_fps	Макс. частота кадров	integer	T1_TYPE_SPECIFIC	false	runtime_search|publish|facets		
+stabilization_type	Стабилизация	enum	T1_TYPE_SPECIFIC	false	runtime_search|publish|facets	stabilization_type	
+autofocus_type	Автофокус	enum	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	autofocus_type	
+viewfinder_type	Видоискатель	enum	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	viewfinder_type	
+screen_type	Экран	enum	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	screen_type	
+memory_card_type	Тип карты памяти	enum	T1_TYPE_SPECIFIC	false	runtime_search|publish|facets	memory_card_type	
+battery_model	Модель батареи	string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+battery_count	Количество батарей	integer	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+shutter_count	Пробег затвора	integer	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+weather_sealing	Пыле-/влагозащита	boolean	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+optical_zoom_x	Оптический зум, x	decimal	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+drone_flight_time_min	Время полёта, мин	integer	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+drone_range_km	Дальность передачи, км	decimal	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+drone_weight_g	Вес дрона, г	integer	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+drone_registration_class	Класс/регистрация дрона	enum	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	drone_registration_class	
+obstacle_avoidance	Облёт препятствий	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	obstacle_avoidance	
+remote_controller_included	Пульт в комплекте	boolean	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+gimbal_axis_count	Количество осей стабилизации	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	gimbal_axis_count	
+payload_capacity_g	Грузоподъёмность, г	integer	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+light_type	Тип света	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	light_type	
+light_power_w	Мощность света, Вт	integer	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+color_temperature_k	Цветовая температура, K	range/string	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+binocular_magnification	Увеличение оптики	string	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+objective_diameter_mm	Диаметр объектива оптики, мм	integer	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets		
+accessory_type	Тип аксессуара камеры	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	camera_accessory_type	
+filter_diameter_mm	Диаметр фильтра, мм	integer	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+tripod_head_type	Тип головы штатива	enum	T1_TYPE_SPECIFIC	conditional	runtime_search|publish|facets	tripod_head_type	
+max_load_kg	Максимальная нагрузка, кг	decimal	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+folded_length_cm	Длина в сложенном виде, см	decimal	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+connectivity	Подключение	set(enum)	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	connectivity	
+recording_format	Формат записи	set(enum)	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	recording_format	
+waterproof_rating	Влагозащита	enum	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets	waterproof_rating	
+bundle_items_normalized	Нормализованный комплект	set(string)	T2_OPTIONAL_ENRICHMENT	false	runtime_search|publish|facets		
+evidence_level	Уровень доказательности модели	enum	T3_SYSTEM_HIDDEN	false	runtime_search|publish|facets	evidence_level	
+vision_confidence	Уверенность vision	decimal	T3_SYSTEM_HIDDEN	false	runtime_search|publish|facets		
+route_confidence	Уверенность маршрутизации	decimal	T3_SYSTEM_HIDDEN	false	runtime_search|publish|facets		
+normalized_title	Нормализованный title	string	T3_SYSTEM_HIDDEN	false	runtime_search|publish|facets		

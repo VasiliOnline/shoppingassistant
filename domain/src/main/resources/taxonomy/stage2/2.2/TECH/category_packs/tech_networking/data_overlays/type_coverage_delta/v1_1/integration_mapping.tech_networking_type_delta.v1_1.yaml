@@ -1,0 +1,20 @@
+version: 1.1
+patch_type: data_overlay_patch
+target_package: TECH_NETWORKING_public_category_pack_v1_0_RU
+categoryCode: TECH.NETWORKING
+apply_order:
+  - values_delta.tech_networking.v1_1.tsv
+  - aliases_delta.ru.tech_networking.v1_1.tsv
+  - model_head_seed_delta.tech_networking.v1_1.tsv
+  - route_guardrails_delta.tech_networking.v1_1.yaml
+  - golden_queries_delta.tech_networking.v1_1.tsv
+  - sample_offers_delta.tech_networking.v1_1.jsonl
+  - publish_sample_offers_delta.tech_networking.v1_1.jsonl
+merge_policy:
+  values: append_if_value_code_missing_else_noop
+  aliases: append_if_alias_target_missing_else_noop
+  model_head_seed: append_if_brand_model_missing_else_update_notes
+  route_guardrails: append_rules_by_id
+  fixtures: append
+rollback:
+  remove_by_patch_version: v1_1

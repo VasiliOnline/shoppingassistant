@@ -1,0 +1,34 @@
+categoryCode: TECH.WEARABLES
+evaluation_mode: sort_by_priority_desc_then_first_match
+guards:
+  - id: phone_exclusion
+    priority: 100
+    if_any: ["iphone", "смартфон", "телефон samsung", "pixel phone"]
+    route_to: TECH.PHONES
+  - id: audio_exclusion
+    priority: 96
+    if_any: ["airpods", "наушники", "гарнитура", "speaker", "колонка"]
+    route_to: TECH.AUDIO
+  - id: fashion_watch_exclusion
+    priority: 94
+    if_all: ["часы"]
+    if_none: ["smart", "смарт", "apple watch", "galaxy watch", "garmin", "fitbit", "lte", "gps", "пульс", "bluetooth"]
+    route_to: FASH.ACCESSORIES
+  - id: jewelry_ring_exclusion
+    priority: 93
+    if_any: ["золотое кольцо", "серебряное кольцо", "кольцо украшение", "обручальное кольцо"]
+    route_to: FASH.ACCESSORIES
+  - id: phone_accessory_exclusion
+    priority: 92
+    if_any: ["чехол iphone", "зарядка iphone", "кабель iphone", "стекло iphone"]
+    route_to: TECH.PHONE_ACCESSORIES
+  - id: wearable_watchband_include
+    priority: 80
+    if_any: ["ремешок apple watch", "ремешок galaxy watch", "ремешок garmin", "watch band", "strap apple watch"]
+    route_to: TECH.WEARABLES
+    set:
+      wearable_type: WATCH_BAND
+  - id: wearable_include
+    priority: 70
+    if_any: ["смарт часы", "умные часы", "фитнес браслет", "smartwatch", "fitness tracker", "smart ring", "умное кольцо", "ar glasses", "умные очки", "apple watch", "galaxy watch", "garmin forerunner", "oura ring"]
+    route_to: TECH.WEARABLES

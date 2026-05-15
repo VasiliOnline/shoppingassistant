@@ -1,0 +1,8 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+dedup_keys:
+  primary: [power_cable_type, brand, model, wattage_w, connector_type, capacity_mah, cable_length_m]
+  fallback: [title_normalized, brand, power_cable_type, key_specs_hash]
+notes:
+  - Same charger/cable in different color can merge under same master if specs are identical and color is variant-level.
+  - Different wattage/capacity/connector combinations must not merge.

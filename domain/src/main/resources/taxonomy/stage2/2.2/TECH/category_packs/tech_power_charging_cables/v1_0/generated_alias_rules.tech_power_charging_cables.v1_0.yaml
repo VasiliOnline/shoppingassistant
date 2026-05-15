@@ -1,0 +1,32 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+rules:
+  - id: usb_cable_pattern
+    detect: ["usb c cable", "кабель usb c", "type c кабель", "usb-c {wattage}w"]
+    normalize:
+      power_cable_type: USB_CABLE
+      connector_type: USB_C
+  - id: charger_wattage_pattern
+    detect: ["зарядка {wattage}w", "блок питания {wattage}w", "gan {wattage}w", "charger {wattage}w"]
+    normalize:
+      power_cable_type: WALL_CHARGER
+      wattage_w: "{wattage}"
+  - id: hdmi_version_pattern
+    detect: ["hdmi 2.1", "кабель hdmi 2.1", "8k hdmi", "4k 120 hdmi"]
+    normalize:
+      power_cable_type: HDMI_CABLE
+      hdmi_version: HDMI_2_1
+  - id: power_bank_capacity_pattern
+    detect: ["power bank {capacity}mah", "повербанк {capacity}", "внешний аккумулятор {capacity} mah"]
+    normalize:
+      power_cable_type: POWER_BANK
+      capacity_mah: "{capacity}"
+  - id: ups_pattern
+    detect: ["ибп {va}va", "ups {va}va", "бесперебойник {va}"]
+    normalize:
+      power_cable_type: UPS
+  - id: battery_size_pattern
+    detect: ["батарейки {size}", "аккумуляторы {size}", "battery {size}"]
+    normalize:
+      power_cable_type: BATTERY
+      battery_size: "{size}"

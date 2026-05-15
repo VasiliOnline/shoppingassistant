@@ -1,0 +1,17 @@
+gates:
+  - name: OverlayAppendOnlyGate
+    required: true
+  - name: RouteConflictGate
+    required: true
+  - name: AliasCollisionGate
+    required: true
+  - name: SampleOffersSmokeGate
+    required: true
+  - name: PublishFixtureCoverageGate
+    required: true
+  - name: NoPresetCollectionLeakGate
+    required: true
+acceptance:
+  min_delta_sample_offers: 30
+  min_publish_fixtures_per_gap_type: 3
+  required_gap_types: [WATCH_BAND, WEARABLE_ACCESSORY, AR_GLASSES]

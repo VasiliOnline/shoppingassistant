@@ -1,0 +1,20 @@
+categoryCode: TECH.WEARABLES
+mount:
+  after:
+    - TECH.ELECTRONICS_COMMON
+    - TECH.DEVICE_IDENTITY_COMMON
+    - TECH.SPECS_COMMON
+    - TECH.COMPATIBILITY_COMMON
+  public_category: true
+runtime_mappings:
+  title_parser: title -> aliases -> model_head_seed -> runtime_candidates
+  vision: image -> wearable_type + brand/logo evidence + no_model_guess rules
+  compatibility: compatible_wearable_model_text -> TECH.COMPATIBILITY_COMMON soft refs
+  facets: facet_templates.tech_wearables.v1_0.yaml
+  ui_surface: user_surface.tech_wearables.v1_0.yaml
+no_mounts:
+  - TECH.APPLE_WATCH
+  - TECH.GALAXY_WATCH
+  - TECH.SMARTWATCHES
+  - TECH.WATCH_BANDS
+  - TECH.SMART_RINGS

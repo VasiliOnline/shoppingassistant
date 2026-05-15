@@ -1,0 +1,54 @@
+version: 1.1
+categoryCode: TECH.POWER_CHARGING_CABLES
+patch_type: route_guardrails_delta
+extends: route_guardrails.tech_power_charging_cables.v1_0.yaml
+evaluation_mode: priority_desc_first_match
+include_delta:
+  - id: electrical_extension_power_strip_include
+    priority: 115
+    when_any:
+      - "сетевой фильтр"
+      - "фильтр пилот"
+      - "электрический удлинитель"
+      - "удлинитель с защитой"
+      - "power strip"
+      - "extension cord"
+    route: TECH.POWER_CHARGING_CABLES
+  - id: cable_management_include
+    priority: 108
+    when_any:
+      - "кабель канал"
+      - "кабель-канал"
+      - "кабельные клипсы"
+      - "стяжки для кабелей"
+      - "органайзер проводов"
+      - "короб для проводов"
+      - "cable tray"
+      - "cable sleeve"
+    route: TECH.POWER_CHARGING_CABLES
+exclude_delta:
+  - id: network_adapter_wifi_ethernet_exclusion
+    priority: 285
+    when_all_any:
+      all:
+        - "адаптер"
+      any:
+        - "wi-fi"
+        - "wifi"
+        - "ethernet"
+        - "lan"
+        - "rj45"
+        - "сетевая карта"
+        - "сетевой адаптер usb"
+    route: TECH.NETWORKING
+  - id: network_filter_word_safety
+    priority: 275
+    when_any:
+      - "сетевой кабель"
+      - "патч корд"
+      - "ethernet кабель"
+      - "lan кабель"
+    route: TECH.NETWORKING
+notes:
+  - "Слово 'сетевой' неоднозначно: 'сетевой фильтр/адаптер питания' остается POWER_CHARGING_CABLES, но Wi-Fi/Ethernet/RJ45 adapters route to NETWORKING."
+  - "SURGE_PROTECTOR и CABLE_MANAGEMENT получили publish fixtures; schema/UI не менялись."

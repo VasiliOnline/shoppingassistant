@@ -1,0 +1,13 @@
+categoryCode: TECH.WEARABLES
+master_key_priority:
+  - brand + normalized_model + case_size_mm + connectivity_set + color_family
+  - brand + model_name_text + case_size_mm + connectivity_set
+  - title_fingerprint + image_fingerprint
+watch_band_key:
+  - compatible_wearable_brand + compatible_wearable_model_text + strap_width_mm + band_connector_type + color_family + strap_material
+smart_ring_key:
+  - brand + normalized_model + ring_size + color_family
+soft_rules:
+  - Different size/case/connectivity/color variants are separate SKUs but can share master product.
+  - Accessories must not merge with main smartwatch devices.
+  - Generic compatible bands can merge only inside same connector/size/material/color group.

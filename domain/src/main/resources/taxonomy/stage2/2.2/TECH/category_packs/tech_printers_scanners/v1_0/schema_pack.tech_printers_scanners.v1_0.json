@@ -1,0 +1,93 @@
+{
+  "schema_id": "schema_pack.tech_printers_scanners.v1_0",
+  "categoryCode": "TECH.PRINTERS_SCANNERS",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "printer_scanner_type",
+  "type_values": [
+    "PRINTER",
+    "MULTIFUNCTION_PRINTER",
+    "SCANNER",
+    "LABEL_PRINTER",
+    "INK_CARTRIDGE",
+    "TONER_CARTRIDGE",
+    "PRINTER_ACCESSORY"
+  ],
+  "inheritance": {
+    "required_shared_standards": [
+      "TECH.ELECTRONICS_COMMON",
+      "TECH.DEVICE_IDENTITY_COMMON",
+      "TECH.SPECS_COMMON",
+      "TECH.COMPATIBILITY_COMMON"
+    ],
+    "inherited_attribute_groups": [
+      "electronics_common",
+      "device_identity_common",
+      "specs_common",
+      "compatibility_common"
+    ]
+  },
+  "attribute_roles": {
+    "T0_CORE": [
+      "printer_scanner_type",
+      "brand",
+      "model_name_text",
+      "condition",
+      "price",
+      "currency",
+      "availability",
+      "color_family"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "print_technology",
+      "color_printing",
+      "paper_format",
+      "duplex_printing",
+      "connectivity",
+      "scanner_type",
+      "cartridge_type",
+      "toner_color",
+      "compatible_printer_brand",
+      "compatible_printer_model_text",
+      "yield_pages"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "print_speed_ppm",
+      "print_resolution_dpi",
+      "scan_resolution_dpi",
+      "monthly_duty_cycle_pages",
+      "auto_document_feeder",
+      "tank_system",
+      "label_width_mm",
+      "barcode_label_support",
+      "cutter_type",
+      "network_printing",
+      "photo_printing",
+      "portable",
+      "original_compatible_status",
+      "page_yield_bucket"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "dedup_key",
+      "evidence_source",
+      "normalization_confidence",
+      "compatibility_confidence",
+      "raw_model_text",
+      "image_fingerprint",
+      "source_listing_id"
+    ]
+  },
+  "ui_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "publish_policy": {
+    "requires_categoryCode": true,
+    "requires_type": true,
+    "requires_title": true,
+    "requires_price_currency_availability": true
+  },
+  "routing_policy": {
+    "do_not_mount_microcategories": true,
+    "route_by_type_and_facets": true
+  }
+}

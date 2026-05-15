@@ -1,0 +1,12 @@
+categoryCode: TECH.SMART_HOME_SECURITY
+no_guess_policy:
+  - Do not infer exact smart-home model without visible logo/model/OCR/source title.
+  - Do not infer security-camera privacy features without explicit evidence.
+  - Do not infer Matter/Thread/HomeKit support from brand alone.
+allowed_visual_cues:
+  - form factor
+  - visible logo/brand
+  - visible model number or packaging text
+  - clear connector/power type
+fallback:
+  exact_model_unknown: fill model_name_text raw and identity_resolution_status=CANDIDATE

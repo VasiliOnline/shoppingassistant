@@ -1,0 +1,28 @@
+categoryCode: TECH.PRINTERS_SCANNERS
+vision_no_guess_rules:
+  - id: do_not_guess_model_from_shape_only
+    severity: P0
+    rule: "Do not infer exact printer/scanner model from generic body shape unless model text, barcode, label, packaging, URL, or listing text provides evidence."
+  - id: consumable_compatibility_no_guess
+    severity: P0
+    rule: "Do not infer compatible printer models for cartridges/toners from cartridge appearance only; use explicit cartridge code/model text or package label."
+  - id: distinguish_printer_vs_mfp
+    severity: P1
+    rule: "If scanner lid/ADF is visible, candidate may be MULTIFUNCTION_PRINTER; otherwise keep PRINTER with lower confidence."
+  - id: label_printer_evidence
+    severity: P1
+    rule: "Thermal label printer should be supported by label roll slot, label image, listing text, or model evidence."
+evidence_sources:
+  strong:
+    - model_label_photo
+    - packaging_text
+    - barcode_or_gtin
+    - vendor_url
+    - title_model_code
+  weak:
+    - shape_only
+    - color_only
+    - generic_front_photo
+confidence_policy:
+  exact_model_min_confidence: 0.82
+  type_only_min_confidence: 0.55

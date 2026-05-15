@@ -98,7 +98,7 @@ class CatalogEffectiveSpecTest {
         assertEquals(Stage22ValueType.NUMBER, refreshRate.valueType)
         assertEquals(Stage22ValueSetType.OPEN, refreshRate.valueSetType)
         assertTrue(refreshRate.facetEnabled)
-        assertEquals("hz", refreshRate.unit)
+        assertEquals("Hz", refreshRate.unit)
         assertTrue(refreshRate.options.any { it.valueCode == "120" })
 
         assertEquals(AttributeDataType.STRING, chipset.dataType)

@@ -1,0 +1,35 @@
+{
+  "categoryCode": "TECH.POWER_CHARGING_CABLES",
+  "patch_version": "1.1",
+  "patch_type": "data_overlay_patch",
+  "schema_breaking_changes": false,
+  "ui_surface_changes": false,
+  "new_category_codes": [],
+  "delta_files": [
+    "aliases_delta.tech_power_charging_cables.ru.v1_1.tsv",
+    "route_guardrails_delta.tech_power_charging_cables.v1_1.yaml",
+    "golden_queries_delta.tech_power_charging_cables.v1_1.tsv",
+    "sample_offers_delta.tech_power_charging_cables.v1_1.jsonl",
+    "publish_sample_offers_delta.tech_power_charging_cables.v1_1.jsonl"
+  ],
+  "expected_effective_changes": {
+    "added_aliases": 35,
+    "added_golden_queries": 20,
+    "added_sample_offers": 17,
+    "added_publish_sample_offers": 10,
+    "route_guardrail_delta_ids": [
+      "electrical_extension_power_strip_include",
+      "cable_management_include",
+      "network_adapter_wifi_ethernet_exclusion",
+      "network_filter_word_safety"
+    ]
+  },
+  "unchanged": [
+    "attributes",
+    "values",
+    "user_surface",
+    "facet_templates",
+    "primary_facets",
+    "initial_fields"
+  ]
+}

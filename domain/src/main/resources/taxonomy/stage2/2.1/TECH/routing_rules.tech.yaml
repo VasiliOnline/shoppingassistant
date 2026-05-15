@@ -66,7 +66,9 @@ triggers:
       add: 10
   TECH.COMPUTER_ACCESSORIES:
     bonus:
-    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|вебкамера|матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm|hard\s?shell|keyboard\s?cover|privacy\s?filter|фильтр\s?приватности)\b
+    - pattern: \b(адаптер\s?type\s?c\s?ethernet|type\s?c\s?ethernet|usb\s?c\s?ethernet)\b
+      add: 15
+    - pattern: \b(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|webcam|web\s?камера|веб\s?камера|вебкамера|матрица\s?ноутбука|экран\s?ноутбука|кронштейн\s?для\s?монитора|monitor\s?arm|dual\s?monitor\s?arm|hard\s?shell|keyboard\s?cover|privacy\s?filter|фильтр\s?приватности)\b
       add: 15
     - pattern: \b(док\s?станц|docking|usb\s?hub|usb\s?c\s?hub|юсб\s?хаб|коврик\s?для\s?мыши|mouse\s?pad|laptop\s?stand|подставк[\p{L}\p{N}_]*\s?для\s?ноутбук[\p{L}\p{N}_]*|настольное\s?крепление\s?монитора|газлифт\s?для\s?монитора|накладк[\p{L}\p{N}_]*\s?на\s?клавиатур[\p{L}\p{N}_]*|охлаждающ[\p{L}\p{N}_]*\s?подставк[\p{L}\p{N}_]*|cleaning\s?kit)\b
       add: 10
@@ -96,46 +98,94 @@ triggers:
       add: 10
   TECH.WEARABLES:
     bonus:
-    - pattern: \b(apple\s?watch|galaxy\s?watch|smartwatch|smart\s?watch|смарт\s?часы|умные\s?часы)\b
+    - pattern: \b(apple\s?watch|galaxy\s?watch|pixel\s?watch|smartwatch|smart\s?watch|смарт\s?часы|умные\s?часы|смартчасы|ar\s?glasses|smart\s?glasses|умные\s?очки|очки\s?дополненной\s?реальности|viture|rokid|rayneo|nreal)\b
       add: 15
-    - pattern: \b(fitness\s?tracker|фитнес\s?браслет|mi\s?band|watch\s?band|ремешок\s?apple\s?watch)\b
+    - pattern: \b(fitness\s?tracker|фитнес\s?браслет|фитнес\s?трекер|mi\s?band|xiaomi\s?band|watch\s?band|ремешок\s?(?:apple\s?watch|galaxy\s?watch|garmin|mi\s?band)|чехол\s?(?:apple\s?watch|galaxy\s?watch)|защитное\s?стекло\s?apple\s?watch|зарядная\s?подставка\s?apple\s?watch|smart\s?ring|умное\s?кольцо|oura\s?ring|galaxy\s?ring|ray\s?ban\s?meta|xreal|vuzix|lenovo\s?legion\s?glasses)\b
       add: 10
   TECH.CAMERAS_DRONES:
     bonus:
-    - pattern: \b(фотоаппарат|камера|camera|dslr|беззеркалк|mirrorless|дрон|drone)\b
+    - pattern: \b(фотоаппарат|камера|camera|dslr|беззеркалк[\p{L}\p{N}_]*|mirrorless|зеркалк[\p{L}\p{N}_]*|дрон|drone|квадрокоптер|объектив|lens|экшн\s?камера|action\s?cam|gopro|insta360)\b
       add: 15
-    - pattern: \b(canon|nikon|sony|gopro|объектив|lens|gimbal|штатив)\b
+    - pattern: \b(canon|nikon|sony|fujifilm|fuji|lumix|panasonic|leica|sigma|tamron|dji|mavic|mini\s?4\s?pro|osmo|alpha|eos|powershot|zv[-\s]?e10|rx100|gimbal|гимбал|штатив|tripod|студийный\s?свет|видеосвет|бинокль|телескоп)\b
+      add: 10
+    - pattern: \b(handycam|vixia|blackmagic|smallrig|atomos|np[-\s]?fz100|lp[-\s]?e6nh|en[-\s]?el15|nd\s?фильтр|uv\s?фильтр|cpl\s?фильтр|бленда|крышка\s?объектива|накамерн[\p{L}\p{N}_]*|dji\s?goggles|аккумулятор\s?(?:dji|sony|canon|mavic|np|lp))\b
       add: 10
   TECH.GAMING:
     bonus:
-    - pattern: \b(ps5|playstation|xbox|switch|игровая\s?приставка|консоль)\b
+    - pattern: \b(ps5|ps\s?5|playstation|xbox|nintendo\s?switch|switch\s?oled|steam\s?deck|rog\s?ally|legion\s?go|игровая\s?приставка|консоль|портативная\s?консоль)\b
       add: 15
-    - pattern: \b(dualsense|геймпад|game\s?pass|игры|vr\s?headset)\b
+    - pattern: \b(dualsense|геймпад|джойстик|controller|game\s?pass|игры|игров[\p{L}\p{N}_]*|vr\s?headset|vr\s?шлем|meta\s?quest|oculus\s?quest|ps\s?vr2|gaming\s?keyboard|gaming\s?mouse|gaming\s?headset|диск\s?ps5|картридж\s?nintendo|arcade|аркадн[\p{L}\p{N}_]*)\b
+      add: 10
+    - pattern: \b((игров[\p{L}\p{N}_]*|gaming|геймерск[\p{L}\p{N}_]*|для\s?игр).*(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|гарнитур[\p{L}\p{N}_]*|headset|контроллер|controller)|(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|гарнитур[\p{L}\p{N}_]*|headset|контроллер|controller).*(игров[\p{L}\p{N}_]*|gaming|геймерск[\p{L}\p{N}_]*|для\s?игр))\b
+      add: 15
+    - pattern: \b(meta\s?quest|oculus\s?quest|quest\s?3s|quest\s?3|pico\s?4|htc\s?vive|valve\s?index|joy[-\s]?con|backbone\s?one|gamesir|8bitdo|g502|deathadder|pulsefire|astro\s?a50|turtle\s?beach|pandora\s?box|arcade1up|bartop\s?arcade|quest\s?link|xbox\s?expansion\s?card)\b
       add: 10
   TECH.SMART_HOME_SECURITY:
     bonus:
     - pattern: \b(умный\s?дом|smart\s?home|zigbee|homekit|alexa|google\s?home)\b
       add: 15
+    - pattern: \b(камера\s?видеонаблюдения|камера\s?безопасн[\p{L}\p{N}_]*|ip\s?camera|security\s?camera|xiaomi\s?smart\s?camera|видеодомофон|камера\s?домофона)\b
+      add: 15
     - pattern: \b(умная\s?лампочка|умная\s?розетка|датчик|motion\s?sensor|термостат|smart\s?plug|doorbell|smart\s?lock)\b
       add: 10
+    - pattern: \b(умная\s?колонка|яндекс\s?станц[\p{L}\p{N}_]*|echo\s?dot|echo\s?show|homepod|nest\s?hub|smart\s?speaker|smart\s?display)\b
+      add: 15
+    - pattern: \b(aqara|sonoff|shelly|tuya|tapo|kasa|reolink|ezviz|arlo|eufy|hue|yeelight|govee|smartthings|switchbot|nuki|yale|tado|netatmo)\b
+      add: 10
+    - pattern: \b(умн[\p{L}\p{N}_]*\s?(?:лампа|свет|лента|розетка|выключатель|датчик|замок|термостат|сирена)|датчик\s?(?:движения|открытия|протечки|присутствия)|zigbee\s?хаб|хаб\s?умного\s?дома|video\s?doorbell|smart\s?lock|smart\s?plug)\b
+      add: 15
   TECH.NETWORKING:
     bonus:
+    - pattern: \b(патч[-\s]?корд|patch\s?cord|ethernet\s?cable|lan\s?кабель|rj45|keystone|витая\s?пара|патч[-\s]?панель|кримпер|lan\s?tester)\b
+      add: 15
+    - pattern: \b(gpon|ont\s?терминал|onu\s?терминал|оптическ[\p{L}\p{N}_]*\s?терминал|xgs[-\s]?pon|xgpon)\b
+      add: 15
+    - pattern: \b(litebeam|nanobeam|powerbeam|mant\s?lte|секторн[\p{L}\p{N}_]*\s?антенн[\p{L}\p{N}_]*|lte\s?антенн[\p{L}\p{N}_]*|4g\s?антенн[\p{L}\p{N}_]*|5g\s?антенн[\p{L}\p{N}_]*)\b
+      add: 15
+    - pattern: \b(gl\.?inet|cudy|reyee|ruijie|draytek|vigor|fritz\s?box|fritzbox|peplink|tp[-\s]?link|ubiquiti|unifi|mikrotik|keenetic)\b
+      add: 10
     - pattern: \b(роутер|router|маршрутизатор|mesh\s?wifi|wi\s?fi|wifi|модем|modem)\b
       add: 15
     - pattern: \b(access\s?point|switch|коммутатор|ethernet|poe|network\s?adapter)\b
       add: 10
   TECH.POWER_CHARGING_CABLES:
     bonus:
+    - pattern: \b(сетевой\s?фильтр\s?пилот|фильтр\s?пилот|пилот\s?удлинитель|электрическ[\p{L}\p{N}_]*\s?удлинител[\p{L}\p{N}_]*|удлинител[\p{L}\p{N}_]*\s?с\s?usb|power\s?strip|extension\s?cord)\b
+      add: 15
+    - pattern: \b(кабель\s?канал|кабельн[\p{L}\p{N}_]*\s?канал|лоток\s?для\s?кабел[\p{L}\p{N}_]*|кабельн[\p{L}\p{N}_]*\s?лоток|гофра\s?для\s?кабел[\p{L}\p{N}_]*|оплетк[\p{L}\p{N}_]*\s?для\s?провод[\p{L}\p{N}_]*|кабельн[\p{L}\p{N}_]*\s?клипс[\p{L}\p{N}_]*|cable\s?tray|cable\s?sleeve|cable\s?clips)\b
+      add: 15
+    - pattern: \b(зарядк[\p{L}\p{N}_]*|зарядное\s?устройство|блок\s?питания|сетевой\s?адаптер|адаптер\s?питания|wall\s?charger|gan\s?charger|быстрая\s?зарядк[\p{L}\p{N}_]*)\b
+      add: 15
+    - pattern: \b(беспроводн[\p{L}\p{N}_]*\s?зарядк[\p{L}\p{N}_]*|qi2?|magsafe\s?charger|магнитн[\p{L}\p{N}_]*\s?зарядк[\p{L}\p{N}_]*)\b
+      add: 15
+    - pattern: \b(автозарядк[\p{L}\p{N}_]*|зарядк[\p{L}\p{N}_]*\s?в\s?машин[\p{L}\p{N}_]*|прикуривател[\p{L}\p{N}_]*|car\s?charger)\b
+      add: 15
+    - pattern: \b(usb\s?c\s?кабель|type\s?c\s?кабель|кабель\s?type\s?c|lightning\s?кабель|зарядный\s?кабель|шнур\s?зарядки|usb4\s?кабель|thunderbolt\s?4\s?кабель)\b
+      add: 15
+    - pattern: \b(hdmi\s?2\.1|hdmi\s?кабель|кабель\s?hdmi|displayport\s?кабель|кабель\s?dp|aux\s?кабель|toslink|оптическ[\p{L}\p{N}_]*\s?кабель|rca\s?кабель)\b
+      add: 15
+    - pattern: \b(power\s?bank|powerbank|повербанк|пауэрбанк|внешний\s?аккумулятор|портативн[\p{L}\p{N}_]*\s?зарядк[\p{L}\p{N}_]*)\b
+      add: 15
+    - pattern: \b(portable\s?power\s?station|power\s?station|ecoflow|bluetti|зарядн[\p{L}\p{N}_]*\s?станц[\p{L}\p{N}_]*|портативн[\p{L}\p{N}_]*\s?электростанц[\p{L}\p{N}_]*)\b
+      add: 15
+    - pattern: \b(ups|ибп|бесперебойник|источник\s?бесперебойн[\p{L}\p{N}_]*\s?питания|сетевой\s?фильтр|surge\s?protector|фильтр\s?пилот|удлинитель\s?с\s?защит[\p{L}\p{N}_]*)\b
+      add: 15
+    - pattern: \b(батарейк[\p{L}\p{N}_]*|аккумуляторн[\p{L}\p{N}_]*\s?батарейк[\p{L}\p{N}_]*|cr2032|cr2025|18650|21700|aa\s?duracell|aaa\s?nimh)\b
+      add: 15
+    - pattern: \b(органайзер\s?проводов|стяжк[\p{L}\p{N}_]*\s?для\s?кабел[\p{L}\p{N}_]*|кабельн[\p{L}\p{N}_]*\s?стяжк[\p{L}\p{N}_]*|держател[\p{L}\p{N}_]*\s?кабел[\p{L}\p{N}_]*|короб\s?для\s?проводов|cable\s?management)\b
+      add: 15
     - pattern: \b(ups|ибп|сетевой\s?фильтр|surge\s?protector|portable\s?power\s?station|батаре[яи])\b
       add: 15
     - pattern: \b(hdmi|audio\s?video\s?cable|кабель\s?hdmi|зарядное\s?устройство|wall\s?charger)\b
       add: 10
   TECH.PRINTERS_SCANNERS:
     bonus:
-    - pattern: \b(принтер|printer|мфу|multifunction|scanner|сканер)\b
+    - pattern: \b(принтер|printer|мфу|multifunction|scanner|сканер|принтер\s?этикеток|термопринтер|label\s?printer|laserjet|pixma|ecotank|deskjet|officejet|canoscan|scansnap|labelwriter|i\s?sensys)\b
       add: 15
-    - pattern: \b(картридж|cartridge|toner|тонер|label\s?printer)\b
-      add: 10
+    - pattern: \b(картридж|cartridge|toner|тонер|чернила|ink\s?cartridge|toner\s?cartridge|maintenance\s?box|drum\s?unit|печатающ[а-яa-z]*\s?головк[а-яa-z]*|tze|label\s?roll|термоэтикетк[а-яa-z]*)\b
+      add: 15
+    - pattern: \b(hp\s?(?:305|305xl|650|652|123|953|12a|106a|59a|85a)|q2612a|w1106a|cf259a|ce285a|pg\s?-?445|cl\s?-?446|pg\s?-?545|cl\s?-?546|canon\s?(?:725|737|057)|epson\s?(?:103|104|664|673|t00v)|tn\s?-?(?:1075|2421)|lc\s?-?3219|mlt\s?-?d111s|mlt\s?-?d101s|pc\s?-?211|pb\s?-?211|d1\s?tape)\b
+      add: 15
   TECH.CAR_ELECTRONICS_GPS:
     bonus:
     - pattern: \b(видеорегистратор|dash\s?cam|gps\s?навигатор|gps\s?tracker|obd)\b
@@ -143,10 +193,109 @@ triggers:
     - pattern: \b(магнитола|car\s?head\s?unit|парктроник|parking\s?sensor|backup\s?camera)\b
       add: 10
 conflicts:
+- pattern: \b(obd2?|автосканер|диагностическ[\p{L}\p{N}_]*\s?сканер|scanner\s?obd|obd\s?scanner)\b
+  prefer: TECH.CAR_ELECTRONICS_GPS
+  penalty_other: 25
+- pattern: \b(3d\s?printer|3d-принтер|3д\s?принтер|филамент|пластик\s?для\s?3d\s?принтера|creality\s?ender)\b
+  prefer: B.TECH
+  penalty_other: 25
+- pattern: \b(кабель\s?принтера|usb\s?printer\s?cable|usb\s?кабель\s?для\s?принтера)\b
+  prefer: TECH.PRINTERS_SCANNERS
+  penalty_other: 25
+- pattern: \b(сетевой\s?адаптер|адаптер).*(wi\s?fi|wifi|ethernet|lan|rj45|сетевая\s?карта|сетевой\s?адаптер\s?usb)\b
+  prefer: TECH.NETWORKING
+  penalty_other: 25
+- pattern: \b(wi\s?fi|wifi|ethernet|lan|rj45|сетевая\s?карта|сетевой\s?адаптер\s?usb).*(сетевой\s?адаптер|адаптер)\b
+  prefer: TECH.NETWORKING
+  penalty_other: 25
+- pattern: \b(сетевой\s?кабель|патч\s?корд|ethernet\s?кабель|lan\s?кабель)\b
+  prefer: TECH.NETWORKING
+  penalty_other: 25
+- pattern: \b(сетевой\s?адаптер\s?питания|адаптер\s?питания|блок\s?питания\s?для\s?ноутбук[\p{L}\p{N}_]*|зарядк[\p{L}\p{N}_]*\s?для\s?ноутбук[\p{L}\p{N}_]*|зарядк[\p{L}\p{N}_]*\s?macbook)\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(удлинител[\p{L}\p{N}_]*\s?(?:электрическ[\p{L}\p{N}_]*|с\s?usb|\d+\s?метр[\p{L}\p{N}_]*)|сетевой\s?фильтр\s?пилот|power\s?strip|extension\s?cord)\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(кабель\s?канал|кабельн[\p{L}\p{N}_]*\s?канал|кабельн[\p{L}\p{N}_]*\s?клипс[\p{L}\p{N}_]*|лоток\s?для\s?кабел[\p{L}\p{N}_]*|короб\s?для\s?провод[\p{L}\p{N}_]*|органайзер\s?зарядок|cable\s?sleeve|cable\s?tray)\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(беспроводн[\p{L}\p{N}_]*\s?зарядк[\p{L}\p{N}_]*\s?magsafe)\b(?!\s?(?:iphone|айфон|samsung|самсунг|xiaomi|redmi|honor|huawei|pixel))
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(чехол\s?iphone|защитн[\p{L}\p{N}_]*\s?стекло\s?iphone|magsafe\s?чехол|аккумулятор\s?iphone)\b
+  prefer: TECH.PHONE_ACCESSORIES
+  penalty_other: 25
+- pattern: \b(usb\s?hub|usb\s?c\s?hub|док\s?станц[\p{L}\p{N}_]*|thunderbolt\s?dock|адаптер\s?type\s?c\s?ethernet|type\s?c\s?ethernet|usb\s?c\s?ethernet)\b
+  prefer: TECH.COMPUTER_ACCESSORIES
+  penalty_other: 25
+- pattern: \b(rj45\s?кабель|патч\s?корд|ethernet\s?cable|lan\s?кабель|витая\s?пара)\b
+  prefer: TECH.NETWORKING
+  penalty_other: 25
+- pattern: \b(блок\s?питания\s?(?:пк|компьютера)|power\s?supply\s?atx|atx\s?psu|psu\s?\d+w|corsair\s?psu)\b
+  prefer: TECH.PC_COMPONENTS
+  penalty_other: 25
+- pattern: \b(блок\s?питания\s?atx|atx\s?блок\s?питания)\b
+  prefer: TECH.PC_COMPONENTS
+  penalty_other: 25
+- pattern: \b(dash\s?cam\s?кабель\s?питания|кабель\s?питания\s?dash\s?cam|видеорегистратор[\p{L}\p{N}_]*\s?кабель\s?питания)\b
+  prefer: TECH.CAR_ELECTRONICS_GPS
+  penalty_other: 25
+- pattern: \b(сетевой\s?фильтр|удлинитель\s?с\s?розетк[\p{L}\p{N}_]*|surge\s?protector)\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(usb\s?c\s?кабель|hdmi\s?кабель|кабель\s?питания|зарядн[\p{L}\p{N}_]*\s?кабель)\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b((кабель\s?usb\s?c|usb\s?c\s?кабель|кабель\s?type\s?c|type\s?c\s?кабель).*(\d{2,3}\s?w|mfi|e\s?marker|pd|power\s?delivery)|(\d{2,3}\s?w|mfi|e\s?marker|pd|power\s?delivery).*(кабель\s?usb\s?c|usb\s?c\s?кабель|кабель\s?type\s?c|type\s?c\s?кабель))\b
+  prefer: TECH.POWER_CHARGING_CABLES
+  penalty_other: 25
+- pattern: \b(nas|synology\s?ds|сетевое\s?хранилище)\b
+  prefer: TECH.STORAGE_MEMORY
+  penalty_other: 25
+- pattern: \b(ip\s?камера|камера\s?видеонаблюдения|hikvision|security\s?camera)\b
+  prefer: TECH.SMART_HOME_SECURITY
+  penalty_other: 25
+- pattern: \b(bluetooth\s?колонк[\p{L}\p{N}_]*|jbl\s?flip)\b
+  prefer: TECH.AUDIO
+  penalty_other: 25
+- pattern: \b(роутер|router|tp\s?link\s?archer|mesh\s?wifi)\b
+  prefer: TECH.NETWORKING
+  penalty_other: 25
+- pattern: \b(экшн\s?камера|action\s?cam|gopro)\b
+  prefer: TECH.CAMERAS_DRONES
+  penalty_other: 25
+- pattern: \b((airpods|earbuds|buds).*(ps5|xbox|switch)|(ps5|xbox|switch).*(airpods|earbuds|buds))\b
+  prefer: TECH.AUDIO
+  penalty_other: 25
+- pattern: \b((rtx|geforce|radeon|gpu|видеокарт[\p{L}\p{N}_]*).*(для\s?игр|gaming)|(для\s?игр|gaming).*(rtx|geforce|radeon|gpu|видеокарт[\p{L}\p{N}_]*))\b
+  prefer: TECH.PC_COMPONENTS
+  penalty_other: 25
+- pattern: \b((игров[\p{L}\p{N}_]*|gaming|ps5|xbox|playstation|switch).*(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|гарнитур[\p{L}\p{N}_]*|headset|наушник[\p{L}\p{N}_]*|headphones|геймпад|контроллер|controller|руль)|(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|гарнитур[\p{L}\p{N}_]*|headset|наушник[\p{L}\p{N}_]*|headphones|геймпад|контроллер|controller|руль).*(игров[\p{L}\p{N}_]*|gaming|ps5|xbox|playstation|switch))\b
+  prefer: TECH.GAMING
+  penalty_other: 25
+- pattern: \b((чехол|чехл[\p{L}\p{N}_]*|dock|док|подставк[\p{L}\p{N}_]*|зарядн[\p{L}\p{N}_]*\s?станц[\p{L}\p{N}_]*).*(ps5|xbox|nintendo\s?switch|switch|steam\s?deck)|(ps5|xbox|nintendo\s?switch|switch|steam\s?deck).*(чехол|чехл[\p{L}\p{N}_]*|dock|док|подставк[\p{L}\p{N}_]*|зарядн[\p{L}\p{N}_]*\s?станц[\p{L}\p{N}_]*))\b
+  prefer: TECH.GAMING
+  penalty_other: 25
+- pattern: \b(камера\s?видеонаблюдения|камера\s?безопасн[\p{L}\p{N}_]*|ip\s?camera|security\s?camera|видеодомофон|камера\s?домофона)\b
+  prefer: TECH.SMART_HOME_SECURITY
+  penalty_other: 25
+- pattern: \b(dash\s?cam|видеорегистратор|регистратор\s?автомобильный)\b
+  prefer: TECH.CAR_ELECTRONICS_GPS
+  penalty_other: 25
+- pattern: \b((iphone|айфон|смартфон|телефон|samsung\s?galaxy|pixel).*(камера|camera)|(камера|camera).*(iphone|айфон|смартфон|телефон|samsung\s?galaxy|pixel))\b
+  prefer: TECH.PHONES
+  penalty_other: 20
+- pattern: \b(ps5\s?camera|xbox\s?kinect|камера\s?ps5|kinect)\b
+  prefer: TECH.GAMING
+  penalty_other: 20
 - pattern: \b(студийный\s?монитор|studio\s?monitor|active\s?monitor\s?speaker|мониторы\s?студийные)\b
   prefer: TECH.AUDIO
   penalty_other: 20
 - pattern: \b((игров[а-я]*|gaming|ps5|xbox|playstation).*(гарнитур[а-я]*|headset|наушник[а-я]*|headphones)|(гарнитур[а-я]*|headset|наушник[а-я]*|headphones).*(игров[а-я]*|gaming|ps5|xbox|playstation))\b
+  prefer: TECH.GAMING
+  penalty_other: 25
+- pattern: \b((игров[\p{L}\p{N}_]*|gaming|геймерск[\p{L}\p{N}_]*|для\s?игр).*(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|гарнитур[\p{L}\p{N}_]*|headset|контроллер|controller)|(клавиатур[\p{L}\p{N}_]*|keyboard|мышь|mouse|гарнитур[\p{L}\p{N}_]*|headset|контроллер|controller).*(игров[\p{L}\p{N}_]*|gaming|геймерск[\p{L}\p{N}_]*|для\s?игр))\b
   prefer: TECH.GAMING
   penalty_other: 25
 - pattern: \b(автомагнитол[а-я]*|car\s?head\s?unit|колонки\s?автомобильные|автомобильные\s?колонки|car\s?speaker|car\s?amplifier|pioneer\s?магнитола)\b
@@ -155,13 +304,13 @@ conflicts:
 - pattern: \b(кабель\s?usb\s?c\s?зарядк[а-я]*|usb\s?c\s?charging\s?cable|hdmi\s?кабель|кабель\s?hdmi|зарядный\s?кабель|power\s?bank|зарядк[а-я]*\s?100w|переходник\s?hdmi\s?usb\s?c)\b
   prefer: TECH.POWER_CHARGING_CABLES
   penalty_other: 25
-- pattern: \b(webcam|вебкамера|keyboard|клавиатур[\p{L}\p{N}_]*|mouse|мышь)\b
+- pattern: \b(webcam|web\s?камера|веб\s?камера|вебкамера|keyboard|клавиатур[\p{L}\p{N}_]*|mouse|мышь)\b
   prefer: TECH.COMPUTER_ACCESSORIES
   penalty_other: 20
 - pattern: \b(airpods|earbuds|buds)\b
   prefer: TECH.AUDIO
   penalty_other: 10
-- pattern: \b(apple\s?watch|galaxy\s?watch|smartwatch|smart\s?watch|смарт\s?часы|умные\s?часы|фитнес\s?браслет)\b
+- pattern: \b(apple\s?watch|galaxy\s?watch|pixel\s?watch|smartwatch|smart\s?watch|смарт\s?часы|умные\s?часы|смартчасы|фитнес\s?браслет|fitness\s?tracker|mi\s?band|xiaomi\s?band|watch\s?band|ремешок\s?(?:apple\s?watch|galaxy\s?watch|garmin)|чехол\s?(?:apple\s?watch|galaxy\s?watch)|защитное\s?стекло\s?apple\s?watch|smart\s?ring|умное\s?кольцо|oura\s?ring|galaxy\s?ring|ar\s?glasses|smart\s?glasses|умные\s?очки|очки\s?дополненной\s?реальности|ray\s?ban\s?meta|xreal|viture|rokid|rayneo|nreal)\b
   prefer: TECH.WEARABLES
   penalty_other: 10
 - pattern: \b(чехол|чехл[\p{L}\p{N}_]*|стекло|стекл[\p{L}\p{N}_]*|пленк[\p{L}\p{N}_]*)\b
@@ -194,7 +343,7 @@ conflicts:
 - pattern: \b(ram|ddr|озу|оперативн[\p{L}\p{N}_]*\s?памят[\p{L}\p{N}_]*|gpu|rtx|geforce|radeon|видеокарт[\p{L}\p{N}_]*|cpu|процессор|motherboard|материнск[\p{L}\p{N}_]*\s?плат[\p{L}\p{N}_]*|материнк[\p{L}\p{N}_]*|блок\s?питания|psu|power\s?supply|корпус\s?(?:для\s?)?пк|pc\s?case|термопаст[\p{L}\p{N}_]*|thermal\s?paste|карта\s?захвата|capture\s?card|звуковая\s?карта|sound\s?card|сетевая\s?карта|network\s?card|плата\s?расширения|expansion\s?card)\b
   prefer: TECH.PC_COMPONENTS
   penalty_other: 8
-- pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi|security\s?camera|video\s?doorbell)\b
+- pattern: \b(wifi\s?камера|умная\s?камера|камера\s?wifi|камера\s?безопасн[\p{L}\p{N}_]*(?:\s?wifi)?|security\s?camera|video\s?doorbell)\b
   prefer: TECH.SMART_HOME_SECURITY
   penalty_other: 8
 - pattern: \b(объектив|lens)\b

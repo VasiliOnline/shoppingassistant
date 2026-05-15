@@ -1,0 +1,15 @@
+patch_id: TECH_WEARABLES_type_coverage_delta_pack_v1_1_RU
+target_categoryCode: TECH.WEARABLES
+apply_mode: overlay_append_only
+schema_breaking_changes: false
+files:
+  values_delta: values_delta.tech_wearables.v1_1.tsv
+  aliases_delta: aliases_delta.ru.tech_wearables.v1_1.tsv
+  golden_queries_delta: golden_queries_delta.tech_wearables.v1_1.tsv
+  sample_offers_delta: sample_offers_delta.tech_wearables.v1_1.jsonl
+  publish_sample_offers_delta: publish_sample_offers_delta.tech_wearables.v1_1.jsonl
+runtime_effect:
+  improves_type_coverage: [WATCH_BAND, WEARABLE_ACCESSORY, AR_GLASSES]
+  changes_ui_surface: false
+  changes_primary_facets: false
+  creates_new_categoryCode: false

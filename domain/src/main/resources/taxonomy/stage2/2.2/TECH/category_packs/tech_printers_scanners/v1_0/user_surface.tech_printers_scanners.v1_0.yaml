@@ -1,0 +1,30 @@
+categoryCode: TECH.PRINTERS_SCANNERS
+initial_fields:
+  - printer_scanner_type
+  - brand
+  - model_name_text
+  - condition
+  - print_technology
+  - color_printing
+  - connectivity
+  - price
+expanded_fields:
+  - paper_format
+  - duplex_printing
+  - auto_document_feeder
+  - scanner_type
+  - cartridge_type
+  - toner_color
+  - yield_pages
+  - compatible_printer_brand
+  - compatible_printer_model_text
+  - original_compatible_status
+  - accessory_subtype
+system_hidden_fields:
+  - dedup_key
+  - evidence_source
+  - normalization_confidence
+  - compatibility_confidence
+limits:
+  initial_fields_max: 8
+  primary_facets_max: 7

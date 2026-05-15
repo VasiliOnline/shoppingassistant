@@ -1,0 +1,17 @@
+categoryCode: TECH.GAMING
+version: 1.0
+no_guess_rules:
+  - id: no_model_guess_from_console_shape_only
+    rule: "Do not infer exact console model from shape/photo unless logo, ports, label, packaging, UI screen, or title evidence supports it."
+  - id: no_game_title_guess_from_cover_blur
+    rule: "Do not infer exact physical game title from a blurry cover. Use PHYSICAL_GAME + unknown_title when evidence is weak."
+  - id: controller_platform_evidence
+    rule: "Controller platform requires visible logo/button layout, title text, packaging, or compatibility text."
+  - id: vr_model_evidence
+    rule: "VR headset model needs visible logo, package text, controller shape plus corroborating title, or serial/model label."
+evidence_levels:
+  STRONG: ["barcode/GTIN", "model label", "clear package title", "official product title", "seller title + visible matching product"]
+  MEDIUM: ["seller title", "visible logo", "distinctive controller layout"]
+  WEAK: ["generic silhouette", "single low-res photo"]
+fallback:
+  weak_model_evidence: "keep model_name_text raw, set identity_resolution_status=CANDIDATE"

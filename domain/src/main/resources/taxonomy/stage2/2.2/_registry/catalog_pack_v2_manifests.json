@@ -2,215 +2,6 @@
   "schemaVersion": "1.0.0",
   "manifests": [
     {
-      "packId": "FASH_APPAREL_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
-      "packSections": [
-        "shared_standard",
-        "route_guard_pack"
-      ],
-      "archetypes": [
-        "TYPE_DRIVEN",
-        "SIZE_DRIVEN",
-        "VISUAL_SIMPLE"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH",
-      "requiredFiles": [
-        "shared_standard.fash_apparel_common.v1_0.yaml",
-        "shared_profiles.fash.json",
-        "ai_vision_contract.fash_apparel_common.v1_0.json"
-      ],
-      "userSurfaceFile": null,
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_COMPATIBILITY_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
-      "packSections": [
-        "shared_standard",
-        "compatibility_pack",
-        "route_guard_pack"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_compatibility_common/v1_0",
-      "requiredFiles": [
-        "aliases.tech_compatibility_common.ru.v1_0.tsv",
-        "attributes.tech_compatibility_common.v1_0.tsv",
-        "CHANGELOG.md",
-        "checksums.sha256.json",
-        "checksums.sha256.txt",
-        "compatibility_evidence_policy.tech_compatibility_common.v1_0.yaml",
-        "compatibility_resolution_policy.tech_compatibility_common.v1_0.yaml",
-        "compatibility_surface_matrix.tech_compatibility_common.v1_0.tsv",
-        "docs/COMPATIBILITY_POLICY_RU.md",
-        "docs/COMPATIBILITY_RUNTIME_NOTES_RU.md",
-        "docs/NO_PUBLIC_CATEGORY_BOUNDARY_RU.md",
-        "effective_spec_snapshot.expected.tech_compatibility_common.v1_0.json",
-        "facet_templates.tech_compatibility_common.v1_0.yaml",
-        "generated_alias_rules.tech_compatibility_common.v1_0.yaml",
-        "golden_queries.tech_compatibility_common.v1_0.tsv",
-        "integration_mapping.tech_compatibility_common.v1_0.yaml",
-        "manifest.json",
-        "package_inventory.json",
-        "quality_gates.tech_compatibility_common.v1_0.yaml",
-        "README_TECH_COMPATIBILITY_COMMON_v1_0_RU.md",
-        "route_guardrails.tech_compatibility_common.v1_0.yaml",
-        "sample_offers.tech_compatibility_common.v1_0.jsonl",
-        "schema_pack.tech_compatibility_common.v1_0.json",
-        "user_surface.tech_compatibility_common.v1_0.yaml",
-        "validation_report.tech_compatibility_common.v1_0.json",
-        "values.tech_compatibility_common.v1_0.tsv",
-        "vision_rules.tech_compatibility_common.v1_0.yaml"
-      ],
-      "userSurfaceFile": "user_surface.tech_compatibility_common.v1_0.yaml",
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_DEVICE_IDENTITY_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
-      "packSections": [
-        "shared_standard",
-        "identity_pack",
-        "route_guard_pack"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_device_identity_common/v1_0",
-      "requiredFiles": [
-        "CHANGELOG.md",
-        "README_TECH_DEVICE_IDENTITY_COMMON_v1_0_RU.md",
-        "aliases.tech_device_identity_common.ru.v1_0.tsv",
-        "attributes.tech_device_identity_common.v1_0.tsv",
-        "checksums.sha256.json",
-        "checksums.sha256.txt",
-        "dedup_key_policy.tech_device_identity_common.v1_0.yaml",
-        "docs/IDENTITY_POLICY_RU.md",
-        "docs/NO_MODEL_REGISTRY_BOUNDARY_RU.md",
-        "effective_spec_snapshot.expected.tech_device_identity_common.v1_0.json",
-        "facet_templates.tech_device_identity_common.v1_0.yaml",
-        "generated_alias_rules.tech_device_identity_common.v1_0.yaml",
-        "golden_queries.tech_device_identity_common.v1_0.tsv",
-        "identity_surface_matrix.tech_device_identity_common.v1_0.tsv",
-        "integration_mapping.tech_device_identity_common.v1_0.yaml",
-        "manifest.json",
-        "package_inventory.json",
-        "quality_gates.tech_device_identity_common.v1_0.yaml",
-        "route_guardrails.tech_device_identity_common.v1_0.yaml",
-        "sample_offers.tech_device_identity_common.v1_0.jsonl",
-        "schema_pack.tech_device_identity_common.v1_0.json",
-        "shared_standard.tech_device_identity_common.v1_0.yaml",
-        "title_identity_parser_rules.tech_device_identity_common.v1_0.yaml",
-        "user_surface.tech_device_identity_common.v1_0.yaml",
-        "validation_report.tech_device_identity_common.v1_0.json",
-        "values.tech_device_identity_common.v1_0.tsv",
-        "vision_rules.tech_device_identity_common.v1_0.yaml"
-      ],
-      "userSurfaceFile": "user_surface.tech_device_identity_common.v1_0.yaml",
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_ELECTRONICS_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
-      "packSections": [
-        "shared_standard",
-        "route_guard_pack"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_electronics_common/v1_0",
-      "requiredFiles": [
-        "aliases.tech_electronics_common.ru.v1_0.tsv",
-        "attributes.tech_electronics_common.v1_0.tsv",
-        "CHANGELOG.md",
-        "checksums.sha256.json",
-        "checksums.sha256.txt",
-        "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
-        "facet_templates.tech_electronics_common.v1_0.yaml",
-        "generated_alias_rules.tech_electronics_common.v1_0.yaml",
-        "golden_queries.tech_electronics_common.v1_0.tsv",
-        "integration_mapping.tech_electronics_common.v1_0.yaml",
-        "manifest.json",
-        "package_inventory.json",
-        "quality_gates.tech_electronics_common.v1_0.yaml",
-        "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md",
-        "route_guardrails.tech_electronics_common.v1_0.yaml",
-        "sample_offers.tech_electronics_common.v1_0.jsonl",
-        "schema_pack.tech_electronics_common.v1_0.json",
-        "shared_standard.tech_electronics_common.v1_0.yaml",
-        "user_surface.tech_electronics_common.v1_0.yaml",
-        "validation_report.tech_electronics_common.v1_0.json",
-        "values.tech_electronics_common.v1_0.tsv",
-        "vision_rules.tech_electronics_common.v1_0.yaml"
-      ],
-      "userSurfaceFile": "user_surface.tech_electronics_common.v1_0.yaml",
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
-      "packId": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
-      "categoryCode": null,
-      "packSections": [
-        "foundation_manifest"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/foundation/manifest/TECH_FOUNDATION_MANIFEST_v1_0_RU",
-      "requiredFiles": [
-        "CHANGELOG.md",
-        "README_TECH_FOUNDATION_MANIFEST_v1_0_RU.md",
-        "checksums.sha256.json",
-        "checksums.sha256.txt",
-        "dependency_graph.tech_foundation.v1_0.yaml",
-        "docs/FOUNDATION_MANIFEST_POLICY_RU.md",
-        "docs/NEXT_PACKS_SEQUENCE_RU.md",
-        "docs/RUNTIME_MOUNT_CHECKLIST_RU.md",
-        "effective_spec_snapshot.expected.tech_foundation.v1_0.json",
-        "foundation_manifest.tech.v1_0.json",
-        "integration_mapping.tech_foundation.v1_0.yaml",
-        "manifest.json",
-        "package_index.tech_foundation.v1_0.tsv",
-        "package_inventory.json",
-        "qa/self_check.tech_foundation_manifest.v1_0.json",
-        "quality_gates.tech_foundation.v1_0.yaml",
-        "referenced_artifact_checksums.tech_foundation.v1_0.tsv",
-        "runtime_mount_order.tech_foundation.v1_0.yaml",
-        "validation_report.tech_foundation.v1_0.json",
-        "validator_matrix.tech_foundation.v1_0.tsv"
-      ],
-      "userSurfaceFile": null
-    },
-    {
-      "packId": "TECH_SPECS_COMMON_SHARED_STANDARD_v1_0",
-      "categoryCode": null,
-      "packSections": [
-        "shared_standard",
-        "route_guard_pack"
-      ],
-      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_specs_common/v1_0",
-      "requiredFiles": [
-        "CHANGELOG.md",
-        "README_TECH_SPECS_COMMON_v1_0_RU.md",
-        "aliases.tech_specs_common.ru.v1_0.tsv",
-        "attributes.tech_specs_common.v1_0.tsv",
-        "checksums.sha256.json",
-        "checksums.sha256.txt",
-        "docs/BOUNDARY_WITH_IDENTITY_AND_COMPATIBILITY_RU.md",
-        "docs/NO_GUESS_AND_UNIT_POLICY_RU.md",
-        "docs/SPECS_POLICY_RU.md",
-        "effective_spec_snapshot.expected.tech_specs_common.v1_0.json",
-        "facet_templates.tech_specs_common.v1_0.yaml",
-        "generated_alias_rules.tech_specs_common.v1_0.yaml",
-        "golden_queries.tech_specs_common.v1_0.tsv",
-        "integration_mapping.tech_specs_common.v1_0.yaml",
-        "manifest.json",
-        "package_inventory.json",
-        "quality_gates.tech_specs_common.v1_0.yaml",
-        "route_guardrails.tech_specs_common.v1_0.yaml",
-        "sample_offers.tech_specs_common.v1_0.jsonl",
-        "schema_pack.tech_specs_common.v1_0.json",
-        "spec_confidence_policy.tech_specs_common.v1_0.yaml",
-        "spec_coverage_matrix.tech_specs_common.v1_0.tsv",
-        "unit_normalization_rules.tech_specs_common.v1_0.yaml",
-        "user_surface.tech_specs_common.v1_0.yaml",
-        "validation_report.tech_specs_common.v1_0.json",
-        "values.tech_specs_common.v1_0.tsv",
-        "vision_rules.tech_specs_common.v1_0.yaml"
-      ],
-      "userSurfaceFile": "user_surface.tech_specs_common.v1_0.yaml",
-      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
       "packId": "APPL_CATEGORY_SCHEMA_PACK_v2",
       "categoryCodes": [
         "APPL",
@@ -277,30 +68,6 @@
       "routeGuardLayer": "FOOD_BEAUTY_HEALTH_GUARDRAILS_COMMON"
     },
     {
-      "packId": "FASH_CATALOG_ROOT_v2",
-      "categoryCodes": [
-        "FASH"
-      ],
-      "packSections": [
-        "category_schema_pack",
-        "shared_standard",
-        "route_guard_pack"
-      ],
-      "basePath": "taxonomy/stage2/2.2/FASH",
-      "requiredFiles": [
-        "profiles.fash.json",
-        "constraints.fash.json",
-        "fash_category_tree_contract.v1_0.json",
-        "fash_route_conflict_golden.tsv",
-        "fash_visual_search_golden.v1_0.json",
-        "fash_typed_attribute_coverage_matrix.v1_0.json",
-        "FASH_LAUNCH_READINESS_REPORT.md",
-        "shared_standard.fash_apparel_common.v1_0.yaml",
-        "shared_profiles.fash.json"
-      ],
-      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
-    },
-    {
       "packId": "FASH_ACCESSORIES_PRODUCTION_v1_0",
       "categoryCode": "FASH.ACCESSORIES",
       "packSections": [
@@ -332,6 +99,27 @@
       "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
     },
     {
+      "packId": "FASH_APPAREL_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "SIZE_DRIVEN",
+        "VISUAL_SIMPLE"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH",
+      "requiredFiles": [
+        "shared_standard.fash_apparel_common.v1_0.yaml",
+        "shared_profiles.fash.json",
+        "ai_vision_contract.fash_apparel_common.v1_0.json"
+      ],
+      "userSurfaceFile": null,
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
       "packId": "FASH_BAGS_PRODUCTION_v1_0",
       "categoryCode": "FASH.BAGS",
       "packSections": [
@@ -360,6 +148,30 @@
         "validation_report.fash_bags.v1_0.json"
       ],
       "userSurfaceFile": "user_surface.fash_bags.v1_0.yaml",
+      "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "FASH_CATALOG_ROOT_v2",
+      "categoryCodes": [
+        "FASH"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/FASH",
+      "requiredFiles": [
+        "profiles.fash.json",
+        "constraints.fash.json",
+        "fash_category_tree_contract.v1_0.json",
+        "fash_route_conflict_golden.tsv",
+        "fash_visual_search_golden.v1_0.json",
+        "fash_typed_attribute_coverage_matrix.v1_0.json",
+        "FASH_LAUNCH_READINESS_REPORT.md",
+        "shared_standard.fash_apparel_common.v1_0.yaml",
+        "shared_profiles.fash.json"
+      ],
       "routeGuardLayer": "FASH_ROUTE_GUARDRAILS_COMMON"
     },
     {
@@ -665,6 +477,178 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
+      "packId": "TECH_CAMERAS_DRONES_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.CAMERAS_DRONES",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_cameras_drones/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_CAMERAS_DRONES_v1_0_RU.md",
+        "aliases.tech_cameras_drones.ru.v1_0.tsv",
+        "attributes.tech_cameras_drones.v1_0.tsv",
+        "camera_dedup_policy.tech_cameras_drones.v1_0.yaml",
+        "camera_facet_coverage_matrix.tech_cameras_drones.v1_0.tsv",
+        "camera_model_aliases.tech_cameras_drones.ru.v1_0.tsv",
+        "camera_model_head_seed.tech_cameras_drones.v1_0.tsv",
+        "camera_resale_condition_policy.tech_cameras_drones.v1_0.yaml",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/BOUNDARY_RU.md",
+        "docs/LIVE_VALUES_POLICY_RU.md",
+        "docs/NO_PRESETS_COLLECTIONS_RU.md",
+        "effective_spec_snapshot.expected.tech_cameras_drones.v1_0.json",
+        "facet_templates.tech_cameras_drones.v1_0.yaml",
+        "generated_alias_rules.tech_cameras_drones.v1_0.yaml",
+        "golden_queries.tech_cameras_drones.v1_0.tsv",
+        "integration_mapping.tech_cameras_drones.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers.tech_cameras_drones.v1_0.jsonl",
+        "quality_gates.tech_cameras_drones.v1_0.yaml",
+        "route_guardrails.tech_cameras_drones.v1_0.yaml",
+        "sample_offers.tech_cameras_drones.v1_0.jsonl",
+        "schema_pack.tech_cameras_drones.v1_0.json",
+        "user_surface.tech_cameras_drones.v1_0.yaml",
+        "validation_report.tech_cameras_drones.v1_0.json",
+        "values.tech_cameras_drones.v1_0.tsv",
+        "vision_rules.tech_cameras_drones.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_cameras_drones.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_CAMERAS_DRONES_type_coverage_delta_pack_v1_1_RU",
+      "packVersion": "1.1",
+      "categoryCode": "TECH.CAMERAS_DRONES",
+      "stage": "2.2",
+      "packType": "data_overlay_patch",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_cameras_drones/data_overlays/type_coverage_delta/v1_1",
+      "requiredFiles": [
+        "README_TECH_CAMERAS_DRONES_type_coverage_delta_v1_1_RU.md",
+        "aliases_delta.ru.tech_cameras_drones.v1_1.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/PATCH_SCOPE_RU.md",
+        "effective_spec_snapshot.expected.tech_cameras_drones_type_delta.v1_1.json",
+        "golden_queries_delta.tech_cameras_drones.v1_1.tsv",
+        "integration_mapping.tech_cameras_drones_type_delta.v1_1.yaml",
+        "manifest.json",
+        "model_head_seed_delta.tech_cameras_drones.v1_1.tsv",
+        "package_inventory.json",
+        "publish_sample_offers_delta.tech_cameras_drones.v1_1.jsonl",
+        "quality_gates.tech_cameras_drones_type_delta.v1_1.yaml",
+        "sample_offers_delta.tech_cameras_drones.v1_1.jsonl",
+        "validation_report.tech_cameras_drones_type_delta.v1_1.json",
+        "values_delta.tech_cameras_drones.v1_1.tsv"
+      ],
+      "sourceSha256": null,
+      "userSurfaceFile": null,
+      "routeGuardLayer": null,
+      "status": "mounted",
+      "notes": "Overlay-only TECH.CAMERAS_DRONES type coverage patch v1.1 mounted without new category codes."
+    },
+    {
+      "packId": "TECH_CATEGORY_SCHEMA_PACK_v2",
+      "categoryCodes": [
+        "TECH",
+        "TECH.PHONES",
+        "TECH.PHONE_ACCESSORIES",
+        "TECH.COMPUTERS",
+        "TECH.TABLETS_E_READERS",
+        "TECH.MONITORS_DISPLAYS",
+        "TECH.COMPUTER_ACCESSORIES",
+        "TECH.PC_COMPONENTS",
+        "TECH.STORAGE_MEMORY",
+        "TECH.AUDIO",
+        "TECH.TV_HOME_THEATER",
+        "TECH.WEARABLES",
+        "TECH.CAMERAS_DRONES",
+        "TECH.GAMING",
+        "TECH.SMART_HOME_SECURITY",
+        "TECH.NETWORKING",
+        "TECH.POWER_CHARGING_CABLES",
+        "TECH.PRINTERS_SCANNERS",
+        "TECH.CAR_ELECTRONICS_GPS"
+      ],
+      "packSections": [
+        "category_schema_pack",
+        "shared_standard",
+        "compatibility_pack",
+        "route_guard_pack",
+        "identity_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH",
+      "requiredFiles": [
+        "profiles.tech.json",
+        "constraints.tech.json",
+        "shared_profiles.tech.json"
+      ],
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_COMPATIBILITY_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_compatibility_common/v1_0",
+      "requiredFiles": [
+        "aliases.tech_compatibility_common.ru.v1_0.tsv",
+        "attributes.tech_compatibility_common.v1_0.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "compatibility_evidence_policy.tech_compatibility_common.v1_0.yaml",
+        "compatibility_resolution_policy.tech_compatibility_common.v1_0.yaml",
+        "compatibility_surface_matrix.tech_compatibility_common.v1_0.tsv",
+        "docs/COMPATIBILITY_POLICY_RU.md",
+        "docs/COMPATIBILITY_RUNTIME_NOTES_RU.md",
+        "docs/NO_PUBLIC_CATEGORY_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_compatibility_common.v1_0.json",
+        "facet_templates.tech_compatibility_common.v1_0.yaml",
+        "generated_alias_rules.tech_compatibility_common.v1_0.yaml",
+        "golden_queries.tech_compatibility_common.v1_0.tsv",
+        "integration_mapping.tech_compatibility_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_compatibility_common.v1_0.yaml",
+        "README_TECH_COMPATIBILITY_COMMON_v1_0_RU.md",
+        "route_guardrails.tech_compatibility_common.v1_0.yaml",
+        "sample_offers.tech_compatibility_common.v1_0.jsonl",
+        "schema_pack.tech_compatibility_common.v1_0.json",
+        "user_surface.tech_compatibility_common.v1_0.yaml",
+        "validation_report.tech_compatibility_common.v1_0.json",
+        "values.tech_compatibility_common.v1_0.tsv",
+        "vision_rules.tech_compatibility_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_compatibility_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
       "packId": "TECH_COMPUTERS_public_category_pack_v1_0_RU",
       "categoryCode": "TECH.COMPUTERS",
       "packSections": [
@@ -763,6 +747,206 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
+      "packId": "TECH_DEVICE_IDENTITY_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "identity_pack",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_device_identity_common/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_DEVICE_IDENTITY_COMMON_v1_0_RU.md",
+        "aliases.tech_device_identity_common.ru.v1_0.tsv",
+        "attributes.tech_device_identity_common.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "dedup_key_policy.tech_device_identity_common.v1_0.yaml",
+        "docs/IDENTITY_POLICY_RU.md",
+        "docs/NO_MODEL_REGISTRY_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_device_identity_common.v1_0.json",
+        "facet_templates.tech_device_identity_common.v1_0.yaml",
+        "generated_alias_rules.tech_device_identity_common.v1_0.yaml",
+        "golden_queries.tech_device_identity_common.v1_0.tsv",
+        "identity_surface_matrix.tech_device_identity_common.v1_0.tsv",
+        "integration_mapping.tech_device_identity_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_device_identity_common.v1_0.yaml",
+        "route_guardrails.tech_device_identity_common.v1_0.yaml",
+        "sample_offers.tech_device_identity_common.v1_0.jsonl",
+        "schema_pack.tech_device_identity_common.v1_0.json",
+        "shared_standard.tech_device_identity_common.v1_0.yaml",
+        "title_identity_parser_rules.tech_device_identity_common.v1_0.yaml",
+        "user_surface.tech_device_identity_common.v1_0.yaml",
+        "validation_report.tech_device_identity_common.v1_0.json",
+        "values.tech_device_identity_common.v1_0.tsv",
+        "vision_rules.tech_device_identity_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_device_identity_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_ELECTRONICS_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_electronics_common/v1_0",
+      "requiredFiles": [
+        "aliases.tech_electronics_common.ru.v1_0.tsv",
+        "attributes.tech_electronics_common.v1_0.tsv",
+        "CHANGELOG.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "effective_spec_snapshot.expected.tech_electronics_common.v1_0.json",
+        "facet_templates.tech_electronics_common.v1_0.yaml",
+        "generated_alias_rules.tech_electronics_common.v1_0.yaml",
+        "golden_queries.tech_electronics_common.v1_0.tsv",
+        "integration_mapping.tech_electronics_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_electronics_common.v1_0.yaml",
+        "README_TECH_ELECTRONICS_COMMON_v1_0_RU.md",
+        "route_guardrails.tech_electronics_common.v1_0.yaml",
+        "sample_offers.tech_electronics_common.v1_0.jsonl",
+        "schema_pack.tech_electronics_common.v1_0.json",
+        "shared_standard.tech_electronics_common.v1_0.yaml",
+        "user_surface.tech_electronics_common.v1_0.yaml",
+        "validation_report.tech_electronics_common.v1_0.json",
+        "values.tech_electronics_common.v1_0.tsv",
+        "vision_rules.tech_electronics_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_electronics_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_FOUNDATION_MANIFEST_v1_0_RU",
+      "categoryCode": null,
+      "packSections": [
+        "foundation_manifest"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/foundation/manifest/TECH_FOUNDATION_MANIFEST_v1_0_RU",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_FOUNDATION_MANIFEST_v1_0_RU.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "dependency_graph.tech_foundation.v1_0.yaml",
+        "docs/FOUNDATION_MANIFEST_POLICY_RU.md",
+        "docs/NEXT_PACKS_SEQUENCE_RU.md",
+        "docs/RUNTIME_MOUNT_CHECKLIST_RU.md",
+        "effective_spec_snapshot.expected.tech_foundation.v1_0.json",
+        "foundation_manifest.tech.v1_0.json",
+        "integration_mapping.tech_foundation.v1_0.yaml",
+        "manifest.json",
+        "package_index.tech_foundation.v1_0.tsv",
+        "package_inventory.json",
+        "qa/self_check.tech_foundation_manifest.v1_0.json",
+        "quality_gates.tech_foundation.v1_0.yaml",
+        "referenced_artifact_checksums.tech_foundation.v1_0.tsv",
+        "runtime_mount_order.tech_foundation.v1_0.yaml",
+        "validation_report.tech_foundation.v1_0.json",
+        "validator_matrix.tech_foundation.v1_0.tsv"
+      ],
+      "userSurfaceFile": null
+    },
+    {
+      "packId": "TECH_GAMING_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.GAMING",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_gaming/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_GAMING_v1_0_RU.md",
+        "aliases.tech_gaming.ru.v1_0.tsv",
+        "attributes.tech_gaming.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/GAMING_BOUNDARY_RU.md",
+        "docs/NO_PRESETS_COLLECTIONS_BOUNDARY_RU.md",
+        "docs/SOURCE_NOTES_RU.md",
+        "effective_spec_snapshot.expected.tech_gaming.v1_0.json",
+        "facet_templates.tech_gaming.v1_0.yaml",
+        "gaming_dedup_policy.tech_gaming.v1_0.yaml",
+        "gaming_facet_coverage_matrix.tech_gaming.v1_0.tsv",
+        "gaming_model_aliases.tech_gaming.ru.v1_0.tsv",
+        "gaming_model_head_seed.tech_gaming.v1_0.tsv",
+        "gaming_resale_condition_policy.tech_gaming.v1_0.yaml",
+        "generated_alias_rules.tech_gaming.v1_0.yaml",
+        "golden_queries.tech_gaming.v1_0.tsv",
+        "integration_mapping.tech_gaming.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers.tech_gaming.v1_0.jsonl",
+        "quality_gates.tech_gaming.v1_0.yaml",
+        "route_guardrails.tech_gaming.v1_0.yaml",
+        "sample_offers.tech_gaming.v1_0.jsonl",
+        "schema_pack.tech_gaming.v1_0.json",
+        "user_surface.tech_gaming.v1_0.yaml",
+        "validation_report.tech_gaming.v1_0.json",
+        "values.tech_gaming.v1_0.tsv",
+        "vision_rules.tech_gaming.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_gaming.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_GAMING_route_alias_type_coverage_delta_pack_v1_1_RU",
+      "packVersion": "1.1",
+      "categoryCode": "TECH.GAMING",
+      "stage": "2.2",
+      "packType": "data_overlay_patch",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_gaming/data_overlays/route_alias_type_coverage_delta/v1_1",
+      "requiredFiles": [
+        "README_TECH_GAMING_DELTA_v1_1_RU.md",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/GAMING_DELTA_REVIEW_NOTES_RU.md",
+        "effective_spec_snapshot.expected.tech_gaming_delta.v1_1.json",
+        "gaming_aliases_delta.ru.v1_1.tsv",
+        "gaming_type_coverage_delta.tech_gaming.v1_1.tsv",
+        "golden_queries_delta.tech_gaming.v1_1.tsv",
+        "integration_mapping.tech_gaming_delta.v1_1.yaml",
+        "manifest.json",
+        "model_alias_retractions.tech_gaming.v1_1.tsv",
+        "model_head_seed_delta.tech_gaming.v1_1.tsv",
+        "package_inventory.json",
+        "publish_sample_offers_delta.tech_gaming.v1_1.jsonl",
+        "quality_gates.tech_gaming_delta.v1_1.yaml",
+        "route_guardrails_delta.tech_gaming.v1_1.yaml",
+        "sample_offers_delta.tech_gaming.v1_1.jsonl",
+        "validation_report.tech_gaming_delta.v1_1.json"
+      ],
+      "sourceSha256": null,
+      "userSurfaceFile": null,
+      "routeGuardLayer": null,
+      "status": "mounted",
+      "notes": "Overlay-only TECH.GAMING route alias/type coverage patch v1.1 mounted without new category codes."
+    },
+    {
       "packId": "TECH_MONITORS_DISPLAYS_public_category_pack_v1_0_RU",
       "categoryCode": "TECH.MONITORS_DISPLAYS",
       "packSections": [
@@ -809,6 +993,98 @@
       ],
       "userSurfaceFile": "user_surface.tech_monitors_displays.v1_0.yaml",
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_NETWORKING_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.NETWORKING",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_networking/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_NETWORKING_v1_0_RU.md",
+        "aliases.tech_networking.ru.v1_0.tsv",
+        "attributes.tech_networking.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/NETWORKING_DATA_POLICY_RU.md",
+        "docs/ROUTE_BOUNDARIES_RU.md",
+        "effective_spec_snapshot.expected.tech_networking.v1_0.json",
+        "facet_templates.tech_networking.v1_0.yaml",
+        "generated_alias_rules.tech_networking.v1_0.yaml",
+        "golden_queries.tech_networking.v1_0.tsv",
+        "integration_mapping.tech_networking.v1_0.yaml",
+        "manifest.json",
+        "networking_dedup_policy.tech_networking.v1_0.yaml",
+        "networking_facet_coverage_matrix.tech_networking.v1_0.tsv",
+        "networking_model_aliases.tech_networking.ru.v1_0.tsv",
+        "networking_model_head_seed.tech_networking.v1_0.tsv",
+        "networking_resale_condition_policy.tech_networking.v1_0.yaml",
+        "package_inventory.json",
+        "publish_sample_offers.tech_networking.v1_0.jsonl",
+        "quality_gates.tech_networking.v1_0.yaml",
+        "route_guardrails.tech_networking.v1_0.yaml",
+        "sample_offers.tech_networking.v1_0.jsonl",
+        "schema_pack.tech_networking.v1_0.json",
+        "user_surface.tech_networking.v1_0.yaml",
+        "validation_report.tech_networking.v1_0.json",
+        "values.tech_networking.v1_0.tsv",
+        "vision_rules.tech_networking.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_networking.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_NETWORKING_type_coverage_delta_pack_v1_1_RU",
+      "packVersion": "1.1",
+      "categoryCode": "TECH.NETWORKING",
+      "stage": "2.2",
+      "packType": "data_overlay_patch",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_networking/data_overlays/type_coverage_delta/v1_1",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_NETWORKING_type_delta_v1_1_RU.md",
+        "aliases_delta.ru.tech_networking.v1_1.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/NETWORKING_TYPE_DELTA_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_networking_type_delta.v1_1.json",
+        "golden_queries_delta.tech_networking.v1_1.tsv",
+        "integration_mapping.tech_networking_type_delta.v1_1.yaml",
+        "manifest.json",
+        "model_head_seed_delta.tech_networking.v1_1.tsv",
+        "package_inventory.json",
+        "publish_sample_offers_delta.tech_networking.v1_1.jsonl",
+        "quality_gates.tech_networking_type_delta.v1_1.yaml",
+        "route_guardrails_delta.tech_networking.v1_1.yaml",
+        "sample_offers_delta.tech_networking.v1_1.jsonl",
+        "validation_report.tech_networking_type_delta.v1_1.json",
+        "values_delta.tech_networking.v1_1.tsv"
+      ],
+      "sourceSha256": null,
+      "userSurfaceFile": null,
+      "routeGuardLayer": null,
+      "status": "mounted",
+      "notes": "Overlay-only TECH.NETWORKING type coverage patch v1.1 mounted without new category codes."
     },
     {
       "packId": "TECH_PC_COMPONENTS_public_category_pack_v1_0_RU",
@@ -1019,6 +1295,276 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
+      "packId": "TECH_POWER_CHARGING_CABLES_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.POWER_CHARGING_CABLES",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "TYPE_DRIVEN",
+        "COMPATIBILITY_DRIVEN",
+        "SPEC_HEAVY",
+        "IDENTITY_CRITICAL"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_power_charging_cables/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_POWER_CHARGING_CABLES_v1_0_RU.md",
+        "aliases.tech_power_charging_cables.ru.v1_0.tsv",
+        "attributes.tech_power_charging_cables.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/POWER_CHARGING_CABLES_DATA_POLICY_RU.md",
+        "docs/ROUTE_BOUNDARIES_RU.md",
+        "effective_spec_snapshot.expected.tech_power_charging_cables.v1_0.json",
+        "facet_templates.tech_power_charging_cables.v1_0.yaml",
+        "generated_alias_rules.tech_power_charging_cables.v1_0.yaml",
+        "golden_queries.tech_power_charging_cables.v1_0.tsv",
+        "integration_mapping.tech_power_charging_cables.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "power_dedup_policy.tech_power_charging_cables.v1_0.yaml",
+        "power_facet_coverage_matrix.tech_power_charging_cables.v1_0.tsv",
+        "power_model_aliases.tech_power_charging_cables.ru.v1_0.tsv",
+        "power_model_head_seed.tech_power_charging_cables.v1_0.tsv",
+        "power_resale_condition_policy.tech_power_charging_cables.v1_0.yaml",
+        "publish_sample_offers.tech_power_charging_cables.v1_0.jsonl",
+        "quality_gates.tech_power_charging_cables.v1_0.yaml",
+        "route_guardrails.tech_power_charging_cables.v1_0.yaml",
+        "sample_offers.tech_power_charging_cables.v1_0.jsonl",
+        "schema_pack.tech_power_charging_cables.v1_0.json",
+        "user_surface.tech_power_charging_cables.v1_0.yaml",
+        "validation_report.tech_power_charging_cables.v1_0.json",
+        "values.tech_power_charging_cables.v1_0.tsv",
+        "vision_rules.tech_power_charging_cables.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_power_charging_cables.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_POWER_CHARGING_CABLES_route_publish_delta_pack_v1_1_RU",
+      "packVersion": "1.1",
+      "categoryCode": "TECH.POWER_CHARGING_CABLES",
+      "stage": "2.2",
+      "packType": "data_overlay_patch",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_power_charging_cables/data_overlays/route_publish_delta/v1_1",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_POWER_CHARGING_CABLES_delta_v1_1_RU.md",
+        "aliases_delta.tech_power_charging_cables.ru.v1_1.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/POWER_CHARGING_CABLES_DELTA_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_power_charging_cables_delta.v1_1.json",
+        "golden_queries_delta.tech_power_charging_cables.v1_1.tsv",
+        "integration_mapping.tech_power_charging_cables_delta.v1_1.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers_delta.tech_power_charging_cables.v1_1.jsonl",
+        "quality_gates.tech_power_charging_cables_delta.v1_1.yaml",
+        "route_guardrails_delta.tech_power_charging_cables.v1_1.yaml",
+        "sample_offers_delta.tech_power_charging_cables.v1_1.jsonl",
+        "validation_report.tech_power_charging_cables_delta.v1_1.json"
+      ],
+      "sourceSha256": null,
+      "userSurfaceFile": null,
+      "routeGuardLayer": null,
+      "status": "mounted",
+      "notes": "Overlay-only TECH.POWER_CHARGING_CABLES route/publish delta v1.1 mounted without schema or UI changes."
+    },
+    {
+      "packId": "TECH_PRINTERS_SCANNERS_consumables_compatibility_delta_pack_v1_1_RU",
+      "packVersion": "1.1",
+      "categoryCode": "TECH.PRINTERS_SCANNERS",
+      "stage": "2.2",
+      "packType": "data_overlay_patch",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_printers_scanners/data_overlays/consumables_compatibility_delta/v1_1",
+      "requiredFiles": [
+        "README_TECH_PRINTERS_SCANNERS_CONSUMABLES_DELTA_v1_1_RU.md",
+        "aliases_delta.ru.tech_printers_scanners_consumables.v1_1.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "consumable_compatibility_policy.tech_printers_scanners.v1_1.yaml",
+        "docs/CONSUMABLES_COMPATIBILITY_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_printers_scanners_consumables.v1_1.json",
+        "golden_queries_delta.tech_printers_scanners_consumables.v1_1.tsv",
+        "integration_mapping.tech_printers_scanners_consumables.v1_1.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers_delta.tech_printers_scanners_consumables.v1_1.jsonl",
+        "quality_gates.tech_printers_scanners_consumables.v1_1.yaml",
+        "sample_offers_delta.tech_printers_scanners_consumables.v1_1.jsonl",
+        "validation_report.tech_printers_scanners_consumables.v1_1.json",
+        "values_delta.tech_printers_scanners_consumables.v1_1.tsv"
+      ],
+      "sourceSha256": null,
+      "userSurfaceFile": null,
+      "routeGuardLayer": null,
+      "status": "mounted",
+      "notes": "Overlay-only TECH.PRINTERS_SCANNERS consumables compatibility delta v1.1 mounted without schema or UI changes."
+    },
+    {
+      "packId": "TECH_PRINTERS_SCANNERS_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.PRINTERS_SCANNERS",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_printers_scanners/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_PRINTERS_SCANNERS_v1_0_RU.md",
+        "aliases.tech_printers_scanners.ru.v1_0.tsv",
+        "attributes.tech_printers_scanners.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/BOUNDARY_RU.md",
+        "docs/NO_PRESETS_COLLECTIONS_RU.md",
+        "effective_spec_snapshot.expected.tech_printers_scanners.v1_0.json",
+        "facet_templates.tech_printers_scanners.v1_0.yaml",
+        "generated_alias_rules.tech_printers_scanners.v1_0.yaml",
+        "golden_queries.tech_printers_scanners.v1_0.tsv",
+        "integration_mapping.tech_printers_scanners.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "printer_dedup_policy.tech_printers_scanners.v1_0.yaml",
+        "printer_facet_coverage_matrix.tech_printers_scanners.v1_0.tsv",
+        "printer_model_aliases.tech_printers_scanners.ru.v1_0.tsv",
+        "printer_model_head_seed.tech_printers_scanners.v1_0.tsv",
+        "printer_resale_condition_policy.tech_printers_scanners.v1_0.yaml",
+        "publish_sample_offers.tech_printers_scanners.v1_0.jsonl",
+        "quality_gates.tech_printers_scanners.v1_0.yaml",
+        "route_guardrails.tech_printers_scanners.v1_0.yaml",
+        "sample_offers.tech_printers_scanners.v1_0.jsonl",
+        "schema_pack.tech_printers_scanners.v1_0.json",
+        "user_surface.tech_printers_scanners.v1_0.yaml",
+        "validation_report.tech_printers_scanners.v1_0.json",
+        "values.tech_printers_scanners.v1_0.tsv",
+        "vision_rules.tech_printers_scanners.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_printers_scanners.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_SMART_HOME_SECURITY_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.SMART_HOME_SECURITY",
+      "packSections": [
+        "category_schema_pack",
+        "identity_pack",
+        "compatibility_pack",
+        "route_guard_pack"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_smart_home_security/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_SMART_HOME_SECURITY_v1_0_RU.md",
+        "aliases.tech_smart_home_security.ru.v1_0.tsv",
+        "attributes.tech_smart_home_security.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/SMART_HOME_PRIVACY_NO_GUESS_POLICY_RU.md",
+        "docs/SMART_HOME_SECURITY_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_smart_home_security.v1_0.json",
+        "facet_templates.tech_smart_home_security.v1_0.yaml",
+        "generated_alias_rules.tech_smart_home_security.v1_0.yaml",
+        "golden_queries.tech_smart_home_security.v1_0.tsv",
+        "integration_mapping.tech_smart_home_security.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers.tech_smart_home_security.v1_0.jsonl",
+        "quality_gates.tech_smart_home_security.v1_0.yaml",
+        "route_guardrails.tech_smart_home_security.v1_0.yaml",
+        "sample_offers.tech_smart_home_security.v1_0.jsonl",
+        "schema_pack.tech_smart_home_security.v1_0.json",
+        "smart_home_dedup_policy.tech_smart_home_security.v1_0.yaml",
+        "smart_home_facet_coverage_matrix.tech_smart_home_security.v1_0.tsv",
+        "smart_home_model_aliases.tech_smart_home_security.ru.v1_0.tsv",
+        "smart_home_model_head_seed.tech_smart_home_security.v1_0.tsv",
+        "smart_home_resale_condition_policy.tech_smart_home_security.v1_0.yaml",
+        "user_surface.tech_smart_home_security.v1_0.yaml",
+        "validation_report.tech_smart_home_security.v1_0.json",
+        "values.tech_smart_home_security.v1_0.tsv",
+        "vision_rules.tech_smart_home_security.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_smart_home_security.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_SPECS_COMMON_SHARED_STANDARD_v1_0",
+      "categoryCode": null,
+      "packSections": [
+        "shared_standard",
+        "route_guard_pack"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/shared_standards/tech_specs_common/v1_0",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_SPECS_COMMON_v1_0_RU.md",
+        "aliases.tech_specs_common.ru.v1_0.tsv",
+        "attributes.tech_specs_common.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/BOUNDARY_WITH_IDENTITY_AND_COMPATIBILITY_RU.md",
+        "docs/NO_GUESS_AND_UNIT_POLICY_RU.md",
+        "docs/SPECS_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_specs_common.v1_0.json",
+        "facet_templates.tech_specs_common.v1_0.yaml",
+        "generated_alias_rules.tech_specs_common.v1_0.yaml",
+        "golden_queries.tech_specs_common.v1_0.tsv",
+        "integration_mapping.tech_specs_common.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "quality_gates.tech_specs_common.v1_0.yaml",
+        "route_guardrails.tech_specs_common.v1_0.yaml",
+        "sample_offers.tech_specs_common.v1_0.jsonl",
+        "schema_pack.tech_specs_common.v1_0.json",
+        "spec_confidence_policy.tech_specs_common.v1_0.yaml",
+        "spec_coverage_matrix.tech_specs_common.v1_0.tsv",
+        "unit_normalization_rules.tech_specs_common.v1_0.yaml",
+        "user_surface.tech_specs_common.v1_0.yaml",
+        "validation_report.tech_specs_common.v1_0.json",
+        "values.tech_specs_common.v1_0.tsv",
+        "vision_rules.tech_specs_common.v1_0.yaml"
+      ],
+      "userSurfaceFile": "user_surface.tech_specs_common.v1_0.yaml",
+      "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
       "packId": "TECH_STORAGE_MEMORY_public_category_pack_v1_0_RU",
       "categoryCode": "TECH.STORAGE_MEMORY",
       "packSections": [
@@ -1170,42 +1716,97 @@
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
     },
     {
-      "packId": "TECH_CATEGORY_SCHEMA_PACK_v2",
-      "categoryCodes": [
-        "TECH",
-        "TECH.PHONES",
-        "TECH.PHONE_ACCESSORIES",
-        "TECH.COMPUTERS",
-        "TECH.TABLETS_E_READERS",
-        "TECH.MONITORS_DISPLAYS",
-        "TECH.COMPUTER_ACCESSORIES",
-        "TECH.PC_COMPONENTS",
-        "TECH.STORAGE_MEMORY",
-        "TECH.AUDIO",
-        "TECH.TV_HOME_THEATER",
-        "TECH.WEARABLES",
-        "TECH.CAMERAS_DRONES",
-        "TECH.GAMING",
-        "TECH.SMART_HOME_SECURITY",
-        "TECH.NETWORKING",
-        "TECH.POWER_CHARGING_CABLES",
-        "TECH.PRINTERS_SCANNERS",
-        "TECH.CAR_ELECTRONICS_GPS"
-      ],
+      "packId": "TECH_WEARABLES_public_category_pack_v1_0_RU",
+      "categoryCode": "TECH.WEARABLES",
       "packSections": [
         "category_schema_pack",
-        "shared_standard",
+        "identity_pack",
         "compatibility_pack",
-        "route_guard_pack",
-        "identity_pack"
+        "route_guard_pack"
       ],
-      "basePath": "taxonomy/stage2/2.2/TECH",
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_wearables/v1_0",
       "requiredFiles": [
-        "profiles.tech.json",
-        "constraints.tech.json",
-        "shared_profiles.tech.json"
+        "CHANGELOG.md",
+        "README_TECH_WEARABLES_v1_0_RU.md",
+        "aliases.tech_wearables.ru.v1_0.tsv",
+        "attributes.tech_wearables.v1_0.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/SOURCE_NOTES_RU.md",
+        "docs/WEARABLES_BOUNDARY_RU.md",
+        "effective_spec_snapshot.expected.tech_wearables.v1_0.json",
+        "facet_templates.tech_wearables.v1_0.yaml",
+        "generated_alias_rules.tech_wearables.v1_0.yaml",
+        "golden_queries.tech_wearables.v1_0.tsv",
+        "integration_mapping.tech_wearables.v1_0.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers.tech_wearables.v1_0.jsonl",
+        "quality_gates.tech_wearables.v1_0.yaml",
+        "route_guardrails.tech_wearables.v1_0.yaml",
+        "sample_offers.tech_wearables.v1_0.jsonl",
+        "schema_pack.tech_wearables.v1_0.json",
+        "user_surface.tech_wearables.v1_0.yaml",
+        "validation_report.tech_wearables.v1_0.json",
+        "values.tech_wearables.v1_0.tsv",
+        "vision_rules.tech_wearables.v1_0.yaml",
+        "wearable_dedup_policy.tech_wearables.v1_0.yaml",
+        "wearable_facet_coverage_matrix.tech_wearables.v1_0.tsv",
+        "wearable_model_aliases.tech_wearables.ru.v1_0.tsv",
+        "wearable_model_head_seed.tech_wearables.v1_0.tsv",
+        "wearable_resale_condition_policy.tech_wearables.v1_0.yaml"
       ],
+      "userSurfaceFile": "user_surface.tech_wearables.v1_0.yaml",
       "routeGuardLayer": "TECH_ROUTE_GUARDRAILS_COMMON"
+    },
+    {
+      "packId": "TECH_WEARABLES_type_coverage_delta_pack_v1_1_RU",
+      "packVersion": "1.1",
+      "categoryCode": "TECH.WEARABLES",
+      "stage": "2.2",
+      "packType": "data_overlay_patch",
+      "packSections": [
+        "data_overlay_only"
+      ],
+      "archetypes": [
+        "IDENTITY_CRITICAL",
+        "TYPE_DRIVEN",
+        "SPEC_HEAVY",
+        "SIZE_DRIVEN",
+        "COMPATIBILITY_DRIVEN"
+      ],
+      "basePath": "taxonomy/stage2/2.2/TECH/category_packs/tech_wearables/data_overlays/type_coverage_delta/v1_1",
+      "requiredFiles": [
+        "CHANGELOG.md",
+        "README_TECH_WEARABLES_TYPE_COVERAGE_DELTA_v1_1_RU.md",
+        "aliases_delta.ru.tech_wearables.v1_1.tsv",
+        "checksums.sha256.json",
+        "checksums.sha256.txt",
+        "docs/PATCH_POLICY_RU.md",
+        "effective_spec_snapshot.expected.tech_wearables_type_coverage_delta.v1_1.json",
+        "golden_queries_delta.tech_wearables.v1_1.tsv",
+        "integration_mapping.tech_wearables_type_coverage_delta.v1_1.yaml",
+        "manifest.json",
+        "package_inventory.json",
+        "publish_sample_offers_delta.tech_wearables.v1_1.jsonl",
+        "quality_gates.tech_wearables_type_coverage_delta.v1_1.yaml",
+        "sample_offers_delta.tech_wearables.v1_1.jsonl",
+        "validation_report.tech_wearables_type_coverage_delta.v1_1.json",
+        "values_delta.tech_wearables.v1_1.tsv",
+        "wearable_type_gap_audit.tech_wearables.v1_1.tsv"
+      ],
+      "sourceSha256": null,
+      "userSurfaceFile": null,
+      "routeGuardLayer": null,
+      "status": "mounted",
+      "notes": "Overlay-only TECH.WEARABLES type coverage patch v1.1 mounted without new category codes."
     }
   ]
 }

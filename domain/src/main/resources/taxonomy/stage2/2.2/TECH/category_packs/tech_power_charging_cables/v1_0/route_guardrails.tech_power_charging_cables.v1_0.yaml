@@ -1,0 +1,36 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+evaluation_mode: priority_desc_first_match
+include:
+  - id: generic_charger_cable_power_include
+    priority: 100
+    when_any: ["зарядка", "блок питания", "кабель usb", "hdmi кабель", "повербанк", "power bank", "ибп", "ups", "сетевой фильтр", "батарейки", "аккумуляторы", "power station"]
+    route: TECH.POWER_CHARGING_CABLES
+exclude:
+  - id: phone_case_screen_protector_exclusion
+    priority: 300
+    when_any: ["чехол", "защитное стекло", "пленка", "lens protector"]
+    route: TECH.PHONE_ACCESSORIES
+  - id: phone_specific_replacement_part_exclusion
+    priority: 260
+    when_all: ["аккумулятор", "iphone"]
+    route: TECH.PHONE_ACCESSORIES
+  - id: pc_psu_exclusion
+    priority: 250
+    when_any: ["блок питания пк", "psu", "power supply atx", "бп 750w", "блок питания компьютера"]
+    route: TECH.PC_COMPONENTS
+  - id: networking_cable_exclusion
+    priority: 240
+    when_any: ["rj45", "патч корд", "ethernet cable", "lan кабель", "патч панель", "keystone"]
+    route: TECH.NETWORKING
+  - id: computer_dock_hub_exclusion
+    priority: 230
+    when_any: ["usb hub", "док станция", "docking station", "thunderbolt dock", "hub usb"]
+    route: TECH.COMPUTER_ACCESSORIES
+  - id: car_electronics_device_exclusion
+    priority: 220
+    when_any: ["gps трекер", "obd", "dash cam", "магнитола"]
+    route: TECH.CAR_ELECTRONICS_GPS
+notes:
+  - Phone-specific chargers/cables may route to TECH.PHONE_ACCESSORIES when compatible_model is explicit; generic chargers/cables route here.
+  - HDMI/audio/video cables are in this branch by TECH tree policy.

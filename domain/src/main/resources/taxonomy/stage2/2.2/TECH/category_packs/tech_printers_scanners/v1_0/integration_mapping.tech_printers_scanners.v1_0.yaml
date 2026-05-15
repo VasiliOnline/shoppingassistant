@@ -1,0 +1,22 @@
+integration_mapping:
+  categoryCode: TECH.PRINTERS_SCANNERS
+  source_files:
+    schema: schema_pack.tech_printers_scanners.v1_0.json
+    attributes: attributes.tech_printers_scanners.v1_0.tsv
+    values: values.tech_printers_scanners.v1_0.tsv
+    aliases: aliases.tech_printers_scanners.ru.v1_0.tsv
+    generated_alias_rules: generated_alias_rules.tech_printers_scanners.v1_0.yaml
+    route_guardrails: route_guardrails.tech_printers_scanners.v1_0.yaml
+    vision_rules: vision_rules.tech_printers_scanners.v1_0.yaml
+    golden_queries: golden_queries.tech_printers_scanners.v1_0.tsv
+    sample_offers: sample_offers.tech_printers_scanners.v1_0.jsonl
+    effective_spec_snapshot_expected: effective_spec_snapshot.expected.tech_printers_scanners.v1_0.json
+  target_registry:
+    category_schema_pack: domain/src/main/resources/taxonomy/stage2/2.2/category_schema_packs/tech_printers_scanners.v1_0.json
+    aliases: domain/src/main/resources/taxonomy/stage2/2.2/aliases/tech_printers_scanners.ru.v1_0.tsv
+  mount_mode: public_category
+  depends_on:
+    - TECH.ELECTRONICS_COMMON
+    - TECH.DEVICE_IDENTITY_COMMON
+    - TECH.SPECS_COMMON
+    - TECH.COMPATIBILITY_COMMON

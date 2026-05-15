@@ -124,38 +124,245 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "condition",
+        "attributeCode": "camera_type",
         "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "DIGITAL_CAMERA",
+          "MIRRORLESS_CAMERA",
+          "DSLR_CAMERA",
+          "ACTION_CAMERA",
+          "INSTANT_CAMERA",
+          "CAMCORDER",
+          "DRONE",
+          "LENS",
+          "TRIPOD",
+          "GIMBAL",
+          "PHOTO_LIGHTING",
+          "BINOCULARS_TELESCOPE",
+          "CAMERA_ACCESSORY"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "Allowed values from dictionary 'camera_type' for TECH.CAMERAS_DRONES."
       },
       {
-        "attributeCode": "color",
+        "attributeCode": "condition",
         "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "ACCEPTABLE",
+          "DEFECTS",
+          "DEFECTS_OR_REPAIR",
+          "EXCELLENT",
+          "FAIR",
+          "FOR_PARTS",
+          "FOR_REPAIR",
+          "GOOD",
+          "HEAVILY_USED",
+          "LIKE_NEW",
+          "NEW",
+          "NEW_WITH_TAGS",
+          "NEW_WITHOUT_TAGS",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "REFURBISHED_MANUFACTURER",
+          "REFURBISHED_SELLER",
+          "UNKNOWN",
+          "USED",
+          "USED_EXCELLENT",
+          "USED_FAIR",
+          "USED_FOR_PARTS",
+          "USED_GOOD",
+          "USED_LIKE_NEW",
+          "VERY_GOOD"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "Allowed values from dictionary 'condition' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "sensor_format",
+        "allowedValues": [
+          "FULL_FRAME",
+          "APS_C",
+          "MICRO_FOUR_THIRDS",
+          "MEDIUM_FORMAT",
+          "ONE_INCH",
+          "ONE_OVER_1_3",
+          "ONE_OVER_2_3",
+          "SUPER_35",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'sensor_format' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "lens_mount",
+        "allowedValues": [
+          "CANON_EF",
+          "CANON_RF",
+          "FUJIFILM_X",
+          "L_MOUNT",
+          "LEICA_M",
+          "MICRO_FOUR_THIRDS",
+          "NIKON_F",
+          "NIKON_Z",
+          "PENTAX_K",
+          "SONY_E",
+          "FUJIFILM_G",
+          "LEICA_L",
+          "CANON_EF_M",
+          "FIXED_LENS",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'lens_mount' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "camera_lens_type",
+        "allowedValues": [
+          "PRIME",
+          "ZOOM",
+          "TELEPHOTO",
+          "WIDE_ANGLE",
+          "MACRO",
+          "FISHEYE",
+          "KIT_ZOOM",
+          "CINE_LENS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'camera_lens_type' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "video_resolution_max",
+        "allowedValues": [
+          "FHD_1080P",
+          "HD_720P",
+          "QHD_1440P",
+          "UHD_4K",
+          "UHD_6K",
+          "UHD_8K",
+          "1080P",
+          "2_7K",
+          "4K",
+          "5_3K",
+          "6K",
+          "8K",
+          "RAW_VIDEO",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'video_resolution' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "stabilization_type",
+        "allowedValues": [
+          "NONE",
+          "LENS_OIS",
+          "IBIS",
+          "ELECTRONIC",
+          "GIMBAL",
+          "HYBRID"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'stabilization_type' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "memory_card_type",
+        "allowedValues": [
+          "MICROSD",
+          "MICROSD_WITH_ADAPTER",
+          "MICROSDHC",
+          "MICROSDXC",
+          "SD",
+          "SD_UHS_II",
+          "CFEXPRESS_TYPE_A",
+          "CFEXPRESS_TYPE_B",
+          "CF_CARD",
+          "INTERNAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'memory_card_type' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "drone_registration_class",
+        "allowedValues": [
+          "UNDER_250G",
+          "C0",
+          "C1",
+          "C2",
+          "C3",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'drone_registration_class' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "obstacle_avoidance",
+        "allowedValues": [
+          "NONE",
+          "FRONT_ONLY",
+          "DOWNWARD",
+          "OMNIDIRECTIONAL",
+          "ADVANCED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'obstacle_avoidance' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "gimbal_axis_count",
+        "allowedValues": [
+          "1_AXIS",
+          "2_AXIS",
+          "3_AXIS",
+          "4_AXIS",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'gimbal_axis_count' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "light_type",
+        "allowedValues": [
+          "LED_PANEL",
+          "COB_LIGHT",
+          "RING_LIGHT",
+          "FLASH",
+          "SOFTBOX",
+          "LIGHT_STAND"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'light_type' for TECH.CAMERAS_DRONES."
+      },
+      {
+        "attributeCode": "tripod_head_type",
+        "allowedValues": [
+          "BALL_HEAD",
+          "PAN_TILT",
+          "FLUID_HEAD",
+          "VIDEO_HEAD",
+          "GIMBAL_HEAD",
+          "NONE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'tripod_head_type' for TECH.CAMERAS_DRONES."
       }
     ],
     "compatibilityRules": [
       {
         "whenAll": [
           {
-            "attributeCode": "condition",
+            "attributeCode": "camera_type",
             "op": "EQUALS_ANY",
             "values": [
-              "NEW"
+              "DIGITAL_CAMERA",
+              "MIRRORLESS_CAMERA",
+              "DSLR_CAMERA",
+              "ACTION_CAMERA",
+              "INSTANT_CAMERA",
+              "CAMCORDER",
+              "DRONE",
+              "LENS",
+              "TRIPOD",
+              "GIMBAL",
+              "PHOTO_LIGHTING",
+              "BINOCULARS_TELESCOPE",
+              "CAMERA_ACCESSORY"
             ]
           }
         ],
@@ -165,16 +372,18 @@
             "allowedValues": [
               "NEW",
               "LIKE_NEW",
+              "GOOD",
               "USED",
-              "REFURBISHED"
+              "REFURBISHED",
+              "OPEN_BOX"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.CAMERAS_DRONES по атрибуту condition."
+            "reason": "Cameras/drones condition compatibility safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -403,39 +612,605 @@
     "model": null,
     "attributeConstraints": [
       {
+        "attributeCode": "gaming_type",
+        "allowedValues": [
+          "GAME_CONSOLE",
+          "HANDHELD_CONSOLE",
+          "VR_HEADSET",
+          "GAME_CONTROLLER",
+          "GAMING_KEYBOARD",
+          "GAMING_MOUSE",
+          "GAMING_HEADSET",
+          "CONSOLE_ACCESSORY",
+          "PHYSICAL_GAME",
+          "ARCADE_EQUIPMENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'gaming_type' for TECH.GAMING."
+      },
+      {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "ACCEPTABLE",
+          "DEFECTS",
+          "DEFECTS_OR_REPAIR",
+          "EXCELLENT",
+          "FAIR",
+          "FOR_PARTS",
+          "FOR_REPAIR",
+          "GOOD",
+          "HEAVILY_USED",
           "LIKE_NEW",
+          "NEW",
+          "NEW_WITHOUT_TAGS",
+          "NEW_WITH_TAGS",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "REFURBISHED_MANUFACTURER",
+          "REFURBISHED_SELLER",
+          "UNKNOWN",
           "USED",
-          "REFURBISHED"
+          "USED_EXCELLENT",
+          "USED_FAIR",
+          "USED_FOR_PARTS",
+          "USED_GOOD",
+          "USED_LIKE_NEW",
+          "VERY_GOOD"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "Allowed values from dictionary 'condition' for TECH.GAMING."
       },
       {
-        "attributeCode": "os_family",
+        "attributeCode": "availability",
+        "allowedValues": [
+          "IN_STOCK",
+          "LOCAL_ONLY",
+          "OUT_OF_STOCK",
+          "PREORDER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'availability' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "color_family",
+        "allowedValues": [
+          "BEIGE",
+          "BLACK",
+          "BLUE",
+          "BROWN",
+          "CLEAR",
+          "GOLD",
+          "GRAY",
+          "GREEN",
+          "MULTICOLOR",
+          "ORANGE",
+          "OTHER",
+          "OTHER_COLOR",
+          "PINK",
+          "PURPLE",
+          "RED",
+          "ROSE_GOLD",
+          "SILVER",
+          "TITANIUM",
+          "TRANSPARENT",
+          "UNKNOWN",
+          "WHITE",
+          "YELLOW"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'color_family' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "region",
+        "allowedValues": [
+          "CN",
+          "EU",
+          "GLOBAL",
+          "IN",
+          "JP",
+          "KR",
+          "OTHER",
+          "RU",
+          "UK",
+          "UNKNOWN",
+          "US"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'region' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "platform",
+        "allowedValues": [
+          "PLAYSTATION",
+          "XBOX",
+          "NINTENDO",
+          "PC",
+          "META_QUEST",
+          "STEAM_DECK",
+          "RETRO",
+          "MULTIPLATFORM"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'platform' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "console_generation",
+        "allowedValues": [
+          "GEN_9",
+          "GEN_8",
+          "RETRO",
+          "CURRENT",
+          "LEGACY"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'console_generation' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "media_format",
+        "allowedValues": [
+          "DISC",
+          "DIGITAL_ONLY",
+          "CARTRIDGE",
+          "CODE_IN_BOX",
+          "DOWNLOAD_CODE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'media_format' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "game_platform",
+        "allowedValues": [
+          "PS5",
+          "PS4",
+          "XBOX_SERIES",
+          "XBOX_ONE",
+          "NINTENDO_SWITCH_2",
+          "NINTENDO_SWITCH",
+          "PC",
+          "META_QUEST"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'game_platform' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "edition",
+        "allowedValues": [
+          "STANDARD",
+          "DELUXE",
+          "ULTIMATE",
+          "COLLECTOR",
+          "GOTY",
+          "BUNDLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'edition' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "age_rating_system",
+        "allowedValues": [
+          "ESRB",
+          "PEGI",
+          "CERO",
+          "USK",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'age_rating_system' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "age_rating_value",
+        "allowedValues": [
+          "EVERYONE",
+          "TEEN",
+          "MATURE",
+          "ADULTS_ONLY",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'age_rating_value' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "modded_status",
+        "allowedValues": [
+          "OFFICIAL",
+          "THIRD_PARTY",
+          "MODDED",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'modded_status' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "disc_drive",
+        "allowedValues": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'disc_drive' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "account_lock_status",
+        "allowedValues": [
+          "GOOGLE_FRP_LOCKED",
+          "ICLOUD_LOCKED",
+          "NO_ACCOUNT_LOCK",
+          "OWNER_ACCOUNT_LOCKED",
+          "UNKNOWN",
+          "YES",
+          "NO"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'account_lock_status' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "online_ban_status",
+        "allowedValues": [
+          "YES",
+          "NO",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'online_ban_status' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "display_type",
+        "allowedValues": [
+          "AMOLED",
+          "COMPUTER_MONITOR",
+          "E_INK",
+          "GAMING_MONITOR",
+          "LCD",
+          "MICROLED",
+          "MIP",
+          "MONITOR_ACCESSORY",
+          "NONE",
+          "OLED",
+          "PORTABLE_MONITOR",
+          "PROFESSIONAL_MONITOR",
+          "SMART_MONITOR",
+          "TOUCHSCREEN_MONITOR",
+          "UNKNOWN",
+          "MINI_LED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'display_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "vr_tracking_type",
+        "allowedValues": [
+          "INSIDE_OUT",
+          "OUTSIDE_IN",
+          "BASE_STATION",
+          "THREE_DOF",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'vr_tracking_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "connection_type",
+        "allowedValues": [
+          "BLUETOOTH",
+          "DUAL_WIRELESS",
+          "HDMI",
+          "HDMI_ARC",
+          "HYBRID",
+          "OPTICAL",
+          "OTHER_CONNECTION",
+          "RCA",
+          "RF",
+          "SIX_POINT_THREE_MM",
+          "THREE_POINT_FIVE_MM",
+          "TRUE_WIRELESS",
+          "TWO_POINT_FOUR_GHZ",
+          "UNIVERSAL",
+          "USB",
+          "USB_A",
+          "USB_C",
+          "USB_RECEIVER",
+          "WIFI",
+          "WIRED",
+          "WIRELESS",
+          "WIRELESS_2_4GHZ",
+          "XLR",
+          "WIRELESS_2_4",
+          "MULTI"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'connection_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "battery_type",
+        "allowedValues": [
+          "AA_AAA",
+          "INTEGRATED",
+          "LI_ION",
+          "NONE",
+          "AA",
+          "AAA",
+          "BUILT_IN_RECHARGEABLE",
+          "USB_POWERED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'battery_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "controller_subtype",
+        "allowedValues": [
+          "GAMEPAD",
+          "JOYSTICK",
+          "RACING_WHEEL",
+          "FLIGHT_STICK",
+          "FIGHT_STICK",
+          "DRUMS",
+          "GUITAR"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'controller_subtype' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "keyboard_switch_type",
+        "allowedValues": [
+          "MECHANICAL",
+          "MEMBRANE",
+          "OPTICAL",
+          "HALL_EFFECT",
+          "SCISSOR"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'keyboard_switch_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "keyboard_layout",
+        "allowedValues": [
+          "ANSI",
+          "CH",
+          "DE",
+          "EU",
+          "FR",
+          "ISO",
+          "JIS",
+          "ORTHOLINEAR",
+          "OTHER_LAYOUT",
+          "QWERTY",
+          "RU",
+          "SPLIT",
+          "UK",
+          "US",
+          "TKL",
+          "FULL_SIZE",
+          "SIXTY_PERCENT"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'keyboard_layout' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "mouse_sensor_type",
+        "allowedValues": [
+          "BLUE_TRACK",
+          "HERO",
+          "LASER",
+          "OPTICAL",
+          "PAW3395",
+          "TRACKBALL",
+          "FOCUS",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'mouse_sensor_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "headset_surround",
+        "allowedValues": [
+          "STEREO",
+          "VIRTUAL_7_1",
+          "DOLBY_ATMOS",
+          "TEMPEST_3D",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'headset_surround' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "accessory_subtype",
+        "allowedValues": [
+          "ACTIVE_STYLUS",
+          "ARAMID_CASE",
+          "AUX_ADAPTER",
+          "BATTERY_CASE",
+          "BIKE_HOLDER",
+          "BIKE_MOUNT",
+          "BLUE_LIGHT_GLASS",
+          "BRAIDED_CABLE",
+          "BUMPER_CASE",
+          "CAMERA_GLASS",
+          "CAMERA_RING_CASE",
+          "CARD_SLOT_CASE",
+          "CERAMIC_FILM",
+          "CLEAR_CASE",
+          "COOLER_FAN",
+          "DASHBOARD_MOUNT",
+          "DESK_STAND",
+          "DESK_TRIPOD",
+          "DUAL_CONNECTOR_FLASH",
+          "DUAL_PORT_CHARGER",
+          "ECO_LEATHER_CASE",
+          "E_MARKER_CABLE",
+          "FLEX_ARM_HOLDER",
+          "FOLDING_PLUG_CHARGER",
+          "FOLIO_CASE",
+          "FOUR_PORT_CHARGER",
+          "GAN_CHARGER",
+          "HARD_PC_CASE",
+          "HYDROGEL_FILM",
+          "INSTALL_FRAME_KIT",
+          "LEATHER_CASE",
+          "LIGHTNING_CABLE",
+          "LIQUID_SILICONE_CASE",
+          "MAGNETIC_CABLE",
+          "MAGNETIC_WIRELESS",
+          "MAGSAFE_CASE",
+          "MAGSAFE_POWER_BANK",
+          "MATTE_FILM",
+          "MICROSD",
+          "MICRO_USB_CABLE",
+          "MINI_POWER_BANK",
+          "MOBILE_GAMEPAD",
+          "MOTORCYCLE_HOLDER",
+          "MULTIPORT_CHARGER",
+          "OTG_ADAPTER",
+          "OTG_FLASH_DRIVE",
+          "PASSIVE_STYLUS",
+          "PD_CHARGER",
+          "PELTIER_COOLER",
+          "PHONE_REPAIR_ADHESIVE",
+          "POWER_BANK_WITH_DISPLAY",
+          "POWER_BANK_WITH_STAND",
+          "PRIVACY_GLASS",
+          "PUBG_TRIGGER",
+          "RETRACTABLE_CABLE",
+          "RIGHT_ANGLE_CABLE",
+          "RUGGED_CASE",
+          "SCREWDRIVER_KIT",
+          "SILICONE_CASE",
+          "SIM_ADAPTER_SET",
+          "SIM_EJECT_PIN",
+          "STRAP_CASE",
+          "SUCTION_CAR_HOLDER",
+          "TEMPERED_GLASS",
+          "THREE_IN_ONE_CHARGER",
+          "TPU_CASE",
+          "TRAVEL_CHARGER",
+          "USB_C_CABLE",
+          "UV_GLASS",
+          "VENT_CAR_MOUNT",
+          "VENT_MAGNET_HOLDER",
+          "WALLET_CASE",
+          "WINDSHIELD_MOUNT",
+          "CHARGING_DOCK",
+          "STAND",
+          "CARRYING_CASE",
+          "GRIP",
+          "COOLING_STAND",
+          "STORAGE_EXPANSION",
+          "FACEPLATE",
+          "CABLE_ADAPTER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'accessory_subtype' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "compatible_platform",
         "allowedValues": [
           "ANDROID",
+          "CAMERA",
           "IOS",
+          "MACOS",
+          "NINTENDO_SWITCH",
+          "PLAYSTATION_5",
+          "SMART_HOME",
+          "TV",
           "WINDOWS",
-          "MACOS"
+          "XBOX",
+          "PS5",
+          "PS4",
+          "XBOX_SERIES",
+          "NINTENDO_SWITCH_2",
+          "STEAM_DECK",
+          "META_QUEST",
+          "PC",
+          "MULTI"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+        "reason": "Allowed values from dictionary 'compatible_platform' for TECH.GAMING."
       },
       {
-        "attributeCode": "color",
+        "attributeCode": "arcade_equipment_type",
         "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "ARCADE_CABINET",
+          "PINBALL",
+          "BARTOP",
+          "PANDORA_BOX",
+          "ARCADE_STICK",
+          "COIN_OP_PART"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "Allowed values from dictionary 'arcade_equipment_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "cosmetic_grade",
+        "allowedValues": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'cosmetic_grade' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "functional_grade",
+        "allowedValues": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'functional_grade' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "lot_type",
+        "allowedValues": [
+          "MIXED_PHONE_LOT",
+          "PARTS_LOT",
+          "SAME_MODEL_LOT",
+          "SINGLE_ITEM",
+          "SINGLE",
+          "BUNDLE",
+          "LOT",
+          "PARTS_ONLY"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'lot_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "language_pack",
+        "allowedValues": [
+          "EN",
+          "RU",
+          "MULTI",
+          "JP",
+          "EU"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'language_pack' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "lens_type",
+        "allowedValues": [
+          "PANCake",
+          "FRESNEL",
+          "ASPHERIC",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'lens_type' for TECH.GAMING."
+      },
+      {
+        "attributeCode": "ipd_adjustment",
+        "allowedValues": [
+          "MANUAL",
+          "SOFTWARE",
+          "FIXED",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'ipd_adjustment' for TECH.GAMING."
       }
     ],
     "compatibilityRules": [
@@ -453,18 +1228,39 @@
           {
             "attributeCode": "condition",
             "allowedValues": [
-              "NEW",
+              "ACCEPTABLE",
+              "DEFECTS",
+              "DEFECTS_OR_REPAIR",
+              "EXCELLENT",
+              "FAIR",
+              "FOR_PARTS",
+              "FOR_REPAIR",
+              "GOOD",
+              "HEAVILY_USED",
               "LIKE_NEW",
+              "NEW",
+              "NEW_WITHOUT_TAGS",
+              "NEW_WITH_TAGS",
+              "OPEN_BOX",
+              "REFURBISHED",
+              "REFURBISHED_MANUFACTURER",
+              "REFURBISHED_SELLER",
+              "UNKNOWN",
               "USED",
-              "REFURBISHED"
+              "USED_EXCELLENT",
+              "USED_FAIR",
+              "USED_FOR_PARTS",
+              "USED_GOOD",
+              "USED_LIKE_NEW",
+              "VERY_GOOD"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.GAMING по атрибуту condition."
+            "reason": "Gaming condition safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -545,39 +1341,382 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "condition",
+        "attributeCode": "networking_type",
         "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "ACCESS_POINT",
+          "ANTENNA",
+          "MESH_WIFI_SYSTEM",
+          "MODEM",
+          "NETWORK_ACCESSORY",
+          "NETWORK_ADAPTER",
+          "POE_INJECTOR",
+          "ROUTER",
+          "SWITCH",
+          "WIFI_EXTENDER"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'networking_type'."
+      },
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "FOR_PARTS",
+          "NEW",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "USED_FAIR",
+          "USED_GOOD"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'condition'."
       },
       {
         "attributeCode": "color",
         "allowedValues": [
           "BLACK",
-          "WHITE",
           "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "SILVER",
+          "UNKNOWN",
+          "WHITE"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'color'."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "region",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "CN",
+          "EU",
+          "GLOBAL",
+          "JP",
+          "RU_CIS",
+          "UK",
+          "UNKNOWN",
+          "US"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'region'."
+      },
+      {
+        "attributeCode": "warranty",
+        "allowedValues": [
+          "EXTENDED_WARRANTY",
+          "MANUFACTURER_WARRANTY",
+          "NO_WARRANTY",
+          "SELLER_14D",
+          "SELLER_30D",
+          "SELLER_7D",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'warranty'."
+      },
+      {
+        "attributeCode": "wifi_standard",
+        "allowedValues": [
+          "NO_WIFI",
+          "UNKNOWN",
+          "WIFI_4",
+          "WIFI_5",
+          "WIFI_6",
+          "WIFI_6E",
+          "WIFI_7"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'wifi_standard'."
+      },
+      {
+        "attributeCode": "wifi_band",
+        "allowedValues": [
+          "DUAL_BAND",
+          "QUAD_BAND",
+          "SINGLE_BAND_2_4",
+          "TRI_BAND",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'wifi_band'."
+      },
+      {
+        "attributeCode": "ethernet_max_speed",
+        "allowedValues": [
+          "100_MBPS",
+          "10_GBPS",
+          "1_GBPS",
+          "25_GBPS",
+          "2_5_GBPS",
+          "300_MBPS",
+          "40_GBPS",
+          "5_GBPS",
+          "600_MBPS",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'ethernet_max_speed'."
+      },
+      {
+        "attributeCode": "poe_support",
+        "allowedValues": [
+          "NO_POE",
+          "PASSIVE_POE",
+          "POE_802_3AF",
+          "POE_INPUT",
+          "POE_PASSTHROUGH",
+          "POE_PLUS_802_3AT",
+          "POE_PLUS_PLUS_802_3BT",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'poe_support'."
+      },
+      {
+        "attributeCode": "managed_switch",
+        "allowedValues": [
+          "MANAGED_L2",
+          "MANAGED_L3",
+          "SMART_MANAGED",
+          "UNKNOWN",
+          "UNMANAGED"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'managed_switch'."
+      },
+      {
+        "attributeCode": "mesh_support",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'mesh_support'."
+      },
+      {
+        "attributeCode": "modem_type",
+        "allowedValues": [
+          "DOCSIS_CABLE_MODEM",
+          "DSL_MODEM",
+          "FIBER_ONT",
+          "FIVE_G_MODEM",
+          "GPON_ONT",
+          "LTE_4G_MODEM",
+          "UNKNOWN",
+          "USB_CELLULAR_MODEM",
+          "XGPON_XGSPON_ONT"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'modem_type'."
+      },
+      {
+        "attributeCode": "docsis_version",
+        "allowedValues": [
+          "DOCSIS_3_0",
+          "DOCSIS_3_1",
+          "DOCSIS_4_0",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'docsis_version'."
+      },
+      {
+        "attributeCode": "cellular_standard",
+        "allowedValues": [
+          "FIVE_G",
+          "LTE_4G",
+          "LTE_4G_FIVE_G",
+          "NO_CELLULAR",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'cellular_standard'."
+      },
+      {
+        "attributeCode": "sim_support",
+        "allowedValues": [
+          "DUAL_SIM",
+          "ESIM",
+          "MICRO_SIM",
+          "NANO_SIM",
+          "NO_SIM",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'sim_support'."
+      },
+      {
+        "attributeCode": "outdoor_rated",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'outdoor_rated'."
+      },
+      {
+        "attributeCode": "ip_rating",
+        "allowedValues": [
+          "IP54",
+          "IP55",
+          "IP65",
+          "IP66",
+          "IP67",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'ip_rating'."
+      },
+      {
+        "attributeCode": "antenna_type",
+        "allowedValues": [
+          "DIRECTIONAL",
+          "DISH",
+          "INTERNAL",
+          "OMNI",
+          "PANEL",
+          "PARABOLIC",
+          "SECTOR",
+          "UNKNOWN",
+          "YAGI"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'antenna_type'."
+      },
+      {
+        "attributeCode": "mimo_streams",
+        "allowedValues": [
+          "EIGHT_BY_EIGHT",
+          "FOUR_BY_FOUR",
+          "ONE_BY_ONE",
+          "THREE_BY_THREE",
+          "TWO_BY_TWO",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'mimo_streams'."
+      },
+      {
+        "attributeCode": "security_protocol",
+        "allowedValues": [
+          "UNKNOWN",
+          "VPN_FIREWALL",
+          "WPA2",
+          "WPA2_WPA3",
+          "WPA3"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'security_protocol'."
+      },
+      {
+        "attributeCode": "vpn_support",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'vpn_support'."
+      },
+      {
+        "attributeCode": "mount_type",
+        "allowedValues": [
+          "CEILING_MOUNT",
+          "DESKTOP",
+          "DIN_RAIL",
+          "OUTDOOR_POLE",
+          "RACK_MOUNT",
+          "UNKNOWN",
+          "WALL_MOUNT"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'mount_type'."
+      },
+      {
+        "attributeCode": "power_source",
+        "allowedValues": [
+          "AC_ADAPTER",
+          "BATTERY",
+          "DC",
+          "POE",
+          "UNKNOWN",
+          "USB"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'power_source'."
+      },
+      {
+        "attributeCode": "included_accessories",
+        "allowedValues": [
+          "ANTENNAS",
+          "ETHERNET_CABLE",
+          "MANUAL",
+          "MOUNTING_BRACKET",
+          "POWER_ADAPTER",
+          "RACK_EARS"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'included_accessories'."
+      },
+      {
+        "attributeCode": "seller_bundle",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'seller_bundle'."
+      },
+      {
+        "attributeCode": "original_box",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'original_box'."
+      },
+      {
+        "attributeCode": "repair_history",
+        "allowedValues": [
+          "NO_REPAIR_KNOWN",
+          "REPAIRED",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'repair_history'."
+      },
+      {
+        "attributeCode": "controller_ecosystem",
+        "allowedValues": [
+          "AIMESH",
+          "ARUBA_INSTANT_ON",
+          "DECO",
+          "EERO",
+          "GENERIC",
+          "GLINET_OPENWRT",
+          "KEENETIC_OS",
+          "MERAKI",
+          "MIKROTIK_ROUTEROS",
+          "OMADA",
+          "ORBI",
+          "RUIJIE_REYEE_CLOUD",
+          "UNIFI",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'controller_ecosystem'."
+      },
+      {
+        "attributeCode": "isp_locked",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.NETWORKING v1.0 dictionary-bound values for 'isp_locked'."
       }
     ],
     "compatibilityRules": [
@@ -595,18 +1734,20 @@
           {
             "attributeCode": "condition",
             "allowedValues": [
+              "FOR_PARTS",
               "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
+              "OPEN_BOX",
+              "REFURBISHED",
+              "USED_FAIR",
+              "USED_GOOD"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.NETWORKING по атрибуту condition."
+            "reason": "Networking condition safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -855,39 +1996,388 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "condition",
+        "attributeCode": "power_cable_type",
         "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "ADAPTER",
+          "AUDIO_VIDEO_CABLE",
+          "BATTERY",
+          "CABLE_MANAGEMENT",
+          "CAR_CHARGER",
+          "HDMI_CABLE",
+          "PORTABLE_POWER_STATION",
+          "POWER_BANK",
+          "SURGE_PROTECTOR",
+          "UPS",
+          "USB_CABLE",
+          "WALL_CHARGER",
+          "WIRELESS_CHARGER"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'power_cable_type'."
+      },
+      {
+        "attributeCode": "condition",
+        "allowedValues": [
+          "FOR_PARTS",
+          "NEW",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "USED"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'condition'."
       },
       {
         "attributeCode": "color",
         "allowedValues": [
           "BLACK",
-          "WHITE",
-          "GRAY",
           "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "GRAY",
+          "GREEN",
+          "RED",
+          "TRANSPARENT",
+          "WHITE",
+          "YELLOW"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'color'."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "region",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "CN",
+          "EU",
+          "GLOBAL",
+          "JP",
+          "UK",
+          "US"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'region'."
+      },
+      {
+        "attributeCode": "warranty",
+        "allowedValues": [
+          "MANUFACTURER",
+          "NONE",
+          "SELLER_14D",
+          "SELLER_30D",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'warranty'."
+      },
+      {
+        "attributeCode": "connector_type",
+        "allowedValues": [
+          "AUX_3_5",
+          "DC_BARREL",
+          "DISPLAYPORT",
+          "DVI",
+          "HDMI",
+          "IEC_C13",
+          "IEC_C7",
+          "LIGHTNING",
+          "MAGSAFE_APPLE",
+          "MICRO_USB",
+          "MINI_DISPLAYPORT",
+          "OPTICAL_TOSLINK",
+          "RCA",
+          "THUNDERBOLT",
+          "USB_A",
+          "USB_C",
+          "VGA"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'connector_type'."
+      },
+      {
+        "attributeCode": "connector_from",
+        "allowedValues": [
+          "AUX_3_5",
+          "DC_BARREL",
+          "DISPLAYPORT",
+          "DVI",
+          "HDMI",
+          "IEC_C13",
+          "IEC_C7",
+          "LIGHTNING",
+          "MAGSAFE_APPLE",
+          "MICRO_USB",
+          "MINI_DISPLAYPORT",
+          "OPTICAL_TOSLINK",
+          "RCA",
+          "THUNDERBOLT",
+          "USB_A",
+          "USB_C",
+          "VGA"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'connector_from'."
+      },
+      {
+        "attributeCode": "connector_to",
+        "allowedValues": [
+          "AUX_3_5",
+          "DC_BARREL",
+          "DISPLAYPORT",
+          "DVI",
+          "HDMI",
+          "IEC_C13",
+          "IEC_C7",
+          "LIGHTNING",
+          "MAGSAFE_APPLE",
+          "MICRO_USB",
+          "MINI_DISPLAYPORT",
+          "OPTICAL_TOSLINK",
+          "RCA",
+          "THUNDERBOLT",
+          "USB_A",
+          "USB_C",
+          "VGA"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'connector_to'."
+      },
+      {
+        "attributeCode": "fast_charge_protocol",
+        "allowedValues": [
+          "APPLE_FAST_CHARGE",
+          "HUAWEI_SUPERCHARGE",
+          "OPPO_VOOC",
+          "PPS",
+          "QC_3_0",
+          "QC_4_PLUS",
+          "SAMSUNG_SUPER_FAST",
+          "USB_PD",
+          "XIAOMI_HYPERCHARGE"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'fast_charge_protocol'."
+      },
+      {
+        "attributeCode": "qi_standard",
+        "allowedValues": [
+          "MAGSAFE_CERTIFIED",
+          "MAGSAFE_COMPATIBLE",
+          "QI",
+          "QI2"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'qi_standard'."
+      },
+      {
+        "attributeCode": "magsafe_support",
+        "allowedValues": [
+          "MAGNETIC_COMPATIBLE",
+          "MAGSAFE_CERTIFIED",
+          "MAGSAFE_COMPATIBLE",
+          "NONE"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'magsafe_support'."
+      },
+      {
+        "attributeCode": "cable_standard",
+        "allowedValues": [
+          "DISPLAYPORT_1_4",
+          "DISPLAYPORT_2_1",
+          "HDMI_2_0",
+          "HDMI_2_1",
+          "THUNDERBOLT_3",
+          "THUNDERBOLT_4",
+          "THUNDERBOLT_5",
+          "USB_2_0",
+          "USB_3_0",
+          "USB_3_2_GEN2",
+          "USB_4"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'cable_standard'."
+      },
+      {
+        "attributeCode": "hdmi_version",
+        "allowedValues": [
+          "HDMI_1_4",
+          "HDMI_2_0",
+          "HDMI_2_1"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'hdmi_version'."
+      },
+      {
+        "attributeCode": "video_standard",
+        "allowedValues": [
+          "DISPLAYPORT",
+          "DVI",
+          "HDMI",
+          "OPTICAL_AUDIO",
+          "RCA_COMPOSITE",
+          "USB_C_ALT_MODE",
+          "VGA"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'video_standard'."
+      },
+      {
+        "attributeCode": "battery_size",
+        "allowedValues": [
+          "18650",
+          "21700",
+          "9V",
+          "AA",
+          "AAA",
+          "C",
+          "CAMERA_BATTERY",
+          "CR2025",
+          "CR2032",
+          "D",
+          "LAPTOP_BATTERY"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'battery_size'."
+      },
+      {
+        "attributeCode": "battery_chemistry",
+        "allowedValues": [
+          "ALKALINE",
+          "LEAD_ACID",
+          "LIFEPO4",
+          "LITHIUM",
+          "LI_ION",
+          "NIMH"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'battery_chemistry'."
+      },
+      {
+        "attributeCode": "ups_topology",
+        "allowedValues": [
+          "LINE_INTERACTIVE",
+          "ONLINE_DOUBLE_CONVERSION",
+          "STANDBY"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'ups_topology'."
+      },
+      {
+        "attributeCode": "plug_type",
+        "allowedValues": [
+          "AU_TYPE_I",
+          "CN_TYPE_I",
+          "EU_TYPE_C",
+          "EU_TYPE_F",
+          "UK_TYPE_G",
+          "UNIVERSAL",
+          "US_TYPE_A",
+          "US_TYPE_B"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'plug_type'."
+      },
+      {
+        "attributeCode": "socket_type",
+        "allowedValues": [
+          "EU_SCHUKO",
+          "IEC_C13",
+          "UK_TYPE_G",
+          "UNIVERSAL",
+          "USB_A_PORT",
+          "USB_C_PORT",
+          "US_NEMA"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'socket_type'."
+      },
+      {
+        "attributeCode": "car_voltage_v",
+        "allowedValues": [
+          "12V",
+          "12_24V",
+          "24V"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'car_voltage_v'."
+      },
+      {
+        "attributeCode": "oem_original",
+        "allowedValues": [
+          "OEM",
+          "ORIGINAL",
+          "THIRD_PARTY",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'oem_original'."
+      },
+      {
+        "attributeCode": "safety_certification",
+        "allowedValues": [
+          "CE",
+          "EAC",
+          "ETL",
+          "FCC",
+          "MFI",
+          "ROHS",
+          "UKCA",
+          "UL"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'safety_certification'."
+      },
+      {
+        "attributeCode": "included_accessories",
+        "allowedValues": [
+          "CABLE_INCLUDED",
+          "CASE_INCLUDED",
+          "MANUAL_INCLUDED",
+          "NO_ACCESSORIES",
+          "POWER_ADAPTER_INCLUDED"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'included_accessories'."
+      },
+      {
+        "attributeCode": "seller_bundle",
+        "allowedValues": [
+          "BUNDLE",
+          "LOT",
+          "SINGLE_ITEM"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'seller_bundle'."
+      },
+      {
+        "attributeCode": "original_box",
+        "allowedValues": [
+          "NO",
+          "UNKNOWN",
+          "YES"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'original_box'."
+      },
+      {
+        "attributeCode": "replacement_part_context",
+        "allowedValues": [
+          "CAMERA_PART",
+          "GENERIC_BATTERY",
+          "LAPTOP_PART",
+          "NOT_PART",
+          "PHONE_PART"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'replacement_part_context'."
+      },
+      {
+        "attributeCode": "live_value_candidate_state",
+        "allowedValues": [
+          "CANDIDATE",
+          "PROMOTED",
+          "REJECTED"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.POWER_CHARGING_CABLES v1.0 dictionary-bound values for 'live_value_candidate_state'."
       }
     ],
     "compatibilityRules": [
@@ -905,18 +2395,19 @@
           {
             "attributeCode": "condition",
             "allowedValues": [
+              "FOR_PARTS",
               "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
+              "OPEN_BOX",
+              "REFURBISHED",
+              "USED"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.POWER_CHARGING_CABLES по атрибуту condition."
+            "reason": "Power, charging and cables condition safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -926,68 +2417,296 @@
     "model": null,
     "attributeConstraints": [
       {
-        "attributeCode": "condition",
+        "attributeCode": "printer_scanner_type",
         "allowedValues": [
-          "NEW",
-          "LIKE_NEW",
-          "USED",
-          "REFURBISHED"
+          "INK_CARTRIDGE",
+          "LABEL_PRINTER",
+          "MULTIFUNCTION_PRINTER",
+          "PRINTER",
+          "PRINTER_ACCESSORY",
+          "SCANNER",
+          "TONER_CARTRIDGE"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'printer_scanner_type'."
       },
       {
-        "attributeCode": "color",
+        "attributeCode": "print_technology",
+        "allowedValues": [
+          "DOT_MATRIX",
+          "DYE_SUBLIMATION",
+          "INKJET",
+          "LASER",
+          "LED",
+          "PHOTO_INKJET",
+          "SOLID_INK",
+          "THERMAL"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'print_technology'."
+      },
+      {
+        "attributeCode": "device_function",
+        "allowedValues": [
+          "COPY",
+          "DUPLEX_SCAN",
+          "FAX",
+          "LABEL_PRINT",
+          "PHOTO_PRINT",
+          "PRINT",
+          "SCAN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'device_function'."
+      },
+      {
+        "attributeCode": "mono_color",
+        "allowedValues": [
+          "COLOR",
+          "MONOCHROME"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'mono_color'."
+      },
+      {
+        "attributeCode": "paper_format",
+        "allowedValues": [
+          "A0",
+          "A1",
+          "A2",
+          "A3",
+          "A4",
+          "A5",
+          "A6",
+          "CARD",
+          "ENVELOPE",
+          "LABEL_ROLL",
+          "LEGAL",
+          "LETTER",
+          "PHOTO_10X15",
+          "PHOTO_A4",
+          "POSTCARD",
+          "RECEIPT_ROLL"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'paper_format'."
+      },
+      {
+        "attributeCode": "duplex_printing",
+        "allowedValues": [
+          "AUTO_DUPLEX",
+          "MANUAL_DUPLEX",
+          "NO_DUPLEX"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'duplex_printing'."
+      },
+      {
+        "attributeCode": "connectivity",
+        "allowedValues": [
+          "AIRPRINT",
+          "BLUETOOTH",
+          "CLOUD_PRINT",
+          "ETHERNET",
+          "MOPRIA",
+          "NFC",
+          "PARALLEL_PORT",
+          "USB",
+          "USB_C",
+          "WIFI",
+          "WIFI_DIRECT"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'connectivity'."
+      },
+      {
+        "attributeCode": "tank_system",
+        "allowedValues": [
+          "CARTRIDGE",
+          "INK_TANK",
+          "REFILLABLE_TANK",
+          "RIBBON",
+          "THERMAL_ROLL",
+          "TONER",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'tank_system'."
+      },
+      {
+        "attributeCode": "scanner_type",
+        "allowedValues": [
+          "BARCODE_SCANNER",
+          "BOOK_SCANNER",
+          "DOCUMENT_SCANNER",
+          "FILM_SCANNER",
+          "FLATBED",
+          "PHOTO_SCANNER",
+          "PORTABLE_SCANNER",
+          "SHEETFED"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'scanner_type'."
+      },
+      {
+        "attributeCode": "cutter_type",
+        "allowedValues": [
+          "AUTO_CUTTER",
+          "MANUAL_CUTTER",
+          "NO_CUTTER"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'cutter_type'."
+      },
+      {
+        "attributeCode": "cartridge_type",
+        "allowedValues": [
+          "DRUM_UNIT",
+          "INK_CARTRIDGE",
+          "LABEL_ROLL",
+          "MAINTENANCE_BOX",
+          "PRINTHEAD",
+          "RIBBON",
+          "TONER_CARTRIDGE",
+          "WASTE_TONER_BOX"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'cartridge_type'."
+      },
+      {
+        "attributeCode": "toner_color",
         "allowedValues": [
           "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "CMYK_SET",
+          "CYAN",
+          "LIGHT_CYAN",
+          "LIGHT_MAGENTA",
+          "MAGENTA",
+          "MULTICOLOR",
+          "PHOTO_BLACK",
+          "YELLOW"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'toner_color'."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "page_yield_bucket",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "EXTRA_HIGH_YIELD",
+          "HIGH_YIELD",
+          "MULTIPACK",
+          "STANDARD_YIELD"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'page_yield_bucket'."
+      },
+      {
+        "attributeCode": "original_compatible_status",
+        "allowedValues": [
+          "COMPATIBLE",
+          "OEM_ORIGINAL",
+          "REFILL",
+          "REMANUFACTURED",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'original_compatible_status'."
+      },
+      {
+        "attributeCode": "accessory_subtype",
+        "allowedValues": [
+          "ADAPTER_POWER_SUPPLY",
+          "CUTTER_BLADE",
+          "DUPLEX_UNIT",
+          "DUST_COVER",
+          "FUSER_UNIT",
+          "LABEL_ROLL",
+          "MAINTENANCE_KIT",
+          "PAPER_TRAY",
+          "PHOTO_PAPER",
+          "PICKUP_ROLLER",
+          "PRINTHEAD",
+          "SCANNER_PAD",
+          "STAND",
+          "TRANSFER_BELT",
+          "USB_PRINTER_CABLE"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'accessory_subtype'."
+      },
+      {
+        "attributeCode": "supported_os",
+        "allowedValues": [
+          "ANDROID",
+          "CHROME_OS",
+          "IOS",
+          "LINUX",
+          "MACOS",
+          "WINDOWS"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'supported_os'."
+      },
+      {
+        "attributeCode": "mobile_printing",
+        "allowedValues": [
+          "AIRPRINT",
+          "BROTHER_IPRINT",
+          "CANON_PRINT",
+          "CLOUD_PRINT",
+          "EPSON_CONNECT",
+          "HP_SMART",
+          "MOPRIA",
+          "VENDOR_APP"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'mobile_printing'."
+      },
+      {
+        "attributeCode": "media_type_supported",
+        "allowedValues": [
+          "CARDSTOCK",
+          "ENVELOPES",
+          "LABELS",
+          "PHOTO_PAPER",
+          "PLAIN_PAPER",
+          "RECEIPT_PAPER",
+          "THERMAL_LABELS",
+          "TRANSPARENCY_FILM"
+        ],
+        "forbiddenValues": [],
+        "reason": "TECH.PRINTERS_SCANNERS v1.0 dictionary-bound values for 'media_type_supported'."
       }
     ],
     "compatibilityRules": [
       {
         "whenAll": [
           {
-            "attributeCode": "condition",
+            "attributeCode": "printer_scanner_type",
             "op": "EQUALS_ANY",
             "values": [
-              "NEW"
+              "INK_CARTRIDGE",
+              "TONER_CARTRIDGE"
             ]
           }
         ],
         "apply": [
           {
-            "attributeCode": "condition",
+            "attributeCode": "original_compatible_status",
             "allowedValues": [
-              "NEW",
-              "LIKE_NEW",
-              "USED",
-              "REFURBISHED"
+              "COMPATIBLE",
+              "OEM_ORIGINAL",
+              "REFILL",
+              "REMANUFACTURED",
+              "UNKNOWN"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.PRINTERS_SCANNERS по атрибуту condition."
+            "reason": "Consumables compatibility safe-list for printer cartridges and toner."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -1001,45 +2720,284 @@
         "allowedValues": [
           "NEW",
           "LIKE_NEW",
+          "GOOD",
           "USED",
-          "REFURBISHED"
+          "REFURBISHED",
+          "OPEN_BOX"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "Smart home/security branch accepts resale-safe condition values."
       },
       {
-        "attributeCode": "network_type",
+        "attributeCode": "smart_home_type",
         "allowedValues": [
-          "5G",
-          "4G",
-          "3G"
+          "SMART_SPEAKER",
+          "SMART_DISPLAY",
+          "SMART_LIGHT",
+          "SMART_PLUG",
+          "SMART_SWITCH",
+          "SMART_SENSOR",
+          "SECURITY_CAMERA",
+          "VIDEO_DOORBELL",
+          "SMART_LOCK",
+          "SMART_THERMOSTAT",
+          "HOME_HUB",
+          "ALARM_SIREN",
+          "AUTOMATION_KIT"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'network_type'."
+        "reason": "Smart home baseline allowed values for smart_home_type."
       },
       {
-        "attributeCode": "os_family",
+        "attributeCode": "protocol",
         "allowedValues": [
-          "ANDROID",
-          "IOS",
-          "WINDOWS",
-          "MACOS"
+          "WIFI",
+          "ZIGBEE",
+          "Z_WAVE",
+          "THREAD",
+          "MATTER",
+          "BLUETOOTH",
+          "RF_433",
+          "INFRARED",
+          "ETHERNET",
+          "POE"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'os_family'."
+        "reason": "Smart home baseline allowed values for protocol."
       },
       {
-        "attributeCode": "color",
+        "attributeCode": "ecosystem",
         "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "APPLE_HOME",
+          "GOOGLE_HOME",
+          "AMAZON_ALEXA",
+          "SAMSUNG_SMARTTHINGS",
+          "YANDEX_ALICE",
+          "VK_MARUSIA",
+          "SBER_SALUT",
+          "XIAOMI_MI_HOME",
+          "AQARA_HOME",
+          "TUYA_SMART_LIFE",
+          "HOME_ASSISTANT",
+          "MATTER_ECOSYSTEM",
+          "PROPRIETARY_APP"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "Smart home baseline allowed values for ecosystem."
+      },
+      {
+        "attributeCode": "power_source",
+        "allowedValues": [
+          "MAINS",
+          "BATTERY",
+          "USB",
+          "POE",
+          "SOLAR",
+          "HARDWIRED"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for power_source."
+      },
+      {
+        "attributeCode": "indoor_outdoor",
+        "allowedValues": [
+          "INDOOR",
+          "OUTDOOR",
+          "INDOOR_OUTDOOR"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for indoor_outdoor."
+      },
+      {
+        "attributeCode": "video_resolution",
+        "allowedValues": [
+          "HD_720P",
+          "FULL_HD_1080P",
+          "QHD_2K",
+          "UHD_4K"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for video_resolution."
+      },
+      {
+        "attributeCode": "sensor_kind",
+        "allowedValues": [
+          "DOOR_WINDOW",
+          "MOTION",
+          "PRESENCE",
+          "TEMPERATURE_HUMIDITY",
+          "WATER_LEAK",
+          "SMOKE",
+          "CO_GAS",
+          "LIGHT",
+          "VIBRATION",
+          "BUTTON"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for sensor_kind."
+      },
+      {
+        "attributeCode": "lock_type",
+        "allowedValues": [
+          "DEADBOLT",
+          "RETROFIT",
+          "HANDLE_LOCK",
+          "MORTISE",
+          "PADLOCK",
+          "CYLINDER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for lock_type."
+      },
+      {
+        "attributeCode": "thermostat_type",
+        "allowedValues": [
+          "WALL_THERMOSTAT",
+          "RADIATOR_VALVE",
+          "FLOOR_HEATING_CONTROLLER",
+          "AC_CONTROLLER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for thermostat_type."
+      },
+      {
+        "attributeCode": "bulb_base",
+        "allowedValues": [
+          "E27",
+          "E14",
+          "GU10",
+          "G9",
+          "B22",
+          "LIGHT_STRIP",
+          "PANEL"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for bulb_base."
+      },
+      {
+        "attributeCode": "installation_type",
+        "allowedValues": [
+          "PLUG_IN",
+          "BATTERY_POWERED",
+          "WIRED",
+          "RETROFIT",
+          "DIN_RAIL",
+          "IN_WALL",
+          "TABLETOP"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for installation_type."
+      },
+      {
+        "attributeCode": "storage_mode",
+        "allowedValues": [
+          "MICROSD",
+          "LOCAL_STORAGE",
+          "CLOUD",
+          "NVR",
+          "NAS",
+          "NO_STORAGE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for storage_mode."
+      },
+      {
+        "attributeCode": "subscription_required",
+        "allowedValues": [
+          "NO",
+          "OPTIONAL",
+          "REQUIRED",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for subscription_required."
+      },
+      {
+        "attributeCode": "switch_type",
+        "allowedValues": [
+          "ONE_GANG",
+          "TWO_GANG",
+          "THREE_GANG",
+          "DIMMER",
+          "RELAY",
+          "SCENE_BUTTON"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for switch_type."
+      },
+      {
+        "attributeCode": "siren_type",
+        "allowedValues": [
+          "INDOOR_SIREN",
+          "OUTDOOR_SIREN",
+          "KEYPAD_SIREN",
+          "ALARM_KIT"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for siren_type."
+      },
+      {
+        "attributeCode": "automation_use_case",
+        "allowedValues": [
+          "STARTER_KIT",
+          "SECURITY",
+          "LIGHTING",
+          "CLIMATE",
+          "ENERGY",
+          "DOOR_ACCESS"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for automation_use_case."
+      },
+      {
+        "attributeCode": "connectivity_band",
+        "allowedValues": [
+          "WIFI_2_4_GHZ",
+          "WIFI_5_GHZ",
+          "WIFI_6_GHZ"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for connectivity_band."
+      },
+      {
+        "attributeCode": "ip_rating",
+        "allowedValues": [
+          "IP20",
+          "IP44",
+          "IP54",
+          "IP65",
+          "IP66",
+          "IP67",
+          "IP68"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for ip_rating."
+      },
+      {
+        "attributeCode": "mounting_type",
+        "allowedValues": [
+          "WALL",
+          "CEILING",
+          "DOOR",
+          "WINDOW",
+          "TABLE",
+          "MAGNETIC",
+          "ADHESIVE"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for mounting_type."
+      },
+      {
+        "attributeCode": "hvac_compatibility",
+        "allowedValues": [
+          "BOILER",
+          "HEAT_PUMP",
+          "RADIATOR",
+          "FLOOR_HEATING",
+          "AIR_CONDITIONER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Smart home baseline allowed values for hvac_compatibility."
       }
     ],
     "compatibilityRules": [
@@ -1059,16 +3017,18 @@
             "allowedValues": [
               "NEW",
               "LIKE_NEW",
+              "GOOD",
               "USED",
-              "REFURBISHED"
+              "REFURBISHED",
+              "OPEN_BOX"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.SMART_HOME_SECURITY по атрибуту condition."
+            "reason": "Smart home/security condition safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -1644,49 +3604,191 @@
     "model": null,
     "attributeConstraints": [
       {
+        "attributeCode": "wearable_type",
+        "allowedValues": [
+          "SMARTWATCH",
+          "FITNESS_TRACKER",
+          "SMART_RING",
+          "AR_GLASSES",
+          "WEARABLE_ACCESSORY",
+          "WATCH_BAND"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'wearable_type' for TECH.WEARABLES."
+      },
+      {
         "attributeCode": "condition",
         "allowedValues": [
-          "NEW",
+          "ACCEPTABLE",
+          "DEFECTS",
+          "DEFECTS_OR_REPAIR",
+          "EXCELLENT",
+          "FAIR",
+          "FOR_PARTS",
+          "FOR_REPAIR",
+          "GOOD",
+          "HEAVILY_USED",
           "LIKE_NEW",
+          "NEW",
+          "NEW_WITH_TAGS",
+          "NEW_WITHOUT_TAGS",
+          "OPEN_BOX",
+          "REFURBISHED",
+          "REFURBISHED_MANUFACTURER",
+          "REFURBISHED_SELLER",
+          "UNKNOWN",
           "USED",
-          "REFURBISHED"
+          "USED_EXCELLENT",
+          "USED_FAIR",
+          "USED_FOR_PARTS",
+          "USED_GOOD",
+          "USED_LIKE_NEW",
+          "VERY_GOOD"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'condition'."
+        "reason": "Allowed values from dictionary 'condition' for TECH.WEARABLES."
       },
       {
-        "attributeCode": "color",
+        "attributeCode": "activation_lock_status",
         "allowedValues": [
-          "BLACK",
-          "WHITE",
-          "GRAY",
-          "BLUE",
-          "PINK",
-          "NATURAL_TITANIUM"
+          "NOT_APPLICABLE",
+          "UNLOCKED_CONFIRMED",
+          "LOCKED_OR_UNKNOWN",
+          "ACCOUNT_LOCKED",
+          "NEEDS_RESET",
+          "UNKNOWN"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'color'."
+        "reason": "Allowed values from dictionary 'activation_lock_status' for TECH.WEARABLES."
       },
       {
-        "attributeCode": "material",
+        "attributeCode": "display_type",
         "allowedValues": [
-          "CERAMIC",
-          "GLASS",
-          "STEEL",
-          "PLASTIC"
+          "COMPUTER_MONITOR",
+          "GAMING_MONITOR",
+          "MONITOR_ACCESSORY",
+          "PORTABLE_MONITOR",
+          "PROFESSIONAL_MONITOR",
+          "SMART_MONITOR",
+          "TOUCHSCREEN_MONITOR",
+          "AMOLED",
+          "OLED",
+          "MIP",
+          "LCD",
+          "MICROLED",
+          "E_INK",
+          "NONE",
+          "UNKNOWN"
         ],
         "forbiddenValues": [],
-        "reason": "Базовое ограничение: допустимы valueCode из словаря 'material'."
+        "reason": "Allowed values from dictionary 'display_type' for TECH.WEARABLES."
+      },
+      {
+        "attributeCode": "compatible_os",
+        "allowedValues": [
+          "ANDROID",
+          "ANDROID_TV",
+          "CHROMEOS",
+          "FIRE_OS",
+          "IOS",
+          "IPADOS",
+          "LINUX",
+          "MACOS",
+          "PLAYSTATION_OS",
+          "TVOS",
+          "WATCHOS",
+          "WEAR_OS",
+          "WINDOWS",
+          "XBOX_OS",
+          "IOS_ANDROID",
+          "WATCH_ONLY",
+          "GARMIN_CONNECT",
+          "HUAWEI_HEALTH",
+          "ZEPP",
+          "FITBIT_APP",
+          "NONE",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'compatible_os' for TECH.WEARABLES."
+      },
+      {
+        "attributeCode": "ecosystem",
+        "allowedValues": [
+          "AMAZON_ALEXA",
+          "APPLE_FIND_MY",
+          "APPLE_HOMEKIT",
+          "APPLE_MAGSAFE",
+          "DJI_ECOSYSTEM",
+          "GARMIN_ECOSYSTEM",
+          "GOOGLE_FAST_PAIR",
+          "GOOGLE_HOME",
+          "GOPRO_ECOSYSTEM",
+          "MATTER",
+          "MICROSOFT_XBOX",
+          "SAMSUNG_DEX",
+          "SAMSUNG_SMARTTHINGS",
+          "SONY_PLAYSTATION",
+          "APPLE_WATCH",
+          "SAMSUNG_GALAXY",
+          "GOOGLE_PIXEL_FITBIT",
+          "GARMIN",
+          "HUAWEI",
+          "XIAOMI",
+          "AMAZFIT_ZEPP",
+          "POLAR",
+          "COROS",
+          "SUUNTO",
+          "OURA",
+          "WHOOP",
+          "WITHINGS",
+          "META_RAYBAN",
+          "XREAL",
+          "OTHER"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'ecosystem' for TECH.WEARABLES."
+      },
+      {
+        "attributeCode": "gps_support",
+        "allowedValues": [
+          "NO_GPS",
+          "PHONE_ASSISTED_GPS",
+          "BUILT_IN_GPS",
+          "MULTI_GNSS",
+          "DUAL_FREQUENCY_GPS",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'gps_support' for TECH.WEARABLES."
+      },
+      {
+        "attributeCode": "cellular_support",
+        "allowedValues": [
+          "NO_CELLULAR",
+          "LTE_OPTIONAL",
+          "LTE_INCLUDED",
+          "ESIM_OPTIONAL",
+          "KIDS_CELLULAR",
+          "UNKNOWN"
+        ],
+        "forbiddenValues": [],
+        "reason": "Allowed values from dictionary 'cellular_support' for TECH.WEARABLES."
       }
     ],
     "compatibilityRules": [
       {
         "whenAll": [
           {
-            "attributeCode": "condition",
+            "attributeCode": "wearable_type",
             "op": "EQUALS_ANY",
             "values": [
-              "NEW"
+              "SMARTWATCH",
+              "FITNESS_TRACKER",
+              "SMART_RING",
+              "AR_GLASSES",
+              "WEARABLE_ACCESSORY",
+              "WATCH_BAND"
             ]
           }
         ],
@@ -1696,16 +3798,18 @@
             "allowedValues": [
               "NEW",
               "LIKE_NEW",
+              "GOOD",
               "USED",
-              "REFURBISHED"
+              "REFURBISHED",
+              "OPEN_BOX"
             ],
             "forbiddenValues": [],
-            "reason": "Базовый compatibility-safe-list для категории TECH.WEARABLES по атрибуту condition."
+            "reason": "Wearables condition compatibility safe-list."
           }
         ]
       }
     ],
-    "effectiveFrom": "2026-02-19",
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   }
 ]

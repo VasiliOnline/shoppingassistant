@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "package_name": "TECH_CAMERAS_DRONES_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.CAMERAS_DRONES",
+  "pack_type": "public_category_pack",
+  "public_category": true,
+  "accepts_offers_directly": true,
+  "main_type_attribute": "camera_type",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "category_archetypes": [
+    "identity_sensitive_device",
+    "spec_heavy",
+    "accessory_mixed",
+    "vision_sensitive",
+    "regulated_by_region_soft"
+  ],
+  "type_values": [
+    "DIGITAL_CAMERA",
+    "MIRRORLESS_CAMERA",
+    "DSLR_CAMERA",
+    "ACTION_CAMERA",
+    "INSTANT_CAMERA",
+    "CAMCORDER",
+    "DRONE",
+    "LENS",
+    "TRIPOD",
+    "GIMBAL",
+    "PHOTO_LIGHTING",
+    "BINOCULARS_TELESCOPE",
+    "CAMERA_ACCESSORY"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "camera_type",
+      "brand",
+      "condition",
+      "model_name_text",
+      "price",
+      "currency",
+      "availability",
+      "images"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "sensor_format",
+      "lens_mount",
+      "camera_lens_type",
+      "focal_length_mm",
+      "video_resolution_max",
+      "shutter_count",
+      "drone_weight_g",
+      "drone_flight_time_min",
+      "obstacle_avoidance",
+      "gimbal_axis_count",
+      "light_type",
+      "tripod_head_type",
+      "accessory_type"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "sensor_resolution_mp",
+      "frame_rate_max_fps",
+      "autofocus_type",
+      "memory_card_type",
+      "battery_count",
+      "weather_sealing",
+      "connectivity",
+      "recording_format",
+      "bundle_items_normalized"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "evidence_level",
+      "vision_confidence",
+      "route_confidence",
+      "normalized_title"
+    ]
+  },
+  "ui_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "boundary": {
+    "presets_collections_included": false,
+    "microcategories_created": false,
+    "full_model_registry": false
+  }
+}

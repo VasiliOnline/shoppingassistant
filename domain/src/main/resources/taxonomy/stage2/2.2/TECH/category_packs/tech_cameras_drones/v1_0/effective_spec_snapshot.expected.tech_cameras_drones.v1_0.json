@@ -1,0 +1,63 @@
+{
+  "categoryCode": "TECH.CAMERAS_DRONES",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "camera_type",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "type_values": [
+    "DIGITAL_CAMERA",
+    "MIRRORLESS_CAMERA",
+    "DSLR_CAMERA",
+    "ACTION_CAMERA",
+    "INSTANT_CAMERA",
+    "CAMCORDER",
+    "DRONE",
+    "LENS",
+    "TRIPOD",
+    "GIMBAL",
+    "PHOTO_LIGHTING",
+    "BINOCULARS_TELESCOPE",
+    "CAMERA_ACCESSORY"
+  ],
+  "required_fields": [
+    "categoryCode",
+    "camera_type",
+    "brand",
+    "condition",
+    "title",
+    "price",
+    "currency",
+    "availability",
+    "images"
+  ],
+  "primary_facets": [
+    "camera_type",
+    "brand",
+    "condition",
+    "price",
+    "sensor_format",
+    "lens_mount",
+    "video_resolution_max"
+  ],
+  "hidden_fields": [
+    "evidence_level",
+    "vision_confidence",
+    "route_confidence",
+    "normalized_title"
+  ],
+  "blocked_cross_routes": [
+    "TECH.PHONES",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.SMART_HOME_SECURITY",
+    "TECH.CAR_ELECTRONICS_GPS",
+    "TECH.GAMING",
+    "TECH.STORAGE_MEMORY",
+    "TECH.POWER_CHARGING_CABLES"
+  ],
+  "presets_collections_included": false,
+  "full_model_registry": false,
+  "long_tail_policy": "runtime_candidates/live_values"
+}

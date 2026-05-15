@@ -1,0 +1,48 @@
+{
+  "package_name": "TECH_GAMING_route_alias_type_coverage_delta_pack_v1_1_RU",
+  "reviewed_package": "TECH_GAMING_public_category_pack_v1_0_RU",
+  "decision": "PATCH_RELEASED_BEFORE_NEXT_BRANCH",
+  "gaps_found": [
+    {
+      "severity": "P1",
+      "gap": "model_aliases contained source-note aliases such as official/resale/head labels",
+      "fix": "model_alias_retractions"
+    },
+    {
+      "severity": "P1",
+      "gap": "direct route coverage weak for VR headset, controller, arcade and platform accessory queries",
+      "fix": "route_guardrails_delta + aliases_delta + golden_queries_delta"
+    },
+    {
+      "severity": "P1",
+      "gap": "thin publish fixtures for GAMING_MOUSE, GAMING_HEADSET, ARCADE_EQUIPMENT and CONSOLE_ACCESSORY",
+      "fix": "sample/publish delta"
+    }
+  ],
+  "static_validation": {
+    "json_syntax": "PASS",
+    "jsonl_structure": "PASS",
+    "tsv_structure": "PASS",
+    "yaml_structure": "PASS",
+    "new_category_codes": 0,
+    "presets_collections_files": 0,
+    "schema_breaking_changes": false
+  },
+  "counts": {
+    "schema_breaking_changes": false,
+    "ui_surface_changes": false,
+    "new_category_codes": [],
+    "alias_retractions": 55,
+    "aliases_delta": 99,
+    "model_head_seed_delta": 16,
+    "golden_queries_delta": 32,
+    "sample_offers_delta": 31,
+    "publish_sample_offers_delta": 18
+  },
+  "post_patch_verdict": {
+    "data_covered": "YES",
+    "patch_needed": "NO",
+    "move_next": "YES",
+    "runtime_prod_proven": "NO_PENDING_PROJECT_VALIDATORS"
+  }
+}

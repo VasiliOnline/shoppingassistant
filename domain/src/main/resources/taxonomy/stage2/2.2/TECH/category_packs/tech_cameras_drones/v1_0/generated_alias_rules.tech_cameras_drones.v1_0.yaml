@@ -1,0 +1,22 @@
+rules:
+  - id: camera_type_ru_forms
+    type: morphology
+    targets: [camera_type]
+    generate: [singular, plural, hyphen_variants, latin_ru_mix]
+  - id: model_space_hyphen_case
+    type: model_alias_generation
+    targets: [model]
+    generate: [space_removed, hyphen_removed, mark_to_mk, roman_to_arabic_when_safe]
+  - id: lens_focal_aperture_pattern
+    type: regex
+    detect:
+      - '(?P<focal>\d{2,3}(-\d{2,3})?)\s?mm\s?f/?(?P<aperture>\d\.\d)'
+      - '(?P<focal>\d{2,3}(-\d{2,3})?)\s?мм\s?(?P<aperture>\d\.\d)'
+    normalize_to: [focal_length_mm, aperture_range]
+  - id: drone_model_pattern
+    type: regex
+    detect:
+      - 'mavic\s?(?P<gen>\d)?\s?(?P<tier>pro|classic|cine)?'
+      - 'mini\s?(?P<gen>\d)\s?(?P<tier>pro)?'
+      - 'avata\s?(?P<gen>\d)?'
+    normalize_to: [brand, family, model]

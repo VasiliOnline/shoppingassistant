@@ -1,0 +1,32 @@
+{
+  "package_name": "TECH_POWER_CHARGING_CABLES_route_publish_delta_pack_v1_1_RU",
+  "target": "TECH_POWER_CHARGING_CABLES_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.POWER_CHARGING_CABLES",
+  "check_reason": "User asked: check current or move next. Current package was checked before moving.",
+  "found_gaps": [
+    "publish_sample_offers v1.0 had no SURGE_PROTECTOR publish fixtures",
+    "publish_sample_offers v1.0 had no CABLE_MANAGEMENT publish fixtures",
+    "route disambiguation for 'сетевой адаптер' needed stronger guard: power adapter vs Wi-Fi/Ethernet network adapter"
+  ],
+  "patch_added": {
+    "aliases_delta": 35,
+    "golden_queries_delta": 20,
+    "sample_offers_delta": 17,
+    "publish_sample_offers_delta": 10,
+    "route_guardrail_delta": 4
+  },
+  "static_validation": {
+    "json_syntax": "PASS",
+    "jsonl_structure": "PASS",
+    "tsv_structure": "PASS",
+    "yaml_structure": "PASS",
+    "new_categoryCode": 0,
+    "presets_collections": 0,
+    "schema_breaking_changes": false,
+    "ui_changes": false
+  },
+  "data_coverage_verdict_after_patch": "PASS",
+  "patch_needed_after_this": "NO",
+  "move_next": "YES",
+  "runtime_release_status": "PENDING_PROJECT_VALIDATORS"
+}

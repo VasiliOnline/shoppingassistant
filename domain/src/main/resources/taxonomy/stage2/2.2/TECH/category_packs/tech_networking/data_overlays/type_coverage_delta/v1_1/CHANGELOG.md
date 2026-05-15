@@ -1,0 +1,1 @@
+- v1.1: Added networking type coverage delta for ANTENNA, NETWORK_ACCESSORY, GPON/ONT and route boundaries.

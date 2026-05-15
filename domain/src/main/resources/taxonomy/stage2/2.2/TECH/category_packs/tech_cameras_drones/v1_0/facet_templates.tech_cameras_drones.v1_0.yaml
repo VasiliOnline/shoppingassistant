@@ -1,0 +1,25 @@
+categoryCode: TECH.CAMERAS_DRONES
+primary_facets:
+  - camera_type
+  - brand
+  - condition
+  - price
+  - sensor_format
+  - lens_mount
+  - video_resolution_max
+secondary_facets:
+  - camera_lens_type
+  - focal_length_mm
+  - shutter_count
+  - drone_weight_g
+  - drone_flight_time_min
+  - obstacle_avoidance
+  - gimbal_axis_count
+  - tripod_head_type
+  - light_type
+  - memory_card_type
+type_specific_facets:
+  DRONE: [brand, model, drone_weight_g, drone_flight_time_min, obstacle_avoidance, remote_controller_included, condition]
+  LENS: [brand, lens_mount, camera_lens_type, focal_length_mm, aperture_range, condition, price]
+  MIRRORLESS_CAMERA: [brand, sensor_format, lens_mount, sensor_resolution_mp, video_resolution_max, condition, price]
+  ACTION_CAMERA: [brand, video_resolution_max, waterproof_rating, stabilization_type, condition, price]

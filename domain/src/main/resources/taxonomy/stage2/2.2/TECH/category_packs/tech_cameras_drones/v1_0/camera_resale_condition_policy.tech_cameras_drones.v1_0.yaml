@@ -1,0 +1,18 @@
+condition_fields:
+  - condition
+  - shutter_count
+  - battery_count
+  - lens_glass_condition
+  - sensor_condition
+  - drone_crash_history
+  - gimbal_condition
+  - included_accessories
+publish_guidance:
+  shutter_count: recommended_for_interchangeable_cameras
+  crash_history: recommended_for_drones
+  glass_condition: recommended_for_lenses
+  remote_controller_included: recommended_for_drones
+blockers:
+  - counterfeit_or_replica_claim
+  - unsafe_modified_battery
+  - drone_with_removed_identification_when_required

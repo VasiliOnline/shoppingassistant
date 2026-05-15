@@ -1,0 +1,82 @@
+evaluation_mode: sort_by_priority_desc_then_first_match
+guards:
+  -
+    id: webcam_to_computer_accessories
+    priority: 980
+    when_any:
+      - webcam
+      - вебкамера
+      - web камера
+    route_to: TECH.COMPUTER_ACCESSORIES
+  -
+    id: dashcam_to_car_electronics
+    priority: 970
+    when_any:
+      - dash cam
+      - видеорегистратор
+      - car dvr
+    route_to: TECH.CAR_ELECTRONICS_GPS
+  -
+    id: generic_audio_speaker_to_audio
+    priority: 960
+    when_any:
+      - bluetooth колонка
+      - портативная колонка
+      - jbl flip
+      - soundbar
+    unless_any:
+      - алиса
+      - echo
+      - nest
+      - homepod
+      - умная
+    route_to: TECH.AUDIO
+  -
+    id: router_to_networking
+    priority: 950
+    when_any:
+      - роутер
+      - mesh wi-fi
+      - модем
+    unless_any:
+      - home hub
+      - хаб умного дома
+      - zigbee hub
+    route_to: TECH.NETWORKING
+  -
+    id: camera_drone_to_cameras_drones
+    priority: 940
+    when_any:
+      - dji
+      - дрон
+      - объектив
+      - фотоаппарат
+      - gopro
+      - экшн камера
+    route_to: TECH.CAMERAS_DRONES
+  -
+    id: smart_home_include
+    priority: 500
+    when_any:
+      - умный дом
+      - smart home
+      - homekit
+      - matter
+      - zigbee
+      - aqara
+      - tuya
+      - smartthings
+      - яндекс станция
+      - умная розетка
+      - умная лампа
+      - датчик протечки
+      - ip камера
+      - видеозвонок
+      - умный замок
+    route_to: TECH.SMART_HOME_SECURITY
+blocked_microcategories:
+  - TECH.SMART_LIGHTS
+  - TECH.SECURITY_CAMERAS
+  - TECH.SMART_LOCKS
+  - TECH.AQARA
+  - TECH.HOMEKIT

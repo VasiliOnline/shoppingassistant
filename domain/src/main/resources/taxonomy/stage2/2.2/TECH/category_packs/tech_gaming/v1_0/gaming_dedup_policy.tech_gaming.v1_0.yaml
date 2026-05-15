@@ -1,0 +1,15 @@
+categoryCode: TECH.GAMING
+dedup_keys:
+  GAME_CONSOLE:
+    strong: [brand, model, storage_capacity_gb, region, condition]
+    weak: [brand, model_name_text, color_family]
+  PHYSICAL_GAME:
+    strong: [game_platform, title_normalized, media_format, region]
+    weak: [title_text, game_platform]
+  GAME_CONTROLLER:
+    strong: [brand, model, compatible_platform, connection_type]
+  CONSOLE_ACCESSORY:
+    strong: [brand, accessory_subtype, compatible_platform, model_name_text]
+notes:
+  - "Do not merge console bundles with base console if bundle content differs materially."
+  - "Do not merge physical games across platform even if title is identical."

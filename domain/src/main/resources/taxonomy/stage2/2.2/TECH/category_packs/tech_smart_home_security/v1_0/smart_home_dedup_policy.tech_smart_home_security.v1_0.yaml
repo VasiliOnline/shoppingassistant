@@ -1,0 +1,24 @@
+categoryCode: TECH.SMART_HOME_SECURITY
+primary_dedup_keys:
+  -
+    - brand
+    - model
+    - smart_home_type
+    - region
+  -
+    - brand
+    - model_name_text
+    - smart_home_type
+    - protocol
+    - ecosystem
+  -
+    - image_fingerprint
+    - brand
+    - smart_home_type
+do_not_merge_when_different:
+  - smart_home_type
+  - protocol
+  - ecosystem
+  - kit_contains
+  - device_count_in_kit
+kit_policy: automation kits are not merged with individual components

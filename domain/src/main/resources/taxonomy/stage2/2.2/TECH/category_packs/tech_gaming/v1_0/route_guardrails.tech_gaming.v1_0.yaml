@@ -1,0 +1,49 @@
+categoryCode: TECH.GAMING
+evaluation_mode: priority_desc_first_match
+include_rules:
+  - id: include_game_console
+    priority: 900
+    when_any: ["ps5", "playstation 5", "xbox series", "nintendo switch", "steam deck", "игровая консоль", "портативная консоль"]
+    route_to: TECH.GAMING
+  - id: include_physical_game
+    priority: 880
+    when_any: ["игра ps5", "диск ps5", "картридж nintendo", "game cartridge", "physical game"]
+    route_to: TECH.GAMING
+  - id: include_gaming_input_device
+    priority: 850
+    when_all_any:
+      - ["gaming", "игровая", "для ps5", "для xbox", "для switch"]
+      - ["клавиатура", "мышь", "гарнитура", "геймпад", "контроллер", "руль"]
+    route_to: TECH.GAMING
+exclude_rules:
+  - id: generic_keyboard_mouse_to_computer_accessories
+    priority: 930
+    when_all_any:
+      - ["клавиатура", "мышь", "webcam", "usb hub"]
+      - ["office", "офисная", "обычная", "generic"]
+    route_to: TECH.COMPUTER_ACCESSORIES
+  - id: generic_headphones_to_audio
+    priority: 920
+    when_any: ["наушники", "earbuds", "speaker", "microphone", "микрофон"]
+    unless_any: ["gaming", "игровая", "ps5", "xbox", "switch"]
+    route_to: TECH.AUDIO
+  - id: tv_and_projector_to_av
+    priority: 910
+    when_any: ["tv", "телевизор", "projector", "проектор", "soundbar"]
+    route_to: TECH.TV_HOME_THEATER
+  - id: pc_parts_to_components
+    priority: 900
+    when_any: ["rtx", "gpu", "cpu", "ryzen", "core i7", "motherboard", "ram ddr"]
+    route_to: TECH.PC_COMPONENTS
+  - id: storage_to_storage_memory
+    priority: 890
+    when_any: ["ssd", "hdd", "memory card", "карта памяти"]
+    route_to: TECH.STORAGE_MEMORY
+  - id: phone_to_phones
+    priority: 880
+    when_any: ["iphone", "galaxy s", "смартфон"]
+    route_to: TECH.PHONES
+  - id: gambling_services_block
+    priority: 1000
+    when_any: ["casino", "букмекер", "ставки", "gambling account"]
+    block_reason: regulated_or_service_not_gaming_product

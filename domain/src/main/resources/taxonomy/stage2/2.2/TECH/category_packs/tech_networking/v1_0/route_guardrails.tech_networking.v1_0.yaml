@@ -1,0 +1,11 @@
+version: 1.0
+categoryCode: TECH.NETWORKING
+evaluation_mode: priority_desc_first_match
+include_rules:
+  - {id: networking_include_core, priority: 600, route_to: TECH.NETWORKING, when_any: [router, роутер, маршрутизатор, mesh wifi, коммутатор, access point, точка доступа, modem, модем, wifi extender, репитер, сетевой адаптер, poe injector]}
+exclude_rules:
+  - {id: nas_to_storage, priority: 900, route_to: TECH.STORAGE_MEMORY, when_any: [NAS, Synology DS, QNAP TS, сетевое хранилище]}
+  - {id: usb_hub_dock_to_computer_accessories, priority: 880, route_to: TECH.COMPUTER_ACCESSORIES, when_any: [USB hub, USB хаб, док-станция, docking station]}
+  - {id: security_camera_to_smart_home, priority: 860, route_to: TECH.SMART_HOME_SECURITY, when_any: [IP camera, камера видеонаблюдения, security camera, видеодомофон]}
+  - {id: cable_power_to_power_charging, priority: 840, route_to: TECH.POWER_CHARGING_CABLES, when_any: [HDMI cable, USB cable, UPS, ИБП, surge protector]}
+  - {id: car_tracker_to_car_electronics, priority: 820, route_to: TECH.CAR_ELECTRONICS_GPS, when_any: [автомобильный gps трекер, OBD tracker]}

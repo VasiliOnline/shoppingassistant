@@ -1,0 +1,26 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+mount:
+  parent: TECH
+  public_category: true
+  accepts_offers_directly: true
+inherits_from:
+  - TECH.ELECTRONICS_COMMON
+  - TECH.DEVICE_IDENTITY_COMMON
+  - TECH.SPECS_COMMON
+  - TECH.COMPATIBILITY_COMMON
+input_bindings:
+  title: title
+  description: description
+  price: price
+  currency: currency
+  images: images
+publish_blockers:
+  - missing_power_cable_type
+  - missing_condition
+  - missing_price
+  - missing_currency
+  - unsafe_battery_claim
+runtime_candidates:
+  enabled: true
+  fields: [brand, model, connector_type, fast_charge_protocol]

@@ -1,0 +1,20 @@
+version: 1.1
+categoryCode: TECH.NETWORKING
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - AliasCollisionGate
+  - SampleOffersSmokeGate
+patch_specific_gates:
+  - NetworkingTypeCoverageDeltaGate
+  - NetworkCableRouteGate
+  - OntGponAliasGate
+  - NoPowerStripFalsePositiveGate
+thresholds:
+  new_category_codes: 0
+  presets_collections_files: 0
+  schema_breaking_changes: false
+  required_positive_delta_samples_min: 18
+  required_publish_delta_samples_min: 10

@@ -1,0 +1,106 @@
+{
+  "schema_id": "schema_pack.tech_power_charging_cables.v1_0",
+  "categoryCode": "TECH.POWER_CHARGING_CABLES",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "power_cable_type",
+  "type_values": [
+    "WALL_CHARGER",
+    "WIRELESS_CHARGER",
+    "CAR_CHARGER",
+    "USB_CABLE",
+    "HDMI_CABLE",
+    "AUDIO_VIDEO_CABLE",
+    "ADAPTER",
+    "POWER_BANK",
+    "PORTABLE_POWER_STATION",
+    "UPS",
+    "BATTERY",
+    "SURGE_PROTECTOR",
+    "CABLE_MANAGEMENT"
+  ],
+  "category_archetypes": [
+    "TECH_ACCESSORY",
+    "POWER_DEVICE",
+    "CABLE_DEVICE",
+    "SPECS_HEAVY",
+    "COMPATIBILITY_AWARE"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "categoryCode",
+      "power_cable_type",
+      "brand",
+      "condition",
+      "model_name_text",
+      "connector_type",
+      "wattage_w",
+      "capacity_mah"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "port_count",
+      "fast_charge_protocol",
+      "usb_pd_support",
+      "gan_charger",
+      "qi_standard",
+      "cable_length_m",
+      "cable_standard",
+      "hdmi_version",
+      "video_standard",
+      "power_delivery_w",
+      "capacity_wh",
+      "ac_outlet_count",
+      "ups_topology",
+      "surge_joule_rating",
+      "battery_size",
+      "plug_type",
+      "socket_type",
+      "compatibility_target"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "model",
+      "release_year",
+      "region",
+      "warranty",
+      "color",
+      "included_accessories",
+      "seller_bundle",
+      "original_box",
+      "oem_original",
+      "mfi_certified",
+      "e_marker_chip",
+      "braided_cable",
+      "right_angle_connector",
+      "safety_certification",
+      "data_transfer_speed_gbps",
+      "car_voltage_v",
+      "input_voltage_v",
+      "output_voltage_v",
+      "replacement_part_context"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "ingestion_confidence",
+      "routing_confidence",
+      "dedup_key",
+      "source_evidence",
+      "live_value_candidate_state"
+    ]
+  },
+  "ui_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "rules": {
+    "no_microcategories": [
+      "TECH.CHARGERS",
+      "TECH.CABLES",
+      "TECH.POWER_BANKS",
+      "TECH.UPS",
+      "TECH.HDMI_CABLES",
+      "TECH.USB_CABLES",
+      "TECH.ADAPTERS"
+    ],
+    "no_presets_or_collections": true,
+    "long_tail_policy": "head seed only; long-tail through runtime_candidates/live_values",
+    "phone_specific_policy": "Phone-specific cases/protectors/holders stay in TECH.PHONE_ACCESSORIES; generic power/cable products stay here."
+  }
+}

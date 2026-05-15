@@ -1,0 +1,44 @@
+rules:
+  - id: gaming_console_platform_aliases
+    scope: TECH.GAMING
+    patterns:
+      - "ps{number}"
+      - "playstation {number}"
+      - "xbox series {letter}"
+      - "nintendo switch {suffix}"
+    output:
+      candidate_fields: [platform, brand, model_name_text]
+      confidence: 0.82
+  - id: physical_game_media_aliases
+    patterns:
+      - "диск {platform}"
+      - "игра {platform}"
+      - "картридж {platform}"
+    output:
+      gaming_type: PHYSICAL_GAME
+      confidence: 0.86
+  - id: gaming_input_device_aliases
+    patterns:
+      - "{brand} gaming keyboard"
+      - "игровая клавиатура {brand}"
+      - "{brand} gaming mouse"
+      - "игровая мышь {brand}"
+      - "{brand} headset {platform}"
+    output:
+      candidate_fields: [gaming_type, brand, platform]
+      confidence: 0.80
+  - id: vr_headset_aliases
+    patterns:
+      - "quest {number}"
+      - "ps vr{number}"
+      - "oculus quest {number}"
+    output:
+      gaming_type: VR_HEADSET
+      confidence: 0.84
+guardrails:
+  do_not_create_microcategories:
+    - TECH.PS5
+    - TECH.XBOX
+    - TECH.NINTENDO_SWITCH
+    - TECH.GAMEPADS
+    - TECH.VR

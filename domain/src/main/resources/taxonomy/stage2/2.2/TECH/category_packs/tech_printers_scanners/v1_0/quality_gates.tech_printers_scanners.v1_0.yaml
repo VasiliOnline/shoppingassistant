@@ -1,0 +1,21 @@
+quality_gates:
+  required:
+    - Stage22SeedValidator
+    - FacetSchemaValidator
+    - EffectiveSpecSnapshotGate
+    - RouteConflictGate
+    - UserSurfaceGate
+    - AliasCollisionGate
+    - VisionRulesGate
+    - SampleOffersSmokeGate
+  category_specific:
+    - ConsumablePolicyGate
+    - PrinterConsumableCompatibilityGate
+    - NoMicrocategoryGate
+    - DeviceVsConsumableRouteGate
+  thresholds:
+    min_sample_offers: 80
+    min_golden_queries: 100
+    initial_fields_max: 8
+    primary_facets_max: 7
+    t3_hidden_ui_leaks: 0

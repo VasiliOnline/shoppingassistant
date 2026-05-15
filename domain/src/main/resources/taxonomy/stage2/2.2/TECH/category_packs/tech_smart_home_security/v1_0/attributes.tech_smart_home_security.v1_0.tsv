@@ -1,0 +1,63 @@
+attribute_code	label_ru	type	role	required_policy	usage_scope	applies_to_types	value_source	unit	ui_hint	validation_notes
+smart_home_type	Тип устройства умного дома	enum	T0_CORE	required	routing|facet|title	ALL	values#smart_home_type		single_select	Main type
+brand	Бренд	string	T0_CORE	required_when_available	identity|facet|search	ALL	TECH.ELECTRONICS_COMMON#brand + runtime_candidates		autocomplete	Head+live
+model_name_text	Модель текстом	string	T0_CORE	required_when_available	identity|listing	ALL	free_text		text	Raw seller model
+condition	Состояние	enum	T0_CORE	required	commerce|facet	ALL	TECH.ELECTRONICS_COMMON#condition		single_select	
+color_family	Цвет	enum	T0_CORE	optional	facet|variant	ALL	TECH.ELECTRONICS_COMMON#color_family		color_select	
+region	Регион/версия	enum	T0_CORE	optional	identity|compatibility	ALL	TECH.ELECTRONICS_COMMON#region		single_select	
+protocol	Протокол связи	enum	T0_CORE	required_when_applicable	compatibility|facet	ALL	values#protocol		multi_select	Wi-Fi/Zigbee/etc
+ecosystem	Экосистема	enum	T0_CORE	required_when_applicable	compatibility|facet	ALL	values#ecosystem		multi_select	Apple/Google/Alexa/etc
+power_source	Питание	enum	T0_CORE	required_when_applicable	facet|publish	ALL	values#power_source		single_select	
+voice_assistant_support	Голосовые ассистенты	enum_list	T1_TYPE_SPECIFIC	conditional	compatibility|facet	SMART_SPEAKER;SMART_DISPLAY;HOME_HUB	values#voice_assistant_support		multi_select	
+hub_required	Нужен хаб	boolean	T1_TYPE_SPECIFIC	conditional	compatibility|facet	SMART_LIGHT;SMART_SENSOR;SMART_SWITCH;SMART_LOCK;ALARM_SIREN	boolean		toggle	
+indoor_outdoor	Внутри/снаружи	enum	T1_TYPE_SPECIFIC	conditional	facet|publish	SECURITY_CAMERA;VIDEO_DOORBELL;SMART_LIGHT;SMART_SENSOR	values#indoor_outdoor		single_select	
+video_resolution	Разрешение видео	enum	T1_TYPE_SPECIFIC	conditional	spec|facet	SECURITY_CAMERA;VIDEO_DOORBELL	values#video_resolution		single_select	
+sensor_kind	Тип датчика	enum	T1_TYPE_SPECIFIC	conditional	routing|facet	SMART_SENSOR	values#sensor_kind		single_select	
+lock_type	Тип замка	enum	T1_TYPE_SPECIFIC	conditional	routing|facet	SMART_LOCK	values#lock_type		single_select	
+thermostat_type	Тип термостата	enum	T1_TYPE_SPECIFIC	conditional	routing|facet	SMART_THERMOSTAT	values#thermostat_type		single_select	
+bulb_base	Цоколь лампы	enum	T1_TYPE_SPECIFIC	conditional	spec|facet	SMART_LIGHT	values#bulb_base		single_select	
+brightness_lumen	Яркость	integer	T1_TYPE_SPECIFIC	conditional	spec|facet	SMART_LIGHT	lm	number		
+max_load_watt	Максимальная нагрузка	integer	T1_TYPE_SPECIFIC	conditional	spec|facet	SMART_PLUG;SMART_SWITCH	W	number		
+installation_type	Тип установки	enum	T1_TYPE_SPECIFIC	conditional	publish|facet	SMART_LOCK;SMART_THERMOSTAT;VIDEO_DOORBELL;SMART_SWITCH;SMART_LIGHT;SECURITY_CAMERA	values#installation_type		single_select	
+device_count_in_kit	Количество устройств в комплекте	integer	T1_TYPE_SPECIFIC	conditional	commerce|facet	AUTOMATION_KIT	integer		number	
+release_year	release year	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+warranty_status	warranty status	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+matter_support	matter support	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+thread_support	thread support	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+zigbee_support	zigbee support	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+z_wave_support	z wave support	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+connectivity_band	connectivity band	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#connectivity_band		type_specific	optional enrichment
+battery_life_months	battery life months	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+night_vision	night vision	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+field_of_view_deg	field of view deg	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+storage_mode	storage mode	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#storage_mode		type_specific	optional enrichment
+subscription_required	subscription required	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#subscription_required		type_specific	optional enrichment
+two_way_audio	two way audio	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+motion_detection	motion detection	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+person_detection	person detection	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+package_detection	package detection	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+privacy_shutter	privacy shutter	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+mounting_type	mounting type	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#mounting_type		type_specific	optional enrichment
+ip_rating	ip rating	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#ip_rating		type_specific	optional enrichment
+energy_monitoring	energy monitoring	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+switch_type	switch type	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#switch_type		type_specific	optional enrichment
+neutral_wire_required	neutral wire required	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+keypad	keypad	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+fingerprint	fingerprint	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+auto_lock	auto lock	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+hvac_compatibility	hvac compatibility	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#hvac_compatibility		type_specific	optional enrichment
+hub_protocols	hub protocols	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+max_connected_devices	max connected devices	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+alarm_volume_db	alarm volume db	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+siren_type	siren type	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#siren_type		type_specific	optional enrichment
+automation_use_case	automation use case	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	values#automation_use_case		type_specific	optional enrichment
+kit_contains	kit contains	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+included_accessories	included accessories	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+original_box	original box	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+repair_history	repair history	string	T2_OPTIONAL_ENRICHMENT	optional	facet|spec|search	TYPE_SPECIFIC	free_text_or_boolean		type_specific	optional enrichment
+normalization_confidence	normalization_confidence	system	T3_SYSTEM_HIDDEN	system	system	ALL	system		hidden	must not appear in UI
+identity_evidence	identity_evidence	system	T3_SYSTEM_HIDDEN	system	system	ALL	system		hidden	must not appear in UI
+route_confidence	route_confidence	system	T3_SYSTEM_HIDDEN	system	system	ALL	system		hidden	must not appear in UI
+source_quality_score	source_quality_score	system	T3_SYSTEM_HIDDEN	system	system	ALL	system		hidden	must not appear in UI
+dedup_fingerprint	dedup_fingerprint	system	T3_SYSTEM_HIDDEN	system	system	ALL	system		hidden	must not appear in UI
+privacy_risk_flag	privacy_risk_flag	system	T3_SYSTEM_HIDDEN	system	system	ALL	system		hidden	must not appear in UI

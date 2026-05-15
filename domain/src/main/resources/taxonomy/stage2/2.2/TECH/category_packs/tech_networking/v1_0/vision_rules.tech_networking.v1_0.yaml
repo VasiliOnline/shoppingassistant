@@ -1,0 +1,8 @@
+version: 1.0
+categoryCode: TECH.NETWORKING
+no_guess_policy:
+  - Do not infer exact model from logo-only images.
+  - Do not infer Wi-Fi generation without visible label/title/spec evidence.
+  - Do not infer port speed or PoE support without visible marking, title, or seller spec evidence.
+evidence_priority: [title_text, model_label_on_device, packaging_text, seller_spec_table, visible_port_labels, OCR_from_photo, logo_only]
+confidence_thresholds: {auto_route_min: 0.82, require_user_confirmation_below: 0.66, model_resolution_min: 0.78}

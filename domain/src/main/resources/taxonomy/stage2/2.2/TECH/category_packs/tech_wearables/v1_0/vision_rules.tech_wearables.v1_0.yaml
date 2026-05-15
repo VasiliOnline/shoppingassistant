@@ -1,0 +1,22 @@
+categoryCode: TECH.WEARABLES
+rules:
+  - id: no_model_guess_from_watch_face
+    severity: P0
+    text: "Do not infer exact model/generation from a generic round or square watch body unless text/OCR/logo/model number/listing title provides evidence."
+  - id: distinguish_watch_vs_band
+    severity: P0
+    text: "If image shows only strap/band without watch body, classify as WATCH_BAND or WEARABLE_ACCESSORY, not SMARTWATCH."
+  - id: ordinary_watch_guard
+    severity: P0
+    text: "Analog/mechanical watch without smart evidence routes to FASH.ACCESSORIES, not TECH.WEARABLES."
+  - id: smart_ring_guard
+    severity: P1
+    text: "Ring-shaped electronics with charger/app/health tracking evidence routes to SMART_RING; jewelry-only rings route to FASH.ACCESSORIES."
+  - id: privacy_camera_flag
+    severity: P1
+    text: "For AR/smart glasses or kids watches with visible camera, set camera_presence=YES when evidence exists."
+confidence_thresholds:
+  exact_model_from_image_only: forbidden
+  type_from_image: 0.70
+  brand_from_logo: 0.75
+  compatibility_from_text: 0.80

@@ -1,0 +1,40 @@
+attribute_code	label_ru	value_type	role	required_policy	usage_scope	is_facet	value_source	description_ru
+wearable_type	Тип носимого устройства	enum	T0_CORE	always_required	classification,search,facets,publish	true	values#wearable_type	Главный type-атрибут ветки TECH.WEARABLES.
+brand	Бренд	enum_or_text	T0_CORE	always_required	search,facets,publish,dedup	true	TECH.ELECTRONICS_COMMON#brand + runtime_candidates	Производитель/коммерческий бренд.
+model_name_text	Модель как в объявлении	text	T0_CORE	recommended	search,identity,publish	false	free_text	Исходная строка модели без агрессивной нормализации.
+condition	Состояние	enum	T0_CORE	always_required	facets,publish,trust	true	TECH.ELECTRONICS_COMMON#condition	Новое, б/у, восстановленное, на запчасти.
+color_family	Цвет	enum	T0_CORE	recommended	facets,variant,publish	true	TECH.ELECTRONICS_COMMON#color_family	Нормализованный цвет корпуса/основного изделия.
+case_size_mm	Размер корпуса, мм	number_or_enum	T1_TYPE_SPECIFIC	required_for_SMARTWATCH_AR_GLASSES_optional_other	facets,search,publish	true	values#case_size_mm + runtime_candidates	Размер корпуса/оправы, если применимо.
+display_type	Тип дисплея	enum	T1_TYPE_SPECIFIC	recommended_for_SMARTWATCH_FITNESS_TRACKER_AR_GLASSES	facets,search,publish	true	values#display_type	AMOLED/OLED/MIP/LCD/MicroLED/нет дисплея.
+connectivity_set	Связь	multi_enum	T1_TYPE_SPECIFIC	recommended	facets,search,publish	true	values#connectivity	Bluetooth, Wi-Fi, LTE, NFC, GPS, ANT+.
+compatible_os	Совместимая ОС телефона	multi_enum	T1_TYPE_SPECIFIC	recommended	facets,compatibility,publish	true	values#compatible_os	iOS, Android, оба, проприетарная экосистема.
+ecosystem	Экосистема	enum	T1_TYPE_SPECIFIC	recommended	facets,identity,compatibility	true	values#ecosystem	Apple, Galaxy, Pixel/Fitbit, Garmin, Huawei и т.д.
+battery_life_days	Автономность, дни	number_range	T1_TYPE_SPECIFIC	recommended	facets,search,publish	true	range:0.5..60	Ожидаемая автономность в обычном режиме.
+gps_support	GPS / GNSS	enum	T1_TYPE_SPECIFIC	recommended	facets,search,publish	true	values#gps_support	Нет, phone-assisted, built-in, dual-frequency.
+cellular_support	Cellular / LTE	enum	T1_TYPE_SPECIFIC	recommended_for_SMARTWATCH_KIDS	facets,search,publish	true	values#cellular_support	Есть ли LTE/eSIM/cellular-версия.
+nfc_payments	NFC/платежи	enum	T1_TYPE_SPECIFIC	optional	facets,search,publish	true	values#yes_no_unknown	Поддержка NFC/платёжных сценариев.
+sensor_set	Датчики	multi_enum	T1_TYPE_SPECIFIC	recommended	facets,search,enrichment	true	values#sensor	Пульс, SpO2, ECG, температура, барометр и др.
+health_feature_set	Функции здоровья	multi_enum	T1_TYPE_SPECIFIC	recommended	facets,search,enrichment	true	values#health_feature	Сон, ECG, SpO2, готовность, Body Battery и др.
+sport_profile_set	Спортивные режимы	multi_enum	T1_TYPE_SPECIFIC	optional	facets,search,enrichment	true	values#sport_profile	Бег, плавание, триатлон, походы, гольф и др.
+water_resistance	Влагозащита	enum	T1_TYPE_SPECIFIC	recommended	facets,search,publish	true	values#water_resistance	IP/ATM/метры; нормализуется мягко.
+durability_rating	Защита/прочность	multi_enum	T1_TYPE_SPECIFIC	optional	facets,search,publish	true	values#durability_rating	IP, MIL-STD, сапфировое стекло и т.д.
+case_material	Материал корпуса	enum	T1_TYPE_SPECIFIC	optional	facets,search,publish	true	values#case_material	Алюминий, сталь, титан, пластик, керамика.
+strap_material	Материал ремешка	enum	T1_TYPE_SPECIFIC	optional	facets,search,publish	true	values#strap_material	Силикон, нейлон, кожа, металл и т.д.
+strap_width_mm	Ширина ремешка, мм	number_or_enum	T1_TYPE_SPECIFIC	required_for_WATCH_BAND_optional_other	compatibility,facets,publish	true	values#strap_width_mm + runtime_candidates	Ширина/размер крепления ремешка.
+band_connector_type	Тип крепления ремешка	enum	T1_TYPE_SPECIFIC	required_for_WATCH_BAND_optional_other	compatibility,publish	true	values#band_connector_type	Apple proprietary, quick release, Garmin QuickFit и др.
+compatible_wearable_brand	Совместимый бренд	enum_or_text	T1_TYPE_SPECIFIC	required_for_ACCESSORY_TYPES	compatibility,facets,publish	true	TECH.COMPATIBILITY_COMMON#compatible_brand	Для ремешков, зарядок, плёнок, аксессуаров.
+compatible_wearable_model_text	Совместимая модель текстом	text	T1_TYPE_SPECIFIC	required_for_ACCESSORY_TYPES	compatibility,publish	false	free_text	Исходная строка совместимости из объявления.
+ring_size	Размер кольца	enum_or_number	T1_TYPE_SPECIFIC	required_for_SMART_RING	facets,publish	true	values#ring_size + runtime_candidates	Размер умного кольца.
+ar_display_mode	Тип AR/очков	enum	T1_TYPE_SPECIFIC	required_for_AR_GLASSES	facets,publish	true	values#ar_display_mode	Smart glasses, XR display, camera glasses и т.д.
+prescription_support	Поддержка диоптрий	enum	T1_TYPE_SPECIFIC	optional_for_AR_GLASSES	facets,publish	true	values#yes_no_unknown	Можно ли использовать с рецептурными линзами.
+camera_presence	Камера	enum	T1_TYPE_SPECIFIC	optional_for_AR_GLASSES_KIDS	facets,privacy,publish	true	values#yes_no_unknown	Есть ли камера; важен privacy/safety сигнал.
+storage_gb	Память, ГБ	number_or_enum	T2_OPTIONAL_ENRICHMENT	optional	search,enrichment	false	TECH.SPECS_COMMON#storage	Память устройства, если важна.
+ram_gb	RAM, ГБ	number_or_enum	T2_OPTIONAL_ENRICHMENT	optional	search,enrichment	false	TECH.SPECS_COMMON#ram	ОЗУ, если указана.
+charging_type	Зарядка	enum	T2_OPTIONAL_ENRICHMENT	optional	search,publish	true	values#charging_type	Магнитная, wireless puck, USB-C, proprietary.
+included_accessories	Комплект	multi_enum	T2_OPTIONAL_ENRICHMENT	optional	publish,trust	false	TECH.ELECTRONICS_COMMON#included_accessories	Ремешок, зарядка, коробка и др.
+original_box	Коробка	enum	T2_OPTIONAL_ENRICHMENT	optional	publish,trust	true	values#yes_no_unknown	Есть ли оригинальная коробка.
+warranty	Гарантия	enum_or_text	T2_OPTIONAL_ENRICHMENT	optional	facets,publish,trust	true	TECH.ELECTRONICS_COMMON#warranty	Официальная/продавца/нет.
+activation_lock_status	Блокировка/аккаунт	enum	T1_TYPE_SPECIFIC	recommended_for_SMARTWATCH	publish,safety,trust	true	values#activation_lock_status	Особенно важно для Apple Watch / Samsung / LTE.
+imei_or_serial_presence	IMEI/serial evidence	enum	T3_SYSTEM_HIDDEN	optional	trust,moderation	false	values#evidence_presence	Не показывать полностью в UI; только наличие доказательства.
+identity_confidence	Уверенность идентификации	number	T3_SYSTEM_HIDDEN	system_computed	runtime,quality	false	0..1	Системный скоринг нормализации модели.
+vision_confidence	Уверенность vision	number	T3_SYSTEM_HIDDEN	system_computed	runtime,quality	false	0..1	Системный скоринг по изображению.

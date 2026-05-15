@@ -1,0 +1,35 @@
+{
+  "package_name": "TECH_POWER_CHARGING_CABLES_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.POWER_CHARGING_CABLES",
+  "static_validation": {
+    "zip_integrity": "PASS",
+    "json_syntax": "PASS",
+    "jsonl_structure": "PASS",
+    "tsv_structure": "PASS",
+    "initial_fields": "8/8",
+    "primary_facets": "7/7",
+    "presets_collections_files": 0,
+    "forbidden_microcategory_codes": 0,
+    "t3_hidden_leaks": 0,
+    "golden_queries": "PASS"
+  },
+  "counts": {
+    "attributes": 52,
+    "values": 158,
+    "aliases": 131,
+    "model_head_seed": 51,
+    "model_aliases": 153,
+    "golden_queries": 113,
+    "sample_offers": 124,
+    "publish_sample_offers": 45,
+    "facet_coverage_rows": 195
+  },
+  "data_coverage_verdict": "baseline production data candidate",
+  "runtime_release_status": "PENDING_PROJECT_VALIDATORS",
+  "external_runtime_validators_executed": false,
+  "known_limitations": [
+    "Representative head seed only; new charger/cable models and regional brands should enter via runtime_candidates/live_values.",
+    "Phone-specific chargers/cables may require route policy review against TECH.PHONE_ACCESSORIES when compatible_model is explicit.",
+    "Battery safety enforcement belongs to runtime safety/publish layer, not taxonomy alone."
+  ]
+}

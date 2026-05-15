@@ -1,0 +1,135 @@
+{
+  "schema_pack_id": "schema_pack.tech_smart_home_security.v1_0",
+  "categoryCode": "TECH.SMART_HOME_SECURITY",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "smart_home_type",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "type_values": [
+    {
+      "code": "SMART_SPEAKER",
+      "label_ru": "Умная колонка"
+    },
+    {
+      "code": "SMART_DISPLAY",
+      "label_ru": "Умный дисплей"
+    },
+    {
+      "code": "SMART_LIGHT",
+      "label_ru": "Умный свет"
+    },
+    {
+      "code": "SMART_PLUG",
+      "label_ru": "Умная розетка"
+    },
+    {
+      "code": "SMART_SWITCH",
+      "label_ru": "Умный выключатель"
+    },
+    {
+      "code": "SMART_SENSOR",
+      "label_ru": "Умный датчик"
+    },
+    {
+      "code": "SECURITY_CAMERA",
+      "label_ru": "Камера безопасности"
+    },
+    {
+      "code": "VIDEO_DOORBELL",
+      "label_ru": "Видеозвонок"
+    },
+    {
+      "code": "SMART_LOCK",
+      "label_ru": "Умный замок"
+    },
+    {
+      "code": "SMART_THERMOSTAT",
+      "label_ru": "Умный термостат"
+    },
+    {
+      "code": "HOME_HUB",
+      "label_ru": "Хаб умного дома"
+    },
+    {
+      "code": "ALARM_SIREN",
+      "label_ru": "Сигнализация / сирена"
+    },
+    {
+      "code": "AUTOMATION_KIT",
+      "label_ru": "Комплект автоматизации"
+    }
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "smart_home_type",
+      "brand",
+      "model_name_text",
+      "condition",
+      "color_family",
+      "protocol",
+      "ecosystem",
+      "power_source",
+      "region"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "voice_assistant_support",
+      "hub_required",
+      "indoor_outdoor",
+      "video_resolution",
+      "sensor_kind",
+      "lock_type",
+      "thermostat_type",
+      "bulb_base",
+      "brightness_lumen",
+      "max_load_watt",
+      "installation_type",
+      "device_count_in_kit"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "release_year",
+      "warranty_status",
+      "connectivity_band",
+      "matter_support",
+      "thread_support",
+      "zigbee_support",
+      "z_wave_support",
+      "poe_support",
+      "battery_life_months",
+      "night_vision",
+      "field_of_view_deg",
+      "storage_mode",
+      "subscription_required",
+      "two_way_audio",
+      "motion_detection",
+      "person_detection",
+      "privacy_shutter",
+      "mounting_type",
+      "ip_rating",
+      "energy_monitoring",
+      "keypad",
+      "fingerprint",
+      "alarm_volume_db",
+      "automation_use_case"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "normalization_confidence",
+      "identity_evidence",
+      "route_confidence",
+      "source_quality_score",
+      "dedup_fingerprint",
+      "privacy_risk_flag"
+    ]
+  },
+  "ui_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "runtime_policy": {
+    "long_tail_policy": "runtime_candidates_then_promotion",
+    "vision_no_guess": "exact model/protocol/privacy features require evidence"
+  }
+}

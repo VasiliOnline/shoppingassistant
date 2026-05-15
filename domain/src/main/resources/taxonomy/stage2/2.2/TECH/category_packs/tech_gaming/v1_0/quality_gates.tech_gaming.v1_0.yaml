@@ -1,0 +1,21 @@
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+category_specific_gates:
+  - GamingPlatformRouteGate
+  - PhysicalGameMediaGate
+  - GamingAccessoryRouteGate
+  - GamingResaleConditionGate
+  - NoMicrocategoryGate
+thresholds:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  sample_offers_min: 80
+  golden_queries_min: 100
+  t3_hidden_ui_leaks: 0

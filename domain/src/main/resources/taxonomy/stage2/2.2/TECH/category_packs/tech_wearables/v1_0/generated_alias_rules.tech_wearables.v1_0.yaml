@@ -1,0 +1,31 @@
+rules:
+  - id: smartwatch_brand_model_ru_en
+    applies_to: [SMARTWATCH, FITNESS_TRACKER, SMART_RING]
+    templates:
+      - "{brand} {model}"
+      - "{model} {case_size_mm}"
+      - "{model} lte"
+      - "{model} cellular"
+      - "{model} gps"
+      - "{model} ремешок"
+    normalize:
+      categoryCode: TECH.WEARABLES
+      model_name_text: "{model}"
+  - id: apple_watch_shorthand
+    detect:
+      - "aw {series_or_ultra}"
+      - "эпл вотч {series_or_ultra}"
+      - "айвотч {series_or_ultra}"
+    normalize:
+      brand: APPLE
+      family: APPLE_WATCH
+  - id: band_compatibility
+    detect:
+      - "ремешок {brand_or_model} {size}"
+      - "watch band {brand_or_model} {size}"
+      - "strap {brand_or_model}"
+    normalize:
+      categoryCode: TECH.WEARABLES
+      wearable_type: WATCH_BAND
+      compatible_wearable_model_text: "{brand_or_model}"
+      strap_width_mm: "{size}"

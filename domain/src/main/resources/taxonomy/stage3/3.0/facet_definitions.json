@@ -1,5 +1,28 @@
 [
   {
+    "facetKey": "ac_outlet_count",
+    "titleRu": "Количество розеток",
+    "titleEn": "Ac Outlet Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "ac_outlet_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10753,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "accessory_completeness_grade",
     "titleRu": "Полнота комплектации",
     "titleEn": "accessory completeness grade",
@@ -91,7 +114,9 @@
     "titleEn": "Accessory Subtype",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.GAMING",
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.PRINTERS_SCANNERS"
     ],
     "attributeCode": "accessory_subtype",
     "dictionaryCode": "accessory_subtype",
@@ -161,6 +186,7 @@
     "titleEn": "account lock status",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.GAMING",
       "TECH.PHONES"
     ],
     "attributeCode": "account_lock_status",
@@ -194,6 +220,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 6030,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "activation_lock_status",
+    "titleRu": "Блокировка/аккаунт",
+    "titleEn": "Activation Lock Status",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "activation_lock_status",
+    "dictionaryCode": "activation_lock_status",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9803,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -396,6 +445,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "age_rating_value",
+    "titleRu": "Возрастной рейтинг",
+    "titleEn": "Age Rating Value",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "age_rating_value",
+    "dictionaryCode": "age_rating_value",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10273,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "age_recommendation",
     "titleRu": "Возрастная рекомендация",
     "titleEn": "age recommendation",
@@ -439,6 +511,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "alarm_volume_db",
+    "titleRu": "alarm volume db",
+    "titleEn": "Alarm Volume Db",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "alarm_volume_db",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4090,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -532,6 +627,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "antenna_gain_dbi",
+    "titleRu": "Усиление антенны",
+    "titleEn": "Antenna Gain Dbi",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "antenna_gain_dbi",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10513,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "antenna_type",
+    "titleRu": "Тип антенны",
+    "titleEn": "Antenna Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "antenna_type",
+    "dictionaryCode": "antenna_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10523,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "anti_glare",
     "titleRu": "Антиблик",
     "titleEn": "Anti Glare",
@@ -575,6 +716,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "aperture_range",
+    "titleRu": "Светосила / диафрагма",
+    "titleEn": "Aperture Range",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "aperture_range",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9933,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -647,6 +811,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ar_display_mode",
+    "titleRu": "Тип AR/очков",
+    "titleEn": "Ar Display Mode",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "ar_display_mode",
+    "dictionaryCode": "ar_display_mode",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9799,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "arcade_equipment_type",
+    "titleRu": "Тип аркадного оборудования",
+    "titleEn": "Arcade Equipment Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "arcade_equipment_type",
+    "dictionaryCode": "arcade_equipment_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10333,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -962,6 +1172,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "auto_lock",
+    "titleRu": "auto lock",
+    "titleEn": "Auto Lock",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "auto_lock",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4050,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "autofocus",
     "titleRu": "Автофокус",
     "titleEn": "autofocus",
@@ -982,6 +1215,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "autofocus_type",
+    "titleRu": "Автофокус",
+    "titleEn": "Autofocus Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "autofocus_type",
+    "dictionaryCode": "autofocus_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9973,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "automation_use_case",
+    "titleRu": "automation use case",
+    "titleEn": "Automation Use Case",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "automation_use_case",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4110,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -1116,6 +1395,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 6350,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "band_connector_type",
+    "titleRu": "Тип крепления ремешка",
+    "titleEn": "Band Connector Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "band_connector_type",
+    "dictionaryCode": "band_connector_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9796,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -1267,6 +1569,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "battery_chemistry",
+    "titleRu": "Химия батареи",
+    "titleEn": "Battery Chemistry",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "battery_chemistry",
+    "dictionaryCode": "battery_chemistry",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10743,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "battery_count",
+    "titleRu": "Количество батарей",
+    "titleEn": "Battery Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "battery_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10013,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "battery_cycle_count",
     "titleRu": "Циклы батареи",
     "titleEn": "battery cycle count",
@@ -1338,6 +1686,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "battery_life_days",
+    "titleRu": "Автономность, дни",
+    "titleEn": "Battery Life Days",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "battery_life_days",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9787,
+      "pinned": false,
+      "hidden": false,
+      "format": "days"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "battery_life_hours",
     "titleRu": "Время работы, часы",
     "titleEn": "battery life hours",
@@ -1362,6 +1733,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "battery_life_months",
+    "titleRu": "battery life months",
+    "titleEn": "Battery Life Months",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "battery_life_months",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3880,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "battery_mah",
     "titleRu": "Батарея (мА·ч)",
     "titleEn": "Battery Capacity",
@@ -1377,6 +1771,52 @@
       "format": null
     },
     "effectiveFrom": "2026-03-28",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "battery_model",
+    "titleRu": "Модель батареи",
+    "titleEn": "Battery Model",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "battery_model",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10003,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "battery_size",
+    "titleRu": "Типоразмер батареи",
+    "titleEn": "Battery Size",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "battery_size",
+    "dictionaryCode": "battery_size",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10733,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -1492,6 +1932,29 @@
       "format": "cm"
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "binocular_magnification",
+    "titleRu": "Увеличение оптики",
+    "titleEn": "Binocular Magnification",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "binocular_magnification",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10153,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -1652,6 +2115,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "braided_cable",
+    "titleRu": "Оплётка",
+    "titleEn": "Braided Cable",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "braided_cable",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10713,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "brand",
     "titleRu": "Бренд",
     "titleEn": "Brand",
@@ -1780,6 +2266,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "brightness_lumen",
+    "titleRu": "Яркость",
+    "titleEn": "Brightness Lumen",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "brightness_lumen",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3770,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -1921,6 +2430,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "bulb_base",
+    "titleRu": "Цоколь лампы",
+    "titleEn": "Bulb Base",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "bulb_base",
+    "dictionaryCode": "bulb_base",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3760,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "bundle_items_normalized",
+    "titleRu": "Нормализованный комплект",
+    "titleEn": "Bundle Items Normalized",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "bundle_items_normalized",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10213,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "bus_protocol",
     "titleRu": "Протокол шины",
     "titleEn": "bus protocol",
@@ -2044,14 +2599,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTER_ACCESSORIES",
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -2099,6 +2654,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "cable_standard",
+    "titleRu": "Стандарт кабеля",
+    "titleEn": "Cable Standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "cable_standard",
+    "dictionaryCode": "cable_standard",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10683,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "cache_mb",
     "titleRu": "Кэш HDD/SSD, МБ",
     "titleEn": "cache mb",
@@ -2143,6 +2721,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "camera_lens_type",
+    "titleRu": "Тип объектива",
+    "titleEn": "Camera Lens Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "camera_lens_type",
+    "dictionaryCode": "camera_lens_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9913,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "camera_main_mp",
     "titleRu": "Основная камера, Мп",
     "titleEn": "camera main mp",
@@ -2161,6 +2762,52 @@
       "pinned": false,
       "hidden": false,
       "format": "mp"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "camera_presence",
+    "titleRu": "Камера",
+    "titleEn": "Camera Presence",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "camera_presence",
+    "dictionaryCode": "camera_presence",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9801,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "camera_type",
+    "titleRu": "Тип товара в ветке камеры/дроны",
+    "titleEn": "Camera Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "camera_type",
+    "dictionaryCode": "camera_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9863,
+      "pinned": false,
+      "hidden": false,
+      "format": null
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
@@ -2194,7 +2841,8 @@
     "titleEn": "Capacity Mah",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.POWER_CHARGING_CABLES"
     ],
     "attributeCode": "capacity_mah",
     "dictionaryCode": null,
@@ -2217,7 +2865,8 @@
     "titleEn": "Capacity Wh",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.POWER_CHARGING_CABLES"
     ],
     "attributeCode": "capacity_wh",
     "dictionaryCode": null,
@@ -2278,6 +2927,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "car_voltage_v",
+    "titleRu": "Автомобильное напряжение",
+    "titleEn": "Car Voltage V",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "car_voltage_v",
+    "dictionaryCode": "car_voltage_v",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10793,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -2392,6 +3064,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cartridge_type",
+    "titleRu": "Тип расходника",
+    "titleEn": "Cartridge Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "cartridge_type",
+    "dictionaryCode": "cartridge_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10883,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -2538,7 +3233,8 @@
     "titleEn": "Материал чехла",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "case_material",
     "dictionaryCode": "case_material",
@@ -2680,6 +3376,52 @@
     "source": "PRODUCT",
     "ui": {
       "order": 4000,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cellular_standard",
+    "titleRu": "Сотовая связь",
+    "titleEn": "Cellular Standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "cellular_standard",
+    "dictionaryCode": "cellular_standard",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10493,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cellular_support",
+    "titleRu": "Cellular / LTE",
+    "titleEn": "Cellular Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "cellular_support",
+    "dictionaryCode": "cellular_support",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9789,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -2923,6 +3665,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 2700,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "charging_type",
+    "titleRu": "Зарядка",
+    "titleEn": "Charging Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "charging_type",
+    "dictionaryCode": "charging_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9802,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -3192,20 +3957,20 @@
       "SPORT.BIKES_SCOOTERS",
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
+      "TECH.CAR_ELECTRONICS_GPS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.GAMING",
+      "TECH.MONITORS_DISPLAYS",
+      "TECH.NETWORKING",
       "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
-      "TECH.SMART_HOME_SECURITY",
-      "TECH.TABLETS_E_READERS",
-      "TECH.TV_HOME_THEATER",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.STORAGE_MEMORY",
-      "TECH.WEARABLES",
-      "TECH.NETWORKING",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -3268,36 +4033,20 @@
   {
     "facetKey": "color_family",
     "titleRu": "Цвет",
-    "titleEn": "color family",
-    "valueType": "ENUM",
+    "titleEn": "Color Family",
+    "valueType": "TEXT",
     "appliesToCategoryCodes": [
-      "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
-      "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.GAMING",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.NETWORKING",
-      "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.PHONES",
-      "TECH.POWER_CHARGING_CABLES",
-      "TECH.PRINTERS_SCANNERS",
-      "TECH.SMART_HOME_SECURITY",
-      "TECH.STORAGE_MEMORY",
-      "TECH.TABLETS_E_READERS",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES"
+      "TECH.SMART_HOME_SECURITY"
     ],
     "attributeCode": "color_family",
-    "dictionaryCode": "color_family",
-    "selectionMode": "MULTI",
-    "uiWidget": "CHECKBOX_GROUP",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
     "normalizationRef": "stage22.query_normalizer_v1",
     "source": "PRODUCT",
     "ui": {
-      "order": 2140,
+      "order": 9823,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -3356,6 +4105,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "color_printing",
+    "titleRu": "Цветная печать",
+    "titleEn": "Color Printing",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "color_printing",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10843,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "color_secondary",
     "titleRu": "Дополнительный цвет",
     "titleEn": "Color Secondary",
@@ -3379,6 +4151,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "color_temperature_k",
+    "titleRu": "Цветовая температура, K",
+    "titleEn": "Color Temperature K",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "color_temperature_k",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10143,
+      "pinned": false,
+      "hidden": false,
+      "format": "K"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -3568,6 +4363,30 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatibility_target",
+    "titleRu": "Совместимость/экосистема",
+    "titleEn": "Compatibility Target",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING",
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "compatibility_target",
+    "dictionaryCode": null,
+    "selectionMode": "SINGLE",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10563,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -3834,7 +4653,8 @@
     "titleEn": "Compatible Platform",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.AUDIO"
+      "TECH.AUDIO",
+      "TECH.GAMING"
     ],
     "attributeCode": "compatible_platform",
     "dictionaryCode": "compatible_platform",
@@ -3849,6 +4669,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "compatible_printer_brand",
+    "titleRu": "Совместимый бренд принтера",
+    "titleEn": "Compatible Printer Brand",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "compatible_printer_brand",
+    "dictionaryCode": "compatible_printer_brand",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10913,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -3961,6 +4804,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "compatible_wearable_brand",
+    "titleRu": "Совместимый бренд",
+    "titleEn": "Compatible Wearable Brand",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "compatible_wearable_brand",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9797,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "compression_level",
     "titleRu": "Компрессия",
     "titleEn": "Compression Level",
@@ -4035,72 +4901,28 @@
     "facetKey": "condition",
     "titleRu": "Состояние",
     "titleEn": "Condition",
-    "valueType": "ENUM",
+    "valueType": "TEXT",
     "appliesToCategoryCodes": [
-      "APPL.CLIMATE",
-      "APPL.MAJOR",
-      "APPL.SMALL",
-      "AUTO.ACCESSORIES",
-      "AUTO.PARTS",
-      "AUTO.TIRES_WHEELS",
-      "AUTO.TOOLS_GARAGE",
-      "BEAUTY.DEVICES",
-      "FASH.ACCESSORIES",
-      "FASH.BAGS",
-      "FASH.KIDS",
-      "FASH.MEN",
-      "FASH.SHOES",
-      "FASH.WOMEN",
-      "HOME.FURNITURE",
-      "HOME.GARDEN",
-      "HOME.LIGHTING",
-      "HOME.PLUMBING",
-      "HOME.REPAIR_TOOLS",
-      "HOME.STORAGE",
-      "HOME.TEXTILES",
-      "KIDS.BABY_GEAR",
-      "KIDS.NURSERY_FURNITURE",
-      "KIDS.STROLLERS_CARSEATS",
-      "KIDS.TOYS_GAMES",
-      "PETS.ACCESSORIES",
-      "SPORT.BIKES_SCOOTERS",
-      "SPORT.EQUIPMENT",
-      "SPORT.FITNESS",
-      "SPORT.HOBBY",
-      "SPORT.OUTDOOR",
-      "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
-      "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTERS",
-      "TECH.COMPUTER_ACCESSORIES",
       "TECH.GAMING",
-      "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
-      "TECH.PC_COMPONENTS",
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.POWER_CHARGING_CABLES",
-      "TECH.PRINTERS_SCANNERS",
-      "TECH.SMART_HOME_SECURITY",
-      "TECH.STORAGE_MEMORY",
-      "TECH.TABLETS_E_READERS",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES"
+      "TECH.SMART_HOME_SECURITY"
     ],
-    "source": "OFFER",
+    "attributeCode": "condition",
+    "dictionaryCode": "condition",
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
     "ui": {
-      "order": 30,
-      "pinned": true,
+      "order": 9813,
+      "pinned": false,
       "hidden": false,
       "format": null
     },
-    "effectiveFrom": "2026-02-19",
-    "effectiveTo": null,
-    "attributeCode": "condition",
-    "dictionaryCode": "condition",
-    "selectionMode": "MULTI",
-    "uiWidget": "CHECKBOX_GROUP",
-    "normalizationRef": "stage22.query_normalizer_v1"
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
   },
   {
     "facetKey": "condition_grade",
@@ -4133,6 +4955,7 @@
     "appliesToCategoryCodes": [
       "TECH.AUDIO",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.GAMING",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "connection_type",
@@ -4156,6 +4979,8 @@
     "titleEn": "connectivity",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
+      "TECH.PRINTERS_SCANNERS",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "connectivity",
@@ -4167,6 +4992,52 @@
     "ui": {
       "order": 3950,
       "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connectivity_band",
+    "titleRu": "connectivity band",
+    "titleEn": "Connectivity Band",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "connectivity_band",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3870,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "connectivity_set",
+    "titleRu": "Связь",
+    "titleEn": "Connectivity Set",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "connectivity_set",
+    "dictionaryCode": "connectivity_set",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9786,
+      "pinned": false,
       "hidden": false,
       "format": null
     },
@@ -4266,6 +5137,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "connector_from",
+    "titleRu": "Разъём 1",
+    "titleEn": "Connector From",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "connector_from",
+    "dictionaryCode": "connector_from",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10603,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "connector_input",
     "titleRu": "Входной разъём",
     "titleEn": "Connector Input",
@@ -4335,6 +5229,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "connector_to",
+    "titleRu": "Разъём 2",
+    "titleEn": "Connector To",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "connector_to",
+    "dictionaryCode": "connector_to",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10613,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "connector_type",
     "titleRu": "Тип разъёма",
     "titleEn": "Connector type",
@@ -4343,14 +5260,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTER_ACCESSORIES",
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -4413,6 +5330,52 @@
     "source": "PRODUCT",
     "ui": {
       "order": 5470,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "controller_ecosystem",
+    "titleRu": "Controller ecosystem",
+    "titleEn": "Controller Ecosystem",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "controller_ecosystem",
+    "dictionaryCode": "controller_ecosystem",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10573,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "controller_subtype",
+    "titleRu": "Подтип контроллера",
+    "titleEn": "Controller Subtype",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "controller_subtype",
+    "dictionaryCode": "controller_subtype",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10303,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -4568,6 +5531,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 2150,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "cosmetic_grade",
+    "titleRu": "Косметическое состояние",
+    "titleEn": "Cosmetic Grade",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "cosmetic_grade",
+    "dictionaryCode": "cosmetic_grade",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10343,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -4922,6 +5908,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "data_transfer_speed_gbps",
+    "titleRu": "Скорость передачи данных",
+    "titleEn": "Data Transfer Speed Gbps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "data_transfer_speed_gbps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10693,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "data_transfer_support",
     "titleRu": "Передача данных",
     "titleEn": "Передача данных",
@@ -5060,6 +6069,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "device_count_in_kit",
+    "titleRu": "Количество устройств в комплекте",
+    "titleEn": "Device Count In Kit",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "device_count_in_kit",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3800,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "dimensions",
     "titleRu": "Габариты",
     "titleEn": "Dimensions",
@@ -5095,6 +6127,29 @@
       "pinned": false,
       "hidden": false,
       "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "disc_drive",
+    "titleRu": "Дисковод",
+    "titleEn": "Disc Drive",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "disc_drive",
+    "dictionaryCode": "disc_drive",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10243,
+      "pinned": false,
+      "hidden": false,
+      "format": null
     },
     "effectiveFrom": "2026-05-14",
     "effectiveTo": null
@@ -5221,7 +6276,9 @@
     "titleEn": "display type",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.MONITORS_DISPLAYS"
+      "TECH.GAMING",
+      "TECH.MONITORS_DISPLAYS",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "display_type",
     "dictionaryCode": "display_type",
@@ -5259,6 +6316,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "docsis_version",
+    "titleRu": "Версия DOCSIS",
+    "titleEn": "Docsis Version",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "docsis_version",
+    "dictionaryCode": "docsis_version",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10483,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -5448,6 +6528,98 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "drone_flight_time_min",
+    "titleRu": "Время полёта, мин",
+    "titleEn": "Drone Flight Time Min",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "drone_flight_time_min",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10043,
+      "pinned": false,
+      "hidden": false,
+      "format": "min"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "drone_range_km",
+    "titleRu": "Дальность передачи, км",
+    "titleEn": "Drone Range Km",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "drone_range_km",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10053,
+      "pinned": false,
+      "hidden": false,
+      "format": "km"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "drone_registration_class",
+    "titleRu": "Класс/регистрация дрона",
+    "titleEn": "Drone Registration Class",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "drone_registration_class",
+    "dictionaryCode": "drone_registration_class",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10073,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "drone_weight_g",
+    "titleRu": "Вес дрона, г",
+    "titleEn": "Drone Weight G",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "drone_weight_g",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10063,
+      "pinned": false,
+      "hidden": false,
+      "format": "g"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "drop_protection_m",
     "titleRu": "Защита от падения, м",
     "titleEn": "Drop Protection M",
@@ -5494,6 +6666,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "duplex_printing",
+    "titleRu": "Двусторонняя печать",
+    "titleEn": "Duplex Printing",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "duplex_printing",
+    "dictionaryCode": "duplex_printing",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10863,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "durability_rating",
+    "titleRu": "Защита/прочность",
+    "titleEn": "Durability Rating",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "durability_rating",
+    "dictionaryCode": "durability_rating",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9794,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "dust_bag_included",
     "titleRu": "Пыльник в комплекте",
     "titleEn": "Dust Bag Included",
@@ -5522,7 +6740,8 @@
     "titleEn": "E Marker Chip",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
-      "TECH.PHONE_ACCESSORIES"
+      "TECH.PHONE_ACCESSORIES",
+      "TECH.POWER_CHARGING_CABLES"
     ],
     "attributeCode": "e_marker_chip",
     "dictionaryCode": null,
@@ -5741,6 +6960,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "energy_monitoring",
+    "titleRu": "energy monitoring",
+    "titleEn": "Energy Monitoring",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "energy_monitoring",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4000,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "ergonomic_hand",
     "titleRu": "Эргономика под руку",
     "titleEn": "ergonomic hand",
@@ -5804,6 +7046,29 @@
     },
     "titleRu": "Ethernet",
     "titleEn": "Ethernet"
+  },
+  {
+    "facetKey": "ethernet_max_speed",
+    "titleRu": "Макс. Ethernet",
+    "titleEn": "Ethernet Max Speed",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "ethernet_max_speed",
+    "dictionaryCode": "ethernet_max_speed",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10373,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
   },
   {
     "facetKey": "ethernet_speed",
@@ -6031,6 +7296,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "fast_charge_protocol",
+    "titleRu": "Быстрая зарядка",
+    "titleEn": "Fast Charge Protocol",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "fast_charge_protocol",
+    "dictionaryCode": "fast_charge_protocol",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10633,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "fast_charge_standard",
     "titleRu": "Стандарт быстрой зарядки",
     "titleEn": "Стандарт быстрой зарядки",
@@ -6095,6 +7383,75 @@
       "format": "G"
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "field_of_view_deg",
+    "titleRu": "field of view deg",
+    "titleEn": "Field Of View Deg",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "field_of_view_deg",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3900,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "filter_diameter_mm",
+    "titleRu": "Диаметр фильтра, мм",
+    "titleEn": "Filter Diameter Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "filter_diameter_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10173,
+      "pinned": false,
+      "hidden": false,
+      "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "fingerprint",
+    "titleRu": "fingerprint",
+    "titleEn": "Fingerprint",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "fingerprint",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4040,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -6192,6 +7549,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "focal_length_mm",
+    "titleRu": "Фокусное расстояние, мм",
+    "titleEn": "Focal Length Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "focal_length_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9923,
+      "pinned": false,
+      "hidden": false,
+      "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "foldable",
     "titleRu": "Складной",
     "titleEn": "Foldable",
@@ -6215,6 +7595,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "folded_length_cm",
+    "titleRu": "Длина в сложенном виде, см",
+    "titleEn": "Folded Length Cm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "folded_length_cm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10193,
+      "pinned": false,
+      "hidden": false,
+      "format": "cm"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -6278,6 +7681,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "frame_rate_max_fps",
+    "titleRu": "Макс. частота кадров",
+    "titleEn": "Frame Rate Max Fps",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "frame_rate_max_fps",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9953,
+      "pinned": false,
+      "hidden": false,
+      "format": "fps"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -6390,6 +7816,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "game_platform",
+    "titleRu": "Платформа игры",
+    "titleEn": "Game Platform",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "game_platform",
+    "dictionaryCode": "game_platform",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10263,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "gaming_features",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
@@ -6433,6 +7882,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "gaming_type",
+    "titleRu": "Тип игрового товара",
+    "titleEn": "Gaming Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "gaming_type",
+    "dictionaryCode": "gaming_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10223,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "gan_charger",
+    "titleRu": "GaN зарядка",
+    "titleEn": "Gan Charger",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "gan_charger",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10653,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -6494,6 +7989,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "gimbal_axis_count",
+    "titleRu": "Количество осей стабилизации",
+    "titleEn": "Gimbal Axis Count",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "gimbal_axis_count",
+    "dictionaryCode": "gimbal_axis_count",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10103,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "glove_size",
     "titleRu": "Размер перчаток",
     "titleEn": "Glove Size",
@@ -6514,6 +8032,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "gps_support",
+    "titleRu": "GPS / GNSS",
+    "titleEn": "Gps Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "gps_support",
+    "dictionaryCode": "gps_support",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9788,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -6882,6 +8423,7 @@
     "facetKey": "hdmi_version",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES",
       "TECH.TV_HOME_THEATER"
     ],
     "attributeCode": "hdmi_version",
@@ -6985,6 +8527,52 @@
       "format": "cm"
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "headset_surround",
+    "titleRu": "Surround / spatial audio",
+    "titleEn": "Headset Surround",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "headset_surround",
+    "dictionaryCode": "headset_surround",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10323,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "health_feature_set",
+    "titleRu": "Функции здоровья",
+    "titleEn": "Health Feature Set",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "health_feature_set",
+    "dictionaryCode": "health_feature_set",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9792,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -7148,6 +8736,75 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "hub_protocols",
+    "titleRu": "hub protocols",
+    "titleEn": "Hub Protocols",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "hub_protocols",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4070,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "hub_required",
+    "titleRu": "Нужен хаб",
+    "titleEn": "Hub Required",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "hub_required",
+    "dictionaryCode": null,
+    "selectionMode": "SINGLE",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3700,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "hvac_compatibility",
+    "titleRu": "hvac compatibility",
+    "titleEn": "Hvac Compatibility",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "hvac_compatibility",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4060,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -7358,37 +9015,21 @@
   },
   {
     "facetKey": "included_accessories",
-    "titleRu": "Комплектация",
-    "titleEn": "included accessories",
-    "valueType": "ENUM",
+    "titleRu": "Комплект",
+    "titleEn": "Included Accessories",
+    "valueType": "TEXT",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
-      "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
       "TECH.CAMERAS_DRONES",
-      "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
-      "TECH.NETWORKING",
-      "TECH.POWER_CHARGING_CABLES",
-      "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY"
     ],
     "attributeCode": "included_accessories",
-    "dictionaryCode": "included_accessories",
-    "selectionMode": "MULTI",
-    "uiWidget": "CHECKBOX_GROUP",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
     "normalizationRef": "stage22.query_normalizer_v1",
     "source": "PRODUCT",
     "ui": {
-      "order": 2180,
+      "order": 9853,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -7443,6 +9084,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "indoor_outdoor",
+    "titleRu": "Внутри/снаружи",
+    "titleEn": "Indoor Outdoor",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "indoor_outdoor",
+    "dictionaryCode": "indoor_outdoor",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3710,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "input_type",
     "titleRu": "Входы",
     "titleEn": "Input Type",
@@ -7486,6 +9150,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "installation_type",
+    "titleRu": "Тип установки",
+    "titleEn": "Installation Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "installation_type",
+    "dictionaryCode": "installation_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3790,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -7589,7 +9276,9 @@
     "titleEn": "IP Rating",
     "valueType": "TEXT",
     "appliesToCategoryCodes": [
-      "TECH.PHONES"
+      "TECH.NETWORKING",
+      "TECH.PHONES",
+      "TECH.SMART_HOME_SECURITY"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -7599,7 +9288,9 @@
       "format": null
     },
     "effectiveFrom": "2026-03-28",
-    "effectiveTo": null
+    "effectiveTo": null,
+    "attributeCode": "ip_rating",
+    "dictionaryCode": "ip_rating"
   },
   {
     "facetKey": "is_adjustable_strap",
@@ -7622,6 +9313,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "is_body_only",
+    "titleRu": "Только корпус/body only",
+    "titleEn": "Is Body Only",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "is_body_only",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9873,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -7666,6 +9380,29 @@
       "format": null
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "isp_locked",
+    "titleRu": "Привязка к оператору",
+    "titleEn": "Isp Locked",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "isp_locked",
+    "dictionaryCode": "isp_locked",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10583,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -7744,7 +9481,8 @@
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
       "TECH.COMPUTERS",
-      "TECH.COMPUTER_ACCESSORIES"
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.GAMING"
     ],
     "attributeCode": "keyboard_layout",
     "dictionaryCode": "keyboard_layout",
@@ -7808,6 +9546,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "keyboard_switch_type",
+    "titleRu": "Тип свитчей",
+    "titleEn": "Keyboard Switch Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "keyboard_switch_type",
+    "dictionaryCode": "keyboard_switch_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10313,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "keypad",
+    "titleRu": "keypad",
+    "titleEn": "Keypad",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "keypad",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4030,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "keystone_correction",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
@@ -7831,6 +9615,52 @@
     "titleEn": "Keystone Correction"
   },
   {
+    "facetKey": "kit_contains",
+    "titleRu": "kit contains",
+    "titleEn": "Kit Contains",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "kit_contains",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4120,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "kit_lens_included",
+    "titleRu": "Китовый объектив в комплекте",
+    "titleEn": "Kit Lens Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "kit_lens_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9883,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "laminated_display",
     "titleRu": "Ламинированный экран",
     "titleEn": "laminated display",
@@ -7851,6 +9681,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "lan_port_count",
+    "titleRu": "LAN-порты",
+    "titleEn": "Lan Port Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "lan_port_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10393,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -8174,11 +10027,58 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "light_power_w",
+    "titleRu": "Мощность света, Вт",
+    "titleEn": "Light Power W",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "light_power_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10133,
+      "pinned": false,
+      "hidden": false,
+      "format": "W"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "light_type",
+    "titleRu": "Тип света",
+    "titleEn": "Light Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "light_type",
+    "dictionaryCode": "light_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10123,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "line",
     "titleRu": "Линейка",
     "titleEn": "line",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "line",
@@ -8296,7 +10196,8 @@
     "titleEn": "Lock Type",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "FASH.BAGS"
+      "FASH.BAGS",
+      "TECH.SMART_HOME_SECURITY"
     ],
     "attributeCode": "lock_type",
     "dictionaryCode": "lock_type",
@@ -8427,6 +10328,52 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "magsafe_support",
+    "titleRu": "MagSafe/Qi2 магнитная совместимость",
+    "titleEn": "Magsafe Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "magsafe_support",
+    "dictionaryCode": "magsafe_support",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10673,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "managed_switch",
+    "titleRu": "Управляемость коммутатора",
+    "titleEn": "Managed Switch",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "managed_switch",
+    "dictionaryCode": "managed_switch",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10443,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -8665,6 +10612,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "matter_support",
+    "titleRu": "matter support",
+    "titleEn": "Matter Support",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "matter_support",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3830,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "max_capture_fps",
     "titleRu": "Макс. FPS захвата",
     "titleEn": "max capture fps",
@@ -8708,6 +10678,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_connected_devices",
+    "titleRu": "max connected devices",
+    "titleEn": "Max Connected Devices",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "max_connected_devices",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4080,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -8808,6 +10801,7 @@
     "titleEn": "max load kg",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.COMPUTER_ACCESSORIES",
       "TECH.TV_HOME_THEATER"
     ],
@@ -8824,6 +10818,29 @@
       "format": "kg"
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "max_load_watt",
+    "titleRu": "Максимальная нагрузка",
+    "titleEn": "Max Load Watt",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "max_load_watt",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3780,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -8942,6 +10959,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "media_format",
+    "titleRu": "Формат носителя",
+    "titleEn": "Media Format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "media_format",
+    "dictionaryCode": "media_format",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10253,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "memory_card_format",
     "titleRu": "Формат карты памяти",
     "titleEn": "memory card format",
@@ -8970,6 +11010,7 @@
     "titleEn": "Memory Card Type",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.PHONE_ACCESSORIES"
     ],
     "attributeCode": "memory_card_type",
@@ -9132,6 +11173,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "mesh_node_count",
+    "titleRu": "Количество узлов Mesh",
+    "titleEn": "Mesh Node Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "mesh_node_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10463,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "mesh_support",
+    "titleRu": "Mesh поддержка",
+    "titleEn": "Mesh Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "mesh_support",
+    "dictionaryCode": "mesh_support",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10453,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "metal_purity",
     "titleRu": "Проба / чистота металла",
     "titleEn": "Metal Purity",
@@ -9175,6 +11262,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "mfi_certified",
+    "titleRu": "MFi сертификация",
+    "titleEn": "Mfi Certified",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "mfi_certified",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10803,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -9270,6 +11380,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "mimo_streams",
+    "titleRu": "MIMO потоки",
+    "titleEn": "Mimo Streams",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "mimo_streams",
+    "dictionaryCode": "mimo_streams",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10533,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "mobile_network_generation",
     "titleRu": "Поколение сети",
     "titleEn": "mobile network generation",
@@ -9325,22 +11458,22 @@
       "SPORT.OUTDOOR",
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
-      "TECH.GAMING",
+      "TECH.CAR_ELECTRONICS_GPS",
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.GAMING",
+      "TECH.MONITORS_DISPLAYS",
+      "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
       "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
-      "TECH.SMART_HOME_SECURITY",
-      "TECH.TABLETS_E_READERS",
-      "TECH.TV_HOME_THEATER",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.STORAGE_MEMORY",
-      "TECH.WEARABLES",
-      "TECH.NETWORKING",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "source": "PRODUCT",
     "ui": {
@@ -9359,6 +11492,7 @@
     "titleEn": "model aliases",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "model_aliases",
@@ -9435,6 +11569,30 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "model_name_text",
+    "titleRu": "Текст модели",
+    "titleEn": "Model Name Text",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
+      "TECH.GAMING"
+    ],
+    "attributeCode": "model_name_text",
+    "dictionaryCode": null,
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9843,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "model_number",
     "titleRu": "Номер модели",
     "titleEn": "model number",
@@ -9472,6 +11630,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "modem_type",
+    "titleRu": "Тип модема",
+    "titleEn": "Modem Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "modem_type",
+    "dictionaryCode": "modem_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10473,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -9568,6 +11749,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "motion_detection",
+    "titleRu": "motion detection",
+    "titleEn": "Motion Detection",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "motion_detection",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3940,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "motorized",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
@@ -9645,14 +11849,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTER_ACCESSORIES",
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -9722,7 +11926,8 @@
     "titleEn": "mouse sensor type",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "TECH.COMPUTER_ACCESSORIES"
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.GAMING"
     ],
     "attributeCode": "mouse_sensor_type",
     "dictionaryCode": "mouse_sensor_type",
@@ -10089,6 +12294,98 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "networking_type",
+    "titleRu": "Тип сетевого устройства",
+    "titleEn": "Networking Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "networking_type",
+    "dictionaryCode": "networking_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10353,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "neutral_wire_required",
+    "titleRu": "neutral wire required",
+    "titleEn": "Neutral Wire Required",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "neutral_wire_required",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4020,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "nfc_payments",
+    "titleRu": "NFC/платежи",
+    "titleEn": "Nfc Payments",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "nfc_payments",
+    "dictionaryCode": "nfc_payments",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9790,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "night_vision",
+    "titleRu": "night vision",
+    "titleEn": "Night Vision",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "night_vision",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3890,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "noise_control",
     "titleRu": "Шумоподавление/прозрачность",
     "titleEn": "Noise Control",
@@ -10135,6 +12432,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "objective_diameter_mm",
+    "titleRu": "Диаметр объектива оптики, мм",
+    "titleEn": "Objective Diameter Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "objective_diameter_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10163,
+      "pinned": false,
+      "hidden": false,
+      "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "obstacle_avoidance",
+    "titleRu": "Облёт препятствий",
+    "titleEn": "Obstacle Avoidance",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "obstacle_avoidance",
+    "dictionaryCode": "obstacle_avoidance",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10083,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "occasion",
     "titleRu": "Назначение",
     "titleEn": "Occasion",
@@ -10160,6 +12503,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "oem_original",
+    "titleRu": "Оригинальный/OEM",
+    "titleEn": "Oem Original",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "oem_original",
+    "dictionaryCode": "oem_original",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10813,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "oleophobic_coating",
     "titleRu": "Олеофобное покрытие",
     "titleEn": "Oleophobic Coating",
@@ -10180,6 +12546,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "online_ban_status",
+    "titleRu": "Бан онлайн-сервиса",
+    "titleEn": "Online Ban Status",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "online_ban_status",
+    "dictionaryCode": "online_ban_status",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10283,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -10211,6 +12600,7 @@
     "titleEn": "optical zoom x",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.PHONES"
     ],
     "attributeCode": "optical_zoom_x",
@@ -10237,14 +12627,14 @@
       "TECH.AUDIO",
       "TECH.CAMERAS_DRONES",
       "TECH.CAR_ELECTRONICS_GPS",
-      "TECH.COMPUTER_ACCESSORIES",
       "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
       "TECH.GAMING",
       "TECH.MONITORS_DISPLAYS",
       "TECH.NETWORKING",
       "TECH.PC_COMPONENTS",
-      "TECH.PHONE_ACCESSORIES",
       "TECH.PHONES",
+      "TECH.PHONE_ACCESSORIES",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
       "TECH.SMART_HOME_SECURITY",
@@ -10266,6 +12656,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "original_compatible_status",
+    "titleRu": "Оригинальность",
+    "titleEn": "Original Compatible Status",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "original_compatible_status",
+    "dictionaryCode": "original_compatible_status",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10903,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -10399,6 +12812,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "outdoor_rated",
+    "titleRu": "Уличное исполнение",
+    "titleEn": "Outdoor Rated",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "outdoor_rated",
+    "dictionaryCode": "outdoor_rated",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10503,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "outerwear_weight",
     "titleRu": "Теплота верхней одежды",
     "titleEn": "Outerwear Weight",
@@ -10518,6 +12954,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "package_detection",
+    "titleRu": "package detection",
+    "titleEn": "Package Detection",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "package_detection",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3960,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "packaging_condition",
     "titleRu": "Состояние упаковки",
     "titleEn": "packaging condition",
@@ -10555,6 +13014,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "page_yield_bucket",
+    "titleRu": "Класс ресурса",
+    "titleEn": "Page Yield Bucket",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "page_yield_bucket",
+    "dictionaryCode": "page_yield_bucket",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10923,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -10665,6 +13147,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "paper_format",
+    "titleRu": "Формат бумаги",
+    "titleEn": "Paper Format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "paper_format",
+    "dictionaryCode": "paper_format",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10853,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -10810,6 +13315,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "payload_capacity_g",
+    "titleRu": "Грузоподъёмность, г",
+    "titleEn": "Payload Capacity G",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "payload_capacity_g",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10113,
+      "pinned": false,
+      "hidden": false,
+      "format": "g"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "pc_component_type",
     "titleRu": "Тип комплектующего",
     "titleEn": "pc component type",
@@ -10899,6 +13427,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "person_detection",
+    "titleRu": "person detection",
+    "titleEn": "Person Detection",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "person_detection",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3950,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -11057,6 +13608,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "platform",
+    "titleRu": "Платформа",
+    "titleEn": "Platform",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "platform",
+    "dictionaryCode": "platform",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10233,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "platform_height_cm",
     "titleRu": "Высота платформы, см",
     "titleEn": "Platform Height Cm",
@@ -11099,6 +13673,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "plug_type",
+    "titleRu": "Тип вилки",
+    "titleEn": "Plug Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "plug_type",
+    "dictionaryCode": "plug_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10783,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -11150,6 +13747,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "poe_port_count",
+    "titleRu": "Количество PoE-портов",
+    "titleEn": "Poe Port Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "poe_port_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10423,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "poe_power_budget_w",
+    "titleRu": "Бюджет PoE",
+    "titleEn": "Poe Power Budget W",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "poe_power_budget_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10433,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "poe_support",
     "titleRu": "Поддержка PoE",
     "titleEn": "PoE support",
@@ -11175,7 +13818,7 @@
       "TECH.WEARABLES"
     ],
     "attributeCode": "poe_support",
-    "dictionaryCode": null,
+    "dictionaryCode": "poe_support",
     "selectionMode": "BOOLEAN",
     "uiWidget": "TOGGLE",
     "normalizationRef": "tech_specs_common.unit_normalization.v1",
@@ -11259,6 +13902,30 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "port_count",
+    "titleRu": "Всего портов",
+    "titleEn": "Port Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING",
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "port_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10403,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "portable_power_mode",
     "titleRu": "Power mode for portable monitor",
     "titleEn": "portable power mode",
@@ -11325,6 +13992,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "power_cable_type",
+    "titleRu": "Тип питания/кабеля",
+    "titleEn": "Power Cable Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "power_cable_type",
+    "dictionaryCode": "power_cable_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10593,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -11396,6 +14086,7 @@
     "titleEn": "power delivery w",
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES",
       "TECH.TABLETS_E_READERS"
     ],
     "attributeCode": "power_delivery_w",
@@ -11586,6 +14277,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "prescription_support",
+    "titleRu": "Поддержка диоптрий",
+    "titleEn": "Prescription Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "prescription_support",
+    "dictionaryCode": "prescription_support",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9800,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "pressure_levels",
     "titleRu": "Уровни нажатия",
     "titleEn": "pressure levels",
@@ -11754,6 +14468,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "printer_scanner_type",
+    "titleRu": "Тип товара",
+    "titleEn": "Printer Scanner Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "printer_scanner_type",
+    "dictionaryCode": "printer_scanner_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10833,
+      "pinned": true,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "privacy_filter",
     "titleRu": "Антишпион/приватность",
     "titleEn": "Privacy Filter",
@@ -11805,7 +14542,8 @@
     "titleEn": "privacy shutter",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
-      "TECH.COMPUTER_ACCESSORIES"
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.SMART_HOME_SECURITY"
     ],
     "attributeCode": "privacy_shutter",
     "dictionaryCode": null,
@@ -12028,6 +14766,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "protocol",
+    "titleRu": "Протокол связи",
+    "titleEn": "Protocol",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "protocol",
+    "dictionaryCode": "protocol",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3660,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "protocol_standard",
     "titleRu": "Протокол/стандарт",
     "titleEn": "Protocol Standard",
@@ -12180,6 +14941,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "qi_standard",
+    "titleRu": "Беспроводной стандарт",
+    "titleEn": "Qi Standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "qi_standard",
+    "dictionaryCode": "qi_standard",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10663,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -12692,6 +15476,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "recording_format",
+    "titleRu": "Формат записи",
+    "titleEn": "Recording Format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "recording_format",
+    "dictionaryCode": "recording_format",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10203,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "recording_pattern",
     "titleRu": "Диаграмма направленности",
     "titleEn": "Recording Pattern",
@@ -12879,37 +15686,22 @@
   },
   {
     "facetKey": "region",
-    "titleRu": "Регион",
-    "titleEn": "region",
-    "valueType": "ENUM",
+    "titleRu": "Регион/версия",
+    "titleEn": "Region",
+    "valueType": "TEXT",
     "appliesToCategoryCodes": [
-      "TECH.PHONES",
-      "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
-      "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
       "TECH.CAMERAS_DRONES",
-      "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
       "TECH.NETWORKING",
-      "TECH.POWER_CHARGING_CABLES",
-      "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.POWER_CHARGING_CABLES"
     ],
     "attributeCode": "region",
     "dictionaryCode": "region",
-    "selectionMode": "MULTI",
-    "uiWidget": "CHECKBOX_GROUP",
+    "selectionMode": null,
+    "uiWidget": "TEXT_INPUT",
     "normalizationRef": "stage22.query_normalizer_v1",
     "source": "PRODUCT",
     "ui": {
-      "order": 2250,
+      "order": 9833,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -12964,9 +15756,13 @@
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "TECH.AUDIO",
+      "TECH.CAMERAS_DRONES",
       "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
+      "TECH.NETWORKING",
       "TECH.PHONES",
+      "TECH.POWER_CHARGING_CABLES",
+      "TECH.SMART_HOME_SECURITY",
       "TECH.TABLETS_E_READERS",
       "TECH.TV_HOME_THEATER"
     ],
@@ -12984,6 +15780,29 @@
     "selectionMode": "RANGE",
     "uiWidget": "RANGE_INPUT",
     "normalizationRef": "stage22.query_normalizer_v1"
+  },
+  {
+    "facetKey": "remote_controller_included",
+    "titleRu": "Пульт в комплекте",
+    "titleEn": "Remote Controller Included",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "remote_controller_included",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10093,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
   },
   {
     "facetKey": "remote_shutter_included",
@@ -13273,6 +16092,52 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "right_angle_connector",
+    "titleRu": "Угловой разъём",
+    "titleEn": "Right Angle Connector",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "right_angle_connector",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10723,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "ring_size",
+    "titleRu": "Размер кольца",
+    "titleEn": "Ring Size",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "ring_size",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9798,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "ring_size_ru",
     "titleRu": "Размер кольца RU",
     "titleEn": "Ring Size RU",
@@ -13457,6 +16322,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "safety_certification",
+    "titleRu": "Сертификация безопасности",
+    "titleEn": "Safety Certification",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "safety_certification",
+    "dictionaryCode": "safety_certification",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10823,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "safety_protections",
     "titleRu": "Защиты питания",
     "titleEn": "Safety Protections",
@@ -13500,6 +16388,29 @@
       "format": "kHz"
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "scanner_type",
+    "titleRu": "Тип сканера",
+    "titleEn": "Scanner Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "scanner_type",
+    "dictionaryCode": "scanner_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10873,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -13901,6 +16812,29 @@
     "titleEn": "Screen Surface Type"
   },
   {
+    "facetKey": "screen_type",
+    "titleRu": "Экран",
+    "titleEn": "Screen Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "screen_type",
+    "dictionaryCode": "screen_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9993,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "sd_card_support",
     "titleRu": "Поддержка карты памяти",
     "titleEn": "sd card support",
@@ -13974,32 +16908,55 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "security_protocol",
+    "titleRu": "Безопасность",
+    "titleEn": "Security Protocol",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "security_protocol",
+    "dictionaryCode": "security_protocol",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10543,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "seller_bundle",
     "titleRu": "Набор продавца",
     "titleEn": "seller bundle",
     "valueType": "BOOL",
     "appliesToCategoryCodes": [
+      "TECH.AUDIO",
+      "TECH.CAMERAS_DRONES",
+      "TECH.CAR_ELECTRONICS_GPS",
+      "TECH.COMPUTERS",
+      "TECH.COMPUTER_ACCESSORIES",
+      "TECH.GAMING",
+      "TECH.MONITORS_DISPLAYS",
+      "TECH.NETWORKING",
+      "TECH.PC_COMPONENTS",
       "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
-      "TECH.COMPUTERS",
-      "TECH.TABLETS_E_READERS",
-      "TECH.MONITORS_DISPLAYS",
-      "TECH.COMPUTER_ACCESSORIES",
-      "TECH.PC_COMPONENTS",
-      "TECH.STORAGE_MEMORY",
-      "TECH.AUDIO",
-      "TECH.TV_HOME_THEATER",
-      "TECH.WEARABLES",
-      "TECH.CAMERAS_DRONES",
-      "TECH.GAMING",
-      "TECH.SMART_HOME_SECURITY",
-      "TECH.NETWORKING",
       "TECH.POWER_CHARGING_CABLES",
       "TECH.PRINTERS_SCANNERS",
-      "TECH.CAR_ELECTRONICS_GPS"
+      "TECH.SMART_HOME_SECURITY",
+      "TECH.STORAGE_MEMORY",
+      "TECH.TABLETS_E_READERS",
+      "TECH.TV_HOME_THEATER",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "seller_bundle",
-    "dictionaryCode": null,
+    "dictionaryCode": "seller_bundle",
     "selectionMode": "BOOLEAN",
     "uiWidget": "TOGGLE",
     "normalizationRef": "stage22.query_normalizer_v1",
@@ -14037,6 +16994,98 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "sensor_format",
+    "titleRu": "Формат сенсора",
+    "titleEn": "Sensor Format",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "sensor_format",
+    "dictionaryCode": "sensor_format",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9893,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "sensor_kind",
+    "titleRu": "Тип датчика",
+    "titleEn": "Sensor Kind",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "sensor_kind",
+    "dictionaryCode": "sensor_kind",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3730,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "sensor_resolution_mp",
+    "titleRu": "Разрешение сенсора, Мп",
+    "titleEn": "Sensor Resolution Mp",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "sensor_resolution_mp",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9903,
+      "pinned": false,
+      "hidden": false,
+      "format": "MP"
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "sensor_set",
+    "titleRu": "Датчики",
+    "titleEn": "Sensor Set",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "sensor_set",
+    "dictionaryCode": "sensor_set",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9791,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "set_top_box_type",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
@@ -14058,6 +17107,29 @@
     },
     "titleRu": "Тип set-top box",
     "titleEn": "Set Top Box Type"
+  },
+  {
+    "facetKey": "sfp_ports",
+    "titleRu": "SFP/SFP+ порты",
+    "titleEn": "Sfp Ports",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "sfp_ports",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10413,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
   },
   {
     "facetKey": "shaft_height",
@@ -14124,6 +17196,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "shutter_count",
+    "titleRu": "Пробег затвора",
+    "titleEn": "Shutter Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "shutter_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10023,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -14258,6 +17353,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "siren_type",
+    "titleRu": "siren type",
+    "titleEn": "Siren Type",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "siren_type",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4100,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -14443,6 +17561,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "smart_home_type",
+    "titleRu": "Тип устройства умного дома",
+    "titleEn": "Smart Home Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "smart_home_type",
+    "dictionaryCode": "smart_home_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3600,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -14689,6 +17830,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "sport_profile_set",
+    "titleRu": "Спортивные режимы",
+    "titleEn": "Sport Profile Set",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "sport_profile_set",
+    "dictionaryCode": "sport_profile_set",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9793,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "sport_purpose",
     "titleRu": "Назначение спорта",
     "titleEn": "Sport Purpose",
@@ -14709,6 +17873,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "stabilization_type",
+    "titleRu": "Стабилизация",
+    "titleEn": "Stabilization Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "stabilization_type",
+    "dictionaryCode": "stabilization_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9963,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -14850,6 +18037,7 @@
     "valueType": "RANGE",
     "appliesToCategoryCodes": [
       "TECH.COMPUTERS",
+      "TECH.GAMING",
       "TECH.PHONES",
       "TECH.PHONE_ACCESSORIES",
       "TECH.STORAGE_MEMORY",
@@ -14953,6 +18141,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "storage_mode",
+    "titleRu": "storage mode",
+    "titleEn": "Storage Mode",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "storage_mode",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3910,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -15091,7 +18302,8 @@
     "titleEn": "Strap Material",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
-      "FASH.ACCESSORIES"
+      "FASH.ACCESSORIES",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "strap_material",
     "dictionaryCode": "strap_material",
@@ -15129,6 +18341,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-13",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "strap_width_mm",
+    "titleRu": "Ширина ремешка, мм",
+    "titleEn": "Strap Width Mm",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "strap_width_mm",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9795,
+      "pinned": false,
+      "hidden": false,
+      "format": "mm"
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -15367,6 +18602,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "subscription_required",
+    "titleRu": "subscription required",
+    "titleEn": "Subscription Required",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "subscription_required",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3920,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "subwoofer_included",
     "titleRu": "Сабвуфер в комплекте",
     "titleEn": "Subwoofer Included",
@@ -15387,6 +18645,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "surge_joule_rating",
+    "titleRu": "Защита от скачков",
+    "titleEn": "Surge Joule Rating",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "surge_joule_rating",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10773,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -15456,6 +18737,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "switch_type",
+    "titleRu": "switch type",
+    "titleEn": "Switch Type",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "switch_type",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 4010,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -15625,6 +18929,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "thermostat_type",
+    "titleRu": "Тип термостата",
+    "titleEn": "Thermostat Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "thermostat_type",
+    "dictionaryCode": "thermostat_type",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3750,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "thickness_mm",
     "titleRu": "Толщина, мм",
     "titleEn": "Thickness Mm",
@@ -15668,6 +18995,29 @@
       "format": null
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "thread_support",
+    "titleRu": "thread support",
+    "titleEn": "Thread Support",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "thread_support",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3840,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -15786,6 +19136,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "toner_color",
+    "titleRu": "Цвет тонера/чернил",
+    "titleEn": "Toner Color",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.PRINTERS_SCANNERS"
+    ],
+    "attributeCode": "toner_color",
+    "dictionaryCode": "toner_color",
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10893,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "touch_interface",
     "titleRu": "USB/serial touch interface",
     "titleEn": "touch interface",
@@ -15871,6 +19244,29 @@
     "source": "PRODUCT",
     "ui": {
       "order": 3590,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "tripod_head_type",
+    "titleRu": "Тип головы штатива",
+    "titleEn": "Tripod Head Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "tripod_head_type",
+    "dictionaryCode": "tripod_head_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10183,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -15971,6 +19367,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "two_way_audio",
+    "titleRu": "two way audio",
+    "titleEn": "Two Way Audio",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "two_way_audio",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3930,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "type_of_item",
     "titleRu": "Тип товара",
     "titleEn": "Type Of Item",
@@ -16058,6 +19477,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "ups_topology",
+    "titleRu": "Тип UPS",
+    "titleEn": "Ups Topology",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "ups_topology",
+    "dictionaryCode": "ups_topology",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10763,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "usage_context",
     "titleRu": "Сценарий использования",
     "titleEn": "Usage Context",
@@ -16101,6 +19543,29 @@
       "format": "W"
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "usb_pd_support",
+    "titleRu": "USB Power Delivery",
+    "titleEn": "Usb Pd Support",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "usb_pd_support",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10643,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   },
   {
@@ -16414,6 +19879,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "video_resolution_max",
+    "titleRu": "Макс. разрешение видео",
+    "titleEn": "Video Resolution Max",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "video_resolution_max",
+    "dictionaryCode": "video_resolution",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9943,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "video_speed_class",
     "titleRu": "Video speed class",
     "titleEn": "video speed class",
@@ -16429,6 +19917,52 @@
     "source": "PRODUCT",
     "ui": {
       "order": 5380,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "video_standard",
+    "titleRu": "Видео стандарт",
+    "titleEn": "Video Standard",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "video_standard",
+    "dictionaryCode": "video_standard",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10703,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "viewfinder_type",
+    "titleRu": "Видоискатель",
+    "titleEn": "Viewfinder Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "viewfinder_type",
+    "dictionaryCode": "viewfinder_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9983,
       "pinned": false,
       "hidden": false,
       "format": null
@@ -16458,6 +19992,29 @@
     },
     "titleRu": "Голосовой ассистент",
     "titleEn": "Voice Assistant"
+  },
+  {
+    "facetKey": "voice_assistant_support",
+    "titleRu": "Голосовые ассистенты",
+    "titleEn": "Voice Assistant Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "voice_assistant_support",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3690,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
   },
   {
     "facetKey": "voice_remote",
@@ -16530,6 +20087,52 @@
       "format": "ML"
     },
     "effectiveFrom": "2026-02-19",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "vpn_support",
+    "titleRu": "VPN поддержка",
+    "titleEn": "Vpn Support",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "vpn_support",
+    "dictionaryCode": "vpn_support",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10553,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "vr_tracking_type",
+    "titleRu": "Тип трекинга VR",
+    "titleEn": "Vr Tracking Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.GAMING"
+    ],
+    "attributeCode": "vr_tracking_type",
+    "dictionaryCode": "vr_tracking_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10293,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -16652,17 +20255,44 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "wan_port_count",
+    "titleRu": "WAN-порты",
+    "titleEn": "Wan Port Count",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "wan_port_count",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10383,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "warranty",
     "titleRu": "Гарантия",
     "titleEn": "Гарантия",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.COMPUTERS",
       "TECH.COMPUTER_ACCESSORIES",
-      "TECH.TABLETS_E_READERS"
+      "TECH.NETWORKING",
+      "TECH.POWER_CHARGING_CABLES",
+      "TECH.TABLETS_E_READERS",
+      "TECH.WEARABLES"
     ],
     "attributeCode": "warranty",
-    "dictionaryCode": null,
+    "dictionaryCode": "warranty",
     "selectionMode": "MULTI",
     "uiWidget": "CHECKBOX_GROUP",
     "normalizationRef": "stage22.query_normalizer_v1",
@@ -16962,6 +20592,7 @@
     "titleEn": "Waterproof Rating",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES",
       "TECH.PHONE_ACCESSORIES"
     ],
     "attributeCode": "waterproof_rating",
@@ -17000,6 +20631,75 @@
       "format": null
     },
     "effectiveFrom": "2026-05-11",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wattage_w",
+    "titleRu": "Мощность",
+    "titleEn": "Wattage W",
+    "valueType": "RANGE",
+    "appliesToCategoryCodes": [
+      "TECH.POWER_CHARGING_CABLES"
+    ],
+    "attributeCode": "wattage_w",
+    "dictionaryCode": null,
+    "selectionMode": "RANGE",
+    "uiWidget": "RANGE_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10623,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "wearable_type",
+    "titleRu": "Тип носимого устройства",
+    "titleEn": "Wearable Type",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.WEARABLES"
+    ],
+    "attributeCode": "wearable_type",
+    "dictionaryCode": "wearable_type",
+    "selectionMode": "SINGLE",
+    "uiWidget": "CHECKBOX_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 9785,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "weather_sealing",
+    "titleRu": "Пыле-/влагозащита",
+    "titleEn": "Weather Sealing",
+    "valueType": "BOOL",
+    "appliesToCategoryCodes": [
+      "TECH.CAMERAS_DRONES"
+    ],
+    "attributeCode": "weather_sealing",
+    "dictionaryCode": null,
+    "selectionMode": "BOOLEAN",
+    "uiWidget": "TOGGLE",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10033,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-14",
     "effectiveTo": null
   },
   {
@@ -17269,6 +20969,29 @@
     "effectiveTo": null
   },
   {
+    "facetKey": "wifi_band",
+    "titleRu": "Диапазоны Wi‑Fi",
+    "titleEn": "Wifi Band",
+    "valueType": "ENUM",
+    "appliesToCategoryCodes": [
+      "TECH.NETWORKING"
+    ],
+    "attributeCode": "wifi_band",
+    "dictionaryCode": "wifi_band",
+    "selectionMode": "SINGLE",
+    "uiWidget": "RADIO_GROUP",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 10363,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
     "facetKey": "wifi_bluetooth",
     "titleRu": "Wi‑Fi / Bluetooth",
     "titleEn": "wifi bluetooth",
@@ -17295,6 +21018,7 @@
     "facetKey": "wifi_standard",
     "valueType": "ENUM",
     "appliesToCategoryCodes": [
+      "TECH.NETWORKING",
       "TECH.TV_HOME_THEATER"
     ],
     "attributeCode": "wifi_standard",
@@ -17593,6 +21317,52 @@
       "format": "MBps"
     },
     "effectiveFrom": "2026-05-14",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "z_wave_support",
+    "titleRu": "z wave support",
+    "titleEn": "Z Wave Support",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "z_wave_support",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3860,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
+    "effectiveTo": null
+  },
+  {
+    "facetKey": "zigbee_support",
+    "titleRu": "zigbee support",
+    "titleEn": "Zigbee Support",
+    "valueType": "TEXT",
+    "appliesToCategoryCodes": [
+      "TECH.SMART_HOME_SECURITY"
+    ],
+    "attributeCode": "zigbee_support",
+    "dictionaryCode": null,
+    "selectionMode": "MULTI",
+    "uiWidget": "TEXT_INPUT",
+    "normalizationRef": "stage22.query_normalizer_v1",
+    "source": "PRODUCT",
+    "ui": {
+      "order": 3850,
+      "pinned": false,
+      "hidden": false,
+      "format": null
+    },
+    "effectiveFrom": "2026-05-15",
     "effectiveTo": null
   }
 ]

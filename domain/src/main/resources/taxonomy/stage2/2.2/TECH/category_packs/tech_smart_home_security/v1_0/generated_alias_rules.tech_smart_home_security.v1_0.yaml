@@ -1,0 +1,37 @@
+rules:
+  -
+    id: camera_security_vs_webcam
+    positive_patterns:
+      - ip камера
+      - камера видеонаблюдения
+      - security camera
+    negative_patterns:
+      - web камера
+      - вебкамера
+      - экшн камера
+    target: SECURITY_CAMERA
+  -
+    id: speaker_smart_vs_audio
+    positive_patterns:
+      - яндекс станция
+      - amazon echo
+      - homepod
+      - nest audio
+    negative_patterns:
+      - bluetooth колонка
+      - портативная колонка
+      - jbl flip
+    target: SMART_SPEAKER
+  -
+    id: matter_thread_tokens
+    patterns:
+      - matter
+      - thread
+      - zigbee
+      - z-wave
+      - homekit
+      - smartthings
+      - tuya
+    extract_to:
+      - protocol
+      - ecosystem

@@ -1,0 +1,33 @@
+{
+  "package_name": "TECH_CAMERAS_DRONES_type_coverage_delta_pack_v1_1_RU",
+  "version": "1.1",
+  "language": "ru",
+  "package_type": "data_overlay_patch",
+  "target_categoryCode": "TECH.CAMERAS_DRONES",
+  "base_package": "TECH_CAMERAS_DRONES_public_category_pack_v1_0_RU",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "purpose": "Close P1 data coverage gaps for weaker camera_type segments without changing schema, categoryCode, presets, or collections.",
+  "scope": {
+    "adds_values": true,
+    "adds_aliases": true,
+    "adds_model_seed_delta": true,
+    "adds_golden_queries": true,
+    "adds_sample_offers": true,
+    "schema_breaking_changes": false,
+    "new_category_codes": 0,
+    "presets_collections": 0,
+    "seo_landing_pages": 0
+  },
+  "covered_gap_types": [
+    "CAMCORDER",
+    "DSLR_CAMERA",
+    "CAMERA_ACCESSORY",
+    "BINOCULARS_TELESCOPE",
+    "DRONE accessory/battery-route support"
+  ],
+  "depends_on": [
+    "TECH_CAMERAS_DRONES_public_category_pack_v1_0_RU"
+  ],
+  "created_at": "2026-05-14T17:59:00Z"
+}

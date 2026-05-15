@@ -1,0 +1,32 @@
+categoryCode: TECH.GAMING
+version: 1.0
+primary_facets:
+  - gaming_type
+  - platform
+  - brand
+  - condition
+  - price
+  - model_name_text
+  - compatible_platform
+secondary_facets:
+  - storage_capacity_gb
+  - disc_drive
+  - media_format
+  - controller_subtype
+  - connection_type
+  - game_platform
+  - account_lock_status
+  - online_ban_status
+  - age_rating_value
+  - cosmetic_grade
+type_specific_facets:
+  GAME_CONSOLE: [brand, platform, model_name_text, storage_capacity_gb, disc_drive, condition, account_lock_status]
+  HANDHELD_CONSOLE: [brand, platform, model_name_text, storage_capacity_gb, display_type, condition]
+  VR_HEADSET: [brand, model_name_text, vr_standalone_mode, pc_vr_compatible, storage_capacity_gb, condition]
+  GAME_CONTROLLER: [brand, compatible_platform, controller_subtype, connection_type, wireless, condition]
+  GAMING_KEYBOARD: [brand, keyboard_switch_type, keyboard_layout, connection_type, condition]
+  GAMING_MOUSE: [brand, wireless, mouse_dpi_max, connection_type, condition]
+  GAMING_HEADSET: [brand, compatible_platform, connection_type, headset_surround, microphone_included, condition]
+  CONSOLE_ACCESSORY: [accessory_subtype, compatible_platform, brand, condition]
+  PHYSICAL_GAME: [game_platform, media_format, edition, age_rating_value, language_pack, condition]
+  ARCADE_EQUIPMENT: [arcade_equipment_type, brand, condition, coin_op]

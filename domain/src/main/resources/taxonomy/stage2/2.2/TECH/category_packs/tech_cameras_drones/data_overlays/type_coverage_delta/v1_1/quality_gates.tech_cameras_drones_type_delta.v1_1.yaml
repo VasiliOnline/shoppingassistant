@@ -1,0 +1,20 @@
+required_gates:
+  - Stage22SeedValidator
+  - AliasCollisionGate
+  - RouteConflictGate
+  - SampleOffersSmokeGate
+  - EffectiveSpecSnapshotGate
+special_gates:
+  - CameraAccessoryBoundaryGate
+  - CameraLensMountGate
+  - DroneSafetyRoutingGate
+static_expectations:
+  schema_breaking_changes_allowed: false
+  new_category_codes_allowed: false
+  presets_collections_allowed: false
+  alias_collision_allowed: false
+  weak_type_coverage_closed:
+    - CAMCORDER
+    - DSLR_CAMERA
+    - CAMERA_ACCESSORY
+    - BINOCULARS_TELESCOPE

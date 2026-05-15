@@ -1,0 +1,67 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_networking.v1_0",
+  "categoryCode": "TECH.NETWORKING",
+  "pack_type": "public_category_pack",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "main_type_attribute": "networking_type",
+  "type_values": [
+    "ROUTER",
+    "MESH_WIFI_SYSTEM",
+    "MODEM",
+    "ACCESS_POINT",
+    "SWITCH",
+    "WIFI_EXTENDER",
+    "NETWORK_ADAPTER",
+    "ANTENNA",
+    "POE_INJECTOR",
+    "NETWORK_ACCESSORY"
+  ],
+  "required_fields": [
+    "categoryCode",
+    "networking_type",
+    "condition",
+    "title",
+    "price",
+    "currency",
+    "availability"
+  ],
+  "initial_fields": [
+    "networking_type",
+    "brand",
+    "condition",
+    "model_name_text",
+    "wifi_standard",
+    "ethernet_max_speed",
+    "port_count",
+    "poe_support"
+  ],
+  "primary_facets": [
+    "networking_type",
+    "brand",
+    "condition",
+    "wifi_standard",
+    "ethernet_max_speed",
+    "port_count",
+    "poe_support"
+  ],
+  "hidden_fields": [
+    "routing_confidence",
+    "ingestion_confidence",
+    "dedup_key",
+    "source_evidence",
+    "live_value_candidate_state"
+  ],
+  "blocked_microcategories": [
+    "TECH.ROUTERS",
+    "TECH.SWITCHES",
+    "TECH.MESH_WIFI",
+    "TECH.TP_LINK",
+    "TECH.UBIQUITI",
+    "TECH.MIKROTIK"
+  ]
+}

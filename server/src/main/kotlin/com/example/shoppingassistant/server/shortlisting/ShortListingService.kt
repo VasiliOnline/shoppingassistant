@@ -3,7 +3,9 @@ package com.example.shoppingassistant.server.shortlisting
 import com.example.shoppingassistant.domain.catalog.CatalogCategoryEffectiveSpec
 import com.example.shoppingassistant.domain.catalog.CatalogReadRepository
 import com.example.shoppingassistant.domain.catalog.CatalogTaxonomyRepository
+import com.example.shoppingassistant.domain.catalog.ProductIdentityStatus
 import com.example.shoppingassistant.domain.catalog.RequiredIfRule
+import com.example.shoppingassistant.domain.catalog.TechPhonesIdentityResolver
 import com.example.shoppingassistant.domain.catalog.allAttributes
 import com.example.shoppingassistant.domain.i18n.displayTitle
 import com.example.shoppingassistant.domain.model.Money
@@ -95,6 +97,72 @@ interface ShortListingBackendService {
     ): ShortListingDraftEnvelope
     suspend fun getPublishPreflight(userId: Long, draftId: String): ShortListingPublishPreflight
     suspend fun publishDraft(userId: Long, draftId: String): ShortListingPublishAttemptResult
+}
+
+internal data class ShortListingProductIdentitySignatureSource(
+    val signatureSource: String,
+    val identityAttributes: Map<String, ShortListingFieldValue>,
+)
+
+internal object ShortListingTechPhonesIdentitySignatureBuilder {
+    private const val CATEGORY = "TECH.PHONES"
+    private const val MIN_CONFIDENCE = 0.9
+    private const val PRODUCT_IDENTITY_FIELD = "product_identity_match_key"
+
+    private val resolver: TechPhonesIdentityResolver by lazy {
+        TechPhonesIdentityResolver()
+    }
+
+    fun tryBuild(
+        categoryCode: String,
+        mergedFields: Map<String, ShortListingFieldValue>,
+    ): ShortListingProductIdentitySignatureSource? {
+        if (categoryCode.trim().uppercase(Locale.ROOT) != CATEGORY) return null
+
+        val normalizedFields = mergedFields.mapKeys { (key, _) -> key.trim().lowercase(Locale.ROOT) }
+        val productIdentity = resolver.resolveProductIdentity(
+            categoryCode = categoryCode,
+            brand = normalizedFields["brand"]?.primaryIdentityValue(),
+            model = normalizedFields["model"]?.primaryIdentityValue()
+                ?: normalizedFields["model_name_text"]?.primaryIdentityValue(),
+            titleOrQuery = normalizedFields["title"]?.primaryIdentityValue()
+                ?: normalizedFields["product_name"]?.primaryIdentityValue(),
+            attrs = normalizedFields.mapValues { (_, value) -> value.primaryIdentityValue().orEmpty() }
+                .filterValues { it.isNotBlank() },
+        )
+
+        if (productIdentity.status != ProductIdentityStatus.RESOLVED || productIdentity.confidence < MIN_CONFIDENCE) {
+            return null
+        }
+
+        val identityAttributes = LinkedHashMap<String, ShortListingFieldValue>()
+        identityAttributes[PRODUCT_IDENTITY_FIELD] = identityField(productIdentity.matchKey)
+        productIdentity.brandCanonical?.let { identityAttributes["brand"] = identityField(it) }
+        productIdentity.modelCanonical?.let { identityAttributes["model"] = identityField(it) }
+        productIdentity.variantAttributes.forEach { (key, value) ->
+            identityAttributes[key] = identityField(value)
+        }
+
+        return ShortListingProductIdentitySignatureSource(
+            signatureSource = "$CATEGORY|$PRODUCT_IDENTITY_FIELD=${productIdentity.matchKey}",
+            identityAttributes = identityAttributes,
+        )
+    }
+
+    private fun ShortListingFieldValue.primaryIdentityValue(): String? = when (kind) {
+        ShortListingFieldKind.SCALAR -> normalizedValue ?: canonicalValueCode ?: displayValue
+        ShortListingFieldKind.MULTI -> values.firstOrNull()?.normalizedValue
+            ?: values.firstOrNull()?.canonicalValueCode
+            ?: values.firstOrNull()?.displayValue
+    }?.trim()?.takeIf { it.isNotEmpty() }
+
+    private fun identityField(value: String): ShortListingFieldValue =
+        ShortListingFieldValue(
+            kind = ShortListingFieldKind.SCALAR,
+            valueType = ShortListingValueType.STRING,
+            displayValue = value,
+            normalizedValue = value,
+        )
 }
 
 class ShortListingBackendServiceImpl(
@@ -861,6 +929,40 @@ class ShortListingBackendServiceImpl(
         spec: CatalogCategoryEffectiveSpec?,
     ): ShortListingIdentitySignature? {
         val categoryCode = normalizeCategoryCode(resolvedCategoryCode) ?: return null
+        val techPhonesIdentity = ShortListingTechPhonesIdentitySignatureBuilder.tryBuild(
+            categoryCode = categoryCode,
+            mergedFields = mergedFields,
+        )
+        if (techPhonesIdentity != null) {
+            val signature = sha256Hex(techPhonesIdentity.signatureSource.toByteArray(Charsets.UTF_8))
+            val duplicate = findSameUserDuplicateOffer(
+                userId = userId,
+                categoryCode = categoryCode,
+                signature = signature,
+                identityCodes = emptyList(),
+                signatureSourceBuilder = { fields ->
+                    ShortListingTechPhonesIdentitySignatureBuilder.tryBuild(
+                        categoryCode = categoryCode,
+                        mergedFields = fields,
+                    )?.signatureSource
+                },
+            )
+            return ShortListingIdentitySignature(
+                resolvedCategoryCode = categoryCode,
+                identityAttributes = techPhonesIdentity.identityAttributes,
+                identitySignature = signature,
+                dedupDecision = if (duplicate) {
+                    ShortListingDedupDecision.SAME_USER_SIMILAR_ACTIVE
+                } else {
+                    ShortListingDedupDecision.NO_DUPLICATE
+                },
+                dedupReasonCodes = if (duplicate) listOf(
+                    "SAME_USER_SIMILAR_ACTIVE",
+                    "TECH_PHONES_PRODUCT_IDENTITY",
+                ) else emptyList(),
+            )
+        }
+
         val identityCodes = (spec?.meta?.identityAttributeCodes.orEmpty().map { it.normalizedFieldCode() } + listOf("brand", "model"))
             .distinct()
         val identityAttributes = LinkedHashMap<String, ShortListingFieldValue>()
@@ -906,6 +1008,7 @@ class ShortListingBackendServiceImpl(
         categoryCode: String,
         signature: String,
         identityCodes: List<String>,
+        signatureSourceBuilder: ((Map<String, ShortListingFieldValue>) -> String?)? = null,
     ): Boolean = DatabaseFactory.dbQuery {
         OffersTable
             .innerJoin(ProductsTable, { productId }, { ProductsTable.id })
@@ -925,18 +1028,19 @@ class ShortListingBackendServiceImpl(
                 row[OffersTable.attributes].orEmpty().forEach { (key, value) ->
                     merged[key.normalizedFieldCode()] = typedValueToField(value)
                 }
-                val existingSource = buildString {
-                    append(categoryCode)
-                    identityCodes.distinct().sorted().forEach { code ->
-                        val value = merged[code]
-                        if (value?.isMeaningful() == true) {
-                            append('|')
-                            append(code)
-                            append('=')
-                            append(value.signatureToken())
+                val existingSource = signatureSourceBuilder?.invoke(merged)
+                    ?: buildString {
+                        append(categoryCode)
+                        identityCodes.distinct().sorted().forEach { code ->
+                            val value = merged[code]
+                            if (value?.isMeaningful() == true) {
+                                append('|')
+                                append(code)
+                                append('=')
+                                append(value.signatureToken())
+                            }
                         }
                     }
-                }
                 sha256Hex(existingSource.toByteArray(Charsets.UTF_8)) == signature
             }
     }

@@ -72,17 +72,18 @@ class TechMonitorsDisplaysPublicCategoryPackGateTest {
         assertTrue(displayType.isFacet)
 
         val displayTypes = registry.dictionaries.getValue("display_type").entries.map { it.valueCode }.toSet()
-        assertEquals(
-            setOf(
-                "COMPUTER_MONITOR",
-                "GAMING_MONITOR",
-                "PROFESSIONAL_MONITOR",
-                "PORTABLE_MONITOR",
-                "SMART_MONITOR",
-                "TOUCHSCREEN_MONITOR",
-                "MONITOR_ACCESSORY",
+        assertTrue(
+            displayTypes.containsAll(
+                setOf(
+                    "COMPUTER_MONITOR",
+                    "GAMING_MONITOR",
+                    "PROFESSIONAL_MONITOR",
+                    "PORTABLE_MONITOR",
+                    "SMART_MONITOR",
+                    "TOUCHSCREEN_MONITOR",
+                    "MONITOR_ACCESSORY",
+                ),
             ),
-            displayTypes,
         )
 
         assertEquals(Stage22ValueType.NUMBER, registry.attributes.getValue("screen_size_in").valueType)

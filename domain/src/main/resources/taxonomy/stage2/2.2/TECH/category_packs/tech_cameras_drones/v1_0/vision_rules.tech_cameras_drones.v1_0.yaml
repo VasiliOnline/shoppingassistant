@@ -1,0 +1,17 @@
+categoryCode: TECH.CAMERAS_DRONES
+no_guess_rules:
+  - id: no_model_from_image_only
+    rule: Do not assign exact camera/drone/lens model from image alone unless title/OCR/model-number/source evidence supports it.
+  - id: lens_mount_requires_evidence
+    rule: Lens mount must be inferred only from explicit mount marking, title, MPN, source URL, or strong model resolution.
+  - id: drone_model_requires_text
+    rule: Drone family may be inferred visually, but exact model requires title/OCR/source evidence.
+  - id: shutter_count_not_visual
+    rule: shutter_count cannot be extracted from photo; accept only seller text/metadata.
+vision_allowed:
+  coarse_type: [MIRRORLESS_CAMERA, DSLR_CAMERA, ACTION_CAMERA, DRONE, LENS, TRIPOD, GIMBAL, PHOTO_LIGHTING]
+  visible_attributes: [color_family, kit_lens_included, lens_mount_candidate, remote_controller_included, accessory_type]
+evidence_thresholds:
+  exact_model_min_confidence: 0.86
+  type_min_confidence: 0.72
+  publish_requires_text_or_source_for_model: true

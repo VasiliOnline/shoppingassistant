@@ -470,6 +470,7 @@ private val adminOnlyAttributeCodes = setOf(
     "evidence_tokens",
     "evidence_policy",
     "evidence_level",
+    "evidence_source",
     "extraction_warnings",
     "identity_candidate_count",
     "identity_confidence",
@@ -477,6 +478,7 @@ private val adminOnlyAttributeCodes = setOf(
     "identity_evidence",
     "identity_last_resolved_at",
     "identity_resolution_version",
+    "imei_or_serial_presence",
     "imei_evidence_hash",
     "image_embedding_id",
     "image_fingerprint",
@@ -498,11 +500,13 @@ private val adminOnlyAttributeCodes = setOf(
     "raw_title_identity_tokens",
     "raw_size_text",
     "route_confidence",
+    "routing_confidence",
     "route_guard_trace",
     "route_guardrail_trace",
     "serial_number_masked",
     "seller_claims_raw",
     "source_payload_hash",
+    "source_quality_score",
     "source_confidence",
     "source_evidence",
     "source_hash",
@@ -514,8 +518,10 @@ private val adminOnlyAttributeCodes = setOf(
     "source_url",
     "source_url_identity_tokens",
     "ingestion_timestamp",
+    "ingestion_confidence",
     "normalization_trace_id",
     "risk_flags",
+    "privacy_risk_flag",
     "moderation_status",
     "normalized_spec_key",
     "spec_confidence",
@@ -529,6 +535,7 @@ private val adminOnlyAttributeCodes = setOf(
     "spec_runtime_version",
     "spec_unit_parse_notes",
     "title_embedding_id",
+    "title_confidence",
     "unit_parser_version",
     "visual_evidence_flags",
     "vision_confidence",
@@ -544,6 +551,7 @@ private val adminOnlyAttributeCodes = setOf(
     "normalization_notes",
     "source_trace_id",
     "candidate_value_status",
+    "live_value_candidate_state",
     "model_seed_match_level",
 )
 
@@ -648,6 +656,282 @@ private val tvHomeTheaterCoreAttributeCodes = setOf(
     "model_name_text",
     "resolution",
     "screen_size_in",
+)
+
+private val wearableCoreAttributeCodes = setOf(
+    "brand",
+    "color_family",
+    "condition",
+    "model_name_text",
+    "wearable_type",
+)
+
+private val cameraCoreAttributeCodes = setOf(
+    "availability",
+    "brand",
+    "camera_type",
+    "color_family",
+    "condition",
+    "model_name_text",
+)
+
+private val gamingCoreAttributeCodes = setOf(
+    "availability",
+    "brand",
+    "condition",
+    "gaming_type",
+    "model_name_text",
+)
+
+private val smartHomeCoreAttributeCodes = setOf(
+    "availability",
+    "brand",
+    "color_family",
+    "condition",
+    "ecosystem",
+    "model_name_text",
+    "power_source",
+    "protocol",
+    "region",
+    "smart_home_type",
+)
+
+private val networkingCoreAttributeCodes = setOf(
+    "brand",
+    "condition",
+    "ethernet_max_speed",
+    "model_name_text",
+    "networking_type",
+    "poe_support",
+    "port_count",
+    "wifi_standard",
+)
+
+private val powerChargingCablesCoreAttributeCodes = setOf(
+    "brand",
+    "capacity_mah",
+    "condition",
+    "connector_type",
+    "model_name_text",
+    "power_cable_type",
+    "wattage_w",
+)
+
+private val printersScannersCoreAttributeCodes = setOf(
+    "brand",
+    "condition",
+    "model_name_text",
+    "printer_scanner_type",
+)
+
+private val wearableTypeCriticalAttributeCodes = setOf(
+    "activation_lock_status",
+    "ar_display_mode",
+    "band_connector_type",
+    "battery_life_days",
+    "camera_presence",
+    "case_material",
+    "case_size_mm",
+    "cellular_support",
+    "charging_type",
+    "compatible_os",
+    "compatible_wearable_brand",
+    "compatible_wearable_model_text",
+    "connectivity_set",
+    "display_type",
+    "durability_rating",
+    "ecosystem",
+    "gps_support",
+    "health_feature_set",
+    "nfc_payments",
+    "prescription_support",
+    "ring_size",
+    "sensor_set",
+    "sport_profile_set",
+    "strap_material",
+    "strap_width_mm",
+    "water_resistance",
+)
+
+private val cameraTypeCriticalAttributeCodes = setOf(
+    "accessory_type",
+    "aperture_range",
+    "binocular_magnification",
+    "camera_lens_type",
+    "drone_flight_time_min",
+    "drone_range_km",
+    "drone_registration_class",
+    "drone_weight_g",
+    "filter_diameter_mm",
+    "focal_length_mm",
+    "frame_rate_max_fps",
+    "gimbal_axis_count",
+    "is_body_only",
+    "kit_lens_included",
+    "lens_mount",
+    "light_type",
+    "memory_card_type",
+    "objective_diameter_mm",
+    "obstacle_avoidance",
+    "optical_zoom_x",
+    "payload_capacity_g",
+    "remote_controller_included",
+    "sensor_format",
+    "sensor_resolution_mp",
+    "shutter_count",
+    "stabilization_type",
+    "tripod_head_type",
+    "video_resolution_max",
+    "weather_sealing",
+)
+
+private val gamingTypeCriticalAttributeCodes = setOf(
+    "accessory_subtype",
+    "account_lock_status",
+    "adaptive_triggers",
+    "age_rating_system",
+    "age_rating_value",
+    "arcade_equipment_type",
+    "battery_type",
+    "case_included",
+    "compatible_model_text",
+    "compatible_platform",
+    "console_generation",
+    "control_panel_type",
+    "controller_count",
+    "controller_subtype",
+    "controllers_included",
+    "disc_drive",
+    "disc_region",
+    "display_type",
+    "edition",
+    "force_feedback",
+    "for_parts_only",
+    "functional_grade",
+    "game_platform",
+    "headset_connection",
+    "headset_surround",
+    "input_layout",
+    "ipd_adjustment",
+    "keyboard_layout",
+    "keyboard_switch_type",
+    "language_pack",
+    "lens_type",
+    "media_format",
+    "microphone_included",
+    "modded_status",
+    "mouse_dpi_max",
+    "mouse_sensor_type",
+    "online_ban_status",
+    "pc_vr_compatible",
+    "platform",
+    "refresh_rate_hz",
+    "screen_size_in",
+    "storage_capacity_gb",
+    "vr_standalone_mode",
+    "vr_tracking_type",
+    "wheel_rotation_deg",
+    "wireless",
+)
+
+private val smartHomeTypeCriticalAttributeCodes = setOf(
+    "brightness_lumen",
+    "bulb_base",
+    "device_count_in_kit",
+    "hub_required",
+    "indoor_outdoor",
+    "installation_type",
+    "lock_type",
+    "max_load_watt",
+    "sensor_kind",
+    "thermostat_type",
+    "video_resolution",
+    "voice_assistant_support",
+)
+
+private val networkingTypeCriticalAttributeCodes = setOf(
+    "antenna_gain_dbi",
+    "antenna_type",
+    "cellular_standard",
+    "compatibility_target",
+    "controller_ecosystem",
+    "docsis_version",
+    "ip_rating",
+    "isp_locked",
+    "lan_port_count",
+    "managed_switch",
+    "mesh_node_count",
+    "mesh_support",
+    "modem_type",
+    "mount_type",
+    "outdoor_rated",
+    "poe_port_count",
+    "poe_power_budget_w",
+    "sfp_ports",
+    "sim_support",
+    "wan_port_count",
+)
+
+private val powerChargingCablesTypeCriticalAttributeCodes = setOf(
+    "ac_outlet_count",
+    "battery_chemistry",
+    "battery_size",
+    "cable_length_m",
+    "cable_standard",
+    "capacity_wh",
+    "compatibility_target",
+    "connector_from",
+    "connector_to",
+    "fast_charge_protocol",
+    "gan_charger",
+    "hdmi_version",
+    "magsafe_support",
+    "plug_type",
+    "port_count",
+    "power_delivery_w",
+    "qi_standard",
+    "socket_type",
+    "surge_joule_rating",
+    "ups_topology",
+    "usb_pd_support",
+    "video_standard",
+)
+
+private val printersScannersTypeCriticalAttributeCodes = setOf(
+    "accessory_subtype",
+    "auto_document_feeder",
+    "barcode_label_support",
+    "cartridge_type",
+    "color_printing",
+    "compatible_cartridge_code",
+    "compatible_printer_brand",
+    "compatible_printer_model_text",
+    "connectivity",
+    "consumable_included",
+    "cutter_type",
+    "device_function",
+    "duplex_printing",
+    "film_scanning",
+    "label_width_mm",
+    "media_type_supported",
+    "mobile_printing",
+    "mono_color",
+    "monthly_duty_cycle_pages",
+    "network_printing",
+    "original_compatible_status",
+    "page_yield_bucket",
+    "paper_format",
+    "photo_printing",
+    "portable",
+    "print_resolution_dpi",
+    "print_speed_ppm",
+    "print_technology",
+    "scan_resolution_dpi",
+    "scanner_type",
+    "supported_os",
+    "tank_system",
+    "toner_color",
+    "yield_pages",
 )
 
 private val pcComponentTypeCriticalAttributeCodes = setOf(
@@ -923,10 +1207,38 @@ private fun inferAttributeRole(
     normalizedCode in audioCoreAttributeCodes -> CatalogAttributeRole.T0_CORE
     normalizedCategoryCode == "TECH.TV_HOME_THEATER" && normalizedCode in tvHomeTheaterCoreAttributeCodes ->
         CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.WEARABLES" && normalizedCode in wearableCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.CAMERAS_DRONES" && normalizedCode in cameraCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.GAMING" && normalizedCode in gamingCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.SMART_HOME_SECURITY" && normalizedCode in smartHomeCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.NETWORKING" && normalizedCode in networkingCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.POWER_CHARGING_CABLES" && normalizedCode in powerChargingCablesCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
+    normalizedCategoryCode == "TECH.PRINTERS_SCANNERS" && normalizedCode in printersScannersCoreAttributeCodes ->
+        CatalogAttributeRole.T0_CORE
     normalizedCode in pcComponentTypeCriticalAttributeCodes -> CatalogAttributeRole.T1_TYPE_CRITICAL
     normalizedCode in storageMemoryTypeCriticalAttributeCodes -> CatalogAttributeRole.T1_TYPE_CRITICAL
     normalizedCode in audioTypeCriticalAttributeCodes -> CatalogAttributeRole.T1_TYPE_CRITICAL
     normalizedCategoryCode == "TECH.TV_HOME_THEATER" && normalizedCode in tvHomeTheaterTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.WEARABLES" && normalizedCode in wearableTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.CAMERAS_DRONES" && normalizedCode in cameraTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.GAMING" && normalizedCode in gamingTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.SMART_HOME_SECURITY" && normalizedCode in smartHomeTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.NETWORKING" && normalizedCode in networkingTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.POWER_CHARGING_CABLES" && normalizedCode in powerChargingCablesTypeCriticalAttributeCodes ->
+        CatalogAttributeRole.T1_TYPE_CRITICAL
+    normalizedCategoryCode == "TECH.PRINTERS_SCANNERS" && normalizedCode in printersScannersTypeCriticalAttributeCodes ->
         CatalogAttributeRole.T1_TYPE_CRITICAL
     normalizedCode in typeCriticalAttributeCodes -> CatalogAttributeRole.T1_TYPE_CRITICAL
     isIdentity -> CatalogAttributeRole.T0_CORE

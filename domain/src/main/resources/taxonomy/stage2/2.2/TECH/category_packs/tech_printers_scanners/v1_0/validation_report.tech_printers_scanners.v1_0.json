@@ -1,0 +1,33 @@
+{
+  "package_id": "TECH_PRINTERS_SCANNERS_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.PRINTERS_SCANNERS",
+  "static_validation": {
+    "zip_integrity": "PASS_PENDING_FINAL_ZIP",
+    "json_syntax": "PASS",
+    "jsonl_structure": "PASS",
+    "tsv_structure": "PASS",
+    "initial_fields_max_8": "PASS",
+    "primary_facets_max_7": "PASS",
+    "presets_collections_absent": "PASS",
+    "forbidden_microcategory_codes_absent": "PASS"
+  },
+  "data_counts": {
+    "attributes": 35,
+    "values": 169,
+    "aliases": 131,
+    "model_head_seed": 52,
+    "model_aliases": 163,
+    "golden_queries": 112,
+    "sample_offers": 125,
+    "publish_sample_offers": 50,
+    "facet_coverage_rows": 43
+  },
+  "runtime_validators_executed": false,
+  "runtime_release_status": "PENDING_PROJECT_VALIDATORS",
+  "known_limitations": [
+    "Representative model seed only, not a full global printer/scanner registry.",
+    "3D printers and POS cash-register systems are intentionally routed outside this branch in v1.",
+    "Compatibility for cartridges is evidence-first; do not infer compatible printer model without cartridge code or explicit listing text."
+  ],
+  "verdict": "STATIC_PRODUCTION_CANDIDATE"
+}

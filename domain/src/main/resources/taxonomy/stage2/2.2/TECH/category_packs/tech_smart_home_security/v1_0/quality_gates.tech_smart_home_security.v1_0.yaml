@@ -1,0 +1,22 @@
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+  - IdentityCandidateGate
+  - CompatibilityGate
+  - SafetyRegulatedGate
+thresholds:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  sample_offers_min: 80
+  golden_queries_min: 120
+  t3_hidden_leaks_max: 0
+smart_home_specific_gates:
+  - SecurityPrivacySurfaceGate
+  - SmartHomeProtocolGate
+  - RouteConflictGatePlus

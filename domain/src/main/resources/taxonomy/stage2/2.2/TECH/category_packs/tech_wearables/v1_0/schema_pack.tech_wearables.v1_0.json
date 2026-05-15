@@ -1,0 +1,70 @@
+{
+  "schema_id": "schema_pack.tech_wearables.v1_0",
+  "categoryCode": "TECH.WEARABLES",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "wearable_type",
+  "attribute_roles": {
+    "T0_CORE": [
+      "wearable_type",
+      "brand",
+      "model_name_text",
+      "condition",
+      "color_family"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "case_size_mm",
+      "display_type",
+      "connectivity_set",
+      "compatible_os",
+      "ecosystem",
+      "battery_life_days",
+      "gps_support",
+      "cellular_support",
+      "sensor_set",
+      "health_feature_set",
+      "water_resistance",
+      "case_material",
+      "strap_width_mm",
+      "band_connector_type",
+      "compatible_wearable_brand",
+      "compatible_wearable_model_text",
+      "ring_size",
+      "ar_display_mode",
+      "activation_lock_status"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "sport_profile_set",
+      "durability_rating",
+      "strap_material",
+      "prescription_support",
+      "camera_presence",
+      "storage_gb",
+      "ram_gb",
+      "charging_type",
+      "included_accessories",
+      "original_box",
+      "warranty",
+      "nfc_payments"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "imei_or_serial_presence",
+      "identity_confidence",
+      "vision_confidence"
+    ]
+  },
+  "type_values": [
+    "SMARTWATCH",
+    "FITNESS_TRACKER",
+    "SMART_RING",
+    "AR_GLASSES",
+    "WEARABLE_ACCESSORY",
+    "WATCH_BAND"
+  ],
+  "ui_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7,
+    "t3_hidden_in_ui": false
+  },
+  "no_microcategory_policy": true,
+  "no_presets_or_collections": true
+}

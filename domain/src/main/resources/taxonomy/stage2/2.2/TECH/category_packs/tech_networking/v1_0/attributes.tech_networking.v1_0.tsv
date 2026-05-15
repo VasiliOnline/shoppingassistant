@@ -1,0 +1,49 @@
+attribute_code	label_ru	role	data_type	required_policy	usage_scope	unit	value_source	facet_eligible	search_boost	notes
+categoryCode	Код категории	T0_CORE	enum	always	routing		fixed:TECH.NETWORKING	false	1.0	
+networking_type	Тип сетевого устройства	T0_CORE	enum	always	classification		values.networking_type	true	2.0	
+brand	Бренд	T0_CORE	enum_or_text	required_if_known	identity		TECH.ELECTRONICS_COMMON.brand + runtime_candidates	true	1.5	
+model	Модель	T1_TYPE_SPECIFIC	text	required_if_known	identity		model_head_seed + runtime_candidates	true	1.3	
+model_name_text	Текст модели	T0_CORE	text	required_if_model_unknown	identity		free_text	false	1.0	
+condition	Состояние	T0_CORE	enum	always	commerce		values.condition	true	1.2	
+color	Цвет	T2_OPTIONAL_ENRICHMENT	enum	optional	display		values.color	true	0.2	
+release_year	Год выпуска	T2_OPTIONAL_ENRICHMENT	integer	optional	identity/specs	year	range	true	0.3	
+region	Регион/версия	T2_OPTIONAL_ENRICHMENT	enum	optional	commerce/compatibility		values.region	true	0.4	
+warranty	Гарантия	T2_OPTIONAL_ENRICHMENT	enum	optional	commerce		values.warranty	true	0.4	
+wifi_standard	Стандарт Wi‑Fi	T0_CORE	enum	required_for_wifi_devices	specs		values.wifi_standard	true	1.4	
+wifi_band	Диапазоны Wi‑Fi	T2_OPTIONAL_ENRICHMENT	enum	optional	specs		values.wifi_band	true	0.8	
+ethernet_max_speed	Макс. Ethernet	T0_CORE	enum	required_if_ports_known	specs	bps	values.ethernet_speed	true	1.1	
+wan_port_count	WAN-порты	T1_TYPE_SPECIFIC	integer	optional	specs	count	range:0..8	true	0.5	
+lan_port_count	LAN-порты	T1_TYPE_SPECIFIC	integer	optional	specs	count	range:0..96	true	0.6	
+port_count	Всего портов	T0_CORE	integer	required_if_switch	specs	count	range:0..128	true	0.8	
+sfp_ports	SFP/SFP+ порты	T1_TYPE_SPECIFIC	integer	optional	specs	count	range:0..48	true	0.5	
+poe_support	PoE поддержка	T1_TYPE_SPECIFIC	enum	required_for_poe_devices	specs		values.poe_support	true	1.0	
+poe_port_count	Количество PoE-портов	T1_TYPE_SPECIFIC	integer	optional	specs	count	range:0..96	true	0.5	
+poe_power_budget_w	Бюджет PoE	T1_TYPE_SPECIFIC	decimal	optional	specs	W	range:0..2000	true	0.5	
+managed_switch	Управляемость коммутатора	T1_TYPE_SPECIFIC	enum	required_for_SWITCH	specs		values.managed_switch	true	0.8	
+mesh_support	Mesh поддержка	T1_TYPE_SPECIFIC	enum	optional	specs		values.boolean_unknown	true	0.6	
+mesh_node_count	Количество узлов Mesh	T1_TYPE_SPECIFIC	integer	required_for_mesh_kit	commerce/specs	count	range:1..12	true	0.8	
+modem_type	Тип модема	T1_TYPE_SPECIFIC	enum	required_for_MODEM	classification/specs		values.modem_type	true	1.0	
+docsis_version	Версия DOCSIS	T1_TYPE_SPECIFIC	enum	required_if_cable_modem	specs		values.docsis_version	true	0.5	
+cellular_standard	Сотовая связь	T1_TYPE_SPECIFIC	enum	required_if_cellular	specs		values.cellular_standard	true	0.8	
+sim_support	SIM/eSIM	T1_TYPE_SPECIFIC	enum	optional	specs		values.sim_support	true	0.4	
+outdoor_rated	Уличное исполнение	T1_TYPE_SPECIFIC	enum	optional	specs		values.boolean_unknown	true	0.5	
+ip_rating	IP-защита	T1_TYPE_SPECIFIC	enum	optional	specs		values.ip_rating	true	0.3	
+antenna_gain_dbi	Усиление антенны	T1_TYPE_SPECIFIC	decimal	required_for_ANTENNA	specs	dBi	range:0..40	true	0.7	
+antenna_type	Тип антенны	T1_TYPE_SPECIFIC	enum	required_for_ANTENNA	specs		values.antenna_type	true	0.6	
+mimo_streams	MIMO потоки	T2_OPTIONAL_ENRICHMENT	enum	optional	specs		values.mimo_streams	true	0.3	
+security_protocol	Безопасность	T2_OPTIONAL_ENRICHMENT	enum	optional	specs		values.security_protocol	true	0.4	
+vpn_support	VPN поддержка	T2_OPTIONAL_ENRICHMENT	enum	optional	specs		values.boolean_unknown	true	0.3	
+mount_type	Тип монтажа	T1_TYPE_SPECIFIC	enum	optional	physical		values.mount_type	true	0.3	
+rack_units	Rack units	T2_OPTIONAL_ENRICHMENT	decimal	optional	physical	U	range:0..8	false	0.1	
+power_source	Питание	T2_OPTIONAL_ENRICHMENT	enum	optional	specs		values.power_source	true	0.2	
+included_accessories	Комплект	T2_OPTIONAL_ENRICHMENT	multi_enum	optional	commerce		values.included_accessories	false	0.2	
+seller_bundle	Набор продавца	T2_OPTIONAL_ENRICHMENT	enum	optional	commerce		values.boolean_unknown	true	0.2	
+original_box	Оригинальная коробка	T2_OPTIONAL_ENRICHMENT	enum	optional	commerce		values.boolean_unknown	true	0.2	
+repair_history	История ремонта	T2_OPTIONAL_ENRICHMENT	enum	optional	commerce		values.repair_history	false	0.2	
+compatibility_target	Совместимость/экосистема	T1_TYPE_SPECIFIC	enum_or_text	optional	compatibility		runtime_candidates	true	0.5	
+controller_ecosystem	Controller ecosystem	T1_TYPE_SPECIFIC	enum	optional	compatibility		values.controller_ecosystem	true	0.5	
+isp_locked	Привязка к оператору	T1_TYPE_SPECIFIC	enum	optional	commerce/compatibility		values.boolean_unknown	true	0.6	
+routing_confidence	Routing confidence	T3_SYSTEM_HIDDEN	decimal	always	system		0..1	false	0	
+ingestion_confidence	Ingestion confidence	T3_SYSTEM_HIDDEN	decimal	always	system		0..1	false	0	
+dedup_key	Dedup key	T3_SYSTEM_HIDDEN	text	always	system		computed	false	0	
+source_evidence	Evidence	T3_SYSTEM_HIDDEN	json	optional	system		runtime	false	0	

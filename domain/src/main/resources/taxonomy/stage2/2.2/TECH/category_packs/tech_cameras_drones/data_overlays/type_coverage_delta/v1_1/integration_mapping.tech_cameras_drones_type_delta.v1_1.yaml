@@ -1,0 +1,15 @@
+target_categoryCode: TECH.CAMERAS_DRONES
+base_package: TECH_CAMERAS_DRONES_public_category_pack_v1_0_RU
+patch_type: data_overlay_patch
+apply_order: after_base_pack_v1_0
+merge_policy:
+  values_delta: append_if_attribute_exists_and_value_absent
+  aliases_delta: append_if_no_collision
+  model_head_seed_delta: append_if_model_code_absent
+  golden_queries_delta: append
+  sample_offers_delta: append
+  publish_sample_offers_delta: append
+schema_breaking_changes: false
+new_category_codes: []
+removed_fields: []
+changed_semantics: []

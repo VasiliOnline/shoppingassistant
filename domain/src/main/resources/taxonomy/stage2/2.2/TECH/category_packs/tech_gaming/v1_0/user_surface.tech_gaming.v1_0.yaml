@@ -1,0 +1,34 @@
+categoryCode: TECH.GAMING
+version: 1.0
+public_category: true
+accepts_offers_directly: true
+main_type_attribute: gaming_type
+initial_fields:
+  - gaming_type
+  - brand
+  - model_name_text
+  - platform
+  - condition
+  - price
+  - availability
+  - included_accessories
+expanded_fields:
+  - storage_capacity_gb
+  - disc_drive
+  - media_format
+  - compatible_platform
+  - controller_subtype
+  - connection_type
+  - game_platform
+  - account_lock_status
+  - online_ban_status
+  - cosmetic_grade
+  - functional_grade
+hidden_fields:
+  - title_confidence
+  - route_confidence
+  - compatibility_confidence
+  - evidence_source
+limits:
+  initial_fields_max: 8
+  primary_facets_max: 7

@@ -1,0 +1,16 @@
+resale_condition_policy:
+  categoryCode: TECH.PRINTERS_SCANNERS
+  required_for_used_devices:
+    - print_test_status
+    - included_accessories
+    - consumable_included
+    - known_defects
+  recommended_for_used_devices:
+    - page_count
+    - drum_life_percent
+    - toner_level
+    - ink_level
+  used_consumables_policy:
+    allow_open_box: true
+    require_original_compatible_status: true
+    warn_if_used_ink_or_toner_opened: true

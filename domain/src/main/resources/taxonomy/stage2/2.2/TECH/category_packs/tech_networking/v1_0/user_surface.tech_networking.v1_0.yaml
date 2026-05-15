@@ -1,0 +1,7 @@
+version: 1.0
+categoryCode: TECH.NETWORKING
+initial_fields: [networking_type, brand, condition, model_name_text, wifi_standard, ethernet_max_speed, port_count, poe_support]
+primary_facets: [networking_type, brand, condition, wifi_standard, ethernet_max_speed, port_count, poe_support]
+expanded_fields: [wifi_band, lan_port_count, wan_port_count, mesh_node_count, modem_type, cellular_standard, managed_switch, controller_ecosystem, mount_type, outdoor_rated, warranty, region]
+hidden_fields: [routing_confidence, ingestion_confidence, dedup_key, source_evidence]
+notes: {initial_fields_limit: 8, no_presets_or_collections: true}

@@ -1,0 +1,22 @@
+categoryCode: TECH.CAMERAS_DRONES
+input_sources:
+  listing_title: [camera_type, brand, model_name_text, lens_mount, focal_length_mm, aperture_range, video_resolution_max]
+  listing_description: [condition, shutter_count, included_accessories, battery_count, drone_flight_time_min, obstacle_avoidance]
+  photo_vision: [camera_type, kit_lens_included, color_family, remote_controller_included]
+  source_url: [brand, model, mpn, gtin]
+publish_required:
+  - categoryCode
+  - camera_type
+  - title
+  - brand
+  - condition
+  - price
+  - currency
+  - availability
+  - images
+routing_targets:
+  phones: TECH.PHONES
+  webcams: TECH.COMPUTER_ACCESSORIES
+  security_cameras: TECH.SMART_HOME_SECURITY
+  dashcams: TECH.CAR_ELECTRONICS_GPS
+  gaming_cameras: TECH.GAMING

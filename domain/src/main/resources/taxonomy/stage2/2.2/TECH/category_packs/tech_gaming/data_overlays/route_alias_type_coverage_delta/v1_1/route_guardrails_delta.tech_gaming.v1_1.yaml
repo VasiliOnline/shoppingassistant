@@ -1,0 +1,44 @@
+categoryCode: TECH.GAMING
+version: 1.1
+delta_type: route_guardrails_overlay
+evaluation_mode: priority_desc_first_match
+include_rules_delta:
+  - id: include_vr_headset_direct
+    priority: 875
+    when_any: ["meta quest", "oculus quest", "quest 2", "quest 3", "quest 3s", "ps vr2", "psvr2", "playstation vr2", "valve index", "htc vive", "pico 4", "vr шлем", "шлем vr"]
+    route_to: TECH.GAMING
+    expected_type: VR_HEADSET
+  - id: include_controller_direct
+    priority: 870
+    when_any: ["dualsense", "dual sense", "dualsense edge", "xbox wireless controller", "xbox elite", "joy-con", "joy con", "switch pro controller", "8bitdo", "gamesir", "backbone one", "геймпад", "джойстик", "контроллер ps5", "руль для ps5", "руль для xbox", "fight stick", "файтстик"]
+    route_to: TECH.GAMING
+    expected_type: GAME_CONTROLLER
+  - id: include_gaming_mouse_headset_keyboard_direct
+    priority: 860
+    when_all_any:
+      - ["gaming", "игровая", "геймерская", "razer", "logitech g", "steelseries", "hyperx", "corsair", "turtle beach", "astro"]
+      - ["мышь", "mouse", "клавиатура", "keyboard", "гарнитура", "headset"]
+    route_to: TECH.GAMING
+  - id: include_console_accessory_direct
+    priority: 855
+    when_all_any:
+      - ["ps5", "xbox", "switch", "steam deck", "quest"]
+      - ["charging station", "зарядная станция", "dock", "док", "expansion card", "карта расширения", "link cable", "ремешок", "carry case"]
+    route_to: TECH.GAMING
+    expected_type: CONSOLE_ACCESSORY
+  - id: include_arcade_equipment_direct
+    priority: 845
+    when_any: ["arcade cabinet", "аркадный автомат", "bartop arcade", "pandora box", "arcade1up", "coin op arcade"]
+    route_to: TECH.GAMING
+    expected_type: ARCADE_EQUIPMENT
+exclude_rules_delta:
+  - id: gambling_service_not_gaming_product_delta
+    priority: 1000
+    when_any: ["casino account", "букмекер", "ставки", "скины рулетка", "gambling"]
+    block_reason: regulated_or_service_not_gaming_product
+  - id: digital_account_service_not_physical_game_delta
+    priority: 940
+    when_all_any:
+      - ["аккаунт", "account", "подписка", "boost", "прокачка"]
+      - ["psn", "xbox", "steam", "fortnite", "roblox"]
+    block_reason: digital_service_or_account_not_baseline_physical_product

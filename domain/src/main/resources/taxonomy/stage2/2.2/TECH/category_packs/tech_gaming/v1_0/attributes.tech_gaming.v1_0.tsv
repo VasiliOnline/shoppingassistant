@@ -1,0 +1,84 @@
+attribute_code	label_ru	role	data_type	required_policy	usage_scope	allowed_values_source	unit	ui_visibility	normalization_note
+categoryCode	Код категории	T0_CORE	enum	required	all			VISIBLE	Inherited from TECH shared layers where applicable
+gaming_type	Тип игрового товара	T0_CORE	enum	required	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+brand	Бренд	T0_CORE	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+manufacturer	Производитель	T1_TYPE_SPECIFIC	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+family	Семейство	T1_TYPE_SPECIFIC	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+line	Линейка	T1_TYPE_SPECIFIC	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+model	Модель	T1_TYPE_SPECIFIC	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+model_name_text	Текстовое имя модели	T0_CORE	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+condition	Состояние	T0_CORE	enum	required	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+price	Цена	T0_CORE	text	required	all			VISIBLE	Inherited from TECH shared layers where applicable
+currency	Валюта	T0_CORE	enum	required	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+availability	Наличие	T0_CORE	enum	required	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+color_family	Цвет	T1_TYPE_SPECIFIC	enum	optional_or_inherited	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+region	Регион	T1_TYPE_SPECIFIC	enum	optional_or_inherited	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+release_year	Год выпуска	T1_TYPE_SPECIFIC	text	optional_or_inherited	all			VISIBLE	Inherited from TECH shared layers where applicable
+warranty_status	Гарантия	T1_TYPE_SPECIFIC	enum	optional_or_inherited	all	values.head		VISIBLE	Inherited from TECH shared layers where applicable
+platform	Платформа	T1_TYPE_SPECIFIC	enum	required_for_GAME_CONSOLE_HANDHELD_CONSOLE_VR_PHYSICAL_GAME_CONTROLLER	all			VISIBLE	
+console_generation	Поколение консоли	T1_TYPE_SPECIFIC	enum	optional	GAME_CONSOLE,HANDHELD_CONSOLE			VISIBLE	
+storage_capacity_gb	Встроенная память	T1_TYPE_SPECIFIC	integer	required_for_consoles_when_known	GAME_CONSOLE,HANDHELD_CONSOLE,VR_HEADSET			VISIBLE	
+disc_drive	Дисковод	T1_TYPE_SPECIFIC	enum	required_for_GAME_CONSOLE_when_known	GAME_CONSOLE			VISIBLE	
+media_format	Формат носителя	T1_TYPE_SPECIFIC	enum	required_for_PHYSICAL_GAME	PHYSICAL_GAME			VISIBLE	
+game_platform	Платформа игры	T1_TYPE_SPECIFIC	enum	required_for_PHYSICAL_GAME	PHYSICAL_GAME			VISIBLE	
+edition	Издание	T1_TYPE_SPECIFIC	enum	optional	PHYSICAL_GAME			VISIBLE	
+age_rating_system	Система возрастного рейтинга	T2_OPTIONAL_ENRICHMENT	enum	optional	PHYSICAL_GAME			VISIBLE	
+age_rating_value	Возрастной рейтинг	T2_OPTIONAL_ENRICHMENT	enum	optional	PHYSICAL_GAME			VISIBLE	
+language_pack	Язык / регион игры	T2_OPTIONAL_ENRICHMENT	enum	optional	PHYSICAL_GAME			VISIBLE	
+disc_region	Регион диска/картриджа	T2_OPTIONAL_ENRICHMENT	enum	optional	PHYSICAL_GAME			VISIBLE	
+case_included	Коробка включена	T1_TYPE_SPECIFIC	boolean	optional	PHYSICAL_GAME			VISIBLE	
+manual_included	Мануал включён	T2_OPTIONAL_ENRICHMENT	boolean	optional	PHYSICAL_GAME			VISIBLE	
+controller_count	Количество контроллеров	T1_TYPE_SPECIFIC	integer	optional	GAME_CONSOLE,HANDHELD_CONSOLE			VISIBLE	
+controllers_included	Контроллеры в комплекте	T1_TYPE_SPECIFIC	boolean	optional	GAME_CONSOLE,VR_HEADSET			VISIBLE	
+bundle_included	Бандл/комплект	T2_OPTIONAL_ENRICHMENT	boolean	optional	all			VISIBLE	
+digital_code_included	Цифровой код включён	T2_OPTIONAL_ENRICHMENT	boolean	optional	PHYSICAL_GAME,GAME_CONSOLE			VISIBLE	
+subscription_included	Подписка включена	T2_OPTIONAL_ENRICHMENT	boolean	optional	GAME_CONSOLE,PHYSICAL_GAME			VISIBLE	
+account_lock_status	Блокировка аккаунта/привязка	T1_TYPE_SPECIFIC	enum	required_for_used_consoles_when_claimed	GAME_CONSOLE,HANDHELD_CONSOLE,VR_HEADSET			VISIBLE	
+online_ban_status	Бан онлайн-сервиса	T1_TYPE_SPECIFIC	enum	required_for_used_consoles_when_claimed	GAME_CONSOLE,HANDHELD_CONSOLE			VISIBLE	
+firmware_status	Версия/статус прошивки	T2_OPTIONAL_ENRICHMENT	text	optional	GAME_CONSOLE,HANDHELD_CONSOLE			VISIBLE	
+modded_status	Модификация/чип/кастом	T2_OPTIONAL_ENRICHMENT	enum	optional	GAME_CONSOLE,HANDHELD_CONSOLE,ARCADE_EQUIPMENT			VISIBLE	
+backward_compatibility	Обратная совместимость	T2_OPTIONAL_ENRICHMENT	enum	optional	GAME_CONSOLE,HANDHELD_CONSOLE			VISIBLE	
+display_type	Тип дисплея	T1_TYPE_SPECIFIC	enum	optional	HANDHELD_CONSOLE,VR_HEADSET,ARCADE_EQUIPMENT			VISIBLE	
+screen_size_in	Размер экрана	T1_TYPE_SPECIFIC	decimal	optional	HANDHELD_CONSOLE,ARCADE_EQUIPMENT			VISIBLE	
+refresh_rate_hz	Частота обновления	T1_TYPE_SPECIFIC	integer	optional	HANDHELD_CONSOLE,VR_HEADSET			VISIBLE	
+resolution_text	Разрешение	T1_TYPE_SPECIFIC	text	optional	HANDHELD_CONSOLE,VR_HEADSET,ARCADE_EQUIPMENT			VISIBLE	
+vr_tracking_type	Тип трекинга VR	T1_TYPE_SPECIFIC	enum	required_for_VR_HEADSET	VR_HEADSET			VISIBLE	
+vr_standalone_mode	Автономный режим VR	T1_TYPE_SPECIFIC	boolean	required_for_VR_HEADSET	VR_HEADSET			VISIBLE	
+pc_vr_compatible	Совместимость с PC VR	T1_TYPE_SPECIFIC	boolean	optional	VR_HEADSET			VISIBLE	
+lens_type	Тип линз VR	T2_OPTIONAL_ENRICHMENT	enum	optional	VR_HEADSET			VISIBLE	
+ipd_adjustment	Регулировка IPD	T2_OPTIONAL_ENRICHMENT	enum	optional	VR_HEADSET			VISIBLE	
+connection_type	Тип подключения	T1_TYPE_SPECIFIC	enum	required_for_controllers_input	GAME_CONTROLLER,GAMING_KEYBOARD,GAMING_MOUSE,GAMING_HEADSET,CONSOLE_ACCESSORY			VISIBLE	
+wireless	Беспроводной	T1_TYPE_SPECIFIC	boolean	optional	GAME_CONTROLLER,GAMING_KEYBOARD,GAMING_MOUSE,GAMING_HEADSET			VISIBLE	
+battery_type	Тип питания	T2_OPTIONAL_ENRICHMENT	enum	optional	GAME_CONTROLLER,GAMING_MOUSE,GAMING_KEYBOARD,VR_HEADSET			VISIBLE	
+input_layout	Раскладка / layout	T1_TYPE_SPECIFIC	enum	optional	GAME_CONTROLLER,GAMING_KEYBOARD			VISIBLE	
+controller_subtype	Подтип контроллера	T1_TYPE_SPECIFIC	enum	required_for_GAME_CONTROLLER	GAME_CONTROLLER			VISIBLE	
+force_feedback	Вибрация / force feedback	T2_OPTIONAL_ENRICHMENT	boolean	optional	GAME_CONTROLLER			VISIBLE	
+adaptive_triggers	Адаптивные триггеры	T2_OPTIONAL_ENRICHMENT	boolean	optional	GAME_CONTROLLER			VISIBLE	
+wheel_rotation_deg	Угол поворота руля	T2_OPTIONAL_ENRICHMENT	integer	optional	GAME_CONTROLLER			VISIBLE	
+keyboard_switch_type	Тип свитчей	T1_TYPE_SPECIFIC	enum	optional	GAMING_KEYBOARD			VISIBLE	
+keyboard_layout	Раскладка клавиатуры	T1_TYPE_SPECIFIC	enum	optional	GAMING_KEYBOARD			VISIBLE	
+mouse_sensor_type	Сенсор мыши	T2_OPTIONAL_ENRICHMENT	enum	optional	GAMING_MOUSE			VISIBLE	
+mouse_dpi_max	Макс. DPI	T2_OPTIONAL_ENRICHMENT	integer	optional	GAMING_MOUSE			VISIBLE	
+headset_connection	Подключение гарнитуры	T1_TYPE_SPECIFIC	enum	optional	GAMING_HEADSET			VISIBLE	
+headset_surround	Surround / spatial audio	T2_OPTIONAL_ENRICHMENT	enum	optional	GAMING_HEADSET			VISIBLE	
+microphone_included	Микрофон	T1_TYPE_SPECIFIC	boolean	optional	GAMING_HEADSET			VISIBLE	
+accessory_subtype	Подтип аксессуара	T1_TYPE_SPECIFIC	enum	required_for_CONSOLE_ACCESSORY	CONSOLE_ACCESSORY			VISIBLE	
+compatible_platform	Совместимая платформа	T1_TYPE_SPECIFIC	enum	required_for_accessories_when_claimed	GAME_CONTROLLER,GAMING_KEYBOARD,GAMING_MOUSE,GAMING_HEADSET,CONSOLE_ACCESSORY			VISIBLE	
+compatible_model_text	Текст совместимой модели	T2_OPTIONAL_ENRICHMENT	text	optional	accessories			VISIBLE	
+compatibility_confidence	Уверенность совместимости	T3_SYSTEM_HIDDEN	decimal	system	accessories			HIDDEN	
+arcade_equipment_type	Тип аркадного оборудования	T1_TYPE_SPECIFIC	enum	required_for_ARCADE_EQUIPMENT	ARCADE_EQUIPMENT			VISIBLE	
+coin_op	Монетоприёмник	T2_OPTIONAL_ENRICHMENT	boolean	optional	ARCADE_EQUIPMENT			VISIBLE	
+control_panel_type	Тип панели управления	T2_OPTIONAL_ENRICHMENT	enum	optional	ARCADE_EQUIPMENT			VISIBLE	
+dimensions_text	Габариты	T2_OPTIONAL_ENRICHMENT	text	optional	all			VISIBLE	
+weight_kg	Вес	T2_OPTIONAL_ENRICHMENT	decimal	optional	all			VISIBLE	
+ports	Порты	T2_OPTIONAL_ENRICHMENT	multi_enum	optional	hardware			VISIBLE	
+included_accessories	Комплект поставки	T1_TYPE_SPECIFIC	multi_text	optional	all			VISIBLE	
+seller_bundle	Комплект продавца	T2_OPTIONAL_ENRICHMENT	multi_text	optional	all			VISIBLE	
+repair_history	История ремонта	T2_OPTIONAL_ENRICHMENT	enum	optional	hardware			VISIBLE	
+cosmetic_grade	Косметическое состояние	T1_TYPE_SPECIFIC	enum	optional	used			VISIBLE	
+functional_grade	Работоспособность	T1_TYPE_SPECIFIC	enum	optional	used			VISIBLE	
+for_parts_only	Только на запчасти	T1_TYPE_SPECIFIC	boolean	optional	all			VISIBLE	
+lot_type	Тип лота	T2_OPTIONAL_ENRICHMENT	enum	optional	all			VISIBLE	
+title_confidence	Уверенность парсинга заголовка	T3_SYSTEM_HIDDEN	decimal	system	all			HIDDEN	
+route_confidence	Уверенность маршрута	T3_SYSTEM_HIDDEN	decimal	system	all			HIDDEN	
+evidence_source	Источник evidence	T3_SYSTEM_HIDDEN	multi_text	system	all			HIDDEN	

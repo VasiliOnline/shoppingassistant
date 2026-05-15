@@ -1,0 +1,86 @@
+{
+  "schema_id": "schema_pack.tech_networking.v1_0",
+  "categoryCode": "TECH.NETWORKING",
+  "pack_type": "public_category_pack",
+  "main_type_attribute": "networking_type",
+  "type_values": [
+    "ROUTER",
+    "MESH_WIFI_SYSTEM",
+    "MODEM",
+    "ACCESS_POINT",
+    "SWITCH",
+    "WIFI_EXTENDER",
+    "NETWORK_ADAPTER",
+    "ANTENNA",
+    "POE_INJECTOR",
+    "NETWORK_ACCESSORY"
+  ],
+  "category_archetypes": [
+    "TECH_DEVICE",
+    "NETWORK_INFRASTRUCTURE",
+    "SPECS_HEAVY",
+    "COMPATIBILITY_AWARE"
+  ],
+  "attribute_roles": {
+    "T0_CORE": [
+      "categoryCode",
+      "networking_type",
+      "brand",
+      "condition",
+      "model_name_text",
+      "wifi_standard",
+      "ethernet_max_speed",
+      "port_count"
+    ],
+    "T1_TYPE_SPECIFIC": [
+      "mesh_node_count",
+      "modem_type",
+      "cellular_standard",
+      "poe_support",
+      "managed_switch",
+      "lan_port_count",
+      "wan_port_count",
+      "sfp_ports",
+      "antenna_gain_dbi",
+      "mount_type",
+      "outdoor_rated",
+      "compatibility_target"
+    ],
+    "T2_OPTIONAL_ENRICHMENT": [
+      "release_year",
+      "region",
+      "warranty",
+      "color",
+      "security_protocol",
+      "vpn_support",
+      "mimo_streams",
+      "wifi_band",
+      "included_accessories",
+      "seller_bundle",
+      "original_box"
+    ],
+    "T3_SYSTEM_HIDDEN": [
+      "ingestion_confidence",
+      "routing_confidence",
+      "dedup_key",
+      "source_evidence",
+      "live_value_candidate_state"
+    ]
+  },
+  "ui_limits": {
+    "initial_fields_max": 8,
+    "primary_facets_max": 7
+  },
+  "rules": {
+    "no_microcategories": [
+      "TECH.ROUTERS",
+      "TECH.SWITCHES",
+      "TECH.MESH_WIFI",
+      "TECH.TP_LINK",
+      "TECH.UBIQUITI",
+      "TECH.MIKROTIK"
+    ],
+    "no_presets_or_collections": true,
+    "long_tail_policy": "head seed only; long-tail through runtime_candidates/live_values"
+  }
+}

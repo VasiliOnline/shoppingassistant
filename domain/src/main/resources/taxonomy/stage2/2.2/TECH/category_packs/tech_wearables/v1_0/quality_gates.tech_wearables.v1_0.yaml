@@ -1,0 +1,22 @@
+gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+  - IdentityCandidateGate
+  - CompatibilityGate
+  - PrivacySensitiveIdentifierGate
+branch_specific:
+  all_wearable_type_values_covered: true
+  smart_watch_vs_fashion_watch_conflict_covered: true
+  watch_band_compatibility_minimum_covered: true
+  smart_ring_vs_jewelry_conflict_covered: true
+  ar_glasses_camera_privacy_flag_covered: true
+ui_limits:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_system_hidden_forbidden: true

@@ -1,0 +1,20 @@
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+special_gates:
+  - IdentityCandidateGate
+  - CameraLensMountGate
+  - DroneSafetyRoutingGate
+  - AccessoryBoundaryGate
+static_expectations:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  t3_hidden_leak_allowed: false
+  sample_offers_min: 80
+  golden_queries_min: 100

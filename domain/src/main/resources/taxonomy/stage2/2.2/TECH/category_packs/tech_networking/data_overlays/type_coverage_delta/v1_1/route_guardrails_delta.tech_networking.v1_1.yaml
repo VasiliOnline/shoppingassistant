@@ -1,0 +1,27 @@
+version: 1.1
+categoryCode: TECH.NETWORKING
+patch_type: route_guardrails_delta
+add_include_rules:
+  - id: network_cable_accessory_include
+    priority: 610
+    route_to: TECH.NETWORKING
+    when_any: ["патч-корд", "patch cord", "ethernet cable", "lan кабель", "rj45 коннектор", "keystone", "витая пара"]
+  - id: gpon_ont_modem_include
+    priority: 615
+    route_to: TECH.NETWORKING
+    when_any: ["GPON", "ONT терминал", "ONU терминал", "оптический терминал", "XGS-PON"]
+  - id: network_antenna_include
+    priority: 612
+    route_to: TECH.NETWORKING
+    when_any: ["lte антенна", "4g антенна", "5g антенна", "секторная антенна", "LiteBeam", "NanoBeam", "mANT LTE"]
+add_exclude_rules:
+  - id: russian_power_strip_not_networking
+    priority: 930
+    route_to: TECH.POWER_CHARGING_CABLES
+    when_any: ["сетевой фильтр", "удлинитель с розетками", "surge protector"]
+  - id: generic_usb_hdmi_cables_not_networking
+    priority: 870
+    route_to: TECH.POWER_CHARGING_CABLES
+    when_any: ["USB C кабель", "HDMI кабель", "кабель питания"]
+notes:
+  - "Ethernet/LAN/RJ45 cable/accessory stays in TECH.NETWORKING; USB/HDMI/power cable stays in TECH.POWER_CHARGING_CABLES."

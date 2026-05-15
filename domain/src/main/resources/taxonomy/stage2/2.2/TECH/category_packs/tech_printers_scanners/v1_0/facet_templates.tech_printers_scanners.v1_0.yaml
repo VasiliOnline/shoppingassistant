@@ -1,0 +1,55 @@
+categoryCode: TECH.PRINTERS_SCANNERS
+primary_facets:
+  - printer_scanner_type
+  - brand
+  - condition
+  - price
+  - print_technology
+  - color_printing
+  - connectivity
+secondary_facets:
+  - paper_format
+  - duplex_printing
+  - scanner_type
+  - cartridge_type
+  - toner_color
+  - original_compatible_status
+  - compatible_printer_brand
+  - page_yield_bucket
+  - accessory_subtype
+type_specific_facets:
+  PRINTER:
+    - print_technology
+    - color_printing
+    - paper_format
+    - duplex_printing
+    - connectivity
+  MULTIFUNCTION_PRINTER:
+    - print_technology
+    - color_printing
+    - auto_document_feeder
+    - duplex_printing
+    - connectivity
+  SCANNER:
+    - scanner_type
+    - scan_resolution_dpi
+    - auto_document_feeder
+    - paper_format
+  LABEL_PRINTER:
+    - print_technology
+    - label_width_mm
+    - barcode_label_support
+    - cutter_type
+  INK_CARTRIDGE:
+    - compatible_printer_brand
+    - toner_color
+    - original_compatible_status
+    - page_yield_bucket
+  TONER_CARTRIDGE:
+    - compatible_printer_brand
+    - toner_color
+    - original_compatible_status
+    - page_yield_bucket
+  PRINTER_ACCESSORY:
+    - accessory_subtype
+    - compatible_printer_brand

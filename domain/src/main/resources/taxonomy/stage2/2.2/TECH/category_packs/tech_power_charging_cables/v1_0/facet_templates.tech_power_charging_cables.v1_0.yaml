@@ -1,0 +1,23 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+primary_facets:
+  - power_cable_type
+  - brand
+  - condition
+  - connector_type
+  - wattage_w
+  - capacity_mah
+  - price
+secondary_facets:
+  - cable_length_m
+  - fast_charge_protocol
+  - usb_pd_support
+  - qi_standard
+  - hdmi_version
+  - port_count
+  - plug_type
+  - warranty
+rules:
+  hide_empty_facets: true
+  zero_count_values: hidden
+  long_tail_values: runtime_candidates

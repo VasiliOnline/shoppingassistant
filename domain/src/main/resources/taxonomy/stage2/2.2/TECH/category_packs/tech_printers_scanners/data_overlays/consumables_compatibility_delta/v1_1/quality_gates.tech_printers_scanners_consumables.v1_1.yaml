@@ -1,0 +1,17 @@
+gates:
+  - name: NoNewCategoryCodeGate
+    expected: green
+  - name: AliasCollisionGate
+    expected: green
+  - name: RouteConflictGate
+    expected: green
+  - name: SampleOffersSmokeGate
+    expected: green
+  - name: ConsumableCompatibilitySoftGate
+    expected: green
+  - name: PublishFixtureGate
+    expected: green
+limits:
+  initial_fields_changed: false
+  primary_facets_changed: false
+  presets_or_collections_allowed: false

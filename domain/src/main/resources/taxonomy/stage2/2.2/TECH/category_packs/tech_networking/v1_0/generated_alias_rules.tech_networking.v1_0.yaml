@@ -1,0 +1,20 @@
+version: 1.0
+categoryCode: TECH.NETWORKING
+rules:
+  - id: router_wifi_generation
+    target_attribute: wifi_standard
+    patterns: ["wi[- ]?fi\s*(4|5|6e|6|7)", "802\.11(n|ac|ax|be)"]
+  - id: switch_port_count
+    target_attribute: port_count
+    patterns: ["(\d{1,3})\s*(port|порт|порта|портов)"]
+  - id: ethernet_speed
+    target_attribute: ethernet_max_speed
+    patterns: ["(100m|1g|gigabit|гигабит|2\.5g|5g|10g|10gbe)"]
+  - id: poe_standard
+    target_attribute: poe_support
+    patterns: ["(poe\+\+|poe\+|poe|802\.3af|802\.3at|802\.3bt)"]
+negative_rules:
+  - id: usb_hub_not_networking
+    route_to: TECH.COMPUTER_ACCESSORIES
+  - id: nas_not_networking
+    route_to: TECH.STORAGE_MEMORY

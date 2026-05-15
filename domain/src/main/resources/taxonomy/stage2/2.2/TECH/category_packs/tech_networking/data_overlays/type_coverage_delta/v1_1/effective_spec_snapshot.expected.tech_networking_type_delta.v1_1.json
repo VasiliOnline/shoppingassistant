@@ -1,0 +1,33 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_networking_type_delta.v1_1",
+  "categoryCode": "TECH.NETWORKING",
+  "base_package": "TECH_NETWORKING_public_category_pack_v1_0_RU",
+  "patch_package": "TECH_NETWORKING_type_coverage_delta_pack_v1_1_RU",
+  "expected_after_patch": {
+    "type_values_unchanged": true,
+    "new_category_codes": [],
+    "new_schema_attributes": [],
+    "patched_types": [
+      "ANTENNA",
+      "NETWORK_ACCESSORY",
+      "MODEM",
+      "POE_INJECTOR",
+      "ROUTER"
+    ],
+    "new_brand_head_values": [
+      "RUIJIE_REYEE",
+      "CUDY",
+      "GL_INET",
+      "AVM_FRITZ",
+      "DRAYTEK",
+      "PEPLINK"
+    ],
+    "route_boundary_added": [
+      "ethernet_rj45_network_accessory",
+      "gpon_ont_modem",
+      "power_strip_exclusion"
+    ],
+    "ui_surface_changed": false,
+    "primary_facets_changed": false
+  }
+}

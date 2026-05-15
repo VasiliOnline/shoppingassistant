@@ -1,0 +1,6 @@
+version: 1.0
+categoryCode: TECH.NETWORKING
+dedup_strategy:
+  primary_key: [categoryCode, networking_type, brand, normalized_model, port_count, wifi_standard, ethernet_max_speed, poe_support]
+  fallback_key: [title_normalized, image_fingerprint, seller_id]
+  not_duplicates: [same model but different mesh_node_count, same switch line but different port_count, same router model but different ISP lock]

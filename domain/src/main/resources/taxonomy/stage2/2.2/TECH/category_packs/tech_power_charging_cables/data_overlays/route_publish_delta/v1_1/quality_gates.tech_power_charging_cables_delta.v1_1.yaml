@@ -1,0 +1,19 @@
+version: 1.1
+categoryCode: TECH.POWER_CHARGING_CABLES
+patch_type: data_overlay_patch
+required_gates:
+  - RouteConflictGate
+  - AliasCollisionGate
+  - SampleOffersSmokeGate
+  - PublishSampleSmokeGate
+  - EffectiveSpecSnapshotGate
+special_checks:
+  - SURGE_PROTECTOR_publish_fixture_present
+  - CABLE_MANAGEMENT_publish_fixture_present
+  - network_adapter_disambiguation_guard_present
+  - no_schema_breaking_changes
+  - no_presets_collections
+thresholds:
+  min_publish_delta_positive: 8
+  min_golden_delta: 16
+  min_sample_delta: 12

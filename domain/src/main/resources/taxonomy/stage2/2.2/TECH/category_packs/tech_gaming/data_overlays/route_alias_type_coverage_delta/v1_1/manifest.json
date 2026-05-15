@@ -1,0 +1,32 @@
+{
+  "package_name": "TECH_GAMING_route_alias_type_coverage_delta_pack_v1_1_RU",
+  "version": "1.1",
+  "pack_type": "data_overlay_patch",
+  "categoryCode": "TECH.GAMING",
+  "applies_to": "TECH_GAMING_public_category_pack_v1_0_RU",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "schema_breaking_changes": false,
+  "new_category_codes": [],
+  "presets_collections": false,
+  "purpose": "Close P1 data gaps found after review of TECH.GAMING v1.0: alias pollution, thin route guards for VR/controller/arcade/direct gaming peripherals, and weak fixtures for thin types.",
+  "runtime_policy": "Patch overlays base package. It retracts invalid generated aliases and adds route/type/fixture deltas only. It does not change tree, categoryCode, type semantics, or UI limits.",
+  "created_at_utc": "2026-05-14T18:32:51.109242+00:00",
+  "files": [
+    "model_alias_retractions.tech_gaming.v1_1.tsv",
+    "gaming_aliases_delta.ru.v1_1.tsv",
+    "route_guardrails_delta.tech_gaming.v1_1.yaml",
+    "model_head_seed_delta.tech_gaming.v1_1.tsv",
+    "golden_queries_delta.tech_gaming.v1_1.tsv",
+    "sample_offers_delta.tech_gaming.v1_1.jsonl",
+    "publish_sample_offers_delta.tech_gaming.v1_1.jsonl",
+    "gaming_type_coverage_delta.tech_gaming.v1_1.tsv",
+    "integration_mapping.tech_gaming_delta.v1_1.yaml",
+    "quality_gates.tech_gaming_delta.v1_1.yaml",
+    "effective_spec_snapshot.expected.tech_gaming_delta.v1_1.json",
+    "validation_report.tech_gaming_delta.v1_1.json",
+    "checksums.sha256.json",
+    "checksums.sha256.txt",
+    "README_TECH_GAMING_DELTA_v1_1_RU.md"
+  ]
+}

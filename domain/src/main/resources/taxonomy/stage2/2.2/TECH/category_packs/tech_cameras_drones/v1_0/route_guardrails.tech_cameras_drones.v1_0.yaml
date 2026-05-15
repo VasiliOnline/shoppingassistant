@@ -1,0 +1,34 @@
+categoryCode: TECH.CAMERAS_DRONES
+evaluation_mode: sort_by_priority_desc_then_first_match
+include_rules:
+  - id: include_camera_drone_core
+    priority: 500
+    any_terms: [камера, фотоаппарат, беззеркалка, зеркалка, объектив, дрон, квадрокоптер, экшн-камера, видеокамера, штатив, гимбал, студийный свет, бинокль, телескоп]
+    route_to: TECH.CAMERAS_DRONES
+exclusion_rules:
+  - id: smartphone_camera_not_camera
+    priority: 900
+    any_terms: [iphone, смартфон, телефон, samsung galaxy, pixel, камера телефона]
+    route_to: TECH.PHONES
+    unless_terms: [объектив для камеры, штатив, свет, gimbal camera]
+  - id: webcam_to_computer_accessories
+    priority: 850
+    any_terms: [webcam, вебкамера, веб-камера]
+    route_to: TECH.COMPUTER_ACCESSORIES
+  - id: security_camera_to_smart_home
+    priority: 840
+    any_terms: [камера видеонаблюдения, ip camera, security camera, видеодомофон]
+    route_to: TECH.SMART_HOME_SECURITY
+  - id: car_dashcam_to_car_electronics
+    priority: 830
+    any_terms: [dash cam, видеорегистратор, регистратор автомобильный]
+    route_to: TECH.CAR_ELECTRONICS_GPS
+  - id: phone_tripod_holder_to_phone_accessories
+    priority: 810
+    all_terms: [телефон]
+    any_terms: [штатив, держатель, селфи палка]
+    route_to: TECH.PHONE_ACCESSORIES
+  - id: gaming_camera_conflict
+    priority: 780
+    any_terms: [ps5 camera, xbox kinect, камера ps5]
+    route_to: TECH.GAMING

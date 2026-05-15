@@ -1,0 +1,21 @@
+version: 1.0
+categoryCode: TECH.POWER_CHARGING_CABLES
+required_gates:
+  - Stage22SeedValidator
+  - FacetSchemaValidator
+  - EffectiveSpecSnapshotGate
+  - RouteConflictGate
+  - UserSurfaceGate
+  - AliasCollisionGate
+  - VisionRulesGate
+  - SampleOffersSmokeGate
+special_gates:
+  - CompatibilityGate
+  - SafetyRegulatedGate
+  - BatterySafetyGate
+thresholds:
+  initial_fields_max: 8
+  primary_facets_max: 7
+  min_sample_offers: 80
+  min_golden_queries: 80
+  t3_hidden_leak_allowed: 0

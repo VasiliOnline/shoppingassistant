@@ -1,0 +1,15 @@
+dedup_keys:
+  device_body:
+    strong: [brand, model, mpn, gtin]
+    fallback: [brand, family, model_name_text, sensor_format, lens_mount, image_fingerprint]
+  lens:
+    strong: [brand, model, lens_mount, focal_length_mm, aperture_range, mpn]
+    fallback: [brand, focal_length_mm, aperture_range, lens_mount, image_fingerprint]
+  drone:
+    strong: [brand, model, model_code, controller_bundle]
+    fallback: [brand, family, model_name_text, drone_weight_g, image_fingerprint]
+do_not_merge:
+  - different lens_mount
+  - different focal_length_mm for lenses
+  - drone standard vs fly_more_bundle when bundle materially changes offer
+  - body only vs kit with lens when title/source confirms kit

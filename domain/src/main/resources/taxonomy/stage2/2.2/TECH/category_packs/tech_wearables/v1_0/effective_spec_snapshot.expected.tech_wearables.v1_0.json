@@ -1,0 +1,54 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_wearables.v1_0",
+  "categoryCode": "TECH.WEARABLES",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "main_type_attribute": "wearable_type",
+  "type_values": [
+    "SMARTWATCH",
+    "FITNESS_TRACKER",
+    "SMART_RING",
+    "AR_GLASSES",
+    "WEARABLE_ACCESSORY",
+    "WATCH_BAND"
+  ],
+  "required_fields_effective": [
+    "wearable_type",
+    "condition"
+  ],
+  "recommended_core_fields": [
+    "brand",
+    "model_name_text",
+    "color_family",
+    "case_size_mm",
+    "connectivity_set",
+    "compatible_os"
+  ],
+  "primary_facets": [
+    "wearable_type",
+    "brand",
+    "condition",
+    "price",
+    "compatible_os",
+    "connectivity_set",
+    "battery_life_days"
+  ],
+  "hidden_system_fields": [
+    "imei_or_serial_presence",
+    "identity_confidence",
+    "vision_confidence"
+  ],
+  "blocked_cross_routes": [
+    "TECH.PHONES",
+    "TECH.AUDIO",
+    "FASH.ACCESSORIES",
+    "TECH.PHONE_ACCESSORIES",
+    "TECH.POWER_CHARGING_CABLES"
+  ],
+  "no_microcategory_codes": true,
+  "no_presets_or_collections": true
+}

@@ -1,0 +1,14 @@
+version: 1.1
+categoryCode: TECH.POWER_CHARGING_CABLES
+patch_type: data_overlay_patch
+apply_after:
+  - TECH_POWER_CHARGING_CABLES_public_category_pack_v1_0_RU
+operations:
+  - append_aliases: aliases_delta.tech_power_charging_cables.ru.v1_1.tsv
+  - merge_route_guardrails: route_guardrails_delta.tech_power_charging_cables.v1_1.yaml
+  - append_golden_queries: golden_queries_delta.tech_power_charging_cables.v1_1.tsv
+  - append_sample_offers: sample_offers_delta.tech_power_charging_cables.v1_1.jsonl
+  - append_publish_sample_offers: publish_sample_offers_delta.tech_power_charging_cables.v1_1.jsonl
+no_schema_changes: true
+no_ui_surface_changes: true
+no_new_category_codes: true

@@ -1,0 +1,20 @@
+{
+  "package_name": "TECH_POWER_CHARGING_CABLES_route_publish_delta_pack_v1_1_RU",
+  "version": "1.1",
+  "package_type": "data_overlay_patch",
+  "target_package": "TECH_POWER_CHARGING_CABLES_public_category_pack_v1_0_RU",
+  "categoryCode": "TECH.POWER_CHARGING_CABLES",
+  "public_category": false,
+  "schema_breaking_changes": false,
+  "ui_surface_changes": false,
+  "presets_collections": false,
+  "purpose": "Close P1 data gaps after current package check: publish fixtures for SURGE_PROTECTOR/CABLE_MANAGEMENT and ambiguous routing for network adapters vs power adapters.",
+  "created_at_utc": "2026-05-15T00:00:00Z",
+  "depends_on": [
+    "TECH_POWER_CHARGING_CABLES_public_category_pack_v1_0_RU",
+    "TECH_ELECTRONICS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_DEVICE_IDENTITY_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_SPECS_COMMON_shared_standard_pack_v1_0_RU",
+    "TECH_COMPATIBILITY_COMMON_shared_standard_pack_v1_0_RU"
+  ]
+}

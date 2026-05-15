@@ -1,0 +1,68 @@
+categoryCode: TECH.PRINTERS_SCANNERS
+evaluation_mode: priority_desc_first_match
+guards:
+  - id: route_printers_scanners_positive
+    priority: 80
+    include_any:
+      - "принтер"
+      - "мфу"
+      - "сканер"
+      - "картридж"
+      - "тонер"
+      - "принтер этикеток"
+      - "label printer"
+      - "laserjet"
+      - "pixma"
+      - "ecotank"
+    target: TECH.PRINTERS_SCANNERS
+
+  - id: route_camera_conflict
+    priority: 95
+    include_any:
+      - "фотоаппарат"
+      - "объектив"
+      - "экшн камера"
+      - "дрон"
+    target: TECH.CAMERAS_DRONES
+
+  - id: route_power_cable_conflict
+    priority: 92
+    include_any:
+      - "usb-c кабель"
+      - "hdmi кабель"
+      - "зарядка"
+      - "блок питания"
+      - "сетевой фильтр"
+    exclude_any:
+      - "кабель принтера"
+      - "usb printer cable"
+    target: TECH.POWER_CHARGING_CABLES
+
+  - id: route_networking_conflict
+    priority: 91
+    include_any:
+      - "ethernet"
+      - "rj45"
+      - "патч корд"
+      - "роутер"
+      - "сетевой адаптер"
+    target: TECH.NETWORKING
+
+  - id: route_pc_components_conflict
+    priority: 91
+    include_any:
+      - "3d printer filament"
+      - "филамент"
+      - "пластик для 3d принтера"
+      - "ram"
+      - "ddr4"
+      - "ddr5"
+    target: TECH.PC_COMPONENTS_OR_OTHER_ELECTRONICS
+
+  - id: route_pos_equipment_future
+    priority: 70
+    include_any:
+      - "кассовый аппарат"
+      - "фискальный регистратор"
+      - "pos terminal"
+    target: TECH.OTHER_ELECTRONICS

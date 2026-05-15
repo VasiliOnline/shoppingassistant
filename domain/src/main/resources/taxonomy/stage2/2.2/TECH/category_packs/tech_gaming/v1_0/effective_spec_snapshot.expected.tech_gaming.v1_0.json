@@ -1,0 +1,67 @@
+{
+  "categoryCode": "TECH.GAMING",
+  "version": "1.0",
+  "inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON"
+  ],
+  "main_type_attribute": "gaming_type",
+  "required_fields_effective": [
+    "categoryCode",
+    "gaming_type",
+    "condition",
+    "price",
+    "currency",
+    "availability"
+  ],
+  "initial_fields_count": 8,
+  "primary_facets_count": 7,
+  "t3_hidden_fields": [
+    "compatibility_confidence",
+    "title_confidence",
+    "route_confidence",
+    "evidence_source"
+  ],
+  "allowed_type_values": [
+    "GAME_CONSOLE",
+    "HANDHELD_CONSOLE",
+    "VR_HEADSET",
+    "GAME_CONTROLLER",
+    "GAMING_KEYBOARD",
+    "GAMING_MOUSE",
+    "GAMING_HEADSET",
+    "CONSOLE_ACCESSORY",
+    "PHYSICAL_GAME",
+    "ARCADE_EQUIPMENT"
+  ],
+  "blocked_microcategories": [
+    "TECH.PS5",
+    "TECH.XBOX",
+    "TECH.NINTENDO_SWITCH",
+    "TECH.VR",
+    "TECH.GAMEPADS"
+  ],
+  "route_boundaries": {
+    "TECH.AUDIO": [
+      "generic headphones",
+      "microphones",
+      "speakers"
+    ],
+    "TECH.COMPUTER_ACCESSORIES": [
+      "generic keyboard/mouse/webcam/usb hub"
+    ],
+    "TECH.PC_COMPONENTS": [
+      "GPU/CPU/RAM/motherboard"
+    ],
+    "TECH.STORAGE_MEMORY": [
+      "SSD/HDD/memory cards"
+    ],
+    "TECH.TV_HOME_THEATER": [
+      "TV/projectors/soundbars"
+    ],
+    "TECH.PHONES": [
+      "smartphones"
+    ]
+  }
+}

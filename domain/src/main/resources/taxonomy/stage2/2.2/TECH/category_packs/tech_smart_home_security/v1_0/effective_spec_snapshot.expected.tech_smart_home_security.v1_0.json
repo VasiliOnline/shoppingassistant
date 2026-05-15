@@ -1,0 +1,75 @@
+{
+  "snapshot_id": "effective_spec_snapshot.expected.tech_smart_home_security.v1_0",
+  "categoryCode": "TECH.SMART_HOME_SECURITY",
+  "effective_inherits_from": [
+    "TECH.ELECTRONICS_COMMON",
+    "TECH.DEVICE_IDENTITY_COMMON",
+    "TECH.SPECS_COMMON",
+    "TECH.COMPATIBILITY_COMMON"
+  ],
+  "main_type_attribute": "smart_home_type",
+  "type_values": [
+    "SMART_SPEAKER",
+    "SMART_DISPLAY",
+    "SMART_LIGHT",
+    "SMART_PLUG",
+    "SMART_SWITCH",
+    "SMART_SENSOR",
+    "SECURITY_CAMERA",
+    "VIDEO_DOORBELL",
+    "SMART_LOCK",
+    "SMART_THERMOSTAT",
+    "HOME_HUB",
+    "ALARM_SIREN",
+    "AUTOMATION_KIT"
+  ],
+  "required_core_fields": [
+    "smart_home_type",
+    "brand",
+    "model_name_text",
+    "condition",
+    "color_family",
+    "protocol",
+    "ecosystem",
+    "power_source",
+    "region"
+  ],
+  "initial_fields": [
+    "smart_home_type",
+    "brand",
+    "model_name_text",
+    "condition",
+    "protocol",
+    "ecosystem",
+    "power_source",
+    "color_family"
+  ],
+  "primary_facets": [
+    "smart_home_type",
+    "brand",
+    "protocol",
+    "ecosystem",
+    "power_source",
+    "condition",
+    "price"
+  ],
+  "hidden_fields": [
+    "normalization_confidence",
+    "identity_evidence",
+    "route_confidence",
+    "source_quality_score",
+    "dedup_fingerprint",
+    "privacy_risk_flag"
+  ],
+  "blocked_cross_routes": [
+    "TECH.AUDIO",
+    "TECH.COMPUTER_ACCESSORIES",
+    "TECH.CAMERAS_DRONES",
+    "TECH.CAR_ELECTRONICS_GPS",
+    "TECH.NETWORKING",
+    "TECH.PHONES",
+    "TECH.WEARABLES"
+  ],
+  "no_presets_collections": true,
+  "no_microcategory_codes": true
+}

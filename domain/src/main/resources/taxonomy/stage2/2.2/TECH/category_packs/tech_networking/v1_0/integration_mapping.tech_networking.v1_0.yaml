@@ -1,0 +1,10 @@
+version: 1.0
+categoryCode: TECH.NETWORKING
+ingestion_fields:
+  title: {maps_to: [model_name_text, brand, networking_type, wifi_standard, ethernet_max_speed, port_count, poe_support]}
+  description: {maps_to: [modem_type, cellular_standard, docsis_version, mesh_node_count, controller_ecosystem, included_accessories]}
+  images: {maps_to: [vision_candidate_type, visible_port_count, visible_model_label]}
+runtime: {head_values: values.tech_networking.v1_0.tsv, aliases: aliases.tech_networking.ru.v1_0.tsv, model_head_seed: networking_model_head_seed.tech_networking.v1_0.tsv, model_aliases: networking_model_aliases.tech_networking.ru.v1_0.tsv, long_tail: runtime_candidates/live_values}
+publish_contract:
+  required: [categoryCode, networking_type, title, condition, price, currency, availability]
+  soft_required: [brand, model_name_text, wifi_standard, ethernet_max_speed, port_count]

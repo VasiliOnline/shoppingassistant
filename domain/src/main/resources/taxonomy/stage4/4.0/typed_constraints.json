@@ -3,6 +3,16 @@
   "schemaVersion": "1.0.0",
   "constraints": [
     {
+      "attributeCode": "ac_outlet_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "accessory_completeness_grade",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -40,7 +50,20 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "CONSOLE_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "accessory_type",
@@ -50,7 +73,20 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "CAMERA_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "accessory_width_cm",
@@ -70,10 +106,35 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONSOLE",
+                "HANDHELD_CONSOLE",
+                "VR_HEADSET"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "acoustic_design",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "activation_lock_status",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -136,6 +197,16 @@
       "attributeCode": "adaptive_sync",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "adaptive_triggers",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -217,6 +288,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "age_rating_system",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "age_rating_value",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "age_recommendation",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -249,6 +340,16 @@
     {
       "attributeCode": "airline_safe",
       "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "alarm_volume_db",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -317,9 +418,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "antenna_gain_dbi",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "dBi",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "antenna_included",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "antenna_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -345,6 +466,29 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "aperture_range",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "LENS"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "app_control",
@@ -395,6 +539,52 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "ar_display_mode",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "AR_GLASSES"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "arcade_equipment_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "ARCADE_EQUIPMENT"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "argb_support",
@@ -537,8 +727,48 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "auto_document_feeder",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "auto_lock",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "autofocus",
       "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "autofocus_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "automation_use_case",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -607,6 +837,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "backward_compatibility",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "bag_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -627,8 +867,41 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "band_connector_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WATCH_BAND"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "band_width_mm",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "barcode_label_support",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -680,6 +953,26 @@
       "attributeCode": "battery_cell_type",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_chemistry",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -740,10 +1033,30 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "battery_life_days",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "days",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "battery_life_hours",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "h",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_life_months",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -760,6 +1073,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "battery_model",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "battery_replaced",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -771,6 +1094,16 @@
     },
     {
       "attributeCode": "battery_service_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "battery_size",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -851,6 +1184,29 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "binocular_magnification",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "BINOCULARS_TELESCOPE"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "biometric_auth_type",
@@ -1000,6 +1356,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "braided_cable",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "brand",
       "valueType": "STRING",
       "enumOnly": false,
@@ -1044,6 +1410,16 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "brightness_lumen",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "number",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -1120,6 +1496,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "bulb_base",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "bundle_contents",
       "valueType": "STRING",
       "enumOnly": false,
@@ -1132,6 +1518,26 @@
     {
       "attributeCode": "bundle_identity_exclusion",
       "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "bundle_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "bundle_items_normalized",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -1220,6 +1626,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "cable_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "cache_mb",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -1250,10 +1666,43 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "camera_lens_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "LENS"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "camera_main_mp",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "mp",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "camera_presence",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -1283,6 +1732,16 @@
       "attributeCode": "camera_summary",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "camera_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1333,7 +1792,7 @@
       "attributeCode": "capacity_mah",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": "mah",
+      "unit": "mAh",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -1356,7 +1815,7 @@
       "attributeCode": "capacity_wh",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": "wh",
+      "unit": "Wh",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -1394,6 +1853,16 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "car_voltage_v",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": "V",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "carbs_per_serving_gram",
@@ -1469,6 +1938,16 @@
       "attributeCode": "cartridge_included",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cartridge_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -1592,11 +2071,25 @@
       "attributeCode": "case_size_mm",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": null,
+      "unit": "mm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "AR_GLASSES",
+                "SMARTWATCH"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "case_style",
@@ -1620,6 +2113,26 @@
     },
     {
       "attributeCode": "cellular_generation",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cellular_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cellular_support",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1730,6 +2243,16 @@
     },
     {
       "attributeCode": "charging_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "charging_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -1872,6 +2395,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "coin_op",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "coin_pocket",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -1962,10 +2495,30 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "color_printing",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "color_secondary",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "color_temperature_k",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "K",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -2709,6 +3262,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "compatibility_target",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "compatibility_target_id",
       "valueType": "STRING",
       "enumOnly": false,
@@ -2742,6 +3305,16 @@
       "attributeCode": "compatible_brand",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compatible_cartridge_code",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -2956,6 +3529,43 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONTROLLER",
+                "GAMING_KEYBOARD",
+                "GAMING_MOUSE",
+                "GAMING_HEADSET",
+                "CONSOLE_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "compatible_printer_brand",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "compatible_printer_model_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
       "requiredIf": []
     },
     {
@@ -3017,6 +3627,54 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "compatible_wearable_brand",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WATCH_BAND",
+                "WEARABLE_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "compatible_wearable_model_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WATCH_BAND",
+                "WEARABLE_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "compliance_flags",
@@ -3086,10 +3744,47 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONTROLLER",
+                "GAMING_KEYBOARD",
+                "GAMING_MOUSE",
+                "GAMING_HEADSET",
+                "CONSOLE_ACCESSORY"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "connectivity",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "connectivity_band",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "connectivity_set",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3180,6 +3875,16 @@
     },
     {
       "attributeCode": "connector_b_form_factor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "connector_from",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3281,6 +3986,16 @@
       ]
     },
     {
+      "attributeCode": "connector_to",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "connector_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -3311,8 +4026,91 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "console_generation",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "consumable_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "contrast_ratio_text",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "control_panel_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "controller_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "controller_ecosystem",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "controller_subtype",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONTROLLER"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "controllers_included",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -3382,6 +4180,16 @@
     },
     {
       "attributeCode": "cosmetic_condition_grade",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "cosmetic_grade",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -3561,6 +4369,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "cutter_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "cycle_count",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -3622,6 +4440,16 @@
     },
     {
       "attributeCode": "data_transfer_rate",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "Gbps",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "data_transfer_speed_gbps",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "Gbps",
@@ -4118,6 +4946,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "device_count_in_kit",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "device_function",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "device_identity_key",
       "valueType": "STRING",
       "enumOnly": false,
@@ -4130,6 +4978,16 @@
     {
       "attributeCode": "diameter_cm",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "digital_code_included",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -4168,6 +5026,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "disc_drive",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONSOLE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "disc_format",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -4189,6 +5070,16 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "disc_region",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "display_output",
@@ -4285,6 +5176,16 @@
     },
     {
       "attributeCode": "dock_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "docsis_version",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -4414,6 +5315,72 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "drone_flight_time_min",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "min",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DRONE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "drone_range_km",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "km",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "drone_registration_class",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "drone_weight_g",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "g",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DRONE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "drop_protection_m",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -4437,6 +5404,26 @@
       "attributeCode": "dual_sim_support",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "duplex_printing",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "durability_rating",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -4525,8 +5512,8 @@
     },
     {
       "attributeCode": "edition",
-      "valueType": "STRING",
-      "enumOnly": false,
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -4624,6 +5611,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "energy_monitoring",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "enterprise_management_support",
       "valueType": "STRING",
       "enumOnly": false,
@@ -4664,6 +5661,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "ethernet_max_speed",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": "bps",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "ethernet_speed",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -4687,6 +5694,16 @@
       "attributeCode": "evidence_policy",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "evidence_source",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -4854,6 +5871,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "fast_charge_protocol",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "fast_charge_standard",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -4884,6 +5911,46 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "field_of_view_deg",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "film_scanning",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "filter_diameter_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "fingerprint",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "finish",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -4895,6 +5962,16 @@
     },
     {
       "attributeCode": "firmware_requirement",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "firmware_status",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -4964,10 +6041,43 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "focal_length_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "LENS"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "foldable",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "folded_length_cm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "cm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -4995,6 +6105,16 @@
     },
     {
       "attributeCode": "for_parts_only",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "force_feedback",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -5035,6 +6155,16 @@
     },
     {
       "attributeCode": "frame_rate_fps",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "fps",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "frame_rate_max_fps",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "fps",
@@ -5503,6 +6633,16 @@
       ]
     },
     {
+      "attributeCode": "functional_grade",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "game_controller_layout",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -5511,6 +6651,29 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "game_platform",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "PHYSICAL_GAME"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "gaming_features",
@@ -5524,6 +6687,26 @@
     },
     {
       "attributeCode": "gaming_grade",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "gaming_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "gan_charger",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -5573,6 +6756,30 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "gimbal_axis_count",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DRONE",
+                "GIMBAL"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "glove_size",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -5596,6 +6803,16 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "gps_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "gpu_brand",
@@ -5911,6 +7128,36 @@
       ]
     },
     {
+      "attributeCode": "headset_connection",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "headset_surround",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "health_feature_set",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "health_status",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -6031,6 +7278,36 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "hub_protocols",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "hub_required",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "hvac_compatibility",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "hypoallergenic",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -6052,7 +7329,7 @@
     },
     {
       "attributeCode": "identity_confidence",
-      "valueType": "STRING",
+      "valueType": "NUMBER",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -7214,6 +8491,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "imei_or_serial_presence",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "imei_status",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7294,6 +8581,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "indoor_outdoor",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ingestion_confidence",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "ingestion_timestamp",
       "valueType": "STRING",
       "enumOnly": false,
@@ -7307,6 +8614,16 @@
       "attributeCode": "ingredient_list",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "input_layout",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -7374,6 +8691,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "installation_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "insulation",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7428,10 +8755,20 @@
     },
     {
       "attributeCode": "ip_rating",
-      "valueType": "STRING",
-      "enumOnly": false,
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": "^IP[0-9]{2}[A-Z]?$",
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ipd_adjustment",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
@@ -7445,6 +8782,31 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "is_body_only",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DIGITAL_CAMERA",
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "is_detachable_strap",
@@ -7517,6 +8879,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "isp_locked",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "key_switch_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7577,6 +8949,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "keyboard_switch_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "keypad",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "keystone_correction",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -7587,10 +8979,54 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "kit_contains",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "kit_lens_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "kvm_switch",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "label_width_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -7611,6 +9047,26 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "hours",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "lan_port_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "language_pack",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -7714,12 +9170,37 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA",
+                "LENS"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "lens_shift",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "lens_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -7745,6 +9226,39 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "light_power_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "W",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "light_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "PHOTO_LIGHTING"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "limited_edition",
@@ -7810,6 +9324,16 @@
       "attributeCode": "listing_completeness_confidence",
       "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "live_value_candidate_state",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -7928,6 +9452,36 @@
     },
     {
       "attributeCode": "magsafe_compatible",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "magsafe_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "managed_switch",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "manual_included",
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
@@ -8060,6 +9614,16 @@
       ]
     },
     {
+      "attributeCode": "matter_support",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "max_capture_fps",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -8073,6 +9637,16 @@
       "attributeCode": "max_capture_resolution",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "max_connected_devices",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -8124,6 +9698,16 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "kg",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "max_load_watt",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "number",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -8205,6 +9789,39 @@
     },
     {
       "attributeCode": "measurement_system",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "media_format",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "PHYSICAL_GAME"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "media_type_supported",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -8307,6 +9924,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "mesh_node_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "mesh_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "metal_purity",
       "valueType": "STRING",
       "enumOnly": false,
@@ -8320,6 +9957,16 @@
       "attributeCode": "metal_type",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "mfi_certified",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -8387,7 +10034,37 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "mimo_streams",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "mobile_network_generation",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "mobile_printing",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "modded_status",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -8765,6 +10442,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "modem_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "moderation_status",
       "valueType": "STRING",
       "enumOnly": false,
@@ -8798,6 +10485,26 @@
       ]
     },
     {
+      "attributeCode": "mono_color",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "monthly_duty_cycle_pages",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "pages",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "motherboard_form_factor",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -8821,6 +10528,16 @@
       "attributeCode": "motherboard_socket",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "motion_detection",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -8907,9 +10624,19 @@
     },
     {
       "attributeCode": "mounting_type",
-      "valueType": "ENUM",
-      "enumOnly": true,
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "mouse_dpi_max",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "dpi",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -9026,6 +10753,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "network_printing",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "network_speed",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -9056,6 +10793,46 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "networking_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "neutral_wire_required",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "nfc_payments",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "night_vision",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "noise_control",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -9077,7 +10854,7 @@
     },
     {
       "attributeCode": "normalization_confidence",
-      "valueType": "NUMBER",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -9156,7 +10933,63 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "objective_diameter_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "BINOCULARS_TELESCOPE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "obstacle_avoidance",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DRONE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "occasion",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "oem_original",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -9174,6 +11007,30 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "online_ban_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONSOLE",
+                "HANDHELD_CONSOLE"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "operating_temperature",
@@ -9203,12 +11060,36 @@
       "regex": null,
       "minValue": null,
       "maxValue": null,
-      "requiredIf": []
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DIGITAL_CAMERA",
+                "CAMCORDER"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "original_box",
-      "valueType": "BOOLEAN",
-      "enumOnly": false,
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "original_compatible_status",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -9319,6 +11200,16 @@
       "attributeCode": "otg_support",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "outdoor_rated",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -9502,6 +11393,16 @@
       ]
     },
     {
+      "attributeCode": "package_detection",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "package_text",
       "valueType": "STRING",
       "enumOnly": false,
@@ -9513,6 +11414,16 @@
     },
     {
       "attributeCode": "packaging_condition",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "page_yield_bucket",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -9573,6 +11484,16 @@
     },
     {
       "attributeCode": "panel_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "paper_format",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -9662,9 +11583,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "payload_capacity_g",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "g",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "pc_component_type",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "pc_vr_compatible",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -9705,6 +11646,16 @@
       "attributeCode": "pen_technology",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "person_detection",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -9756,6 +11707,16 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "photo_printing",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -9822,6 +11783,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "platform",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "platform_height_cm",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -9833,6 +11804,16 @@
     },
     {
       "attributeCode": "plating",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "plug_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -9862,9 +11843,29 @@
       "requiredIf": []
     },
     {
-      "attributeCode": "poe_support",
-      "valueType": "BOOLEAN",
+      "attributeCode": "poe_port_count",
+      "valueType": "NUMBER",
       "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "poe_power_budget_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "W",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "poe_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -9902,6 +11903,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "port_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "port_list_text",
       "valueType": "STRING",
       "enumOnly": false,
@@ -9924,6 +11935,16 @@
     {
       "attributeCode": "port_summary",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "portable",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -9975,6 +11996,16 @@
       "attributeCode": "power_adapter_included",
       "valueType": "BOOLEAN",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "power_cable_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -10112,6 +12143,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "prescription_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "pressure_levels",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -10162,6 +12203,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "print_resolution_dpi",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "dpi",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "print_speed_ppm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "ppm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "print_technology",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -10175,6 +12236,16 @@
       "attributeCode": "print_text",
       "valueType": "STRING",
       "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "printer_scanner_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -10212,8 +12283,18 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "privacy_risk_flag",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "privacy_shutter",
-      "valueType": "BOOLEAN",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -10393,6 +12474,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "protocol",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "protocol_standard",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -10467,6 +12558,26 @@
       "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "qi_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "rack_units",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "U",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -10566,7 +12677,7 @@
       "attributeCode": "ram_gb",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": "gb",
+      "unit": "GB",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -10806,6 +12917,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "recording_format",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "recording_pattern",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -10829,7 +12950,7 @@
       "attributeCode": "refresh_rate_hz",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": "hz",
+      "unit": "Hz",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -10954,6 +13075,29 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "remote_controller_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DRONE"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "remote_included",
@@ -11088,6 +13232,16 @@
       ]
     },
     {
+      "attributeCode": "replacement_part_context",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "replacement_part_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -11190,6 +13344,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "resolution_text",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "resolution_width_px",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -11250,6 +13414,39 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "right_angle_connector",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "ring_size",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "SMART_RING"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "ring_size_ru",
       "valueType": "NUMBER",
       "enumOnly": false,
@@ -11306,7 +13503,7 @@
       "attributeCode": "route_confidence",
       "valueType": "STRING",
       "enumOnly": false,
-      "unit": "0..1",
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -11325,6 +13522,16 @@
     {
       "attributeCode": "route_guardrail_trace",
       "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "routing_confidence",
+      "valueType": "NUMBER",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -11393,6 +13600,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "safety_certification",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "safety_protections",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -11437,6 +13654,26 @@
       "valueType": "STRING",
       "enumOnly": false,
       "unit": "dpi",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "scan_resolution_dpi",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "dpi",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "scanner_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -11670,6 +13907,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "screen_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "sd_card_support",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -11723,6 +13970,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "security_protocol",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "seller_bundle",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -11761,6 +14018,70 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "sensor_format",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DIGITAL_CAMERA",
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA",
+                "ACTION_CAMERA",
+                "CAMCORDER"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "sensor_kind",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "sensor_resolution_mp",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "MP",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DIGITAL_CAMERA",
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA",
+                "ACTION_CAMERA",
+                "CAMCORDER"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "sensor_set",
@@ -11876,6 +14197,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "sfp_ports",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "shaft_height",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -11934,6 +14265,30 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "shutter_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "side_panel_material",
@@ -11997,6 +14352,16 @@
           ]
         }
       ]
+    },
+    {
+      "attributeCode": "siren_type",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
     },
     {
       "attributeCode": "size_class",
@@ -12130,6 +14495,16 @@
     },
     {
       "attributeCode": "smart_assistant",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "smart_home_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -12283,6 +14658,16 @@
     },
     {
       "attributeCode": "source_payload_hash",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "source_quality_score",
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
@@ -12532,6 +14917,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "sport_profile_set",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "sport_purpose",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -12591,6 +14986,16 @@
       ]
     },
     {
+      "attributeCode": "stabilization_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "stand_form_factor",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -12644,11 +15049,25 @@
       "attributeCode": "storage_capacity_gb",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": "gb",
+      "unit": "GB",
       "regex": null,
       "minValue": null,
       "maxValue": null,
       "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "GAME_CONSOLE",
+                "HANDHELD_CONSOLE",
+                "VR_HEADSET"
+              ]
+            }
+          ]
+        },
         {
           "categoryCode": "TECH.PHONE_ACCESSORIES",
           "whenAll": [
@@ -12679,7 +15098,7 @@
       "attributeCode": "storage_gb",
       "valueType": "NUMBER",
       "enumOnly": false,
-      "unit": null,
+      "unit": "GB",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -12699,6 +15118,16 @@
       "attributeCode": "storage_media_type",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "storage_mode",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -12814,6 +15243,29 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "strap_width_mm",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "mm",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.WEARABLES",
+          "whenAll": [
+            {
+              "attributeCode": "wearable_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "WATCH_BAND"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "streaming_os",
@@ -12963,6 +15415,26 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "subscription_included",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "subscription_required",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "substance_code",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -12987,6 +15459,26 @@
       "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "supported_os",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "surge_joule_rating",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "J",
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -13033,6 +15525,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "switch_type",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "swivel",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -13044,6 +15546,16 @@
     },
     {
       "attributeCode": "tablet_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "tank_system",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -13123,6 +15635,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "thermostat_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "thickness",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -13155,6 +15677,16 @@
     {
       "attributeCode": "thread_count",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "thread_support",
+      "valueType": "STRING",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -13236,6 +15768,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "title_confidence",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "title_embedding_id",
       "valueType": "STRING",
       "enumOnly": false,
@@ -13247,6 +15789,16 @@
     },
     {
       "attributeCode": "toe_shape",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "toner_color",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -13326,6 +15878,29 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "tripod_head_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "TRIPOD"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "tripod_mount_thread",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -13359,6 +15934,16 @@
       "attributeCode": "turntable_drive_type",
       "valueType": "ENUM",
       "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "two_way_audio",
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -13459,6 +16044,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "ups_topology",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "usage_context",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -13501,6 +16096,16 @@
     {
       "attributeCode": "usb_hub_ports_count",
       "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "usb_pd_support",
+      "valueType": "BOOLEAN",
       "enumOnly": false,
       "unit": null,
       "regex": null,
@@ -13639,7 +16244,55 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "video_resolution_max",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.CAMERAS_DRONES",
+          "whenAll": [
+            {
+              "attributeCode": "camera_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "DIGITAL_CAMERA",
+                "MIRRORLESS_CAMERA",
+                "DSLR_CAMERA",
+                "ACTION_CAMERA",
+                "CAMCORDER",
+                "DRONE"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "attributeCode": "video_speed_class",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "video_standard",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "viewfinder_type",
       "valueType": "ENUM",
       "enumOnly": true,
       "unit": null,
@@ -13729,6 +16382,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "voice_assistant_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "voice_remote",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -13777,6 +16440,62 @@
       "minValue": null,
       "maxValue": null,
       "requiredIf": []
+    },
+    {
+      "attributeCode": "vpn_support",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "vr_standalone_mode",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "VR_HEADSET"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "attributeCode": "vr_tracking_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": [
+        {
+          "categoryCode": "TECH.GAMING",
+          "whenAll": [
+            {
+              "attributeCode": "gaming_type",
+              "op": "EQUALS_ANY",
+              "values": [
+                "VR_HEADSET"
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "attributeCode": "vram_gb",
@@ -13839,6 +16558,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "wan_port_count",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "count",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "warranty",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -13880,8 +16609,8 @@
     },
     {
       "attributeCode": "warranty_status",
-      "valueType": "ENUM",
-      "enumOnly": true,
+      "valueType": "STRING",
+      "enumOnly": false,
       "unit": null,
       "regex": null,
       "minValue": null,
@@ -14038,10 +16767,40 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "wattage_w",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "W",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "wear_level_percent",
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "percent",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "wearable_type",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "weather_sealing",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,
@@ -14118,6 +16877,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "wheel_rotation_deg",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "deg",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "wheel_type",
       "valueType": "ENUM",
       "enumOnly": true,
@@ -14178,6 +16947,16 @@
       "requiredIf": []
     },
     {
+      "attributeCode": "wifi_band",
+      "valueType": "ENUM",
+      "enumOnly": true,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
       "attributeCode": "wifi_bluetooth",
       "valueType": "BOOLEAN",
       "enumOnly": false,
@@ -14215,6 +16994,16 @@
       "regex": null,
       "minValue": 1.0,
       "maxValue": 300.0,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "wireless",
+      "valueType": "BOOLEAN",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
       "requiredIf": []
     },
     {
@@ -14315,6 +17104,36 @@
       "valueType": "NUMBER",
       "enumOnly": false,
       "unit": "MBps",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "yield_pages",
+      "valueType": "NUMBER",
+      "enumOnly": false,
+      "unit": "pages",
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "z_wave_support",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
+      "regex": null,
+      "minValue": null,
+      "maxValue": null,
+      "requiredIf": []
+    },
+    {
+      "attributeCode": "zigbee_support",
+      "valueType": "STRING",
+      "enumOnly": false,
+      "unit": null,
       "regex": null,
       "minValue": null,
       "maxValue": null,

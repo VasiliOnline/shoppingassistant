@@ -1,0 +1,25 @@
+package: TECH_PRINTERS_SCANNERS_consumables_compatibility_delta_pack_v1_1_RU
+target_category: TECH.PRINTERS_SCANNERS
+version: 1.1
+status: active
+policy:
+  compatibility_fields:
+    - compatible_printer_brand
+    - compatible_printer_model_text
+    - compatible_cartridge_code
+  validation_mode: soft_suggest_only
+  publish_blocking: false
+  evidence_priority:
+    - explicit_cartridge_code_in_title
+    - explicit_printer_model_in_title
+    - vendor_packaging_text
+    - seller_description
+    - OCR_from_packaging
+  rule: >
+    Consumable compatibility improves search, matching and dedup, but must not reject listings
+    unless the seller explicitly claims an impossible combination and the runtime validator is configured
+    to enforce that in a future release.
+route_guard_delta:
+  OBD scanner / автосканер -> TECH.CAR_ELECTRONICS_GPS
+  3D printer / filament -> TECH.OTHER_ELECTRONICS in v1
+  USB power cable -> TECH.POWER_CHARGING_CABLES unless bundled as printer-specific accessory

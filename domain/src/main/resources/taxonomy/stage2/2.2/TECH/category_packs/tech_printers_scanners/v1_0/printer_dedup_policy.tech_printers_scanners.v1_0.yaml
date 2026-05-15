@@ -1,0 +1,31 @@
+dedup_policy:
+  categoryCode: TECH.PRINTERS_SCANNERS
+  device_dedup_key:
+    fields:
+      - categoryCode
+      - printer_scanner_type
+      - brand
+      - normalized_model
+      - print_technology
+      - color_printing
+    note: "Do not merge different consumable variants or cartridges into device products."
+  consumable_dedup_key:
+    fields:
+      - categoryCode
+      - printer_scanner_type
+      - brand
+      - compatible_cartridge_code
+      - toner_color
+      - original_compatible_status
+      - page_yield_bucket
+  accessory_dedup_key:
+    fields:
+      - categoryCode
+      - accessory_subtype
+      - compatible_printer_brand
+      - compatible_printer_model_text
+      - brand
+merge_guards:
+  - "Never merge OEM and compatible cartridge listings unless explicit same SKU and same seller listing duplication."
+  - "Never merge ink cartridge and toner cartridge."
+  - "Never merge printer and multifunction printer if scanner/copier evidence differs."

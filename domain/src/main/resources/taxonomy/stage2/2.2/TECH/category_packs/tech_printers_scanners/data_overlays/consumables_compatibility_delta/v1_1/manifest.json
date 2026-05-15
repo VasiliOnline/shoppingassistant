@@ -1,0 +1,43 @@
+{
+  "package_name": "TECH_PRINTERS_SCANNERS_consumables_compatibility_delta_pack_v1_1_RU",
+  "version": "1.1",
+  "lang": "ru",
+  "created_at": "2026-05-15T10:24:25Z",
+  "pack_type": "data_overlay_patch",
+  "target_category_code": "TECH.PRINTERS_SCANNERS",
+  "target_base_package": "TECH_PRINTERS_SCANNERS_public_category_pack_v1_0_RU",
+  "public_category": false,
+  "accepts_offers_directly": false,
+  "purpose_ru": "Закрыть P1-дыру по картриджам/тонерам/чернилам: cartridge-code aliases, compatibility evidence, consumable publish fixtures и route ambiguities.",
+  "scope": [
+    "INK_CARTRIDGE",
+    "TONER_CARTRIDGE",
+    "PRINTER_ACCESSORY",
+    "SCANNER route edge cases"
+  ],
+  "non_goals": [
+    "presets",
+    "collections",
+    "SEO landing pages",
+    "new categoryCode",
+    "full cartridge registry",
+    "full printer model registry"
+  ],
+  "schema_breaking_changes": false,
+  "ui_changes": false,
+  "new_category_codes": 0,
+  "files": [
+    "values_delta.tech_printers_scanners_consumables.v1_1.tsv",
+    "aliases_delta.ru.tech_printers_scanners_consumables.v1_1.tsv",
+    "consumable_compatibility_policy.tech_printers_scanners.v1_1.yaml",
+    "golden_queries_delta.tech_printers_scanners_consumables.v1_1.tsv",
+    "sample_offers_delta.tech_printers_scanners_consumables.v1_1.jsonl",
+    "publish_sample_offers_delta.tech_printers_scanners_consumables.v1_1.jsonl",
+    "integration_mapping.tech_printers_scanners_consumables.v1_1.yaml",
+    "quality_gates.tech_printers_scanners_consumables.v1_1.yaml",
+    "effective_spec_snapshot.expected.tech_printers_scanners_consumables.v1_1.json",
+    "validation_report.tech_printers_scanners_consumables.v1_1.json",
+    "README_TECH_PRINTERS_SCANNERS_CONSUMABLES_DELTA_v1_1_RU.md",
+    "docs/CONSUMABLES_COMPATIBILITY_BOUNDARY_RU.md"
+  ]
+}

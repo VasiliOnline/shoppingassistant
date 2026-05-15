@@ -1,0 +1,25 @@
+query	expected_categoryCode	expected_networking_type	expected_brand	expected_attributes	negative_route	notes
+патч корд cat6 1 метр	TECH.NETWORKING	NETWORK_ACCESSORY	GENERIC	ethernet_max_speed=1_GBPS		Network accessory, not generic cable
+патч панель 24 порта cat6	TECH.NETWORKING	NETWORK_ACCESSORY	GENERIC	port_count=24		Patch panel accessory
+keystone rj45 cat6	TECH.NETWORKING	NETWORK_ACCESSORY	GENERIC			Keystone network accessory
+коннектор rj45 упаковка	TECH.NETWORKING	NETWORK_ACCESSORY	GENERIC			RJ45 network accessory
+обжимка rj45 кримпер	TECH.NETWORKING	NETWORK_ACCESSORY	GENERIC			Networking tool accessory
+lan tester тестер витой пары	TECH.NETWORKING	NETWORK_ACCESSORY	GENERIC			Network tester accessory
+LiteBeam 5AC Ubiquiti	TECH.NETWORKING	ANTENNA	UBIQUITI	antenna_type=DIRECTIONAL		Outdoor wireless antenna
+NanoBeam 5AC Ubiquiti	TECH.NETWORKING	ANTENNA	UBIQUITI	antenna_type=DIRECTIONAL		Outdoor wireless antenna
+mANT LTE 5o MikroTik	TECH.NETWORKING	ANTENNA	MIKROTIK	antenna_type=OMNI		LTE antenna
+антенна 4g mimo наружная	TECH.NETWORKING	ANTENNA		antenna_type=DIRECTIONAL		Cellular antenna
+секторная wifi антенна	TECH.NETWORKING	ANTENNA		antenna_type=SECTOR		Sector antenna
+Huawei EchoLife HG8245H GPON ONT	TECH.NETWORKING	MODEM	HUAWEI	modem_type=GPON_ONT		Fiber ONT
+ZTE F660 ONT терминал	TECH.NETWORKING	MODEM	ZTE	modem_type=GPON_ONT		Fiber ONT
+xgs pon ont терминал	TECH.NETWORKING	MODEM		modem_type=XGPON_XGSPON_ONT		High speed fiber ONT
+GL.iNet Flint 2 роутер	TECH.NETWORKING	ROUTER	GL_INET	controller_ecosystem=GLINET_OPENWRT		OpenWrt router
+Cudy WR3000 роутер	TECH.NETWORKING	ROUTER	CUDY	wifi_standard=WIFI_6		Budget router
+Reyee RG EW3200GX Pro	TECH.NETWORKING	ROUTER	RUIJIE_REYEE	controller_ecosystem=RUIJIE_REYEE_CLOUD		Ruijie/Reyee route
+DrayTek Vigor 2927 VPN роутер	TECH.NETWORKING	ROUTER	DRAYTEK	vpn_support=YES		VPN router
+PoE инжектор 48V гигабитный	TECH.NETWORKING	POE_INJECTOR		poe_support=POE_802_3AF		PoE accessory
+passive poe injector mikrotik	TECH.NETWORKING	POE_INJECTOR	MIKROTIK	poe_support=PASSIVE_POE		PoE accessory
+сетевой фильтр 6 розеток	TECH.POWER_CHARGING_CABLES				POWER_SURGE_PROTECTOR	Russian сетевой фильтр is surge protector, not networking
+usb c кабель 100w	TECH.POWER_CHARGING_CABLES				USB_CABLE	Generic USB cable
+NAS Synology DS224+	TECH.STORAGE_MEMORY				NAS	NAS must stay storage
+ip камера hikvision	TECH.SMART_HOME_SECURITY				SECURITY_CAMERA	Security camera not networking

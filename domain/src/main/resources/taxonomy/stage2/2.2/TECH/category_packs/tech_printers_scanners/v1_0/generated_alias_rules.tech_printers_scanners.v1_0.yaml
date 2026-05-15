@@ -1,0 +1,45 @@
+generated_alias_rules:
+  - id: printer_brand_model_rule
+    scope: TECH.PRINTERS_SCANNERS
+    examples:
+      - "hp laserjet m404dn"
+      - "canon pixma g3411"
+      - "epson l3250"
+    pattern: "{brand} {series_or_family} {model}"
+    normalize:
+      categoryCode: TECH.PRINTERS_SCANNERS
+      keep_raw_model_text: true
+      evidence_required_for_model: true
+
+  - id: cartridge_code_rule
+    scope: consumables
+    examples:
+      - "hp 305"
+      - "canon 445"
+      - "brother tn-2421"
+      - "epson 103"
+    pattern: "{brand} {cartridge_code}"
+    normalize:
+      categoryCode: TECH.PRINTERS_SCANNERS
+      printer_scanner_type: INK_CARTRIDGE|TONER_CARTRIDGE
+      compatible_cartridge_code: "{cartridge_code}"
+      do_not_infer_printer_model_without_evidence: true
+
+  - id: label_printer_rule
+    scope: label_printers
+    detect_any:
+      - "принтер этикеток"
+      - "label printer"
+      - "термопринтер"
+      - "принтер штрихкодов"
+    normalize:
+      printer_scanner_type: LABEL_PRINTER
+
+  - id: no_microcategory_rule
+    forbidden_category_codes:
+      - TECH.PRINTERS
+      - TECH.SCANNERS
+      - TECH.INK
+      - TECH.TONER
+      - TECH.HP_PRINTERS
+    action: reject_package_or_route_to_TECH.PRINTERS_SCANNERS
